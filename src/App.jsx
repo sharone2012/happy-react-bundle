@@ -272,7 +272,6 @@ const ResidueCard = ({label, active, locked, onClick, sublabel, highlightColor})
   </div>
   );
 };
-);
 
 const FE_COLOR = {LOW:C.green, MODERATE:C.teal, HIGH:C.amber, CRITICAL:C.red, Untested:C.grey};
 
