@@ -161,14 +161,14 @@ const AmbField = ({label, unit, value, onChange, note}) => {
   );
 };
 
-const CalcField = ({label, unit, value, note}) => (
+const CalcField = ({label, unit, value, note, noteColor}) => (
   <div>
     <Lbl t={label} unit={unit}/>
     <div style={{background:"#0D2818", border:`1px solid ${C.green}44`, borderRadius:5,
                  padding:"6px 10px", color:C.green, fontSize:13, fontWeight:600, textAlign:"center"}}>
       {value}
     </div>
-    {note && <div style={{color:C.green,fontSize:10,marginTop:2}}>{note}</div>}
+    {note && <div style={{color:noteColor||C.green,fontSize:10,marginTop:2}}>{note}</div>}
   </div>
 );
 
@@ -2538,7 +2538,8 @@ export default function CFI() {
                     <CalcField label="Blended Moisture" unit="%" value={blendMC}/>
                     <CalcField label="Blend DM Content" unit="%" value={(100-blendMC).toFixed(1)}/>
                     <CalcField label="Blend C:N (DM)" unit="" value={blendCN||"—"}
-                      note={blendCN?blendCN<=25?"✓ Optimal for BSF (15–25)":blendCN<=35?"⚠ Marginal — add POME/PKE":"✕ High — BSF yield penalty":undefined}/>
+                      note={blendCN?blendCN<=25?"✓ Optimal for BSF (15–25)":blendCN<=35?"⚠ Marginal — add POME/PKE":"✕ High — BSF yield penalty":undefined}
+                      noteColor={blendCN?blendCN<=25?C.green:blendCN<=35?C.amber:C.red:undefined}/>
                   </div>
                   <div style={{...g2, marginTop:10}}>
                     <CalcField label="Blend CP % DM (DM-weighted)" unit=""
