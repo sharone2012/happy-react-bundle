@@ -2569,7 +2569,7 @@ export default function CFI() {
                   <div style={g3}>
                     <CalcField label="Blended Moisture" unit="%" value={blendMC}/>
                     <CalcField label="Blend DM Content" unit="%" value={(100-blendMC).toFixed(1)}/>
-                    <CalcField label="Blend C:N (DM Ratio)" unit="" value={blendCN||"—"}
+                    <CalcField label="Blend C:N (DM)" unit="" value={blendCN||"—"}
                       note={blendCN?blendCN<=25?"✓ Optimal for BSF (15–25)":blendCN<=35?"⚠ Marginal — add POME/PKE":"✕ High — BSF yield penalty":undefined}/>
                   </div>
                   <div style={{...g2, marginTop:10}}>
