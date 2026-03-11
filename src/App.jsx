@@ -2346,7 +2346,7 @@ export default function CFI() {
                 <Card>
                   <SectionHdr icon="⚙" title="B — Mill Fresh Fruit Bunch Processing Capacity" color={C.teal}/>
                   <div style={{display:"flex", justifyContent:"center"}}>
-                    <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"28px 56px", maxWidth:540}}>
+                    <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"12px 56px", maxWidth:540}}>
 
                       {/* FFB Processing */}
                       <div style={{display:"flex", flexDirection:"column", gap:4}}>
