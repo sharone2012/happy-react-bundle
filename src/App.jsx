@@ -2573,7 +2573,7 @@ export default function CFI() {
                       note={blendCN?blendCN<=25?"✓ Optimal for BSF (15–25)":blendCN<=35?"⚠ Marginal — add POME/PKE":"✕ High — BSF yield penalty":undefined}/>
                   </div>
                   <div style={{...g2, marginTop:10}}>
-                    <CalcField label="Blend CP % DM (DM-weighted)" unit="% crude protein"
+                    <CalcField label="Blend CP % DM (DM-weighted)" unit=""
                       value={blendCP ? blendCP+"%" : "—"}
                       note={blendCP?blendCP>=15?"✓ Strong (≥15%)":blendCP>=10?"⚠ Marginal (10–15%) — PKE advised":"✕ Low (<10%) — increase OPDC or PKE":undefined}/>
                     <div style={{background:C.navyDk, borderRadius:8, padding:"10px 12px"}}>
