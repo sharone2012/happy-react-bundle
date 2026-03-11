@@ -36,6 +36,7 @@ const C = {
   navyMid:"#0F2236",
   navyLt: "#162E45",
   navyDk: "#070F1A",
+  inputBg:"#000000",
   teal:   "#00C9B1",
   tealDk: "#009E8C",
   tealLt: "#5EEADA",
@@ -2303,7 +2304,7 @@ export default function CFI() {
                     <div style={{marginLeft:12, flexShrink:0, display:"flex", flexDirection:"column", alignItems:"center"}}>
                       <div style={{color:C.grey, fontSize:9, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.09em", marginBottom:4, textAlign:"center"}}>ID Code</div>
                       <input
-                        style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
+                        style={{background:C.inputBg, border:`1px solid ${C.teal}55`, borderRadius:6,
                           color:C.white, padding:"8px 12px", fontSize:13, width:90, outline:"none",
                           boxSizing:"border-box", textAlign:"center"}}
                         value={s0.idCode||""} onChange={e=>upS0("idCode",e.target.value)}
@@ -2311,31 +2312,31 @@ export default function CFI() {
                     </div>
                   </div>
                   <div style={g2}>
-                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
+                    <input style={{background:C.inputBg, border:`1px solid ${C.teal}55`, borderRadius:6,
                       color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
                       value={s0.plantName} onChange={e=>upS0("plantName",e.target.value)}
                       placeholder="Plantation / Company Name"/>
-                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
+                    <input style={{background:C.inputBg, border:`1px solid ${C.teal}55`, borderRadius:6,
                       color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
                       value={s0.millName} onChange={e=>upS0("millName",e.target.value)}
                       placeholder="Mill Name / Unit"/>
                   </div>
                   <div style={{...g2, marginTop:10}}>
-                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
+                    <input style={{background:C.inputBg, border:`1px solid ${C.teal}55`, borderRadius:6,
                       color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
                       value={s0.district} onChange={e=>upS0("district",e.target.value)}
                       placeholder="District / Kabupaten"/>
-                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
+                    <input style={{background:C.inputBg, border:`1px solid ${C.teal}55`, borderRadius:6,
                       color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
                       value={s0.province} onChange={e=>upS0("province",e.target.value)}
                       placeholder="Province"/>
                   </div>
                   <div style={{...g2, marginTop:10}}>
-                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
+                    <input style={{background:C.inputBg, border:`1px solid ${C.teal}55`, borderRadius:6,
                       color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
                       value={s0.contactName||""} onChange={e=>upS0("contactName",e.target.value)}
                       placeholder="First &amp; Last Name"/>
-                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
+                    <input style={{background:C.inputBg, border:`1px solid ${C.teal}55`, borderRadius:6,
                       color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
                       value={s0.contactEmail||""} onChange={e=>upS0("contactEmail",e.target.value)}
                       placeholder="Email &amp; Telephone"/>
@@ -2354,7 +2355,7 @@ export default function CFI() {
                           <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2, minWidth:70}}>
                             FFB<br/>Processing
                           </div>
-                          <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
+                          <input style={{background:C.inputBg, border:`2px solid ${C.teal}66`, borderRadius:6,
                             color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
                             width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
                             value={s0.ffbCapacity}
@@ -2370,7 +2371,7 @@ export default function CFI() {
                           <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2, minWidth:70}}>
                             Capacity<br/>Utilisation
                           </div>
-                          <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
+                          <input style={{background:C.inputBg, border:`2px solid ${C.teal}66`, borderRadius:6,
                             color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
                             width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
                             value={s0.utilisation}
@@ -2389,7 +2390,7 @@ export default function CFI() {
                           <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2, minWidth:70}}>
                             Hours<br/>/ Day
                           </div>
-                          <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
+                          <input style={{background:C.inputBg, border:`2px solid ${C.teal}66`, borderRadius:6,
                             color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
                             width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
                             value={s0.hrsDay}
@@ -2405,7 +2406,7 @@ export default function CFI() {
                           <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2, minWidth:70}}>
                             Days<br/>/ Month
                           </div>
-                          <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
+                          <input style={{background:C.inputBg, border:`2px solid ${C.teal}66`, borderRadius:6,
                             color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
                             width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
                             value={s0.daysMonth}
@@ -2478,7 +2479,7 @@ export default function CFI() {
                     {/* EFB */}
                     <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
                       <div style={{color:C.teal, fontWeight:700, fontSize:11, textAlign:"center"}}>EFB</div>
-                      <input style={{background:"#142030", border:`1px solid ${C.teal}66`, borderRadius:6,
+                      <input style={{background:C.inputBg, border:`1px solid ${C.teal}66`, borderRadius:6,
                         color:C.white, padding:"8px 0", fontSize:15, fontWeight:700,
                         width:"100%", outline:"none", boxSizing:"border-box", textAlign:"center"}}
                         value={s0.efbPct}
@@ -2488,7 +2489,7 @@ export default function CFI() {
                     {/* OPDC */}
                     <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
                       <div style={{color:C.amber, fontWeight:700, fontSize:11, textAlign:"center"}}>OPDC</div>
-                      <input style={{background:"#142030", border:`1px solid ${C.amber}66`, borderRadius:6,
+                      <input style={{background:C.inputBg, border:`1px solid ${C.amber}66`, borderRadius:6,
                         color:C.white, padding:"8px 0", fontSize:15, fontWeight:700,
                         width:"100%", outline:"none", boxSizing:"border-box", textAlign:"center"}}
                         value={s0.opdcPct}
@@ -2747,7 +2748,7 @@ export default function CFI() {
                           <input type="number" min={15} max={35} step={1}
                             value={s0.cnTarget}
                             onChange={e=>upS0("cnTarget",+e.target.value)}
-                            style={{background:"#142030", border:"1px solid #9B59B655",
+                            style={{background:C.inputBg, border:"1px solid #9B59B655",
                               borderRadius:6, color:C.white, padding:"8px 12px",
                               fontSize:14, fontWeight:700, width:"100%",
                               outline:"none", boxSizing:"border-box"}}/>
