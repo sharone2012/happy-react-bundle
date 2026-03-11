@@ -2346,8 +2346,8 @@ export default function CFI() {
                 {/* ── B: MILL CAPACITY ── */}
                 <Card>
                   <SectionHdr icon="⚙" title="B — Mill Fresh Fruit Bunch Processing Capacity" color={C.teal}/>
-                  <div style={{display:"flex", justifyContent:"flex-start"}}>
-                    <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"12px 56px", maxWidth:540}}>
+                  <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>
+                    <div style={{display:"grid", gridTemplateColumns:"1fr auto 1fr", gap:"12px 32px", maxWidth:640, alignItems:"center"}}>
 
                       {/* FFB Processing */}
                       <div style={{display:"flex", flexDirection:"column", gap:4}}>
@@ -2363,6 +2363,13 @@ export default function CFI() {
                             onBlur={e=>upS0("ffbCapacity",+e.target.value)}/>
                         </div>
                         <div style={{color:C.grey, fontSize:10, textAlign:"center", marginLeft:70, width:88}}>Tons per Hour</div>
+                      </div>
+
+                      {/* EFB Monthly - centered between */}
+                      <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:2, padding:"0 8px"}}>
+                        <div style={{color:C.teal, fontSize:11, fontWeight:800, letterSpacing:"0.05em"}}>EFB Monthly</div>
+                        <div style={{color:C.white, fontSize:18, fontWeight:700}}>{efbMonthWet.toLocaleString()}</div>
+                        <div style={{color:C.grey, fontSize:10}}>t/month wet</div>
                       </div>
 
                       {/* Utilisation */}
@@ -2381,7 +2388,6 @@ export default function CFI() {
                         <div style={{display:"flex", alignItems:"center", marginLeft:70, width:88, justifyContent:"center", gap:6}}>
                           <div style={{color:C.grey, fontSize:10, textAlign:"center"}}>% Default</div>
                         </div>
-                        
                       </div>
 
                     </div>
@@ -2394,7 +2400,7 @@ export default function CFI() {
                     <KPI label="Effective FFB" value={effFFB} unit="TPH" color={C.green}/>
                     <KPI label="Monthly FFB" value={monthFFB.toLocaleString()} unit="t/month" color={C.green}/>
                     <KPI label="EFB at Discharge" value={efbTPH} unit="TPH wet" color={C.teal}/>
-                    <KPI label="EFB Monthly" value={efbMonthWet.toLocaleString()} unit="t/month wet" color={C.teal}/>
+                    
                   </div>
                   <Divider/>
                   <SectionHdr icon="📡" title="D — Captured % of Mill Processing Capacity Used" color={C.teal}/>
