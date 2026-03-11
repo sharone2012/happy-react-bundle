@@ -2396,7 +2396,7 @@ export default function CFI() {
                             onChange={e=>e.target.value}
                             onBlur={e=>upS0("hrsDay",+e.target.value)}/>
                         </div>
-                        <div style={{color:C.grey, fontSize:10, textAlign:"center", marginLeft:70, width:88}}>hrs/day</div>
+                        
                       </div>
 
                       {/* Days / Month */}
