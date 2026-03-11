@@ -2412,7 +2412,7 @@ export default function CFI() {
                             onChange={e=>e.target.value}
                             onBlur={e=>upS0("daysMonth",+e.target.value)}/>
                         </div>
-                        <div style={{color:C.grey, fontSize:10, textAlign:"center", marginLeft:70, width:88}}>days/month</div>
+                        <div style={{color:C.grey, fontSize:10, textAlign:"center", marginLeft:70, width:88}}></div>
                       </div>
 
                     </div>
