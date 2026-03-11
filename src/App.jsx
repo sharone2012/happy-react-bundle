@@ -2471,7 +2471,7 @@ export default function CFI() {
                   </div>
                   <Divider/>
                   {/* Blend fraction header */}
-                  <div style={{textAlign:"center", marginBottom:4}}>
+                  <div style={{textAlign:"left", marginBottom:4}}>
                     <div style={{color:C.teal, fontWeight:800, fontSize:12, letterSpacing:"0.05em"}}>Choose Blend — Enter % (total must be 100%)</div>
                     <div style={{color:C.grey, fontSize:10, marginTop:4}}>Blend Fraction (DM Basis) %</div>
                   </div>
