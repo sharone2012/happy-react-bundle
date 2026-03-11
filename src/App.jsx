@@ -129,22 +129,36 @@ const Lbl = ({t, unit}) => (
   <div style={S.label}>{t}{unit && <span style={{color:C.teal,marginLeft:4}}>[{unit}]</span>}</div>
 );
 
-const BluField = ({label, unit, value, onChange, disabled, note}) => (
-  <div>
-    <Lbl t={label} unit={unit}/>
-    <input style={disabled ? {...S.input, background:"#0E2030", color:C.teal, cursor:"not-allowed"} : S.input}
-      value={value} onChange={e=>onChange&&onChange(e.target.value)} disabled={!!disabled}/>
-    {note && <div style={{color:C.grey,fontSize:10,marginTop:2}}>{note}</div>}
-  </div>
-);
+const BluField = ({label, unit, value, onChange, disabled, note}) => {
+  const [local, setLocal] = useState(value);
+  useState(() => { setLocal(value); }, [value]);
+  return (
+    <div>
+      <Lbl t={label} unit={unit}/>
+      <input style={disabled ? {...S.input, background:"#0E2030", color:C.teal, cursor:"not-allowed"} : S.input}
+        value={local}
+        onChange={e => setLocal(e.target.value)}
+        onBlur={e => { if(onChange) onChange(e.target.value); }}
+        disabled={!!disabled}/>
+      {note && <div style={{color:C.grey,fontSize:10,marginTop:2}}>{note}</div>}
+    </div>
+  );
+};
 
-const AmbField = ({label, unit, value, onChange, note}) => (
-  <div>
-    <Lbl t={label} unit={unit}/>
-    <input style={S.inputAmb} value={value} onChange={e=>onChange&&onChange(e.target.value)}/>
-    {note && <div style={{color:C.amber,fontSize:10,marginTop:2}}>⚠ {note}</div>}
-  </div>
-);
+const AmbField = ({label, unit, value, onChange, note}) => {
+  const [local, setLocal] = useState(value);
+  useState(() => { setLocal(value); }, [value]);
+  return (
+    <div>
+      <Lbl t={label} unit={unit}/>
+      <input style={S.inputAmb}
+        value={local}
+        onChange={e => setLocal(e.target.value)}
+        onBlur={e => { if(onChange) onChange(e.target.value); }}/>
+      {note && <div style={{color:C.amber,fontSize:10,marginTop:2}}>⚠ {note}</div>}
+    </div>
+  );
+};
 
 const CalcField = ({label, unit, value, note}) => (
   <div>
@@ -1321,6 +1335,50 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
 // ─── MAIN APP ─────────────────────────────────────────────────────────────────
 export default function CFI() {
   const [stage, setStage] = useState(0);
+  const [tabsSeen, setTabsSeen]         = useState(new Set([0]));
+  const [searchesUsed, setSearchesUsed] = useState(0);
+  const [showGate, setShowGate]         = useState(false);
+  const [gateReason, setGateReason]     = useState("");
+  const [visName,  setVisName]          = useState("");
+  const [visEmail, setVisEmail]         = useState("");
+  const [visOrg,   setVisOrg]           = useState("");
+  const [visSubmitted, setVisSubmitted] = useState(false);
+
+  const siteRegistered = !!(s0.plantName && s0.millName && s0.contactEmail);
+  const FREE_TABS = 3;
+  const FREE_SEARCHES = 5;
+
+  const handleTabClick = (i) => {
+    if (siteRegistered) { setStage(i); setTabsSeen(p => new Set([...p, i])); return; }
+    const newSeen = new Set([...tabsSeen, i]);
+    if (newSeen.size > FREE_TABS) {
+      setGateReason("tabs");
+      setShowGate(true);
+      return;
+    }
+    setTabsSeen(newSeen);
+    setStage(i);
+  };
+
+  const handleSearch = (cb) => {
+    if (siteRegistered) { cb(); return; }
+    if (searchesUsed >= FREE_SEARCHES) {
+      setGateReason("searches");
+      setShowGate(true);
+      return;
+    }
+    setSearchesUsed(p => p+1);
+    cb();
+  };
+
+  const submitGate = () => {
+    if (!visName || !visEmail) return;
+    upS0("contactName", visName);
+    upS0("contactEmail", visEmail);
+    if (visOrg) upS0("plantName", visOrg);
+    setVisSubmitted(true);
+    setTimeout(() => { setShowGate(false); setVisSubmitted(false); }, 1800);
+  };
   const [uploadedConfigs, setUploadedConfigs] = useState([]);
 
   // ── S0 STATE ──
@@ -1333,6 +1391,7 @@ export default function CFI() {
     pomeSludgeMC: 82,
     pomeSludgeDewatered: false,
     pomeSludgeFeResult: "",
+    pomeEnabled: false,
     pkeEnabled: false,
     pkeTPD: 5,
     cnTarget: 22,
@@ -1369,7 +1428,7 @@ export default function CFI() {
   // Required OPDC DM for 40% blend (dry basis)
   // ── 3-STREAM BLEND: EFB% + OPDC% + POME% = 100% DM — POME auto-fills remainder ──
   const pomePct       = +Math.max(0, 100 - s0.efbPct - s0.opdcPct).toFixed(2);
-  const pomeActive    = pomePct > 0.09;
+  const pomeActive    = s0.pomeEnabled || pomePct > 0.09;
   const blendOK       = true; // always valid — pomePct auto-fills remainder
   const totalDMTarget = s0.efbPct > 0 ? efbDMpd / (s0.efbPct / 100) : 0;
   const opdcDMreq     = useMemo(()=> +(totalDMTarget * (s0.opdcPct / 100)).toFixed(1), [totalDMTarget, s0.opdcPct]);
@@ -1729,7 +1788,70 @@ export default function CFI() {
   // Monthly bio cost
   const s3_monthlyCost = Math.round(s3_monthlyFW * s3CostPerT);
   const s3_annualCost  = s3_monthlyCost * 12;
-  // ── S4 STATE ────────────────────────────────────────────────────────────────
+
+  // ── FULL PIPELINE LAB DERIVATION (formula-driven, responds to S2+S3 choices) ──────────────
+  // S0 raw blend baseline
+  const lab_s0_lignin  = blendCN ? +(s0.efbPct/100*22 + s0.opdcPct/100*30.7 + (pomeActive?pomePct/100*7.6:0)).toFixed(1) : 25;
+  const lab_s0_CN      = blendCN || 32;
+  const lab_s0_N       = +(totalDMpd>0 ? totalN_kgpd/totalDMpd/10 : 0.95).toFixed(2);
+  const lab_s0_P       = +(totalDMpd>0 ? totalP_kgpd/totalDMpd/10 : 0.14).toFixed(2);
+  const lab_s0_K       = +(totalDMpd>0 ? totalK_kgpd/totalDMpd/10 : 0.83).toFixed(2);
+  const lab_s0_OM      = +(s0.efbPct/100*85 + s0.opdcPct/100*78 + (pomeActive?pomePct/100*72:0) + (s0.pkeEnabled?pctPKE/100*82:0)).toFixed(1);
+  const lab_s0_CP      = blendCP || 8.0;
+  const lab_s0_pH      = 5.5;
+
+  // S2: chemicals applied — each chemical shifts specific lab parameters
+  // Lignin: full diminishing-return calc already done → pksa_ligninRed
+  const lab_s2_lignin  = +(lab_s0_lignin * (1 - pksa_ligninRed/100)).toFixed(1);
+  // Hemicellulose reduction from S2 enzymes (cellulase, xylanase, mannanase, LiP, MnP)
+  const hemiRed_s2 = Math.min(55, (s2.cellulase_s2?12:0)+(s2.xylanase_s2?18:0)+(s2.mnp_s2?8:0)+(s2.lip_s2?14:0)+(s2.laccase_s2?6:0));
+  const lab_s2_hemi    = +(28.2 * (1 - hemiRed_s2/100)).toFixed(1); // baseline NDF 28.2% DM
+  // N: alkaline treatment can volatilise NH3 at high pH (NaOH worst); acidic treatment preserves N
+  const nVolatLoss = s2.naoh?0.12 : s2.koh?0.08 : s2.pksa?0.04 : 0;
+  const nConc = (s2.pksa||s2.naoh||s2.koh||s2.caoh2) ? 0.15 : 0; // concentration effect from OM loss
+  const lab_s2_N       = +(lab_s0_N * (1 - nVolatLoss) * (1 + nConc)).toFixed(2);
+  // C:N: alkaline reduces lignin (C) faster than N → C:N drops; but N volatilisation pushes it back up
+  const ligninCReduction = pksa_ligninRed/100 * 0.4; // lignin ~40% of total C
+  const lab_s2_CN      = +(lab_s0_CN * (1 - ligninCReduction) * (1 + nVolatLoss)).toFixed(1);
+  const lab_s2_OM      = +(lab_s0_OM * (1 - pksa_ligninRed/100 * 0.45)).toFixed(1);
+  const lab_s2_CP      = +(lab_s2_N * 4.67 * 100).toFixed(1); // using N×4.67 per guardrail
+  const lab_s2_pH      = s2.pksa||s2.naoh||s2.koh ? 7.0 : s2.h2so4||s2.hcl||s2.citric ? 4.5 : s2.caco3||s2.caoh2 ? 7.5 : 5.5;
+  const lab_s2_P       = +(lab_s0_P * 1.12).toFixed(2); // slight P concentration
+  const lab_s2_K       = s2.pksa ? +(lab_s0_K * 7.7).toFixed(2) : +(lab_s0_K * 1.05).toFixed(2); // PKSA K spike
+
+  // S3: biological treatment
+  // Lignin further reduced by fungal/enzymatic activity
+  const s3LigninRed = Math.min(40, ligninOrgs*8 + (s3orgs.trichoderma_h?10:0) + enzymeOrgs*6 + (s3orgs.cellulase_e?8:0) + (s3orgs.xylanase_e?10:0) + (s3orgs.mannanase_e?7:0));
+  const lab_s3_lignin  = +(lab_s2_lignin * (1 - s3LigninRed/100)).toFixed(1);
+  // Hemi further reduced by S3 enzymes
+  const hemiRed_s3 = Math.min(55, (s3orgs.cellulase_e?15:0)+(s3orgs.xylanase_e?20:0)+(s3orgs.mannanase_e?14:0)+(s3orgs.bglucosidase_e?8:0)+(s3orgs.pectinase_e?6:0));
+  const lab_s3_hemi    = +(lab_s2_hemi * (1 - hemiRed_s3/100)).toFixed(1);
+  // N-fixers add N; proteases can mineralise protein → available N up
+  const nFixBoost = nfixOrgs * 0.06 + (s3orgs.protease_e?0.04:0) + (s3orgs.bacillus_sub?0.03:0);
+  const lab_s3_N       = +(lab_s2_N * (1 + nFixBoost)).toFixed(2);
+  const lab_s3_P       = +(lab_s2_P * (1 + (s3orgs.bacillus_meg||s3orgs.pseudomonas||s3orgs.paenibacillus ? 0.08:0) + (s3orgs.aspergillus_n?0.05:0))).toFixed(2);
+  const lab_s3_K       = +(lab_s2_K * (1 + (s3orgs.frateuria?0.06:0))).toFixed(2);
+  const lab_s3_CN      = +(lab_s2_CN * (1 - s3LigninRed/100*0.5) / (1 + nFixBoost)).toFixed(1);
+  const lab_s3_OM      = +(lab_s2_OM * (1 - (ligninOrgs*0.04 + enzymeOrgs*0.03 + (s3orgs.trichoderma_h?0.06:0)))).toFixed(1);
+  const lab_s3_CP      = +(lab_s3_N * 4.67 * 100).toFixed(1);
+  const lab_s3_pH      = s3orgs.lactobacillus ? +(lab_s2_pH - 0.3).toFixed(1) : s3orgs.azotobacter ? +(lab_s2_pH + 0.1).toFixed(1) : +(lab_s2_pH - 0.1).toFixed(1);
+
+  // S4: BSF rearing concentrates nutrients as OM is consumed
+  const lab_s4_lignin  = +(lab_s3_lignin * 0.55).toFixed(1); // gut microbiome degrades ~45% residual
+  const lab_s4_N       = +(lab_s3_N * 1.18).toFixed(2); // N concentrates as C consumed
+  const lab_s4_P       = +(lab_s3_P * 1.20).toFixed(2);
+  const lab_s4_K       = +(lab_s3_K * 1.01).toFixed(2); // K minimal uptake
+  const lab_s4_CN      = +(lab_s3_CN * 0.80).toFixed(1); // narrows as C consumed
+  const lab_s4_OM      = +(lab_s3_OM * 0.83).toFixed(1); // ~17% OM consumed
+  const lab_s4_CP      = +(lab_s4_N * 4.67 * 100).toFixed(1);
+  const lab_s4_pH      = +(lab_s3_pH - 0.3).toFixed(1); // mild acidification from frass
+
+  // FCR bidirectional: good chemistry reduces, bad combos raise it
+  const fcrPenalty = (s2.naoh && !s2.caco3 && !s2.h2so4 ? 0.10 : 0) // NaOH w/o neutralisation
+                   + (s2.urea ? 0.08 : 0)           // excess N → ammonia → BSF stress
+                   + (s2.feso4 && !s2.pksa ? 0.06 : 0) // Fe overload without PKSA
+                   + (s3orgs.bt_icbb && !s3.bt_confirmed_absent ? 0.15 : 0); // Bt active risk
+  const ligninFCRBonus = +(Math.min(0.35, pksa_ligninRed * 0.008) - fcrPenalty).toFixed(3);
   const [s4, setS4] = useState({
     s4tab: "grow",           // "grow" | "pkm" | "lab"
     growDays: 12,            // legacy single-bay (kept for S5/S6 downstream)
@@ -1773,14 +1895,14 @@ export default function CFI() {
   const bayA_yieldPct    = s4_lerp(14.0, 22.0, bayADays);
   const bayA_proteinDM   = +(44.0 - Math.max(0, bayADays-10)*0.5).toFixed(1); // peaks ~Day 10 at 44%
   const bayA_fatDM       = s4_lerp(28.0, 34.0, bayADays);
-  const bayA_FCR         = s4_lerp(5.2,  3.5,  bayADays);
+  const bayA_FCR         = +(s4_lerp(5.2,  3.5,  bayADays) - ligninFCRBonus).toFixed(2);
   const bayA_moisture    = s4_lerp(72.0, 65.0, bayADays);
 
   // Bay B (biomass-optimised, Day 10–18): more FW yield, slightly lower protein
   const bayB_yieldPct    = s4_lerp(14.0, 22.0, bayBDays);
   const bayB_proteinDM   = gd <= 12 ? s4_lerp(42.0, 44.0, bayBDays) : +(44.0 - (bayBDays-12)*(6/6)).toFixed(2);
   const bayB_fatDM       = s4_lerp(28.0, 34.0, bayBDays);
-  const bayB_FCR         = s4_lerp(5.2,  3.5,  bayBDays);
+  const bayB_FCR         = +(s4_lerp(5.2,  3.5,  bayBDays) - ligninFCRBonus).toFixed(2);
   const bayB_moisture    = s4_lerp(72.0, 65.0, bayBDays);
 
   // Larvae yield (% of substrate FW) — legacy single-bay
@@ -1788,7 +1910,7 @@ export default function CFI() {
   // Protein %DM — peaks ~Day12: lerp 42→44→38 (use quadratic approx via two lerps)
   const larvProteinDM   = gd <= 12 ? s4_lerp(42.0, 44.0, gd) : +(44.0 - (gd-12)*(6/6)).toFixed(2);
   const larvFatDM       = s4_lerp(28.0, 34.0, gd);
-  const larvFCR         = s4_lerp(5.2,  3.5,  gd);
+  const larvFCR         = +(s4_lerp(5.2,  3.5,  gd) - ligninFCRBonus).toFixed(2);
   const larvAshDM       = 16.0;
   const larvChitinDM    = 9.3;
   const larvMoisture    = s4_lerp(72.0, 65.0, gd);
@@ -2100,7 +2222,7 @@ export default function CFI() {
             <div key={i} style={{background: stage===i ? C.teal : C.navyLt,
                                   color: stage===i ? C.navy : C.grey,
                                   borderRadius:4, padding:"3px 10px", fontSize:11, fontWeight:700,
-                                  cursor:"pointer"}} onClick={()=>setStage(i)}>{s}</div>
+                                  cursor:"pointer"}} onClick={()=>handleTabClick(i)}>{s}</div>
           ))}
         </div>
       </div>
@@ -2109,7 +2231,7 @@ export default function CFI() {
       <div style={{display:"flex", gap:2, padding:"0 24px", borderBottom:`2px solid ${C.teal}33`,
                    background:C.navyMid}}>
         {TABS.map((t,i)=>(
-          <div key={i} style={S.tab(stage===i)} onClick={()=>setStage(i)}>{t}</div>
+          <div key={i} style={S.tab(stage===i)} onClick={()=>handleTabClick(i)}>{t}</div>
         ))}
       </div>
 
@@ -2158,9 +2280,8 @@ export default function CFI() {
                 <div style={{color:C.grey, fontSize:11}}>Site identity · Mill capacity · Residue streams · Soil profile</div>
               </div>
               <div style={{display:"flex", alignItems:"center", gap:8, flexWrap:"wrap"}}>
-                {siteOK
-                  ? <Badge text="✓ Site configured" color={C.green}/>
-                  : <Badge text="Site data incomplete" color={C.amber}/>}
+                {!siteRegistered && <Badge text="Enter Site Details (Section A)" color={C.amber}/>}
+                {siteRegistered && <Badge text={"✓ "+s0.plantName} color={C.green}/>}
                 {blendOK
                   ? <Badge text="✓ Blend valid" color={C.green}/>
                   : <Badge text="Blend error" color={C.red}/>}
@@ -2230,49 +2351,59 @@ export default function CFI() {
                 {/* ── B: MILL CAPACITY ── */}
                 <Card>
                   <SectionHdr icon="⚙" title="B — Oil Palm Mill Fresh Fruit Bunch Processing Capacity" color={C.teal}/>
-                  <div style={{display:"flex", gap:16, flexWrap:"wrap", alignItems:"flex-end"}}>
-                    <div style={{display:"flex", alignItems:"center", gap:10}}>
-                      <div style={{textAlign:"right", minWidth:90}}>
-                        <div style={{color:C.grey, fontSize:11, fontWeight:700, letterSpacing:"0.04em"}}>FFB Processing</div>
-                        <div style={{color:C.grey, fontSize:10, marginTop:2}}>Tons per Hour</div>
+                  <div style={{display:"flex", justifyContent:"center"}}>
+                    <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"24px 48px", maxWidth:520}}>
+                      {/* Row 1: FFB Processing | Capacity Utilisation */}
+                      <div style={{display:"flex", flexDirection:"column", alignItems:"flex-end", gap:6}}>
+                        <div style={{textAlign:"right"}}>
+                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em"}}>FFB Processing</div>
+                          <div style={{color:C.grey, fontSize:10, marginTop:2}}>Tons per Hour</div>
+                        </div>
+                        <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
+                          color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
+                          width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
+                          value={s0.ffbCapacity}
+                          onChange={e=>e.target.value}
+                          onBlur={e=>upS0("ffbCapacity",+e.target.value)}/>
                       </div>
-                      <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                        color:C.white, padding:"10px 12px", fontSize:16, fontWeight:700,
-                        width:72, outline:"none", boxSizing:"border-box", textAlign:"center"}}
-                        value={s0.ffbCapacity} onChange={e=>upS0("ffbCapacity",+e.target.value)}/>
-                    </div>
-                    <div style={{display:"flex", alignItems:"center", gap:10}}>
-                      <div style={{textAlign:"right", minWidth:70}}>
-                        <div style={{color:C.grey, fontSize:11, fontWeight:700, letterSpacing:"0.04em"}}>Capacity</div>
-                        <div style={{color:C.grey, fontSize:10, marginTop:2}}>Utilisation %</div>
+                      <div style={{display:"flex", flexDirection:"column", alignItems:"flex-end", gap:6}}>
+                        <div style={{textAlign:"right"}}>
+                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em"}}>Capacity</div>
+                          <div style={{color:C.grey, fontSize:10, marginTop:2}}>Utilisation %</div>
+                        </div>
+                        <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
+                          color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
+                          width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
+                          value={s0.utilisation}
+                          onChange={e=>e.target.value}
+                          onBlur={e=>upS0("utilisation",+e.target.value)}/>
+                        <div style={{color:C.grey, fontSize:10, textAlign:"right"}}>Default 85%</div>
                       </div>
-                      <div>
-                        <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                          color:C.white, padding:"10px 12px", fontSize:16, fontWeight:700,
-                          width:72, outline:"none", boxSizing:"border-box", textAlign:"center"}}
-                          value={s0.utilisation} onChange={e=>upS0("utilisation",+e.target.value)}/>
-                        <div style={{color:C.grey, fontSize:10, marginTop:3}}>Default 85%</div>
+                      {/* Row 2: Operating Hours | Operating Days */}
+                      <div style={{display:"flex", flexDirection:"column", alignItems:"flex-end", gap:6}}>
+                        <div style={{textAlign:"right"}}>
+                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em"}}>Operating</div>
+                          <div style={{color:C.grey, fontSize:10, marginTop:2}}>Hours / Day</div>
+                        </div>
+                        <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
+                          color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
+                          width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
+                          value={s0.hrsDay}
+                          onChange={e=>e.target.value}
+                          onBlur={e=>upS0("hrsDay",+e.target.value)}/>
                       </div>
-                    </div>
-                    <div style={{display:"flex", alignItems:"center", gap:10}}>
-                      <div style={{textAlign:"right", minWidth:80}}>
-                        <div style={{color:C.grey, fontSize:11, fontWeight:700, letterSpacing:"0.04em"}}>Operating</div>
-                        <div style={{color:C.grey, fontSize:10, marginTop:2}}>Hours / Day</div>
+                      <div style={{display:"flex", flexDirection:"column", alignItems:"flex-end", gap:6}}>
+                        <div style={{textAlign:"right"}}>
+                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em"}}>Operating</div>
+                          <div style={{color:C.grey, fontSize:10, marginTop:2}}>Days / Month</div>
+                        </div>
+                        <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
+                          color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
+                          width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
+                          value={s0.daysMonth}
+                          onChange={e=>e.target.value}
+                          onBlur={e=>upS0("daysMonth",+e.target.value)}/>
                       </div>
-                      <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                        color:C.white, padding:"10px 12px", fontSize:16, fontWeight:700,
-                        width:72, outline:"none", boxSizing:"border-box", textAlign:"center"}}
-                        value={s0.hrsDay} onChange={e=>upS0("hrsDay",+e.target.value)}/>
-                    </div>
-                    <div style={{display:"flex", alignItems:"center", gap:10}}>
-                      <div style={{textAlign:"right", minWidth:80}}>
-                        <div style={{color:C.grey, fontSize:11, fontWeight:700, letterSpacing:"0.04em"}}>Operating</div>
-                        <div style={{color:C.grey, fontSize:10, marginTop:2}}>Days / Month</div>
-                      </div>
-                      <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                        color:C.white, padding:"10px 12px", fontSize:16, fontWeight:700,
-                        width:72, outline:"none", boxSizing:"border-box", textAlign:"center"}}
-                        value={s0.daysMonth} onChange={e=>upS0("daysMonth",+e.target.value)}/>
                     </div>
                   </div>
                   <Divider/>
@@ -2283,9 +2414,7 @@ export default function CFI() {
                     <KPI label="EFB Monthly" value={efbMonthWet.toLocaleString()} unit="t/month wet" color={C.teal}/>
                   </div>
                   <Divider/>
-                  <div style={{color:C.greyLt, fontWeight:800, fontSize:11, letterSpacing:"0.06em", marginBottom:8}}>
-                    D — CAPTURED % OF MILL PROCESSING CAPACITY USED
-                  </div>
+                  <SectionHdr icon="📡" title="D — Captured % of Mill Processing Capacity Used" color={C.teal}/>
                   <div style={g3}>
                     <BluField label="EFB %" value={s0.efbCapturePct}
                       onChange={v=>upS0("efbCapturePct",Math.min(100,Math.max(0,+v)))}
@@ -2296,12 +2425,8 @@ export default function CFI() {
                       onChange={v=>upS0("pomeCapturePct",Math.min(100,Math.max(0,+v)))}/>
                   </div>
                   <div style={{background:C.navyDk, border:"1px solid rgba(255,255,255,0.08)", borderRadius:8, padding:12, marginTop:12}}>
-                    <div style={{marginBottom:6}}>
-                      <div style={{color:C.greyLt, fontWeight:800, fontSize:11, letterSpacing:"0.05em"}}>
-                        E — 🌿 Carbon Credits Preview
-                      </div>
-                      <div style={{color:C.grey, fontSize:10, marginTop:3}}>Full methodology available in the CO₂ tab</div>
-                    </div>
+                    <SectionHdr icon="🌿" title="E — Carbon Credits Preview" color={C.green}/>
+                    <div style={{color:C.grey, fontSize:10, marginTop:-6, marginBottom:10}}>Full methodology in the CO₂ tab</div>
                     <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:8}}>
                       {[
                         {l:"Monthly CO₂e",   v:co2est.toLocaleString()+" t",   c:C.green},
@@ -2329,19 +2454,56 @@ export default function CFI() {
                   <div style={g4}>
                     <ResidueCard label="EFB"         active={s0.efbEnabled}        onClick={()=>upS0("efbEnabled",!s0.efbEnabled)}               sublabel="Empty Fruit Bunches"/>
                     <ResidueCard label="OPDC"        active={s0.opdcEnabled}       onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)}              sublabel="Decanter Cake"/>
-                    <ResidueCard label="POME SLUDGE" active={pomeActive} onClick={()=>{}} sublabel={pomeActive?"Auto-active — "+pomePct+"% DM remainder":"Lower EFB+OPDC below 100%"}/>
-                    <ResidueCard label="PKE"         active={s0.pkeEnabled}        onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)}                sublabel="Purchased Protein Booster"/>
+                    <ResidueCard label="POME SLUDGE" active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} sublabel={pomeActive?(pomePct>0.09?"Auto: "+pomePct+"% DM remainder":"Manual — ON"):"Click to activate"}/>
+                    <ResidueCard label="PKE" active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)} sublabel="Palm Kernel Expeller (Protein Booster)"/>
                   </div>
                   <Divider/>
-                  <div style={{...g2, marginBottom:12}}>
-                    <BluField label="EFB Blend Fraction (DM basis)" unit="%" value={s0.efbPct} onChange={v=>{
-                      const nv=Math.min(+v,100); upS0("efbPct",nv);
-                      if(nv + s0.opdcPct > 100) upS0("opdcPct",+(100-nv).toFixed(1));
-                    }}/>
-                    <BluField label="OPDC Blend Fraction (DM basis)" unit="%" value={s0.opdcPct} onChange={v=>{
-                      const nv=Math.min(+v,100); upS0("opdcPct",nv);
-                      if(nv + s0.efbPct > 100) upS0("efbPct",+(100-nv).toFixed(1));
-                    }}/>
+                  {/* Blend fraction header */}
+                  <div style={{textAlign:"center", marginBottom:4}}>
+                    <div style={{color:C.teal, fontWeight:800, fontSize:12, letterSpacing:"0.05em"}}>Choose Blend — Enter % (total must be 100%)</div>
+                    <div style={{color:C.grey, fontSize:10, marginTop:4}}>Blend Fraction (DM Basis) %</div>
+                  </div>
+                  <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:10, marginBottom:12}}>
+                    {/* EFB */}
+                    <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
+                      <div style={{color:C.teal, fontWeight:700, fontSize:11, textAlign:"center"}}>EFB</div>
+                      <input style={{background:"#142030", border:`1px solid ${C.teal}66`, borderRadius:6,
+                        color:C.white, padding:"8px 0", fontSize:15, fontWeight:700,
+                        width:"100%", outline:"none", boxSizing:"border-box", textAlign:"center"}}
+                        value={s0.efbPct}
+                        onChange={e=>e.target.value}
+                        onBlur={e=>{const nv=Math.min(+e.target.value,100); upS0("efbPct",nv); if(nv + s0.opdcPct > 100) upS0("opdcPct",+(100-nv).toFixed(1));}}/>
+                    </div>
+                    {/* POME Sludge */}
+                    <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
+                      <div style={{color:"#4A9EDB", fontWeight:700, fontSize:11, textAlign:"center", lineHeight:1.2}}>POME<br/>Sludge</div>
+                      <div style={{background:"#0A1624", border:`1px solid #4A9EDB44`, borderRadius:6,
+                        color:pomeActive?"#4A9EDB":C.grey, padding:"8px 0", fontSize:15, fontWeight:700,
+                        width:"100%", boxSizing:"border-box", textAlign:"center", lineHeight:"1.4"}}>
+                        {pomeActive ? pomePct+"%" : "—"}
+                      </div>
+                      <div style={{color:C.grey, fontSize:9, textAlign:"center"}}>auto-fills</div>
+                    </div>
+                    {/* OPDC */}
+                    <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
+                      <div style={{color:C.amber, fontWeight:700, fontSize:11, textAlign:"center"}}>OPDC</div>
+                      <input style={{background:"#142030", border:`1px solid ${C.amber}66`, borderRadius:6,
+                        color:C.white, padding:"8px 0", fontSize:15, fontWeight:700,
+                        width:"100%", outline:"none", boxSizing:"border-box", textAlign:"center"}}
+                        value={s0.opdcPct}
+                        onChange={e=>e.target.value}
+                        onBlur={e=>{const nv=Math.min(+e.target.value,100); upS0("opdcPct",nv); if(nv + s0.efbPct > 100) upS0("efbPct",+(100-nv).toFixed(1));}}/>
+                    </div>
+                    {/* PKE */}
+                    <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
+                      <div style={{color:"#9B59B6", fontWeight:700, fontSize:11, textAlign:"center", lineHeight:1.2}}>PKE</div>
+                      <div style={{background:"#0A1624", border:`1px solid #9B59B644`, borderRadius:6,
+                        color:s0.pkeEnabled?"#9B59B6":C.grey, padding:"8px 0", fontSize:15, fontWeight:700,
+                        width:"100%", boxSizing:"border-box", textAlign:"center"}}>
+                        {s0.pkeEnabled ? pctPKE+"%" : "—"}
+                      </div>
+                      <div style={{color:C.grey, fontSize:9, textAlign:"center"}}>calculated</div>
+                    </div>
                   </div>
                   {/* POME auto-fill display */}
                   <div style={{background:"#0A1624", border:`1px solid ${pomeActive?"#4A9EDB55":"rgba(255,255,255,0.06)"}`,
@@ -2395,7 +2557,7 @@ export default function CFI() {
                   <div style={g3}>
                     <CalcField label="Blended Moisture" unit="%" value={blendMC}/>
                     <CalcField label="Blend DM Content" unit="%" value={(100-blendMC).toFixed(1)}/>
-                    <CalcField label="Blend C:N (DM-weighted)" unit="ratio" value={blendCN||"—"}
+                    <CalcField label="Blend C:N (DM Ratio)" unit="ratio" value={blendCN||"—"}
                       note={blendCN?blendCN<=25?"✓ Optimal for BSF (15–25)":blendCN<=35?"⚠ Marginal — add POME/PKE":"✕ High — BSF yield penalty":undefined}/>
                   </div>
                   <div style={{...g2, marginTop:10}}>
@@ -2427,7 +2589,7 @@ export default function CFI() {
 
                 {/* ── SOIL TYPE & AG MANAGEMENT ── */}
                 <Card>
-                  <SectionHdr icon="🌍" title="E — Soil Type &amp; Agronomy" color={C.teal}/>
+                  <SectionHdr icon="🌍" title="E — Soil Type &amp; Fertiliser Requirements" color={C.teal}/>
                   <div style={{display:"block", color:C.grey, fontSize:10, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.09em", marginBottom:8}}>Indonesian Soil Classification</div>
                   <div style={{display:"flex", gap:8, flexWrap:"wrap", marginBottom:4}}>
                     {SOILS.map(so=>(
@@ -2826,7 +2988,7 @@ export default function CFI() {
                   </div>
                   {s2.pksa && (
                     <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
-                      <div><Lbl t="Dose" unit="kg/t FW"/><input style={S.inputBlu} type="number" value={s2.pksa_dose} onChange={e=>upS2("pksa_dose",+e.target.value)}/></div>
+                      <div><Lbl t="Dose" unit="kg/t FW"/><input style={S.inputBlu} type="number" value={s2.pksa_dose} onChange={e=>e.target.value} onBlur={e=>upS2("pksa_dose",+e.target.value)}/></div>
                       <CalcField label="Lignin reduction" unit="%" value={`~${ligninReductions.pksa}%`}/>
                       <CalcField label="pH target" unit="" value="10–12 → 6.5–8.0"/>
                     </div>
@@ -2866,7 +3028,7 @@ export default function CFI() {
                           <div style={{display:"flex",alignItems:"center",gap:8,marginTop:6}}>
                             <Lbl t="Dose kg/t FW"/>
                             <input style={{...S.inputBlu,width:80,padding:"3px 6px",fontSize:11}}
-                              type="number" value={s2[chem.k+"_dose"]||2} onChange={e=>upS2(chem.k+"_dose",+e.target.value)}/>
+                              type="number" value={s2[chem.k+"_dose"]||2} onChange={e=>e.target.value} onBlur={e=>upS2(chem.k+"_dose",+e.target.value)}/>
                           </div>
                         )}
                       </div>
@@ -3682,17 +3844,18 @@ export default function CFI() {
                     </thead>
                     <tbody>
                       {[
-                        {p:"N (%DM)",       s3:"1.35", s4:"1.60", up:true,  reason:"N concentrates as C is consumed; microbial N retained"},
-                        {p:"P (%DM)",       s3:"0.20", s4:"0.24", up:true,  reason:"P concentration as OM depleted; larval excretion"},
-                        {p:"K (%DM)",       s3:"6.80", s4:"6.90", up:true,  reason:"Slight concentration; minimal K uptake by larvae"},
+                        {p:"N (%DM)",       s3:lab_s3_N.toString(),  s4:lab_s4_N.toString(),  up:lab_s4_N>=lab_s3_N,  reason:"N concentrates as C is consumed; microbial N retained"},
+                        {p:"P (%DM)",       s3:lab_s3_P.toString(),  s4:lab_s4_P.toString(),  up:true,  reason:"P concentration as OM depleted; larval excretion"},
+                        {p:"K (%DM)",       s3:lab_s3_K.toString(),  s4:lab_s4_K.toString(),  up:true,  reason:"Slight concentration; minimal K uptake by larvae"},
                         {p:"Ca (%DM)",      s3:"1.20", s4:"1.80", up:true,  reason:"Larval calcified cuticle shedding cycles"},
                         {p:"Mg (%DM)",      s3:"0.40", s4:"0.55", up:true,  reason:"Mineral concentration; Mg essential larval metabolite"},
-                        {p:"OM (%DM)",      s3:"72",   s4:"60",   up:false, reason:"BSF consume ~30% substrate OM as energy source"},
-                        {p:"C:N",          s3:"20",   s4:"16",   up:false, reason:"N concentrates as C is consumed; ratio narrows"},
-                        {p:"Lignin (%DM)", s3:"15",   s4:"8",    up:false, reason:"Partial lignin degradation by gut-associated microbiome"},
-                        {p:"pH",           s3:"6.8",  s4:"6.5",  up:false, reason:"Mild acidification from larval frass (lactic acid)"},
+                        {p:"OM (%DM)",      s3:lab_s3_OM.toString(), s4:lab_s4_OM.toString(), up:false, reason:"BSF consume substrate OM as energy source"},
+                        {p:"C:N",           s3:lab_s3_CN.toString(), s4:lab_s4_CN.toString(), up:false, reason:"N concentrates as C is consumed; ratio narrows"},
+                        {p:"Lignin (%DM)",  s3:lab_s3_lignin.toString(), s4:lab_s4_lignin.toString(), up:false, reason:"Partial lignin degradation by gut-associated microbiome"},
+                        {p:"Hemicellulose", s3:lab_s3_hemi.toString(), s4:(lab_s3_hemi*0.7).toFixed(1), up:false, reason:"BSF gut enzymes further break down hemicellulose"},
+                        {p:"pH",            s3:lab_s3_pH.toString(), s4:lab_s4_pH.toString(), up:lab_s4_pH>=lab_s3_pH, reason:"Mild acidification from larval frass (lactic acid)"},
                         {p:"Moisture (%wb)",s3:"65",  s4:"62",   up:false, reason:"Evaporation during 8–13 day rearing period"},
-                        {p:"Crude Protein (%DM)", s3:"8.4", s4:"10.0", up:true, reason:"Microbial protein + larval exuviae enrichment"},
+                        {p:"Crude Protein", s3:lab_s3_CP.toString(), s4:lab_s4_CP.toString(), up:lab_s4_CP>=lab_s3_CP, reason:"Microbial protein + larval exuviae enrichment"},
                         {p:"Fat (%DM)",    s3:"2.1",  s4:"3.5",  up:true,  reason:"Microbial lipid production; partial larval excretion"},
                         {p:"Ash (%DM)",    s3:"8.0",  s4:"12.0", up:true,  reason:"Mineral concentration as OM is metabolised"},
                         {p:"Chitin (%DM)", s3:"0",    s4:"2.5",  up:true,  reason:"Larval exoskeleton fragments (ADF-chitin fraction)"},
@@ -4557,13 +4720,15 @@ export default function CFI() {
                     </thead>
                     <tbody>
                       {[
-                        {p:"N (%DM)",      s0:"0.95", s2:"1.10", s3:"1.35", s4:"1.60", s5a:`${s5a_N_DM}`, s5b:`${s5b_N_DM}`, s6:"8.1"},
-                        {p:"P (%DM)",      s0:"0.14", s2:"0.16", s3:"0.20", s4:"0.24", s5a:`${s5a_P_DM}`, s5b:`${s5b_P_DM}`, s6:"1.2"},
-                        {p:"K (%DM)",      s0:"0.83", s2:"6.40", s3:"6.80", s4:"6.90", s5a:`${s5a_K_DM}`, s5b:`${s5b_K_DM}`, s6:"0.6"},
-                        {p:"OM (%DM)",     s0:"82",   s2:"78",   s3:"72",   s4:"60",   s5a:`${s5a_OM_DM}`, s5b:`${s5b_OM_DM}`, s6:"42"},
-                        {p:"C:N",          s0:"32",   s2:"28",   s3:"20",   s4:"16",   s5a:`${s5a_CN}`, s5b:`${s5b_CN}`, s6:"5.9"},
-                        {p:"Lignin (%DM)", s0:"25",   s2:`${(25*(1-pksa_ligninRed/100)).toFixed(0)}`, s3:"15", s4:"8", s5a:"5", s5b:"5", s6:"0"},
-                        {p:"pH",           s0:"5.5",  s2:"7.0",  s3:"6.8",  s4:"6.5",  s5a:`${s5a_pH}`, s5b:`${s5b_pH}`, s6:"6.5"},
+                        {p:"N (%DM)",      s0:lab_s0_N.toString(),      s2:lab_s2_N.toString(),      s3:lab_s3_N.toString(),      s4:lab_s4_N.toString(),      s5a:`${s5a_N_DM}`, s5b:`${s5b_N_DM}`, s6:"8.1"},
+                        {p:"P (%DM)",      s0:lab_s0_P.toString(),      s2:lab_s2_P.toString(),      s3:lab_s3_P.toString(),      s4:lab_s4_P.toString(),      s5a:`${s5a_P_DM}`, s5b:`${s5b_P_DM}`, s6:"1.2"},
+                        {p:"K (%DM)",      s0:lab_s0_K.toString(),      s2:lab_s2_K.toString(),      s3:lab_s3_K.toString(),      s4:lab_s4_K.toString(),      s5a:`${s5a_K_DM}`, s5b:`${s5b_K_DM}`, s6:"0.6"},
+                        {p:"OM (%DM)",     s0:lab_s0_OM.toString(),     s2:lab_s2_OM.toString(),     s3:lab_s3_OM.toString(),     s4:lab_s4_OM.toString(),     s5a:`${s5a_OM_DM}`, s5b:`${s5b_OM_DM}`, s6:"42"},
+                        {p:"C:N",          s0:lab_s0_CN.toString(),     s2:lab_s2_CN.toString(),     s3:lab_s3_CN.toString(),     s4:lab_s4_CN.toString(),     s5a:`${s5a_CN}`, s5b:`${s5b_CN}`, s6:"5.9"},
+                        {p:"Lignin (%DM)", s0:lab_s0_lignin.toString(), s2:lab_s2_lignin.toString(), s3:lab_s3_lignin.toString(), s4:lab_s4_lignin.toString(), s5a:"5", s5b:"5", s6:"0"},
+                        {p:"Hemi (%DM)",   s0:"28.2",                   s2:lab_s2_hemi.toString(),   s3:lab_s3_hemi.toString(),   s4:(lab_s3_hemi*0.7).toFixed(1), s5a:"4", s5b:"4", s6:"0"},
+                        {p:"CP (%DM)",     s0:lab_s0_CP.toString(),     s2:lab_s2_CP.toString(),     s3:lab_s3_CP.toString(),     s4:lab_s4_CP.toString(),     s5a:"—", s5b:"—", s6:"52–60"},
+                        {p:"pH",           s0:lab_s0_pH.toString(),     s2:lab_s2_pH.toString(),     s3:lab_s3_pH.toString(),     s4:lab_s4_pH.toString(),     s5a:`${s5a_pH}`, s5b:`${s5b_pH}`, s6:"6.5"},
                       ].map((row,i)=>(
                         <tr key={i} style={{borderBottom:`1px solid ${C.navyLt}`, background:i%2===0?C.navyLt+"30":"transparent"}}>
                           <td style={{padding:"6px 8px", color:C.grey, fontWeight:700}}>{row.p}</td>
@@ -5491,6 +5656,52 @@ export default function CFI() {
           <OrchestrationTab uploadedConfigs={uploadedConfigs} setUploadedConfigs={setUploadedConfigs}/>
         )}
       </div>
+
+      {/* ── VISITOR GATE MODAL ── */}
+      {showGate && (
+        <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.75)",
+          display:"flex",alignItems:"center",justifyContent:"center",zIndex:9999}}>
+          <div style={{background:C.navyMid,border:`2px solid ${C.teal}`,borderRadius:16,
+            padding:32,maxWidth:420,width:"90%",boxShadow:"0 24px 64px rgba(0,0,0,0.5)"}}>
+            <div style={{textAlign:"center",marginBottom:20}}>
+              <div style={{fontSize:28,marginBottom:8}}>🌴</div>
+              <div style={{color:C.teal,fontWeight:900,fontSize:16,letterSpacing:"0.06em",marginBottom:6}}>
+                REGISTER TO CONTINUE
+              </div>
+              <div style={{color:C.grey,fontSize:12}}>
+                {gateReason==="tabs"
+                  ? "You've previewed "+FREE_TABS+" sections. Register free to access all 11 tabs."
+                  : "You've used "+FREE_SEARCHES+" searches. Register free for unlimited access."}
+              </div>
+            </div>
+            {!visSubmitted ? (
+              <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                <input placeholder="Your Name *" value={visName} onChange={e=>setVisName(e.target.value)}
+                  style={{background:C.navyDk,border:`1px solid ${C.teal}55`,borderRadius:8,
+                    color:C.white,padding:"10px 14px",fontSize:13,outline:"none"}}/>
+                <input placeholder="Email Address *" value={visEmail} onChange={e=>setVisEmail(e.target.value)}
+                  style={{background:C.navyDk,border:`1px solid ${C.teal}55`,borderRadius:8,
+                    color:C.white,padding:"10px 14px",fontSize:13,outline:"none"}}/>
+                <input placeholder="Company / Organisation" value={visOrg} onChange={e=>setVisOrg(e.target.value)}
+                  style={{background:C.navyDk,border:`1px solid ${C.teal}55`,borderRadius:8,
+                    color:C.white,padding:"10px 14px",fontSize:13,outline:"none"}}/>
+                <button onClick={submitGate}
+                  style={{background:C.teal,color:C.navy,fontWeight:900,fontSize:14,border:"none",
+                    borderRadius:8,padding:"12px 0",cursor:"pointer",marginTop:6,letterSpacing:"0.05em"}}>
+                  REGISTER + UNLOCK FULL ACCESS
+                </button>
+                <div style={{textAlign:"center",color:C.grey,fontSize:10,marginTop:4}}>
+                  No spam. Your data stays private.
+                </div>
+              </div>
+            ) : (
+              <div style={{textAlign:"center",color:C.green,fontWeight:800,fontSize:15,padding:20}}>
+                ✅ Thank you! Full access unlocked.
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* ── FOOTER ── */}
       <div style={{textAlign:"center", color:C.grey, fontSize:10, marginTop:20, borderTop:`1px solid ${C.navyLt}`, paddingTop:12}}>
