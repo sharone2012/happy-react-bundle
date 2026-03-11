@@ -2395,7 +2395,7 @@ export default function CFI() {
 
 
                   <SectionHdr icon="📡" title="D — Captured % of Mill Processing Capacity Used" color={C.teal}/>
-                  <div style={g3}>
+                  <div style={{...g3, justifyItems:"center", textAlign:"center"}}>
                     <BluField label="EFB %" value={s0.efbCapturePct}
                       onChange={v=>upS0("efbCapturePct",Math.min(100,Math.max(0,+v)))}
                       note={"= "+(+(efbMonthWet*(s0.efbCapturePct/100)).toFixed(0)).toLocaleString()+" t FW/mo"}/>
