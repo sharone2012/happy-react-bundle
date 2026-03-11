@@ -2348,49 +2348,51 @@ export default function CFI() {
                 <Card>
                   <SectionHdr icon="⚙" title="B — Mill Fresh Fruit Bunch Processing Capacity" color={C.teal}/>
                   <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>
-                    <div style={{display:"grid", gridTemplateColumns:"1fr auto 1fr", gap:"12px 32px", maxWidth:640, alignItems:"center"}}>
+                    <div style={{display:"flex", alignItems:"center", gap:24}}>
+                      <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"12px 32px", alignItems:"center"}}>
 
-                      {/* FFB Processing */}
-                      <div style={{display:"flex", flexDirection:"column", gap:4}}>
-                        <div style={{display:"flex", alignItems:"center", gap:10}}>
-                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2, minWidth:70}}>
-                            FFB<br/>Processing
+                        {/* FFB Processing */}
+                        <div style={{display:"flex", flexDirection:"column", gap:4}}>
+                          <div style={{display:"flex", alignItems:"center", gap:10}}>
+                            <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2, minWidth:70}}>
+                              FFB<br/>Processing
+                            </div>
+                            <input style={{background:C.inputBg, border:`2px solid ${C.teal}66`, borderRadius:6,
+                              color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
+                              width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
+                              value={s0.ffbCapacity}
+                              onChange={e=>e.target.value}
+                              onBlur={e=>upS0("ffbCapacity",+e.target.value)}/>
                           </div>
-                          <input style={{background:C.inputBg, border:`2px solid ${C.teal}66`, borderRadius:6,
-                            color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
-                            width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
-                            value={s0.ffbCapacity}
-                            onChange={e=>e.target.value}
-                            onBlur={e=>upS0("ffbCapacity",+e.target.value)}/>
+                          <div style={{color:C.grey, fontSize:10, textAlign:"center", marginLeft:70, width:88}}>Tons per Hour</div>
                         </div>
-                        <div style={{color:C.grey, fontSize:10, textAlign:"center", marginLeft:70, width:88}}>Tons per Hour</div>
+
+                        {/* Utilisation */}
+                        <div style={{display:"flex", flexDirection:"column", gap:4}}>
+                          <div style={{display:"flex", alignItems:"center", gap:10}}>
+                            <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2, minWidth:70}}>
+                              Mill<br/>Utilisation
+                            </div>
+                            <input style={{background:C.inputBg, border:`2px solid ${C.teal}66`, borderRadius:6,
+                              color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
+                              width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
+                              value={s0.utilisation}
+                              onChange={e=>e.target.value}
+                              onBlur={e=>upS0("utilisation",+e.target.value)}/>
+                          </div>
+                          <div style={{display:"flex", alignItems:"center", marginLeft:70, width:88, justifyContent:"center", gap:6}}>
+                            <div style={{color:C.grey, fontSize:10, textAlign:"center"}}>% Default</div>
+                          </div>
+                        </div>
+
                       </div>
 
-                      {/* EFB Monthly - centered between */}
-                      <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:2, padding:"0 8px"}}>
-                        <div style={{color:C.teal, fontSize:11, fontWeight:800, letterSpacing:"0.05em"}}>EFB Monthly</div>
-                        <div style={{color:C.white, fontSize:18, fontWeight:700}}>{efbMonthWet.toLocaleString()}</div>
+                      {/* EFB Available - black box */}
+                      <div style={{background:"#000000", border:`1px solid ${C.teal}44`, borderRadius:10, padding:"16px 24px", display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
+                        <div style={{color:C.teal, fontSize:11, fontWeight:800, letterSpacing:"0.05em"}}>EFB Available</div>
+                        <div style={{color:C.white, fontSize:22, fontWeight:700}}>{efbMonthWet.toLocaleString()}</div>
                         <div style={{color:C.grey, fontSize:10}}>t/month wet</div>
                       </div>
-
-                      {/* Utilisation */}
-                      <div style={{display:"flex", flexDirection:"column", gap:4}}>
-                        <div style={{display:"flex", alignItems:"center", gap:10}}>
-                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2, minWidth:70}}>
-                            Mill<br/>Utilisation
-                          </div>
-                          <input style={{background:C.inputBg, border:`2px solid ${C.teal}66`, borderRadius:6,
-                            color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
-                            width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
-                            value={s0.utilisation}
-                            onChange={e=>e.target.value}
-                            onBlur={e=>upS0("utilisation",+e.target.value)}/>
-                        </div>
-                        <div style={{display:"flex", alignItems:"center", marginLeft:70, width:88, justifyContent:"center", gap:6}}>
-                          <div style={{color:C.grey, fontSize:10, textAlign:"center"}}>% Default</div>
-                        </div>
-                      </div>
-
                     </div>
                   </div>
 
