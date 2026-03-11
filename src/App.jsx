@@ -2371,7 +2371,7 @@ export default function CFI() {
                           <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2, minWidth:70}}>
                             Capacity<br/>Utilisation
                           </div>
-                          <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
+                          <input style={{background:C.inputBg, border:`2px solid ${C.teal}66`, borderRadius:6,
                             color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
                             width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
                             value={s0.utilisation}
