@@ -2497,7 +2497,7 @@ export default function CFI() {
                     </div>
                     {/* POME Sludge */}
                     <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
-                      <div style={{color:"#4A9EDB", fontWeight:700, fontSize:11, textAlign:"center", lineHeight:1.2}}>POME<br/>Sludge</div>
+                      <div style={{color:"#4A9EDB", fontWeight:700, fontSize:11, textAlign:"center"}}>POME Sludge</div>
                       <div style={{background:"#0A1624", border:`1px solid #4A9EDB44`, borderRadius:6,
                         color:pomeActive?"#4A9EDB":C.grey, padding:"8px 0", fontSize:15, fontWeight:700,
                         width:"100%", boxSizing:"border-box", textAlign:"center", lineHeight:"1.4"}}>
