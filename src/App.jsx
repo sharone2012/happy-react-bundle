@@ -252,22 +252,26 @@ const PillToggle = ({options, value, onChange, color=C.teal}) => (
   </div>
 );
 
-const ResidueCard = ({label, active, locked, onClick, sublabel}) => (
+const ResidueCard = ({label, active, locked, onClick, sublabel, highlightColor}) => {
+  const hc = highlightColor || C.teal;
+  return (
   <div onClick={locked?undefined:onClick}
-    style={{background:active?C.teal+"18":C.navyDk,
-      border:`1px solid ${active?C.teal+"66":"rgba(255,255,255,0.07)"}`,
-      borderTop:`2px solid ${active?C.teal:"rgba(255,255,255,0.07)"}`,
-      borderRadius:8, padding:"10px 14px",
+    style={{background:active?hc+"18":C.navyDk,
+      border:`1px solid ${active?hc+"66":"rgba(255,255,255,0.07)"}`,
+      borderTop:`2px solid ${active?hc:"rgba(255,255,255,0.07)"}`,
+      borderRadius:8, padding:"10px 14px", minHeight:60,
       cursor:locked?"not-allowed":"pointer", transition:"all 0.15s"}}>
     <div style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
-      <span style={{color:active?C.teal:C.grey, fontWeight:800, fontSize:12}}>{label}</span>
+      <span style={{color:active?hc:C.grey, fontWeight:800, fontSize:12}}>{label}</span>
       <div style={{width:14, height:14, borderRadius:"50%",
-        background:active?C.teal:"transparent",
-        border:`2px solid ${active?C.teal:C.grey+"66"}`, transition:"all 0.15s"}}/>
+        background:active?hc:"transparent",
+        border:`2px solid ${active?hc:C.grey+"66"}`, transition:"all 0.15s"}}/>
     </div>
     {sublabel&&<div style={{color:C.grey, fontSize:9, marginTop:4}}>{sublabel}</div>}
     {locked&&<div style={{color:C.grey, fontSize:9, marginTop:3, fontStyle:"italic"}}>locked — always active</div>}
   </div>
+  );
+};
 );
 
 const FE_COLOR = {LOW:C.green, MODERATE:C.teal, HIGH:C.amber, CRITICAL:C.red, Untested:C.grey};
