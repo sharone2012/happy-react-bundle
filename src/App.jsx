@@ -55,7 +55,7 @@ const S = {
   card:    { background: C.navyMid, borderRadius: 8, padding: "16px", marginBottom: 12 },
   hdr:     { background: C.navyLt, borderRadius: 6, padding: "10px 14px", marginBottom: 10,
              display:"flex", alignItems:"center", gap: 8 },
-  label:   { color: C.grey, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 2 },
+  label:   { color: C.grey, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 2, textAlign: "center" },
   val:     { color: C.white, fontSize: 14, fontWeight: 600 },
   input:   { background: "#1A3550", border: `1px solid ${C.teal}44`, borderRadius: 5, color: C.white,
              padding: "6px 10px", fontSize: 13, width: "100%", outline: "none", textAlign: "center" },
@@ -165,7 +165,7 @@ const CalcField = ({label, unit, value, note}) => (
   <div>
     <Lbl t={label} unit={unit}/>
     <div style={{background:"#0D2818", border:`1px solid ${C.green}44`, borderRadius:5,
-                 padding:"6px 10px", color:C.green, fontSize:13, fontWeight:600}}>
+                 padding:"6px 10px", color:C.green, fontSize:13, fontWeight:600, textAlign:"center"}}>
       {value}
     </div>
     {note && <div style={{color:C.green,fontSize:10,marginTop:2}}>{note}</div>}
