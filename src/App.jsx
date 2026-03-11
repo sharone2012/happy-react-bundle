@@ -2389,10 +2389,10 @@ export default function CFI() {
                       </div>
 
                       {/* EFB Available - black box */}
-                      <div style={{background:"#000000", border:`1px solid ${C.teal}44`, borderRadius:10, padding:"10px 28px", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:1, minWidth:140}}>
-                        <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.06em", marginBottom:4}}>EFB Available</div>
+                      <div style={{background:"#000000", border:`1px solid ${C.teal}44`, borderRadius:10, padding:"10px 28px", display:"flex", alignItems:"center", justifyContent:"center", gap:10, minWidth:140}}>
+                        <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.06em"}}>EFB Available</div>
                         <div style={{color:C.white, fontSize:24, fontWeight:700, lineHeight:1}}>{efbMonthWet.toLocaleString()}</div>
-                        <div style={{color:C.grey, fontSize:10, marginTop:2}}>Fresh Weight / month</div>
+                        <div style={{color:C.grey, fontSize:10}}>Fresh Weight / month</div>
                       </div>
                     </div>
                   </div>
