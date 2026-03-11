@@ -2486,16 +2486,6 @@ export default function CFI() {
                         onChange={e=>e.target.value}
                         onBlur={e=>{const nv=Math.min(+e.target.value,100); upS0("efbPct",nv); if(nv + s0.opdcPct > 100) upS0("opdcPct",+(100-nv).toFixed(1));}}/>
                     </div>
-                    {/* POME Sludge */}
-                    <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
-                      <div style={{color:"#4A9EDB", fontWeight:700, fontSize:11, textAlign:"center", lineHeight:1.2}}>POME<br/>Sludge</div>
-                      <div style={{background:"#0A1624", border:`1px solid #4A9EDB44`, borderRadius:6,
-                        color:pomeActive?"#4A9EDB":C.grey, padding:"8px 0", fontSize:15, fontWeight:700,
-                        width:"100%", boxSizing:"border-box", textAlign:"center", lineHeight:"1.4"}}>
-                        {pomeActive ? pomePct+"%" : "—"}
-                      </div>
-                      <div style={{color:C.grey, fontSize:9, textAlign:"center"}}>auto-fills</div>
-                    </div>
                     {/* OPDC */}
                     <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
                       <div style={{color:C.amber, fontWeight:700, fontSize:11, textAlign:"center"}}>OPDC</div>
@@ -2506,11 +2496,21 @@ export default function CFI() {
                         onChange={e=>e.target.value}
                         onBlur={e=>{const nv=Math.min(+e.target.value,100); upS0("opdcPct",nv); if(nv + s0.efbPct > 100) upS0("efbPct",+(100-nv).toFixed(1));}}/>
                     </div>
+                    {/* POME Sludge */}
+                    <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
+                      <div style={{color:"#4A9EDB", fontWeight:700, fontSize:11, textAlign:"center", lineHeight:1.2}}>POME<br/>Sludge</div>
+                      <div style={{background:"#0A1624", border:`1px solid #4A9EDB44`, borderRadius:6,
+                        color:pomeActive?"#4A9EDB":C.grey, padding:"8px 0", fontSize:15, fontWeight:700,
+                        width:"100%", boxSizing:"border-box", textAlign:"center", lineHeight:"1.4"}}>
+                        {pomeActive ? pomePct+"%" : "—"}
+                      </div>
+                      <div style={{color:C.grey, fontSize:9, textAlign:"center"}}>auto-fills</div>
+                    </div>
                     {/* PKE */}
                     <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
-                      <div style={{color:"#9B59B6", fontWeight:700, fontSize:11, textAlign:"center", lineHeight:1.2}}>PKE</div>
-                      <div style={{background:"#0A1624", border:`1px solid #9B59B644`, borderRadius:6,
-                        color:s0.pkeEnabled?"#9B59B6":C.grey, padding:"8px 0", fontSize:15, fontWeight:700,
+                      <div style={{color:"#00E676", fontWeight:700, fontSize:11, textAlign:"center", lineHeight:1.2}}>PKE</div>
+                      <div style={{background:"#0A1624", border:`1px solid #00E67644`, borderRadius:6,
+                        color:s0.pkeEnabled?"#00E676":C.grey, padding:"8px 0", fontSize:15, fontWeight:700,
                         width:"100%", boxSizing:"border-box", textAlign:"center"}}>
                         {s0.pkeEnabled ? pctPKE+"%" : "—"}
                       </div>
