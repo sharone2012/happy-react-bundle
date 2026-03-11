@@ -266,9 +266,9 @@ const ResidueCard = ({label, active, locked, onClick, sublabel, highlightColor})
       cursor:locked?"not-allowed":"pointer", transition:"all 0.15s"}}>
     <div style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
       <span style={{color:active?hc:C.grey, fontWeight:800, fontSize:12}}>{label}</span>
-      <div style={{width:14, height:14, borderRadius:"50%",
-        background:active?hc:"transparent",
-        border:`2px solid ${active?hc:C.grey+"66"}`, transition:"all 0.15s"}}/>
+      <div style={{width:8, height:8, borderRadius:"50%",
+        background:active?hc:hc+"44",
+        border:`2px solid ${active?hc:C.grey+"66"}`, transition:"all 0.15s", flexShrink:0}}/>
     </div>
     {sublabel&&<div style={{color:C.grey, fontSize:9, marginTop:4}}>{sublabel}</div>}
     {locked&&<div style={{color:C.grey, fontSize:9, marginTop:3, fontStyle:"italic"}}>locked — always active</div>}
