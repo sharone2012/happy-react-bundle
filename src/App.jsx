@@ -2341,14 +2341,14 @@ export default function CFI() {
 
                 {/* ── B: MILL CAPACITY ── */}
                 <Card>
-                  <SectionHdr icon="⚙" title="B — Oil Palm Mill Fresh Fruit Bunch Processing Capacity" color={C.teal}/>
+                  <SectionHdr icon="⚙" title="B — Mill Fresh Fruit Bunch Processing Capacity" color={C.teal}/>
                   <div style={{display:"flex", justifyContent:"center"}}>
                     <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"28px 56px", maxWidth:540}}>
 
                       {/* FFB Processing */}
                       <div style={{display:"flex", flexDirection:"column", gap:4}}>
                         <div style={{display:"flex", alignItems:"center", gap:10}}>
-                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2}}>
+                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2, minWidth:70}}>
                             FFB<br/>Processing
                           </div>
                           <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
@@ -2358,13 +2358,13 @@ export default function CFI() {
                             onChange={e=>e.target.value}
                             onBlur={e=>upS0("ffbCapacity",+e.target.value)}/>
                         </div>
-                        <div style={{color:C.grey, fontSize:10, textAlign:"center", paddingLeft:50}}>Tons per Hour</div>
+                        <div style={{color:C.grey, fontSize:10, textAlign:"center", marginLeft:70, width:88}}>Tons per Hour</div>
                       </div>
 
-                      {/* Capacity / Utilisation */}
+                      {/* Utilisation */}
                       <div style={{display:"flex", flexDirection:"column", gap:4}}>
                         <div style={{display:"flex", alignItems:"center", gap:10}}>
-                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2}}>
+                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2, minWidth:70}}>
                             Capacity<br/>Utilisation
                           </div>
                           <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
@@ -2374,16 +2374,16 @@ export default function CFI() {
                             onChange={e=>e.target.value}
                             onBlur={e=>upS0("utilisation",+e.target.value)}/>
                         </div>
-                        <div style={{display:"flex", justifyContent:"space-between", paddingLeft:50}}>
+                        <div style={{display:"flex", alignItems:"center", marginLeft:70, width:88, justifyContent:"center", gap:6}}>
                           <div style={{color:C.grey, fontSize:10, textAlign:"center"}}>%</div>
-                          <div style={{color:C.grey, fontSize:10}}>Default 85%</div>
                         </div>
+                        <div style={{color:C.grey, fontSize:10, marginLeft:70, width:88, textAlign:"right"}}>Default 85%</div>
                       </div>
 
                       {/* Hours / Day */}
                       <div style={{display:"flex", flexDirection:"column", gap:4}}>
                         <div style={{display:"flex", alignItems:"center", gap:10}}>
-                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2}}>
+                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2, minWidth:70}}>
                             Hours<br/>/ Day
                           </div>
                           <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
@@ -2393,13 +2393,13 @@ export default function CFI() {
                             onChange={e=>e.target.value}
                             onBlur={e=>upS0("hrsDay",+e.target.value)}/>
                         </div>
-                        <div style={{color:C.grey, fontSize:10, textAlign:"center", paddingLeft:50}}>hrs/day</div>
+                        <div style={{color:C.grey, fontSize:10, textAlign:"center", marginLeft:70, width:88}}>hrs/day</div>
                       </div>
 
                       {/* Days / Month */}
                       <div style={{display:"flex", flexDirection:"column", gap:4}}>
                         <div style={{display:"flex", alignItems:"center", gap:10}}>
-                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2}}>
+                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2, minWidth:70}}>
                             Days<br/>/ Month
                           </div>
                           <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
@@ -2409,7 +2409,7 @@ export default function CFI() {
                             onChange={e=>e.target.value}
                             onBlur={e=>upS0("daysMonth",+e.target.value)}/>
                         </div>
-                        <div style={{color:C.grey, fontSize:10, textAlign:"center", paddingLeft:50}}>days/month</div>
+                        <div style={{color:C.grey, fontSize:10, textAlign:"center", marginLeft:70, width:88}}>days/month</div>
                       </div>
 
                     </div>
