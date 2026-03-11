@@ -2316,7 +2316,7 @@ export default function CFI() {
                       color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
                       value={s0.plantName} onChange={e=>upS0("plantName",e.target.value)}
                       placeholder="Plantation / Company Name"/>
-                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
+                    <input style={{background:C.inputBg, border:`1px solid ${C.teal}55`, borderRadius:6,
                       color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
                       value={s0.millName} onChange={e=>upS0("millName",e.target.value)}
                       placeholder="Mill Name / Unit"/>
