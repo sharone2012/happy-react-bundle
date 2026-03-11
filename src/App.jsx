@@ -2211,7 +2211,7 @@ export default function CFI() {
             <div style={{color:C.teal, fontWeight:900, fontSize:16, letterSpacing:"0.06em"}}>
               CIRCULAR FERTILISER INDUSTRIES
             </div>
-            <div style={{color:C.grey, fontSize:11}}>Palm Oil Bioconversion System · 60 TPH FFB Mill · West Java</div>
+            <div style={{color:C.grey, fontSize:11}}>Palm Oil Bioconversion System · 60 TPH FFB Mill</div>
           </div>
         </div>
         <div style={{display:"flex", gap:6}}>
