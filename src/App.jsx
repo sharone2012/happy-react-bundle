@@ -295,7 +295,7 @@ const AG_TIERS = [
   {id:"vgam", name:"VGAM — Very Good AG Management", uplift:1.0, color:C.greenLt},
   {id:"gam",  name:"GAM — Good AG Management",       uplift:0.85, color:C.greenLt},
   {id:"poor", name:"Poor AG Management",              uplift:0.65, color:C.redLt},
-  {id:"abandoned", name:"Abandoned",                 uplift:0.40, color:C.redLt},
+  {id:"abandoned", name:"Abandoned",                 uplift:0.40, color:C.red},
 ];
 
 // ─── NUTRIENT LEDGER COMPONENT ────────────────────────────────────────────────
