@@ -2393,8 +2393,7 @@ export default function CFI() {
                     </div>
                   </div>
 
-                    </div>
-                  </div>
+
                   <Divider/>
                   <div style={g4}>
                     <KPI label="Effective FFB" value={effFFB} unit="TPH" color={C.green}/>
