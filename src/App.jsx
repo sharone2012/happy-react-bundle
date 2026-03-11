@@ -2346,7 +2346,7 @@ export default function CFI() {
                 {/* ── B: MILL CAPACITY ── */}
                 <Card>
                   <SectionHdr icon="⚙" title="B — Mill Fresh Fruit Bunch Processing Capacity" color={C.teal}/>
-                  <div style={{display:"flex", justifyContent:"center"}}>
+                  <div style={{display:"flex", justifyContent:"flex-start"}}>
                     <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"12px 56px", maxWidth:540}}>
 
                       {/* FFB Processing */}
@@ -2369,7 +2369,7 @@ export default function CFI() {
                       <div style={{display:"flex", flexDirection:"column", gap:4}}>
                         <div style={{display:"flex", alignItems:"center", gap:10}}>
                           <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2, minWidth:70}}>
-                            Capacity<br/>Utilisation
+                            Mill<br/>Utilisation
                           </div>
                           <input style={{background:C.inputBg, border:`2px solid ${C.teal}66`, borderRadius:6,
                             color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
@@ -2384,37 +2384,8 @@ export default function CFI() {
                         
                       </div>
 
-                      {/* Hours / Day */}
-                      <div style={{display:"flex", flexDirection:"column", gap:4}}>
-                        <div style={{display:"flex", alignItems:"center", gap:10}}>
-                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2, minWidth:70}}>
-                            Hours<br/>/ Day
-                          </div>
-                          <input style={{background:C.inputBg, border:`2px solid ${C.teal}66`, borderRadius:6,
-                            color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
-                            width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
-                            value={s0.hrsDay}
-                            onChange={e=>e.target.value}
-                            onBlur={e=>upS0("hrsDay",+e.target.value)}/>
-                        </div>
-                        
-                      </div>
-
-                      {/* Days / Month */}
-                      <div style={{display:"flex", flexDirection:"column", gap:4}}>
-                        <div style={{display:"flex", alignItems:"center", gap:10}}>
-                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2, minWidth:70}}>
-                            Days<br/>/ Month
-                          </div>
-                          <input style={{background:C.inputBg, border:`2px solid ${C.teal}66`, borderRadius:6,
-                            color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
-                            width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
-                            value={s0.daysMonth}
-                            onChange={e=>e.target.value}
-                            onBlur={e=>upS0("daysMonth",+e.target.value)}/>
-                        </div>
-                        <div style={{color:C.grey, fontSize:10, textAlign:"center", marginLeft:70, width:88}}></div>
-                      </div>
+                    </div>
+                  </div>
 
                     </div>
                   </div>
