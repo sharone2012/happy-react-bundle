@@ -2294,11 +2294,11 @@ export default function CFI() {
                       borderRadius:8, padding:"11px 14px", display:"flex", alignItems:"center", gap:10, flex:1}}>
                       <span style={{fontSize:17, lineHeight:1}}>🏭</span>
                       <div style={{color:C.teal, fontWeight:800, fontSize:12, letterSpacing:"0.07em", textTransform:"uppercase"}}>
-                        A — ENTER YOUR DETAILS IN THE FIELDS BELOW
+                        A — Enter Your Details Below
                       </div>
                     </div>
-                    <div style={{marginLeft:12, flexShrink:0}}>
-                      <div style={{color:C.grey, fontSize:9, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.09em", marginBottom:4, textAlign:"right"}}>ID Code</div>
+                    <div style={{marginLeft:12, flexShrink:0, display:"flex", flexDirection:"column", alignItems:"center"}}>
+                      <div style={{color:C.grey, fontSize:9, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.09em", marginBottom:4, textAlign:"center"}}>ID Code</div>
                       <input
                         style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
                           color:C.white, padding:"8px 12px", fontSize:13, width:90, outline:"none",
@@ -2343,58 +2343,75 @@ export default function CFI() {
                 <Card>
                   <SectionHdr icon="⚙" title="B — Oil Palm Mill Fresh Fruit Bunch Processing Capacity" color={C.teal}/>
                   <div style={{display:"flex", justifyContent:"center"}}>
-                    <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"24px 48px", maxWidth:520}}>
-                      {/* Row 1: FFB Processing | Capacity Utilisation */}
-                      <div style={{display:"flex", flexDirection:"column", alignItems:"flex-end", gap:6}}>
-                        <div style={{textAlign:"right"}}>
-                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em"}}>FFB Processing</div>
-                          <div style={{color:C.grey, fontSize:10, marginTop:2}}>Tons per Hour</div>
+                    <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"28px 56px", maxWidth:540}}>
+
+                      {/* FFB Processing */}
+                      <div style={{display:"flex", flexDirection:"column", gap:4}}>
+                        <div style={{display:"flex", alignItems:"center", gap:10}}>
+                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2}}>
+                            FFB<br/>Processing
+                          </div>
+                          <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
+                            color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
+                            width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
+                            value={s0.ffbCapacity}
+                            onChange={e=>e.target.value}
+                            onBlur={e=>upS0("ffbCapacity",+e.target.value)}/>
                         </div>
-                        <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
-                          color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
-                          width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
-                          value={s0.ffbCapacity}
-                          onChange={e=>e.target.value}
-                          onBlur={e=>upS0("ffbCapacity",+e.target.value)}/>
+                        <div style={{color:C.grey, fontSize:10, textAlign:"center", paddingLeft:50}}>Tons per Hour</div>
                       </div>
-                      <div style={{display:"flex", flexDirection:"column", alignItems:"flex-end", gap:6}}>
-                        <div style={{textAlign:"right"}}>
-                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em"}}>Capacity</div>
-                          <div style={{color:C.grey, fontSize:10, marginTop:2}}>Utilisation %</div>
+
+                      {/* Capacity / Utilisation */}
+                      <div style={{display:"flex", flexDirection:"column", gap:4}}>
+                        <div style={{display:"flex", alignItems:"center", gap:10}}>
+                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2}}>
+                            Capacity<br/>Utilisation
+                          </div>
+                          <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
+                            color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
+                            width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
+                            value={s0.utilisation}
+                            onChange={e=>e.target.value}
+                            onBlur={e=>upS0("utilisation",+e.target.value)}/>
                         </div>
-                        <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
-                          color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
-                          width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
-                          value={s0.utilisation}
-                          onChange={e=>e.target.value}
-                          onBlur={e=>upS0("utilisation",+e.target.value)}/>
-                        <div style={{color:C.grey, fontSize:10, textAlign:"right"}}>Default 85%</div>
-                      </div>
-                      {/* Row 2: Operating Hours | Operating Days */}
-                      <div style={{display:"flex", flexDirection:"column", alignItems:"flex-end", gap:6}}>
-                        <div style={{textAlign:"right"}}>
-                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em"}}>Operating</div>
-                          <div style={{color:C.grey, fontSize:10, marginTop:2}}>Hours / Day</div>
+                        <div style={{display:"flex", justifyContent:"space-between", paddingLeft:50}}>
+                          <div style={{color:C.grey, fontSize:10, textAlign:"center"}}>%</div>
+                          <div style={{color:C.grey, fontSize:10}}>Default 85%</div>
                         </div>
-                        <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
-                          color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
-                          width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
-                          value={s0.hrsDay}
-                          onChange={e=>e.target.value}
-                          onBlur={e=>upS0("hrsDay",+e.target.value)}/>
                       </div>
-                      <div style={{display:"flex", flexDirection:"column", alignItems:"flex-end", gap:6}}>
-                        <div style={{textAlign:"right"}}>
-                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em"}}>Operating</div>
-                          <div style={{color:C.grey, fontSize:10, marginTop:2}}>Days / Month</div>
+
+                      {/* Hours / Day */}
+                      <div style={{display:"flex", flexDirection:"column", gap:4}}>
+                        <div style={{display:"flex", alignItems:"center", gap:10}}>
+                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2}}>
+                            Hours<br/>/ Day
+                          </div>
+                          <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
+                            color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
+                            width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
+                            value={s0.hrsDay}
+                            onChange={e=>e.target.value}
+                            onBlur={e=>upS0("hrsDay",+e.target.value)}/>
                         </div>
-                        <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
-                          color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
-                          width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
-                          value={s0.daysMonth}
-                          onChange={e=>e.target.value}
-                          onBlur={e=>upS0("daysMonth",+e.target.value)}/>
+                        <div style={{color:C.grey, fontSize:10, textAlign:"center", paddingLeft:50}}>hrs/day</div>
                       </div>
+
+                      {/* Days / Month */}
+                      <div style={{display:"flex", flexDirection:"column", gap:4}}>
+                        <div style={{display:"flex", alignItems:"center", gap:10}}>
+                          <div style={{color:C.teal, fontSize:12, fontWeight:800, letterSpacing:"0.05em", lineHeight:1.2}}>
+                            Days<br/>/ Month
+                          </div>
+                          <input style={{background:"#142030", border:`2px solid ${C.teal}66`, borderRadius:6,
+                            color:C.white, padding:"10px 0", fontSize:18, fontWeight:700,
+                            width:88, outline:"none", boxSizing:"border-box", textAlign:"center"}}
+                            value={s0.daysMonth}
+                            onChange={e=>e.target.value}
+                            onBlur={e=>upS0("daysMonth",+e.target.value)}/>
+                        </div>
+                        <div style={{color:C.grey, fontSize:10, textAlign:"center", paddingLeft:50}}>days/month</div>
+                      </div>
+
                     </div>
                   </div>
                   <Divider/>
