@@ -2748,7 +2748,7 @@ export default function CFI() {
                           <input type="number" min={15} max={35} step={1}
                             value={s0.cnTarget}
                             onChange={e=>upS0("cnTarget",+e.target.value)}
-                            style={{background:"#142030", border:"1px solid #9B59B655",
+                            style={{background:C.inputBg, border:"1px solid #9B59B655",
                               borderRadius:6, color:C.white, padding:"8px 12px",
                               fontSize:14, fontWeight:700, width:"100%",
                               outline:"none", boxSizing:"border-box"}}/>
