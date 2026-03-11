@@ -44,6 +44,7 @@ const C = {
   amberLt:"#FFD080",
   red:    "#E84040",
   green:  "#3DCB7A",
+  greenLt:"#A8E6C3",
   blue:   "#4A9EDB",
   purple: "#9B59B6",
   white:  "#F0F4F8",
@@ -2593,14 +2594,14 @@ export default function CFI() {
                   <div style={{display:"flex", flexDirection:"column", gap:6}}>
                     {AG_TIERS.map(ag=>(
                       <div key={ag.id} onClick={()=>upS0("ag",ag.id)}
-                        style={{background:s0.ag===ag.id?C.amber+"18":C.navyDk,
-                          border:`1px solid ${s0.ag===ag.id?C.amber+"66":"rgba(255,255,255,0.07)"}`,
-                          borderLeft:s0.ag===ag.id?`3px solid ${C.amber}`:"3px solid transparent",
+                        style={{background:s0.ag===ag.id?C.greenLt+"18":C.navyDk,
+                          border:`1px solid ${s0.ag===ag.id?C.greenLt+"66":"rgba(255,255,255,0.07)"}`,
+                          borderLeft:s0.ag===ag.id?`3px solid ${C.greenLt}`:"3px solid transparent",
                           borderRadius:8, padding:"10px 14px", cursor:"pointer",
                           display:"flex", alignItems:"center", justifyContent:"space-between",
                           transition:"all 0.15s"}}>
-                        <span style={{color:s0.ag===ag.id?C.amberLt:C.white, fontSize:12, fontWeight:600}}>{ag.name}</span>
-                        <Badge text={Math.round(ag.uplift*100)+"% uplift"} color={s0.ag===ag.id?C.amber:C.grey}/>
+                        <span style={{color:s0.ag===ag.id?C.greenLt:C.white, fontSize:12, fontWeight:600}}>{ag.name}</span>
+                        <Badge text={Math.round(ag.uplift*100)+"% uplift"} color={s0.ag===ag.id?C.greenLt:C.grey}/>
                       </div>
                     ))}
                   </div>
