@@ -44,6 +44,7 @@ const C = {
   amberLt:"#FFD080",
   red:    "#E84040",
   green:  "#3DCB7A",
+  greenLt:"#A8E6C3",
   blue:   "#4A9EDB",
   purple: "#9B59B6",
   white:  "#F0F4F8",
