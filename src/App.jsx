@@ -2489,7 +2489,7 @@ export default function CFI() {
                     {/* OPDC */}
                     <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
                       <div style={{color:C.amber, fontWeight:700, fontSize:11, textAlign:"center"}}>OPDC</div>
-                      <input style={{background:"#142030", border:`1px solid ${C.amber}66`, borderRadius:6,
+                      <input style={{background:C.inputBg, border:`1px solid ${C.amber}66`, borderRadius:6,
                         color:C.white, padding:"8px 0", fontSize:15, fontWeight:700,
                         width:"100%", outline:"none", boxSizing:"border-box", textAlign:"center"}}
                         value={s0.opdcPct}
