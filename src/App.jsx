@@ -58,7 +58,7 @@ const S = {
   label:   { color: C.grey, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 2 },
   val:     { color: C.white, fontSize: 14, fontWeight: 600 },
   input:   { background: "#1A3550", border: `1px solid ${C.teal}44`, borderRadius: 5, color: C.white,
-             padding: "6px 10px", fontSize: 13, width: "100%", outline: "none" },
+             padding: "6px 10px", fontSize: 13, width: "100%", outline: "none", textAlign: "center" },
   inputAmb:{ background: "#2A2010", border: `1px solid ${C.amber}66`, borderRadius: 5, color: C.amberLt,
              padding: "6px 10px", fontSize: 13, width: "100%", outline: "none" },
   badge:   (c) => ({ background: c + "22", border: `1px solid ${c}55`, borderRadius: 12, padding: "2px 8px",
