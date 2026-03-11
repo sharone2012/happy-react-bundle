@@ -2400,7 +2400,7 @@ export default function CFI() {
                     <KPI label="Effective FFB" value={effFFB} unit="TPH" color={C.green}/>
                     <KPI label="Monthly FFB" value={monthFFB.toLocaleString()} unit="t/month" color={C.green}/>
                     <KPI label="EFB at Discharge" value={efbTPH} unit="TPH wet" color={C.teal}/>
-                    <KPI label="EFB Monthly" value={efbMonthWet.toLocaleString()} unit="t/month wet" color={C.teal}/>
+                    
                   </div>
                   <Divider/>
                   <SectionHdr icon="📡" title="D — Captured % of Mill Processing Capacity Used" color={C.teal}/>
