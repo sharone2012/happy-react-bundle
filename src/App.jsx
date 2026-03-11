@@ -2350,7 +2350,7 @@ export default function CFI() {
                   <SectionHdr icon="⚙" title="B — Mill Fresh Fruit Bunch Processing Capacity" color={C.teal}/>
                   <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>
                     <div style={{display:"flex", alignItems:"center", gap:24}}>
-                      <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"12px 32px", alignItems:"center"}}>
+                      <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"12px 32px", alignItems:"center", alignSelf:"center"}}>
 
                         {/* FFB Processing */}
                         <div style={{display:"flex", flexDirection:"column", gap:4}}>
