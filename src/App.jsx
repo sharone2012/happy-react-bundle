@@ -262,7 +262,7 @@ const ResidueCard = ({label, active, locked, onClick, sublabel, highlightColor})
     style={{background:active?hc+"18":C.navyDk,
       border:`1px solid ${active?hc+"66":"rgba(255,255,255,0.07)"}`,
       borderTop:`2px solid ${active?hc:"rgba(255,255,255,0.07)"}`,
-      borderRadius:8, padding:"10px 14px", minHeight:60,
+      borderRadius:10, padding:"10px 14px", minHeight:60,
       cursor:locked?"not-allowed":"pointer", transition:"all 0.15s"}}>
     <div style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
       <span style={{color:active?hc:C.grey, fontWeight:800, fontSize:12}}>{label}</span>
