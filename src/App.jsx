@@ -2397,7 +2397,7 @@ export default function CFI() {
                     </div>
                   </div>
 
-
+                  <div style={{marginTop:16}}>
                   <SectionHdr icon="📡" title="D — Captured % of Mill Processing Capacity Used" color={C.teal}/>
                   <div style={{...g3, justifyItems:"center", textAlign:"center"}}>
                     <BluField label="EFB %" value={s0.efbCapturePct}
@@ -2407,6 +2407,7 @@ export default function CFI() {
                       onChange={v=>upS0("opdcCapturePct",Math.min(100,Math.max(0,+v)))}/>
                     <BluField label="POME %" value={s0.pomeCapturePct}
                       onChange={v=>upS0("pomeCapturePct",Math.min(100,Math.max(0,+v)))}/>
+                  </div>
                   </div>
                   <div style={{background:C.navyDk, border:"1px solid rgba(255,255,255,0.08)", borderRadius:8, padding:12, marginTop:12}}>
                     <SectionHdr icon="🌿" title="E — Carbon Credits Preview" color={C.green}/>
