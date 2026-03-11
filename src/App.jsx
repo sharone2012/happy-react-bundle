@@ -170,7 +170,7 @@ const CalcField = ({label, unit, value, note, noteColor}) => (
                  padding:"6px 10px", color:C.green, fontSize:13, fontWeight:600, textAlign:"center"}}>
       {value}
     </div>
-    {note && <div style={{color:noteColor||C.green,fontSize:10,marginTop:2}}>{note}</div>}
+    {note && <div style={{color:noteColor||C.green,fontSize:8,marginTop:2,whiteSpace:"nowrap"}}>{note}</div>}
   </div>
 );
 
