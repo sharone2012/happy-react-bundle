@@ -45,6 +45,7 @@ const C = {
   red:    "#E84040",
   green:  "#3DCB7A",
   greenLt:"#A8E6C3",
+  redLt:  "#F4A6A6",
   blue:   "#4A9EDB",
   purple: "#9B59B6",
   white:  "#F0F4F8",
@@ -291,10 +292,10 @@ const SOILS = [
 ]
 
 const AG_TIERS = [
-  {id:"vgam", name:"VGAM — Very Good AG Management", uplift:1.0},
-  {id:"gam",  name:"GAM — Good AG Management",       uplift:0.85},
-  {id:"poor", name:"Poor AG Management",              uplift:0.65},
-  {id:"abandoned", name:"Abandoned",                 uplift:0.40},
+  {id:"vgam", name:"VGAM — Very Good AG Management", uplift:1.0, color:C.greenLt},
+  {id:"gam",  name:"GAM — Good AG Management",       uplift:0.85, color:C.greenLt},
+  {id:"poor", name:"Poor AG Management",              uplift:0.65, color:C.redLt},
+  {id:"abandoned", name:"Abandoned",                 uplift:0.40, color:C.redLt},
 ];
 
 // ─── NUTRIENT LEDGER COMPONENT ────────────────────────────────────────────────
@@ -2596,14 +2597,14 @@ export default function CFI() {
                   <div style={{display:"flex", flexDirection:"column", gap:6}}>
                     {AG_TIERS.map(ag=>(
                       <div key={ag.id} onClick={()=>upS0("ag",ag.id)}
-                        style={{background:s0.ag===ag.id?C.greenLt+"18":C.navyDk,
-                          border:`1px solid ${s0.ag===ag.id?C.greenLt+"66":"rgba(255,255,255,0.07)"}`,
-                          borderLeft:s0.ag===ag.id?`3px solid ${C.greenLt}`:"3px solid transparent",
+                        style={{background:s0.ag===ag.id?ag.color+"18":C.navyDk,
+                          border:`1px solid ${s0.ag===ag.id?ag.color+"66":"rgba(255,255,255,0.07)"}`,
+                          borderLeft:s0.ag===ag.id?`3px solid ${ag.color}`:"3px solid transparent",
                           borderRadius:8, padding:"10px 14px", cursor:"pointer",
                           display:"flex", alignItems:"center", justifyContent:"space-between",
                           transition:"all 0.15s"}}>
-                        <span style={{color:s0.ag===ag.id?C.greenLt:C.white, fontSize:12, fontWeight:600}}>{ag.name}</span>
-                        <Badge text={Math.round(ag.uplift*100)+"% uplift"} color={s0.ag===ag.id?C.greenLt:C.grey}/>
+                        <span style={{color:s0.ag===ag.id?ag.color:C.white, fontSize:12, fontWeight:600}}>{ag.name}</span>
+                        <Badge text={Math.round(ag.uplift*100)+"% uplift"} color={s0.ag===ag.id?ag.color:C.grey}/>
                       </div>
                     ))}
                   </div>
