@@ -252,22 +252,26 @@ const PillToggle = ({options, value, onChange, color=C.teal}) => (
   </div>
 );
 
-const ResidueCard = ({label, active, locked, onClick, sublabel}) => (
+const ResidueCard = ({label, active, locked, onClick, sublabel, highlightColor}) => {
+  const hc = highlightColor || C.teal;
+  return (
   <div onClick={locked?undefined:onClick}
-    style={{background:active?C.teal+"18":C.navyDk,
-      border:`1px solid ${active?C.teal+"66":"rgba(255,255,255,0.07)"}`,
-      borderTop:`2px solid ${active?C.teal:"rgba(255,255,255,0.07)"}`,
-      borderRadius:8, padding:"10px 14px",
+    style={{background:active?hc+"18":C.navyDk,
+      border:`1px solid ${active?hc+"66":"rgba(255,255,255,0.07)"}`,
+      borderTop:`2px solid ${active?hc:"rgba(255,255,255,0.07)"}`,
+      borderRadius:8, padding:"10px 14px", minHeight:60,
       cursor:locked?"not-allowed":"pointer", transition:"all 0.15s"}}>
     <div style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
-      <span style={{color:active?C.teal:C.grey, fontWeight:800, fontSize:12}}>{label}</span>
+      <span style={{color:active?hc:C.grey, fontWeight:800, fontSize:12}}>{label}</span>
       <div style={{width:14, height:14, borderRadius:"50%",
-        background:active?C.teal:"transparent",
-        border:`2px solid ${active?C.teal:C.grey+"66"}`, transition:"all 0.15s"}}/>
+        background:active?hc:"transparent",
+        border:`2px solid ${active?hc:C.grey+"66"}`, transition:"all 0.15s"}}/>
     </div>
     {sublabel&&<div style={{color:C.grey, fontSize:9, marginTop:4}}>{sublabel}</div>}
     {locked&&<div style={{color:C.grey, fontSize:9, marginTop:3, fontStyle:"italic"}}>locked — always active</div>}
   </div>
+  );
+};
 );
 
 const FE_COLOR = {LOW:C.green, MODERATE:C.teal, HIGH:C.amber, CRITICAL:C.red, Untested:C.grey};
@@ -2463,7 +2467,7 @@ export default function CFI() {
                     <ResidueCard label="EFB"         active={s0.efbEnabled}        onClick={()=>upS0("efbEnabled",!s0.efbEnabled)}               sublabel="Empty Fruit Bunches"/>
                     <ResidueCard label="OPDC"        active={s0.opdcEnabled}       onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)}              sublabel="Decanter Cake"/>
                     <ResidueCard label="POME SLUDGE" active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} sublabel={pomeActive?(pomePct>0.09?"Auto: "+pomePct+"% DM remainder":"Manual — ON"):"Click to activate"}/>
-                    <ResidueCard label="PKE" active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)} sublabel="Palm Kernel Expeller (Protein Booster)"/>
+                    <ResidueCard label="PKE" active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)} sublabel="Palm Kernel Expeller (Protein Booster)" highlightColor="#00E676"/>
                   </div>
                   <Divider/>
                   {/* Blend fraction header */}
@@ -2482,16 +2486,6 @@ export default function CFI() {
                         onChange={e=>e.target.value}
                         onBlur={e=>{const nv=Math.min(+e.target.value,100); upS0("efbPct",nv); if(nv + s0.opdcPct > 100) upS0("opdcPct",+(100-nv).toFixed(1));}}/>
                     </div>
-                    {/* POME Sludge */}
-                    <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
-                      <div style={{color:"#4A9EDB", fontWeight:700, fontSize:11, textAlign:"center", lineHeight:1.2}}>POME<br/>Sludge</div>
-                      <div style={{background:"#0A1624", border:`1px solid #4A9EDB44`, borderRadius:6,
-                        color:pomeActive?"#4A9EDB":C.grey, padding:"8px 0", fontSize:15, fontWeight:700,
-                        width:"100%", boxSizing:"border-box", textAlign:"center", lineHeight:"1.4"}}>
-                        {pomeActive ? pomePct+"%" : "—"}
-                      </div>
-                      <div style={{color:C.grey, fontSize:9, textAlign:"center"}}>auto-fills</div>
-                    </div>
                     {/* OPDC */}
                     <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
                       <div style={{color:C.amber, fontWeight:700, fontSize:11, textAlign:"center"}}>OPDC</div>
@@ -2502,11 +2496,21 @@ export default function CFI() {
                         onChange={e=>e.target.value}
                         onBlur={e=>{const nv=Math.min(+e.target.value,100); upS0("opdcPct",nv); if(nv + s0.efbPct > 100) upS0("efbPct",+(100-nv).toFixed(1));}}/>
                     </div>
+                    {/* POME Sludge */}
+                    <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
+                      <div style={{color:"#4A9EDB", fontWeight:700, fontSize:11, textAlign:"center", lineHeight:1.2}}>POME<br/>Sludge</div>
+                      <div style={{background:"#0A1624", border:`1px solid #4A9EDB44`, borderRadius:6,
+                        color:pomeActive?"#4A9EDB":C.grey, padding:"8px 0", fontSize:15, fontWeight:700,
+                        width:"100%", boxSizing:"border-box", textAlign:"center", lineHeight:"1.4"}}>
+                        {pomeActive ? pomePct+"%" : "—"}
+                      </div>
+                      <div style={{color:C.grey, fontSize:9, textAlign:"center"}}>auto-fills</div>
+                    </div>
                     {/* PKE */}
                     <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
-                      <div style={{color:"#9B59B6", fontWeight:700, fontSize:11, textAlign:"center", lineHeight:1.2}}>PKE</div>
-                      <div style={{background:"#0A1624", border:`1px solid #9B59B644`, borderRadius:6,
-                        color:s0.pkeEnabled?"#9B59B6":C.grey, padding:"8px 0", fontSize:15, fontWeight:700,
+                      <div style={{color:"#00E676", fontWeight:700, fontSize:11, textAlign:"center", lineHeight:1.2}}>PKE</div>
+                      <div style={{background:"#0A1624", border:`1px solid #00E67644`, borderRadius:6,
+                        color:s0.pkeEnabled?"#00E676":C.grey, padding:"8px 0", fontSize:15, fontWeight:700,
                         width:"100%", boxSizing:"border-box", textAlign:"center"}}>
                         {s0.pkeEnabled ? pctPKE+"%" : "—"}
                       </div>
