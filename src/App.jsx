@@ -2394,14 +2394,6 @@ export default function CFI() {
                   </div>
 
 
-                  <Divider/>
-                  <div style={g4}>
-                    <KPI label="Effective FFB" value={effFFB} unit="TPH" color={C.green}/>
-                    <KPI label="Monthly FFB" value={monthFFB.toLocaleString()} unit="t/month" color={C.green}/>
-                    <KPI label="EFB at Discharge" value={efbTPH} unit="TPH wet" color={C.teal}/>
-                    
-                  </div>
-                  <Divider/>
                   <SectionHdr icon="📡" title="D — Captured % of Mill Processing Capacity Used" color={C.teal}/>
                   <div style={g3}>
                     <BluField label="EFB %" value={s0.efbCapturePct}
