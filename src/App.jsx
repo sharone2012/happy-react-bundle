@@ -2582,14 +2582,14 @@ export default function CFI() {
                   <div style={{display:"flex", gap:8, flexWrap:"wrap", marginBottom:4}}>
                     {SOILS.map(so=>(
                       <div key={so.id} onClick={()=>upS0("soil",so.id)}
-                        style={{background:s0.soil===so.id?C.teal+"20":C.navyDk,
-                          border:`1px solid ${s0.soil===so.id?C.teal+"77":"rgba(255,255,255,0.07)"}`,
-                          borderBottom:s0.soil===so.id?`2px solid ${C.teal}`:"2px solid transparent",
+                        style={{background:s0.soil===so.id?C.amber:C.navyDk,
+                          border:`1px solid ${s0.soil===so.id?C.amber:"rgba(255,255,255,0.07)"}`,
+                          borderBottom:s0.soil===so.id?`2px solid ${C.amber}`:"2px solid transparent",
                           borderRadius:8, padding:"9px 13px", cursor:"pointer",
                           flex:"1 1 auto", minWidth:120, transition:"all 0.15s"}}>
-                        <div style={{color:s0.soil===so.id?C.teal:C.white, fontWeight:700, fontSize:12}}>{so.name}</div>
-                        <div style={{color:C.grey, fontSize:10, marginTop:3}}>{so.pct} · pH {so.ph} · CEC {so.cec}</div>
-                        <div style={{color:C.grey, fontSize:9, marginTop:2}}>{so.desc}</div>
+                        <div style={{color:s0.soil===so.id?"#000":C.white, fontWeight:700, fontSize:12}}>{so.name}</div>
+                        <div style={{color:s0.soil===so.id?"#000":C.grey, fontSize:10, marginTop:3}}>{so.pct} · pH {so.ph} · CEC {so.cec}</div>
+                        <div style={{color:s0.soil===so.id?"#000":C.grey, fontSize:9, marginTop:2}}>{so.desc}</div>
                       </div>
                     ))}
                   </div>
