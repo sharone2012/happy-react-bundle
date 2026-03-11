@@ -1343,42 +1343,6 @@ export default function CFI() {
   const [visEmail, setVisEmail]         = useState("");
   const [visOrg,   setVisOrg]           = useState("");
   const [visSubmitted, setVisSubmitted] = useState(false);
-
-  const siteRegistered = !!(s0.plantName && s0.millName && s0.contactEmail);
-  const FREE_TABS = 3;
-  const FREE_SEARCHES = 5;
-
-  const handleTabClick = (i) => {
-    if (siteRegistered) { setStage(i); setTabsSeen(p => new Set([...p, i])); return; }
-    const newSeen = new Set([...tabsSeen, i]);
-    if (newSeen.size > FREE_TABS) {
-      setGateReason("tabs");
-      setShowGate(true);
-      return;
-    }
-    setTabsSeen(newSeen);
-    setStage(i);
-  };
-
-  const handleSearch = (cb) => {
-    if (siteRegistered) { cb(); return; }
-    if (searchesUsed >= FREE_SEARCHES) {
-      setGateReason("searches");
-      setShowGate(true);
-      return;
-    }
-    setSearchesUsed(p => p+1);
-    cb();
-  };
-
-  const submitGate = () => {
-    if (!visName || !visEmail) return;
-    upS0("contactName", visName);
-    upS0("contactEmail", visEmail);
-    if (visOrg) upS0("plantName", visOrg);
-    setVisSubmitted(true);
-    setTimeout(() => { setShowGate(false); setVisSubmitted(false); }, 1800);
-  };
   const [uploadedConfigs, setUploadedConfigs] = useState([]);
 
   // ── S0 STATE ──
@@ -1413,6 +1377,33 @@ export default function CFI() {
   });
 
   const upS0 = (k,v) => setS0(p=>({...p,[k]:v}));
+
+  // ── VISITOR GATE LOGIC (needs s0 + upS0) ──────────────────────────────────
+  const siteRegistered = !!(s0.plantName && s0.millName && s0.contactEmail);
+  const FREE_TABS = 3;
+  const FREE_SEARCHES = 5;
+
+  const handleTabClick = (i) => {
+    if (siteRegistered) { setStage(i); setTabsSeen(p => new Set([...p, i])); return; }
+    const newSeen = new Set([...tabsSeen, i]);
+    if (newSeen.size > FREE_TABS) { setGateReason("tabs"); setShowGate(true); return; }
+    setTabsSeen(newSeen); setStage(i);
+  };
+
+  const handleSearch = (cb) => {
+    if (siteRegistered) { cb(); return; }
+    if (searchesUsed >= FREE_SEARCHES) { setGateReason("searches"); setShowGate(true); return; }
+    setSearchesUsed(p => p+1); cb();
+  };
+
+  const submitGate = () => {
+    if (!visName || !visEmail) return;
+    upS0("contactName", visName);
+    upS0("contactEmail", visEmail);
+    if (visOrg) upS0("plantName", visOrg);
+    setVisSubmitted(true);
+    setTimeout(() => { setShowGate(false); setVisSubmitted(false); }, 1800);
+  };
 
   // ── S0 DERIVED ──
   const effFFB    = useMemo(()=> +(s0.ffbCapacity * s0.utilisation/100).toFixed(2), [s0.ffbCapacity, s0.utilisation]);
