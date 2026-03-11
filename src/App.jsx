@@ -2380,7 +2380,7 @@ export default function CFI() {
                         <div style={{display:"flex", alignItems:"center", marginLeft:70, width:88, justifyContent:"center", gap:6}}>
                           <div style={{color:C.grey, fontSize:10, textAlign:"center"}}>%</div>
                         </div>
-                        <div style={{color:C.grey, fontSize:10, marginLeft:70, width:88, textAlign:"right"}}>Default 85%</div>
+                        
                       </div>
 
                       {/* Hours / Day */}
