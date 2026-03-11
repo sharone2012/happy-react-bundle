@@ -2378,7 +2378,7 @@ export default function CFI() {
                             onBlur={e=>upS0("utilisation",+e.target.value)}/>
                         </div>
                         <div style={{display:"flex", alignItems:"center", marginLeft:70, width:88, justifyContent:"center", gap:6}}>
-                          <div style={{color:C.grey, fontSize:10, textAlign:"center"}}>%</div>
+                          <div style={{color:C.grey, fontSize:10, textAlign:"center"}}>% Default</div>
                         </div>
                         
                       </div>
