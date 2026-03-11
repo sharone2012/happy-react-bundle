@@ -2563,7 +2563,7 @@ export default function CFI() {
                   </div>
                   <div style={{...g2, marginTop:12}}>
                     <CalcField label={<>Fresh Weight<br/>Residues</>} unit="tons/month" value={s1_blendWet.toLocaleString()}/>
-                    <CalcField label="Monthly Substrate DM" unit="t DM/month" value={s1_blendDM.toLocaleString()}/>
+                    <CalcField label={<>Monthly Substrate<br/>DM</>} unit="t DM/month" value={s1_blendDM.toLocaleString()}/>
                   </div>
                 </Card>
 
