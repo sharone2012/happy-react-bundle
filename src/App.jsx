@@ -2498,6 +2498,7 @@ export default function CFI() {
                       <div style={{color:C.grey, fontSize:9, textAlign:"center"}}>calculated</div>
                     </div>
                   </div>
+                  </div>
                   {/* POME auto-fill display */}
                   <div style={{background:"#0A1624", border:`1px solid ${pomeActive?"#4A9EDB55":"rgba(255,255,255,0.06)"}`,
                     borderRadius:8, padding:"11px 14px", marginBottom:10}}>
