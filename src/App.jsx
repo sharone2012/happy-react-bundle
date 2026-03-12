@@ -2349,15 +2349,11 @@ export default function CFI() {
                       onBlur={(e) => upS0("utilisation", +e.target.value)} />
                     </div>
                   </div>
-                  {/* Total EFB - below FFB and Hours fields */}
-                  <div style={{ display: "flex", alignItems: "center", gap: 0, marginTop: 12, width: 320 }}>
-                    <div style={{ background: "#0D3B3B", border: `1px solid ${C.teal}55`, borderRight: "none", borderRadius: "6px 0 0 6px", padding: "10px 10px", display: "flex", justifyContent: "center", alignItems: "center", flex: "1 1 0" }}>
-                      <div style={{ color: C.amber, fontSize: 11, fontWeight: 800, lineHeight: 1.4, textTransform: "uppercase", textAlign: "left" }}>EFB MONTHLY<br/>PRODUCTION</div>
-                    </div>
-                    <div style={{ background: "#0D3B3B", border: `1px solid ${C.teal}55`, borderLeft: "none", borderRadius: "0 6px 6px 0", padding: "10px 14px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-                      <span style={{ color: C.amber, fontSize: 18, fontWeight: 700 }}>{efbMonthWet.toLocaleString()}</span>
-                      <div style={{ color: C.amber, fontSize: 11, fontWeight: 800, textTransform: "uppercase", opacity: 0.85 }}>FRESH WEIGHT</div>
-                    </div>
+                  {/* Total EFB - single unified field */}
+                  <div style={{ background: "#0D3B3B", border: `1px solid ${C.teal}55`, borderRadius: 6, padding: "10px 14px", marginTop: 12, width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                    <div style={{ color: C.amber, fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.04em" }}>EFB MONTHLY PRODUCTION</div>
+                    <div style={{ color: C.amber, fontSize: 11, fontWeight: 700, marginTop: 4 }}>{efbMonthWet.toLocaleString()}</div>
+                    <div style={{ color: C.amber, fontSize: 11, fontWeight: 800, textTransform: "uppercase", opacity: 0.85, marginTop: 2 }}>FRESH WEIGHT</div>
                   </div>
                 </Card>
             </div>
