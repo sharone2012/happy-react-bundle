@@ -3261,7 +3261,7 @@ export default function CFI() {
 
                 {/* ADDITIONAL ORGANISMS */}
                 <div style={S.card}>
-                  <SectionHdr icon="🔥" title="THERMOPHILIC SPECIALISTS (Wave 1 — >50°C)" color={C.red}/>
+                  <SectionHdr title="THERMOPHILIC SPECIALISTS (Wave 1 — >50°C)" color={C.red}/>
                   {[
                     {k:"thermomyces",      cat:"Thermo Fungi",  name:"Thermomyces lanuginosus",    fn:"Thermophilic cellulase/xylanase producer",       cost:"$25/kg",temp:"50–60°C",col:C.red,   bsf:"✅"},
                     {k:"myceliophthora",   cat:"Thermo Fungi",  name:"Myceliophthora thermophila",  fn:"C1 cellulase system, industrial enzyme source",  cost:"$30/kg", temp:"45–55°C",col:C.red,   bsf:"✅"},
