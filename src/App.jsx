@@ -267,10 +267,7 @@ const ResidueCard = ({label, active, locked, onClick, sublabel, highlightColor})
     <div style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
       <span style={{color:active?hc:C.grey, fontWeight:800, fontSize:12}}>{label}</span>
       {/* Switch toggle */}
-      <div style={{display:"flex", alignItems:"center", gap:6, flexShrink:0}}>
-        <span style={{fontSize:9, fontWeight:700, color:active?hc:C.grey+"99", textTransform:"uppercase", letterSpacing:"0.05em"}}>
-          {active?"ON":"OFF"}
-        </span>
+      <div style={{display:"flex", alignItems:"center", flexShrink:0}}>
         <div style={{width:32, height:18, borderRadius:9, padding:2,
           background:active?hc:C.grey+"44",
           transition:"background 0.2s", display:"flex", alignItems:"center"}}>
