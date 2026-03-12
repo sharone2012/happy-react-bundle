@@ -2329,10 +2329,10 @@ export default function CFI() {
                   <div style={{ display: "flex", alignItems: "flex-start", gap: 24 }}>
                     {/* FFB */}
                     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                      <div style={{ color: C.teal, fontSize: 11, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase" }}>FFB</div>
-                      <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6,
-                        color: C.white, padding: "10px 0", fontSize: 18, fontWeight: 700,
-                        width: 80, outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                      <div style={{ color: C.teal, fontSize: 11, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase" }}>FFB T/H
+
+                      </div>
+                      <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "10px 0", fontSize: 18, fontWeight: 700, width: 80, outline: "none", boxSizing: "border-box", textAlign: "center" }}
                       value={s0.ffbCapacity}
                       onChange={(e) => e.target.value}
                       onBlur={(e) => upS0("ffbCapacity", +e.target.value)} />
@@ -2341,10 +2341,10 @@ export default function CFI() {
 
                     {/* Mill Hours */}
                     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                      <div style={{ color: C.teal, fontSize: 11, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase" }}>MILL HOURS</div>
-                      <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6,
-                        color: C.white, padding: "10px 0", fontSize: 18, fontWeight: 700,
-                        width: 80, outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                      <div style={{ color: C.teal, fontSize: 11, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase" }}>HOURS / DAY
+
+                      </div>
+                      <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "10px 0", fontSize: 18, fontWeight: 700, width: 80, outline: "none", boxSizing: "border-box", textAlign: "center" }}
                       value={s0.utilisation}
                       onChange={(e) => e.target.value}
                       onBlur={(e) => upS0("utilisation", +e.target.value)} />
@@ -2353,7 +2353,9 @@ export default function CFI() {
 
                     {/* Total EFB */}
                     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                      <div style={{ color: C.teal, fontSize: 11, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase" }}>Total EFB Total</div>
+                      <div style={{ color: C.teal, fontSize: 11, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase" }}>EFB / MONTH 
+
+                      </div>
                       <div style={{ background: C.teal, borderRadius: 6, padding: "10px 0", width: 80, textAlign: "center" }}>
                         <span style={{ color: C.white, fontSize: 18, fontWeight: 700 }}>{efbMonthWet.toLocaleString()}</span>
                       </div>
@@ -2367,9 +2369,7 @@ export default function CFI() {
             <Card style={{ marginBottom: 16 }}>
               <SectionHdr title="D — Captured % of Mill Processing Capacity Used" color={C.teal} />
               <div style={{ ...g3, justifyItems: "center", textAlign: "center" }}>
-                <BluField label="EFB %" value={s0.efbCapturePct}
-                  onChange={(v) => upS0("efbCapturePct", Math.min(100, Math.max(0, +v)))}
-                  note={"= " + (+(efbMonthWet * (s0.efbCapturePct / 100)).toFixed(0)).toLocaleString() + " t FW/mo"} />
+                <BluField label="EFB %" value={s0.efbCapturePct} onChange={(v) => upS0("efbCapturePct", Math.min(100, Math.max(0, +v)))} note={"= " + (+(efbMonthWet * (s0.efbCapturePct / 100)).toFixed(0)).toLocaleString() + " t FW/mo"} />
                 <BluField label="OPDC %" value={s0.opdcCapturePct}
                   onChange={(v) => upS0("opdcCapturePct", Math.min(100, Math.max(0, +v)))} />
                 <BluField label="POME %" value={s0.pomeCapturePct}
