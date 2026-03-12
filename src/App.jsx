@@ -3546,7 +3546,7 @@ export default function CFI() {
 
                 {/* Bay A */}
                 <div style={{...S.card, border:`1px solid ${C.green}44`}}>
-                  <SectionHdr icon="🟢" title={`BAY A — PROTEIN-OPTIMISED (Day ${bayADays})`} color={C.green}/>
+                  <SectionHdr title={`BAY A — PROTEIN-OPTIMISED (Day ${bayADays})`} color={C.green}/>
                   <div style={S.row}>
                     <div style={S.col}>
                       <Lbl t="Bay A grow days" unit="6–10 (protein peak)"/>
