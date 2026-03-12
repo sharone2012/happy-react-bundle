@@ -2326,9 +2326,9 @@ export default function CFI() {
                 {/* ── B: MILL CAPACITY ── */}
                 <Card style={{ flex: 1 }}>
                   <SectionHdr title={"B — ENTER PROCESSING CAPACITY \n"} color={C.teal} />
-                  <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                    {/* FFB */}
-                    <div style={{ display: "flex", alignItems: "center", gap: 6, flex: "1 1 0" }}>
+                  {/* FFB + Hours row */}
+                  <div style={{ display: "flex", alignItems: "center", gap: 0 }}>
+                    <div style={{ flex: "1 1 0", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "8px 0" }}>
                       <div style={{ color: C.teal, fontSize: 12, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", textAlign: "center", lineHeight: 1.2 }}>
                         <div>FFB</div><div>T/H</div>
                       </div>
@@ -2337,9 +2337,7 @@ export default function CFI() {
                       onChange={(e) => e.target.value}
                       onBlur={(e) => upS0("ffbCapacity", +e.target.value)} />
                     </div>
-
-                    {/* Mill Hours */}
-                    <div style={{ display: "flex", alignItems: "center", gap: 6, flex: "1 1 0" }}>
+                    <div style={{ flex: "1 1 0", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "8px 0" }}>
                       <div style={{ color: C.teal, fontSize: 12, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", textAlign: "center", lineHeight: 1.2 }}>
                         <div>HOURS</div><div>/ DAY</div>
                       </div>
@@ -2349,12 +2347,12 @@ export default function CFI() {
                       onBlur={(e) => upS0("utilisation", +e.target.value)} />
                     </div>
                   </div>
-                  {/* C: EFB Monthly Produced - matches width of row above */}
-                  <div style={{ display: "flex", alignItems: "stretch", gap: 0, marginTop: 12 }}>
-                    <div style={{ background: "#0D3B3B", border: `1px solid ${C.teal}55`, borderRight: "none", borderRadius: "6px 0 0 6px", padding: "10px 12px", display: "flex", justifyContent: "flex-start", alignItems: "center", flex: "1 1 0" }}>
-                      <div style={{ color: C.amber, fontSize: 11, fontWeight: 800, lineHeight: 1.4, textTransform: "uppercase", textAlign: "left" }}>EFB MONTHLY<br />PRODUCTION</div>
+                  {/* EFB Monthly - aligned to same 50/50 split */}
+                  <div style={{ display: "flex", alignItems: "stretch", gap: 0, marginTop: 8 }}>
+                    <div style={{ flex: "1 1 0", background: "#0D3B3B", border: `1px solid ${C.teal}55`, borderRight: "none", borderRadius: "6px 0 0 6px", padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <div style={{ color: C.amber, fontSize: 11, fontWeight: 800, lineHeight: 1.4, textTransform: "uppercase", textAlign: "center" }}>EFB MONTHLY<br />PRODUCTION</div>
                     </div>
-                    <div style={{ background: "#0D3B3B", border: `1px solid ${C.teal}55`, borderLeft: "none", borderRadius: "0 6px 6px 0", padding: "10px 14px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", flex: "1 1 0" }}>
+                    <div style={{ flex: "1 1 0", background: "#0D3B3B", border: `1px solid ${C.teal}55`, borderLeft: "none", borderRadius: "0 6px 6px 0", padding: "10px 14px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
                       <span style={{ color: C.amber, fontSize: 18, fontWeight: 700 }}>{efbMonthWet.toLocaleString()}</span>
                       <div style={{ color: C.amber, fontSize: 9, fontWeight: 800, textTransform: "uppercase", opacity: 0.85 }}>FRESH WEIGHT</div>
                     </div>
