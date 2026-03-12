@@ -255,7 +255,7 @@ const PillToggle = ({options, value, onChange, color=C.teal}) => (
   </div>
 );
 
-const ResidueCard = ({label, active, locked, onClick, highlightColor}) => {
+const ResidueCard = ({label, active, locked, onClick, highlightColor, fontSize:fs}) => {
   return (
   <div onClick={locked?undefined:onClick}
     style={{background:active?"#1a3a4a":"#1a2a35",
@@ -264,7 +264,7 @@ const ResidueCard = ({label, active, locked, onClick, highlightColor}) => {
       display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:8,
       border:active?`1px solid ${C.teal}55`:"1px solid rgba(255,255,255,0.08)"}}>
     {/* Label text */}
-    <div style={{color:active?C.teal:"#7799aa", fontWeight:800, fontSize:9.8, textTransform:"uppercase",
+    <div style={{color:active?C.teal:"#7799aa", fontWeight:800, fontSize:fs||9.8, textTransform:"uppercase",
       textAlign:"left", lineHeight:1.3, letterSpacing:"0.04em", whiteSpace:"pre-line", flex:1}}>{label}</div>
     {/* Circle indicator */}
     <div style={{width:18, height:18, borderRadius:"50%", flexShrink:0, marginTop:1,
@@ -2445,7 +2445,7 @@ export default function CFI() {
                   </div>
                   <div style={{...g3, marginTop:12}}>
                     <ResidueCard label={"PALM\nMESOCARP\nFIBER"} active={s0.pmfEnabled} onClick={()=>upS0("pmfEnabled",!s0.pmfEnabled)}/>
-                    <ResidueCard label={"POME LIQUID (Additional Process)"} active={s0.pomeLiquidEnabled} onClick={()=>upS0("pomeLiquidEnabled",!s0.pomeLiquidEnabled)}/>
+                    <ResidueCard label={"POME LIQUID\n(Additional Process)"} fontSize={8.3} active={s0.pomeLiquidEnabled} onClick={()=>upS0("pomeLiquidEnabled",!s0.pomeLiquidEnabled)}/>
                     <ResidueCard label={"PALM\nKERNAL\nEXPELLER"} active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)}/>
                   </div>
                   <Divider/>
