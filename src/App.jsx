@@ -3288,7 +3288,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="🍄" title="LIGNINOLYTIC FUNGI (Wave 2 — Mesophilic)" color={C.purple}/>
+                  <SectionHdr title="LIGNINOLYTIC FUNGI (Wave 2 — Mesophilic)" color={C.purple}/>
                   {[
                     {k:"phanerochaete_sp",  cat:"White-rot",  name:"Phanerochaete sp. ICBB 9182",     fn:"Primary lignin destroyer — LiP, MnP, Laccase trio",     cost:"$8/L",  col:C.purple, bsf:"✅"},
                     {k:"phanerochaete_chry",cat:"White-rot",  name:"Phanerochaete chrysosporium",       fn:"Strongest lignin degrader — wild-type reference strain", cost:"$8/L",  col:C.purple, bsf:"✅"},
