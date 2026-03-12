@@ -2326,6 +2326,7 @@ export default function CFI() {
                 {/* ── B: MILL CAPACITY ── */}
                 <Card style={{ flex: 1 }}>
                   <SectionHdr title={"B — ENTER PROCESSING CAPACITY \n"} color={C.teal} />
+                  <div style={{ maxWidth: 280, width: "100%" }}>
                   {/* FFB + Hours row */}
                   <div style={{ display: "flex", alignItems: "center", gap: 0 }}>
                     <div style={{ flex: "1 1 0", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "8px 0" }}>
@@ -2355,6 +2356,7 @@ export default function CFI() {
                     <div style={{ flex: "1 1 0", background: "#0D3B3B", border: `1px solid ${C.teal}55`, borderLeft: "none", borderRadius: "0 6px 6px 0", padding: "10px 14px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
                       <span style={{ color: C.amber, fontSize: 18, fontWeight: 700 }}>{efbMonthWet.toLocaleString()}</span>
                       <div style={{ color: C.amber, fontSize: 9, fontWeight: 800, textTransform: "uppercase", opacity: 0.85 }}>FRESH WEIGHT</div>
+                    </div>
                     </div>
                   </div>
                 </Card>
