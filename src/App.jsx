@@ -2366,8 +2366,8 @@ export default function CFI() {
                     </div>
                   {/* Formula breakdown */}
                   <div style={{ textAlign: "center", color: C.teal, fontSize: 9, opacity: 0.6, marginTop: 4 }}>
-                    {efbTPH} t/hr × {s0.hrsDay} hrs/day × {s0.daysMonth} days = {efbMonthWet.toLocaleString()} t
-                  </div>
+                     {s0.ffbCapacity} TPH × 0.225 × 24 hrs/day × {s0.daysMonth} days = {(s0.ffbCapacity * 0.225 * 24 * s0.daysMonth).toLocaleString()} t
+                   </div>
                   </div>
                   </div>
                 </Card>
