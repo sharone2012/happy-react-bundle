@@ -2297,12 +2297,8 @@ export default function CFI() {
 
                 {/* ── A: SITE IDENTITY ── */}
                 <Card style={{ flex: 1 }}>
-                  <div style={{ background: "#0D1F33", borderLeft: `3px solid ${C.teal}`,
-                    borderRadius: 8, padding: "11px 14px", display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-                    <div style={{ color: C.teal, fontWeight: 800, fontSize: 13, letterSpacing: "0.07em", textTransform: "uppercase" }}>A — ENTER DETAILS BELOW
-
-                      </div>
-                  </div>
+                  <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
+                  <SectionHdr title="A — ENTER DETAILS BELOW" color={C.teal} />
                   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                     <input style={{ background: C.inputBg, border: `1px solid ${C.teal}55`, borderRadius: 6,
                       color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
@@ -2320,6 +2316,7 @@ export default function CFI() {
                       color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
                     value={s0.province} onChange={(e) => upS0("province", e.target.value)}
                     placeholder="Enter Province" />
+                  </div>
                   </div>
                 </Card>
 
@@ -2425,7 +2422,6 @@ export default function CFI() {
 
                 {/* ── D: DAILY DRY MATTER AVAILABLE AT MILL ── */}
                 <Card>
-                  <div style={{ background: "#000000", borderRadius: 10, padding: 16, marginBottom: 0, border: "1px solid rgba(255,255,255,0.1)" }}>
                   <SectionHdr title="D — Daily Dry Matter Available at Mill" color={C.teal} />
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 8 }}>
                     {[
@@ -2448,7 +2444,6 @@ export default function CFI() {
                         
                       </div>
                         )}
-                  </div>
                   </div>
                 </Card>
 
