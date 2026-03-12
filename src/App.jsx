@@ -2685,6 +2685,7 @@ export default function CFI() {
 
               {/* ── G: PKE ── */}
               <Card>
+                <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
                 <SectionHdr title="G — PKE Palm Kernel Expeller (Protein Booster — Optional)" color={C.amber} />
                 <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: s0.pkeEnabled ? 16 : 0 }}>
                   <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
@@ -2763,6 +2764,7 @@ export default function CFI() {
                     </div>
                   </div>
                   }
+                </div>
               </Card>
 
               {/* ── H: COMBINED SUMMARY ── */}
