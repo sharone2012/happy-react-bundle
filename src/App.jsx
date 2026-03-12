@@ -4527,7 +4527,7 @@ export default function CFI() {
 
             {/* Revenue Summary */}
             <div style={{...S.card, marginTop:16}}>
-              <SectionHdr icon="💵" title="S6 REVENUE SUMMARY" color={C.green}/>
+              <SectionHdr title="S6 REVENUE SUMMARY" color={C.green}/>
               <div style={{display:"grid", gridTemplateColumns:"repeat(6,1fr)", gap:10}}>
                 <KPI label="Insect Meal" value={`$${certMealRev.toLocaleString()}`} unit="/month" color={C.teal}/>
                 <KPI label="BSF Oil" value={`$${certOilRev.toLocaleString()}`} unit="/month" color={C.amber}/>
