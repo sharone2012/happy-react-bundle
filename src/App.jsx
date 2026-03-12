@@ -2351,15 +2351,16 @@ export default function CFI() {
                       <div style={{ color: C.grey, fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>HOURS/DAY</div>
                     </div>
 
-                    {/* Total EFB */}
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                      <div style={{ color: C.teal, fontSize: 11, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase" }}>EFB / MONTH 
-
-                      </div>
-                      <div style={{ background: C.teal, borderRadius: 6, padding: "10px 0", width: 80, textAlign: "center" }}>
-                        <span style={{ color: C.white, fontSize: 18, fontWeight: 700 }}>{efbMonthWet.toLocaleString()}</span>
-                      </div>
-                      <div style={{ color: C.grey, fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>FRESH WEIGHT</div>
+                  </div>
+                  {/* Total EFB - below FFB and Hours fields */}
+                  <div style={{ display: "flex", alignItems: "stretch", gap: 0, marginTop: 12 }}>
+                    <div style={{ background: C.teal, borderRadius: "6px 0 0 6px", padding: "10px 10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                      <div style={{ color: C.white, fontSize: 11, fontWeight: 800, lineHeight: 1.2, textTransform: "uppercase" }}>EFB Produced</div>
+                      <div style={{ color: C.white, fontSize: 11, fontWeight: 800, lineHeight: 1.2, textTransform: "uppercase" }}>Monthly</div>
+                    </div>
+                    <div style={{ background: C.teal, borderRadius: "0 6px 6px 0", padding: "10px 14px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                      <span style={{ color: C.white, fontSize: 18, fontWeight: 700 }}>{efbMonthWet.toLocaleString()}</span>
+                      <div style={{ color: C.white, fontSize: 9, fontWeight: 600, textTransform: "uppercase", opacity: 0.85 }}>Fresh Weight</div>
                     </div>
                   </div>
                 </Card>
