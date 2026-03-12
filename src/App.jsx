@@ -3143,7 +3143,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="⚙️" title="PROCESS SEQUENCE + GATES" color={C.amber}/>
+                  <SectionHdr title="PROCESS SEQUENCE + GATES" color={C.amber}/>
                   {[
                     {n:1,step:"PKSA soak at pH 10–12",dur:"60–90 min mixing",gate:"pH sensor confirms"},
                     {n:2,step:"First turning",         dur:"8–12hr post-PKSA",gate:"🔒 HARD LOCK"},
