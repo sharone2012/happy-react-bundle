@@ -2374,7 +2374,7 @@ export default function CFI() {
                     onChange={(v) => upS0("pomeCapturePct", Math.min(100, Math.max(0, +v)))} />
               </div>
             </Card>
-            </div>
+
 
             {/* ── TWO-COLUMN ROW ── */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, alignItems: "start" }}>
