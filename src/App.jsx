@@ -3590,7 +3590,7 @@ export default function CFI() {
 
                 {/* Bay B */}
                 <div style={{...S.card, border:`1px solid ${C.amber}44`}}>
-                  <SectionHdr icon="🟡" title={`BAY B — BIOMASS-OPTIMISED (Day ${bayBDays})`} color={C.amber}/>
+                  <SectionHdr title={`BAY B — BIOMASS-OPTIMISED (Day ${bayBDays})`} color={C.amber}/>
                   <div style={S.row}>
                     <div style={S.col}>
                       <Lbl t="Bay B grow days" unit="10–18 (max yield)"/>
