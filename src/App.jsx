@@ -186,14 +186,13 @@ const Alert = ({msg, type="warn"}) => {
   return (
     <div style={{background:col+"18", border:`1px solid ${col}55`, borderRadius:6,
                  padding:"7px 12px", color:col, fontSize:12, marginTop:6}}>
-      {type==="warn"?"⚠ ":type==="ok"?"✅ ":"❌ "}{msg}
+      {msg}
     </div>
   );
 };
 
-const SectionHdr = ({icon, title, color=C.teal}) => (
+const SectionHdr = ({title, color=C.teal}) => (
   <div style={{...S.hdr, borderLeft:`3px solid ${color}`}}>
-    <span style={{fontSize:16}}>{icon}</span>
     <span style={{color, fontWeight:800, fontSize:13, letterSpacing:"0.05em"}}>{title}</span>
   </div>
 );
@@ -228,13 +227,11 @@ const Card = ({children, style={}}) => (
 
 const Warn = ({msg, type="warn"}) => {
   const col = type==="warn"?C.amber : type==="ok"?C.green : C.red;
-  const icon = type==="warn"?"⚠" : type==="ok"?"✓" : "✕";
   return (
     <div style={{background:col+"14", border:`1px solid ${col}44`,
       borderLeft:`3px solid ${col}`, borderRadius:6,
       padding:"8px 13px", color:col, fontSize:11,
       display:"flex", alignItems:"flex-start", gap:8, marginTop:8}}>
-      <span style={{fontWeight:800, fontSize:12, marginTop:1, flexShrink:0}}>{icon}</span>
       <span style={{lineHeight:1.5}}>{msg}</span>
     </div>
   );
@@ -500,7 +497,7 @@ function BlendOptimiser({ efbDMpd, opdcDMreq, pomeSludgeMaxPct, pomeSludgeNatTPD
 
   return (
     <div style={{ ...S.card, border: `1px solid ${C.purple}55`, gridColumn: "1/-1" }}>
-      <SectionHdr icon="🎯" title="I — BLEND OPTIMISER — REVERSE SOLVER" color={C.purple}/>
+      <SectionHdr title="I — BLEND OPTIMISER — REVERSE SOLVER" color={C.purple}/>
       <div style={{ fontSize: 11, color: C.grey, marginBottom: 12, lineHeight: 1.7 }}>
         Set a <strong style={{color:C.white}}>target C:N</strong> and/or <strong style={{color:C.white}}>target CP%</strong>.
         The solver calculates the POME inclusion % and PKE dose required.
@@ -896,13 +893,13 @@ const MOCK_SOLUTIONS = [
 ];
 
 const AGENT_STATUS = [
-  {id:"master_discovery_engine",   label:"Master Discovery",    icon:"🧭",schedule:"3d",last_run:"2026-03-09 06:00",next_run:"2026-03-12 06:00",status:"idle",   color:"#00C9B1"},
-  {id:"biology_synthetic_agent",   label:"Biology Synthetic",   icon:"🧬",schedule:"3d",last_run:"2026-03-09 06:12",next_run:"2026-03-12 06:12",status:"idle",   color:"#3DCB7A"},
-  {id:"bsf_performance_agent",     label:"BSF Performance",     icon:"🦗",schedule:"3d",last_run:"2026-03-09 06:24",next_run:"2026-03-12 06:24",status:"idle",   color:"#4A9EDB"},
-  {id:"soil_palm_agent",           label:"Soil & Palm",         icon:"🌿",schedule:"3d",last_run:"2026-03-09 06:36",next_run:"2026-03-12 06:36",status:"idle",   color:"#9B59B6"},
-  {id:"finishing_topping_agent",   label:"Finishing & Topping", icon:"⚗️", schedule:"3d",last_run:"2026-03-09 06:48",next_run:"2026-03-12 06:48",status:"idle",   color:"#F5A623"},
-  {id:"carbon_credits_agent",      label:"Carbon Credits",      icon:"🌍",schedule:"3d",last_run:"2026-03-09 07:00",next_run:"2026-03-12 07:00",status:"idle",   color:"#FFD080"},
-  {id:"math_optimization_agent",   label:"Math Optimisation",   icon:"📐",schedule:"3d",last_run:"2026-03-09 07:12",next_run:"2026-03-12 07:12",status:"idle",   color:"#E84040"},
+  {id:"master_discovery_engine",   label:"Master Discovery",    schedule:"3d",last_run:"2026-03-09 06:00",next_run:"2026-03-12 06:00",status:"idle",   color:"#00C9B1"},
+  {id:"biology_synthetic_agent",   label:"Biology Synthetic",   schedule:"3d",last_run:"2026-03-09 06:12",next_run:"2026-03-12 06:12",status:"idle",   color:"#3DCB7A"},
+  {id:"bsf_performance_agent",     label:"BSF Performance",     schedule:"3d",last_run:"2026-03-09 06:24",next_run:"2026-03-12 06:24",status:"idle",   color:"#4A9EDB"},
+  {id:"soil_palm_agent",           label:"Soil & Palm",         schedule:"3d",last_run:"2026-03-09 06:36",next_run:"2026-03-12 06:36",status:"idle",   color:"#9B59B6"},
+  {id:"finishing_topping_agent",   label:"Finishing & Topping", schedule:"3d",last_run:"2026-03-09 06:48",next_run:"2026-03-12 06:48",status:"idle",   color:"#F5A623"},
+  {id:"carbon_credits_agent",      label:"Carbon Credits",      schedule:"3d",last_run:"2026-03-09 07:00",next_run:"2026-03-12 07:00",status:"idle",   color:"#FFD080"},
+  {id:"math_optimization_agent",   label:"Math Optimisation",   schedule:"3d",last_run:"2026-03-09 07:12",next_run:"2026-03-12 07:12",status:"idle",   color:"#E84040"},
 ];
 
 const STEP_LABELS = {
@@ -997,7 +994,7 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
     mono:"'Courier New',monospace"
   };
 
-  const SubTab = ({id,label,icon}) => (
+  const SubTab = ({id,label}) => (
     <div onClick={()=>setOrchTab(id)}
       style={{padding:"7px 16px",cursor:"pointer",borderRadius:"6px 6px 0 0",
         background:orchTab===id?oc.navyLt:oc.navyDk,
@@ -1005,7 +1002,7 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
         fontSize:11,fontWeight:700,letterSpacing:"0.04em",
         borderBottom:orchTab===id?"2px solid "+oc.teal:"2px solid transparent",
         transition:"all 0.15s"}}>
-      {icon} {label}
+      {label}
     </div>
   );
 
@@ -1018,7 +1015,7 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
         display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8}}>
         <div>
           <div style={{color:oc.teal,fontWeight:900,fontSize:16,letterSpacing:"0.06em"}}>
-            🧭 CFI Orchestration Layer
+            CFI Orchestration Layer
           </div>
           <div style={{color:oc.grey,fontSize:10,marginTop:2}}>
             Data Lake · Agent Status · Config Upload · Supabase LIVE · v21.0
@@ -1038,9 +1035,9 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
 
       {/* Sub-tabs */}
       <div style={{display:"flex",gap:4,marginBottom:16,borderBottom:"1px solid "+oc.navyLt}}>
-        <SubTab id="lake" label="Data Lake" icon="🗄"/>
-        <SubTab id="agents" label="Agent Status" icon="🤖"/>
-        <SubTab id="upload" label="Upload Config" icon="📤"/>
+        <SubTab id="lake" label="Data Lake"/>
+        <SubTab id="agents" label="Agent Status"/>
+        <SubTab id="upload" label="Upload Config"/>
       </div>
 
       {/* ── DATA LAKE TAB ── */}
@@ -1050,7 +1047,7 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
           {dbLoading && (
             <div style={{background:"#0d1f35",borderRadius:7,padding:"8px 13px",marginBottom:10,
               border:"1px solid #1e4060",fontSize:10,color:oc.teal,display:"flex",alignItems:"center",gap:8}}>
-              <span>⏳</span>{"Fetching live records from Supabase..."}
+              Fetching live records from Supabase...
             </div>
           )}
           {dbError && (
@@ -1202,7 +1199,6 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
               <div key={ag.id} style={{background:oc.navyMid,borderRadius:8,padding:"11px 14px",
                 border:"1px solid "+ag.color+"33",
                 display:"flex",alignItems:"center",gap:14,flexWrap:"wrap"}}>
-                <span style={{fontSize:18}}>{ag.icon}</span>
                 <div style={{flex:1,minWidth:120}}>
                   <div style={{color:ag.color,fontWeight:800,fontSize:12}}>{ag.label}</div>
                   <div style={{color:oc.grey,fontSize:9,marginTop:2,fontFamily:oc.mono}}>
@@ -2346,7 +2342,7 @@ export default function CFI() {
 
                 {/* ── B: MILL CAPACITY ── */}
                 <Card>
-                  <SectionHdr icon="⚙" title={"B — MILL'S HOURLY PROCESSING CAPACITY \n"} color={C.teal}/>
+                  <SectionHdr title="B — MILL'S HOURLY PROCESSING CAPACITY" color={C.teal}/>
                   <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>
                     <div style={{display:"flex", alignItems:"center", gap:24}}>
                       <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"12px 32px", alignItems:"center", alignSelf:"center"}}>
@@ -2397,7 +2393,7 @@ export default function CFI() {
                   </div>
 
                   <div style={{marginTop:16}}>
-                  <SectionHdr icon="📡" title="D — Captured % of Mill Processing Capacity Used" color={C.teal}/>
+                  <SectionHdr title="D — Captured % of Mill Processing Capacity Used" color={C.teal}/>
                   <div style={{...g3, justifyItems:"center", textAlign:"center"}}>
                     <BluField label="EFB %" value={s0.efbCapturePct}
                       onChange={v=>upS0("efbCapturePct",Math.min(100,Math.max(0,+v)))}
@@ -2411,7 +2407,7 @@ export default function CFI() {
                 </Card>
 
                 <Card style={{background:C.navyDk, border:"1px solid rgba(255,255,255,0.08)", borderRadius:8, padding:12, marginTop:12}}>
-                    <SectionHdr icon="🌿" title="E — Carbon Credits Preview" color={C.green}/>
+                    <SectionHdr title="E — Carbon Credits Preview" color={C.green}/>
                     <div style={{color:C.grey, fontSize:10, marginTop:-6, marginBottom:10}}>Full methodology in the CO₂ tab</div>
                     <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:8}}>
                       {[
@@ -2436,7 +2432,7 @@ export default function CFI() {
                 {/* ── C: RESIDUE SELECTION ── */}
                 <Card>
                   <div style={{background:"#000000", borderRadius:10, padding:16, marginBottom:12, border:"1px solid rgba(255,255,255,0.1)"}}>
-                  <SectionHdr icon="🌿" title="C — Choose Residues" color={C.teal}/>
+                  <SectionHdr title="C — Choose Residues" color={C.teal}/>
                   <div style={g3}>
                     <ResidueCard abbr="EFB" label={"EMPTY\nFRUIT BUNCHES"} active={s0.efbEnabled} onClick={()=>upS0("efbEnabled",!s0.efbEnabled)} highlightColor={C.amber}/>
                     <ResidueCard abbr="POS" label={"POME\nSLUDGE"} active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} highlightColor={C.amber}/>
@@ -2453,7 +2449,7 @@ export default function CFI() {
                 {/* ── D: DAILY DRY MATTER AVAILABLE AT MILL ── */}
                 <Card>
                   <div style={{background:"#000000", borderRadius:10, padding:16, marginBottom:0, border:"1px solid rgba(255,255,255,0.1)"}}>
-                  <SectionHdr icon="📊" title="D — Daily Dry Matter Available at Mill" color={C.teal}/>
+                  <SectionHdr title="D — Daily Dry Matter Available at Mill" color={C.teal}/>
                   <div style={{display:"grid", gridTemplateColumns:"repeat(6, 1fr)", gap:8}}>
                     {[
                       {l:"EFB", dm:efbDMpd, c:C.amber, active:true},
@@ -2590,7 +2586,7 @@ export default function CFI() {
 
                 {/* ── SOIL TYPE & AG MANAGEMENT ── */}
                 <Card>
-                  <SectionHdr icon="🌍" title="E — Soil Type &amp; Fertiliser Requirements" color={C.teal}/>
+                  <SectionHdr title="E — Soil Type &amp; Fertiliser Requirements" color={C.teal}/>
                   <div style={{display:"block", color:C.grey, fontSize:10, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.09em", marginBottom:8}}>Indonesian Soil Classification</div>
                   <div style={{display:"flex", gap:8, flexWrap:"wrap", marginBottom:4}}>
                     {SOILS.map(so=>(
@@ -2634,7 +2630,7 @@ export default function CFI() {
 
               {/* ── F: POME SLUDGE ── */}
               <Card>
-                <SectionHdr icon="💧" title="F — POME Sludge (Third Waste Stream)" color={C.blue}/>
+                <SectionHdr title="F — POME Sludge (Third Waste Stream)" color={C.blue}/>
                 <div style={{display:"flex", alignItems:"center", gap:16, marginBottom:16}}>
                   <div style={{display:"flex", alignItems:"center", gap:10}}>
                     <input type="checkbox" checked={pomeActive} readOnly
@@ -2711,7 +2707,7 @@ export default function CFI() {
 
               {/* ── G: PKE ── */}
               <Card>
-                <SectionHdr icon="🌾" title="G — PKE Palm Kernel Expeller (Protein Booster — Optional)" color={C.amber}/>
+                <SectionHdr title="G — PKE Palm Kernel Expeller (Protein Booster — Optional)" color={C.amber}/>
                 <div style={{display:"flex", alignItems:"center", gap:16, marginBottom:s0.pkeEnabled?16:0}}>
                   <label style={{display:"flex", alignItems:"center", gap:10, cursor:"pointer"}}>
                     <input type="checkbox" checked={s0.pkeEnabled}
@@ -2794,7 +2790,7 @@ export default function CFI() {
               {/* ── H: COMBINED SUMMARY ── */}
               {(pomeActive||s0.pkeEnabled) && (
                 <Card style={{border:`1px solid ${C.green}33`}}>
-                  <SectionHdr icon="📊" title="H — Combined Multi-Stream Daily NPK Summary" color={C.green}/>
+                  <SectionHdr title="H — Combined Multi-Stream Daily NPK Summary" color={C.green}/>
                   <div style={{overflowX:"auto"}}>
                     <table style={{width:"100%", borderCollapse:"collapse", fontSize:11}}>
                       <thead>
@@ -2870,7 +2866,7 @@ export default function CFI() {
 
             <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:16}}>
               <div style={S.card}>
-                <SectionHdr icon="⚗️" title="S1 — EFB PRE-PROCESSING (MECHANICAL)"/>
+                <SectionHdr title="S1 — EFB PRE-PROCESSING (MECHANICAL)"/>
                 <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8}}>
                   <CalcField label="EFB Nameplate Throughput" unit="TPH (wet)" value={efbTPH}/>
                   <CalcField label="EFB Daily (wet)" unit="t/day" value={efbTPD}/>
@@ -2880,7 +2876,7 @@ export default function CFI() {
                   <CalcField label="EFB Monthly DM" unit="t DM/month" value={s1_efbMonthDM.toLocaleString()}/>
                 </div>
                 <hr style={S.divider}/>
-                <SectionHdr icon="🔧" title="EQUIPMENT SIZING" color={C.amber}/>
+                <SectionHdr title="EQUIPMENT SIZING" color={C.amber}/>
                 <div style={{fontSize:12, color:C.greyLt, lineHeight:1.8}}>
                   <div>• <span style={{color:C.amber}}>Shredder:</span> {(efbTPH / 0.65).toFixed(1)} TPH nameplate (÷0.65 Asian derating)</div>
                   <div>• <span style={{color:C.amber}}>Hammer Mill:</span> {(efbTPH * 0.3 / 0.65).toFixed(1)} TPH (30% to 2mm fraction)</div>
@@ -2892,7 +2888,7 @@ export default function CFI() {
               </div>
 
               <div style={S.card}>
-                <SectionHdr icon="🔩" title="S1 — OPDC PRE-PROCESSING"/>
+                <SectionHdr title="S1 — OPDC PRE-PROCESSING"/>
                 <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8}}>
                   <CalcField label="Natural OPDC (wet, 15.2%)" unit="t/day" value={opdcNatTPD}/>
                   <CalcField label="Natural OPDC DM" unit="t DM/day" value={opdcNatDM}/>
@@ -2904,7 +2900,7 @@ export default function CFI() {
                 {opdcShortfall > 0 &&
                   <Alert msg={`Source ${(opdcShortfall * s0.daysMonth).toFixed(0)} t DM/month OPDC externally`}/>}
                 <hr style={S.divider}/>
-                <SectionHdr icon="⚠️" title="OPDC CONSTRAINTS" color={C.red}/>
+                <SectionHdr title="OPDC CONSTRAINTS" color={C.red}/>
                 <div style={{fontSize:12, color:C.greyLt, lineHeight:1.8}}>
                   <div>• <span style={{color:C.red}}>NEVER below 40% MC</span> — pore damage kills BSF</div>
                   <div>• Target 45–55% MC at press discharge</div>
@@ -2916,7 +2912,7 @@ export default function CFI() {
 
               {pomeActive && (
                 <div style={{...S.card, gridColumn:"1/-1", border:`1px solid ${C.blue}44`}}>
-                  <SectionHdr icon="💧" title="S1 — POME SLUDGE STREAM (ACTIVE)" color={C.blue}/>
+                  <SectionHdr title="S1 — POME SLUDGE STREAM (ACTIVE)" color={C.blue}/>
                   <div style={{display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:10, marginBottom:8}}>
                     <KPI label="Natural Yield" value={pomeSludgeNatTPD} unit="t/day fresh" color={C.blue}/>
                     <KPI label="MC at entry" value={`${pomeSludgeActMC}%`} unit={s0.pomeSludgeDewatered?"post-dewatering":"mill exit"} color={C.teal}/>
@@ -2936,7 +2932,7 @@ export default function CFI() {
               )}
 
               <div style={{...S.card, gridColumn:"1/-1"}}>
-                <SectionHdr icon="🔗" title="S1 OUTPUT → S2 CONNECTOR" color={C.green}/>
+                <SectionHdr title="S1 OUTPUT → S2 CONNECTOR" color={C.green}/>
                 <div style={{display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:10}}>
                   <KPI label="Blended FW (EFB+OPDC)" value={s1_blendWet.toLocaleString()} unit="t/month" color={C.green}/>
                   <KPI label="Blended DM" value={s1_blendDM.toLocaleString()} unit="t DM/month" color={C.green}/>
@@ -2979,7 +2975,7 @@ export default function CFI() {
 
                 {/* PKSA — DEFAULT */}
                 <div style={S.card}>
-                  <SectionHdr icon="⭐" title="PKSA — DEFAULT PRIMARY TREATMENT (ZERO COST)" color={C.amber}/>
+                  <SectionHdr title="PKSA — DEFAULT PRIMARY TREATMENT (ZERO COST)" color={C.amber}/>
                   <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
                     <input type="checkbox" checked={s2.pksa} onChange={e=>upS2("pksa",e.target.checked)} style={{accentColor:C.teal,width:16,height:16}}/>
                     <span style={{color:s2.pksa?C.teal:C.grey,fontWeight:800}}>Palm Kernel Shell Ash (PKSA)</span>
@@ -3001,7 +2997,7 @@ export default function CFI() {
 
                 {/* ALKALINE CHEMICALS */}
                 <div style={S.card}>
-                  <SectionHdr icon="🧪" title="ALKALINE CHEMICALS" color={C.blue}/>
+                  <SectionHdr title="ALKALINE CHEMICALS" color={C.blue}/>
                   {[
                     {k:"naoh",  name:"NaOH — Sodium Hydroxide",      rspo:"⚠ Needs Doc", cost:"$0.12/t",lig:66,col:C.red,    note:"Strongest delignifier (66%) but Na⁺ toxic to BSF. RED ALERT if active."},
                     {k:"koh",   name:"KOH — Potassium Hydroxide",     rspo:"⚠ Needs Doc", cost:"$0.18/t",lig:35,col:C.amber,  note:"Identical to NaOH but K⁺ enriches compost. pH >12. Better than NaOH for BSF substrate."},
@@ -3039,7 +3035,7 @@ export default function CFI() {
 
                 {/* ACID CHEMICALS */}
                 <div style={S.card}>
-                  <SectionHdr icon="⚗️" title="ACID / OXIDATIVE CHEMICALS" color={C.red}/>
+                  <SectionHdr title="ACID / OXIDATIVE CHEMICALS" color={C.red}/>
                   {[
                     {k:"h2so4",  name:"H₂SO₄ — Sulfuric Acid (dilute)", rspo:"⚠",cost:"$0.05/t",lig:17,col:C.red,   note:"Hemicellulose hydrolysis + cellulose decrystallisation. Requires full neutralisation before biology."},
                     {k:"hcl",    name:"HCl — Hydrochloric Acid",          rspo:"⚠",cost:"$0.07/t",lig:16,col:C.red,   note:"Similar to H₂SO₄. Cl⁻ residues may inhibit cellulase. Higher cost than H₂SO₄."},
@@ -3069,7 +3065,7 @@ export default function CFI() {
 
                 {/* AMENDMENTS + N-RETENTION */}
                 <div style={S.card}>
-                  <SectionHdr icon="🌿" title="AMENDMENTS, N-RETENTION, MINERALS" color={C.green}/>
+                  <SectionHdr title="AMENDMENTS, N-RETENTION, MINERALS" color={C.green}/>
                   {[
                     {k:"gypsum",      name:"Gypsum CaSO₄·2H₂O",         rspo:"✅",cost:"$0.04/t",col:C.green,  note:"N-RETENTION: SO₄²⁻ captures NH₄⁺ as ammonium sulfate. Reduces NH₃ loss 25–40%. Critical for OPDC."},
                     {k:"feso4",       name:"FeSO₄·7H₂O — Ferrous Sulfate",rspo:"✅",cost:"$0.03/t",col:C.amber, note:"Fe²⁺ forms Fe-ammonium-phosphate complexes. N-retention 30–40%. ⚠ INCOMPATIBLE with MnP enzyme."},
@@ -3103,7 +3099,7 @@ export default function CFI() {
 
                 {/* ENZYMES in S2 */}
                 <div style={S.card}>
-                  <SectionHdr icon="🧬" title="ENZYMES (BETTER IN S3 — ALERT IF SELECTED HERE)" color={C.purple}/>
+                  <SectionHdr title="ENZYMES (BETTER IN S3 — ALERT IF SELECTED HERE)" color={C.purple}/>
                   <Alert type="warn" msg="Enzymes denature above 55°C — apply ONLY after substrate cools below 45°C. If substrate is still in thermophilic phase, move these to S3 (biological phase)."/>
                   <div style={{height:8}}/>
                   {[
@@ -3134,7 +3130,7 @@ export default function CFI() {
               {/* RIGHT: Summary panel */}
               <div style={{display:"flex",flexDirection:"column",gap:10}}>
                 <div style={S.card}>
-                  <SectionHdr icon="📊" title="ACTIVE TREATMENT SUMMARY" color={C.teal}/>
+                  <SectionHdr title="ACTIVE TREATMENT SUMMARY" color={C.teal}/>
                   <CalcField label="Total lignin reduction" unit="%" value={`~${pksa_ligninRed}%`}/>
                   <CalcField label="Cost per tonne FW" unit="USD" value={`$${s2CostPerT.toFixed(2)}`}/>
                   <CalcField label="Monthly S2 cost" unit="USD" value={`$${s2MonthlyCost.toLocaleString()}`}/>
@@ -3147,7 +3143,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="⚙️" title="PROCESS SEQUENCE + GATES" color={C.amber}/>
+                  <SectionHdr title="PROCESS SEQUENCE + GATES" color={C.amber}/>
                   {[
                     {n:1,step:"PKSA soak at pH 10–12",dur:"60–90 min mixing",gate:"pH sensor confirms"},
                     {n:2,step:"First turning",         dur:"8–12hr post-PKSA",gate:"🔒 HARD LOCK"},
@@ -3168,7 +3164,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="💊" title="PKSA NUTRIENT VALUE" color={C.green}/>
+                  <SectionHdr title="PKSA NUTRIENT VALUE" color={C.green}/>
                   {[
                     {l:"K₂O",   v:"35–45% DM", note:"$0.633/kg K₂O equiv"},
                     {l:"CaO",   v:"8–12% DM",  note:"Soil liming value"},
@@ -3231,7 +3227,7 @@ export default function CFI() {
 
                 {/* DEFAULT ONE-SHOT PROTOCOL */}
                 <div style={S.card}>
-                  <SectionHdr icon="⭐" title="DEFAULT — ONE-SHOT INOCULATION PROTOCOL ($0.65/t FW)" color={C.teal}/>
+                  <SectionHdr title="DEFAULT — ONE-SHOT INOCULATION PROTOCOL ($0.65/t FW)" color={C.teal}/>
                   <Alert type="ok" msg="All 5 organisms inoculated simultaneously — ONE event after PKSA neutralisation (pH ≤8.0). Consortium uplift ×1.38 on BSF yield."/>
                   <div style={{height:8}}/>
                   {[
@@ -3265,7 +3261,7 @@ export default function CFI() {
 
                 {/* ADDITIONAL ORGANISMS */}
                 <div style={S.card}>
-                  <SectionHdr icon="🔥" title="THERMOPHILIC SPECIALISTS (Wave 1 — >50°C)" color={C.red}/>
+                  <SectionHdr title="THERMOPHILIC SPECIALISTS (Wave 1 — >50°C)" color={C.red}/>
                   {[
                     {k:"thermomyces",      cat:"Thermo Fungi",  name:"Thermomyces lanuginosus",    fn:"Thermophilic cellulase/xylanase producer",       cost:"$25/kg",temp:"50–60°C",col:C.red,   bsf:"✅"},
                     {k:"myceliophthora",   cat:"Thermo Fungi",  name:"Myceliophthora thermophila",  fn:"C1 cellulase system, industrial enzyme source",  cost:"$30/kg", temp:"45–55°C",col:C.red,   bsf:"✅"},
@@ -3292,7 +3288,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="🍄" title="LIGNINOLYTIC FUNGI (Wave 2 — Mesophilic)" color={C.purple}/>
+                  <SectionHdr title="LIGNINOLYTIC FUNGI (Wave 2 — Mesophilic)" color={C.purple}/>
                   {[
                     {k:"phanerochaete_sp",  cat:"White-rot",  name:"Phanerochaete sp. ICBB 9182",     fn:"Primary lignin destroyer — LiP, MnP, Laccase trio",     cost:"$8/L",  col:C.purple, bsf:"✅"},
                     {k:"phanerochaete_chry",cat:"White-rot",  name:"Phanerochaete chrysosporium",       fn:"Strongest lignin degrader — wild-type reference strain", cost:"$8/L",  col:C.purple, bsf:"✅"},
@@ -3320,7 +3316,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="🧫" title="BACTERIA — N-FIXERS, P-SOLUBILISERS, K-MOBILISERS" color={C.green}/>
+                  <SectionHdr title="BACTERIA — N-FIXERS, P-SOLUBILISERS, K-MOBILISERS" color={C.green}/>
                   {[
                     {k:"microbacterium", cat:"Bacteria",     name:"Microbacterium lactium ICBB 7125",   fn:"Primary cellulose decomposer → glucose",               cost:"$3/L",  col:C.green, wave:"W1"},
                     {k:"paenibacillus",  cat:"Bacteria",     name:"Paenibacillus macerans ICBB 8810",   fn:"Hemicellulase + nif genes (N-fixation)",               cost:"$3/L",  col:C.green, wave:"W2"},
@@ -3355,7 +3351,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="🧬" title="ENZYMES (Apply post-thermophilic — <45°C only)" color={C.purple}/>
+                  <SectionHdr title="ENZYMES (Apply post-thermophilic — <45°C only)" color={C.purple}/>
                   <Alert type="warn" msg="Never apply enzymes during thermophilic phase (>55°C). Irreversible denaturation. Apply as part of Wave 2 after substrate cools."/>
                   <div style={{height:8}}/>
                   {[
@@ -3405,7 +3401,7 @@ export default function CFI() {
               <div style={{display:"flex",flexDirection:"column",gap:10}}>
 
                 <div style={S.card}>
-                  <SectionHdr icon="🔬" title="GATE MEASUREMENTS — ENTER LAB READINGS (OPTIONAL)" color={C.blue}/>
+                  <SectionHdr title="GATE MEASUREMENTS — ENTER LAB READINGS (OPTIONAL)" color={C.blue}/>
                   <div style={{fontSize:10,color:C.grey,marginBottom:8}}>Pipeline-calculated values auto-populate. Enter actual lab measurements to override.</div>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:10}}>
                     <BluField label="C:N Measured" unit="ratio" value={s3.cn_measured} onChange={v=>upS3Gate("cn_measured",v)} note={`Pipeline calc: ${blendCN||"—"}`}/>
@@ -3432,7 +3428,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="🚦" title="BSF HANDOFF GATE — 6 CRITERIA" color={allPass?C.green:C.amber}/>
+                  <SectionHdr title="BSF HANDOFF GATE — 6 CRITERIA" color={allPass?C.green:C.amber}/>
                   {[
                     {label:"C:N Ratio",   pass:cnPass,  val:cnGate!=null?`${typeof cnGate==="number"?cnGate.toFixed(1):cnGate}:1 — target ≤35 ${s3.cn_measured?"[measured]":"[calc'd]"}`:"Not yet calculated", icon:"📊"},
                     {label:"Moisture",    pass:mcPass,  val:`${mcGate!=null?mcGate.toFixed(1):blendMC}% — target 55–75% ${s3.mc_measured?"[measured]":"[calc'd]"}`, icon:"💧"},
@@ -3461,7 +3457,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="📊" title="CONSORTIUM ANALYSIS" color={C.teal}/>
+                  <SectionHdr title="CONSORTIUM ANALYSIS" color={C.teal}/>
                   <CalcField label="S4 Yield Uplift" unit="× baseline" value={upliftFactor}/>
                   <CalcField label="Monthly bio cost" unit="USD" value={`$${s3_monthlyCost.toLocaleString()}`}/>
                   <CalcField label="Annual bio cost" unit="USD" value={`$${s3_annualCost.toLocaleString()}`}/>
@@ -3475,7 +3471,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="⏱️" title="WAVE TIMING GATES" color={C.amber}/>
+                  <SectionHdr title="WAVE TIMING GATES" color={C.amber}/>
                   {[
                     {wave:"Wave 1 Trigger",   trigger:"pH sensor ≤ 8.0",     who:"Lactobacillus · Sacch · Bacillus · Thermophiles",  col:C.amber},
                     {wave:"Wave 2 Trigger",   trigger:"Temperature < 50°C",  who:"Azotobacter · Trichoderma · P-solubilisers · N-fixers", col:C.blue},
@@ -3493,7 +3489,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="🔢" title="ACTIVE ORGANISMS" color={C.teal}/>
+                  <SectionHdr title="ACTIVE ORGANISMS" color={C.teal}/>
                   {Object.keys(s3orgs).filter(k=>!["customOrg","bt_icbb"].includes(k)&&s3orgs[k]===true).length===0 ? (
                     <div style={{color:C.grey,fontSize:11}}>No organisms selected</div>
                   ) : (
@@ -3550,7 +3546,7 @@ export default function CFI() {
 
                 {/* Bay A */}
                 <div style={{...S.card, border:`1px solid ${C.green}44`}}>
-                  <SectionHdr icon="🟢" title={`BAY A — PROTEIN-OPTIMISED (Day ${bayADays})`} color={C.green}/>
+                  <SectionHdr title={`BAY A — PROTEIN-OPTIMISED (Day ${bayADays})`} color={C.green}/>
                   <div style={S.row}>
                     <div style={S.col}>
                       <Lbl t="Bay A grow days" unit="6–10 (protein peak)"/>
@@ -3594,7 +3590,7 @@ export default function CFI() {
 
                 {/* Bay B */}
                 <div style={{...S.card, border:`1px solid ${C.amber}44`}}>
-                  <SectionHdr icon="🟡" title={`BAY B — BIOMASS-OPTIMISED (Day ${bayBDays})`} color={C.amber}/>
+                  <SectionHdr title={`BAY B — BIOMASS-OPTIMISED (Day ${bayBDays})`} color={C.amber}/>
                   <div style={S.row}>
                     <div style={S.col}>
                       <Lbl t="Bay B grow days" unit="10–18 (max yield)"/>
@@ -3632,7 +3628,7 @@ export default function CFI() {
 
                 {/* Combined output + mass balance */}
                 <div style={{...S.card, gridColumn:"1/-1"}}>
-                  <SectionHdr icon="⚖️" title="DUAL-TRACK COMBINED OUTPUT + MASS BALANCE" color={C.teal}/>
+                  <SectionHdr title="DUAL-TRACK COMBINED OUTPUT + MASS BALANCE" color={C.teal}/>
                   <div style={{display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:10, marginBottom:12}}>
                     <div style={{background:C.navyLt, borderRadius:6, padding:"10px 14px", borderTop:`3px solid ${C.teal}`}}>
                       <div style={{color:C.grey, fontSize:10}}>Weighted Protein</div>
@@ -3667,7 +3663,7 @@ export default function CFI() {
                   </div>
 
                   {/* S5 pathway selector */}
-                  <SectionHdr icon="🔀" title="S5 PATHWAY SELECTION" color={C.amber}/>
+                  <SectionHdr title="S5 PATHWAY SELECTION" color={C.amber}/>
                   <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:12}}>
                     {[
                       {id:"s5a", icon:"🌿", title:"S5A — EXTRACT LARVAE", sub:"Biofertiliser (frass only) + Live larvae → S6",
@@ -3715,7 +3711,7 @@ export default function CFI() {
               <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:16}}>
 
                 <div style={S.card}>
-                  <SectionHdr icon="🌾" title="PKM SUPPLEMENTATION — SUBSTRATE PROTEIN CORRECTION" color={C.amber}/>
+                  <SectionHdr title="PKM SUPPLEMENTATION — SUBSTRATE PROTEIN CORRECTION" color={C.amber}/>
                   <div style={{marginBottom:12}}>
                     <div style={{display:"flex", alignItems:"center", gap:10, marginBottom:8}}>
                       <span style={{color:C.grey, fontSize:12}}>PKM/PKE supplementation</span>
@@ -3780,7 +3776,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="📋" title="PKM SPECIFICATION & COST BASIS" color={C.teal}/>
+                  <SectionHdr title="PKM SPECIFICATION & COST BASIS" color={C.teal}/>
                   <div style={{fontSize:11, color:C.greyLt, lineHeight:2.0, marginBottom:12}}>
                     {[
                       ["PKM / PKE source","Palm Kernel Meal (local Sumatra/Java)"],
@@ -3799,7 +3795,7 @@ export default function CFI() {
                       </div>
                     ))}
                   </div>
-                  <SectionHdr icon="⚠️" title="RESEARCH-CONFIRMED SUBSTRATE THRESHOLDS" color={C.red}/>
+                  <SectionHdr title="RESEARCH-CONFIRMED SUBSTRATE THRESHOLDS" color={C.red}/>
                   <div style={{fontSize:10, color:C.greyLt, lineHeight:1.9}}>
                     {[
                       ["< 8% CP DM","CRITICAL FAILURE — BSF larvae do not survive; zero yield"],
@@ -3831,7 +3827,7 @@ export default function CFI() {
 
                 {/* Parameter delta table */}
                 <div style={S.card}>
-                  <SectionHdr icon="🔬" title="S3 → S4 SUBSTRATE TRANSFORMATION" color={C.teal}/>
+                  <SectionHdr title="S3 → S4 SUBSTRATE TRANSFORMATION" color={C.teal}/>
                   <div style={{marginBottom:8, fontSize:10, color:C.grey}}>
                     BSF larvae consume ~30% substrate OM · N/P concentrate as C reduces · lignin partially degraded by gut microbiome
                   </div>
@@ -3886,7 +3882,7 @@ export default function CFI() {
                 {/* Dual-bay body composition + S3→S4 progression chart */}
                 <div style={{display:"flex", flexDirection:"column", gap:14}}>
                   <div style={S.card}>
-                    <SectionHdr icon="🐛" title="BAY A vs BAY B — LARVAE BODY COMPOSITION" color={C.green}/>
+                    <SectionHdr title="BAY A vs BAY B — LARVAE BODY COMPOSITION" color={C.green}/>
                     <table style={{width:"100%", borderCollapse:"collapse", fontSize:11}}>
                       <thead>
                         <tr style={{background:C.navyLt}}>
@@ -3924,7 +3920,7 @@ export default function CFI() {
                   </div>
 
                   <div style={S.card}>
-                    <SectionHdr icon="📈" title="KEY NUTRIENT TRAJECTORY S0→S4" color={C.teal}/>
+                    <SectionHdr title="KEY NUTRIENT TRAJECTORY S0→S4" color={C.teal}/>
                     <table style={{width:"100%", borderCollapse:"collapse", fontSize:11}}>
                       <thead>
                         <tr style={{background:C.navyLt}}>
@@ -3986,7 +3982,7 @@ export default function CFI() {
 
               {/* Frass Lab Analysis */}
               <div style={S.card}>
-                <SectionHdr icon="🌱" title={`${s4.pathwayS5==="s5a"?"S5A":"S5B"} — FRASS LAB ANALYSIS`} color={C.green}/>
+                <SectionHdr title={`${s4.pathwayS5==="s5a"?"S5A":"S5B"} — FRASS LAB ANALYSIS`} color={C.green}/>
                 {[
                   {l:"Total N",           v: s4.pathwayS5==="s5a" ? `${s5a_N_DM}%` : `${s5b_N_DM}%`,  unit:"DM", color:C.green},
                   {l:"Total P (P₂O₅)",    v: s4.pathwayS5==="s5a" ? `${(s5a_P_DM*2.29).toFixed(2)}%` : `${(s5b_P_DM*2.29).toFixed(2)}%`, unit:"DM", color:C.green},
@@ -4045,7 +4041,7 @@ export default function CFI() {
               <div style={{display:"flex", flexDirection:"column", gap:16}}>
               {/* NPK Replacement + All-Soils Table */}
               <div style={S.card}>
-                <SectionHdr icon="💰" title="NPK REPLACEMENT VALUE — ALL SOIL TYPES" color={C.amber}/>
+                <SectionHdr title="NPK REPLACEMENT VALUE — ALL SOIL TYPES" color={C.amber}/>
 
                 {/* Certification tier selector for frass */}
                 <div style={{marginBottom:10}}>
@@ -4220,7 +4216,7 @@ export default function CFI() {
               {/* ── S6 DOWNSTREAM PRODUCTS PREVIEW (S5A only) ── */}
             {s4.pathwayS5==="s5a" && (
               <div style={{...S.card, border:`1px solid ${C.teal}44`, marginTop:0}}>
-                <SectionHdr icon="🏭" title="S6 DOWNSTREAM PRODUCTS — LARVAE PROCESSING PREVIEW" color={C.teal}/>
+                <SectionHdr title="S6 DOWNSTREAM PRODUCTS — LARVAE PROCESSING PREVIEW" color={C.teal}/>
                 <div style={{color:C.grey, fontSize:11, marginBottom:12}}>
                   Larvae extracted in S5A flow directly to S6 for drying, oil pressing, and chitin extraction.
                   Volumes and revenues below are based on current S4 rearing outputs.
@@ -4323,7 +4319,7 @@ export default function CFI() {
             {/* S5B — no larvae */}
             {s4.pathwayS5==="s5b" && (
               <div style={{...S.card, border:`1px solid ${C.amber}44`, marginTop:0}}>
-                <SectionHdr icon="🔴" title="S5B — TERMINATE IN-SUBSTRATE: NO INSECT PRODUCTS" color={C.amber}/>
+                <SectionHdr title="S5B — TERMINATE IN-SUBSTRATE: NO INSECT PRODUCTS" color={C.amber}/>
                 <div style={{color:C.grey, fontSize:12, lineHeight:1.6}}>
                   Larvae are terminated inside the substrate. No separate insect meal, oil, or chitin products.
                   All biomass composted as a single high-nutrient biofertiliser. Maximises NPK but eliminates S6 insect processing revenue.
@@ -4365,7 +4361,7 @@ export default function CFI() {
 
             {/* CERTIFICATION TIER SELECTOR */}
             <div style={{...S.card, marginBottom:16}}>
-              <SectionHdr icon="🏆" title="PRODUCT CERTIFICATION TIER — PRICE LADDER" color={C.amber}/>
+              <SectionHdr title="PRODUCT CERTIFICATION TIER — PRICE LADDER" color={C.amber}/>
               <div style={{display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:10, marginBottom:12}}>
                 {[
                   {k:"none",    label:"No Certification",        mealPx:"$1,200/t",  oilPx:"$900/t",     uplift:"1×",  col:C.grey},
@@ -4408,7 +4404,7 @@ export default function CFI() {
 
               {/* Insect Meal */}
               <div style={S.card}>
-                <SectionHdr icon="🥩" title="INSECT MEAL — LAB PROFILE"/>
+                <SectionHdr title="INSECT MEAL — LAB PROFILE"/>
                 <div style={{background:C.teal+"18", border:`1px solid ${C.teal}44`, borderRadius:8,
                   padding:"10px 14px", marginBottom:10, textAlign:"center"}}>
                   <div style={{color:C.grey, fontSize:10}}>MONTHLY YIELD</div>
@@ -4455,7 +4451,7 @@ export default function CFI() {
 
               {/* BSF Oil */}
               <div style={S.card}>
-                <SectionHdr icon="🛢️" title="BSF OIL — FATTY ACID PROFILE" color={C.amber}/>
+                <SectionHdr title="BSF OIL — FATTY ACID PROFILE" color={C.amber}/>
                 <div style={{background:C.amber+"18", border:`1px solid ${C.amber}44`, borderRadius:8,
                   padding:"10px 14px", marginBottom:10, textAlign:"center"}}>
                   <div style={{color:C.grey, fontSize:10}}>MONTHLY YIELD</div>
@@ -4502,7 +4498,7 @@ export default function CFI() {
 
               {/* Chitin */}
               <div style={S.card}>
-                <SectionHdr icon="🦀" title="CHITIN — MARKET GRADE LADDER" color={C.green}/>
+                <SectionHdr title="CHITIN — MARKET GRADE LADDER" color={C.green}/>
                 <div style={{background:C.green+"18", border:`1px solid ${C.green}44`, borderRadius:8,
                   padding:"10px 14px", marginBottom:10, textAlign:"center"}}>
                   <div style={{color:C.grey, fontSize:10}}>MONTHLY YIELD</div>
@@ -4531,7 +4527,7 @@ export default function CFI() {
 
             {/* Revenue Summary */}
             <div style={{...S.card, marginTop:16}}>
-              <SectionHdr icon="💵" title="S6 REVENUE SUMMARY" color={C.green}/>
+              <SectionHdr title="S6 REVENUE SUMMARY" color={C.green}/>
               <div style={{display:"grid", gridTemplateColumns:"repeat(6,1fr)", gap:10}}>
                 <KPI label="Insect Meal" value={`$${certMealRev.toLocaleString()}`} unit="/month" color={C.teal}/>
                 <KPI label="BSF Oil" value={`$${certOilRev.toLocaleString()}`} unit="/month" color={C.amber}/>
@@ -4572,7 +4568,7 @@ export default function CFI() {
 
               {/* CAPEX overview */}
               <div style={S.card}>
-                <SectionHdr icon="🏗️" title="CAPITAL EXPENDITURE (CAPEX)" color={C.red}/>
+                <SectionHdr title="CAPITAL EXPENDITURE (CAPEX)" color={C.red}/>
                 <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8}}>
                   <BluField label="Greenhouse Area" unit="m²" value={capex.greenhouse_area} onChange={v=>upCapex("greenhouse_area",+v)}/>
                   <BluField label="Civil Cost" unit="$/m²" value={capex.greenhouse_cost_m2} onChange={v=>upCapex("greenhouse_cost_m2",+v)}/>
@@ -4600,7 +4596,7 @@ export default function CFI() {
 
               {/* OPEX + P&L */}
               <div style={S.card}>
-                <SectionHdr icon="📊" title="OPERATING EXPENDITURE + P&L" color={C.amber}/>
+                <SectionHdr title="OPERATING EXPENDITURE + P&L" color={C.amber}/>
                 <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, marginBottom:10}}>
                   <BluField label="Labor" unit="USD/month" value={capex.labor_monthly} onChange={v=>upCapex("labor_monthly",+v)}/>
                   <BluField label="Utilities" unit="USD/month" value={capex.utilities_monthly} onChange={v=>upCapex("utilities_monthly",+v)}/>
@@ -4634,7 +4630,7 @@ export default function CFI() {
 
               {/* Per-Stage CAPEX Breakdown */}
               <div style={S.card}>
-                <SectionHdr icon="🔢" title="PER-STAGE CAPEX BREAKDOWN" color={C.teal}/>
+                <SectionHdr title="PER-STAGE CAPEX BREAKDOWN" color={C.teal}/>
                 <div style={{color:C.grey, fontSize:10, marginBottom:8}}>Override individual stage CAPEX estimates (FD Engineering EPC basis)</div>
                 <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, marginBottom:10}}>
                   <BluField label="S1 Pre-Processing" unit="USD" value={capex.s1_capex} onChange={v=>upCapex("s1_capex",+v)}/>
@@ -4669,7 +4665,7 @@ export default function CFI() {
 
               {/* Sensitivity Analysis */}
               <div style={S.card}>
-                <SectionHdr icon="📉" title="SENSITIVITY ANALYSIS" color={C.amber}/>
+                <SectionHdr title="SENSITIVITY ANALYSIS" color={C.amber}/>
                 <div style={{color:C.grey, fontSize:10, marginBottom:8}}>Payback period and NPV under ±20% revenue / CAPEX scenarios</div>
                 <table style={{width:"100%", borderCollapse:"collapse", fontSize:11}}>
                   <thead>
@@ -4709,7 +4705,7 @@ export default function CFI() {
                 <hr style={S.divider}/>
 
                 {/* Nutrient Tracker */}
-                <SectionHdr icon="📈" title="CROSS-STAGE NUTRIENT EVOLUTION" color={C.teal}/>
+                <SectionHdr title="CROSS-STAGE NUTRIENT EVOLUTION" color={C.teal}/>
                 <div style={{overflowX:"auto"}}>
                   <table style={{width:"100%", borderCollapse:"collapse", fontSize:11}}>
                     <thead>
@@ -5601,7 +5597,7 @@ export default function CFI() {
         {stage===9 && (
           <div>
             <div style={S.card}>
-              <SectionHdr icon="📊" title="CFI PROJECT SUMMARY — ALL STAGES" color={C.teal}/>
+              <SectionHdr title="CFI PROJECT SUMMARY — ALL STAGES" color={C.teal}/>
               <div style={{display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:12, marginBottom:16}}>
                 <KPI label="Mill Capacity" value={s0.ffbCapacity+" TPH"} unit={`${s0.utilisation}% utilisation`} color={C.teal}/>
                 <KPI label="Monthly FFB" value={monthFFB.toLocaleString()+" t"} unit="/month"/>
