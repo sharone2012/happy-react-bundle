@@ -2464,50 +2464,46 @@ export default function CFI() {
                   <div style={{ background: "#000000", borderRadius: 10, padding: 16, marginBottom: 0, border: "1px solid rgba(255,255,255,0.1)" }}>
                   <Divider />
                   {/* Blend fraction header */}
-                  <div style={{ textAlign: "left", marginBottom: 4 }}>
-                    <div style={{ color: C.teal, fontWeight: 800, fontSize: 12, letterSpacing: "0.05em" }}>Choose Blend — Enter % (total must be 100%)</div>
-                    
-                  </div>
+                   <SectionHdr title="D — Choose Blend" color={C.teal} />
+                  <div style={{ color: C.red, fontSize: 10, fontWeight: 700, marginTop: -4, marginBottom: 8 }}>% must total 100%</div>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
                     {/* EFB */}
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                      <div style={{ color: C.teal, fontWeight: 700, fontSize: 11, textAlign: "center" }}>EFB</div>
+                    <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
+                      <div style={{ color: C.amber, fontWeight: 900, fontSize: 13, textAlign: "left", flex: 1 }}>EFB</div>
                       <input style={{ background: C.inputBg, border: `1px solid ${C.teal}66`, borderRadius: 6,
                             color: C.white, padding: "8px 0", fontSize: 15, fontWeight: 700,
-                            width: "100%", outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                            width: 52, outline: "none", boxSizing: "border-box", textAlign: "center" }}
                           value={s0.efbPct}
                           onChange={(e) => e.target.value}
                           onBlur={(e) => {const nv = Math.min(+e.target.value, 100);upS0("efbPct", nv);if (nv + s0.opdcPct > 100) upS0("opdcPct", +(100 - nv).toFixed(1));}} />
                     </div>
                     {/* OPDC */}
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                      <div style={{ color: C.amber, fontWeight: 700, fontSize: 11, textAlign: "center" }}>OPDC</div>
+                    <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
+                      <div style={{ color: C.teal, fontWeight: 900, fontSize: 13, textAlign: "left", flex: 1 }}>OPDC</div>
                       <input style={{ background: C.inputBg, border: `1px solid ${C.amber}66`, borderRadius: 6,
                             color: C.white, padding: "8px 0", fontSize: 15, fontWeight: 700,
-                            width: "100%", outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                            width: 52, outline: "none", boxSizing: "border-box", textAlign: "center" }}
                           value={s0.opdcPct}
                           onChange={(e) => e.target.value}
                           onBlur={(e) => {const nv = Math.min(+e.target.value, 100);upS0("opdcPct", nv);if (nv + s0.efbPct > 100) upS0("efbPct", +(100 - nv).toFixed(1));}} />
                     </div>
                     {/* POME Sludge */}
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                      <div style={{ color: "#4A9EDB", fontWeight: 700, fontSize: 11, textAlign: "center" }}>POME Sludge</div>
+                    <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
+                      <div style={{ color: C.teal, fontWeight: 900, fontSize: 13, textAlign: "left", flex: 1 }}>POME Sludge</div>
                       <div style={{ background: "#0A1624", border: `1px solid #4A9EDB44`, borderRadius: 6,
                             color: pomeActive ? "#4A9EDB" : C.grey, padding: "8px 0", fontSize: 15, fontWeight: 700,
-                            width: "100%", boxSizing: "border-box", textAlign: "center", lineHeight: "1.4" }}>
+                            width: 52, boxSizing: "border-box", textAlign: "center", lineHeight: "1.4" }}>
                         {pomeActive ? pomePct + "%" : "—"}
                       </div>
-                      <div style={{ color: C.grey, fontSize: 9, textAlign: "center" }}>auto-fills</div>
                     </div>
                     {/* PKE */}
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                      <div style={{ color: "#00E676", fontWeight: 700, fontSize: 11, textAlign: "center", lineHeight: 1.2 }}>PKE</div>
+                    <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
+                      <div style={{ color: C.teal, fontWeight: 900, fontSize: 13, textAlign: "left", flex: 1 }}>PKE</div>
                       <div style={{ background: "#0A1624", border: `1px solid #00E67644`, borderRadius: 6,
                             color: s0.pkeEnabled ? "#00E676" : C.grey, padding: "8px 0", fontSize: 15, fontWeight: 700,
-                            width: "100%", boxSizing: "border-box", textAlign: "center" }}>
+                            width: 52, boxSizing: "border-box", textAlign: "center" }}>
                         {s0.pkeEnabled ? pctPKE + "%" : "—"}
                       </div>
-                      <div style={{ color: C.grey, fontSize: 9, textAlign: "center" }}>calculated</div>
                     </div>
                   </div>
 
