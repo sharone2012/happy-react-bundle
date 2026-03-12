@@ -3401,7 +3401,7 @@ export default function CFI() {
               <div style={{display:"flex",flexDirection:"column",gap:10}}>
 
                 <div style={S.card}>
-                  <SectionHdr icon="🔬" title="GATE MEASUREMENTS — ENTER LAB READINGS (OPTIONAL)" color={C.blue}/>
+                  <SectionHdr title="GATE MEASUREMENTS — ENTER LAB READINGS (OPTIONAL)" color={C.blue}/>
                   <div style={{fontSize:10,color:C.grey,marginBottom:8}}>Pipeline-calculated values auto-populate. Enter actual lab measurements to override.</div>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:10}}>
                     <BluField label="C:N Measured" unit="ratio" value={s3.cn_measured} onChange={v=>upS3Gate("cn_measured",v)} note={`Pipeline calc: ${blendCN||"—"}`}/>
