@@ -2468,7 +2468,7 @@ export default function CFI() {
                     <div style={{ color: C.teal, fontWeight: 800, fontSize: 12, letterSpacing: "0.05em" }}>Choose Blend — Enter % (total must be 100%)</div>
                     
                   </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 10, marginBottom: 12 }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
                     {/* EFB */}
                     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
                       <div style={{ color: C.teal, fontWeight: 700, fontSize: 11, textAlign: "center" }}>EFB</div>
