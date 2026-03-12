@@ -2997,7 +2997,7 @@ export default function CFI() {
 
                 {/* ALKALINE CHEMICALS */}
                 <div style={S.card}>
-                  <SectionHdr icon="🧪" title="ALKALINE CHEMICALS" color={C.blue}/>
+                  <SectionHdr title="ALKALINE CHEMICALS" color={C.blue}/>
                   {[
                     {k:"naoh",  name:"NaOH — Sodium Hydroxide",      rspo:"⚠ Needs Doc", cost:"$0.12/t",lig:66,col:C.red,    note:"Strongest delignifier (66%) but Na⁺ toxic to BSF. RED ALERT if active."},
                     {k:"koh",   name:"KOH — Potassium Hydroxide",     rspo:"⚠ Needs Doc", cost:"$0.18/t",lig:35,col:C.amber,  note:"Identical to NaOH but K⁺ enriches compost. pH >12. Better than NaOH for BSF substrate."},
