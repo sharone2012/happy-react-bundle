@@ -255,8 +255,9 @@ const PillToggle = ({options, value, onChange, color=C.teal}) => (
   </div>
 );
 
-const ResidueCard = ({abbr, label, active, locked, onClick, highlightColor, fontSize:fs}) => {
+const ResidueCard = ({abbr, label, labelJsx, active, locked, onClick, highlightColor, fontSize:fs}) => {
   const col = highlightColor || C.teal;
+  const hasSubLabel = (label && abbr) || labelJsx;
   return (
   <div onClick={locked?undefined:onClick}
     style={{background:"#0B1929",
@@ -273,7 +274,9 @@ const ResidueCard = ({abbr, label, active, locked, onClick, highlightColor, font
         border:active?"2.5px solid "+col:"2.5px solid rgba(255,255,255,0.25)",
         transition:"all 0.2s"}}/>
     </div>
-    {label && abbr && <div style={{color:"#5a7a8e", fontWeight:700, fontSize:8.5, textTransform:"uppercase",
+    {labelJsx ? <div style={{color:"#5a7a8e", fontWeight:700, fontSize:8.5, textTransform:"uppercase",
+      letterSpacing:"0.06em", lineHeight:1.3}}>{labelJsx}</div>
+    : label && abbr && <div style={{color:"#5a7a8e", fontWeight:700, fontSize:8.5, textTransform:"uppercase",
       letterSpacing:"0.06em", lineHeight:1.3, whiteSpace:"pre-line"}}>{label}</div>}
   </div>
   );
@@ -2444,12 +2447,12 @@ export default function CFI() {
                   <SectionHdr icon="🌿" title="C — Choose Residues for Biological Processing" color={C.teal}/>
                   <div style={g3}>
                     <ResidueCard abbr="EFB" label={"EMPTY\nFRUIT BUNCHES"} active={s0.efbEnabled} onClick={()=>upS0("efbEnabled",!s0.efbEnabled)}/>
-                    <ResidueCard abbr="POME" label={"POME\nSLUDGE"} active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} highlightColor="#4A9EDB"/>
+                    <ResidueCard abbr="POS" label={"POME\nSLUDGE"} active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} highlightColor="#4A9EDB"/>
                     <ResidueCard abbr="PMF" label={"PALM\nMESOCARP FIBER"} active={s0.pmfEnabled} onClick={()=>upS0("pmfEnabled",!s0.pmfEnabled)} highlightColor="#E07C24"/>
                   </div>
                   <div style={{...g3, marginTop:10}}>
                     <ResidueCard abbr="OPDC" label={"DECANTER\nCAKE"} active={s0.opdcEnabled} onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)} highlightColor={C.amber}/>
-                    <ResidueCard abbr="POME" label={"POME\nLIQUID"} active={s0.pomeLiquidEnabled} onClick={()=>upS0("pomeLiquidEnabled",!s0.pomeLiquidEnabled)} highlightColor="#4A9EDB"/>
+                    <ResidueCard abbr="POL" labelJsx={<><i style={{fontStyle:"italic"}}>Liquid</i><br/><span style={{fontSize:7}}>discharged to pond</span></>} active={s0.pomeLiquidEnabled} onClick={()=>upS0("pomeLiquidEnabled",!s0.pomeLiquidEnabled)} highlightColor="#4A9EDB"/>
                     <ResidueCard abbr="PKM" label={"PALM\nKERNAL EXPELLER"} active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)} highlightColor="#00E676"/>
                   </div>
                   <Divider/>
