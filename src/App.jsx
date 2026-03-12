@@ -3099,7 +3099,7 @@ export default function CFI() {
 
                 {/* ENZYMES in S2 */}
                 <div style={S.card}>
-                  <SectionHdr icon="🧬" title="ENZYMES (BETTER IN S3 — ALERT IF SELECTED HERE)" color={C.purple}/>
+                  <SectionHdr title="ENZYMES (BETTER IN S3 — ALERT IF SELECTED HERE)" color={C.purple}/>
                   <Alert type="warn" msg="Enzymes denature above 55°C — apply ONLY after substrate cools below 45°C. If substrate is still in thermophilic phase, move these to S3 (biological phase)."/>
                   <div style={{height:8}}/>
                   {[
