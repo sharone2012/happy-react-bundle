@@ -1365,6 +1365,8 @@ export default function CFI() {
     pomeSludgeFeResult: "",
     pomeEnabled: false,
     pkeEnabled: false,
+    pmfEnabled: false,
+    pomeLiquidEnabled: false,
     pkeTPD: 5,
     cnTarget: 22,
     soil: "ultisol", ag: "vgam",
