@@ -2569,60 +2569,6 @@ export default function CFI() {
                     </div>
                   </div>
 
-                  {/* POME auto-fill status */}
-                  {pomeActive &&
-                      <div style={{ background: "#0A1624", border: "1px solid #4A9EDB33",
-                        borderRadius: 8, padding: "10px 14px", marginBottom: 10 }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 6 }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                        <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#4A9EDB", border: "2px solid #4A9EDB" }} />
-                        <span style={{ color: "#4A9EDB", fontWeight: 700, fontSize: 11 }}>
-                          POME Sludge — auto-fills remainder ({pomePct}% DM)
-                        </span>
-                      </div>
-                      <span style={{ background: pomeSupplyOK ? "#3DCB7A20" : "#E8404020",
-                            border: `1px solid ${pomeSupplyOK ? "#3DCB7A50" : "#E8404050"}`,
-                            borderRadius: 10, padding: "2px 9px",
-                            color: pomeSupplyOK ? C.green : C.red, fontSize: 10, fontWeight: 800 }}>
-                          {pomeSupplyOK ? "✓ Supply OK" : "✕ Supply gap " + pomeShortfall + " t/day"}
-                        </span>
-                    </div>
-                  </div>
-                      }
-                  <Warn type="ok" msg={"EFB " + s0.efbPct + "% + OPDC " + s0.opdcPct + "%" + (pomeActive ? " + POME " + pomePct + "%" : "") + " = 100% DM ✓"} />
-                  <Divider />
-                  <div style={g3}>
-                    <CalcField label="Blended Moisture" unit="%" value={blendMC} />
-                    <CalcField label="Blend DM Content" unit="%" value={(100 - blendMC).toFixed(1)} />
-                    <CalcField label="Blend C:N (DM)" unit="" value={blendCN || "—"}
-                        note={blendCN ? blendCN <= 25 ? "✓ Optimal for BSF (15–25)" : blendCN <= 35 ? "⚠ Marginal — add POME/PKE" : "✕ High — BSF yield penalty" : undefined}
-                        noteColor={blendCN ? blendCN <= 25 ? C.green : blendCN <= 35 ? C.amber : C.red : undefined} />
-                  </div>
-                  <div style={{ ...g2, marginTop: 10 }}>
-                    <CalcField label="Blend CP % DM (DM-weighted)" unit=""
-                        value={blendCP ? blendCP + "%" : "—"}
-                        note={blendCP ? blendCP >= 15 ? "✓ Strong (≥15%)" : blendCP >= 10 ? "⚠ Marginal (10–15%) — PKE advised" : "✕ Low (<10%) — increase OPDC or PKE" : undefined} />
-                    <div style={{ background: C.navyDk, borderRadius: 8, padding: "10px 12px" }}>
-                      <div style={{ color: C.grey, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 7 }}>% of Total Substrate DM</div>
-                      <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                        {[
-                            { l: "EFB", v: pctEFB, c: C.teal },
-                            { l: "OPDC", v: pctOPDC, c: C.amber },
-                            ...(pomeActive ? [{ l: "POME", v: pctPOME, c: "#4A9EDB" }] : []),
-                            ...(s0.pkeEnabled ? [{ l: "PKE", v: pctPKE, c: "#9B59B6" }] : [])].
-                            map((s, i) =>
-                            <div key={i} style={{ textAlign: "center" }}>
-                            <div style={{ color: s.c, fontWeight: 900, fontSize: 14, fontFamily: "monospace" }}>{s.v}%</div>
-                            <div style={{ color: C.grey, fontSize: 9 }}>{s.l}</div>
-                          </div>
-                            )}
-                      </div>
-                    </div>
-                  </div>
-                  <div style={{ ...g2, marginTop: 12 }}>
-                    <CalcField label={<>Fresh Weight<br />Residues</>} unit="tons/month" value={s1_blendWet.toLocaleString()} />
-                    <CalcField label={<>Monthly Substrate<br />DM</>} unit="t DM/month" value={s1_blendDM.toLocaleString()} />
-                  </div>
                   </div>
                 </Card>
 
