@@ -2975,7 +2975,7 @@ export default function CFI() {
 
                 {/* PKSA — DEFAULT */}
                 <div style={S.card}>
-                  <SectionHdr icon="⭐" title="PKSA — DEFAULT PRIMARY TREATMENT (ZERO COST)" color={C.amber}/>
+                  <SectionHdr title="PKSA — DEFAULT PRIMARY TREATMENT (ZERO COST)" color={C.amber}/>
                   <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
                     <input type="checkbox" checked={s2.pksa} onChange={e=>upS2("pksa",e.target.checked)} style={{accentColor:C.teal,width:16,height:16}}/>
                     <span style={{color:s2.pksa?C.teal:C.grey,fontWeight:800}}>Palm Kernel Shell Ash (PKSA)</span>
