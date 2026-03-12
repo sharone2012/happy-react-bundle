@@ -2463,42 +2463,25 @@ export default function CFI() {
                 <Card>
                   <div style={{background:"#000000", borderRadius:10, padding:16, marginBottom:0, border:"1px solid rgba(255,255,255,0.1)"}}>
                   <SectionHdr icon="📊" title="D — Daily Dry Matter Available at Mill" color={C.teal}/>
-                  <div style={g3}>
+                  <div style={{display:"grid", gridTemplateColumns:"repeat(6, 1fr)", gap:8}}>
                     {[
                       {l:"EFB", dm:efbDMpd, c:C.amber, active:true},
                       {l:"POS", dm:pomeSludgeDMpd, c:C.amber, active:pomeActive},
                       {l:"PMF", dm:s0.pmfEnabled ? +(effFFB * s0.hrsDay * 0.135 * 0.35).toFixed(2) : 0, c:C.amber, active:s0.pmfEnabled},
-                    ].map((r,i)=>(
-                      <div key={i} style={{background:r.active?"#0D3B3B":"#000000",
-                        borderRadius:10, padding:"10px 12px",
-                        display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:8,
-                        border:r.active?`1px solid ${C.teal}55`:"1px solid rgba(255,255,255,0.08)"}}>
-                        <div style={{color:r.active?r.c:C.teal, fontWeight:800, fontSize:9.8, textTransform:"uppercase",
-                          textAlign:"left", lineHeight:1.3, letterSpacing:"0.04em", whiteSpace:"pre-line", flex:1}}>{r.l}</div>
-                        <div style={{color:r.active?C.white:"#555", fontWeight:900, fontSize:14, fontFamily:"monospace",
-                          textAlign:"right", lineHeight:1.2}}>
-                          {r.dm}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{...g3, marginTop:12}}>
-                    {[
                       {l:"OPDC", dm:opdcNatDM, c:C.amber, active:true},
                       {l:"POME", dm:0, c:C.amber, active:s0.pomeLiquidEnabled},
                       {l:"PKM", dm:s0.pkeEnabled ? +(s0.pkeTPD * 0.90).toFixed(2) : 0, c:C.amber, active:s0.pkeEnabled},
                     ].map((r,i)=>(
                       <div key={i} style={{background:r.active?"#0D3B3B":"#000000",
-                        borderRadius:10, padding:"10px 12px",
-                        display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:8,
+                        borderRadius:8, padding:"8px 6px",
+                        display:"flex", flexDirection:"column", alignItems:"center", gap:2,
                         border:r.active?`1px solid ${C.teal}55`:"1px solid rgba(255,255,255,0.08)",
                         opacity:r.active?1:0.4}}>
-                        <div style={{color:r.active?r.c:C.teal, fontWeight:800, fontSize:9.8, textTransform:"uppercase",
-                          textAlign:"left", lineHeight:1.3, letterSpacing:"0.04em", whiteSpace:"pre-line", flex:1}}>{r.l}</div>
-                        <div style={{color:r.active?C.white:"#555", fontWeight:900, fontSize:14, fontFamily:"monospace",
-                          textAlign:"right", lineHeight:1.2}}>
-                          {r.dm}
-                        </div>
+                        <div style={{color:r.active?r.c:C.teal, fontWeight:800, fontSize:9.5, textTransform:"uppercase",
+                          textAlign:"center", letterSpacing:"0.04em"}}>{r.l}</div>
+                        <div style={{color:r.active?C.white:"#555", fontWeight:800, fontSize:10, fontFamily:"monospace",
+                          textAlign:"center"}}>{r.dm}</div>
+                        <div style={{color:C.grey, fontSize:7, fontWeight:600}}>tonnes</div>
                       </div>
                     ))}
                   </div>
