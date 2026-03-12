@@ -1015,7 +1015,7 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
         display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8}}>
         <div>
           <div style={{color:oc.teal,fontWeight:900,fontSize:16,letterSpacing:"0.06em"}}>
-            🧭 CFI Orchestration Layer
+            CFI Orchestration Layer
           </div>
           <div style={{color:oc.grey,fontSize:10,marginTop:2}}>
             Data Lake · Agent Status · Config Upload · Supabase LIVE · v21.0
