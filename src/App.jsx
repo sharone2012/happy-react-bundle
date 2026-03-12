@@ -3882,7 +3882,7 @@ export default function CFI() {
                 {/* Dual-bay body composition + S3→S4 progression chart */}
                 <div style={{display:"flex", flexDirection:"column", gap:14}}>
                   <div style={S.card}>
-                    <SectionHdr icon="🐛" title="BAY A vs BAY B — LARVAE BODY COMPOSITION" color={C.green}/>
+                    <SectionHdr title="BAY A vs BAY B — LARVAE BODY COMPOSITION" color={C.green}/>
                     <table style={{width:"100%", borderCollapse:"collapse", fontSize:11}}>
                       <thead>
                         <tr style={{background:C.navyLt}}>
