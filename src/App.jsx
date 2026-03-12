@@ -2329,10 +2329,10 @@ export default function CFI() {
                   <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
                     {/* FFB */}
                     <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                      <div style={{ color: C.teal, fontSize: 11, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", textAlign: "center", lineHeight: 1.2 }}>
+                      <div style={{ color: C.teal, fontSize: 12, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", textAlign: "center", lineHeight: 1.2 }}>
                         <div>FFB</div><div>T/H</div>
                       </div>
-                      <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 0", fontSize: 14, fontWeight: 700, width: 44, outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                      <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 0", fontSize: 15, fontWeight: 700, width: 44, outline: "none", boxSizing: "border-box", textAlign: "center" }}
                       value={s0.ffbCapacity}
                       onChange={(e) => e.target.value}
                       onBlur={(e) => upS0("ffbCapacity", +e.target.value)} />
@@ -2340,10 +2340,10 @@ export default function CFI() {
 
                     {/* Mill Hours */}
                     <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                      <div style={{ color: C.teal, fontSize: 11, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", textAlign: "center", lineHeight: 1.2 }}>
+                      <div style={{ color: C.teal, fontSize: 12, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", textAlign: "center", lineHeight: 1.2 }}>
                         <div>HOURS</div><div>/ DAY</div>
                       </div>
-                      <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 0", fontSize: 14, fontWeight: 700, width: 44, outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                      <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 0", fontSize: 15, fontWeight: 700, width: 44, outline: "none", boxSizing: "border-box", textAlign: "center" }}
                       value={s0.utilisation}
                       onChange={(e) => e.target.value}
                       onBlur={(e) => upS0("utilisation", +e.target.value)} />
