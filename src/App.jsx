@@ -3164,7 +3164,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="💊" title="PKSA NUTRIENT VALUE" color={C.green}/>
+                  <SectionHdr title="PKSA NUTRIENT VALUE" color={C.green}/>
                   {[
                     {l:"K₂O",   v:"35–45% DM", note:"$0.633/kg K₂O equiv"},
                     {l:"CaO",   v:"8–12% DM",  note:"Soil liming value"},
