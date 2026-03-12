@@ -2540,41 +2540,15 @@ export default function CFI() {
                           POME Sludge — auto-fills remainder ({pomePct}% DM)
                         </span>
                       </div>
-                      <div style={{display:"flex", gap:6, flexWrap:"wrap"}}>
-                        <span style={{background:pomeActive?"#4A9EDB20":"rgba(255,255,255,0.04)",
-                          border:`1px solid ${pomeActive?"#4A9EDB50":"rgba(255,255,255,0.1)"}`,
-                          borderRadius:10, padding:"2px 9px",
-                          color:pomeActive?"#4A9EDB":C.grey, fontSize:10, fontWeight:800}}>
-                          {pomeActive ? pomePct+"% DM" : "0% — EFB+OPDC = 100%"}
-                        </span>
-                        {pomeActive && <span style={{background:pomeSupplyOK?"#3DCB7A20":"#E8404020",
+                      <span style={{background:pomeSupplyOK?"#3DCB7A20":"#E8404020",
                           border:`1px solid ${pomeSupplyOK?"#3DCB7A50":"#E8404050"}`,
                           borderRadius:10, padding:"2px 9px",
                           color:pomeSupplyOK?C.green:C.red, fontSize:10, fontWeight:800}}>
                           {pomeSupplyOK ? "✓ Supply OK" : "✕ Supply gap "+pomeShortfall+" t/day"}
-                        </span>}
-                      </div>
+                        </span>
                     </div>
-                    {pomeActive && (
-                      <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8, marginTop:10}}>
-                        <div style={{textAlign:"center"}}>
-                          <div style={{color:C.grey, fontSize:9, textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:3}}>DM required</div>
-                          <div style={{color:"#4A9EDB", fontWeight:900, fontFamily:"monospace", fontSize:13}}>{pomeDMreq} t/day</div>
-                        </div>
-                        <div style={{textAlign:"center"}}>
-                          <div style={{color:C.grey, fontSize:9, textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:3}}>Wet t/day @ {pomeSludgeActMC}% MC</div>
-                          <div style={{color:pomeSupplyOK?C.green:C.red, fontWeight:900, fontFamily:"monospace", fontSize:13}}>{pomeWetReq} t/day</div>
-                          <div style={{color:C.grey, fontSize:9}}>mill yields {pomeSludgeNatTPD} t/day</div>
-                        </div>
-                        <div style={{textAlign:"center"}}>
-                          <div style={{color:C.grey, fontSize:9, textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:3}}>Dilution factor</div>
-                          <div style={{color:C.tealLt, fontWeight:900, fontFamily:"monospace", fontSize:13}}>{pomeDilutionFactor}×</div>
-                          <div style={{color:C.grey, fontSize:9}}>wet t per t DM</div>
-                        </div>
-                      </div>
-                    )}
-                    {!pomeActive && <div style={{color:C.grey, fontSize:10, marginTop:5}}>Lower EFB% or OPDC% below 100 total to activate POME auto-fill.</div>}
                   </div>
+                  )}
                   <Warn type="ok" msg={"EFB "+s0.efbPct+"% + OPDC "+s0.opdcPct+"%" + (pomeActive?" + POME "+pomePct+"%":"")+" = 100% DM ✓"}/>
                   <Divider/>
                   <div style={g3}>
