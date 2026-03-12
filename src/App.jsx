@@ -3628,7 +3628,7 @@ export default function CFI() {
 
                 {/* Combined output + mass balance */}
                 <div style={{...S.card, gridColumn:"1/-1"}}>
-                  <SectionHdr icon="⚖️" title="DUAL-TRACK COMBINED OUTPUT + MASS BALANCE" color={C.teal}/>
+                  <SectionHdr title="DUAL-TRACK COMBINED OUTPUT + MASS BALANCE" color={C.teal}/>
                   <div style={{display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:10, marginBottom:12}}>
                     <div style={{background:C.navyLt, borderRadius:6, padding:"10px 14px", borderTop:`3px solid ${C.teal}`}}>
                       <div style={{color:C.grey, fontSize:10}}>Weighted Protein</div>
