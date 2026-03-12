@@ -3457,7 +3457,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="📊" title="CONSORTIUM ANALYSIS" color={C.teal}/>
+                  <SectionHdr title="CONSORTIUM ANALYSIS" color={C.teal}/>
                   <CalcField label="S4 Yield Uplift" unit="× baseline" value={upliftFactor}/>
                   <CalcField label="Monthly bio cost" unit="USD" value={`$${s3_monthlyCost.toLocaleString()}`}/>
                   <CalcField label="Annual bio cost" unit="USD" value={`$${s3_annualCost.toLocaleString()}`}/>
