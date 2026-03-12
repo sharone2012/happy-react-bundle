@@ -4498,7 +4498,7 @@ export default function CFI() {
 
               {/* Chitin */}
               <div style={S.card}>
-                <SectionHdr icon="🦀" title="CHITIN — MARKET GRADE LADDER" color={C.green}/>
+                <SectionHdr title="CHITIN — MARKET GRADE LADDER" color={C.green}/>
                 <div style={{background:C.green+"18", border:`1px solid ${C.green}44`, borderRadius:8,
                   padding:"10px 14px", marginBottom:10, textAlign:"center"}}>
                   <div style={{color:C.grey, fontSize:10}}>MONTHLY YIELD</div>
