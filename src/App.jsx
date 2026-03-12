@@ -2332,7 +2332,7 @@ export default function CFI() {
                       <div style={{ color: C.teal, fontSize: 11, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", textAlign: "center", lineHeight: 1.2 }}>
                         <div>FFB</div><div>T/H</div>
                       </div>
-                      <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "8px 0", fontSize: 16, fontWeight: 700, width: 56, outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                      <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 0", fontSize: 14, fontWeight: 700, width: 44, outline: "none", boxSizing: "border-box", textAlign: "center" }}
                       value={s0.ffbCapacity}
                       onChange={(e) => e.target.value}
                       onBlur={(e) => upS0("ffbCapacity", +e.target.value)} />
