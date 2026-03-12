@@ -2292,11 +2292,8 @@ export default function CFI() {
               </div>
             </div>
 
-            {/* ── TWO-COLUMN ROW ── */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, alignItems: "start" }}>
-
-              {/* ════ LEFT COLUMN ════ */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            {/* ── A & B SIDE BY SIDE ── */}
+            <div style={{ display: "flex", gap: 16, alignItems: "start", marginBottom: 16 }}>
 
                 {/* ── A: SITE IDENTITY ── */}
                 <Card style={{ maxWidth: 280 }}>
@@ -2327,8 +2324,8 @@ export default function CFI() {
                 </Card>
 
                 {/* ── B: MILL CAPACITY ── */}
-                <Card>
-                  <SectionHdr title="B — MILL'S HOURLY PROCESSING CAPACITY" color={C.teal} />
+                <Card style={{ flex: 1 }}>
+                  <SectionHdr title="B — ENTER MILL FFB PROCESSING CAPACITY t/h" color={C.teal} />
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
                       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px 32px", alignItems: "center", alignSelf: "center" }}>
@@ -2391,6 +2388,13 @@ export default function CFI() {
                   </div>
                   </div>
                 </Card>
+            </div>
+
+            {/* ── TWO-COLUMN ROW ── */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, alignItems: "start" }}>
+
+              {/* ════ LEFT COLUMN ════ */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
                 <Card style={{ background: C.navyDk, border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: 12, marginTop: 12 }}>
                     <SectionHdr title="E — Carbon Credits Preview" color={C.green} />
