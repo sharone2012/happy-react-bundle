@@ -2418,7 +2418,9 @@ export default function CFI() {
                       onChange={v=>upS0("pomeCapturePct",Math.min(100,Math.max(0,+v)))}/>
                   </div>
                   </div>
-                  <div style={{background:C.navyDk, border:"1px solid rgba(255,255,255,0.08)", borderRadius:8, padding:12, marginTop:12}}>
+                </Card>
+
+                <Card style={{background:C.navyDk, border:"1px solid rgba(255,255,255,0.08)", borderRadius:8, padding:12, marginTop:12}}>
                     <SectionHdr icon="🌿" title="E — Carbon Credits Preview" color={C.green}/>
                     <div style={{color:C.grey, fontSize:10, marginTop:-6, marginBottom:10}}>Full methodology in the CO₂ tab</div>
                     <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:8}}>
@@ -2434,7 +2436,6 @@ export default function CFI() {
                         </div>
                       ))}
                     </div>
-                  </div>
                 </Card>
 
               </div>
