@@ -2326,6 +2326,7 @@ export default function CFI() {
                 {/* ── B: MILL CAPACITY ── */}
                 <Card style={{ flex: 1 }}>
                   <SectionHdr title={"B — ENTER PROCESSING CAPACITY \n"} color={C.teal} />
+                  <div style={{ maxWidth: 280, width: "100%" }}>
                   {/* FFB + Hours row */}
                   <div style={{ display: "flex", alignItems: "center", gap: 0 }}>
                     <div style={{ flex: "1 1 0", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "8px 0" }}>
