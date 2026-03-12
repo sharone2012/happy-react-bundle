@@ -2866,7 +2866,7 @@ export default function CFI() {
 
             <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:16}}>
               <div style={S.card}>
-                <SectionHdr icon="⚗️" title="S1 — EFB PRE-PROCESSING (MECHANICAL)"/>
+                <SectionHdr title="S1 — EFB PRE-PROCESSING (MECHANICAL)"/>
                 <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8}}>
                   <CalcField label="EFB Nameplate Throughput" unit="TPH (wet)" value={efbTPH}/>
                   <CalcField label="EFB Daily (wet)" unit="t/day" value={efbTPD}/>
