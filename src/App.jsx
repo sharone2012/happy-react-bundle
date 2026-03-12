@@ -2433,7 +2433,7 @@ export default function CFI() {
                 {/* ── C: RESIDUE SELECTION ── */}
                 <Card>
                   <div style={{background:"#000000", borderRadius:10, padding:16, marginBottom:12, border:"1px solid rgba(255,255,255,0.1)"}}>
-                  <SectionHdr icon="🌿" title="C — Choose Residues" color={C.teal}/>
+                  <SectionHdr title="C — Choose Residues" color={C.teal}/>
                   <div style={g3}>
                     <ResidueCard abbr="EFB" label={"EMPTY\nFRUIT BUNCHES"} active={s0.efbEnabled} onClick={()=>upS0("efbEnabled",!s0.efbEnabled)} highlightColor={C.amber}/>
                     <ResidueCard abbr="POS" label={"POME\nSLUDGE"} active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} highlightColor={C.amber}/>
