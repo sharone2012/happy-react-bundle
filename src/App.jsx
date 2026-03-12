@@ -2876,7 +2876,7 @@ export default function CFI() {
                   <CalcField label="EFB Monthly DM" unit="t DM/month" value={s1_efbMonthDM.toLocaleString()}/>
                 </div>
                 <hr style={S.divider}/>
-                <SectionHdr icon="🔧" title="EQUIPMENT SIZING" color={C.amber}/>
+                <SectionHdr title="EQUIPMENT SIZING" color={C.amber}/>
                 <div style={{fontSize:12, color:C.greyLt, lineHeight:1.8}}>
                   <div>• <span style={{color:C.amber}}>Shredder:</span> {(efbTPH / 0.65).toFixed(1)} TPH nameplate (÷0.65 Asian derating)</div>
                   <div>• <span style={{color:C.amber}}>Hammer Mill:</span> {(efbTPH * 0.3 / 0.65).toFixed(1)} TPH (30% to 2mm fraction)</div>
