@@ -4596,7 +4596,7 @@ export default function CFI() {
 
               {/* OPEX + P&L */}
               <div style={S.card}>
-                <SectionHdr icon="📊" title="OPERATING EXPENDITURE + P&L" color={C.amber}/>
+                <SectionHdr title="OPERATING EXPENDITURE + P&L" color={C.amber}/>
                 <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, marginBottom:10}}>
                   <BluField label="Labor" unit="USD/month" value={capex.labor_monthly} onChange={v=>upCapex("labor_monthly",+v)}/>
                   <BluField label="Utilities" unit="USD/month" value={capex.utilities_monthly} onChange={v=>upCapex("utilities_monthly",+v)}/>
