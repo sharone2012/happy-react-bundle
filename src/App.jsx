@@ -2449,12 +2449,12 @@ export default function CFI() {
                   <div style={g3}>
                     <ResidueCard abbr="EFB" label={"EMPTY\nFRUIT BUNCHES"} active={s0.efbEnabled} onClick={()=>upS0("efbEnabled",!s0.efbEnabled)} highlightColor={C.amber}/>
                     <ResidueCard abbr="POS" label={"POME\nSLUDGE"} active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} highlightColor={C.amber}/>
-                    <ResidueCard abbr="PMF" label={"MESOCARP\nFIBER"} active={s0.pmfEnabled} onClick={()=>upS0("pmfEnabled",!s0.pmfEnabled)} highlightColor="#E07C24"/>
+                    <ResidueCard abbr="PMF" label={"MESOCARP\nFIBER"} active={s0.pmfEnabled} onClick={()=>upS0("pmfEnabled",!s0.pmfEnabled)} highlightColor={C.amber}/>
                   </div>
                   <div style={{...g3, marginTop:10}}>
                     <ResidueCard abbr="OPDC" label={"DECANTER\nCAKE"} active={s0.opdcEnabled} onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)} highlightColor={C.amber}/>
-                    <ResidueCard abbr="POME" labelJsx={<><span>LIQUID</span><br/><span style={{color:C.amber, fontWeight:700}}>Sent to Pond</span></>} active={s0.pomeLiquidEnabled} onClick={()=>upS0("pomeLiquidEnabled",!s0.pomeLiquidEnabled)} highlightColor="#4A9EDB"/>
-                    <ResidueCard abbr="PKM" label={"PALM KERNAL\nEXPELLER"} active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)} highlightColor="#00E676"/>
+                    <ResidueCard abbr="POME" labelJsx={<><span>LIQUID</span><br/><span style={{color:C.amber, fontWeight:700}}>Sent to Pond</span></>} active={s0.pomeLiquidEnabled} onClick={()=>upS0("pomeLiquidEnabled",!s0.pomeLiquidEnabled)} highlightColor={C.amber}/>
+                    <ResidueCard abbr="PKM" label={"PALM KERNAL\nEXPELLER"} active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)} highlightColor={C.amber}/>
                   </div>
                   <Divider/>
 
