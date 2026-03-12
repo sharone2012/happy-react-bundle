@@ -2422,7 +2422,6 @@ export default function CFI() {
 
                 {/* ── D: DAILY DRY MATTER AVAILABLE AT MILL ── */}
                 <Card>
-                  <div style={{ background: "#000000", borderRadius: 10, padding: 16, marginBottom: 0, border: "1px solid rgba(255,255,255,0.1)" }}>
                   <SectionHdr title="D — Daily Dry Matter Available at Mill" color={C.teal} />
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 8 }}>
                     {[
@@ -2445,7 +2444,6 @@ export default function CFI() {
                         
                       </div>
                         )}
-                  </div>
                   </div>
                 </Card>
 
