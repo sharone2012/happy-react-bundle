@@ -258,8 +258,7 @@ const PillToggle = ({options, value, onChange, color=C.teal}) => (
 const ResidueCard = ({label, active, locked, onClick, highlightColor}) => {
   return (
   <div onClick={locked?undefined:onClick}
-    style={{background:"#111111",
-      border:active?`1px solid ${C.teal}66`:"1px solid rgba(255,255,255,0.07)",
+    style={{background:active?"#2C6E8A":"#111111",
       borderRadius:14, padding:"12px 14px", height:90,
       cursor:locked?"not-allowed":"pointer", transition:"all 0.15s",
       display:"flex", flexDirection:"column", alignItems:"flex-start", justifyContent:"flex-start", gap:6}}>
@@ -272,7 +271,7 @@ const ResidueCard = ({label, active, locked, onClick, highlightColor}) => {
         transition:"transform 0.2s", boxShadow:"0 1px 3px rgba(0,0,0,0.3)"}}/>
     </div>
     {/* Label text */}
-    <div style={{color:active?C.teal:C.grey, fontWeight:800, fontSize:10, textTransform:"uppercase",
+    <div style={{color:active?"#000":"#666", fontWeight:800, fontSize:10, textTransform:"uppercase",
       textAlign:"left", lineHeight:1.4, letterSpacing:"0.04em", whiteSpace:"pre-line"}}>{label}</div>
   </div>
   );
