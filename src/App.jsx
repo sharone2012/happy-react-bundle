@@ -2476,7 +2476,7 @@ export default function CFI() {
                           textAlign:"left", lineHeight:1.3, letterSpacing:"0.04em", whiteSpace:"pre-line", flex:1}}>{r.l}</div>
                         <div style={{color:r.active?C.white:"#555", fontWeight:900, fontSize:14, fontFamily:"monospace",
                           textAlign:"right", lineHeight:1.2}}>
-                          {r.dm}<div style={{color:C.grey, fontSize:8, fontWeight:600, marginTop:2}}>t DM/day</div>
+                          {r.dm}
                         </div>
                       </div>
                     ))}
@@ -2496,7 +2496,7 @@ export default function CFI() {
                           textAlign:"left", lineHeight:1.3, letterSpacing:"0.04em", whiteSpace:"pre-line", flex:1}}>{r.l}</div>
                         <div style={{color:r.active?C.white:"#555", fontWeight:900, fontSize:14, fontFamily:"monospace",
                           textAlign:"right", lineHeight:1.2}}>
-                          {r.dm}<div style={{color:C.grey, fontSize:8, fontWeight:600, marginTop:2}}>t DM/day</div>
+                          {r.dm}
                         </div>
                       </div>
                     ))}
