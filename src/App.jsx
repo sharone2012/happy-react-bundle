@@ -2303,7 +2303,6 @@ export default function CFI() {
                   <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:14}}>
                     <div style={{background:"#0D1F33", borderLeft:`3px solid ${C.teal}`,
                       borderRadius:8, padding:"11px 14px", display:"flex", alignItems:"center", gap:10, flex:1}}>
-                      <span style={{fontSize:17, lineHeight:1}}>🏭</span>
                       <div style={{color:C.teal, fontWeight:800, fontSize:12, letterSpacing:"0.07em", textTransform:"uppercase"}}>
                         A — Enter Your Details Below
                       </div>
@@ -2318,25 +2317,23 @@ export default function CFI() {
                         placeholder="Number"/>
                     </div>
                   </div>
-                  <div style={{display:"flex", flexDirection:"column", gap:10}}>
+                  <div style={{display:"flex", flexDirection:"column", gap:10, maxWidth:420}}>
                     <input style={{background:C.inputBg, border:`1px solid ${C.teal}55`, borderRadius:6,
                       color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
                       value={s0.plantName} onChange={e=>upS0("plantName",e.target.value)}
-                      placeholder="Plantation / Company Name"/>
+                      placeholder="Enter Name of Plantation"/>
                     <input style={{background:C.inputBg, border:`1px solid ${C.teal}55`, borderRadius:6,
                       color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
                       value={s0.millName} onChange={e=>upS0("millName",e.target.value)}
-                      placeholder="FFB Processing Mill — Name"/>
-                    <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:10}}>
-                      <input style={{background:C.inputBg, border:`1px solid ${C.teal}55`, borderRadius:6,
-                        color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                        value={s0.district} onChange={e=>upS0("district",e.target.value)}
-                        placeholder="District / Kabupaten"/>
-                      <input style={{background:C.inputBg, border:`1px solid ${C.teal}55`, borderRadius:6,
-                        color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                        value={s0.province} onChange={e=>upS0("province",e.target.value)}
-                        placeholder="Province"/>
-                    </div>
+                      placeholder="Enter Name of CPO Mill"/>
+                    <input style={{background:C.inputBg, border:`1px solid ${C.teal}55`, borderRadius:6,
+                      color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
+                      value={s0.district} onChange={e=>upS0("district",e.target.value)}
+                      placeholder="Enter District / Kabupaten"/>
+                    <input style={{background:C.inputBg, border:`1px solid ${C.teal}55`, borderRadius:6,
+                      color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
+                      value={s0.province} onChange={e=>upS0("province",e.target.value)}
+                      placeholder="Enter Province"/>
                   </div>
                 </Card>
 
