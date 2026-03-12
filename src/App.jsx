@@ -2606,6 +2606,7 @@ export default function CFI() {
 
               {/* ── F: POME SLUDGE ── */}
               <Card>
+                <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
                 <SectionHdr title="F — POME Sludge (Third Waste Stream)" color={C.blue} />
                 <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -2678,6 +2679,7 @@ export default function CFI() {
                       {item.text}
                     </span>
                     )}
+                </div>
                 </div>
               </Card>
 
