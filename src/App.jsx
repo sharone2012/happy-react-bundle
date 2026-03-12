@@ -4216,7 +4216,7 @@ export default function CFI() {
               {/* ── S6 DOWNSTREAM PRODUCTS PREVIEW (S5A only) ── */}
             {s4.pathwayS5==="s5a" && (
               <div style={{...S.card, border:`1px solid ${C.teal}44`, marginTop:0}}>
-                <SectionHdr icon="🏭" title="S6 DOWNSTREAM PRODUCTS — LARVAE PROCESSING PREVIEW" color={C.teal}/>
+                <SectionHdr title="S6 DOWNSTREAM PRODUCTS — LARVAE PROCESSING PREVIEW" color={C.teal}/>
                 <div style={{color:C.grey, fontSize:11, marginBottom:12}}>
                   Larvae extracted in S5A flow directly to S6 for drying, oil pressing, and chitin extraction.
                   Volumes and revenues below are based on current S4 rearing outputs.
