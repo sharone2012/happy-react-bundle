@@ -3795,7 +3795,7 @@ export default function CFI() {
                       </div>
                     ))}
                   </div>
-                  <SectionHdr icon="⚠️" title="RESEARCH-CONFIRMED SUBSTRATE THRESHOLDS" color={C.red}/>
+                  <SectionHdr title="RESEARCH-CONFIRMED SUBSTRATE THRESHOLDS" color={C.red}/>
                   <div style={{fontSize:10, color:C.greyLt, lineHeight:1.9}}>
                     {[
                       ["< 8% CP DM","CRITICAL FAILURE — BSF larvae do not survive; zero yield"],
