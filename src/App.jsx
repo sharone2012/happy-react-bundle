@@ -3827,7 +3827,7 @@ export default function CFI() {
 
                 {/* Parameter delta table */}
                 <div style={S.card}>
-                  <SectionHdr icon="🔬" title="S3 → S4 SUBSTRATE TRANSFORMATION" color={C.teal}/>
+                  <SectionHdr title="S3 → S4 SUBSTRATE TRANSFORMATION" color={C.teal}/>
                   <div style={{marginBottom:8, fontSize:10, color:C.grey}}>
                     BSF larvae consume ~30% substrate OM · N/P concentrate as C reduces · lignin partially degraded by gut microbiome
                   </div>
