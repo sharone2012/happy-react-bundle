@@ -2421,23 +2421,6 @@ export default function CFI() {
               {/* ════ RIGHT COLUMN ════ */}
               <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
-                {/* ── C: RESIDUE SELECTION ── */}
-                <Card>
-                  <div style={{ background: "#000000", borderRadius: 10, padding: 16, marginBottom: 12, border: "1px solid rgba(255,255,255,0.1)" }}>
-                  <SectionHdr title="C — Choose Residues" color={C.teal} />
-                  <div style={g3}>
-                    <ResidueCard abbr="EFB" label={"EMPTY\nFRUIT BUNCHES"} active={s0.efbEnabled} onClick={() => upS0("efbEnabled", !s0.efbEnabled)} highlightColor={C.amber} />
-                    <ResidueCard abbr="POS" label={"POME\nSLUDGE"} active={pomeActive} onClick={() => upS0("pomeEnabled", !s0.pomeEnabled)} highlightColor={C.amber} />
-                    <ResidueCard abbr="PMF" label={"MESOCARP\nFIBER"} active={s0.pmfEnabled} onClick={() => upS0("pmfEnabled", !s0.pmfEnabled)} highlightColor={C.amber} />
-                  </div>
-                  <div style={{ ...g3, marginTop: 10 }}>
-                    <ResidueCard abbr="OPDC" label={"DECANTER\nCAKE"} active={s0.opdcEnabled} onClick={() => upS0("opdcEnabled", !s0.opdcEnabled)} highlightColor={C.amber} />
-                    <ResidueCard abbr="POME" labelJsx={<><span>LIQUID</span><br /><span style={{ color: C.red, fontWeight: 700 }}>Sent to Pond</span></>} active={s0.pomeLiquidEnabled} onClick={() => upS0("pomeLiquidEnabled", !s0.pomeLiquidEnabled)} highlightColor={C.amber} />
-                    <ResidueCard abbr="PKM" label={"PALM KERNAL\nEXPELLER"} active={s0.pkeEnabled} onClick={() => upS0("pkeEnabled", !s0.pkeEnabled)} highlightColor={C.amber} />
-                   </div>
-                  </div>
-                  </Card>
-
                 {/* ── D: DAILY DRY MATTER AVAILABLE AT MILL ── */}
                 <Card>
                   <div style={{ background: "#000000", borderRadius: 10, padding: 16, marginBottom: 0, border: "1px solid rgba(255,255,255,0.1)" }}>
