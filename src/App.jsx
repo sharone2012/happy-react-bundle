@@ -261,20 +261,16 @@ const ResidueCard = ({label, active, locked, onClick, highlightColor}) => {
     style={{background:active?"#1a3a4a":"#1a2a35",
       borderRadius:10, padding:"10px 12px", height:90,
       cursor:locked?"not-allowed":"pointer", transition:"all 0.15s",
-      display:"flex", flexDirection:"column", alignItems:"flex-start", justifyContent:"space-between",
+      display:"flex", flexDirection:"column", alignItems:"flex-start", gap:6,
       border:active?`1px solid ${C.teal}55`:"1px solid rgba(255,255,255,0.08)"}}>
+    {/* Circle indicator - top right */}
+    <div style={{alignSelf:"flex-end", width:18, height:18, borderRadius:"50%",
+      background:active?C.teal:"transparent",
+      border:active?"2px solid "+C.teal:"2px solid rgba(255,255,255,0.3)",
+      transition:"all 0.2s"}}/>
     {/* Label text */}
     <div style={{color:active?C.teal:"#557788", fontWeight:800, fontSize:10, textTransform:"uppercase",
-      textAlign:"left", lineHeight:1.3, letterSpacing:"0.04em", whiteSpace:"pre-line", flex:1, display:"flex", alignItems:"flex-start", paddingTop:2}}>{label}</div>
-    {/* Toggle pill - bottom right */}
-    <div style={{alignSelf:"flex-end", width:36, height:20, borderRadius:10, padding:3,
-      background:active?C.teal:"#0a0a0a",
-      border:active?"none":"1.5px solid rgba(255,255,255,0.25)",
-      transition:"background 0.2s", display:"flex", alignItems:"center"}}>
-      <div style={{width:14, height:14, borderRadius:"50%", background:"#fff",
-        transform:active?"translateX(14px)":"translateX(0)",
-        transition:"transform 0.2s", boxShadow:"0 1px 3px rgba(0,0,0,0.3)"}}/>
-    </div>
+      textAlign:"left", lineHeight:1.3, letterSpacing:"0.04em", whiteSpace:"pre-line"}}>{label}</div>
   </div>
   );
 };
