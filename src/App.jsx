@@ -2480,7 +2480,7 @@ export default function CFI() {
                         <div style={{color:r.active?r.c:C.teal, fontWeight:800, fontSize:9.5, textTransform:"uppercase",
                           textAlign:"center", letterSpacing:"0.04em"}}>{r.l}</div>
                         <div style={{color:r.active?C.white:"#555", fontWeight:800, fontSize:10, fontFamily:"monospace",
-                          textAlign:"center"}}>{r.dm}</div>
+                          textAlign:"center"}}>{r.dm} T</div>
                         
                       </div>
                     ))}
