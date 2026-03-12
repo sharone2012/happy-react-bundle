@@ -2388,6 +2388,13 @@ export default function CFI() {
                   </div>
                   </div>
                 </Card>
+            </div>
+
+            {/* ── TWO-COLUMN ROW ── */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, alignItems: "start" }}>
+
+              {/* ════ LEFT COLUMN ════ */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
                 <Card style={{ background: C.navyDk, border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: 12, marginTop: 12 }}>
                     <SectionHdr title="E — Carbon Credits Preview" color={C.green} />
