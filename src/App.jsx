@@ -2480,6 +2480,7 @@ export default function CFI() {
                       ))}
                     </div>
                   </div>
+                  </div>
 
                   <Divider/>
                   {/* Blend fraction header */}
