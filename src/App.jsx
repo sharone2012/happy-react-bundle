@@ -3316,7 +3316,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="🧫" title="BACTERIA — N-FIXERS, P-SOLUBILISERS, K-MOBILISERS" color={C.green}/>
+                  <SectionHdr title="BACTERIA — N-FIXERS, P-SOLUBILISERS, K-MOBILISERS" color={C.green}/>
                   {[
                     {k:"microbacterium", cat:"Bacteria",     name:"Microbacterium lactium ICBB 7125",   fn:"Primary cellulose decomposer → glucose",               cost:"$3/L",  col:C.green, wave:"W1"},
                     {k:"paenibacillus",  cat:"Bacteria",     name:"Paenibacillus macerans ICBB 8810",   fn:"Hemicellulase + nif genes (N-fixation)",               cost:"$3/L",  col:C.green, wave:"W2"},
