@@ -2383,11 +2383,13 @@ export default function CFI() {
 
             {/* ── D: CAPTURED % ── */}
             <Card style={{ marginBottom: 16 }}>
+              <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
               <SectionHdr title="D — Captured % of Mill Processing Capacity Used" color={C.teal} />
               <div style={{ ...g3, justifyItems: "center", textAlign: "center" }}>
                 <BluField label="EFB %" value={s0.efbCapturePct} onChange={(v) => upS0("efbCapturePct", Math.min(100, Math.max(0, +v)))} note={"= " + (+(efbMonthWet * (s0.efbCapturePct / 100)).toFixed(0)).toLocaleString() + " t FW/mo"} />
                 <BluField label="OPDC %" value={s0.opdcCapturePct} onChange={(v) => upS0("opdcCapturePct", Math.min(100, Math.max(0, +v)))} />
                 <BluField label="POME %" value={s0.pomeCapturePct} onChange={(v) => upS0("pomeCapturePct", Math.min(100, Math.max(0, +v)))} />
+              </div>
               </div>
             </Card>
 
