@@ -2337,7 +2337,7 @@ export default function CFI() {
                         Tonnes / Hour
                       </div>
                     </div>
-                    <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 0", fontSize: 15, fontWeight: 700, width: 44, outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                    <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 4px", fontSize: 15, fontWeight: 700, width: 52, outline: "none", boxSizing: "border-box", textAlign: "center" }}
                     value={s0.ffbCapacity}
                     onChange={(e) => e.target.value}
                     onBlur={(e) => upS0("ffbCapacity", +e.target.value)} />
@@ -2345,11 +2345,11 @@ export default function CFI() {
                   {/* Row 2: OPERATING HOURS PER DAY + input */}
                   <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0" }}>
                     <div style={{ flex: 1 }}>
-                      <div style={{ color: C.teal, fontSize: 10, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1.3 }}>
+                      <div style={{ color: C.teal, fontSize: 13, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1.3 }}>
                          Daily Operating Hours
                       </div>
                     </div>
-                    <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 0", fontSize: 15, fontWeight: 700, width: 44, outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                    <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 4px", fontSize: 15, fontWeight: 700, width: 52, outline: "none", boxSizing: "border-box", textAlign: "center" }}
                     value={s0.utilisation}
                     onChange={(e) => e.target.value}
                     onBlur={(e) => upS0("utilisation", +e.target.value)} />
@@ -2369,7 +2369,7 @@ export default function CFI() {
                 </Card>
 
                 {/* ── C: RESIDUE SELECTION ── */}
-                <Card>
+                <Card style={{ flex: 1 }}>
                   <div style={{ background: "#000000", borderRadius: 10, padding: 16, marginBottom: 12, border: "1px solid rgba(255,255,255,0.1)" }}>
                   <SectionHdr title="C — Choose Residues" color={C.teal} />
                   <div style={g3}>
@@ -2377,7 +2377,7 @@ export default function CFI() {
                     <ResidueCard abbr="POS" label={"POME\nSLUDGE"} active={pomeActive} onClick={() => upS0("pomeEnabled", !s0.pomeEnabled)} highlightColor={C.amber} />
                     <ResidueCard abbr="PMF" label={"MESOCARP\nFIBER"} active={s0.pmfEnabled} onClick={() => upS0("pmfEnabled", !s0.pmfEnabled)} highlightColor={C.amber} />
                   </div>
-                  <div style={{ ...g3, marginTop: 10 }}>
+                  <div style={{ ...g3, marginTop: 20 }}>
                     <ResidueCard abbr="OPDC" label={"DECANTER\nCAKE"} active={s0.opdcEnabled} onClick={() => upS0("opdcEnabled", !s0.opdcEnabled)} highlightColor={C.amber} />
                     <ResidueCard abbr="POME" labelJsx={<><span>LIQUID</span><br /><span style={{ color: C.red, fontWeight: 700 }}>Sent to Pond</span></>} active={s0.pomeLiquidEnabled} onClick={() => upS0("pomeLiquidEnabled", !s0.pomeLiquidEnabled)} highlightColor={C.amber} />
                     <ResidueCard abbr="PKM" label={"PALM KERNAL\nEXPELLER"} active={s0.pkeEnabled} onClick={() => upS0("pkeEnabled", !s0.pkeEnabled)} highlightColor={C.amber} />
