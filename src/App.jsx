@@ -2443,14 +2443,14 @@ export default function CFI() {
                   <div style={{background:"#000000", borderRadius:10, padding:16, marginBottom:12, border:"1px solid rgba(255,255,255,0.1)"}}>
                   <SectionHdr icon="🌿" title="C — Choose Residues for Biological Processing" color={C.teal}/>
                   <div style={g3}>
-                    <ResidueCard label={"EMPTY\nFRUIT\nBUNCHES"} active={s0.efbEnabled} onClick={()=>upS0("efbEnabled",!s0.efbEnabled)}/>
-                    <ResidueCard label={"DECANTER\nCAKE"} active={s0.opdcEnabled} onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)}/>
-                    <ResidueCard label={"POME\nSLUDGE"} active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)}/>
+                    <ResidueCard abbr="EFB" label={"EMPTY\nFRUIT BUNCHES"} active={s0.efbEnabled} onClick={()=>upS0("efbEnabled",!s0.efbEnabled)}/>
+                    <ResidueCard abbr="POME SLUDGE" label="" active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} highlightColor="#4A9EDB"/>
+                    <ResidueCard abbr="PMF" label={"PALM MESOCARP\nFIBER"} active={s0.pmfEnabled} onClick={()=>upS0("pmfEnabled",!s0.pmfEnabled)} highlightColor="#E07C24"/>
                   </div>
-                  <div style={{...g3, marginTop:12}}>
-                    <ResidueCard label={"PALM\nMESOCARP\nFIBER"} active={s0.pmfEnabled} onClick={()=>upS0("pmfEnabled",!s0.pmfEnabled)}/>
-                    <ResidueCard label={"POME LIQUID\n(Additional Process)"} fontSize={8.3} active={s0.pomeLiquidEnabled} onClick={()=>upS0("pomeLiquidEnabled",!s0.pomeLiquidEnabled)}/>
-                    <ResidueCard label={"PALM\nKERNAL\nEXPELLER"} active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)}/>
+                  <div style={{...g3, marginTop:10}}>
+                    <ResidueCard abbr="OPDC" label={"DECANTER\nCAKE"} active={s0.opdcEnabled} onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)} highlightColor={C.amber}/>
+                    <ResidueCard abbr="POME LIQUID" label="" active={s0.pomeLiquidEnabled} onClick={()=>upS0("pomeLiquidEnabled",!s0.pomeLiquidEnabled)} highlightColor="#4A9EDB"/>
+                    <ResidueCard abbr="PKM" label={"PALM KERNAL\nEXPELLER"} active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)} highlightColor="#00E676"/>
                   </div>
                   <Divider/>
 
