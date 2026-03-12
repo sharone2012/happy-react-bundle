@@ -4665,7 +4665,7 @@ export default function CFI() {
 
               {/* Sensitivity Analysis */}
               <div style={S.card}>
-                <SectionHdr icon="📉" title="SENSITIVITY ANALYSIS" color={C.amber}/>
+                <SectionHdr title="SENSITIVITY ANALYSIS" color={C.amber}/>
                 <div style={{color:C.grey, fontSize:10, marginBottom:8}}>Payback period and NPV under ±20% revenue / CAPEX scenarios</div>
                 <table style={{width:"100%", borderCollapse:"collapse", fontSize:11}}>
                   <thead>
