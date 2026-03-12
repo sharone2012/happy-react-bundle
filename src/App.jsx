@@ -3663,7 +3663,7 @@ export default function CFI() {
                   </div>
 
                   {/* S5 pathway selector */}
-                  <SectionHdr icon="🔀" title="S5 PATHWAY SELECTION" color={C.amber}/>
+                  <SectionHdr title="S5 PATHWAY SELECTION" color={C.amber}/>
                   <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:12}}>
                     {[
                       {id:"s5a", icon:"🌿", title:"S5A — EXTRACT LARVAE", sub:"Biofertiliser (frass only) + Live larvae → S6",
