@@ -2631,7 +2631,7 @@ export default function CFI() {
 
               {/* ── F: POME SLUDGE ── */}
               <Card>
-                <SectionHdr icon="💧" title="F — POME Sludge (Third Waste Stream)" color={C.blue}/>
+                <SectionHdr title="F — POME Sludge (Third Waste Stream)" color={C.blue}/>
                 <div style={{display:"flex", alignItems:"center", gap:16, marginBottom:16}}>
                   <div style={{display:"flex", alignItems:"center", gap:10}}>
                     <input type="checkbox" checked={pomeActive} readOnly
