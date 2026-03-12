@@ -2585,6 +2585,7 @@ export default function CFI() {
                     <CalcField label={<>Fresh Weight<br/>Residues</>} unit="tons/month" value={s1_blendWet.toLocaleString()}/>
                     <CalcField label={<>Monthly Substrate<br/>DM</>} unit="t DM/month" value={s1_blendDM.toLocaleString()}/>
                   </div>
+
                 </Card>
 
                 {/* ── SOIL TYPE & AG MANAGEMENT ── */}
