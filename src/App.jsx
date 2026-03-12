@@ -2437,7 +2437,8 @@ export default function CFI() {
               <div style={{display:"flex", flexDirection:"column", gap:16}}>
 
                 {/* ── C: RESIDUE SELECTION ── */}
-                <Card style={{background:C.amber}}>
+                <Card>
+                  <div style={{background:"#3A2008", borderRadius:10, padding:16, marginBottom:12}}>
                   <SectionHdr icon="🌿" title="C — Choose Residues for Biological Processing" color={C.teal}/>
                   <div style={g3}>
                     <ResidueCard label={"EMPTY\nFRUIT\nBUNCHES"} active={s0.efbEnabled} onClick={()=>upS0("efbEnabled",!s0.efbEnabled)}/>
@@ -2496,6 +2497,7 @@ export default function CFI() {
                       </div>
                       <div style={{color:C.grey, fontSize:9, textAlign:"center"}}>calculated</div>
                     </div>
+                  </div>
                   </div>
                   {/* POME auto-fill display */}
                   <div style={{background:"#0A1624", border:`1px solid ${pomeActive?"#4A9EDB55":"rgba(255,255,255,0.06)"}`,
