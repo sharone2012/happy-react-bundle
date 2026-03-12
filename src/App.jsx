@@ -3471,7 +3471,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="⏱️" title="WAVE TIMING GATES" color={C.amber}/>
+                  <SectionHdr title="WAVE TIMING GATES" color={C.amber}/>
                   {[
                     {wave:"Wave 1 Trigger",   trigger:"pH sensor ≤ 8.0",     who:"Lactobacillus · Sacch · Bacillus · Thermophiles",  col:C.amber},
                     {wave:"Wave 2 Trigger",   trigger:"Temperature < 50°C",  who:"Azotobacter · Trichoderma · P-solubilisers · N-fixers", col:C.blue},
