@@ -1199,7 +1199,6 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
               <div key={ag.id} style={{background:oc.navyMid,borderRadius:8,padding:"11px 14px",
                 border:"1px solid "+ag.color+"33",
                 display:"flex",alignItems:"center",gap:14,flexWrap:"wrap"}}>
-                <span style={{fontSize:18}}>{ag.icon}</span>
                 <div style={{flex:1,minWidth:120}}>
                   <div style={{color:ag.color,fontWeight:800,fontSize:12}}>{ag.label}</div>
                   <div style={{color:oc.grey,fontSize:9,marginTop:2,fontFamily:oc.mono}}>
