@@ -258,7 +258,7 @@ const PillToggle = ({options, value, onChange, color=C.teal}) => (
 const ResidueCard = ({label, active, locked, onClick, highlightColor}) => {
   return (
   <div onClick={locked?undefined:onClick}
-    style={{background:active?"#2C6E8A":"#111111",
+    style={{background:active?"#111111":"#111111",
       borderRadius:14, padding:"12px 14px", height:90,
       cursor:locked?"not-allowed":"pointer", transition:"all 0.15s",
       display:"flex", flexDirection:"column", alignItems:"flex-start", justifyContent:"flex-start", gap:6}}>
