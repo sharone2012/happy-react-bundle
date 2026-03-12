@@ -4705,7 +4705,7 @@ export default function CFI() {
                 <hr style={S.divider}/>
 
                 {/* Nutrient Tracker */}
-                <SectionHdr icon="📈" title="CROSS-STAGE NUTRIENT EVOLUTION" color={C.teal}/>
+                <SectionHdr title="CROSS-STAGE NUTRIENT EVOLUTION" color={C.teal}/>
                 <div style={{overflowX:"auto"}}>
                   <table style={{width:"100%", borderCollapse:"collapse", fontSize:11}}>
                     <thead>
