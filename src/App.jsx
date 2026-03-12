@@ -2455,13 +2455,14 @@ export default function CFI() {
                     <ResidueCard abbr="OPDC" label={"DECANTER\nCAKE"} active={s0.opdcEnabled} onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)} highlightColor={C.amber}/>
                     <ResidueCard abbr="POME" labelJsx={<><span>LIQUID</span><br/><span style={{color:C.red, fontWeight:700}}>Sent to Pond</span></>} active={s0.pomeLiquidEnabled} onClick={()=>upS0("pomeLiquidEnabled",!s0.pomeLiquidEnabled)} highlightColor={C.amber}/>
                     <ResidueCard abbr="PKM" label={"PALM KERNAL\nEXPELLER"} active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)} highlightColor={C.amber}/>
+                   </div>
                   </div>
-                  <Divider/>
+                  </Card>
 
-                  {/* ── DAILY DRY MATTER AVAILABLE AT MILL ── */}
-                  <div style={{textAlign:"left", marginBottom:4, marginTop:4}}>
-                    <div style={{color:C.teal, fontWeight:800, fontSize:12, letterSpacing:"0.05em"}}>Daily Dry Matter Available at Mill</div>
-                  </div>
+                {/* ── D: DAILY DRY MATTER AVAILABLE AT MILL ── */}
+                <Card>
+                  <div style={{background:"#000000", borderRadius:10, padding:16, marginBottom:0, border:"1px solid rgba(255,255,255,0.1)"}}>
+                  <SectionHdr icon="📊" title="D — Daily Dry Matter Available at Mill" color={C.teal}/>
                   <div style={g3}>
                     {[
                       {l:"EFB", dm:efbDMpd, c:C.amber, active:true},
@@ -2501,7 +2502,12 @@ export default function CFI() {
                       </div>
                     ))}
                   </div>
+                  </div>
+                </Card>
 
+                {/* ── BLEND SECTION (continuing) ── */}
+                <Card>
+                  <div style={{background:"#000000", borderRadius:10, padding:16, marginBottom:0, border:"1px solid rgba(255,255,255,0.1)"}}>
                   <Divider/>
                   {/* Blend fraction header */}
                   <div style={{textAlign:"left", marginBottom:4}}>
