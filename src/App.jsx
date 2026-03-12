@@ -1047,7 +1047,7 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
           {dbLoading && (
             <div style={{background:"#0d1f35",borderRadius:7,padding:"8px 13px",marginBottom:10,
               border:"1px solid #1e4060",fontSize:10,color:oc.teal,display:"flex",alignItems:"center",gap:8}}>
-              <span>⏳</span>{"Fetching live records from Supabase..."}
+              Fetching live records from Supabase...
             </div>
           )}
           {dbError && (
