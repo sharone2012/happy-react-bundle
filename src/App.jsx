@@ -2932,7 +2932,7 @@ export default function CFI() {
               )}
 
               <div style={{...S.card, gridColumn:"1/-1"}}>
-                <SectionHdr icon="🔗" title="S1 OUTPUT → S2 CONNECTOR" color={C.green}/>
+                <SectionHdr title="S1 OUTPUT → S2 CONNECTOR" color={C.green}/>
                 <div style={{display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:10}}>
                   <KPI label="Blended FW (EFB+OPDC)" value={s1_blendWet.toLocaleString()} unit="t/month" color={C.green}/>
                   <KPI label="Blended DM" value={s1_blendDM.toLocaleString()} unit="t DM/month" color={C.green}/>
