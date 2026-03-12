@@ -5597,7 +5597,7 @@ export default function CFI() {
         {stage===9 && (
           <div>
             <div style={S.card}>
-              <SectionHdr icon="📊" title="CFI PROJECT SUMMARY — ALL STAGES" color={C.teal}/>
+              <SectionHdr title="CFI PROJECT SUMMARY — ALL STAGES" color={C.teal}/>
               <div style={{display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:12, marginBottom:16}}>
                 <KPI label="Mill Capacity" value={s0.ffbCapacity+" TPH"} unit={`${s0.utilisation}% utilisation`} color={C.teal}/>
                 <KPI label="Monthly FFB" value={monthFFB.toLocaleString()+" t"} unit="/month"/>
