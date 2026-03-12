@@ -3776,7 +3776,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="📋" title="PKM SPECIFICATION & COST BASIS" color={C.teal}/>
+                  <SectionHdr title="PKM SPECIFICATION & COST BASIS" color={C.teal}/>
                   <div style={{fontSize:11, color:C.greyLt, lineHeight:2.0, marginBottom:12}}>
                     {[
                       ["PKM / PKE source","Palm Kernel Meal (local Sumatra/Java)"],
