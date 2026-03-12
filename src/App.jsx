@@ -2351,8 +2351,11 @@ export default function CFI() {
                       onBlur={(e) => upS0("utilisation", +e.target.value)} />
                     </div>
                   </div>
-                  {/* Total EFB */}
-                  <div style={{ background: "#0D3B3B", border: `1px solid ${C.teal}55`, borderRadius: 6, padding: "10px 14px", marginTop: 12, display: "flex", flexDirection: "column", alignItems: "center" }}>
+                  {/* ── C: EFB MONTHLY PRODUCED ── */}
+                  <div style={{ ...S.hdr, borderLeft: `3px solid ${C.teal}`, width: "fit-content", marginTop: 12 }}>
+                    <span style={{ color: C.teal, fontWeight: 800, fontSize: 13, letterSpacing: "0.05em" }}>C — EFB MONTHLY PRODUCED</span>
+                  </div>
+                  <div style={{ background: "#0D3B3B", border: `1px solid ${C.teal}55`, borderRadius: 6, padding: "10px 14px", display: "flex", flexDirection: "column", alignItems: "center" }}>
                     <div style={{ color: C.amber, fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.04em" }}>EFB MONTHLY PRODUCTION</div>
                     <div style={{ color: C.amber, fontSize: 11, fontWeight: 700, marginTop: 4 }}>{efbMonthWet.toLocaleString()}</div>
                     <div style={{ color: C.amber, fontSize: 11, fontWeight: 800, textTransform: "uppercase", opacity: 0.85, marginTop: 2 }}>FRESH WEIGHT</div>
