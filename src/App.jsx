@@ -2354,8 +2354,6 @@ export default function CFI() {
                     onChange={(e) => e.target.value}
                     onBlur={(e) => upS0("utilisation", +e.target.value)} />
                   </div>
-                  {/* Flow arrow */}
-                  <div style={{ textAlign: "center", color: C.teal, fontSize: 10, margin: "4px 0 2px", opacity: 0.7 }}>▼</div>
                   {/* EFB Monthly - aligned to same 50/50 split */}
                   <div style={{ display: "flex", alignItems: "stretch", gap: 0, marginTop: 2 }}>
                     <div style={{ flex: "1 1 0", background: "#0D3B3B", border: `1px solid ${C.amber}55`, borderRight: "none", borderRadius: "6px 0 0 6px", padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
