@@ -2300,21 +2300,10 @@ export default function CFI() {
 
                 {/* ── A: SITE IDENTITY ── */}
                 <Card>
-                  <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:14}}>
-                    <div style={{background:"#0D1F33", borderLeft:`3px solid ${C.teal}`,
-                      borderRadius:8, padding:"11px 14px", display:"flex", alignItems:"center", gap:10, flex:1}}>
-                      <div style={{color:C.teal, fontWeight:800, fontSize:12, letterSpacing:"0.07em", textTransform:"uppercase"}}>
-                        A — Enter Your Details Below
-                      </div>
-                    </div>
-                    <div style={{marginLeft:12, flexShrink:0, display:"flex", flexDirection:"column", alignItems:"center"}}>
-                      <div style={{color:C.grey, fontSize:9, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.09em", marginBottom:4, textAlign:"center"}}>ID Code</div>
-                      <input
-                        style={{background:C.inputBg, border:`1px solid ${C.teal}55`, borderRadius:6,
-                          color:C.white, padding:"8px 12px", fontSize:13, width:90, outline:"none",
-                          boxSizing:"border-box", textAlign:"center"}}
-                        value={s0.idCode||""} onChange={e=>upS0("idCode",e.target.value)}
-                        placeholder="Number"/>
+                  <div style={{background:"#0D1F33", borderLeft:`3px solid ${C.teal}`,
+                    borderRadius:8, padding:"11px 14px", display:"flex", alignItems:"center", gap:10, marginBottom:14}}>
+                    <div style={{color:C.teal, fontWeight:800, fontSize:12, letterSpacing:"0.07em", textTransform:"uppercase"}}>
+                      A — Enter Your Details Below
                     </div>
                   </div>
                   <div style={{display:"flex", flexDirection:"column", gap:10, maxWidth:340}}>
