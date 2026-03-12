@@ -3711,7 +3711,7 @@ export default function CFI() {
               <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:16}}>
 
                 <div style={S.card}>
-                  <SectionHdr icon="🌾" title="PKM SUPPLEMENTATION — SUBSTRATE PROTEIN CORRECTION" color={C.amber}/>
+                  <SectionHdr title="PKM SUPPLEMENTATION — SUBSTRATE PROTEIN CORRECTION" color={C.amber}/>
                   <div style={{marginBottom:12}}>
                     <div style={{display:"flex", alignItems:"center", gap:10, marginBottom:8}}>
                       <span style={{color:C.grey, fontSize:12}}>PKM/PKE supplementation</span>
