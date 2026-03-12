@@ -2299,7 +2299,7 @@ export default function CFI() {
               <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
                 {/* ── A: SITE IDENTITY ── */}
-                <Card>
+                <Card style={{ maxWidth: 280 }}>
                   <div style={{ background: "#0D1F33", borderLeft: `3px solid ${C.teal}`,
                       borderRadius: 8, padding: "11px 14px", display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
                     <div style={{ color: C.teal, fontWeight: 800, fontSize: 12, letterSpacing: "0.07em", textTransform: "uppercase" }}>A — ENTER DETAILS BELOW
