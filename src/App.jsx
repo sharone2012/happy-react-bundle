@@ -2345,7 +2345,7 @@ export default function CFI() {
                   {/* Row 2: OPERATING HOURS PER DAY + input */}
                   <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0" }}>
                     <div style={{ flex: 1 }}>
-                      <div style={{ color: C.teal, fontSize: 10, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1.3 }}>
+                      <div style={{ color: C.teal, fontSize: 13, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1.3 }}>
                          Daily Operating Hours
                       </div>
                     </div>
