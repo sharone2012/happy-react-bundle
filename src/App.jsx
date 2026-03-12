@@ -2438,6 +2438,7 @@ export default function CFI() {
 
                 {/* ── C: RESIDUE SELECTION ── */}
                 <Card>
+                  <div style={{background:"#3A2008", borderRadius:10, padding:16, marginBottom:12}}>
                   <SectionHdr icon="🌿" title="C — Choose Residues for Biological Processing" color={C.teal}/>
                   <div style={g3}>
                     <ResidueCard label={"EMPTY\nFRUIT\nBUNCHES"} active={s0.efbEnabled} onClick={()=>upS0("efbEnabled",!s0.efbEnabled)}/>
