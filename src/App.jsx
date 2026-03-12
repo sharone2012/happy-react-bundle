@@ -2560,6 +2560,7 @@ export default function CFI() {
 
                 {/* ── SOIL TYPE & AG MANAGEMENT ── */}
                 <Card>
+                  <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
                   <SectionHdr title="E — Soil Type &amp; Fertiliser Requirements" color={C.teal} />
                   <div style={{ display: "block", color: C.grey, fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 8 }}>Indonesian Soil Classification</div>
                   <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 4 }}>
@@ -2593,6 +2594,7 @@ export default function CFI() {
                         <Badge text={Math.round(ag.uplift * 100) + "% uplift"} color={s0.ag === ag.id ? ag.color : C.grey} />
                       </div>
                       )}
+                  </div>
                   </div>
                 </Card>
 
