@@ -2293,7 +2293,7 @@ export default function CFI() {
             </div>
 
             {/* ── A & B SIDE BY SIDE ── */}
-            <div style={{ display: "flex", gap: 16, alignItems: "start", marginBottom: 16 }}>
+            <div style={{ display: "flex", gap: 16, alignItems: "stretch", marginBottom: 16 }}>
 
                 {/* ── A: SITE IDENTITY ── */}
                 <Card style={{ flex: 1 }}>
