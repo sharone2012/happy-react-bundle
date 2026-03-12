@@ -268,11 +268,11 @@ const ResidueCard = ({abbr, label, labelJsx, active, locked, onClick, highlightC
       border:active?`1px solid ${toggleCol}55`:"1px solid rgba(255,255,255,0.12)",
       minHeight:58}}>
     <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", gap:8}}>
-      <div style={{color:col, fontWeight:900, fontSize:fs||13, textTransform:"uppercase",
+      <div style={{color:active?col:C.teal, fontWeight:900, fontSize:fs||13, textTransform:"uppercase",
         letterSpacing:"0.06em", lineHeight:1.2}}>{abbr||label}</div>
       <div style={{width:20, height:20, borderRadius:"50%", flexShrink:0,
         background:active?toggleCol:"transparent",
-        border:active?"2.5px solid "+toggleCol:"2.5px solid "+col,
+        border:active?"2.5px solid "+toggleCol:"2.5px solid "+C.teal,
         transition:"all 0.2s"}}/>
     </div>
     {labelJsx ? <div style={{color:"#9ab4c4", fontWeight:700, fontSize:9.5, textTransform:"uppercase",
