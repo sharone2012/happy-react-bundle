@@ -2352,7 +2352,8 @@ export default function CFI() {
                   {/* Total EFB - below FFB and Hours fields */}
                   <div style={{ display: "flex", alignItems: "center", gap: 0, marginTop: 12, width: 320 }}>
                     <div style={{ background: "#0D3B3B", border: `1px solid ${C.teal}55`, borderRight: "none", borderRadius: "6px 0 0 6px", padding: "10px 10px", display: "flex", justifyContent: "center", alignItems: "center", flex: "1 1 0" }}>
-                      <div style={{ color: C.amber, fontSize: 11, fontWeight: 800, lineHeight: 1.2, textTransform: "uppercase" }}>EFB  MONTHLY PRODUCTION</div>
+                      <div style={{ color: C.amber, fontSize: 11, fontWeight: 800, lineHeight: 1.2, textTransform: "uppercase" }}>EFB MONTHLY 
+PRODUCTION</div>
                     </div>
                     <div style={{ background: "#0D3B3B", border: `1px solid ${C.teal}55`, borderLeft: "none", borderRadius: "0 6px 6px 0", padding: "10px 14px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
                       <span style={{ color: C.amber, fontSize: 18, fontWeight: 700 }}>{efbMonthWet.toLocaleString()}</span>
@@ -2368,8 +2369,7 @@ export default function CFI() {
               <div style={{ ...g3, justifyItems: "center", textAlign: "center" }}>
                 <BluField label="EFB %" value={s0.efbCapturePct} onChange={(v) => upS0("efbCapturePct", Math.min(100, Math.max(0, +v)))} note={"= " + (+(efbMonthWet * (s0.efbCapturePct / 100)).toFixed(0)).toLocaleString() + " t FW/mo"} />
                 <BluField label="OPDC %" value={s0.opdcCapturePct} onChange={(v) => upS0("opdcCapturePct", Math.min(100, Math.max(0, +v)))} />
-                <BluField label="POME %" value={s0.pomeCapturePct}
-                  onChange={(v) => upS0("pomeCapturePct", Math.min(100, Math.max(0, +v)))} />
+                <BluField label="POME %" value={s0.pomeCapturePct} onChange={(v) => upS0("pomeCapturePct", Math.min(100, Math.max(0, +v)))} />
               </div>
             </Card>
 
