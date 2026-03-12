@@ -2353,7 +2353,7 @@ export default function CFI() {
 
                   </div>
                   {/* Total EFB - below FFB and Hours fields */}
-                  <div style={{ display: "flex", alignItems: "stretch", gap: 0, marginTop: 12 }}>
+                  <div style={{ display: "flex", alignItems: "stretch", gap: 0, marginTop: 12, width: 184 }}>
                     <div style={{ background: "#0D3B3B", border: `1px solid ${C.teal}55`, borderRight: "none", borderRadius: "6px 0 0 6px", padding: "10px 10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
                       <div style={{ color: C.amber, fontSize: 11, fontWeight: 800, lineHeight: 1.2, textTransform: "uppercase" }}>EFB Produced</div>
                       <div style={{ color: C.amber, fontSize: 11, fontWeight: 800, lineHeight: 1.2, textTransform: "uppercase" }}>Monthly</div>
