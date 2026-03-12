@@ -262,19 +262,19 @@ const ResidueCard = ({abbr, label, active, locked, onClick, highlightColor, font
     style={{background:"#0B1929",
       borderRadius:10, padding:"12px 14px",
       cursor:locked?"not-allowed":"pointer", transition:"all 0.15s",
-      display:"flex", alignItems:"center", justifyContent:"space-between", gap:10,
+      display:"flex", flexDirection:"column", gap:4,
       border:active?`1px solid ${col}55`:"1px solid rgba(255,255,255,0.12)",
       minHeight:58}}>
-    <div style={{flex:1}}>
+    <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", gap:8}}>
       <div style={{color:active?col:"#7799aa", fontWeight:900, fontSize:fs||13, textTransform:"uppercase",
-        letterSpacing:"0.06em", lineHeight:1.2, marginBottom:2}}>{abbr||label}</div>
-      {label && abbr && <div style={{color:"#5a7a8e", fontWeight:700, fontSize:8.5, textTransform:"uppercase",
-        letterSpacing:"0.06em", lineHeight:1.3, whiteSpace:"pre-line"}}>{label}</div>}
+        letterSpacing:"0.06em", lineHeight:1.2}}>{abbr||label}</div>
+      <div style={{width:20, height:20, borderRadius:"50%", flexShrink:0,
+        background:active?col:"transparent",
+        border:active?"2.5px solid "+col:"2.5px solid rgba(255,255,255,0.25)",
+        transition:"all 0.2s"}}/>
     </div>
-    <div style={{width:20, height:20, borderRadius:"50%", flexShrink:0,
-      background:active?col:"transparent",
-      border:active?"2.5px solid "+col:"2.5px solid rgba(255,255,255,0.25)",
-      transition:"all 0.2s"}}/>
+    {label && abbr && <div style={{color:"#5a7a8e", fontWeight:700, fontSize:8.5, textTransform:"uppercase",
+      letterSpacing:"0.06em", lineHeight:1.3, whiteSpace:"pre-line"}}>{label}</div>}
   </div>
   );
 };
