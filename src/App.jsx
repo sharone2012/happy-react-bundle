@@ -4630,7 +4630,7 @@ export default function CFI() {
 
               {/* Per-Stage CAPEX Breakdown */}
               <div style={S.card}>
-                <SectionHdr icon="🔢" title="PER-STAGE CAPEX BREAKDOWN" color={C.teal}/>
+                <SectionHdr title="PER-STAGE CAPEX BREAKDOWN" color={C.teal}/>
                 <div style={{color:C.grey, fontSize:10, marginBottom:8}}>Override individual stage CAPEX estimates (FD Engineering EPC basis)</div>
                 <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, marginBottom:10}}>
                   <BluField label="S1 Pre-Processing" unit="USD" value={capex.s1_capex} onChange={v=>upCapex("s1_capex",+v)}/>
