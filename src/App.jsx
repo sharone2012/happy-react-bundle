@@ -497,7 +497,7 @@ function BlendOptimiser({ efbDMpd, opdcDMreq, pomeSludgeMaxPct, pomeSludgeNatTPD
 
   return (
     <div style={{ ...S.card, border: `1px solid ${C.purple}55`, gridColumn: "1/-1" }}>
-      <SectionHdr title="I — BLEND OPTIMISER — REVERSE SOLVER" color={C.purple} />
+      <SectionHdr title="I — Blend Optimiser — Reverse Solver" color={C.purple} />
       <div style={{ fontSize: 11, color: C.grey, marginBottom: 12, lineHeight: 1.7 }}>
         Set a <strong style={{ color: C.white }}>target C:N</strong> and/or <strong style={{ color: C.white }}>target CP%</strong>.
         The solver calculates the POME inclusion % and PKE dose required.
@@ -2296,9 +2296,9 @@ export default function CFI() {
             <div style={{ display: "flex", gap: 16, alignItems: "stretch", marginBottom: 16 }}>
 
                 {/* ── A: SITE IDENTITY ── */}
-                <Card style={{ flex: 1 }}>
+                <Card style={{ flex: 0.8 }}>
                   <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
-                  <SectionHdr title="A — ENTER DETAILS BELOW" color={C.teal} />
+                  <SectionHdr title="A — Enter Details Below" color={C.teal} />
                   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                     <input style={{ background: C.inputBg, border: `1px solid ${C.teal}55`, borderRadius: 6,
                       color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
@@ -2325,7 +2325,7 @@ export default function CFI() {
                 {/* ── B: MILL CAPACITY ── */}
                 <Card style={{ flex: 1, display: "flex", flexDirection: "column" }}>
                   <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)", flex: 1 }}>
-                  <SectionHdr title={"B — ENTER MILL CAPACITY"} color={C.teal} />
+                  <SectionHdr title={"B — Enter Mill Capacity"} color={C.teal} />
                   <div style={{ width: "100%" }}>
                   {/* Row 1: FRESH FRUIT BUNCH / TONS PER HOUR + input */}
                   <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0" }}>
@@ -2613,7 +2613,7 @@ export default function CFI() {
               {/* ── F: POME SLUDGE ── */}
               <Card>
                 <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
-                <SectionHdr title="F — POME Sludge (Third Waste Stream)" color={C.blue} />
+                <SectionHdr title="F — Pome Sludge (Third Waste Stream)" color={C.blue} />
                 <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                     <input type="checkbox" checked={pomeActive} readOnly
@@ -2692,7 +2692,7 @@ export default function CFI() {
               {/* ── G: PKE ── */}
               <Card>
                 <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
-                <SectionHdr title="G — PKE Palm Kernel Expeller (Protein Booster — Optional)" color={C.amber} />
+                <SectionHdr title="G — Pke Palm Kernel Expeller (Protein Booster — Optional)" color={C.amber} />
                 <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: s0.pkeEnabled ? 16 : 0 }}>
                   <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
                     <input type="checkbox" checked={s0.pkeEnabled}
