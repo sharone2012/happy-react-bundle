@@ -3130,7 +3130,7 @@ export default function CFI() {
               {/* RIGHT: Summary panel */}
               <div style={{display:"flex",flexDirection:"column",gap:10}}>
                 <div style={S.card}>
-                  <SectionHdr icon="📊" title="ACTIVE TREATMENT SUMMARY" color={C.teal}/>
+                  <SectionHdr title="ACTIVE TREATMENT SUMMARY" color={C.teal}/>
                   <CalcField label="Total lignin reduction" unit="%" value={`~${pksa_ligninRed}%`}/>
                   <CalcField label="Cost per tonne FW" unit="USD" value={`$${s2CostPerT.toFixed(2)}`}/>
                   <CalcField label="Monthly S2 cost" unit="USD" value={`$${s2MonthlyCost.toLocaleString()}`}/>
