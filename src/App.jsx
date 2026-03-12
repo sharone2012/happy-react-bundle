@@ -3351,7 +3351,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="🧬" title="ENZYMES (Apply post-thermophilic — <45°C only)" color={C.purple}/>
+                  <SectionHdr title="ENZYMES (Apply post-thermophilic — <45°C only)" color={C.purple}/>
                   <Alert type="warn" msg="Never apply enzymes during thermophilic phase (>55°C). Irreversible denaturation. Apply as part of Wave 2 after substrate cools."/>
                   <div style={{height:8}}/>
                   {[
