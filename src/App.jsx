@@ -273,7 +273,7 @@ const ResidueCard = ({label, active, locked, onClick, highlightColor}) => {
     </div>
     {/* Label text */}
     <div style={{color:"#fff", fontWeight:800, fontSize:12, textTransform:"uppercase",
-      textAlign:"center", lineHeight:1.4, letterSpacing:"0.04em"}}>{label}</div>
+      textAlign:"center", lineHeight:1.4, letterSpacing:"0.04em", whiteSpace:"pre-line"}}>{label}</div>
   </div>
   );
 };
