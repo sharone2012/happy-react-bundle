@@ -2448,7 +2448,7 @@ export default function CFI() {
                   <SectionHdr icon="🌿" title="C — Choose Residues for Biological Processing" color={C.teal}/>
                   <div style={g3}>
                     <ResidueCard abbr="EFB" label={"EMPTY\nFRUIT BUNCHES"} active={s0.efbEnabled} onClick={()=>upS0("efbEnabled",!s0.efbEnabled)} highlightColor={C.amber}/>
-                    <ResidueCard abbr="POS" label={"POME\nSLUDGE"} active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} highlightColor="#4A9EDB"/>
+                    <ResidueCard abbr="POS" label={"POME\nSLUDGE"} active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} highlightColor={C.teal}/>
                     <ResidueCard abbr="PMF" label={"MESOCARP\nFIBER"} active={s0.pmfEnabled} onClick={()=>upS0("pmfEnabled",!s0.pmfEnabled)} highlightColor="#E07C24"/>
                   </div>
                   <div style={{...g3, marginTop:10}}>
