@@ -2912,7 +2912,7 @@ export default function CFI() {
 
               {pomeActive && (
                 <div style={{...S.card, gridColumn:"1/-1", border:`1px solid ${C.blue}44`}}>
-                  <SectionHdr icon="💧" title="S1 — POME SLUDGE STREAM (ACTIVE)" color={C.blue}/>
+                  <SectionHdr title="S1 — POME SLUDGE STREAM (ACTIVE)" color={C.blue}/>
                   <div style={{display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:10, marginBottom:8}}>
                     <KPI label="Natural Yield" value={pomeSludgeNatTPD} unit="t/day fresh" color={C.blue}/>
                     <KPI label="MC at entry" value={`${pomeSludgeActMC}%`} unit={s0.pomeSludgeDewatered?"post-dewatering":"mill exit"} color={C.teal}/>
