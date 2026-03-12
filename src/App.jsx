@@ -2450,35 +2450,48 @@ export default function CFI() {
                   </div>
                   <Divider/>
 
-                  {/* ── DAILY RESIDUES AVAILABLE FROM MILL ── */}
-                  <div style={{background:"#0A1624", border:"1px solid rgba(255,255,255,0.08)",
-                    borderRadius:8, padding:"14px 16px", marginBottom:12}}>
-                    <div style={{color:C.teal, fontWeight:800, fontSize:11, textTransform:"uppercase",
-                      letterSpacing:"0.06em", marginBottom:12}}>Daily Residues Available from Mill</div>
-                    <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:8}}>
-                      {[
-                        {l:"EFB", wet:efbTPD, dm:efbDMpd, mc:s0.efbMC, c:C.teal, active:true},
-                        {l:"OPDC", wet:opdcNatTPD, dm:opdcNatDM, mc:s0.opdcMC, c:C.amber, active:true},
-                        {l:"POME Sludge", wet:pomeSludgeNatTPD, dm:pomeSludgeDMpd, mc:pomeSludgeActMC, c:"#4A9EDB", active:pomeActive},
-                        {l:"PMF", wet:s0.pmfEnabled ? +(effFFB * s0.hrsDay * 0.135).toFixed(1) : 0,
-                         dm:s0.pmfEnabled ? +(effFFB * s0.hrsDay * 0.135 * 0.35).toFixed(2) : 0,
-                         mc:65, c:"#E07C24", active:s0.pmfEnabled},
-                      ].map((r,i)=>(
-                        <div key={i} style={{background:r.active?"rgba(255,255,255,0.03)":"rgba(255,255,255,0.01)",
-                          border:`1px solid ${r.active?r.c+"33":"rgba(255,255,255,0.05)"}`,
-                          borderRadius:6, padding:"10px 10px", textAlign:"center", opacity:r.active?1:0.4}}>
-                          <div style={{color:r.c, fontWeight:800, fontSize:10, textTransform:"uppercase",
-                            letterSpacing:"0.05em", marginBottom:8}}>{r.l}</div>
-                          <div style={{color:r.active?C.white:"#555", fontWeight:900, fontSize:16, fontFamily:"monospace"}}>{r.dm}</div>
-                          <div style={{color:C.grey, fontSize:9, marginTop:2}}>t DM / day</div>
-                          <div style={{borderTop:"1px solid rgba(255,255,255,0.06)", marginTop:8, paddingTop:6}}>
-                            <div style={{color:r.active?"#aabbcc":"#555", fontSize:11, fontFamily:"monospace", fontWeight:700}}>{r.wet}</div>
-                            <div style={{color:C.grey, fontSize:9}}>t wet / day</div>
-                          </div>
-                          <div style={{color:C.grey, fontSize:9, marginTop:4}}>{r.mc}% MC</div>
+                  {/* ── DAILY DRY MATTER AVAILABLE AT MILL ── */}
+                  <div style={{textAlign:"left", marginBottom:4, marginTop:4}}>
+                    <div style={{color:C.teal, fontWeight:800, fontSize:12, letterSpacing:"0.05em"}}>Daily Dry Matter Available at Mill</div>
+                  </div>
+                  <div style={g3}>
+                    {[
+                      {l:"EFB", dm:efbDMpd, c:C.teal, active:true},
+                      {l:"OPDC", dm:opdcNatDM, c:C.amber, active:true},
+                      {l:"POME\nSLUDGE", dm:pomeSludgeDMpd, c:"#4A9EDB", active:pomeActive},
+                    ].map((r,i)=>(
+                      <div key={i} style={{background:r.active?"#1a3a4a":"#1a2a35",
+                        borderRadius:10, padding:"10px 12px",
+                        display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:8,
+                        border:r.active?`1px solid ${r.c}55`:"1px solid rgba(255,255,255,0.08)"}}>
+                        <div style={{color:r.active?r.c:"#7799aa", fontWeight:800, fontSize:9.8, textTransform:"uppercase",
+                          textAlign:"left", lineHeight:1.3, letterSpacing:"0.04em", whiteSpace:"pre-line", flex:1}}>{r.l}</div>
+                        <div style={{color:r.active?C.white:"#555", fontWeight:900, fontSize:14, fontFamily:"monospace",
+                          textAlign:"right", lineHeight:1.2}}>
+                          {r.dm}<div style={{color:C.grey, fontSize:8, fontWeight:600, marginTop:2}}>t DM/day</div>
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{...g3, marginTop:12}}>
+                    {[
+                      {l:"PMF", dm:s0.pmfEnabled ? +(effFFB * s0.hrsDay * 0.135 * 0.35).toFixed(2) : 0, c:"#E07C24", active:s0.pmfEnabled},
+                      {l:"POME\nLIQUID", dm:0, c:"#4A9EDB", active:s0.pomeLiquidEnabled},
+                      {l:"PKE", dm:s0.pkeEnabled ? +(s0.pkeTPD * 0.90).toFixed(2) : 0, c:"#00E676", active:s0.pkeEnabled},
+                    ].map((r,i)=>(
+                      <div key={i} style={{background:r.active?"#1a3a4a":"#1a2a35",
+                        borderRadius:10, padding:"10px 12px",
+                        display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:8,
+                        border:r.active?`1px solid ${r.c}55`:"1px solid rgba(255,255,255,0.08)",
+                        opacity:r.active?1:0.4}}>
+                        <div style={{color:r.active?r.c:"#7799aa", fontWeight:800, fontSize:9.8, textTransform:"uppercase",
+                          textAlign:"left", lineHeight:1.3, letterSpacing:"0.04em", whiteSpace:"pre-line", flex:1}}>{r.l}</div>
+                        <div style={{color:r.active?C.white:"#555", fontWeight:900, fontSize:14, fontFamily:"monospace",
+                          textAlign:"right", lineHeight:1.2}}>
+                          {r.dm}<div style={{color:C.grey, fontSize:8, fontWeight:600, marginTop:2}}>t DM/day</div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
 
                   <Divider/>
