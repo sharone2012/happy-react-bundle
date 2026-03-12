@@ -3982,7 +3982,7 @@ export default function CFI() {
 
               {/* Frass Lab Analysis */}
               <div style={S.card}>
-                <SectionHdr icon="🌱" title={`${s4.pathwayS5==="s5a"?"S5A":"S5B"} — FRASS LAB ANALYSIS`} color={C.green}/>
+                <SectionHdr title={`${s4.pathwayS5==="s5a"?"S5A":"S5B"} — FRASS LAB ANALYSIS`} color={C.green}/>
                 {[
                   {l:"Total N",           v: s4.pathwayS5==="s5a" ? `${s5a_N_DM}%` : `${s5b_N_DM}%`,  unit:"DM", color:C.green},
                   {l:"Total P (P₂O₅)",    v: s4.pathwayS5==="s5a" ? `${(s5a_P_DM*2.29).toFixed(2)}%` : `${(s5b_P_DM*2.29).toFixed(2)}%`, unit:"DM", color:C.green},
