@@ -2298,28 +2298,28 @@ export default function CFI() {
                 {/* ── A: SITE IDENTITY ── */}
                 <Card style={{ maxWidth: 280 }}>
                   <div style={{ background: "#0D1F33", borderLeft: `3px solid ${C.teal}`,
-                      borderRadius: 8, padding: "11px 14px", display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+                    borderRadius: 8, padding: "11px 14px", display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
                     <div style={{ color: C.teal, fontWeight: 800, fontSize: 12, letterSpacing: "0.07em", textTransform: "uppercase" }}>A — ENTER DETAILS BELOW
 
                       </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                     <input style={{ background: C.inputBg, border: `1px solid ${C.teal}55`, borderRadius: 6,
-                        color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
-                      value={s0.plantName} onChange={(e) => upS0("plantName", e.target.value)}
-                      placeholder="Enter Name of Plantation" />
+                      color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
+                    value={s0.plantName} onChange={(e) => upS0("plantName", e.target.value)}
+                    placeholder="Enter Name of Plantation" />
                     <input style={{ background: C.inputBg, border: `1px solid ${C.teal}55`, borderRadius: 6,
-                        color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
-                      value={s0.millName} onChange={(e) => upS0("millName", e.target.value)}
-                      placeholder="Enter Name of CPO Mill" />
+                      color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
+                    value={s0.millName} onChange={(e) => upS0("millName", e.target.value)}
+                    placeholder="Enter Name of CPO Mill" />
                     <input style={{ background: C.inputBg, border: `1px solid ${C.teal}55`, borderRadius: 6,
-                        color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
-                      value={s0.district} onChange={(e) => upS0("district", e.target.value)}
-                      placeholder="Enter District / Kabupaten" />
+                      color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
+                    value={s0.district} onChange={(e) => upS0("district", e.target.value)}
+                    placeholder="Enter District / Kabupaten" />
                     <input style={{ background: C.inputBg, border: `1px solid ${C.teal}55`, borderRadius: 6,
-                        color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
-                      value={s0.province} onChange={(e) => upS0("province", e.target.value)}
-                      placeholder="Enter Province" />
+                      color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
+                    value={s0.province} onChange={(e) => upS0("province", e.target.value)}
+                    placeholder="Enter Province" />
                   </div>
                 </Card>
 
@@ -2331,24 +2331,24 @@ export default function CFI() {
                     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
                       <div style={{ color: C.teal, fontSize: 11, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase" }}>FFB</div>
                       <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6,
-                          color: C.white, padding: "10px 0", fontSize: 18, fontWeight: 700,
-                          width: 80, outline: "none", boxSizing: "border-box", textAlign: "center" }}
-                        value={s0.ffbCapacity}
-                        onChange={(e) => e.target.value}
-                        onBlur={(e) => upS0("ffbCapacity", +e.target.value)} />
-                      <div style={{ color: C.grey, fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>TONS PER HOUR</div>
+                        color: C.white, padding: "10px 0", fontSize: 18, fontWeight: 700,
+                        width: 80, outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                      value={s0.ffbCapacity}
+                      onChange={(e) => e.target.value}
+                      onBlur={(e) => upS0("ffbCapacity", +e.target.value)} />
+                      <div style={{ color: C.grey, fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>T/HOUR</div>
                     </div>
 
                     {/* Mill Hours */}
                     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
                       <div style={{ color: C.teal, fontSize: 11, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase" }}>MILL HOURS</div>
                       <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6,
-                          color: C.white, padding: "10px 0", fontSize: 18, fontWeight: 700,
-                          width: 80, outline: "none", boxSizing: "border-box", textAlign: "center" }}
-                        value={s0.utilisation}
-                        onChange={(e) => e.target.value}
-                        onBlur={(e) => upS0("utilisation", +e.target.value)} />
-                      <div style={{ color: C.grey, fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>HOURS PER DAY</div>
+                        color: C.white, padding: "10px 0", fontSize: 18, fontWeight: 700,
+                        width: 80, outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                      value={s0.utilisation}
+                      onChange={(e) => e.target.value}
+                      onBlur={(e) => upS0("utilisation", +e.target.value)} />
+                      <div style={{ color: C.grey, fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>HOURS/DAY</div>
                     </div>
 
                     {/* EFB Available - black box */}
@@ -2366,12 +2366,12 @@ export default function CFI() {
               <SectionHdr title="D — Captured % of Mill Processing Capacity Used" color={C.teal} />
               <div style={{ ...g3, justifyItems: "center", textAlign: "center" }}>
                 <BluField label="EFB %" value={s0.efbCapturePct}
-                    onChange={(v) => upS0("efbCapturePct", Math.min(100, Math.max(0, +v)))}
-                    note={"= " + (+(efbMonthWet * (s0.efbCapturePct / 100)).toFixed(0)).toLocaleString() + " t FW/mo"} />
+                  onChange={(v) => upS0("efbCapturePct", Math.min(100, Math.max(0, +v)))}
+                  note={"= " + (+(efbMonthWet * (s0.efbCapturePct / 100)).toFixed(0)).toLocaleString() + " t FW/mo"} />
                 <BluField label="OPDC %" value={s0.opdcCapturePct}
-                    onChange={(v) => upS0("opdcCapturePct", Math.min(100, Math.max(0, +v)))} />
+                  onChange={(v) => upS0("opdcCapturePct", Math.min(100, Math.max(0, +v)))} />
                 <BluField label="POME %" value={s0.pomeCapturePct}
-                    onChange={(v) => upS0("pomeCapturePct", Math.min(100, Math.max(0, +v)))} />
+                  onChange={(v) => upS0("pomeCapturePct", Math.min(100, Math.max(0, +v)))} />
               </div>
             </Card>
 
