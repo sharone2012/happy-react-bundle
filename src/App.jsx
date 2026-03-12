@@ -255,29 +255,25 @@ const PillToggle = ({options, value, onChange, color=C.teal}) => (
   </div>
 );
 
-const ResidueCard = ({label, active, locked, onClick, sublabel, highlightColor}) => {
-  const hc = highlightColor || C.teal;
+const ResidueCard = ({label, active, locked, onClick, highlightColor}) => {
+  const hc = highlightColor || "#2C6E8A";
   return (
   <div onClick={locked?undefined:onClick}
-    style={{background:active?hc+"18":C.navyDk,
-      border:`1px solid ${active?hc+"66":"rgba(255,255,255,0.07)"}`,
-      borderTop:`2px solid ${active?hc:"rgba(255,255,255,0.07)"}`,
-      borderRadius:10, padding:"10px 14px", minHeight:60,
-      cursor:locked?"not-allowed":"pointer", transition:"all 0.15s"}}>
-    {/* Row 1: label + toggle on same line */}
-    <div style={{display:"flex", alignItems:"center", gap:8}}>
-      <div style={{width:32, height:18, borderRadius:9, padding:2, flexShrink:0,
-        background:active?hc:C.grey+"44",
-        transition:"background 0.2s", display:"flex", alignItems:"center"}}>
-        <div style={{width:14, height:14, borderRadius:"50%", background:"#fff",
-          transform:active?"translateX(14px)":"translateX(0)",
-          transition:"transform 0.2s", boxShadow:"0 1px 3px rgba(0,0,0,0.3)"}}/>
-      </div>
-      <span style={{color:active?hc:C.grey, fontWeight:800, fontSize:12}}>{label}</span>
+    style={{background:active?"#2C6E8A":"#1E4D6B",
+      borderRadius:14, padding:"16px 14px", minHeight:90,
+      cursor:locked?"not-allowed":"pointer", transition:"all 0.15s",
+      display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:8}}>
+    {/* Toggle pill */}
+    <div style={{width:36, height:18, borderRadius:9, padding:2,
+      background:active?"rgba(255,255,255,0.5)":"rgba(255,255,255,0.25)",
+      transition:"background 0.2s", display:"flex", alignItems:"center"}}>
+      <div style={{width:14, height:14, borderRadius:"50%", background:"#fff",
+        transform:active?"translateX(18px)":"translateX(0)",
+        transition:"transform 0.2s", boxShadow:"0 1px 3px rgba(0,0,0,0.3)"}}/>
     </div>
-    {/* Row 2: full name */}
-    {sublabel&&<div style={{color:C.grey, fontSize:9, marginTop:4, paddingLeft:40}}>{sublabel}</div>}
-    {locked&&<div style={{color:C.grey, fontSize:9, marginTop:3, paddingLeft:40, fontStyle:"italic"}}>locked — always active</div>}
+    {/* Label text */}
+    <div style={{color:"#fff", fontWeight:800, fontSize:12, textTransform:"uppercase",
+      textAlign:"center", lineHeight:1.4, letterSpacing:"0.04em", whiteSpace:"pre-line"}}>{label}</div>
   </div>
   );
 };
@@ -1369,6 +1365,8 @@ export default function CFI() {
     pomeSludgeFeResult: "",
     pomeEnabled: false,
     pkeEnabled: false,
+    pmfEnabled: false,
+    pomeLiquidEnabled: false,
     pkeTPD: 5,
     cnTarget: 22,
     soil: "ultisol", ag: "vgam",
@@ -2442,11 +2440,15 @@ export default function CFI() {
                 {/* ── C: RESIDUE SELECTION ── */}
                 <Card>
                   <SectionHdr icon="🌿" title="C — Choose Residues for Biological Processing" color={C.teal}/>
-                  <div style={g4}>
-                    <ResidueCard label="EFB"         active={s0.efbEnabled}        onClick={()=>upS0("efbEnabled",!s0.efbEnabled)}               sublabel="Empty Fruit Bunches"/>
-                    <ResidueCard label="OPDC"        active={s0.opdcEnabled}       onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)}              sublabel="Decanter Cake"/>
-                    <ResidueCard label="POME SLUDGE" active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} sublabel={pomeActive?(pomePct>0.09?"Auto: "+pomePct+"% DM remainder":"Manual — ON"):"Click to activate"}/>
-                    <ResidueCard label="PKE" active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)} sublabel="Palm Kernel Expeller (Protein Booster)" highlightColor="#00E676"/>
+                  <div style={g3}>
+                    <ResidueCard label={"EMPTY\nFRUIT\nBUNCHES"} active={s0.efbEnabled} onClick={()=>upS0("efbEnabled",!s0.efbEnabled)}/>
+                    <ResidueCard label={"DECANTER\nCAKE"} active={s0.opdcEnabled} onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)}/>
+                    <ResidueCard label={"POME\nSLUDGE"} active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)}/>
+                  </div>
+                  <div style={{...g3, marginTop:12}}>
+                    <ResidueCard label={"PALM\nMESOCARP\nFIBER"} active={s0.pmfEnabled} onClick={()=>upS0("pmfEnabled",!s0.pmfEnabled)}/>
+                    <ResidueCard label={"POME\nLIQUID\n(New Process)"} active={s0.pomeLiquidEnabled} onClick={()=>upS0("pomeLiquidEnabled",!s0.pomeLiquidEnabled)}/>
+                    <ResidueCard label={"PALM\nKERNAL\nEXPELLER"} active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)}/>
                   </div>
                   <Divider/>
                   {/* Blend fraction header */}
