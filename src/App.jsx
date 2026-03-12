@@ -2330,7 +2330,7 @@ export default function CFI() {
                   {/* Row 1: FRESH FRUIT BUNCH / TONS PER HOUR + input */}
                   <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0" }}>
                     <div style={{ flex: 1 }}>
-                      <div style={{ color: C.teal, fontSize: 10, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1.3 }}>
+                      <div style={{ color: C.teal, fontSize: 13, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1.3 }}>
                         FRESH FRUIT BUNCH
                       </div>
                       <div style={{ color: C.teal, fontSize: 10, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1.3 }}>
