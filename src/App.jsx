@@ -2298,7 +2298,7 @@ export default function CFI() {
                 {/* ── A: SITE IDENTITY ── */}
                 <Card style={{ flex: 0.8 }}>
                   <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
-                  <SectionHdr title="A — ENTER DETAILS BELOW" color={C.teal} />
+                  <SectionHdr title="A — Enter Details Below" color={C.teal} />
                   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                     <input style={{ background: C.inputBg, border: `1px solid ${C.teal}55`, borderRadius: 6,
                       color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
