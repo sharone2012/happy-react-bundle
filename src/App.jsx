@@ -4451,7 +4451,7 @@ export default function CFI() {
 
               {/* BSF Oil */}
               <div style={S.card}>
-                <SectionHdr icon="🛢️" title="BSF OIL — FATTY ACID PROFILE" color={C.amber}/>
+                <SectionHdr title="BSF OIL — FATTY ACID PROFILE" color={C.amber}/>
                 <div style={{background:C.amber+"18", border:`1px solid ${C.amber}44`, borderRadius:8,
                   padding:"10px 14px", marginBottom:10, textAlign:"center"}}>
                   <div style={{color:C.grey, fontSize:10}}>MONTHLY YIELD</div>
