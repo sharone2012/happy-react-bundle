@@ -2326,68 +2326,54 @@ export default function CFI() {
                 {/* ── B: MILL CAPACITY ── */}
                 <Card style={{ flex: 1 }}>
                   <SectionHdr title="B — ENTER MILL FFB PROCESSING CAPACITY t/h" color={C.teal} />
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px 32px", alignItems: "center", alignSelf: "center" }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: 24 }}>
+                    {/* FFB */}
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+                      <div style={{ color: C.teal, fontSize: 11, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase" }}>FFB</div>
+                      <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6,
+                          color: C.white, padding: "10px 0", fontSize: 18, fontWeight: 700,
+                          width: 80, outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                        value={s0.ffbCapacity}
+                        onChange={(e) => e.target.value}
+                        onBlur={(e) => upS0("ffbCapacity", +e.target.value)} />
+                      <div style={{ color: C.grey, fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>TONS PER HOUR</div>
+                    </div>
 
-                        {/* FFB Processing */}
-                        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                            <div style={{ color: C.teal, fontSize: 12, fontWeight: 800, letterSpacing: "0.05em", lineHeight: 1.2, minWidth: 70 }}>
-                              FFB<br />Processing
-                            </div>
-                            <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6,
-                                color: C.white, padding: "10px 0", fontSize: 18, fontWeight: 700,
-                                width: 88, outline: "none", boxSizing: "border-box", textAlign: "center" }}
-                              value={s0.ffbCapacity}
-                              onChange={(e) => e.target.value}
-                              onBlur={(e) => upS0("ffbCapacity", +e.target.value)} />
-                          </div>
-                          <div style={{ color: C.grey, fontSize: 10, textAlign: "center", marginLeft: 70, width: 88 }}>Tons per Hour</div>
-                        </div>
+                    {/* Mill Hours */}
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+                      <div style={{ color: C.teal, fontSize: 11, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase" }}>MILL HOURS</div>
+                      <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6,
+                          color: C.white, padding: "10px 0", fontSize: 18, fontWeight: 700,
+                          width: 80, outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                        value={s0.utilisation}
+                        onChange={(e) => e.target.value}
+                        onBlur={(e) => upS0("utilisation", +e.target.value)} />
+                      <div style={{ color: C.grey, fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>HOURS PER DAY</div>
+                    </div>
 
-                        {/* Utilisation */}
-                        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                            <div style={{ color: C.teal, fontSize: 12, fontWeight: 800, letterSpacing: "0.05em", lineHeight: 1.2, minWidth: 70 }}>
-                              Mill<br />Utilisation
-                            </div>
-                            <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6,
-                                color: C.white, padding: "10px 0", fontSize: 18, fontWeight: 700,
-                                width: 88, outline: "none", boxSizing: "border-box", textAlign: "center" }}
-                              value={s0.utilisation}
-                              onChange={(e) => e.target.value}
-                              onBlur={(e) => upS0("utilisation", +e.target.value)} />
-                          </div>
-                          <div style={{ display: "flex", alignItems: "center", marginLeft: 70, width: 88, justifyContent: "center", gap: 6 }}>
-                            <div style={{ color: C.grey, fontSize: 10, textAlign: "center" }}>% Default</div>
-                          </div>
-                        </div>
-
-                      </div>
-
-                      {/* EFB Available - black box */}
-                      <div style={{ background: "#000000", border: `1px solid ${C.teal}44`, borderRadius: 10, padding: "6px 28px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 0, minWidth: 140, alignSelf: "center" }}>
-                        <div style={{ color: C.amber, fontSize: 12, fontWeight: 800, letterSpacing: "0.06em", textAlign: "center", marginBottom: 4 }}>EFB Available</div>
-                        <div style={{ color: C.green, fontSize: 24, fontWeight: 900, lineHeight: 1 }}>{efbMonthWet.toLocaleString()}</div>
-                        <div style={{ color: C.grey, fontSize: 10, whiteSpace: "nowrap", marginTop: 4 }}>Fresh Weight /month</div>
-                      </div>
+                    {/* EFB Available - black box */}
+                    <div style={{ background: "#000000", border: `1px solid ${C.teal}44`, borderRadius: 10, padding: "6px 28px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 0, minWidth: 140, alignSelf: "center" }}>
+                      <div style={{ color: C.amber, fontSize: 12, fontWeight: 800, letterSpacing: "0.06em", textAlign: "center", marginBottom: 4 }}>EFB Available</div>
+                      <div style={{ color: C.green, fontSize: 24, fontWeight: 900, lineHeight: 1 }}>{efbMonthWet.toLocaleString()}</div>
+                      <div style={{ color: C.grey, fontSize: 10, whiteSpace: "nowrap", marginTop: 4 }}>Fresh Weight /month</div>
                     </div>
                   </div>
-
-                  <div style={{ marginTop: 16 }}>
-                  <SectionHdr title="D — Captured % of Mill Processing Capacity Used" color={C.teal} />
-                  <div style={{ ...g3, justifyItems: "center", textAlign: "center" }}>
-                    <BluField label="EFB %" value={s0.efbCapturePct}
-                        onChange={(v) => upS0("efbCapturePct", Math.min(100, Math.max(0, +v)))}
-                        note={"= " + (+(efbMonthWet * (s0.efbCapturePct / 100)).toFixed(0)).toLocaleString() + " t FW/mo"} />
-                    <BluField label="OPDC %" value={s0.opdcCapturePct}
-                        onChange={(v) => upS0("opdcCapturePct", Math.min(100, Math.max(0, +v)))} />
-                    <BluField label="POME %" value={s0.pomeCapturePct}
-                        onChange={(v) => upS0("pomeCapturePct", Math.min(100, Math.max(0, +v)))} />
-                  </div>
-                  </div>
                 </Card>
+            </div>
+
+            {/* ── D: CAPTURED % ── */}
+            <Card style={{ marginBottom: 16 }}>
+              <SectionHdr title="D — Captured % of Mill Processing Capacity Used" color={C.teal} />
+              <div style={{ ...g3, justifyItems: "center", textAlign: "center" }}>
+                <BluField label="EFB %" value={s0.efbCapturePct}
+                    onChange={(v) => upS0("efbCapturePct", Math.min(100, Math.max(0, +v)))}
+                    note={"= " + (+(efbMonthWet * (s0.efbCapturePct / 100)).toFixed(0)).toLocaleString() + " t FW/mo"} />
+                <BluField label="OPDC %" value={s0.opdcCapturePct}
+                    onChange={(v) => upS0("opdcCapturePct", Math.min(100, Math.max(0, +v)))} />
+                <BluField label="POME %" value={s0.pomeCapturePct}
+                    onChange={(v) => upS0("pomeCapturePct", Math.min(100, Math.max(0, +v)))} />
+              </div>
+            </Card>
             </div>
 
             {/* ── TWO-COLUMN ROW ── */}
