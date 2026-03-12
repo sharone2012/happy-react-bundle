@@ -2332,8 +2332,8 @@ export default function CFI() {
                   {/* FFB + Hours row */}
                   <div style={{ display: "flex", alignItems: "center", gap: 0 }}>
                     <div style={{ flex: "1 1 0", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "8px 0" }}>
-                      <div style={{ color: C.teal, fontSize: 12, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", textAlign: "center", lineHeight: 1.2 }}>
-                        <div>FFB</div><div>T/H</div>
+                      <div style={{ color: C.teal, fontSize: 13, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", textAlign: "center", lineHeight: 1.2, whiteSpace: "nowrap" }}>
+                        FFB T/H
                       </div>
                       <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 0", fontSize: 15, fontWeight: 700, width: 44, outline: "none", boxSizing: "border-box", textAlign: "center" }}
                       value={s0.ffbCapacity}
