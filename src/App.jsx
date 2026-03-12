@@ -2356,6 +2356,7 @@ export default function CFI() {
                       <span style={{ color: C.amber, fontSize: 18, fontWeight: 700 }}>{efbMonthWet.toLocaleString()}</span>
                       <div style={{ color: C.amber, fontSize: 9, fontWeight: 800, textTransform: "uppercase", opacity: 0.85 }}>FRESH WEIGHT</div>
                     </div>
+                    </div>
                   </div>
                 </Card>
             </div>
