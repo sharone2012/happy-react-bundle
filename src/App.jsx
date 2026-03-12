@@ -2445,7 +2445,7 @@ export default function CFI() {
                   </div>
                   <div style={{...g3, marginTop:12}}>
                     <ResidueCard label={"PALM\nMESOCARP\nFIBER"} active={s0.pmfEnabled} onClick={()=>upS0("pmfEnabled",!s0.pmfEnabled)}/>
-                    <ResidueCard label={"POME LIQUID (Additional Process)"} active={s0.pomeLiquidEnabled} onClick={()=>upS0("pomeLiquidEnabled",!s0.pomeLiquidEnabled)}/>
+                    <ResidueCard label={"POME LIQUID\n(Additional Process)"} fontSize={8.3} active={s0.pomeLiquidEnabled} onClick={()=>upS0("pomeLiquidEnabled",!s0.pomeLiquidEnabled)}/>
                     <ResidueCard label={"PALM\nKERNAL\nEXPELLER"} active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)}/>
                   </div>
                   <Divider/>
