@@ -227,13 +227,11 @@ const Card = ({children, style={}}) => (
 
 const Warn = ({msg, type="warn"}) => {
   const col = type==="warn"?C.amber : type==="ok"?C.green : C.red;
-  const icon = type==="warn"?"⚠" : type==="ok"?"✓" : "✕";
   return (
     <div style={{background:col+"14", border:`1px solid ${col}44`,
       borderLeft:`3px solid ${col}`, borderRadius:6,
       padding:"8px 13px", color:col, fontSize:11,
       display:"flex", alignItems:"flex-start", gap:8, marginTop:8}}>
-      <span style={{fontWeight:800, fontSize:12, marginTop:1, flexShrink:0}}>{icon}</span>
       <span style={{lineHeight:1.5}}>{msg}</span>
     </div>
   );
