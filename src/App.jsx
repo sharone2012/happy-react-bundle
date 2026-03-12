@@ -261,7 +261,7 @@ const ResidueCard = ({abbr, label, labelJsx, active, locked, onClick, highlightC
   const hasSubLabel = (label && abbr) || labelJsx;
   return (
   <div onClick={locked?undefined:onClick}
-    style={{background: active ? "#0B1929" : "#000000",
+    style={{background: active ? "#0F2236" : "#000000",
       borderRadius:10, padding:"12px 14px",
       cursor:locked?"not-allowed":"pointer", transition:"all 0.15s",
       display:"flex", flexDirection:"column", gap:4,
