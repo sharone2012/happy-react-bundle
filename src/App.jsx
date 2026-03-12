@@ -2452,7 +2452,7 @@ export default function CFI() {
                   </div>
                   <div style={{...g3, marginTop:10}}>
                     <ResidueCard abbr="OPDC" label={"DECANTER\nCAKE"} active={s0.opdcEnabled} onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)} highlightColor={C.amber}/>
-                    <ResidueCard abbr="POME" labelJsx={<span style={{fontSize:7.5}}>Liquid — discharged to pond</span>} active={s0.pomeLiquidEnabled} onClick={()=>upS0("pomeLiquidEnabled",!s0.pomeLiquidEnabled)} highlightColor="#4A9EDB"/>
+                    <ResidueCard abbr="POME" labelJsx={<><span>LIQUID</span><br/><span style={{color:"#3DCB7A", fontWeight:700}}>Discharged to Pond</span></>} active={s0.pomeLiquidEnabled} onClick={()=>upS0("pomeLiquidEnabled",!s0.pomeLiquidEnabled)} highlightColor="#4A9EDB"/>
                     <ResidueCard abbr="PKM" label={"PALM\nKERNAL EXPELLER"} active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)} highlightColor="#00E676"/>
                   </div>
                   <Divider/>
