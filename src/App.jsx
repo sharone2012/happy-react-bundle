@@ -994,7 +994,7 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
     mono:"'Courier New',monospace"
   };
 
-  const SubTab = ({id,label,icon}) => (
+  const SubTab = ({id,label}) => (
     <div onClick={()=>setOrchTab(id)}
       style={{padding:"7px 16px",cursor:"pointer",borderRadius:"6px 6px 0 0",
         background:orchTab===id?oc.navyLt:oc.navyDk,
@@ -1002,7 +1002,7 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
         fontSize:11,fontWeight:700,letterSpacing:"0.04em",
         borderBottom:orchTab===id?"2px solid "+oc.teal:"2px solid transparent",
         transition:"all 0.15s"}}>
-      {icon} {label}
+      {label}
     </div>
   );
 
