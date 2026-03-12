@@ -3489,7 +3489,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="🔢" title="ACTIVE ORGANISMS" color={C.teal}/>
+                  <SectionHdr title="ACTIVE ORGANISMS" color={C.teal}/>
                   {Object.keys(s3orgs).filter(k=>!["customOrg","bt_icbb"].includes(k)&&s3orgs[k]===true).length===0 ? (
                     <div style={{color:C.grey,fontSize:11}}>No organisms selected</div>
                   ) : (
