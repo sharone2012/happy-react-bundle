@@ -2383,11 +2383,13 @@ export default function CFI() {
 
             {/* ── D: CAPTURED % ── */}
             <Card style={{ marginBottom: 16 }}>
+              <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
               <SectionHdr title="D — Captured % of Mill Processing Capacity Used" color={C.teal} />
               <div style={{ ...g3, justifyItems: "center", textAlign: "center" }}>
                 <BluField label="EFB %" value={s0.efbCapturePct} onChange={(v) => upS0("efbCapturePct", Math.min(100, Math.max(0, +v)))} note={"= " + (+(efbMonthWet * (s0.efbCapturePct / 100)).toFixed(0)).toLocaleString() + " t FW/mo"} />
                 <BluField label="OPDC %" value={s0.opdcCapturePct} onChange={(v) => upS0("opdcCapturePct", Math.min(100, Math.max(0, +v)))} />
                 <BluField label="POME %" value={s0.pomeCapturePct} onChange={(v) => upS0("pomeCapturePct", Math.min(100, Math.max(0, +v)))} />
+              </div>
               </div>
             </Card>
 
@@ -2558,6 +2560,7 @@ export default function CFI() {
 
                 {/* ── SOIL TYPE & AG MANAGEMENT ── */}
                 <Card>
+                  <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
                   <SectionHdr title="E — Soil Type &amp; Fertiliser Requirements" color={C.teal} />
                   <div style={{ display: "block", color: C.grey, fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 8 }}>Indonesian Soil Classification</div>
                   <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 4 }}>
@@ -2592,6 +2595,7 @@ export default function CFI() {
                       </div>
                       )}
                   </div>
+                  </div>
                 </Card>
 
               </div>
@@ -2602,6 +2606,7 @@ export default function CFI() {
 
               {/* ── F: POME SLUDGE ── */}
               <Card>
+                <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
                 <SectionHdr title="F — POME Sludge (Third Waste Stream)" color={C.blue} />
                 <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -2675,10 +2680,12 @@ export default function CFI() {
                     </span>
                     )}
                 </div>
+                </div>
               </Card>
 
               {/* ── G: PKE ── */}
               <Card>
+                <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
                 <SectionHdr title="G — PKE Palm Kernel Expeller (Protein Booster — Optional)" color={C.amber} />
                 <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: s0.pkeEnabled ? 16 : 0 }}>
                   <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
@@ -2757,6 +2764,7 @@ export default function CFI() {
                     </div>
                   </div>
                   }
+                </div>
               </Card>
 
               {/* ── H: COMBINED SUMMARY ── */}
