@@ -2292,11 +2292,8 @@ export default function CFI() {
               </div>
             </div>
 
-            {/* ── TWO-COLUMN ROW ── */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, alignItems: "start" }}>
-
-              {/* ════ LEFT COLUMN ════ */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            {/* ── A & B SIDE BY SIDE ── */}
+            <div style={{ display: "flex", gap: 16, alignItems: "start", marginBottom: 16 }}>
 
                 {/* ── A: SITE IDENTITY ── */}
                 <Card style={{ maxWidth: 280 }}>
