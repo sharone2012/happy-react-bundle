@@ -2348,7 +2348,7 @@ export default function CFI() {
                       value={s0.utilisation}
                       onChange={(e) => e.target.value}
                       onBlur={(e) => upS0("utilisation", +e.target.value)} />
-                      <div style={{ color: C.grey, fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>HOURS/DAY</div>
+                      
                     </div>
 
                   </div>
