@@ -4041,7 +4041,7 @@ export default function CFI() {
               <div style={{display:"flex", flexDirection:"column", gap:16}}>
               {/* NPK Replacement + All-Soils Table */}
               <div style={S.card}>
-                <SectionHdr icon="💰" title="NPK REPLACEMENT VALUE — ALL SOIL TYPES" color={C.amber}/>
+                <SectionHdr title="NPK REPLACEMENT VALUE — ALL SOIL TYPES" color={C.amber}/>
 
                 {/* Certification tier selector for frass */}
                 <div style={{marginBottom:10}}>
