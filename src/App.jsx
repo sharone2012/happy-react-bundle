@@ -3227,7 +3227,7 @@ export default function CFI() {
 
                 {/* DEFAULT ONE-SHOT PROTOCOL */}
                 <div style={S.card}>
-                  <SectionHdr icon="⭐" title="DEFAULT — ONE-SHOT INOCULATION PROTOCOL ($0.65/t FW)" color={C.teal}/>
+                  <SectionHdr title="DEFAULT — ONE-SHOT INOCULATION PROTOCOL ($0.65/t FW)" color={C.teal}/>
                   <Alert type="ok" msg="All 5 organisms inoculated simultaneously — ONE event after PKSA neutralisation (pH ≤8.0). Consortium uplift ×1.38 on BSF yield."/>
                   <div style={{height:8}}/>
                   {[
