@@ -2444,12 +2444,12 @@ export default function CFI() {
                   <SectionHdr icon="🌿" title="C — Choose Residues for Biological Processing" color={C.teal}/>
                   <div style={g3}>
                     <ResidueCard abbr="EFB" label={"EMPTY\nFRUIT BUNCHES"} active={s0.efbEnabled} onClick={()=>upS0("efbEnabled",!s0.efbEnabled)}/>
-                    <ResidueCard abbr="POME SLUDGE" label="" active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} highlightColor="#4A9EDB"/>
+                    <ResidueCard abbr="POME" label={"POME\nSLUDGE"} active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} highlightColor="#4A9EDB"/>
                     <ResidueCard abbr="PMF" label={"PALM MESOCARP\nFIBER"} active={s0.pmfEnabled} onClick={()=>upS0("pmfEnabled",!s0.pmfEnabled)} highlightColor="#E07C24"/>
                   </div>
                   <div style={{...g3, marginTop:10}}>
                     <ResidueCard abbr="OPDC" label={"DECANTER\nCAKE"} active={s0.opdcEnabled} onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)} highlightColor={C.amber}/>
-                    <ResidueCard abbr="POME LIQUID" label="" active={s0.pomeLiquidEnabled} onClick={()=>upS0("pomeLiquidEnabled",!s0.pomeLiquidEnabled)} highlightColor="#4A9EDB"/>
+                    <ResidueCard abbr="POME" label={"POME\nLIQUID"} active={s0.pomeLiquidEnabled} onClick={()=>upS0("pomeLiquidEnabled",!s0.pomeLiquidEnabled)} highlightColor="#4A9EDB"/>
                     <ResidueCard abbr="PKM" label={"PALM KERNAL\nEXPELLER"} active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)} highlightColor="#00E676"/>
                   </div>
                   <Divider/>
