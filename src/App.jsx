@@ -2354,16 +2354,22 @@ export default function CFI() {
                     onChange={(e) => e.target.value}
                     onBlur={(e) => upS0("utilisation", +e.target.value)} />
                   </div>
+                  {/* Flow arrow */}
+                  <div style={{ textAlign: "center", color: C.teal, fontSize: 10, margin: "4px 0 2px", opacity: 0.7 }}>▼</div>
                   {/* EFB Monthly - aligned to same 50/50 split */}
-                  <div style={{ display: "flex", alignItems: "stretch", gap: 0, marginTop: 8 }}>
-                    <div style={{ flex: "1 1 0", background: "#0D3B3B", border: `1px solid ${C.teal}55`, borderRight: "none", borderRadius: "6px 0 0 6px", padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <div style={{ display: "flex", alignItems: "stretch", gap: 0, marginTop: 2 }}>
+                    <div style={{ flex: "1 1 0", background: "#0D3B3B", border: `1px solid ${C.amber}55`, borderRight: "none", borderRadius: "6px 0 0 6px", padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                       <div style={{ color: C.amber, fontSize: 11, fontWeight: 800, lineHeight: 1.4, textTransform: "uppercase", textAlign: "center" }}>EFB MONTHLY<br />PRODUCTION</div>
                     </div>
-                    <div style={{ flex: "1 1 0", background: "#0D3B3B", border: `1px solid ${C.teal}55`, borderLeft: "none", borderRadius: "0 6px 6px 0", padding: "10px 14px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                      <span style={{ color: C.amber, fontSize: 18, fontWeight: 700 }}>{efbMonthWet.toLocaleString()}</span>
+                    <div style={{ flex: "1 1 0", background: "#0D3B3B", border: `1px solid ${C.amber}55`, borderLeft: "none", borderRadius: "0 6px 6px 0", padding: "10px 14px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                      <span style={{ color: C.amber, fontSize: 20, fontWeight: 700 }}>{efbMonthWet.toLocaleString()}</span>
                       <div style={{ color: C.amber, fontSize: 11, fontWeight: 800, textTransform: "uppercase" }}>FRESH WEIGHT</div>
                     </div>
                     </div>
+                  {/* Formula breakdown */}
+                  <div style={{ textAlign: "center", color: C.teal, fontSize: 9, opacity: 0.6, marginTop: 4 }}>
+                    {efbTPH} t/hr × {s0.hrsDay} hrs/day × {s0.daysMonth} days = {efbMonthWet.toLocaleString()} t
+                  </div>
                   </div>
                   </div>
                 </Card>
