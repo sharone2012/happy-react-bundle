@@ -2326,31 +2326,28 @@ export default function CFI() {
                 {/* ── B: MILL CAPACITY ── */}
                 <Card style={{ flex: 1 }}>
                   <SectionHdr title={"B — ENTER PROCESSING CAPACITY \n"} color={C.teal} />
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: 24 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
                     {/* FFB */}
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                      <div style={{ color: C.teal, fontSize: 11, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase" }}>FFB T/H
-
+                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <div style={{ color: C.teal, fontSize: 11, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", textAlign: "center", lineHeight: 1.2 }}>
+                        <div>FFB</div><div>T/H</div>
                       </div>
-                      <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "10px 0", fontSize: 18, fontWeight: 700, width: 80, outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                      <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "8px 0", fontSize: 16, fontWeight: 700, width: 56, outline: "none", boxSizing: "border-box", textAlign: "center" }}
                       value={s0.ffbCapacity}
                       onChange={(e) => e.target.value}
                       onBlur={(e) => upS0("ffbCapacity", +e.target.value)} />
-                      
                     </div>
 
                     {/* Mill Hours */}
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                      <div style={{ color: C.teal, fontSize: 11, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase" }}>HOURS / DAY
-
+                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <div style={{ color: C.teal, fontSize: 11, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", textAlign: "center", lineHeight: 1.2 }}>
+                        <div>HOURS</div><div>/ DAY</div>
                       </div>
-                      <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "10px 0", fontSize: 18, fontWeight: 700, width: 80, outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                      <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "8px 0", fontSize: 16, fontWeight: 700, width: 56, outline: "none", boxSizing: "border-box", textAlign: "center" }}
                       value={s0.utilisation}
                       onChange={(e) => e.target.value}
                       onBlur={(e) => upS0("utilisation", +e.target.value)} />
-                      
                     </div>
-
                   </div>
                   {/* Total EFB - below FFB and Hours fields */}
                   <div style={{ display: "flex", alignItems: "stretch", gap: 0, marginTop: 12, width: 184 }}>
