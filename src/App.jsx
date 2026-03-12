@@ -3428,7 +3428,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="🚦" title="BSF HANDOFF GATE — 6 CRITERIA" color={allPass?C.green:C.amber}/>
+                  <SectionHdr title="BSF HANDOFF GATE — 6 CRITERIA" color={allPass?C.green:C.amber}/>
                   {[
                     {label:"C:N Ratio",   pass:cnPass,  val:cnGate!=null?`${typeof cnGate==="number"?cnGate.toFixed(1):cnGate}:1 — target ≤35 ${s3.cn_measured?"[measured]":"[calc'd]"}`:"Not yet calculated", icon:"📊"},
                     {label:"Moisture",    pass:mcPass,  val:`${mcGate!=null?mcGate.toFixed(1):blendMC}% — target 55–75% ${s3.mc_measured?"[measured]":"[calc'd]"}`, icon:"💧"},
