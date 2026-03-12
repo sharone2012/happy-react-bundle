@@ -2317,7 +2317,7 @@ export default function CFI() {
                         placeholder="Number"/>
                     </div>
                   </div>
-                  <div style={{display:"flex", flexDirection:"column", gap:10, maxWidth:420}}>
+                  <div style={{display:"flex", flexDirection:"column", gap:10, maxWidth:340}}>
                     <input style={{background:C.inputBg, border:`1px solid ${C.teal}55`, borderRadius:6,
                       color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
                       value={s0.plantName} onChange={e=>upS0("plantName",e.target.value)}
