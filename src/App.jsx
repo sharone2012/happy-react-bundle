@@ -2325,7 +2325,7 @@ export default function CFI() {
 
                 {/* ── B: MILL CAPACITY ── */}
                 <Card style={{ flex: 1 }}>
-                  <SectionHdr title={"B — ENTER PROCESSING CAPACITY \n"} color={C.teal} />
+                  <SectionHdr title="B — ENTER MILL CAPACITY" color={C.teal} />
                   <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
                     {/* FFB */}
                     <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
