@@ -2317,6 +2317,7 @@ export default function CFI() {
                     value={s0.province} onChange={(e) => upS0("province", e.target.value)}
                     placeholder="Enter Province" />
                   </div>
+                  </div>
                 </Card>
 
                 {/* ── B + C stacked ── */}
