@@ -191,9 +191,8 @@ const Alert = ({msg, type="warn"}) => {
   );
 };
 
-const SectionHdr = ({icon, title, color=C.teal}) => (
+const SectionHdr = ({title, color=C.teal}) => (
   <div style={{...S.hdr, borderLeft:`3px solid ${color}`}}>
-    <span style={{fontSize:16}}>{icon}</span>
     <span style={{color, fontWeight:800, fontSize:13, letterSpacing:"0.05em"}}>{title}</span>
   </div>
 );
