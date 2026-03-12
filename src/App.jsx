@@ -2337,7 +2337,7 @@ export default function CFI() {
                         Tonnes / Hour
                       </div>
                     </div>
-                    <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 0", fontSize: 15, fontWeight: 700, width: 44, outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                    <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 4px", fontSize: 15, fontWeight: 700, width: 52, outline: "none", boxSizing: "border-box", textAlign: "center" }}
                     value={s0.ffbCapacity}
                     onChange={(e) => e.target.value}
                     onBlur={(e) => upS0("ffbCapacity", +e.target.value)} />
