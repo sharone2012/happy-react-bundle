@@ -497,7 +497,7 @@ function BlendOptimiser({ efbDMpd, opdcDMreq, pomeSludgeMaxPct, pomeSludgeNatTPD
 
   return (
     <div style={{ ...S.card, border: `1px solid ${C.purple}55`, gridColumn: "1/-1" }}>
-      <SectionHdr icon="🎯" title="I — BLEND OPTIMISER — REVERSE SOLVER" color={C.purple}/>
+      <SectionHdr title="I — BLEND OPTIMISER — REVERSE SOLVER" color={C.purple}/>
       <div style={{ fontSize: 11, color: C.grey, marginBottom: 12, lineHeight: 1.7 }}>
         Set a <strong style={{color:C.white}}>target C:N</strong> and/or <strong style={{color:C.white}}>target CP%</strong>.
         The solver calculates the POME inclusion % and PKE dose required.
