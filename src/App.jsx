@@ -2900,7 +2900,7 @@ export default function CFI() {
                 {opdcShortfall > 0 &&
                   <Alert msg={`Source ${(opdcShortfall * s0.daysMonth).toFixed(0)} t DM/month OPDC externally`}/>}
                 <hr style={S.divider}/>
-                <SectionHdr icon="⚠️" title="OPDC CONSTRAINTS" color={C.red}/>
+                <SectionHdr title="OPDC CONSTRAINTS" color={C.red}/>
                 <div style={{fontSize:12, color:C.greyLt, lineHeight:1.8}}>
                   <div>• <span style={{color:C.red}}>NEVER below 40% MC</span> — pore damage kills BSF</div>
                   <div>• Target 45–55% MC at press discharge</div>
