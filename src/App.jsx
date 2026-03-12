@@ -2356,8 +2356,7 @@ export default function CFI() {
                     </div>
                     <div style={{ background: "#0D3B3B", border: `1px solid ${C.teal}55`, borderLeft: "none", borderRadius: "0 6px 6px 0", padding: "10px 14px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
                       <span style={{ color: C.amber, fontSize: 18, fontWeight: 700 }}>{efbMonthWet.toLocaleString()}</span>
-                      <div style={{ color: C.amber, fontSize: 11, fontWeight: 800, textTransform: "uppercase", opacity: 0.85 }}>
-</div>
+                      <div style={{ color: C.amber, fontSize: 9, fontWeight: 800, textTransform: "uppercase", opacity: 0.85 }}>FRESH WEIGHT</div>
                     </div>
                   </div>
                 </Card>
