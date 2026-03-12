@@ -257,21 +257,22 @@ const PillToggle = ({options, value, onChange, color=C.teal}) => (
 
 const ResidueCard = ({abbr, label, labelJsx, active, locked, onClick, highlightColor, fontSize:fs}) => {
   const col = highlightColor || C.teal;
+  const toggleCol = C.teal;
   const hasSubLabel = (label && abbr) || labelJsx;
   return (
   <div onClick={locked?undefined:onClick}
-    style={{background:"#0B1929",
+    style={{background: active ? "#0B1929" : "#000000",
       borderRadius:10, padding:"12px 14px",
       cursor:locked?"not-allowed":"pointer", transition:"all 0.15s",
       display:"flex", flexDirection:"column", gap:4,
-      border:active?`1px solid ${col}55`:"1px solid rgba(255,255,255,0.12)",
+      border:active?`1px solid ${toggleCol}55`:"1px solid rgba(255,255,255,0.12)",
       minHeight:58}}>
     <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", gap:8}}>
       <div style={{color:active?col:"#7799aa", fontWeight:900, fontSize:fs||13, textTransform:"uppercase",
         letterSpacing:"0.06em", lineHeight:1.2}}>{abbr||label}</div>
       <div style={{width:20, height:20, borderRadius:"50%", flexShrink:0,
-        background:active?col:"transparent",
-        border:active?"2.5px solid "+col:"2.5px solid rgba(255,255,255,0.25)",
+        background:active?toggleCol:"transparent",
+        border:active?"2.5px solid "+toggleCol:"2.5px solid rgba(255,255,255,0.25)",
         transition:"all 0.2s"}}/>
     </div>
     {labelJsx ? <div style={{color:"#5a7a8e", fontWeight:700, fontSize:8.5, textTransform:"uppercase",
