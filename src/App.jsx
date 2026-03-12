@@ -2464,15 +2464,15 @@ export default function CFI() {
                   </div>
                   <div style={g3}>
                     {[
-                      {l:"EFB", dm:efbDMpd, c:C.teal, active:true},
-                      {l:"OPDC", dm:opdcNatDM, c:C.amber, active:true},
-                      {l:"POME\nSLUDGE", dm:pomeSludgeDMpd, c:"#4A9EDB", active:pomeActive},
+                      {l:"EFB", dm:efbDMpd, c:C.amber, active:true},
+                      {l:"POS", dm:pomeSludgeDMpd, c:C.amber, active:pomeActive},
+                      {l:"PMF", dm:s0.pmfEnabled ? +(effFFB * s0.hrsDay * 0.135 * 0.35).toFixed(2) : 0, c:C.amber, active:s0.pmfEnabled},
                     ].map((r,i)=>(
-                      <div key={i} style={{background:r.active?"#1a3a4a":"#1a2a35",
+                      <div key={i} style={{background:r.active?"#0D3B3B":"#000000",
                         borderRadius:10, padding:"10px 12px",
                         display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:8,
-                        border:r.active?`1px solid ${r.c}55`:"1px solid rgba(255,255,255,0.08)"}}>
-                        <div style={{color:r.active?r.c:"#7799aa", fontWeight:800, fontSize:9.8, textTransform:"uppercase",
+                        border:r.active?`1px solid ${C.teal}55`:"1px solid rgba(255,255,255,0.08)"}}>
+                        <div style={{color:r.active?r.c:C.teal, fontWeight:800, fontSize:9.8, textTransform:"uppercase",
                           textAlign:"left", lineHeight:1.3, letterSpacing:"0.04em", whiteSpace:"pre-line", flex:1}}>{r.l}</div>
                         <div style={{color:r.active?C.white:"#555", fontWeight:900, fontSize:14, fontFamily:"monospace",
                           textAlign:"right", lineHeight:1.2}}>
@@ -2483,16 +2483,16 @@ export default function CFI() {
                   </div>
                   <div style={{...g3, marginTop:12}}>
                     {[
-                      {l:"PMF", dm:s0.pmfEnabled ? +(effFFB * s0.hrsDay * 0.135 * 0.35).toFixed(2) : 0, c:"#E07C24", active:s0.pmfEnabled},
-                      {l:"POME\nLIQUID", dm:0, c:"#4A9EDB", active:s0.pomeLiquidEnabled},
-                      {l:"PKE", dm:s0.pkeEnabled ? +(s0.pkeTPD * 0.90).toFixed(2) : 0, c:"#00E676", active:s0.pkeEnabled},
+                      {l:"OPDC", dm:opdcNatDM, c:C.amber, active:true},
+                      {l:"POME\nLIQUID", dm:0, c:C.amber, active:s0.pomeLiquidEnabled},
+                      {l:"PKM", dm:s0.pkeEnabled ? +(s0.pkeTPD * 0.90).toFixed(2) : 0, c:C.amber, active:s0.pkeEnabled},
                     ].map((r,i)=>(
-                      <div key={i} style={{background:r.active?"#1a3a4a":"#1a2a35",
+                      <div key={i} style={{background:r.active?"#0D3B3B":"#000000",
                         borderRadius:10, padding:"10px 12px",
                         display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:8,
-                        border:r.active?`1px solid ${r.c}55`:"1px solid rgba(255,255,255,0.08)",
+                        border:r.active?`1px solid ${C.teal}55`:"1px solid rgba(255,255,255,0.08)",
                         opacity:r.active?1:0.4}}>
-                        <div style={{color:r.active?r.c:"#7799aa", fontWeight:800, fontSize:9.8, textTransform:"uppercase",
+                        <div style={{color:r.active?r.c:C.teal, fontWeight:800, fontSize:9.8, textTransform:"uppercase",
                           textAlign:"left", lineHeight:1.3, letterSpacing:"0.04em", whiteSpace:"pre-line", flex:1}}>{r.l}</div>
                         <div style={{color:r.active?C.white:"#555", fontWeight:900, fontSize:14, fontFamily:"monospace",
                           textAlign:"right", lineHeight:1.2}}>
