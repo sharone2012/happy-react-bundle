@@ -2440,11 +2440,15 @@ export default function CFI() {
                 {/* ── C: RESIDUE SELECTION ── */}
                 <Card>
                   <SectionHdr icon="🌿" title="C — Choose Residues for Biological Processing" color={C.teal}/>
-                  <div style={g4}>
-                    <ResidueCard label="EFB"         active={s0.efbEnabled}        onClick={()=>upS0("efbEnabled",!s0.efbEnabled)}               sublabel="Empty Fruit Bunches"/>
-                    <ResidueCard label="OPDC"        active={s0.opdcEnabled}       onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)}              sublabel="Decanter Cake"/>
-                    <ResidueCard label="POME SLUDGE" active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} sublabel={pomeActive?(pomePct>0.09?"Auto: "+pomePct+"% DM remainder":"Manual — ON"):"Click to activate"}/>
-                    <ResidueCard label="PKE" active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)} sublabel="Palm Kernel Expeller (Protein Booster)" highlightColor="#00E676"/>
+                  <div style={g3}>
+                    <ResidueCard label={"EMPTY\nFRUIT\nBUNCHES"} active={s0.efbEnabled} onClick={()=>upS0("efbEnabled",!s0.efbEnabled)}/>
+                    <ResidueCard label={"DECANTER\nCAKE"} active={s0.opdcEnabled} onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)}/>
+                    <ResidueCard label={"POME\nSLUDGE"} active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)}/>
+                  </div>
+                  <div style={{...g3, marginTop:12}}>
+                    <ResidueCard label={"PALM\nMESOCARP\nFIBER"} active={s0.pmfEnabled} onClick={()=>upS0("pmfEnabled",!s0.pmfEnabled)}/>
+                    <ResidueCard label={"POME\nLIQUID\n(New Process)"} active={s0.pomeLiquidEnabled} onClick={()=>upS0("pomeLiquidEnabled",!s0.pomeLiquidEnabled)}/>
+                    <ResidueCard label={"PALM\nKERNAL\nEXPELLER"} active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)}/>
                   </div>
                   <Divider/>
                   {/* Blend fraction header */}
