@@ -893,13 +893,13 @@ const MOCK_SOLUTIONS = [
 ];
 
 const AGENT_STATUS = [
-  {id:"master_discovery_engine",   label:"Master Discovery",    icon:"🧭",schedule:"3d",last_run:"2026-03-09 06:00",next_run:"2026-03-12 06:00",status:"idle",   color:"#00C9B1"},
-  {id:"biology_synthetic_agent",   label:"Biology Synthetic",   icon:"🧬",schedule:"3d",last_run:"2026-03-09 06:12",next_run:"2026-03-12 06:12",status:"idle",   color:"#3DCB7A"},
-  {id:"bsf_performance_agent",     label:"BSF Performance",     icon:"🦗",schedule:"3d",last_run:"2026-03-09 06:24",next_run:"2026-03-12 06:24",status:"idle",   color:"#4A9EDB"},
-  {id:"soil_palm_agent",           label:"Soil & Palm",         icon:"🌿",schedule:"3d",last_run:"2026-03-09 06:36",next_run:"2026-03-12 06:36",status:"idle",   color:"#9B59B6"},
-  {id:"finishing_topping_agent",   label:"Finishing & Topping", icon:"⚗️", schedule:"3d",last_run:"2026-03-09 06:48",next_run:"2026-03-12 06:48",status:"idle",   color:"#F5A623"},
-  {id:"carbon_credits_agent",      label:"Carbon Credits",      icon:"🌍",schedule:"3d",last_run:"2026-03-09 07:00",next_run:"2026-03-12 07:00",status:"idle",   color:"#FFD080"},
-  {id:"math_optimization_agent",   label:"Math Optimisation",   icon:"📐",schedule:"3d",last_run:"2026-03-09 07:12",next_run:"2026-03-12 07:12",status:"idle",   color:"#E84040"},
+  {id:"master_discovery_engine",   label:"Master Discovery",    schedule:"3d",last_run:"2026-03-09 06:00",next_run:"2026-03-12 06:00",status:"idle",   color:"#00C9B1"},
+  {id:"biology_synthetic_agent",   label:"Biology Synthetic",   schedule:"3d",last_run:"2026-03-09 06:12",next_run:"2026-03-12 06:12",status:"idle",   color:"#3DCB7A"},
+  {id:"bsf_performance_agent",     label:"BSF Performance",     schedule:"3d",last_run:"2026-03-09 06:24",next_run:"2026-03-12 06:24",status:"idle",   color:"#4A9EDB"},
+  {id:"soil_palm_agent",           label:"Soil & Palm",         schedule:"3d",last_run:"2026-03-09 06:36",next_run:"2026-03-12 06:36",status:"idle",   color:"#9B59B6"},
+  {id:"finishing_topping_agent",   label:"Finishing & Topping", schedule:"3d",last_run:"2026-03-09 06:48",next_run:"2026-03-12 06:48",status:"idle",   color:"#F5A623"},
+  {id:"carbon_credits_agent",      label:"Carbon Credits",      schedule:"3d",last_run:"2026-03-09 07:00",next_run:"2026-03-12 07:00",status:"idle",   color:"#FFD080"},
+  {id:"math_optimization_agent",   label:"Math Optimisation",   schedule:"3d",last_run:"2026-03-09 07:12",next_run:"2026-03-12 07:12",status:"idle",   color:"#E84040"},
 ];
 
 const STEP_LABELS = {
