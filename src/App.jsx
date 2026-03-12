@@ -262,8 +262,8 @@ const ResidueCard = ({label, active, locked, onClick, highlightColor}) => {
       borderRadius:14, padding:"12px 14px", height:90,
       cursor:locked?"not-allowed":"pointer", transition:"all 0.15s",
       display:"flex", flexDirection:"column", alignItems:"flex-start", justifyContent:"flex-start", gap:6}}>
-    {/* Toggle pill */}
-    <div style={{width:36, height:18, borderRadius:9, padding:2,
+    {/* Toggle pill - right aligned */}
+    <div style={{alignSelf:"flex-end", width:36, height:18, borderRadius:9, padding:2,
       background:active?C.teal:"rgba(255,255,255,0.2)",
       transition:"background 0.2s", display:"flex", alignItems:"center"}}>
       <div style={{width:14, height:14, borderRadius:"50%", background:"#fff",
@@ -271,7 +271,7 @@ const ResidueCard = ({label, active, locked, onClick, highlightColor}) => {
         transition:"transform 0.2s", boxShadow:"0 1px 3px rgba(0,0,0,0.3)"}}/>
     </div>
     {/* Label text */}
-    <div style={{color:active?"#000":"#666", fontWeight:800, fontSize:10, textTransform:"uppercase",
+    <div style={{color:active?"#fff":"#666", fontWeight:800, fontSize:10, textTransform:"uppercase",
       textAlign:"left", lineHeight:1.4, letterSpacing:"0.04em", whiteSpace:"pre-line"}}>{label}</div>
   </div>
   );
