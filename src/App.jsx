@@ -3920,7 +3920,7 @@ export default function CFI() {
                   </div>
 
                   <div style={S.card}>
-                    <SectionHdr icon="📈" title="KEY NUTRIENT TRAJECTORY S0→S4" color={C.teal}/>
+                    <SectionHdr title="KEY NUTRIENT TRAJECTORY S0→S4" color={C.teal}/>
                     <table style={{width:"100%", borderCollapse:"collapse", fontSize:11}}>
                       <thead>
                         <tr style={{background:C.navyLt}}>
