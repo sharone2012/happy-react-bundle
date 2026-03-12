@@ -264,21 +264,20 @@ const ResidueCard = ({label, active, locked, onClick, sublabel, highlightColor})
       borderTop:`2px solid ${active?hc:"rgba(255,255,255,0.07)"}`,
       borderRadius:10, padding:"10px 14px", minHeight:60,
       cursor:locked?"not-allowed":"pointer", transition:"all 0.15s"}}>
-    <div style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
-      <span style={{color:active?hc:C.grey, fontWeight:800, fontSize:12}}>{label}</span>
-      {/* Switch toggle */}
-      <div style={{display:"flex", alignItems:"center", flexShrink:0}}>
-        <div style={{width:32, height:18, borderRadius:9, padding:2,
-          background:active?hc:C.grey+"44",
-          transition:"background 0.2s", display:"flex", alignItems:"center"}}>
-          <div style={{width:14, height:14, borderRadius:"50%", background:"#fff",
-            transform:active?"translateX(14px)":"translateX(0)",
-            transition:"transform 0.2s", boxShadow:"0 1px 3px rgba(0,0,0,0.3)"}}/>
-        </div>
+    {/* Row 1: label + toggle on same line */}
+    <div style={{display:"flex", alignItems:"center", gap:8}}>
+      <div style={{width:32, height:18, borderRadius:9, padding:2, flexShrink:0,
+        background:active?hc:C.grey+"44",
+        transition:"background 0.2s", display:"flex", alignItems:"center"}}>
+        <div style={{width:14, height:14, borderRadius:"50%", background:"#fff",
+          transform:active?"translateX(14px)":"translateX(0)",
+          transition:"transform 0.2s", boxShadow:"0 1px 3px rgba(0,0,0,0.3)"}}/>
       </div>
+      <span style={{color:active?hc:C.grey, fontWeight:800, fontSize:12}}>{label}</span>
     </div>
-    {sublabel&&<div style={{color:C.grey, fontSize:9, marginTop:4}}>{sublabel}</div>}
-    {locked&&<div style={{color:C.grey, fontSize:9, marginTop:3, fontStyle:"italic"}}>locked — always active</div>}
+    {/* Row 2: full name */}
+    {sublabel&&<div style={{color:C.grey, fontSize:9, marginTop:4, paddingLeft:40}}>{sublabel}</div>}
+    {locked&&<div style={{color:C.grey, fontSize:9, marginTop:3, paddingLeft:40, fontStyle:"italic"}}>locked — always active</div>}
   </div>
   );
 };
