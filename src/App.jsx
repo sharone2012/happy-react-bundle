@@ -2296,7 +2296,7 @@ export default function CFI() {
             <div style={{ display: "flex", gap: 16, alignItems: "stretch", marginBottom: 16 }}>
 
                 {/* ── A: SITE IDENTITY ── */}
-                <Card style={{ flex: 0.8 }}>
+                <Card style={{ flex: 0.6 }}>
                   <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
                   <SectionHdr title="A — Enter Details Below" color={C.teal} />
                   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -2330,11 +2330,11 @@ export default function CFI() {
                   {/* Row 1: FRESH FRUIT BUNCH / TONS PER HOUR + input */}
                   <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0" }}>
                     <div style={{ flex: 1 }}>
-                      <div style={{ color: C.teal, fontSize: 10, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1.3 }}>
+                      <div style={{ color: C.teal, fontSize: 13, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1.3 }}>
                         FRESH FRUIT BUNCH
                       </div>
                       <div style={{ color: C.teal, fontSize: 10, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1.3 }}>
-                        TONS PER HOUR
+                        Tonnes / Hour
                       </div>
                     </div>
                     <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 0", fontSize: 15, fontWeight: 700, width: 44, outline: "none", boxSizing: "border-box", textAlign: "center" }}
@@ -2346,7 +2346,7 @@ export default function CFI() {
                   <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0" }}>
                     <div style={{ flex: 1 }}>
                       <div style={{ color: C.teal, fontSize: 10, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1.3 }}>
-                        OPERATING HOURS PER DAY
+                         Daily Operating Hours
                       </div>
                     </div>
                     <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 0", fontSize: 15, fontWeight: 700, width: 44, outline: "none", boxSizing: "border-box", textAlign: "center" }}
