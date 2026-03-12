@@ -2481,7 +2481,7 @@ export default function CFI() {
                           textAlign:"center", letterSpacing:"0.04em"}}>{r.l}</div>
                         <div style={{color:r.active?C.white:"#555", fontWeight:800, fontSize:10, fontFamily:"monospace",
                           textAlign:"center"}}>{r.dm}</div>
-                        <div style={{color:C.grey, fontSize:7, fontWeight:600}}>tonnes</div>
+                        
                       </div>
                     ))}
                   </div>
