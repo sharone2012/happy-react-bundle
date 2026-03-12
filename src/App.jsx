@@ -2296,7 +2296,7 @@ export default function CFI() {
             <div style={{ display: "flex", gap: 16, alignItems: "stretch", marginBottom: 16 }}>
 
                 {/* ── A: SITE IDENTITY ── */}
-                <Card style={{ flex: 0.6 }}>
+                <Card style={{ flex: "0 0 auto", width: 280 }}>
                   <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
                   <SectionHdr title="A — Enter Details Below" color={C.teal} />
                   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
