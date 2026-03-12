@@ -4361,7 +4361,7 @@ export default function CFI() {
 
             {/* CERTIFICATION TIER SELECTOR */}
             <div style={{...S.card, marginBottom:16}}>
-              <SectionHdr icon="🏆" title="PRODUCT CERTIFICATION TIER — PRICE LADDER" color={C.amber}/>
+              <SectionHdr title="PRODUCT CERTIFICATION TIER — PRICE LADDER" color={C.amber}/>
               <div style={{display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:10, marginBottom:12}}>
                 {[
                   {k:"none",    label:"No Certification",        mealPx:"$1,200/t",  oilPx:"$900/t",     uplift:"1×",  col:C.grey},
