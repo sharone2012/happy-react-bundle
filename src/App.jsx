@@ -2354,8 +2354,6 @@ export default function CFI() {
                     onChange={(e) => e.target.value}
                     onBlur={(e) => upS0("utilisation", +e.target.value)} />
                   </div>
-                  {/* Flow arrow */}
-                  <div style={{ textAlign: "center", color: C.teal, fontSize: 10, margin: "4px 0 2px", opacity: 0.7 }}>▼</div>
                   {/* EFB Monthly - aligned to same 50/50 split */}
                   <div style={{ display: "flex", alignItems: "stretch", gap: 0, marginTop: 2 }}>
                     <div style={{ flex: "1 1 0", background: "#0D3B3B", border: `1px solid ${C.amber}55`, borderRight: "none", borderRadius: "6px 0 0 6px", padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -2368,15 +2366,15 @@ export default function CFI() {
                     </div>
                   {/* Formula breakdown */}
                   <div style={{ textAlign: "center", color: C.teal, fontSize: 9, opacity: 0.6, marginTop: 4 }}>
-                    {efbTPH} t/hr × {s0.hrsDay} hrs/day × {s0.daysMonth} days = {efbMonthWet.toLocaleString()} t
-                  </div>
+                     {s0.ffbCapacity} TPH × 0.225 × 24 hrs/day × {s0.daysMonth} days = {(s0.ffbCapacity * 0.225 * 24 * s0.daysMonth).toLocaleString()} t
+                   </div>
                   </div>
                   </div>
                 </Card>
 
                 {/* ── C: RESIDUE SELECTION ── */}
-                <Card style={{ flex: 1 }}>
-                  <div style={{ background: "#000000", borderRadius: 10, padding: 16, marginBottom: 12, border: "1px solid rgba(255,255,255,0.1)" }}>
+                <Card style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+                   <div style={{ background: "#000000", borderRadius: 10, padding: 16, flex: 1, border: "1px solid rgba(255,255,255,0.1)" }}>
                   <SectionHdr title="C — Choose Residues" color={C.teal} />
                   <div style={g3}>
                     <ResidueCard abbr="EFB" label={"EMPTY\nFRUIT BUNCHES"} active={s0.efbEnabled} onClick={() => upS0("efbEnabled", !s0.efbEnabled)} highlightColor={C.amber} />
