@@ -2484,7 +2484,7 @@ export default function CFI() {
                   <div style={{...g3, marginTop:12}}>
                     {[
                       {l:"OPDC", dm:opdcNatDM, c:C.amber, active:true},
-                      {l:"POME\nLIQUID", dm:0, c:C.amber, active:s0.pomeLiquidEnabled},
+                      {l:"POME", dm:0, c:C.amber, active:s0.pomeLiquidEnabled},
                       {l:"PKM", dm:s0.pkeEnabled ? +(s0.pkeTPD * 0.90).toFixed(2) : 0, c:C.amber, active:s0.pkeEnabled},
                     ].map((r,i)=>(
                       <div key={i} style={{background:r.active?"#0D3B3B":"#000000",
