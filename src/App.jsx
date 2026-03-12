@@ -4568,7 +4568,7 @@ export default function CFI() {
 
               {/* CAPEX overview */}
               <div style={S.card}>
-                <SectionHdr icon="🏗️" title="CAPITAL EXPENDITURE (CAPEX)" color={C.red}/>
+                <SectionHdr title="CAPITAL EXPENDITURE (CAPEX)" color={C.red}/>
                 <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8}}>
                   <BluField label="Greenhouse Area" unit="m²" value={capex.greenhouse_area} onChange={v=>upCapex("greenhouse_area",+v)}/>
                   <BluField label="Civil Cost" unit="$/m²" value={capex.greenhouse_cost_m2} onChange={v=>upCapex("greenhouse_cost_m2",+v)}/>
