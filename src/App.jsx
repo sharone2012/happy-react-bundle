@@ -4319,7 +4319,7 @@ export default function CFI() {
             {/* S5B — no larvae */}
             {s4.pathwayS5==="s5b" && (
               <div style={{...S.card, border:`1px solid ${C.amber}44`, marginTop:0}}>
-                <SectionHdr icon="🔴" title="S5B — TERMINATE IN-SUBSTRATE: NO INSECT PRODUCTS" color={C.amber}/>
+                <SectionHdr title="S5B — TERMINATE IN-SUBSTRATE: NO INSECT PRODUCTS" color={C.amber}/>
                 <div style={{color:C.grey, fontSize:12, lineHeight:1.6}}>
                   Larvae are terminated inside the substrate. No separate insect meal, oil, or chitin products.
                   All biomass composted as a single high-nutrient biofertiliser. Maximises NPK but eliminates S6 insect processing revenue.
