@@ -3065,7 +3065,7 @@ export default function CFI() {
 
                 {/* AMENDMENTS + N-RETENTION */}
                 <div style={S.card}>
-                  <SectionHdr icon="🌿" title="AMENDMENTS, N-RETENTION, MINERALS" color={C.green}/>
+                  <SectionHdr title="AMENDMENTS, N-RETENTION, MINERALS" color={C.green}/>
                   {[
                     {k:"gypsum",      name:"Gypsum CaSO₄·2H₂O",         rspo:"✅",cost:"$0.04/t",col:C.green,  note:"N-RETENTION: SO₄²⁻ captures NH₄⁺ as ammonium sulfate. Reduces NH₃ loss 25–40%. Critical for OPDC."},
                     {k:"feso4",       name:"FeSO₄·7H₂O — Ferrous Sulfate",rspo:"✅",cost:"$0.03/t",col:C.amber, note:"Fe²⁺ forms Fe-ammonium-phosphate complexes. N-retention 30–40%. ⚠ INCOMPATIBLE with MnP enzyme."},
