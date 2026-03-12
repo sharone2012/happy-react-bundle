@@ -2449,6 +2449,39 @@ export default function CFI() {
                     <ResidueCard label={"PALM\nKERNAL\nEXPELLER"} active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)}/>
                   </div>
                   <Divider/>
+
+                  {/* ── DAILY RESIDUES AVAILABLE FROM MILL ── */}
+                  <div style={{background:"#0A1624", border:"1px solid rgba(255,255,255,0.08)",
+                    borderRadius:8, padding:"14px 16px", marginBottom:12}}>
+                    <div style={{color:C.teal, fontWeight:800, fontSize:11, textTransform:"uppercase",
+                      letterSpacing:"0.06em", marginBottom:12}}>Daily Residues Available from Mill</div>
+                    <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:8}}>
+                      {[
+                        {l:"EFB", wet:efbTPD, dm:efbDMpd, mc:s0.efbMC, c:C.teal, active:true},
+                        {l:"OPDC", wet:opdcNatTPD, dm:opdcNatDM, mc:s0.opdcMC, c:C.amber, active:true},
+                        {l:"POME Sludge", wet:pomeSludgeNatTPD, dm:pomeSludgeDMpd, mc:pomeSludgeActMC, c:"#4A9EDB", active:pomeActive},
+                        {l:"PMF", wet:s0.pmfEnabled ? +(effFFB * s0.hrsDay * 0.135).toFixed(1) : 0,
+                         dm:s0.pmfEnabled ? +(effFFB * s0.hrsDay * 0.135 * 0.35).toFixed(2) : 0,
+                         mc:65, c:"#E07C24", active:s0.pmfEnabled},
+                      ].map((r,i)=>(
+                        <div key={i} style={{background:r.active?"rgba(255,255,255,0.03)":"rgba(255,255,255,0.01)",
+                          border:`1px solid ${r.active?r.c+"33":"rgba(255,255,255,0.05)"}`,
+                          borderRadius:6, padding:"10px 10px", textAlign:"center", opacity:r.active?1:0.4}}>
+                          <div style={{color:r.c, fontWeight:800, fontSize:10, textTransform:"uppercase",
+                            letterSpacing:"0.05em", marginBottom:8}}>{r.l}</div>
+                          <div style={{color:r.active?C.white:"#555", fontWeight:900, fontSize:16, fontFamily:"monospace"}}>{r.dm}</div>
+                          <div style={{color:C.grey, fontSize:9, marginTop:2}}>t DM / day</div>
+                          <div style={{borderTop:"1px solid rgba(255,255,255,0.06)", marginTop:8, paddingTop:6}}>
+                            <div style={{color:r.active?"#aabbcc":"#555", fontSize:11, fontFamily:"monospace", fontWeight:700}}>{r.wet}</div>
+                            <div style={{color:C.grey, fontSize:9}}>t wet / day</div>
+                          </div>
+                          <div style={{color:C.grey, fontSize:9, marginTop:4}}>{r.mc}% MC</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <Divider/>
                   {/* Blend fraction header */}
                   <div style={{textAlign:"left", marginBottom:4}}>
                     <div style={{color:C.teal, fontWeight:800, fontSize:12, letterSpacing:"0.05em"}}>Choose Blend — Enter % (total must be 100%)</div>
@@ -2494,38 +2527,6 @@ export default function CFI() {
                         {s0.pkeEnabled ? pctPKE+"%" : "—"}
                       </div>
                       <div style={{color:C.grey, fontSize:9, textAlign:"center"}}>calculated</div>
-                    </div>
-                  </div>
-                  </div>
-
-                  {/* ── MILL DM OUTPUT SUMMARY ── */}
-                  <div style={{background:"#0A1624", border:"1px solid rgba(255,255,255,0.08)",
-                    borderRadius:8, padding:"14px 16px", marginBottom:12}}>
-                    <div style={{color:C.teal, fontWeight:800, fontSize:11, textTransform:"uppercase",
-                      letterSpacing:"0.06em", marginBottom:12}}>Mill DM Calculation — Daily Output</div>
-                    <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:8}}>
-                      {[
-                        {l:"EFB", wet:efbTPD, dm:efbDMpd, mc:s0.efbMC, c:C.teal, active:true},
-                        {l:"OPDC", wet:opdcNatTPD, dm:opdcNatDM, mc:s0.opdcMC, c:C.amber, active:true},
-                        {l:"POME Sludge", wet:pomeSludgeNatTPD, dm:pomeSludgeDMpd, mc:pomeSludgeActMC, c:"#4A9EDB", active:pomeActive},
-                        {l:"PMF", wet:s0.pmfEnabled ? +(effFFB * s0.hrsDay * 0.135).toFixed(1) : 0,
-                         dm:s0.pmfEnabled ? +(effFFB * s0.hrsDay * 0.135 * 0.35).toFixed(2) : 0,
-                         mc:65, c:"#E07C24", active:s0.pmfEnabled},
-                      ].map((r,i)=>(
-                        <div key={i} style={{background:r.active?"rgba(255,255,255,0.03)":"rgba(255,255,255,0.01)",
-                          border:`1px solid ${r.active?r.c+"33":"rgba(255,255,255,0.05)"}`,
-                          borderRadius:6, padding:"10px 10px", textAlign:"center", opacity:r.active?1:0.4}}>
-                          <div style={{color:r.c, fontWeight:800, fontSize:10, textTransform:"uppercase",
-                            letterSpacing:"0.05em", marginBottom:8}}>{r.l}</div>
-                          <div style={{color:r.active?C.white:"#555", fontWeight:900, fontSize:16, fontFamily:"monospace"}}>{r.dm}</div>
-                          <div style={{color:C.grey, fontSize:9, marginTop:2}}>t DM / day</div>
-                          <div style={{borderTop:"1px solid rgba(255,255,255,0.06)", marginTop:8, paddingTop:6}}>
-                            <div style={{color:r.active?"#aabbcc":"#555", fontSize:11, fontFamily:"monospace", fontWeight:700}}>{r.wet}</div>
-                            <div style={{color:C.grey, fontSize:9}}>t wet / day</div>
-                          </div>
-                          <div style={{color:C.grey, fontSize:9, marginTop:4}}>{r.mc}% MC</div>
-                        </div>
-                      ))}
                     </div>
                   </div>
 
