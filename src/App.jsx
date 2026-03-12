@@ -4404,7 +4404,7 @@ export default function CFI() {
 
               {/* Insect Meal */}
               <div style={S.card}>
-                <SectionHdr icon="🥩" title="INSECT MEAL — LAB PROFILE"/>
+                <SectionHdr title="INSECT MEAL — LAB PROFILE"/>
                 <div style={{background:C.teal+"18", border:`1px solid ${C.teal}44`, borderRadius:8,
                   padding:"10px 14px", marginBottom:10, textAlign:"center"}}>
                   <div style={{color:C.grey, fontSize:10}}>MONTHLY YIELD</div>
