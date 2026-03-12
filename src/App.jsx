@@ -2299,14 +2299,14 @@ export default function CFI() {
               <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
                 {/* ── A: SITE IDENTITY ── */}
-                <Card>
+                <Card style={{ maxWidth: 280 }}>
                   <div style={{ background: "#0D1F33", borderLeft: `3px solid ${C.teal}`,
                       borderRadius: 8, padding: "11px 14px", display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
                     <div style={{ color: C.teal, fontWeight: 800, fontSize: 12, letterSpacing: "0.07em", textTransform: "uppercase" }}>A — ENTER DETAILS BELOW
 
                       </div>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 240 }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                     <input style={{ background: C.inputBg, border: `1px solid ${C.teal}55`, borderRadius: 6,
                         color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
                       value={s0.plantName} onChange={(e) => upS0("plantName", e.target.value)}
