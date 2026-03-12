@@ -3035,7 +3035,7 @@ export default function CFI() {
 
                 {/* ACID CHEMICALS */}
                 <div style={S.card}>
-                  <SectionHdr icon="⚗️" title="ACID / OXIDATIVE CHEMICALS" color={C.red}/>
+                  <SectionHdr title="ACID / OXIDATIVE CHEMICALS" color={C.red}/>
                   {[
                     {k:"h2so4",  name:"H₂SO₄ — Sulfuric Acid (dilute)", rspo:"⚠",cost:"$0.05/t",lig:17,col:C.red,   note:"Hemicellulose hydrolysis + cellulose decrystallisation. Requires full neutralisation before biology."},
                     {k:"hcl",    name:"HCl — Hydrochloric Acid",          rspo:"⚠",cost:"$0.07/t",lig:16,col:C.red,   note:"Similar to H₂SO₄. Cl⁻ residues may inhibit cellulase. Higher cost than H₂SO₄."},
