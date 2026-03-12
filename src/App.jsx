@@ -2587,7 +2587,7 @@ export default function CFI() {
 
                 {/* ── SOIL TYPE & AG MANAGEMENT ── */}
                 <Card>
-                  <SectionHdr icon="🌍" title="E — Soil Type &amp; Fertiliser Requirements" color={C.teal}/>
+                  <SectionHdr title="E — Soil Type &amp; Fertiliser Requirements" color={C.teal}/>
                   <div style={{display:"block", color:C.grey, fontSize:10, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.09em", marginBottom:8}}>Indonesian Soil Classification</div>
                   <div style={{display:"flex", gap:8, flexWrap:"wrap", marginBottom:4}}>
                     {SOILS.map(so=>(
