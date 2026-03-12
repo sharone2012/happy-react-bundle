@@ -266,9 +266,19 @@ const ResidueCard = ({label, active, locked, onClick, sublabel, highlightColor})
       cursor:locked?"not-allowed":"pointer", transition:"all 0.15s"}}>
     <div style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
       <span style={{color:active?hc:C.grey, fontWeight:800, fontSize:12}}>{label}</span>
-      <div style={{width:8, height:8, borderRadius:"50%",
-        background:active?hc:hc+"44",
-        border:`2px solid ${active?hc:C.grey+"66"}`, transition:"all 0.15s", flexShrink:0}}/>
+      {/* Switch toggle */}
+      <div style={{display:"flex", alignItems:"center", gap:6, flexShrink:0}}>
+        <span style={{fontSize:9, fontWeight:700, color:active?hc:C.grey+"99", textTransform:"uppercase", letterSpacing:"0.05em"}}>
+          {active?"ON":"OFF"}
+        </span>
+        <div style={{width:32, height:18, borderRadius:9, padding:2,
+          background:active?hc:C.grey+"44",
+          transition:"background 0.2s", display:"flex", alignItems:"center"}}>
+          <div style={{width:14, height:14, borderRadius:"50%", background:"#fff",
+            transform:active?"translateX(14px)":"translateX(0)",
+            transition:"transform 0.2s", boxShadow:"0 1px 3px rgba(0,0,0,0.3)"}}/>
+        </div>
+      </div>
     </div>
     {sublabel&&<div style={{color:C.grey, fontSize:9, marginTop:4}}>{sublabel}</div>}
     {locked&&<div style={{color:C.grey, fontSize:9, marginTop:3, fontStyle:"italic"}}>locked — always active</div>}
