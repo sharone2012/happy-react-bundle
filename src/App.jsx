@@ -259,18 +259,18 @@ const ResidueCard = ({label, active, locked, onClick, highlightColor}) => {
   return (
   <div onClick={locked?undefined:onClick}
     style={{background:active?"#1a3a4a":"#1a2a35",
-      borderRadius:10, padding:"10px 12px", height:90,
+      borderRadius:10, padding:"10px 12px",
       cursor:locked?"not-allowed":"pointer", transition:"all 0.15s",
-      display:"flex", flexDirection:"column", alignItems:"flex-start", gap:6,
+      display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:8,
       border:active?`1px solid ${C.teal}55`:"1px solid rgba(255,255,255,0.08)"}}>
-    {/* Circle indicator - top right */}
-    <div style={{alignSelf:"flex-end", width:18, height:18, borderRadius:"50%",
+    {/* Label text */}
+    <div style={{color:active?C.teal:"#557788", fontWeight:800, fontSize:10, textTransform:"uppercase",
+      textAlign:"left", lineHeight:1.3, letterSpacing:"0.04em", whiteSpace:"pre-line", flex:1}}>{label}</div>
+    {/* Circle indicator */}
+    <div style={{width:18, height:18, borderRadius:"50%", flexShrink:0, marginTop:1,
       background:active?C.teal:"transparent",
       border:active?"2px solid "+C.teal:"2px solid rgba(255,255,255,0.3)",
       transition:"all 0.2s"}}/>
-    {/* Label text */}
-    <div style={{color:active?C.teal:"#557788", fontWeight:800, fontSize:10, textTransform:"uppercase",
-      textAlign:"left", lineHeight:1.3, letterSpacing:"0.04em", whiteSpace:"pre-line"}}>{label}</div>
   </div>
   );
 };
