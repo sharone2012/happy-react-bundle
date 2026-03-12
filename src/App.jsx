@@ -1035,9 +1035,9 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
 
       {/* Sub-tabs */}
       <div style={{display:"flex",gap:4,marginBottom:16,borderBottom:"1px solid "+oc.navyLt}}>
-        <SubTab id="lake" label="Data Lake" icon="🗄"/>
-        <SubTab id="agents" label="Agent Status" icon="🤖"/>
-        <SubTab id="upload" label="Upload Config" icon="📤"/>
+        <SubTab id="lake" label="Data Lake"/>
+        <SubTab id="agents" label="Agent Status"/>
+        <SubTab id="upload" label="Upload Config"/>
       </div>
 
       {/* ── DATA LAKE TAB ── */}
