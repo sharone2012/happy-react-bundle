@@ -186,7 +186,7 @@ const Alert = ({msg, type="warn"}) => {
   return (
     <div style={{background:col+"18", border:`1px solid ${col}55`, borderRadius:6,
                  padding:"7px 12px", color:col, fontSize:12, marginTop:6}}>
-      {type==="warn"?"⚠ ":type==="ok"?"✅ ":"❌ "}{msg}
+      {msg}
     </div>
   );
 };
