@@ -2394,7 +2394,7 @@ export default function CFI() {
                   </div>
 
                   <div style={{marginTop:16}}>
-                  <SectionHdr icon="📡" title="D — Captured % of Mill Processing Capacity Used" color={C.teal}/>
+                  <SectionHdr title="D — Captured % of Mill Processing Capacity Used" color={C.teal}/>
                   <div style={{...g3, justifyItems:"center", textAlign:"center"}}>
                     <BluField label="EFB %" value={s0.efbCapturePct}
                       onChange={v=>upS0("efbCapturePct",Math.min(100,Math.max(0,+v)))}
