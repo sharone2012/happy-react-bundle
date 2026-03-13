@@ -129,7 +129,7 @@ function InfoDot({ summary, logic, sources, color }) {
 
 // ─── FIELD COMPONENTS ─────────────────────────────────────────────────────────
 const Lbl = ({ t, unit }) =>
-<div style={S.label}>{t}{unit && <span style={{ color: C.teal, marginLeft: 4 }}>[{unit}]</span>}</div>;
+<div style={{ ...S.label }}>{t}{unit && <span style={{ color: C.teal, marginLeft: 4 }}>[{unit}]</span>}</div>;
 
 
 const BluField = ({ label, unit, value, onChange, disabled, note }) => {
