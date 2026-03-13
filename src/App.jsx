@@ -2777,7 +2777,7 @@ export default function CFI() {
 
               {/* ── G: PKE ── */}
               <Card>
-                <SectionHdr icon="🌾" title="G — PKE Palm Kernel Expeller (Protein Booster — Optional)" color={C.amber}/>
+                <SectionHdr title="Section G: PKE Palm Kernel Expeller (Protein Booster)" color={C.amber}/>
                 <div style={{display:"flex", alignItems:"center", gap:16, marginBottom:s0.pkeEnabled?16:0}}>
                   <label style={{display:"flex", alignItems:"center", gap:10, cursor:"pointer"}}>
                     <input type="checkbox" checked={s0.pkeEnabled}
