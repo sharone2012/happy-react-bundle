@@ -2415,7 +2415,7 @@ export default function CFI() {
 
                 {/* ── B: MILL CAPACITY ── */}
                 <Card>
-                  <SectionHdr icon="⚙" title="B — Oil Palm Mill Fresh Fruit Bunch Processing Capacity" color={C.teal}/>
+                  <SectionHdr title="Section B: Mill Capacity" color={C.teal}/>
                   <div style={{display:"flex", justifyContent:"center"}}>
                     <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"24px 48px", maxWidth:520}}>
                       {/* Row 1: FFB Processing | Capacity Utilisation */}
