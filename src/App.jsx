@@ -2366,13 +2366,7 @@ export default function CFI() {
 
                 {/* ── A: SITE IDENTITY ── */}
                 <Card>
-                  <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:14}}>
-                    <div style={{display:"flex", alignItems:"center", gap:10, flex:1}}>
-                      <span style={{fontSize:17, lineHeight:1}}>🏭</span>
-                      <div style={{color:C.teal, fontWeight:800, fontSize:13, letterSpacing:"0.03em"}}>
-                        A — Enter your site details below
-                      </div>
-                    </div>
+                  <SectionHdr title="Section A: Site Details" color={C.teal}/>
                     <div style={{marginLeft:12, flexShrink:0}}>
                       <div style={{color:C.grey, fontSize:9, fontWeight:600, letterSpacing:"0.04em", marginBottom:4, textAlign:"right"}}>ID Code</div>
                       <input
