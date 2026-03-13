@@ -321,19 +321,21 @@ const ResidueCard = ({label, active, locked, onClick, sublabel}) => (
       background: locked ? "#0A1624" : active ? "#008F7E" : "#0A1624",
       border: locked ? `1px solid rgba(232,64,64,0.25)` : active ? `2px solid ${C.teal}` : `1px solid rgba(255,255,255,0.08)`,
       borderRadius: 8,
-      padding: "10px 14px",
+      padding: "14px 16px",
       cursor: locked ? "not-allowed" : "pointer",
       transition: "all 0.15s",
+      minHeight: 60,
+      boxSizing: "border-box",
     }}>
     <div style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
-      <span style={{color: locked ? C.red : active ? C.amber : C.grey, fontWeight:800, fontSize:12, fontFamily:F.title}}>{label}</span>
-      <div style={{width:14, height:14, borderRadius:"50%",
+      <span style={{color: locked ? C.red : active ? C.amber : C.grey, fontWeight:700, fontSize:15, fontFamily:F.title, letterSpacing:"normal"}}>{label}</span>
+      <div style={{width:14, height:14, borderRadius:"50%", flexShrink:0,
         background: active ? C.amber : "transparent",
         border: `2px solid ${active ? C.amber : C.grey+"66"}`,
         transition:"all 0.15s"}}/>
     </div>
-    {sublabel && <div style={{color: locked ? C.red : active ? C.greyData : C.grey, fontSize:9, fontFamily:F.body, marginTop:4}}>{sublabel}</div>}
-    {locked && <div style={{color:C.red, fontSize:9, fontFamily:F.body, marginTop:3, fontStyle:"italic"}}>Not Processed</div>}
+    {sublabel && <div style={{color: locked ? C.red : active ? C.greyData : C.grey, fontSize:12, fontFamily:F.body, fontWeight:400, letterSpacing:"normal", marginTop:6}}>{sublabel}</div>}
+    {locked && <div style={{color:C.red, fontSize:11, fontFamily:F.body, fontWeight:400, letterSpacing:"normal", marginTop:4, fontStyle:"italic"}}>Not Processed</div>}
   </div>
 );
 
