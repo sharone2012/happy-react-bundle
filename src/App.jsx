@@ -166,8 +166,8 @@ const AmbField = ({ label, unit, value, onChange, note }) => {
 const CalcField = ({ label, unit, value, note, noteColor }) =>
 <div>
     <Lbl t={label} unit={unit} />
-    <div style={{ background: "#000000", border: `1px solid ${C.green}44`, borderRadius: 5,
-    padding: "6px 10px", color: C.green, fontSize: 13, fontWeight: 600, textAlign: "center" }}>
+    <div style={{ background: C.navyLt, border: `1px solid ${C.green}44`, borderRadius: 5,
+    padding: "6px 10px", color: C.amber, fontSize: 13, fontWeight: 700, textAlign: "center" }}>
       {value}
     </div>
     {note && <div style={{ color: noteColor || C.green, fontSize: 8, marginTop: 2, whiteSpace: "nowrap" }}>{note}</div>}
