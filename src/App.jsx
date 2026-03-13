@@ -206,7 +206,7 @@ const Alert = ({msg, type="warn"}) => {
 
 const SectionHdr = ({icon, title, color=C.teal}) => (
   <div style={{...S.hdr}}>
-    <span style={{color, fontWeight:700, fontSize:18, fontFamily:F.title}}>{title}</span>
+    <span style={{color, fontWeight:700, fontSize:18, fontFamily:F.title, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>{title}</span>
   </div>
 );
 
@@ -2481,7 +2481,7 @@ export default function CFI() {
                     <KPI label="EFB monthly production" value={efbMonthWet.toLocaleString()} unit="t/month fresh weight" color={C.amber}/>
                   </div>
                   <Divider/>
-                  <SectionHdr title="Section D: Captured % Of Mill Processing Capacity" color={C.teal}/>
+                  <SectionHdr title="Section D: Capture %" color={C.teal}/>
                   <div style={g3}>
                     <BluField label="EFB %" value={s0.efbCapturePct}
                       onChange={v=>upS0("efbCapturePct",Math.min(100,Math.max(0,+v)))}
@@ -2517,7 +2517,7 @@ export default function CFI() {
 
                 {/* ── C: RESIDUE SELECTION ── */}
                 <Card>
-                  <SectionHdr title="Section C: Choose Residues For Biological Processing" color={C.teal}/>
+                  <SectionHdr title="Section C: Residue Selection" color={C.teal}/>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12}}>
                     <ResidueCard label="EFB"   active={s0.efbEnabled}  onClick={()=>upS0("efbEnabled",!s0.efbEnabled)}             sublabel="Empty fruit bunches"/>
                     <ResidueCard label="OPDC"  active={s0.opdcEnabled} onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)}            sublabel="Decanter cake"/>
@@ -2658,7 +2658,7 @@ export default function CFI() {
 
                 {/* ── SOIL TYPE & AG MANAGEMENT ── */}
                 <Card>
-                  <SectionHdr title="Section E: Soil Type &amp; Fertiliser Requirements" color={C.teal}/>
+                  <SectionHdr title="Section E: Soil &amp; Fertiliser" color={C.teal}/>
                   <div style={{display:"block", color:C.grey, fontSize:10, fontWeight:700, letterSpacing:"0.04em", marginBottom:8}}>Indonesian soil Classification</div>
                   <div style={{display:"flex", gap:8, flexWrap:"wrap", marginBottom:4}}>
                     {SOILS.map(so=>(
@@ -2779,7 +2779,7 @@ export default function CFI() {
 
               {/* ── G: PKE ── */}
               <Card>
-                <SectionHdr title="Section G: PKE Palm Kernel Expeller (Protein Booster)" color={C.amber}/>
+                <SectionHdr title="Section G: PKE Protein Booster" color={C.amber}/>
                 <div style={{display:"flex", alignItems:"center", gap:16, marginBottom:s0.pkeEnabled?16:0}}>
                   <label style={{display:"flex", alignItems:"center", gap:10, cursor:"pointer"}}>
                     <input type="checkbox" checked={s0.pkeEnabled}
@@ -2862,7 +2862,7 @@ export default function CFI() {
               {/* ── H: COMBINED SUMMARY ── */}
               {(pomeActive||s0.pkeEnabled) && (
                 <Card style={{border:`1px solid ${C.green}33`}}>
-                  <SectionHdr title="Section H: Combined Daily NPK Summary" color={C.green}/>
+                  <SectionHdr title="Section H: Daily NPK Summary" color={C.green}/>
                   <div style={{overflowX:"auto"}}>
                     <table style={{width:"100%", borderCollapse:"collapse", fontSize:11}}>
                       <thead>
