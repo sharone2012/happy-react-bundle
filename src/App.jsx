@@ -318,23 +318,22 @@ const PillToggle = ({options, value, onChange, color=C.teal}) => (
 const ResidueCard = ({label, active, locked, onClick, sublabel}) => (
   <div onClick={locked?undefined:onClick}
     style={{
-      background: active ? C.tealDk : C.navyDk,
-      border: `1px solid ${C.frameBorder}`,
+      background: locked ? "#0A1624" : active ? "#008F7E" : "#0A1624",
+      border: locked ? `1px solid rgba(232,64,64,0.25)` : active ? `2px solid ${C.teal}` : `1px solid rgba(255,255,255,0.08)`,
       borderRadius: 8,
       padding: "10px 14px",
       cursor: locked ? "not-allowed" : "pointer",
       transition: "all 0.15s",
-      opacity: locked ? 0.5 : 1,
     }}>
     <div style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
-      <span style={{color: active ? C.amber : C.grey, fontWeight:800, fontSize:12}}>{label}</span>
+      <span style={{color: locked ? C.red : active ? C.amber : C.grey, fontWeight:800, fontSize:12, fontFamily:F.title}}>{label}</span>
       <div style={{width:14, height:14, borderRadius:"50%",
         background: active ? C.amber : "transparent",
         border: `2px solid ${active ? C.amber : C.grey+"66"}`,
         transition:"all 0.15s"}}/>
     </div>
-    {sublabel && <div style={{color: active ? C.amberLt : C.grey, fontSize:9, marginTop:4}}>{sublabel}</div>}
-    {locked && <div style={{color:C.grey, fontSize:9, marginTop:3, fontStyle:"italic"}}>not processed</div>}
+    {sublabel && <div style={{color: locked ? C.red : active ? C.greyData : C.grey, fontSize:9, fontFamily:F.body, marginTop:4}}>{sublabel}</div>}
+    {locked && <div style={{color:C.red, fontSize:9, fontFamily:F.body, marginTop:3, fontStyle:"italic"}}>Not Processed</div>}
   </div>
 );
 
