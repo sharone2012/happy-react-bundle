@@ -36,7 +36,7 @@ const C = {
   navyMid: "#0F2236",
   navyLt: "#162E45",
   navyDk: "#070F1A",
-  inputBg: "#000000",
+  inputBg: "#142030",
   teal: "#00C9B1",
   tealDk: "#009E8C",
   tealLt: "#5EEADA",
