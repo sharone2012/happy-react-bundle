@@ -30,12 +30,12 @@ function supaInsert(table, record) {
   });
 }
 
-// ─── CFI COLOUR TOKENS ────────────────────────────────────────────────────────
+// ─── CFI COLOUR TOKENS — Design Spec v3 ──────────────────────────────────────
 const C = {
-  navy:   "#0B1929",
-  navyMid:"#0F2236",
-  navyLt: "#1A3550",
-  navyDk: "#070F1A",
+  navy:   "#070D16",       // page background
+  navyMid:"#0B1422",       // app container
+  navyLt: "#1A3A5C",       // input section bg
+  navyDk: "#060C14",       // inner black zone / alert section bg
   teal:   "#00C9B1",
   tealDk: "#009E8C",
   tealLt: "#5EEADA",
@@ -46,32 +46,46 @@ const C = {
   blue:   "#4A9EDB",
   purple: "#9B59B6",
   white:  "#F0F4F8",
-  grey:   "#8BA0B4",
+  grey:   "#8BA0B4",       // field labels, sub-labels
+  greyData:"#A8B8C7",      // table data, secondary text
   greyLt: "#C4D3E0",
-  frame:  "#1A3550",       // unified outer frame background — same on every card
-  frameBorder: "#00C9B133", // unified outer border — 1px teal at 20% on every card
+  pastelGreen: "#A8E6C1",  // table total rows
+  frame:  "#153352",       // info/result section bg
+  frameBorder: "#1E6B8C",  // universal section border
+  inputBg:"#153352",       // input box background
+  inputBorder:"#1E6B8C",   // input box border
+  alertBg:"rgba(232,64,64,0.15)", // alert banner bg
+};
+
+// Font families
+const F = {
+  title: "'Syne', sans-serif",
+  body:  "'DM Sans', sans-serif",
+  mono:  "'DM Mono', monospace",
 };
 
 const S = {
-  card:    { background: C.navyMid, borderRadius: 8, padding: "16px", marginBottom: 12 },
-  hdr:     { background: C.navyLt, borderRadius: 6, padding: "10px 14px", marginBottom: 10,
+  card:    { background: C.navyLt, border: `1.5px solid ${C.frameBorder}`, borderRadius: 8, padding: "16px", marginBottom: 12 },
+  cardInfo:{ background: C.frame, border: `1.5px solid ${C.frameBorder}`, borderRadius: 8, padding: "16px", marginBottom: 12 },
+  cardAlert:{ background: C.navyDk, border: `1.5px solid ${C.frameBorder}`, borderRadius: 8, padding: "16px", marginBottom: 12 },
+  hdr:     { borderRadius: 6, padding: "10px 14px", marginBottom: 10,
              display:"flex", alignItems:"center", gap: 8 },
-  label:   { color: C.grey, fontSize: 11, letterSpacing: "0.04em", marginBottom: 2 },
-  val:     { color: C.white, fontSize: 14, fontWeight: 600 },
-  input:   { background: "#1A3550", border: `1px solid ${C.teal}44`, borderRadius: 5, color: C.white,
-             padding: "6px 10px", fontSize: 13, width: "100%", outline: "none" },
-  inputAmb:{ background: "#2A2010", border: `1px solid ${C.amber}66`, borderRadius: 5, color: C.amberLt,
-             padding: "6px 10px", fontSize: 13, width: "100%", outline: "none" },
+  label:   { color: C.grey, fontSize: 13, fontFamily: F.body, fontWeight: 600, marginBottom: 2 },
+  val:     { color: C.white, fontSize: 14, fontWeight: 600, fontFamily: F.mono },
+  input:   { background: C.inputBg, border: `1.5px solid ${C.inputBorder}`, borderRadius: 5, color: C.amber,
+             padding: "6px 10px", fontSize: 14, fontFamily: F.mono, fontWeight: 600, width: "100%", outline: "none" },
+  inputAmb:{ background: C.inputBg, border: `1.5px solid ${C.inputBorder}`, borderRadius: 5, color: C.amber,
+             padding: "6px 10px", fontSize: 14, fontFamily: F.mono, fontWeight: 600, width: "100%", outline: "none" },
   badge:   (c) => ({ background: c + "22", border: `1px solid ${c}55`, borderRadius: 12, padding: "2px 8px",
-                     color: c, fontSize: 11, fontWeight: 700, display: "inline-block" }),
+                     color: c, fontSize: 12, fontWeight: 700, fontFamily: F.title, display: "inline-block" }),
   row:     { display:"flex", gap:10, marginBottom:8 },
   col:     { flex:1 },
-  divider: { border:"none", borderTop:`1px solid ${C.navyLt}`, margin:"12px 0" },
+  divider: { border:"none", borderTop:`1px solid ${C.frameBorder}`, margin:"12px 0" },
   tab:     (active) => ({
     padding: "8px 18px", cursor: "pointer", borderRadius: "6px 6px 0 0",
     background: active ? C.tealDk : C.navyLt,
     color: active ? C.white : C.grey,
-    fontSize: 12, fontWeight: 700, letterSpacing: "0.04em",
+    fontSize: 12, fontWeight: 700, fontFamily: F.title, letterSpacing: "0.04em",
     border: `1px solid ${active ? C.teal : "transparent"}`,
     borderBottom: "none", transition: "all 0.15s"
   }),
