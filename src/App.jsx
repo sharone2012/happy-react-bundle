@@ -270,31 +270,29 @@ const PillToggle = ({ options, value, onChange, color = C.teal }) =>
 
 
 const ResidueCard = ({ abbr, label, labelJsx, active, locked, onClick, highlightColor, fontSize: fs }) => {
-  const col = highlightColor || C.teal;
+  const col = C.teal;
   const toggleCol = C.teal;
-  const hasSubLabel = label && abbr || labelJsx;
   return (
     <div onClick={locked ? undefined : onClick}
-    style={{ background: active ? "#0D3B3B" : "#000000",
+    style={{ background: active ? C.teal + "18" : C.navyDk,
       borderRadius: 10, padding: "12px 14px",
       cursor: locked ? "not-allowed" : "pointer", transition: "all 0.15s",
       display: "flex", flexDirection: "column", gap: 4,
-      border: active ? `1px solid ${toggleCol}55` : "1px solid rgba(255,255,255,0.12)",
+      border: active ? `1px solid ${toggleCol}55` : `1px solid ${C.grey}44`,
       minHeight: 58 }}>
     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-      <div style={{ color: active ? col : C.teal, fontWeight: 900, fontSize: fs || 13, textTransform: "uppercase",
+      <div style={{ color: active ? col : C.grey, fontWeight: 900, fontSize: fs || 13,
           letterSpacing: "0.06em", lineHeight: 1.2 }}>{abbr || label}</div>
       <div style={{ width: 20, height: 20, borderRadius: "50%", flexShrink: 0,
           background: active ? toggleCol : "transparent",
-          border: active ? "2.5px solid " + toggleCol : "2.5px solid " + C.teal,
+          border: active ? "2.5px solid " + toggleCol : "2.5px solid " + C.grey,
           transition: "all 0.2s" }} />
     </div>
-    {labelJsx ? <div style={{ color: "#9ab4c4", fontWeight: 700, fontSize: 9.5, textTransform: "uppercase",
-        letterSpacing: "0.06em", lineHeight: 1.3 }}>{labelJsx}</div> :
-      label && abbr && <div style={{ color: "#9ab4c4", fontWeight: 700, fontSize: 9.5, textTransform: "uppercase",
-        letterSpacing: "0.06em", lineHeight: 1.3, whiteSpace: "pre-line" }}>{label}</div>}
+    {labelJsx ? <div style={{ color: C.grey, fontWeight: 600, fontSize: 9.5,
+        lineHeight: 1.3 }}>{labelJsx}</div> :
+      label && abbr && <div style={{ color: C.grey, fontWeight: 600, fontSize: 9.5,
+        lineHeight: 1.3, whiteSpace: "pre-line" }}>{label}</div>}
   </div>);
-
 };
 
 const FE_COLOR = { LOW: C.green, MODERATE: C.teal, HIGH: C.amber, CRITICAL: C.red, Untested: C.grey };
