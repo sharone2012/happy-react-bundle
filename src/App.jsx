@@ -2481,7 +2481,7 @@ export default function CFI() {
                     <KPI label="EFB monthly production" value={efbMonthWet.toLocaleString()} unit="t/month fresh weight" color={C.amber}/>
                   </div>
                   <Divider/>
-                  <SectionHdr title="Section D: Captured % Of Mill Processing Capacity" color={C.teal}/>
+                  <SectionHdr title="Section D: Capture %" color={C.teal}/>
                   <div style={g3}>
                     <BluField label="EFB %" value={s0.efbCapturePct}
                       onChange={v=>upS0("efbCapturePct",Math.min(100,Math.max(0,+v)))}
