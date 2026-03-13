@@ -2516,7 +2516,7 @@ export default function CFI() {
                 {/* ── C: RESIDUE SELECTION ── */}
                 <Card>
                   <SectionHdr title="Section C: Choose Residues For Biological Processing" color={C.teal}/>
-                  <div style={g4}>
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12}}>
                     <ResidueCard label="EFB"   active={s0.efbEnabled}  onClick={()=>upS0("efbEnabled",!s0.efbEnabled)}             sublabel="Empty fruit bunches"/>
                     <ResidueCard label="OPDC"  active={s0.opdcEnabled} onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)}            sublabel="Decanter cake"/>
                     <ResidueCard label="POS"   active={pomeActive}     onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)}            sublabel={pomeActive?"Active — palm oil sludge":"Palm oil sludge"}/>
