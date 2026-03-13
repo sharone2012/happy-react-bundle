@@ -142,12 +142,12 @@ function InfoDot({summary, logic, sources, color}) {
 
 // ─── FIELD COMPONENTS ─────────────────────────────────────────────────────────
 const Lbl = ({t, unit}) => (
-  <div style={S.label}>{t}{unit && <span style={{color:C.teal,marginLeft:4}}>[{unit}]</span>}</div>
+  <div style={S.label}>{t}{unit && <span style={{color:C.grey,marginLeft:4,fontSize:11,fontFamily:F.body,fontWeight:400}}>[{unit}]</span>}</div>
 );
 
 const BluField = ({label, unit, value, onChange, disabled, note}) => {
   const [local, setLocal] = useState(value);
-  useState(() => { setLocal(value); }, [value]);
+  useEffect(() => { setLocal(value); }, [value]);
   return (
     <div>
       <Lbl t={label} unit={unit}/>
@@ -156,14 +156,14 @@ const BluField = ({label, unit, value, onChange, disabled, note}) => {
         onChange={e => setLocal(e.target.value)}
         onBlur={e => { if(onChange) onChange(e.target.value); }}
         disabled={!!disabled}/>
-      {note && <div style={{color:C.grey,fontSize:10,marginTop:2}}>{note}</div>}
+      {note && <div style={{color:C.grey,fontSize:11,fontFamily:F.body,marginTop:2}}>{note}</div>}
     </div>
   );
 };
 
 const AmbField = ({label, unit, value, onChange, note}) => {
   const [local, setLocal] = useState(value);
-  useState(() => { setLocal(value); }, [value]);
+  useEffect(() => { setLocal(value); }, [value]);
   return (
     <div>
       <Lbl t={label} unit={unit}/>
@@ -171,7 +171,7 @@ const AmbField = ({label, unit, value, onChange, note}) => {
         value={local}
         onChange={e => setLocal(e.target.value)}
         onBlur={e => { if(onChange) onChange(e.target.value); }}/>
-      {note && <div style={{color:C.amber,fontSize:10,marginTop:2}}>⚠ {note}</div>}
+      {note && <div style={{color:C.amber,fontSize:11,fontFamily:F.body,marginTop:2}}>{note}</div>}
     </div>
   );
 };
@@ -179,35 +179,34 @@ const AmbField = ({label, unit, value, onChange, note}) => {
 const CalcField = ({label, unit, value, note}) => (
   <div>
     <Lbl t={label} unit={unit}/>
-    <div style={{background:"#0D2818", border:`1px solid ${C.green}44`, borderRadius:5,
-                 padding:"6px 10px", color:C.green, fontSize:13, fontWeight:600}}>
+    <div style={{background:C.frame, border:`1.5px solid ${C.frameBorder}`, borderRadius:5,
+                 padding:"6px 10px", color:C.green, fontSize:16, fontFamily:F.mono, fontWeight:700}}>
       {value}
     </div>
-    {note && <div style={{color:C.green,fontSize:10,marginTop:2}}>{note}</div>}
+    {note && <div style={{color:C.green,fontSize:11,fontFamily:F.body,marginTop:2}}>{note}</div>}
   </div>
 );
 
 const Halt = ({msg}) => (
-  <div style={{background:C.red+"22", border:`1px solid ${C.red}`, borderRadius:6,
-               padding:"8px 12px", color:C.red, fontSize:12, fontWeight:700, marginTop:6}}>
-    🛑 HALT — {msg}
+  <div style={{background:C.alertBg, border:`1.5px solid ${C.frameBorder}`, borderRadius:6,
+               padding:"9px 13px", color:C.red, fontSize:13, fontFamily:F.body, fontWeight:700, marginTop:6}}>
+    HALT — {msg}
   </div>
 );
 
 const Alert = ({msg, type="warn"}) => {
   const col = type==="warn" ? C.amber : type==="ok" ? C.green : C.red;
   return (
-    <div style={{background:col+"18", border:`1px solid ${col}55`, borderRadius:6,
-                 padding:"7px 12px", color:col, fontSize:12, marginTop:6}}>
-      {type==="warn"?"⚠ ":type==="ok"?"✅ ":"❌ "}{msg}
+    <div style={{background:col+"18", border:`1.5px solid ${C.frameBorder}`, borderRadius:6,
+                 padding:"7px 12px", color:col, fontSize:13, fontFamily:F.body, marginTop:6}}>
+      {msg}
     </div>
   );
 };
 
 const SectionHdr = ({icon, title, color=C.teal}) => (
-  <div style={{...S.hdr, borderLeft:`3px solid ${color}`}}>
-    <span style={{fontSize:16}}>{icon}</span>
-    <span style={{color, fontWeight:800, fontSize:13, letterSpacing:"0.05em"}}>{title}</span>
+  <div style={{...S.hdr}}>
+    <span style={{color, fontWeight:700, fontSize:18, fontFamily:F.title}}>{title}</span>
   </div>
 );
 
