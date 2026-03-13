@@ -30,12 +30,12 @@ function supaInsert(table, record) {
   });
 }
 
-// ─── CFI COLOUR TOKENS ────────────────────────────────────────────────────────
+// ─── CFI COLOUR TOKENS — Design Spec v3 ──────────────────────────────────────
 const C = {
-  navy:   "#0B1929",
-  navyMid:"#0F2236",
-  navyLt: "#1A3550",
-  navyDk: "#070F1A",
+  navy:   "#070D16",       // page background
+  navyMid:"#0B1422",       // app container
+  navyLt: "#1A3A5C",       // input section bg
+  navyDk: "#060C14",       // inner black zone / alert section bg
   teal:   "#00C9B1",
   tealDk: "#009E8C",
   tealLt: "#5EEADA",
@@ -46,32 +46,46 @@ const C = {
   blue:   "#4A9EDB",
   purple: "#9B59B6",
   white:  "#F0F4F8",
-  grey:   "#8BA0B4",
+  grey:   "#8BA0B4",       // field labels, sub-labels
+  greyData:"#A8B8C7",      // table data, secondary text
   greyLt: "#C4D3E0",
-  frame:  "#1A3550",       // unified outer frame background — same on every card
-  frameBorder: "#00C9B133", // unified outer border — 1px teal at 20% on every card
+  pastelGreen: "#A8E6C1",  // table total rows
+  frame:  "#153352",       // info/result section bg
+  frameBorder: "#1E6B8C",  // universal section border
+  inputBg:"#153352",       // input box background
+  inputBorder:"#1E6B8C",   // input box border
+  alertBg:"rgba(232,64,64,0.15)", // alert banner bg
+};
+
+// Font families
+const F = {
+  title: "'Syne', sans-serif",
+  body:  "'DM Sans', sans-serif",
+  mono:  "'DM Mono', monospace",
 };
 
 const S = {
-  card:    { background: C.navyMid, borderRadius: 8, padding: "16px", marginBottom: 12 },
-  hdr:     { background: C.navyLt, borderRadius: 6, padding: "10px 14px", marginBottom: 10,
+  card:    { background: C.navyLt, border: `1.5px solid ${C.frameBorder}`, borderRadius: 8, padding: "16px", marginBottom: 12 },
+  cardInfo:{ background: C.frame, border: `1.5px solid ${C.frameBorder}`, borderRadius: 8, padding: "16px", marginBottom: 12 },
+  cardAlert:{ background: C.navyDk, border: `1.5px solid ${C.frameBorder}`, borderRadius: 8, padding: "16px", marginBottom: 12 },
+  hdr:     { borderRadius: 6, padding: "10px 14px", marginBottom: 10,
              display:"flex", alignItems:"center", gap: 8 },
-  label:   { color: C.grey, fontSize: 11, letterSpacing: "0.04em", marginBottom: 2 },
-  val:     { color: C.white, fontSize: 14, fontWeight: 600 },
-  input:   { background: "#1A3550", border: `1px solid ${C.teal}44`, borderRadius: 5, color: C.white,
-             padding: "6px 10px", fontSize: 13, width: "100%", outline: "none" },
-  inputAmb:{ background: "#2A2010", border: `1px solid ${C.amber}66`, borderRadius: 5, color: C.amberLt,
-             padding: "6px 10px", fontSize: 13, width: "100%", outline: "none" },
+  label:   { color: C.grey, fontSize: 13, fontFamily: F.body, fontWeight: 600, marginBottom: 2 },
+  val:     { color: C.white, fontSize: 14, fontWeight: 600, fontFamily: F.mono },
+  input:   { background: C.inputBg, border: `1.5px solid ${C.inputBorder}`, borderRadius: 5, color: C.amber,
+             padding: "6px 10px", fontSize: 14, fontFamily: F.mono, fontWeight: 600, width: "100%", outline: "none" },
+  inputAmb:{ background: C.inputBg, border: `1.5px solid ${C.inputBorder}`, borderRadius: 5, color: C.amber,
+             padding: "6px 10px", fontSize: 14, fontFamily: F.mono, fontWeight: 600, width: "100%", outline: "none" },
   badge:   (c) => ({ background: c + "22", border: `1px solid ${c}55`, borderRadius: 12, padding: "2px 8px",
-                     color: c, fontSize: 11, fontWeight: 700, display: "inline-block" }),
+                     color: c, fontSize: 12, fontWeight: 700, fontFamily: F.title, display: "inline-block" }),
   row:     { display:"flex", gap:10, marginBottom:8 },
   col:     { flex:1 },
-  divider: { border:"none", borderTop:`1px solid ${C.navyLt}`, margin:"12px 0" },
+  divider: { border:"none", borderTop:`1px solid ${C.frameBorder}`, margin:"12px 0" },
   tab:     (active) => ({
     padding: "8px 18px", cursor: "pointer", borderRadius: "6px 6px 0 0",
     background: active ? C.tealDk : C.navyLt,
     color: active ? C.white : C.grey,
-    fontSize: 12, fontWeight: 700, letterSpacing: "0.04em",
+    fontSize: 12, fontWeight: 700, fontFamily: F.title, letterSpacing: "0.04em",
     border: `1px solid ${active ? C.teal : "transparent"}`,
     borderBottom: "none", transition: "all 0.15s"
   }),
@@ -128,12 +142,12 @@ function InfoDot({summary, logic, sources, color}) {
 
 // ─── FIELD COMPONENTS ─────────────────────────────────────────────────────────
 const Lbl = ({t, unit}) => (
-  <div style={S.label}>{t}{unit && <span style={{color:C.teal,marginLeft:4}}>[{unit}]</span>}</div>
+  <div style={S.label}>{t}{unit && <span style={{color:C.grey,marginLeft:4,fontSize:11,fontFamily:F.body,fontWeight:400}}>[{unit}]</span>}</div>
 );
 
 const BluField = ({label, unit, value, onChange, disabled, note}) => {
   const [local, setLocal] = useState(value);
-  useState(() => { setLocal(value); }, [value]);
+  useEffect(() => { setLocal(value); }, [value]);
   return (
     <div>
       <Lbl t={label} unit={unit}/>
@@ -142,14 +156,14 @@ const BluField = ({label, unit, value, onChange, disabled, note}) => {
         onChange={e => setLocal(e.target.value)}
         onBlur={e => { if(onChange) onChange(e.target.value); }}
         disabled={!!disabled}/>
-      {note && <div style={{color:C.grey,fontSize:10,marginTop:2}}>{note}</div>}
+      {note && <div style={{color:C.grey,fontSize:11,fontFamily:F.body,marginTop:2}}>{note}</div>}
     </div>
   );
 };
 
 const AmbField = ({label, unit, value, onChange, note}) => {
   const [local, setLocal] = useState(value);
-  useState(() => { setLocal(value); }, [value]);
+  useEffect(() => { setLocal(value); }, [value]);
   return (
     <div>
       <Lbl t={label} unit={unit}/>
@@ -157,7 +171,7 @@ const AmbField = ({label, unit, value, onChange, note}) => {
         value={local}
         onChange={e => setLocal(e.target.value)}
         onBlur={e => { if(onChange) onChange(e.target.value); }}/>
-      {note && <div style={{color:C.amber,fontSize:10,marginTop:2}}>⚠ {note}</div>}
+      {note && <div style={{color:C.amber,fontSize:11,fontFamily:F.body,marginTop:2}}>{note}</div>}
     </div>
   );
 };
@@ -165,76 +179,71 @@ const AmbField = ({label, unit, value, onChange, note}) => {
 const CalcField = ({label, unit, value, note}) => (
   <div>
     <Lbl t={label} unit={unit}/>
-    <div style={{background:"#0D2818", border:`1px solid ${C.green}44`, borderRadius:5,
-                 padding:"6px 10px", color:C.green, fontSize:13, fontWeight:600}}>
+    <div style={{background:C.frame, border:`1.5px solid ${C.frameBorder}`, borderRadius:5,
+                 padding:"6px 10px", color:C.green, fontSize:16, fontFamily:F.mono, fontWeight:700}}>
       {value}
     </div>
-    {note && <div style={{color:C.green,fontSize:10,marginTop:2}}>{note}</div>}
+    {note && <div style={{color:C.green,fontSize:11,fontFamily:F.body,marginTop:2}}>{note}</div>}
   </div>
 );
 
 const Halt = ({msg}) => (
-  <div style={{background:C.red+"22", border:`1px solid ${C.red}`, borderRadius:6,
-               padding:"8px 12px", color:C.red, fontSize:12, fontWeight:700, marginTop:6}}>
-    🛑 HALT — {msg}
+  <div style={{background:C.alertBg, border:`1.5px solid ${C.frameBorder}`, borderRadius:6,
+               padding:"9px 13px", color:C.red, fontSize:13, fontFamily:F.body, fontWeight:700, marginTop:6}}>
+    HALT — {msg}
   </div>
 );
 
 const Alert = ({msg, type="warn"}) => {
   const col = type==="warn" ? C.amber : type==="ok" ? C.green : C.red;
   return (
-    <div style={{background:col+"18", border:`1px solid ${col}55`, borderRadius:6,
-                 padding:"7px 12px", color:col, fontSize:12, marginTop:6}}>
-      {type==="warn"?"⚠ ":type==="ok"?"✅ ":"❌ "}{msg}
+    <div style={{background:col+"18", border:`1.5px solid ${C.frameBorder}`, borderRadius:6,
+                 padding:"7px 12px", color:col, fontSize:13, fontFamily:F.body, marginTop:6}}>
+      {msg}
     </div>
   );
 };
 
 const SectionHdr = ({icon, title, color=C.teal}) => (
-  <div style={{...S.hdr, borderLeft:`3px solid ${color}`}}>
-    <span style={{fontSize:16}}>{icon}</span>
-    <span style={{color, fontWeight:800, fontSize:13, letterSpacing:"0.05em"}}>{title}</span>
+  <div style={{...S.hdr}}>
+    <span style={{color, fontWeight:700, fontSize:18, fontFamily:F.title}}>{title}</span>
   </div>
 );
 
 const KPI = ({label, value, unit, color=C.teal}) => (
   <div style={{background:C.frame, borderRadius:8, padding:"12px 14px", textAlign:"center",
-               border:`1px solid ${C.frameBorder}`}}>
-    <div style={{color:C.grey, fontSize:10, letterSpacing:"0.04em"}}>{label}</div>
-    <div style={{color, fontSize:22, fontWeight:800, margin:"4px 0"}}>{value}</div>
-    <div style={{color:C.grey, fontSize:10}}>{unit}</div>
+               border:`1.5px solid ${C.frameBorder}`}}>
+    <div style={{color:C.grey, fontSize:11, fontFamily:F.body, fontWeight:600}}>{label}</div>
+    <div style={{color, fontSize:22, fontWeight:800, fontFamily:F.mono, margin:"4px 0"}}>{value}</div>
+    <div style={{color:C.grey, fontSize:11, fontFamily:F.body}}>{unit}</div>
   </div>
 );
 
 const Badge = ({text, color}) => (
   <span style={{background:color+"20", border:`1px solid ${color}50`, borderRadius:10,
-    padding:"2px 9px", color, fontSize:10, fontWeight:800, letterSpacing:"0.04em",
+    padding:"2px 9px", color, fontSize:12, fontWeight:700, fontFamily:F.title,
     display:"inline-block", whiteSpace:"nowrap"}}>
     {text}
   </span>
 );
 
 const Divider = ({color}) => (
-  <hr style={{border:"none", borderTop:`1px solid ${color||C.navyLt}`, margin:"14px 0"}}/>
+  <hr style={{border:"none", borderTop:`1px solid ${color||C.frameBorder}`, margin:"14px 0"}}/>
 );
 
 const Card = ({children, style={}}) => (
-  <div style={{background:C.frame, border:`1px solid ${C.frameBorder}`,
-    borderRadius:10, padding:20, ...style}}>
+  <div style={{background:C.navyLt, border:`1.5px solid ${C.frameBorder}`,
+    borderRadius:8, padding:20, ...style}}>
     {children}
   </div>
 );
 
-/* ── NEW DESIGN SYSTEM CARD ──────────────────────────────────────────────────
-   Grey outer frame. Title sits IN the grey area at top — no black behind it.
-   Input area = black inner block. Results = back in grey at bottom.
-   Use height:"100%" on the outer div so rows stretch evenly.
-─────────────────────────────────────────────────────────────────────────── */
-const SectionCard = ({title, icon, color=C.teal, inputs, results, style={}}) => (
+/* ── DESIGN SYSTEM CARD ─────────────────────────────────────────────────── */
+const SectionCard = ({title, icon, color=C.teal, inputs, results, badge, style={}}) => (
   <div style={{
-    background: C.frame,
-    border: `1px solid ${C.frameBorder}`,
-    borderRadius: 10,
+    background: C.navyLt,
+    border: `1.5px solid ${C.frameBorder}`,
+    borderRadius: 8,
     display: "flex",
     flexDirection: "column",
     height: "100%",
@@ -242,17 +251,17 @@ const SectionCard = ({title, icon, color=C.teal, inputs, results, style={}}) => 
     overflow: "hidden",
     ...style
   }}>
-    {/* Title — lives in grey frame, NO black box behind it */}
+    {/* Title */}
     <div style={{padding:"12px 16px 10px", display:"flex", alignItems:"center", gap:8, flexShrink:0}}>
-      {icon && <span style={{fontSize:15, lineHeight:1, flexShrink:0}}>{icon}</span>}
-      <div style={{color, fontWeight:800, fontSize:13, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>{title}</div>
+      <div style={{color, fontWeight:700, fontSize:18, fontFamily:F.title, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis", flex:1}}>{title}</div>
+      {badge && <Badge text={badge.text} color={badge.color}/>}
     </div>
-    {/* Black input block — margin 0 12px so grey frame shows on sides */}
+    {/* Inner black zone */}
     {inputs && (
       <div style={{
         background: C.navyDk,
         margin: "0 12px",
-        borderRadius: 8,
+        borderRadius: 6,
         padding: "14px 16px",
         flex: 1,
         boxSizing: "border-box",
@@ -260,7 +269,7 @@ const SectionCard = ({title, icon, color=C.teal, inputs, results, style={}}) => 
         {inputs}
       </div>
     )}
-    {/* Results — back in grey frame at bottom */}
+    {/* Results area */}
     {results && (
       <div style={{padding:"10px 16px 14px", flexShrink:0}}>
         {results}
@@ -269,25 +278,23 @@ const SectionCard = ({title, icon, color=C.teal, inputs, results, style={}}) => 
   </div>
 );
 
-/* Helper: result value displayed in grey area (orange for totals, teal for calcs) */
+/* Helper: result value displayed in info area */
 const ResultRow = ({label, value, unit, color=C.amber, large=false}) => (
   <div style={{display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:4}}>
-    <span style={{color:C.grey, fontSize:10}}>{label}</span>
-    <span style={{color, fontWeight:large?900:700, fontSize:large?16:13, fontFamily:"monospace"}}>
-      {value}{unit && <span style={{color:C.grey, fontSize:10, fontWeight:400, marginLeft:4}}>{unit}</span>}
+    <span style={{color:C.grey, fontSize:11, fontFamily:F.body}}>{label}</span>
+    <span style={{color, fontWeight:large?900:700, fontSize:large?16:13, fontFamily:F.mono}}>
+      {value}{unit && <span style={{color:C.grey, fontSize:11, fontWeight:400, marginLeft:4}}>{unit}</span>}
     </span>
   </div>
 );
 
 const Warn = ({msg, type="warn"}) => {
   const col = type==="warn"?C.amber : type==="ok"?C.green : C.red;
-  const icon = type==="warn"?"⚠" : type==="ok"?"✓" : "✕";
   return (
-    <div style={{background:col+"14", border:`1px solid ${col}44`,
+    <div style={{background:col+"14", border:`1.5px solid ${C.frameBorder}`,
       borderLeft:`3px solid ${col}`, borderRadius:6,
-      padding:"8px 13px", color:col, fontSize:11,
+      padding:"9px 13px", color:col, fontSize:13, fontFamily:F.body,
       display:"flex", alignItems:"flex-start", gap:8, marginTop:8}}>
-      <span style={{fontWeight:800, fontSize:12, marginTop:1, flexShrink:0}}>{icon}</span>
       <span style={{lineHeight:1.5}}>{msg}</span>
     </div>
   );
@@ -311,23 +318,22 @@ const PillToggle = ({options, value, onChange, color=C.teal}) => (
 const ResidueCard = ({label, active, locked, onClick, sublabel}) => (
   <div onClick={locked?undefined:onClick}
     style={{
-      background: active ? C.tealDk : C.navyDk,
-      border: `1px solid ${C.frameBorder}`,
+      background: locked ? "#0A1624" : active ? "#008F7E" : "#0A1624",
+      border: locked ? `1px solid rgba(232,64,64,0.25)` : active ? `2px solid ${C.teal}` : `1px solid rgba(255,255,255,0.08)`,
       borderRadius: 8,
       padding: "10px 14px",
       cursor: locked ? "not-allowed" : "pointer",
       transition: "all 0.15s",
-      opacity: locked ? 0.5 : 1,
     }}>
     <div style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
-      <span style={{color: active ? C.amber : C.grey, fontWeight:800, fontSize:12}}>{label}</span>
+      <span style={{color: locked ? C.red : active ? C.amber : C.grey, fontWeight:800, fontSize:12, fontFamily:F.title}}>{label}</span>
       <div style={{width:14, height:14, borderRadius:"50%",
         background: active ? C.amber : "transparent",
         border: `2px solid ${active ? C.amber : C.grey+"66"}`,
         transition:"all 0.15s"}}/>
     </div>
-    {sublabel && <div style={{color: active ? C.amberLt : C.grey, fontSize:9, marginTop:4}}>{sublabel}</div>}
-    {locked && <div style={{color:C.grey, fontSize:9, marginTop:3, fontStyle:"italic"}}>not processed</div>}
+    {sublabel && <div style={{color: locked ? C.red : active ? C.greyData : C.grey, fontSize:9, fontFamily:F.body, marginTop:4}}>{sublabel}</div>}
+    {locked && <div style={{color:C.red, fontSize:9, fontFamily:F.body, marginTop:3, fontStyle:"italic"}}>Not Processed</div>}
   </div>
 );
 
@@ -1404,6 +1410,38 @@ export default function CFI() {
   const [visEmail, setVisEmail]         = useState("");
   const [visOrg,   setVisOrg]           = useState("");
   const [visSubmitted, setVisSubmitted] = useState(false);
+  const [uploadedConfigs, setUploadedConfigs] = useState([]);
+
+  // ── S0 STATE ── (must be before siteRegistered which references s0)
+  const [s0, setS0] = useState({
+    plantName: "", millName: "", district: "", province: "", contact: "", rspo: "none",
+    idCode: "", contactName: "", contactEmail: "",
+    ffbCapacity: 60, utilisation: 85, hrsDay: 24, daysMonth: 30,
+    efbPct: 60, opdcPct: 40, efbEnabled: true, opdcEnabled: true,
+    efbMC: 62.5, opdcMC: 70, pksaMC: 5,
+    pomeSludgeMC: 82,
+    pomeSludgeDewatered: false,
+    pomeSludgeFeResult: "",
+    pomeEnabled: false,
+    pkeEnabled: false,
+    pmfEnabled: false,
+    pkeTPD: 5,
+    cnTarget: 22,
+    soil: "ultisol", ag: "vgam",
+    efbCapturePct: 100,
+    opdcCapturePct: 100,
+    pomeCapturePct: 100,
+    carbonPriceScenario: "mid",
+    carbonPriceCustom: 25,
+    carbonGwp: "100yr",
+    carbonBaselineMCF: "shallow",
+    carbonPomeMCF: "pond",
+    dmppEnabled:    false,
+    dmppDose:       1.5,
+    dmppCostPerKg:  9,
+  });
+
+  const upS0 = (k,v) => setS0(p=>({...p,[k]:v}));
 
   const siteRegistered = !!(s0.plantName && s0.millName && s0.contactEmail);
   const FREE_TABS = 3;
@@ -1440,41 +1478,6 @@ export default function CFI() {
     setVisSubmitted(true);
     setTimeout(() => { setShowGate(false); setVisSubmitted(false); }, 1800);
   };
-  const [uploadedConfigs, setUploadedConfigs] = useState([]);
-
-  // ── S0 STATE ──
-  const [s0, setS0] = useState({
-    plantName: "", millName: "", district: "", province: "", contact: "", rspo: "none",
-    idCode: "", contactName: "", contactEmail: "",
-    ffbCapacity: 60, utilisation: 85, hrsDay: 24, daysMonth: 30,
-    efbPct: 60, opdcPct: 40, efbEnabled: true, opdcEnabled: true,
-    efbMC: 62.5, opdcMC: 70, pksaMC: 5,  // BUG-01 FIX: EFB canonical MC = 62.5% wb
-    pomeSludgeMC: 82,
-    pomeSludgeDewatered: false,
-    pomeSludgeFeResult: "",
-    pomeEnabled: false,
-    pkeEnabled: false,
-    pmfEnabled: false,
-    pkeTPD: 5,
-    cnTarget: 22,
-    soil: "ultisol", ag: "vgam",
-    // ── RESIDUE CAPTURE % OVERRIDES (carbon model) ──
-    efbCapturePct: 100,    // % of generated EFB captured by CFI (vs left on field/burned)
-    opdcCapturePct: 100,   // % of OPDC captured
-    pomeCapturePct: 100,   // % of POME sludge captured
-    // ── CARBON CREDIT INPUTS ──
-    carbonPriceScenario: "mid",  // low/mid/high/custom
-    carbonPriceCustom: 25,       // $/t CO2e if custom
-    carbonGwp: "100yr",          // 100yr / 20yr
-    carbonBaselineMCF: "shallow", // shallow(0.4) / deep(0.85)
-    carbonPomeMCF: "pond",        // pond(0.8) / lagoon(0.01)
-    // ── DMPP N₂O SUPPRESSION MODULE ──
-    dmppEnabled:    false,   // toggle — enables N₂O suppression credit pathway
-    dmppDose:       1.5,     // kg DMPP per tonne frass (wet weight) — commercial range 1-2 kg/t
-    dmppCostPerKg:  9,       // $/kg DMPP — commercial range $8-15/kg
-  });
-
-  const upS0 = (k,v) => setS0(p=>({...p,[k]:v}));
 
   // ── S0 DERIVED ──
   const effFFB    = useMemo(()=> +(s0.ffbCapacity * s0.utilisation/100).toFixed(2), [s0.ffbCapacity, s0.utilisation]);
@@ -2262,35 +2265,36 @@ export default function CFI() {
   const TABS = ["S0 Inputs","S1 Pre-Process","S2 Chemical","S3 Biologicals","S4 BSF Rearing","S5 Products","S6 Valuation","CAPEX / OPEX","Carbon Credits","Summary","Orchestration"];
 
   return (
-    <div style={{background:C.navy, minHeight:"100vh", fontFamily:"'DM Sans', system-ui, sans-serif",
+    <div style={{background:C.navy, minHeight:"100vh", fontFamily:F.body,
                  color:C.white, padding:"0 0 40px"}}>
 
       {/* ── HEADER ── */}
-      <div style={{background:`linear-gradient(135deg, ${C.navyMid} 0%, #0A2030 100%)`,
-                   borderBottom:`2px solid ${C.teal}44`, padding:"16px 24px",
+      <div style={{background:C.navyMid,
+                   borderBottom:`2px solid ${C.frameBorder}`, padding:"16px 24px",
                    display:"flex", alignItems:"center", justifyContent:"space-between"}}>
         <div style={{display:"flex", alignItems:"center", gap:12}}>
           <div style={{background:C.teal, width:36, height:36, borderRadius:8, display:"flex",
-                       alignItems:"center", justifyContent:"center", fontSize:18}}>🌴</div>
+                       alignItems:"center", justifyContent:"center", fontSize:18, color:C.navy, fontFamily:F.title, fontWeight:700}}>CFI</div>
           <div>
-            <div style={{color:C.teal, fontWeight:900, fontSize:16, letterSpacing:"0.06em"}}>
-              CIRCULAR FERTILISER INDUSTRIES
+            <div style={{color:C.teal, fontWeight:700, fontSize:18, fontFamily:F.title}}>
+              Circular Fertiliser Industries
             </div>
-            <div style={{color:C.grey, fontSize:11}}>Palm Oil Bioconversion System · 60 TPH FFB Mill · West Java</div>
+            <div style={{color:C.grey, fontSize:11, fontFamily:F.body}}>Palm Oil Bioconversion System · 60 TPH FFB Mill · West Java</div>
           </div>
         </div>
         <div style={{display:"flex", gap:6}}>
-          {["S0","S1","S2","S3","S4","S5","S6","CAPEX","CO₂","∑"].map((s,i)=>(
-            <div key={i} style={{background: stage===i ? C.teal : C.navyLt,
-                                  color: stage===i ? C.navy : C.grey,
-                                  borderRadius:4, padding:"3px 10px", fontSize:11, fontWeight:700,
+          {["S0","S1","S2","S3","S4","S5","S6","CAPEX","CO2","Sum"].map((s,i)=>(
+            <div key={i} style={{background: stage===i ? C.tealDk : C.navyLt,
+                                  color: stage===i ? C.white : C.grey,
+                                  borderRadius:4, padding:"3px 10px", fontSize:12, fontWeight:700,
+                                  fontFamily:F.title,
                                   cursor:"pointer"}} onClick={()=>handleTabClick(i)}>{s}</div>
           ))}
         </div>
       </div>
 
       {/* ── TAB BAR ── */}
-      <div style={{display:"flex", gap:2, padding:"0 24px", borderBottom:`2px solid ${C.teal}33`,
+      <div style={{display:"flex", gap:2, padding:"0 24px", borderBottom:`2px solid ${C.frameBorder}`,
                    background:C.navyMid}}>
         {TABS.map((t,i)=>(
           <div key={i} style={S.tab(stage===i)} onClick={()=>handleTabClick(i)}>{t}</div>
@@ -2411,7 +2415,7 @@ export default function CFI() {
 
                 {/* ── B: MILL CAPACITY ── */}
                 <Card>
-                  <SectionHdr icon="⚙" title="B — Oil Palm Mill Fresh Fruit Bunch Processing Capacity" color={C.teal}/>
+                  <SectionHdr title="Section B: Mill Capacity" color={C.teal}/>
                   <div style={{display:"flex", justifyContent:"center"}}>
                     <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"24px 48px", maxWidth:520}}>
                       {/* Row 1: FFB Processing | Capacity Utilisation */}
@@ -2475,7 +2479,7 @@ export default function CFI() {
                     <KPI label="EFB monthly production" value={efbMonthWet.toLocaleString()} unit="t/month fresh weight" color={C.amber}/>
                   </div>
                   <Divider/>
-                  <SectionHdr icon="📡" title="D — Captured % of Mill Processing Capacity Used" color={C.teal}/>
+                  <SectionHdr title="Section D: Captured % Of Mill Processing Capacity" color={C.teal}/>
                   <div style={g3}>
                     <BluField label="EFB %" value={s0.efbCapturePct}
                       onChange={v=>upS0("efbCapturePct",Math.min(100,Math.max(0,+v)))}
@@ -2486,7 +2490,7 @@ export default function CFI() {
                       onChange={v=>upS0("pomeCapturePct",Math.min(100,Math.max(0,+v)))}/>
                   </div>
                   <div style={{background:C.navyDk, border:"1px solid rgba(255,255,255,0.08)", borderRadius:8, padding:12, marginTop:12}}>
-                    <SectionHdr icon="🌿" title="E — Carbon Credits Preview" color={C.green}/>
+                    <SectionHdr title="Section E: Carbon Credits Preview" color={C.green}/>
                     <div style={{color:C.grey, fontSize:10, marginTop:-6, marginBottom:10}}>Full methodology in the CO₂ tab</div>
                     <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:8}}>
                       {[
@@ -2511,7 +2515,7 @@ export default function CFI() {
 
                 {/* ── C: RESIDUE SELECTION ── */}
                 <Card>
-                  <SectionHdr icon="🌿" title="C — Choose residues for biological processing" color={C.teal}/>
+                  <SectionHdr title="Section C: Choose Residues For Biological Processing" color={C.teal}/>
                   <div style={g4}>
                     <ResidueCard label="EFB"   active={s0.efbEnabled}  onClick={()=>upS0("efbEnabled",!s0.efbEnabled)}             sublabel="Empty fruit bunches"/>
                     <ResidueCard label="OPDC"  active={s0.opdcEnabled} onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)}            sublabel="Decanter cake"/>
@@ -2652,7 +2656,7 @@ export default function CFI() {
 
                 {/* ── SOIL TYPE & AG MANAGEMENT ── */}
                 <Card>
-                  <SectionHdr icon="🌍" title="E — Soil Type &amp; Fertiliser Requirements" color={C.teal}/>
+                  <SectionHdr title="Section E: Soil Type &amp; Fertiliser Requirements" color={C.teal}/>
                   <div style={{display:"block", color:C.grey, fontSize:10, fontWeight:700, letterSpacing:"0.04em", marginBottom:8}}>Indonesian soil Classification</div>
                   <div style={{display:"flex", gap:8, flexWrap:"wrap", marginBottom:4}}>
                     {SOILS.map(so=>(
@@ -2696,7 +2700,7 @@ export default function CFI() {
 
               {/* ── F: POME SLUDGE ── */}
               <Card>
-                <SectionHdr icon="💧" title="F — POME Sludge (Third Waste Stream)" color={C.blue}/>
+                <SectionHdr title="Section F: POS Palm Oil Sludge" color={C.blue}/>
                 <div style={{display:"flex", alignItems:"center", gap:16, marginBottom:16}}>
                   <div style={{display:"flex", alignItems:"center", gap:10}}>
                     <input type="checkbox" checked={pomeActive} readOnly
@@ -2773,7 +2777,7 @@ export default function CFI() {
 
               {/* ── G: PKE ── */}
               <Card>
-                <SectionHdr icon="🌾" title="G — PKE Palm Kernel Expeller (Protein Booster — Optional)" color={C.amber}/>
+                <SectionHdr title="Section G: PKE Palm Kernel Expeller (Protein Booster)" color={C.amber}/>
                 <div style={{display:"flex", alignItems:"center", gap:16, marginBottom:s0.pkeEnabled?16:0}}>
                   <label style={{display:"flex", alignItems:"center", gap:10, cursor:"pointer"}}>
                     <input type="checkbox" checked={s0.pkeEnabled}
@@ -2856,7 +2860,7 @@ export default function CFI() {
               {/* ── H: COMBINED SUMMARY ── */}
               {(pomeActive||s0.pkeEnabled) && (
                 <Card style={{border:`1px solid ${C.green}33`}}>
-                  <SectionHdr icon="📊" title="H — Combined Multi-Stream Daily NPK Summary" color={C.green}/>
+                  <SectionHdr title="Section H: Combined Daily NPK Summary" color={C.green}/>
                   <div style={{overflowX:"auto"}}>
                     <table style={{width:"100%", borderCollapse:"collapse", fontSize:11}}>
                       <thead>
