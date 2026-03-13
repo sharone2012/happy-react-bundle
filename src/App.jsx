@@ -1410,6 +1410,38 @@ export default function CFI() {
   const [visEmail, setVisEmail]         = useState("");
   const [visOrg,   setVisOrg]           = useState("");
   const [visSubmitted, setVisSubmitted] = useState(false);
+  const [uploadedConfigs, setUploadedConfigs] = useState([]);
+
+  // ── S0 STATE ── (must be before siteRegistered which references s0)
+  const [s0, setS0] = useState({
+    plantName: "", millName: "", district: "", province: "", contact: "", rspo: "none",
+    idCode: "", contactName: "", contactEmail: "",
+    ffbCapacity: 60, utilisation: 85, hrsDay: 24, daysMonth: 30,
+    efbPct: 60, opdcPct: 40, efbEnabled: true, opdcEnabled: true,
+    efbMC: 62.5, opdcMC: 70, pksaMC: 5,
+    pomeSludgeMC: 82,
+    pomeSludgeDewatered: false,
+    pomeSludgeFeResult: "",
+    pomeEnabled: false,
+    pkeEnabled: false,
+    pmfEnabled: false,
+    pkeTPD: 5,
+    cnTarget: 22,
+    soil: "ultisol", ag: "vgam",
+    efbCapturePct: 100,
+    opdcCapturePct: 100,
+    pomeCapturePct: 100,
+    carbonPriceScenario: "mid",
+    carbonPriceCustom: 25,
+    carbonGwp: "100yr",
+    carbonBaselineMCF: "shallow",
+    carbonPomeMCF: "pond",
+    dmppEnabled:    false,
+    dmppDose:       1.5,
+    dmppCostPerKg:  9,
+  });
+
+  const upS0 = (k,v) => setS0(p=>({...p,[k]:v}));
 
   const siteRegistered = !!(s0.plantName && s0.millName && s0.contactEmail);
   const FREE_TABS = 3;
@@ -1446,41 +1478,6 @@ export default function CFI() {
     setVisSubmitted(true);
     setTimeout(() => { setShowGate(false); setVisSubmitted(false); }, 1800);
   };
-  const [uploadedConfigs, setUploadedConfigs] = useState([]);
-
-  // ── S0 STATE ──
-  const [s0, setS0] = useState({
-    plantName: "", millName: "", district: "", province: "", contact: "", rspo: "none",
-    idCode: "", contactName: "", contactEmail: "",
-    ffbCapacity: 60, utilisation: 85, hrsDay: 24, daysMonth: 30,
-    efbPct: 60, opdcPct: 40, efbEnabled: true, opdcEnabled: true,
-    efbMC: 62.5, opdcMC: 70, pksaMC: 5,  // BUG-01 FIX: EFB canonical MC = 62.5% wb
-    pomeSludgeMC: 82,
-    pomeSludgeDewatered: false,
-    pomeSludgeFeResult: "",
-    pomeEnabled: false,
-    pkeEnabled: false,
-    pmfEnabled: false,
-    pkeTPD: 5,
-    cnTarget: 22,
-    soil: "ultisol", ag: "vgam",
-    // ── RESIDUE CAPTURE % OVERRIDES (carbon model) ──
-    efbCapturePct: 100,    // % of generated EFB captured by CFI (vs left on field/burned)
-    opdcCapturePct: 100,   // % of OPDC captured
-    pomeCapturePct: 100,   // % of POME sludge captured
-    // ── CARBON CREDIT INPUTS ──
-    carbonPriceScenario: "mid",  // low/mid/high/custom
-    carbonPriceCustom: 25,       // $/t CO2e if custom
-    carbonGwp: "100yr",          // 100yr / 20yr
-    carbonBaselineMCF: "shallow", // shallow(0.4) / deep(0.85)
-    carbonPomeMCF: "pond",        // pond(0.8) / lagoon(0.01)
-    // ── DMPP N₂O SUPPRESSION MODULE ──
-    dmppEnabled:    false,   // toggle — enables N₂O suppression credit pathway
-    dmppDose:       1.5,     // kg DMPP per tonne frass (wet weight) — commercial range 1-2 kg/t
-    dmppCostPerKg:  9,       // $/kg DMPP — commercial range $8-15/kg
-  });
-
-  const upS0 = (k,v) => setS0(p=>({...p,[k]:v}));
 
   // ── S0 DERIVED ──
   const effFFB    = useMemo(()=> +(s0.ffbCapacity * s0.utilisation/100).toFixed(2), [s0.ffbCapacity, s0.utilisation]);
