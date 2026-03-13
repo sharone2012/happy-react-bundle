@@ -200,7 +200,7 @@ const SectionHdr = ({ title, color = C.teal }) =>
 const KPI = ({ label, value, unit, color = C.teal }) =>
 <div style={{ background: C.navyLt, borderRadius: 8, padding: "12px 14px", textAlign: "center",
   border: `1px solid ${color}33` }}>
-    <div style={{ color: C.grey, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.1em" }}>{label}</div>
+    <div style={{ color: C.grey, fontSize: 10, letterSpacing: "0.04em" }}>{label}</div>
     <div style={{ color, fontSize: 22, fontWeight: 800, margin: "4px 0" }}>{value}</div>
     <div style={{ color: C.grey, fontSize: 10 }}>{unit}</div>
   </div>;
