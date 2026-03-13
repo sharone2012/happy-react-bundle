@@ -2268,11 +2268,11 @@ export default function CFI() {
           </div>
         }
         {stage === 0 && (() => {
-          const g2 = { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 };
+          const g2 = { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 };
           const g3 = { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 };
           const g4 = { display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 12 };
           const feStatus = pomeSludgeFeStatus;
-          const inclPctCapped = pomeSludgeInclPct; // auto-computed from DM remainder
+          const inclPctCapped = pomeSludgeInclPct;
           const pomeN = pomeN_kgpd,pomeP = pomeP_kgpd,pomeK = pomeK_kgpd;
           const pkeDM = pkeDMpd,pkeN = pkeNpd,pkeCost = pkeCostDay;
           const efbN = efbN_kgpd,efbP = efbP_kgpd,efbK = efbK_kgpd;
@@ -2297,7 +2297,7 @@ export default function CFI() {
                 <div style={{ color: C.grey, fontSize: 11 }}>Site identity · Mill capacity · Residue streams · Soil profile</div>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                {!siteRegistered && <Badge text="Enter Site Details (Section A)" color={C.amber} />}
+                {!siteRegistered && <Badge text="Enter site details (Section A)" color={C.amber} />}
                 {siteRegistered && <Badge text={"✓ " + s0.plantName} color={C.green} />}
                 {blendOK ?
                   <Badge text="✓ Blend valid" color={C.green} /> :
@@ -2307,371 +2307,239 @@ export default function CFI() {
               </div>
             </div>
 
-            {/* ── A & B SIDE BY SIDE ── */}
-            <div style={{ display: "flex", gap: 16, alignItems: "stretch", marginBottom: 16 }}>
+            {/* ════ ROW 1: A (Site Identity) | B (Mill Capacity + Capture %) ════ */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: 16, marginBottom: 16, alignItems: "stretch" }}>
 
-                {/* ── A: SITE IDENTITY + BLEND ANALYSIS STACKED ── */}
-                <div style={{ flex: "0 0 auto", width: 280, display: "flex", flexDirection: "column", gap: 16 }}>
-                <Card>
-                  <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
-                  <SectionHdr title="A — Enter Details Below" color={C.teal} />
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                    <input style={{ background: C.inputBg, border: `1px solid ${C.teal}55`, borderRadius: 6,
-                      color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
-                    value={s0.plantName} onChange={(e) => upS0("plantName", e.target.value)}
-                    placeholder="Enter Name of Plantation" />
-                    <input style={{ background: C.inputBg, border: `1px solid ${C.teal}55`, borderRadius: 6,
-                      color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
-                    value={s0.millName} onChange={(e) => upS0("millName", e.target.value)}
-                    placeholder="Enter Name of CPO Mill" />
-                    <input style={{ background: C.inputBg, border: `1px solid ${C.teal}55`, borderRadius: 6,
-                      color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
-                    value={s0.district} onChange={(e) => upS0("district", e.target.value)}
-                    placeholder="Enter District / Kabupaten" />
-                    <input style={{ background: C.inputBg, border: `1px solid ${C.teal}55`, borderRadius: 6,
-                      color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
-                    value={s0.province} onChange={(e) => upS0("province", e.target.value)}
-                    placeholder="Enter Province" />
-                  </div>
-                  </div>
-                </Card>
+              {/* ── A: Site identity ── */}
+              <SectionCard title="A — Enter your site details below"
+                results={siteOK && <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: C.green }} />
+                  <span style={{ color: C.green, fontSize: 11, fontWeight: 700 }}>Site registered</span>
+                </div>}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  <input style={{ background: "#142030", border: `1px solid ${C.teal}66`, borderRadius: 6,
+                    color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
+                  value={s0.plantName} onChange={(e) => upS0("plantName", e.target.value)}
+                  placeholder="Plantation name" />
+                  <input style={{ background: "#142030", border: `1px solid ${C.teal}66`, borderRadius: 6,
+                    color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
+                  value={s0.millName} onChange={(e) => upS0("millName", e.target.value)}
+                  placeholder="CPO mill name" />
+                  <input style={{ background: "#142030", border: `1px solid ${C.teal}66`, borderRadius: 6,
+                    color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
+                  value={s0.district} onChange={(e) => upS0("district", e.target.value)}
+                  placeholder="District / Kabupaten" />
+                  <input style={{ background: "#142030", border: `1px solid ${C.teal}66`, borderRadius: 6,
+                    color: C.white, padding: "8px 12px", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" }}
+                  value={s0.province} onChange={(e) => upS0("province", e.target.value)}
+                  placeholder="Province" />
+                </div>
+              </SectionCard>
 
-                {/* ── BLEND ANALYSIS (moved from D) ── */}
-                <Card>
-                  <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
-                  <SectionHdr title="Blend Analysis" color={C.teal} />
-                  {pomeActive &&
-                      <div style={{ background: "#0A1624", border: "1px solid #4A9EDB33",
-                        borderRadius: 8, padding: "10px 14px", marginBottom: 10 }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 6 }}>
+              {/* ── B: Mill capacity + D: Capture % ── */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                <SectionCard title="B — Mill processing capacity"
+                  results={
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ color: C.grey, fontSize: 10 }}>EFB monthly production</div>
+                      <div style={{ color: C.amber, fontSize: 18, fontWeight: 900, margin: "4px 0" }}>{efbMonthWet.toLocaleString()} t</div>
+                      <div style={{ color: C.grey, fontSize: 10 }}>Fresh weight</div>
+                      <div style={{ color: C.teal, fontSize: 9, opacity: 0.6, marginTop: 4 }}>
+                        {s0.ffbCapacity} TPH × 0.225 × {s0.utilisation} hrs × {s0.daysMonth} days
+                      </div>
+                    </div>
+                  }>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                    <div>
+                      <div style={{ color: C.grey, fontSize: 11, marginBottom: 4 }}>Fresh fruit bunches (FFB)</div>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                        <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#4A9EDB", border: "2px solid #4A9EDB" }} />
-                        <span style={{ color: "#4A9EDB", fontWeight: 700, fontSize: 11 }}>
-                          POME Sludge — auto-fills remainder ({pomePct}% DM)
-                        </span>
+                        <span style={{ color: C.teal, fontSize: 11, fontWeight: 700 }}>Tonnes / hour</span>
+                        <input style={{ background: "#142030", border: `1px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 4px", fontSize: 15, fontWeight: 700, width: 52, outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                        value={s0.ffbCapacity}
+                        onChange={(e) => e.target.value}
+                        onBlur={(e) => upS0("ffbCapacity", +e.target.value)} />
                       </div>
-                      <span style={{ background: pomeSupplyOK ? "#3DCB7A20" : "#E8404020",
-                            border: `1px solid ${pomeSupplyOK ? "#3DCB7A50" : "#E8404050"}`,
-                            borderRadius: 10, padding: "2px 9px",
-                            color: pomeSupplyOK ? C.green : C.red, fontSize: 10, fontWeight: 800 }}>
-                          {pomeSupplyOK ? "✓ Supply OK" : "✕ Supply gap " + pomeShortfall + " t/day"}
-                        </span>
                     </div>
-                  </div>
-                      }
-                  <Warn type="ok" msg={"EFB " + s0.efbPct + "% + OPDC " + s0.opdcPct + "%" + (pomeActive ? " + POME " + pomePct + "%" : "") + " = 100% DM ✓"} />
-                  <Divider />
-                  <div style={g3}>
-                    <CalcField label="Blended Moisture" unit="%" value={blendMC} />
-                    <CalcField label="Blend DM Content" unit="%" value={(100 - blendMC).toFixed(1)} />
-                    <CalcField label="Blend C:N (DM)" unit="" value={blendCN || "—"}
-                        note={blendCN ? blendCN <= 25 ? "✓ Optimal for BSF (15–25)" : blendCN <= 35 ? "⚠ Marginal — add POME/PKE" : "✕ High — BSF yield penalty" : undefined}
-                        noteColor={blendCN ? blendCN <= 25 ? C.green : blendCN <= 35 ? C.amber : C.red : undefined} />
-                  </div>
-                  <div style={{ ...g2, marginTop: 10 }}>
-                    <CalcField label="Blend CP % DM (DM-weighted)" unit=""
-                        value={blendCP ? blendCP + "%" : "—"}
-                        note={blendCP ? blendCP >= 15 ? "✓ Strong (≥15%)" : blendCP >= 10 ? "⚠ Marginal (10–15%) — PKE advised" : "✕ Low (<10%) — increase OPDC or PKE" : undefined} />
-                    <div style={{ background: C.navyDk, borderRadius: 8, padding: "10px 12px" }}>
-                      <div style={{ color: C.grey, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 7 }}>% of Total Substrate DM</div>
-                      <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                        {[
-                            { l: "EFB", v: pctEFB, c: C.teal },
-                            { l: "OPDC", v: pctOPDC, c: C.amber },
-                            ...(pomeActive ? [{ l: "POME", v: pctPOME, c: "#4A9EDB" }] : []),
-                            ...(s0.pkeEnabled ? [{ l: "PKE", v: pctPKE, c: "#9B59B6" }] : [])].
-                            map((s, i) =>
-                            <div key={i} style={{ textAlign: "center" }}>
-                            <div style={{ color: s.c, fontWeight: 900, fontSize: 14, fontFamily: "monospace" }}>{s.v}%</div>
-                            <div style={{ color: C.grey, fontSize: 9 }}>{s.l}</div>
-                          </div>
-                            )}
+                    <div>
+                      <div style={{ color: C.grey, fontSize: 11, marginBottom: 4 }}>Daily operating hours</div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <span style={{ color: C.teal, fontSize: 11, fontWeight: 700 }}>Hours / day</span>
+                        <input style={{ background: "#142030", border: `1px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 4px", fontSize: 15, fontWeight: 700, width: 52, outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                        value={s0.utilisation}
+                        onChange={(e) => e.target.value}
+                        onBlur={(e) => upS0("utilisation", +e.target.value)} />
+                      </div>
+                    </div>
+                    <div>
+                      <div style={{ color: C.grey, fontSize: 11, marginBottom: 4 }}>Operating days per month</div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <span style={{ color: C.teal, fontSize: 11, fontWeight: 700 }}>Days</span>
+                        <input style={{ background: "#142030", border: `1px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 4px", fontSize: 15, fontWeight: 700, width: 52, outline: "none", boxSizing: "border-box", textAlign: "center" }}
+                        value={s0.daysMonth}
+                        onChange={(e) => e.target.value}
+                        onBlur={(e) => upS0("daysMonth", +e.target.value)} />
                       </div>
                     </div>
                   </div>
-                  <div style={{ ...g2, marginTop: 12 }}>
-                    <CalcField label={<>Fresh Weight<br />Residues</>} unit="tons/month" value={s1_blendWet.toLocaleString()} />
-                    <CalcField label={<>Monthly Substrate<br />DM</>} unit="t DM/month" value={s1_blendDM.toLocaleString()} />
-                  </div>
-                  </div>
-                </Card>
-                </div>
+                </SectionCard>
 
-                {/* ── B + C stacked ── */}
-                <div style={{ display: "flex", flexDirection: "row", gap: 16, flex: 1, alignItems: "stretch" }}>
-                {/* ── B: MILL CAPACITY ── */}
-                <Card style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-                  <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)", flex: 1 }}>
-                  <SectionHdr title={"B — Enter Mill Capacity"} color={C.teal} />
-                  <div style={{ width: "100%" }}>
-                  {/* Row 1: FRESH FRUIT BUNCH / TONS PER HOUR + input */}
-                  <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0" }}>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ color: C.teal, fontSize: 13, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1.3 }}>
-                        FRESH FRUIT BUNCH
-                      </div>
-                      <div style={{ color: C.teal, fontSize: 10, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1.3 }}>
-                        Tonnes / Hour
-                      </div>
-                    </div>
-                    <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 4px", fontSize: 15, fontWeight: 700, width: 52, outline: "none", boxSizing: "border-box", textAlign: "center" }}
-                    value={s0.ffbCapacity}
-                    onChange={(e) => e.target.value}
-                    onBlur={(e) => upS0("ffbCapacity", +e.target.value)} />
-                  </div>
-                  {/* Row 2: OPERATING HOURS PER DAY + input */}
-                  <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0" }}>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ color: C.teal, fontSize: 13, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1.3 }}>
-                         Daily Operating Hours
-                      </div>
-                    </div>
-                    <input style={{ background: C.inputBg, border: `2px solid ${C.teal}66`, borderRadius: 6, color: C.white, padding: "6px 4px", fontSize: 15, fontWeight: 700, width: 52, outline: "none", boxSizing: "border-box", textAlign: "center" }}
-                    value={s0.utilisation}
-                    onChange={(e) => e.target.value}
-                    onBlur={(e) => upS0("utilisation", +e.target.value)} />
-                  </div>
-                  {/* EFB Monthly - aligned to same 50/50 split */}
-                  <div style={{ display: "flex", alignItems: "stretch", gap: 0, marginTop: 2 }}>
-                    <div style={{ flex: "1 1 0", background: "#0D3B3B", border: `1px solid ${C.amber}55`, borderRight: "none", borderRadius: "6px 0 0 6px", padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <div style={{ color: C.amber, fontSize: 11, fontWeight: 800, lineHeight: 1.4, textTransform: "uppercase", textAlign: "center" }}>EFB MONTHLY<br />PRODUCTION</div>
-                    </div>
-                    <div style={{ flex: "1 1 0", background: "#0D3B3B", border: `1px solid ${C.amber}55`, borderLeft: "none", borderRadius: "0 6px 6px 0", padding: "10px 14px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                      <span style={{ color: C.amber, fontSize: 20, fontWeight: 700 }}>{efbMonthWet.toLocaleString()}</span>
-                      <div style={{ color: C.amber, fontSize: 11, fontWeight: 800, textTransform: "uppercase" }}>FRESH WEIGHT</div>
-                    </div>
-                    </div>
-                  {/* Formula breakdown */}
-                  <div style={{ textAlign: "center", color: C.teal, fontSize: 9, opacity: 0.6, marginTop: 4 }}>
-                     {s0.ffbCapacity} TPH × 0.225 × 24 hrs/day × {s0.daysMonth} days = {(s0.ffbCapacity * 0.225 * 24 * s0.daysMonth).toLocaleString()} t
-                   </div>
-                  </div>
-                  </div>
-                </Card>
-
-                {/* ── C: RESIDUE SELECTION ── */}
-                <Card style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-                   <div style={{ background: "#000000", borderRadius: 10, padding: 16, flex: 1, border: "1px solid rgba(255,255,255,0.1)" }}>
-                  <SectionHdr title="C — Choose Residues" color={C.teal} />
+                {/* D: Capture % */}
+                <SectionCard title="D — Captured % of mill processing capacity">
                   <div style={g3}>
-                    <ResidueCard abbr="EFB" label={"EMPTY\nFRUIT BUNCHES"} active={s0.efbEnabled} onClick={() => upS0("efbEnabled", !s0.efbEnabled)} highlightColor={C.amber} />
-                    <ResidueCard abbr="POS" label={"POME\nSLUDGE"} active={pomeActive} onClick={() => upS0("pomeEnabled", !s0.pomeEnabled)} highlightColor={C.amber} />
-                    <ResidueCard abbr="PMF" label={"MESOCARP\nFIBER"} active={s0.pmfEnabled} onClick={() => upS0("pmfEnabled", !s0.pmfEnabled)} highlightColor={C.amber} />
+                    <BluField label="EFB capture %" value={s0.efbCapturePct} onChange={(v) => upS0("efbCapturePct", Math.min(100, Math.max(0, +v)))} note={"= " + (+(efbMonthWet * (s0.efbCapturePct / 100)).toFixed(0)).toLocaleString() + " t FW/mo"} />
+                    <BluField label="OPDC capture %" value={s0.opdcCapturePct} onChange={(v) => upS0("opdcCapturePct", Math.min(100, Math.max(0, +v)))} />
+                    <BluField label="POME capture %" value={s0.pomeCapturePct} onChange={(v) => upS0("pomeCapturePct", Math.min(100, Math.max(0, +v)))} />
                   </div>
-                  <div style={{ ...g3, marginTop: 20 }}>
-                    <ResidueCard abbr="OPDC" label={"DECANTER\nCAKE"} active={s0.opdcEnabled} onClick={() => upS0("opdcEnabled", !s0.opdcEnabled)} highlightColor={C.amber} />
-                    <ResidueCard abbr="POME" labelJsx={<><span>LIQUID</span><br /><span style={{ color: C.red, fontWeight: 700 }}>Sent to Pond</span></>} active={s0.pomeLiquidEnabled} onClick={() => upS0("pomeLiquidEnabled", !s0.pomeLiquidEnabled)} highlightColor={C.amber} />
-                    <ResidueCard abbr="PKM" label={"PALM KERNAL\nEXPELLER"} active={s0.pkeEnabled} onClick={() => upS0("pkeEnabled", !s0.pkeEnabled)} highlightColor={C.amber} />
-                   </div>
-                  </div>
-                </Card>
-                </div>
+                </SectionCard>
+              </div>
             </div>
 
-            {/* ── D: CAPTURED % ── */}
-            <Card style={{ marginBottom: 16 }}>
-              <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
-              <SectionHdr title="D — Captured % of Mill Processing Capacity Used" color={C.teal} />
-              <div style={{ ...g3, justifyItems: "center", textAlign: "center" }}>
-                <BluField label="EFB %" value={s0.efbCapturePct} onChange={(v) => upS0("efbCapturePct", Math.min(100, Math.max(0, +v)))} note={"= " + (+(efbMonthWet * (s0.efbCapturePct / 100)).toFixed(0)).toLocaleString() + " t FW/mo"} />
-                <BluField label="OPDC %" value={s0.opdcCapturePct} onChange={(v) => upS0("opdcCapturePct", Math.min(100, Math.max(0, +v)))} />
-                <BluField label="POME %" value={s0.pomeCapturePct} onChange={(v) => upS0("pomeCapturePct", Math.min(100, Math.max(0, +v)))} />
-              </div>
-              </div>
-            </Card>
+            {/* ════ ROW 2: C (Choose Residues) | Blend Analysis ════ */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16, alignItems: "stretch" }}>
 
+              {/* ── C: Choose residues ── */}
+              <SectionCard title="C — Choose residues">
+                <div style={g3}>
+                  <ResidueCard abbr="EFB" label={"Empty\nfruit bunches"} active={s0.efbEnabled} onClick={() => upS0("efbEnabled", !s0.efbEnabled)} />
+                  <ResidueCard abbr="POS" label={"POME\nsludge"} active={pomeActive} onClick={() => upS0("pomeEnabled", !s0.pomeEnabled)} />
+                  <ResidueCard abbr="PMF" label={"Mesocarp\nfiber"} active={s0.pmfEnabled} onClick={() => upS0("pmfEnabled", !s0.pmfEnabled)} />
+                </div>
+                <div style={{ ...g3, marginTop: 12 }}>
+                  <ResidueCard abbr="OPDC" label={"Decanter\ncake"} active={s0.opdcEnabled} onClick={() => upS0("opdcEnabled", !s0.opdcEnabled)} />
+                  <ResidueCard abbr="POME" labelJsx={<><span>Liquid</span><br /><span style={{ color: C.grey }}>Sent to pond</span></>} active={s0.pomeLiquidEnabled} locked onClick={() => {}} />
+                  <ResidueCard abbr="PKM" label={"Palm kernel\nexpeller"} active={s0.pkeEnabled} onClick={() => upS0("pkeEnabled", !s0.pkeEnabled)} />
+                </div>
+              </SectionCard>
 
-            {/* ── TWO-COLUMN ROW ── */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, alignItems: "start" }}>
-
-              {/* ════ LEFT COLUMN ════ */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-
-                <Card style={{ background: C.navyDk, border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: 12, marginTop: 12 }}>
-                    <SectionHdr title="E — Carbon Credits Preview" color={C.green} />
-                    <div style={{ color: C.grey, fontSize: 10, marginTop: -6, marginBottom: 10 }}>Full methodology in the CO₂ tab</div>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 8 }}>
-                      {[{ l: "Monthly CO₂e", v: co2est.toLocaleString() + " t", c: C.green },
-                      { l: "Annual CO₂e", v: co2annual.toLocaleString() + " t", c: C.green },
-                      { l: "Annual Revenue", v: "$" + carbRev.toLocaleString(), c: C.amber },
-                      { l: "Carbon Price", v: "$" + cprice + "/t", c: C.amberLt }].
-                      map((k, i) =>
-                      <div key={i} style={{ textAlign: "center", minWidth: 0 }}>
-                          <div style={{ color: C.grey, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.07em", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{k.l}</div>
-                          <div style={{ color: k.c, fontSize: 13, fontWeight: 900, marginTop: 4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{k.v}</div>
+              {/* ── Blend analysis ── */}
+              <SectionCard title="Blend analysis"
+                results={
+                  <div>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                      <div style={{ textAlign: "center" }}>
+                        <div style={{ color: C.grey, fontSize: 10 }}>Fresh weight residues</div>
+                        <div style={{ color: C.amber, fontSize: 16, fontWeight: 900 }}>{s1_blendWet.toLocaleString()} t/mo</div>
+                      </div>
+                      <div style={{ textAlign: "center" }}>
+                        <div style={{ color: C.grey, fontSize: 10 }}>Monthly substrate DM</div>
+                        <div style={{ color: C.amber, fontSize: 16, fontWeight: 900 }}>{s1_blendDM.toLocaleString()} t/mo</div>
+                      </div>
+                    </div>
+                    {/* % of total DM */}
+                    <div style={{ display: "flex", gap: 12, justifyContent: "center", marginTop: 10 }}>
+                      {[
+                        { l: "EFB", v: pctEFB, c: C.teal },
+                        { l: "OPDC", v: pctOPDC, c: C.amber },
+                        ...(pomeActive ? [{ l: "POME", v: pctPOME, c: "#4A9EDB" }] : []),
+                        ...(s0.pkeEnabled ? [{ l: "PKE", v: pctPKE, c: "#9B59B6" }] : [])
+                      ].map((s, i) =>
+                        <div key={i} style={{ textAlign: "center" }}>
+                          <div style={{ color: s.c, fontWeight: 900, fontSize: 14, fontFamily: "monospace" }}>{s.v}%</div>
+                          <div style={{ color: C.grey, fontSize: 9 }}>{s.l}</div>
                         </div>
                       )}
                     </div>
-                </Card>
-
-              </div>
-
-              {/* ════ RIGHT COLUMN ════ */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-
-                {/* ── D: DAILY DRY MATTER AVAILABLE AT MILL ── */}
-                <Card>
-                  <SectionHdr title="D — Daily Dry Matter Available at Mill" color={C.teal} />
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 8 }}>
-                    {[
-                        { l: "EFB", dm: efbDMpd, c: C.amber, active: true },
-                        { l: "POS", dm: pomeSludgeDMpd, c: C.amber, active: pomeActive },
-                        { l: "PMF", dm: s0.pmfEnabled ? +(effFFB * s0.hrsDay * 0.135 * 0.35).toFixed(2) : 0, c: C.amber, active: s0.pmfEnabled },
-                        { l: "OPDC", dm: opdcNatDM, c: C.amber, active: true },
-                        { l: "POME", dm: 0, c: C.amber, active: s0.pomeLiquidEnabled },
-                        { l: "PKM", dm: s0.pkeEnabled ? +(s0.pkeTPD * 0.90).toFixed(2) : 0, c: C.amber, active: s0.pkeEnabled }].
-                        map((r, i) =>
-                        <div key={i} style={{ background: r.active ? "#0D3B3B" : "#000000",
-                          borderRadius: 8, padding: "8px 6px",
-                          display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
-                          border: r.active ? `1px solid ${C.teal}55` : "1px solid rgba(255,255,255,0.08)",
-                          opacity: r.active ? 1 : 0.4 }}>
-                        <div style={{ color: r.active ? r.c : C.teal, fontWeight: 800, fontSize: 9.5, textTransform: "uppercase",
-                            textAlign: "center", letterSpacing: "0.04em" }}>{r.l}</div>
-                        <div style={{ color: r.active ? C.white : "#555", fontWeight: 800, fontSize: 10, fontFamily: "monospace",
-                            textAlign: "center" }}>{r.dm} T</div>
-                        
-                      </div>
-                        )}
                   </div>
-                </Card>
-
-                {/* ── BLEND SECTION (continuing) ── */}
-                <Card>
-                  <div style={{ background: "#000000", borderRadius: 10, padding: 16, marginBottom: 0, border: "1px solid rgba(255,255,255,0.1)" }}>
-                  <Divider />
-                  {/* Blend fraction header */}
-                   <SectionHdr title="D — Choose Blend" color={C.teal} />
-                  <div style={{ color: C.red, fontSize: 10, fontWeight: 700, marginTop: -4, marginBottom: 8 }}>% must total 100%</div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
-                    {/* EFB */}
-                    <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
-                      <div style={{ color: C.amber, fontWeight: 900, fontSize: 13, textAlign: "left", flex: 1 }}>EFB</div>
-                      <input style={{ background: C.inputBg, border: `1px solid ${C.teal}66`, borderRadius: 6,
-                            color: C.white, padding: "8px 0", fontSize: 15, fontWeight: 700,
-                            width: 52, outline: "none", boxSizing: "border-box", textAlign: "center" }}
-                          value={s0.efbPct}
-                          onChange={(e) => e.target.value}
-                          onBlur={(e) => {const nv = Math.min(+e.target.value, 100);upS0("efbPct", nv);if (nv + s0.opdcPct > 100) upS0("opdcPct", +(100 - nv).toFixed(1));}} />
-                    </div>
-                    {/* OPDC */}
-                    <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
-                      <div style={{ color: C.teal, fontWeight: 900, fontSize: 13, textAlign: "left", flex: 1 }}>OPDC</div>
-                      <input style={{ background: C.inputBg, border: `1px solid ${C.amber}66`, borderRadius: 6,
-                            color: C.white, padding: "8px 0", fontSize: 15, fontWeight: 700,
-                            width: 52, outline: "none", boxSizing: "border-box", textAlign: "center" }}
-                          value={s0.opdcPct}
-                          onChange={(e) => e.target.value}
-                          onBlur={(e) => {const nv = Math.min(+e.target.value, 100);upS0("opdcPct", nv);if (nv + s0.efbPct > 100) upS0("efbPct", +(100 - nv).toFixed(1));}} />
-                    </div>
-                    {/* POME Sludge */}
-                    <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
-                      <div style={{ color: C.teal, fontWeight: 900, fontSize: 13, textAlign: "left", flex: 1 }}>POME Sludge</div>
-                      <div style={{ background: "#0A1624", border: `1px solid #4A9EDB44`, borderRadius: 6,
-                            color: pomeActive ? "#4A9EDB" : C.grey, padding: "8px 0", fontSize: 15, fontWeight: 700,
-                            width: 52, boxSizing: "border-box", textAlign: "center", lineHeight: "1.4" }}>
-                        {pomeActive ? pomePct + "%" : "—"}
-                      </div>
-                    </div>
-                    {/* PKE */}
-                    <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
-                      <div style={{ color: C.teal, fontWeight: 900, fontSize: 13, textAlign: "left", flex: 1 }}>PKE</div>
-                      <div style={{ background: "#0A1624", border: `1px solid #00E67644`, borderRadius: 6,
-                            color: s0.pkeEnabled ? "#00E676" : C.grey, padding: "8px 0", fontSize: 15, fontWeight: 700,
-                            width: 52, boxSizing: "border-box", textAlign: "center" }}>
-                        {s0.pkeEnabled ? pctPKE + "%" : "—"}
-                      </div>
-                    </div>
+                }>
+                <div style={g3}>
+                  <CalcField label="Blended moisture" unit="%" value={blendMC} />
+                  <CalcField label="Blend DM content" unit="%" value={(100 - blendMC).toFixed(1)} />
+                  <CalcField label="Blend C:N (DM)" unit="" value={blendCN || "—"}
+                      note={blendCN ? blendCN <= 25 ? "✓ Optimal for BSF (15–25)" : blendCN <= 35 ? "⚠ Marginal — add POME/PKE" : "✕ High — BSF yield penalty" : undefined}
+                      noteColor={blendCN ? blendCN <= 25 ? C.green : blendCN <= 35 ? C.amber : C.red : undefined} />
+                </div>
+                <div style={{ ...g2, marginTop: 10 }}>
+                  <CalcField label="Blend CP % DM (DM-weighted)" unit=""
+                      value={blendCP ? blendCP + "%" : "—"}
+                      note={blendCP ? blendCP >= 15 ? "✓ Strong (≥15%)" : blendCP >= 10 ? "⚠ Marginal (10–15%) — PKE advised" : "✕ Low (<10%) — increase OPDC or PKE" : undefined} />
+                  <div>
+                    <Warn type="ok" msg={"EFB " + s0.efbPct + "% + OPDC " + s0.opdcPct + "%" + (pomeActive ? " + POME " + pomePct + "%" : "") + " = 100% DM ✓"} />
                   </div>
-
-                  </div>
-                </Card>
-
-                {/* ── SOIL TYPE & AG MANAGEMENT ── */}
-                <Card>
-                  <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
-                  <SectionHdr title="E — Soil Type &amp; Fertiliser Requirements" color={C.teal} />
-                  <div style={{ display: "block", color: C.grey, fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 8 }}>Indonesian Soil Classification</div>
-                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 4 }}>
-                    {SOILS.map((so) =>
-                      <div key={so.id} onClick={() => upS0("soil", so.id)}
-                      style={{ background: s0.soil === so.id ? C.amber : C.navyDk,
-                        border: `1px solid ${s0.soil === so.id ? C.amber : "rgba(255,255,255,0.07)"}`,
-                        borderBottom: s0.soil === so.id ? `2px solid ${C.amber}` : "2px solid transparent",
-                        borderRadius: 8, padding: "9px 13px", cursor: "pointer",
-                        flex: "1 1 auto", minWidth: 120, transition: "all 0.15s" }}>
-                        <div style={{ color: s0.soil === so.id ? "#000" : C.white, fontWeight: 700, fontSize: 12 }}>{so.name}</div>
-                        <div style={{ color: s0.soil === so.id ? "#000" : C.grey, fontSize: 10, marginTop: 3 }}>{so.pct} · pH {so.ph} · CEC {so.cec}</div>
-                        <div style={{ color: s0.soil === so.id ? "#000" : C.grey, fontSize: 9, marginTop: 2 }}>{so.desc}</div>
-                      </div>
-                      )}
-                  </div>
-                  {s0.soil === "histosol" && <Warn msg="Histosol (peat): ~80% less N and ~70% less P needed. CFI fertiliser highly competitive." />}
-                  {s0.soil === "inceptisol" && <Warn type="ok" msg="Inceptisol: Best baseline fertility. Standard NPK application rates apply." />}
-                  <Divider />
-                  <div style={{ display: "block", color: C.grey, fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 8 }}>Agronomy Management Tier</div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                    {AG_TIERS.map((ag) =>
-                      <div key={ag.id} onClick={() => upS0("ag", ag.id)}
-                      style={{ background: s0.ag === ag.id ? ag.color + "18" : C.navyDk,
-                        border: `1px solid ${s0.ag === ag.id ? ag.color + "66" : "rgba(255,255,255,0.07)"}`,
-                        borderLeft: s0.ag === ag.id ? `3px solid ${ag.color}` : "3px solid transparent",
-                        borderRadius: 8, padding: "10px 14px", cursor: "pointer",
-                        display: "flex", alignItems: "center", justifyContent: "space-between",
-                        transition: "all 0.15s" }}>
-                        <span style={{ color: s0.ag === ag.id ? ag.color : C.white, fontSize: 12, fontWeight: 600 }}>{ag.name}</span>
-                        <Badge text={Math.round(ag.uplift * 100) + "% uplift"} color={s0.ag === ag.id ? ag.color : C.grey} />
-                      </div>
-                      )}
-                  </div>
-                  </div>
-                </Card>
-
-              </div>
+                </div>
+              </SectionCard>
             </div>
 
-            {/* ── FULL-WIDTH SECTIONS BELOW ── */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 16, marginTop: 16 }}>
+            {/* ════ ROW 3: E (Soil Type) | AG (Management Tier) ════ */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16, alignItems: "stretch" }}>
 
-              {/* ── F: POME SLUDGE ── */}
-              <Card>
-                <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
-                <SectionHdr title="F — Pome Sludge (Third Waste Stream)" color={C.blue} />
+              {/* ── E: Soil type ── */}
+              <SectionCard title="E — Soil type">
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  {SOILS.map((soil) =>
+                    <div key={soil.id} onClick={() => upS0("soil", soil.id)}
+                    style={{ background: s0.soil === soil.id ? C.teal + "18" : "transparent",
+                      border: `1px solid ${s0.soil === soil.id ? C.teal + "66" : "rgba(255,255,255,0.07)"}`,
+                      borderRadius: 8, padding: "10px 14px", cursor: "pointer",
+                      display: "flex", alignItems: "center", justifyContent: "space-between",
+                      transition: "all 0.15s" }}>
+                      <div>
+                        <span style={{ color: s0.soil === soil.id ? C.teal : C.white, fontSize: 12, fontWeight: 600 }}>{soil.name}</span>
+                        <span style={{ color: C.grey, fontSize: 10, marginLeft: 8 }}>{soil.pct} coverage · pH {soil.ph}</span>
+                      </div>
+                      <div style={{ width: 16, height: 16, borderRadius: "50%",
+                        background: s0.soil === soil.id ? C.teal : "transparent",
+                        border: `2px solid ${s0.soil === soil.id ? C.teal : C.grey}` }} />
+                    </div>
+                  )}
+                </div>
+              </SectionCard>
+
+              {/* ── AG: Management tier ── */}
+              <SectionCard title="AG — Management tier">
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  {AG_TIERS.map((ag) =>
+                    <div key={ag.id} onClick={() => upS0("ag", ag.id)}
+                    style={{ background: s0.ag === ag.id ? ag.color + "18" : "transparent",
+                      border: `1px solid ${s0.ag === ag.id ? ag.color + "66" : "rgba(255,255,255,0.07)"}`,
+                      borderRadius: 8, padding: "10px 14px", cursor: "pointer",
+                      display: "flex", alignItems: "center", justifyContent: "space-between",
+                      transition: "all 0.15s" }}>
+                      <span style={{ color: s0.ag === ag.id ? ag.color : C.white, fontSize: 12, fontWeight: 600 }}>{ag.name}</span>
+                      <Badge text={Math.round(ag.uplift * 100) + "% uplift"} color={s0.ag === ag.id ? ag.color : C.grey} />
+                    </div>
+                  )}
+                </div>
+              </SectionCard>
+            </div>
+
+            {/* ════ ROW 4: F — POME Sludge ════ */}
+            <div style={{ marginBottom: 16 }}>
+              <SectionCard title="F — POME sludge (third waste stream)" titleColor={C.blue}>
                 <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                     <input type="checkbox" checked={pomeActive} readOnly
                       style={{ accentColor: C.blue, width: 16, height: 16, cursor: "default" }} />
                     <span style={{ color: pomeActive ? C.blue : C.grey, fontWeight: 700, fontSize: 13 }}>
                       {pomeActive ?
-                        "POME Sludge ACTIVE — " + pomePct + "% DM auto-fill from EFB+OPDC remainder" :
-                        "POME Sludge inactive — EFB+OPDC sum to 100%. Lower either fraction to activate."}
+                        "POME sludge active — " + pomePct + "% DM auto-fill from EFB+OPDC remainder" :
+                        "POME sludge inactive — EFB+OPDC sum to 100%. Lower either fraction to activate."}
                     </span>
                   </div>
-                  <Badge text="Zero Cost — Mill Waste" color={C.green} />
+                  <Badge text="Zero cost — mill waste" color={C.green} />
                 </div>
                 <div style={g4}>
-                  <KPI label="Natural Yield" value={pomeSludgeNatTPD} unit="t/day fresh (at mill exit)" color={C.blue} />
-                  <KPI label="DM Content" value={pomeSludgeDMpd + " t/day"} unit={"at " + pomeSludgeActMC + "% MC"} color={C.teal} />
-                  <KPI label="Daily Nitrogen" value={pomeN + " kg"} unit="N/day (1.76% DM)" color={C.green} />
-                  <KPI label="Fe Status" value={feStatus}
+                  <KPI label="Natural yield" value={pomeSludgeNatTPD} unit="t/day fresh (at mill exit)" color={C.blue} />
+                  <KPI label="DM content" value={pomeSludgeDMpd + " t/day"} unit={"at " + pomeSludgeActMC + "% MC"} color={C.teal} />
+                  <KPI label="Daily nitrogen" value={pomeN + " kg"} unit="N/day (1.76% DM)" color={C.green} />
+                  <KPI label="Fe status" value={feStatus}
                     unit={isNaN(pomeFe) ? "ICP-OES pending" : pomeFe + " mg/kg DM"}
                     color={FE_COLOR[feStatus] || C.grey} />
                 </div>
                 <Divider />
-                  <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr 1.5fr", gap: 12 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr 1.5fr", gap: 12 }}>
                   <div>
-                    <div style={{ display: "block", color: C.grey, fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 5 }}>Moisture State</div>
+                    <div style={{ ...LABEL_STYLE }}>Moisture state</div>
                     <PillToggle
                         options={[{ v: false, l: "Fresh (mill exit)", sub: "82% MC" }, { v: true, l: "Post-dewatered", sub: "65% MC" }]}
                         value={s0.pomeSludgeDewatered}
                         onChange={(v) => upS0("pomeSludgeDewatered", v)}
                         color={C.blue} />
                   </div>
-                  <AmbField label="ICP-OES Fe Result" unit="mg/kg DM"
+                  <AmbField label="ICP-OES Fe result" unit="mg/kg DM"
                     value={s0.pomeSludgeFeResult} onChange={(v) => upS0("pomeSludgeFeResult", v)}
                     note="Run CFI-LAB-POME-001 Package A — drives max inclusion rate" />
                   <div style={{ background: C.navyDk, borderRadius: 8, padding: "10px 12px" }}>
-                    <div style={{ color: C.grey, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 6 }}>
+                    <div style={{ color: C.grey, fontSize: 9, letterSpacing: "0.04em", marginBottom: 6 }}>
                       Auto-fill DM fraction
                     </div>
                     <div style={{ color: "#4A9EDB", fontSize: 18, fontWeight: 900, fontFamily: "monospace" }}>{pomePct}%</div>
@@ -2685,7 +2553,7 @@ export default function CFI() {
                       {pomeSupplyOK ? "✓ Within mill supply" : "✕ Exceeds yield by " + pomeShortfall + " t/day"}
                     </div>
                   </div>
-                  <CalcField label="POME Sludge Added to Blend" unit="t/day"
+                  <CalcField label="POME sludge added to blend" unit="t/day"
                     value={pomeSludgeInclTPD + " t/day  (" + pomeSludgeInclDM + " t DM)"} />
                 </div>
                 {pomeFe >= 8000 && <Halt msg="Fe >8,000 mg/kg DM — CaCO₃ amendment required before inclusion. Max 5% WW. Re-run ICP-OES after amendment." />}
@@ -2694,60 +2562,44 @@ export default function CFI() {
                 {(isNaN(pomeFe) || pomeFe === 0) && pomeActive &&
                   <Warn type="warn" msg="No ICP-OES Fe result entered. Using default 15% WW cap. Run CFI-LAB-POME-001 Package A before scale-up." />}
                 {pomeFe > 0 && pomeFe < 3000 &&
-                  <Warn type="ok" msg={"Fe LOW (" + pomeFe + " mg/kg DM) — max 20% WW inclusion permitted. POME Sludge cleared for standard use."} />}
-                <Divider />
-                <div style={{ background: C.navyDk, borderRadius: 6, padding: "10px 14px",
-                    display: "flex", flexWrap: "wrap", gap: "12px 28px" }}>
-                  {[
-                    { label: "Capture point:", text: "Mill Exit / Sludge Pit / Centrifuge Discharge — NOT pond (higher N, lower Fe)", color: C.blue },
-                    { label: "pH 4–5.5", text: "· neutralised by PKSA S2 at no cost", color: C.teal },
-                    { label: "CPO 5–20% DM", text: "— BSF energy boost", color: C.amber }].
-                    map((item, i) =>
-                    <span key={i} style={{ color: C.grey, fontSize: 11 }}>
-                      <span style={{ color: item.color, fontWeight: 700 }}>{item.label} </span>
-                      {item.text}
-                    </span>
-                    )}
-                </div>
-                </div>
-              </Card>
+                  <Warn type="ok" msg={"Fe LOW (" + pomeFe + " mg/kg DM) — max 20% WW inclusion permitted. POME sludge cleared for standard use."} />}
+              </SectionCard>
+            </div>
 
-              {/* ── G: PKE ── */}
-              <Card>
-                <div style={{ background: "#000000", borderRadius: 10, padding: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
-                <SectionHdr title="G — Pke Palm Kernel Expeller (Protein Booster — Optional)" color={C.amber} />
+            {/* ════ ROW 5: G — PKE Palm Kernel Expeller ════ */}
+            <div style={{ marginBottom: 16 }}>
+              <SectionCard title="G — PKE palm kernel expeller (protein booster — optional)" titleColor={C.amber}>
                 <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: s0.pkeEnabled ? 16 : 0 }}>
                   <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
                     <input type="checkbox" checked={s0.pkeEnabled}
                       onChange={(e) => upS0("pkeEnabled", e.target.checked)}
                       style={{ accentColor: C.amber, width: 16, height: 16, cursor: "pointer" }} />
                     <span style={{ color: s0.pkeEnabled ? C.amber : C.grey, fontWeight: 700, fontSize: 13 }}>
-                      Include PKE — Purchased Protein Booster (raises substrate CP for BSF)
+                      Include PKE — purchased protein booster (raises substrate CP for BSF)
                     </span>
                   </label>
                   <Badge text="$160 / t wet" color={C.amber} />
-                  <Badge text="NOT MILL WASTE — PURCHASED INPUT" color={C.red} />
+                  <Badge text="Not mill waste — purchased input" color={C.red} />
                 </div>
                 {s0.pkeEnabled &&
                   <div>
-                    {/* C:N target + recommended dose */}
                     <div style={{ background: "#0A1624", border: "1px solid rgba(155,89,182,0.3)",
                       borderRadius: 8, padding: "12px 14px", marginBottom: 12 }}>
                       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, alignItems: "center" }}>
                         <div>
-                          <div style={{ color: C.grey, fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 }}>
-                            C:N Target <span style={{ color: "#9B59B6aa", fontSize: 9 }}>[BSF optimum 15–25]</span>
+                          <div style={{ color: C.grey, fontSize: 10, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 6 }}>
+                            C:N target <span style={{ color: "#9B59B6aa", fontSize: 9 }}>[BSF optimum 15–25]</span>
                           </div>
                           <input type="number" min={15} max={35} step={1}
                           value={s0.cnTarget}
                           onChange={(e) => upS0("cnTarget", +e.target.value)}
-                          style={{ background: C.inputBg, border: "1px solid #9B59B655",
+                          style={{ background: "#142030", border: "1px solid #9B59B655",
                             borderRadius: 6, color: C.white, padding: "8px 12px",
                             fontSize: 14, fontWeight: 700, width: "100%",
                             outline: "none", boxSizing: "border-box" }} />
                         </div>
                         <div style={{ background: C.navyDk, borderRadius: 8, padding: "10px 14px" }}>
-                          <div style={{ color: C.grey, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>
+                          <div style={{ color: C.grey, fontSize: 9, letterSpacing: "0.04em", marginBottom: 4 }}>
                             Recommended PKE to hit C:N {s0.cnTarget}
                           </div>
                           <div style={{ color: "#9B59B6", fontSize: 17, fontWeight: 900, fontFamily: "monospace" }}>
@@ -2767,12 +2619,12 @@ export default function CFI() {
                       </div>
                     </div>
                     <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr 1fr", gap: 12, marginBottom: 12 }}>
-                      <BluField label="PKE Addition Rate" unit="t/day wet"
+                      <BluField label="PKE addition rate" unit="t/day wet"
                       value={s0.pkeTPD} onChange={(v) => upS0("pkeTPD", +v)}
                       note={"Rec: " + pkeRecWet + " t/day for C:N " + s0.cnTarget} />
-                      <CalcField label="PKE Dry Matter" unit="t DM/day" value={pkeDM} />
-                      <CalcField label="PKE % of Total DM" unit="% substrate" value={pctPKE + "%"} />
-                      <CalcField label="Daily PKE Cost" unit="USD/day" value={"$" + pkeCost.toLocaleString()} />
+                      <CalcField label="PKE dry matter" unit="t DM/day" value={pkeDM} />
+                      <CalcField label="PKE % of total DM" unit="% substrate" value={pctPKE + "%"} />
+                      <CalcField label="Daily PKE cost" unit="USD/day" value={"$" + pkeCost.toLocaleString()} />
                     </div>
                     {pkeRecWet > 0 && Math.abs(s0.pkeTPD - pkeRecWet) > 0.5 &&
                     <Warn msg={"Recommended dose for C:N " + s0.cnTarget + " is " + pkeRecWet + " t/day. Current: " + s0.pkeTPD + " t/day."} />
@@ -2780,33 +2632,22 @@ export default function CFI() {
                     {pkeRecWet > 0 && Math.abs(s0.pkeTPD - pkeRecWet) <= 0.5 &&
                     <Warn type="ok" msg={"PKE dose matches C:N " + s0.cnTarget + " target."} />
                     }
-                    <div style={{ background: C.navyDk, borderRadius: 6, padding: "10px 14px",
-                      display: "flex", flexWrap: "wrap", gap: "12px 28px", marginTop: 8 }}>
-                      <span style={{ color: C.grey, fontSize: 11 }}>
-                        <span style={{ color: C.amber, fontWeight: 700 }}>PKE profile: </span>
-                        CP 18% DM · N 2.9% DM · C:N 15 · Lignin 12.4% ADL · MC 12% · Fat 9% DM
-                      </span>
-                      <span style={{ color: C.grey, fontSize: 11 }}>
-                        <span style={{ color: C.red, fontWeight: 700 }}>Monthly cost: </span>
-                        {"$" + (pkeCost * s0.daysMonth).toLocaleString()}
-                      </span>
-                    </div>
                   </div>
-                  }
-                </div>
-              </Card>
+                }
+              </SectionCard>
+            </div>
 
-              {/* ── H: COMBINED SUMMARY ── */}
-              {(pomeActive || s0.pkeEnabled) &&
-                <Card style={{ border: `1px solid ${C.green}33` }}>
-                  <SectionHdr title="H — Combined Multi-Stream Daily NPK Summary" color={C.green} />
+            {/* ════ ROW 6: H — Combined NPK Summary ════ */}
+            {(pomeActive || s0.pkeEnabled) &&
+              <div style={{ marginBottom: 16 }}>
+                <SectionCard title="H — Combined multi-stream daily NPK summary" titleColor={C.green}>
                   <div style={{ overflowX: "auto" }}>
                     <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 11 }}>
                       <thead>
                         <tr style={{ background: C.navyDk }}>
-                          {["STREAM", "t/day FW", "t/day DM", "N kg/day", "P kg/day", "K kg/day", "C:N"].map((h, i) =>
+                          {["Stream", "t/day FW", "t/day DM", "N kg/day", "P kg/day", "K kg/day", "C:N"].map((h, i) =>
                           <td key={i} style={{ padding: "9px 12px", color: C.grey, fontWeight: 700,
-                            letterSpacing: "0.07em", fontSize: 10, textTransform: "uppercase",
+                            letterSpacing: "0.04em", fontSize: 10,
                             borderBottom: `1px solid ${C.navyLt}` }}>{h}</td>
                           )}
                         </tr>
@@ -2814,10 +2655,10 @@ export default function CFI() {
                       <tbody>
                         {[
                         { name: "EFB", fw: efbTPD.toFixed(1), dm: efbDMpd.toFixed(1), n: efbN, p: efbP, k: efbK, cn: "60", col: C.teal },
-                        { name: "OPDC (Decanter Cake)", fw: (opdcDMreq / (1 - s0.opdcMC / 100)).toFixed(1), dm: opdcDMreq.toFixed(1), n: opdcN, p: opdcP, k: opdcK, cn: "20", col: C.amber },
-                        ...(pomeActive ? [{ name: "POME Sludge", fw: pomeSludgeInclTPD.toFixed(1), dm: pomeSludgeInclDM.toFixed(2), n: pomeN, p: pomeP, k: pomeK, cn: "~15", col: C.blue }] : []),
-                        ...(s0.pkeEnabled ? [{ name: "PKE (Protein Booster)", fw: (+s0.pkeTPD).toFixed(1), dm: pkeDM.toFixed(1), n: pkeN, p: "—", k: "—", cn: "15", col: C.purple }] : [])].
-                        map((row, i) =>
+                        { name: "OPDC (decanter cake)", fw: (opdcDMreq / (1 - s0.opdcMC / 100)).toFixed(1), dm: opdcDMreq.toFixed(1), n: opdcN, p: opdcP, k: opdcK, cn: "20", col: C.amber },
+                        ...(pomeActive ? [{ name: "POME sludge", fw: pomeSludgeInclTPD.toFixed(1), dm: pomeSludgeInclDM.toFixed(2), n: pomeN, p: pomeP, k: pomeK, cn: "~15", col: C.blue }] : []),
+                        ...(s0.pkeEnabled ? [{ name: "PKE (protein booster)", fw: (+s0.pkeTPD).toFixed(1), dm: pkeDM.toFixed(1), n: pkeN, p: "—", k: "—", cn: "15", col: C.purple }] : [])
+                        ].map((row, i) =>
                         <tr key={i} style={{ borderBottom: `1px solid ${C.navyLt}33`,
                           background: i % 2 === 0 ? C.navyDk + "80" : "transparent" }}>
                             <td style={{ padding: "9px 12px", color: row.col, fontWeight: 700 }}>{row.name}</td>
@@ -2830,7 +2671,7 @@ export default function CFI() {
                           </tr>
                         )}
                         <tr style={{ background: C.green + "14", borderTop: `2px solid ${C.green}44` }}>
-                          <td style={{ padding: "10px 12px", color: C.green, fontWeight: 900, fontSize: 12 }}>COMBINED TOTAL</td>
+                          <td style={{ padding: "10px 12px", color: C.green, fontWeight: 900, fontSize: 12 }}>Combined total</td>
                           <td style={{ padding: "10px 12px", color: C.green, fontFamily: "monospace", fontWeight: 700 }}>—</td>
                           <td style={{ padding: "10px 12px", color: C.green, fontFamily: "monospace", fontWeight: 700 }}>
                             {(efbDMpd + opdcDMreq + pomeSludgeInclDM + pkeDM).toFixed(1)}
@@ -2845,17 +2686,36 @@ export default function CFI() {
                   </div>
                   {blendCN &&
                   <div style={{ marginTop: 10 }}>
-                      {blendCN < 15 && <Warn msg={"C:N " + blendCN + " — BELOW optimum (15–25). Reduce PKE or POME Sludge, or increase EFB fraction."} />}
+                      {blendCN < 15 && <Warn msg={"C:N " + blendCN + " — BELOW optimum (15–25). Reduce PKE or POME sludge, or increase EFB fraction."} />}
                       {blendCN >= 15 && blendCN <= 25 && <Warn type="ok" msg={"C:N " + blendCN + " — OPTIMAL range (15–25). Blend composition confirmed for BSF."} />}
-                      {blendCN > 25 && blendCN <= 35 && <Warn type="warn" msg={"C:N " + blendCN + " — MARGINAL (target 15–25). Add more POME Sludge or PKE to lower."} />}
-                      {blendCN > 35 && <Warn msg={"C:N " + blendCN + " — HIGH. EFB dominance raising C:N. POME Sludge and PKE additions strongly recommended."} />}
+                      {blendCN > 25 && blendCN <= 35 && <Warn type="warn" msg={"C:N " + blendCN + " — MARGINAL (target 15–25). Add more POME sludge or PKE to lower."} />}
+                      {blendCN > 35 && <Warn msg={"C:N " + blendCN + " — HIGH. EFB dominance raising C:N. POME sludge and PKE additions strongly recommended."} />}
                     </div>
                   }
-                </Card>
-                }
+                </SectionCard>
+              </div>
+            }
 
-              {/* ── NUTRLEDGER ── */}
-              <NutrLedger stg="S0 · Raw Blend Inputs" N={nl_N} P={nl_P} K={nl_K} Ca={nl_Ca} Mg={nl_Mg} OM={nl_OM} cn={nl_CN} wetPD={nl_wetPD} mc={blendMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.teal} />
+            {/* ── Carbon credits preview ── */}
+            <SectionCard title="E — Carbon credits preview" titleColor={C.green}
+              results={
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 8 }}>
+                  {[{ l: "Monthly CO₂e", v: co2est.toLocaleString() + " t", c: C.green },
+                  { l: "Annual CO₂e", v: co2annual.toLocaleString() + " t", c: C.green },
+                  { l: "Annual revenue", v: "$" + carbRev.toLocaleString(), c: C.amber },
+                  { l: "Carbon price", v: "$" + cprice + "/t", c: C.amberLt }].map((k, i) =>
+                    <div key={i} style={{ textAlign: "center" }}>
+                      <div style={{ color: C.grey, fontSize: 9 }}>{k.l}</div>
+                      <div style={{ color: k.c, fontSize: 13, fontWeight: 900, marginTop: 4 }}>{k.v}</div>
+                    </div>
+                  )}
+                </div>
+              }>
+              <div style={{ color: C.grey, fontSize: 10 }}>Full methodology in the CO₂ tab</div>
+            </SectionCard>
+
+            {/* ── NUTRLEDGER ── */}
+            <NutrLedger stg="S0 · Raw blend inputs" N={nl_N} P={nl_P} K={nl_K} Ca={nl_Ca} Mg={nl_Mg} OM={nl_OM} cn={nl_CN} wetPD={nl_wetPD} mc={blendMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.teal} />
 
             </div>
           </div>);
