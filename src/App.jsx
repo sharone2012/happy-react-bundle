@@ -2268,35 +2268,36 @@ export default function CFI() {
   const TABS = ["S0 Inputs","S1 Pre-Process","S2 Chemical","S3 Biologicals","S4 BSF Rearing","S5 Products","S6 Valuation","CAPEX / OPEX","Carbon Credits","Summary","Orchestration"];
 
   return (
-    <div style={{background:C.navy, minHeight:"100vh", fontFamily:"'DM Sans', system-ui, sans-serif",
+    <div style={{background:C.navy, minHeight:"100vh", fontFamily:F.body,
                  color:C.white, padding:"0 0 40px"}}>
 
       {/* ── HEADER ── */}
-      <div style={{background:`linear-gradient(135deg, ${C.navyMid} 0%, #0A2030 100%)`,
-                   borderBottom:`2px solid ${C.teal}44`, padding:"16px 24px",
+      <div style={{background:C.navyMid,
+                   borderBottom:`2px solid ${C.frameBorder}`, padding:"16px 24px",
                    display:"flex", alignItems:"center", justifyContent:"space-between"}}>
         <div style={{display:"flex", alignItems:"center", gap:12}}>
           <div style={{background:C.teal, width:36, height:36, borderRadius:8, display:"flex",
-                       alignItems:"center", justifyContent:"center", fontSize:18}}>🌴</div>
+                       alignItems:"center", justifyContent:"center", fontSize:18, color:C.navy, fontFamily:F.title, fontWeight:700}}>CFI</div>
           <div>
-            <div style={{color:C.teal, fontWeight:900, fontSize:16, letterSpacing:"0.06em"}}>
-              CIRCULAR FERTILISER INDUSTRIES
+            <div style={{color:C.teal, fontWeight:700, fontSize:18, fontFamily:F.title}}>
+              Circular Fertiliser Industries
             </div>
-            <div style={{color:C.grey, fontSize:11}}>Palm Oil Bioconversion System · 60 TPH FFB Mill · West Java</div>
+            <div style={{color:C.grey, fontSize:11, fontFamily:F.body}}>Palm Oil Bioconversion System · 60 TPH FFB Mill · West Java</div>
           </div>
         </div>
         <div style={{display:"flex", gap:6}}>
-          {["S0","S1","S2","S3","S4","S5","S6","CAPEX","CO₂","∑"].map((s,i)=>(
-            <div key={i} style={{background: stage===i ? C.teal : C.navyLt,
-                                  color: stage===i ? C.navy : C.grey,
-                                  borderRadius:4, padding:"3px 10px", fontSize:11, fontWeight:700,
+          {["S0","S1","S2","S3","S4","S5","S6","CAPEX","CO2","Sum"].map((s,i)=>(
+            <div key={i} style={{background: stage===i ? C.tealDk : C.navyLt,
+                                  color: stage===i ? C.white : C.grey,
+                                  borderRadius:4, padding:"3px 10px", fontSize:12, fontWeight:700,
+                                  fontFamily:F.title,
                                   cursor:"pointer"}} onClick={()=>handleTabClick(i)}>{s}</div>
           ))}
         </div>
       </div>
 
       {/* ── TAB BAR ── */}
-      <div style={{display:"flex", gap:2, padding:"0 24px", borderBottom:`2px solid ${C.teal}33`,
+      <div style={{display:"flex", gap:2, padding:"0 24px", borderBottom:`2px solid ${C.frameBorder}`,
                    background:C.navyMid}}>
         {TABS.map((t,i)=>(
           <div key={i} style={S.tab(stage===i)} onClick={()=>handleTabClick(i)}>{t}</div>
