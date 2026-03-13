@@ -2860,7 +2860,7 @@ export default function CFI() {
               {/* ── H: COMBINED SUMMARY ── */}
               {(pomeActive||s0.pkeEnabled) && (
                 <Card style={{border:`1px solid ${C.green}33`}}>
-                  <SectionHdr icon="📊" title="H — Combined Multi-Stream Daily NPK Summary" color={C.green}/>
+                  <SectionHdr title="Section H: Combined Daily NPK Summary" color={C.green}/>
                   <div style={{overflowX:"auto"}}>
                     <table style={{width:"100%", borderCollapse:"collapse", fontSize:11}}>
                       <thead>
