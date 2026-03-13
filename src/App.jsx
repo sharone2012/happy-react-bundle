@@ -2366,18 +2366,13 @@ export default function CFI() {
 
                 {/* ── A: SITE IDENTITY ── */}
                 <Card>
-                  <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:14}}>
-                    <div style={{display:"flex", alignItems:"center", gap:10, flex:1}}>
-                      <span style={{fontSize:17, lineHeight:1}}>🏭</span>
-                      <div style={{color:C.teal, fontWeight:800, fontSize:13, letterSpacing:"0.03em"}}>
-                        A — Enter your site details below
-                      </div>
-                    </div>
-                    <div style={{marginLeft:12, flexShrink:0}}>
-                      <div style={{color:C.grey, fontSize:9, fontWeight:600, letterSpacing:"0.04em", marginBottom:4, textAlign:"right"}}>ID Code</div>
+                  <SectionHdr title="Section A: Site Details" color={C.teal}/>
+                  <div style={{display:"flex", gap:10, marginBottom:10}}>
+                    <div style={{flex:1}}>
+                      <div style={{color:C.grey, fontSize:11, fontFamily:F.body, fontWeight:600, marginBottom:4}}>ID Code</div>
                       <input
-                        style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                          color:C.white, padding:"8px 12px", fontSize:13, width:90, outline:"none",
+                        style={{background:C.inputBg, border:`1.5px solid ${C.inputBorder}`, borderRadius:6,
+                          color:C.amber, padding:"8px 12px", fontSize:14, fontFamily:F.mono, fontWeight:600, width:120, outline:"none",
                           boxSizing:"border-box", textAlign:"center"}}
                         value={s0.idCode||""} onChange={e=>upS0("idCode",e.target.value)}
                         placeholder="Number"/>
