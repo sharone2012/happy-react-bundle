@@ -54,14 +54,14 @@ const C = {
 };
 
 const S = {
-  card: { background: C.navyMid, borderRadius: 8, padding: "16px", marginBottom: 12 },
-  hdr: { background: C.navyLt, borderRadius: 6, padding: "10px 14px", marginBottom: 10,
+  card: { background: C.navyLt, borderRadius: 10, padding: "0", marginBottom: 12, border: `1px solid ${C.teal}33` },
+  hdr: { padding: "12px 16px", marginBottom: 0,
     display: "flex", alignItems: "center", gap: 8 },
-  label: { color: C.grey, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 2, textAlign: "center" },
+  label: { color: C.grey, fontSize: 11, letterSpacing: "0.04em", marginBottom: 2, textAlign: "center" },
   val: { color: C.white, fontSize: 14, fontWeight: 600 },
-  input: { background: "#1A3550", border: `1px solid ${C.teal}44`, borderRadius: 5, color: C.white,
+  input: { background: "#142030", border: `1px solid ${C.teal}66`, borderRadius: 6, color: C.white,
     padding: "6px 10px", fontSize: 13, width: "100%", outline: "none", textAlign: "center" },
-  inputAmb: { background: "#2A2010", border: `1px solid ${C.amber}66`, borderRadius: 5, color: C.amberLt,
+  inputAmb: { background: "#142030", border: `1px solid ${C.amber}66`, borderRadius: 6, color: C.amberLt,
     padding: "6px 10px", fontSize: 13, width: "100%", outline: "none" },
   badge: (c) => ({ background: c + "22", border: `1px solid ${c}55`, borderRadius: 12, padding: "2px 8px",
     color: c, fontSize: 11, fontWeight: 700, display: "inline-block" }),
