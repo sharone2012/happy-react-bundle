@@ -298,7 +298,7 @@ const ResidueCard = ({ abbr, label, labelJsx, active, locked, onClick, highlight
 const FE_COLOR = { LOW: C.green, MODERATE: C.teal, HIGH: C.amber, CRITICAL: C.red, Untested: C.grey };
 
 const LABEL_STYLE = { display: "block", color: C.grey, fontSize: 10, fontWeight: 700,
-  textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 5 };
+  letterSpacing: "0.04em", marginBottom: 5 };
 
 
 // ─── SOIL TYPES DATA ──────────────────────────────────────────────────────────
