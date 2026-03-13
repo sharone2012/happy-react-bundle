@@ -224,6 +224,23 @@ const Card = ({ children, style = {} }) =>
     {children}
   </div>;
 
+// ─── SECTION CARD — New design system card ────────────────────────────────────
+const SectionCard = ({ title, titleColor = C.teal, children, results, style = {} }) =>
+<div style={{ background: C.navyLt, border: `1px solid ${C.teal}33`, borderRadius: 10, overflow: "hidden", ...style }}>
+    {/* Title bar */}
+    <div style={{ padding: "12px 16px" }}>
+      <span style={{ color: titleColor, fontWeight: 800, fontSize: 13, whiteSpace: "nowrap" }}>{title}</span>
+    </div>
+    {/* Black input area */}
+    {children && <div style={{ background: C.navyDk, margin: "0 12px", borderRadius: 8, padding: "14px 16px" }}>
+      {children}
+    </div>}
+    {/* Results area */}
+    {results && <div style={{ padding: "10px 16px 14px" }}>
+      {results}
+    </div>}
+  </div>;
+
 
 const Warn = ({ msg, type = "warn" }) => {
   const col = type === "warn" ? C.amber : type === "ok" ? C.green : C.red;
