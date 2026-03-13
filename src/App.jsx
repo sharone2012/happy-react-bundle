@@ -206,7 +206,7 @@ const Alert = ({msg, type="warn"}) => {
 
 const SectionHdr = ({icon, title, color=C.teal}) => (
   <div style={{...S.hdr}}>
-    <span style={{color, fontWeight:700, fontSize:18, fontFamily:F.title}}>{title}</span>
+    <span style={{color, fontWeight:700, fontSize:18, fontFamily:F.title, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>{title}</span>
   </div>
 );
 
