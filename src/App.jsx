@@ -212,42 +212,38 @@ const SectionHdr = ({icon, title, color=C.teal}) => (
 
 const KPI = ({label, value, unit, color=C.teal}) => (
   <div style={{background:C.frame, borderRadius:8, padding:"12px 14px", textAlign:"center",
-               border:`1px solid ${C.frameBorder}`}}>
-    <div style={{color:C.grey, fontSize:10, letterSpacing:"0.04em"}}>{label}</div>
-    <div style={{color, fontSize:22, fontWeight:800, margin:"4px 0"}}>{value}</div>
-    <div style={{color:C.grey, fontSize:10}}>{unit}</div>
+               border:`1.5px solid ${C.frameBorder}`}}>
+    <div style={{color:C.grey, fontSize:11, fontFamily:F.body, fontWeight:600}}>{label}</div>
+    <div style={{color, fontSize:22, fontWeight:800, fontFamily:F.mono, margin:"4px 0"}}>{value}</div>
+    <div style={{color:C.grey, fontSize:11, fontFamily:F.body}}>{unit}</div>
   </div>
 );
 
 const Badge = ({text, color}) => (
   <span style={{background:color+"20", border:`1px solid ${color}50`, borderRadius:10,
-    padding:"2px 9px", color, fontSize:10, fontWeight:800, letterSpacing:"0.04em",
+    padding:"2px 9px", color, fontSize:12, fontWeight:700, fontFamily:F.title,
     display:"inline-block", whiteSpace:"nowrap"}}>
     {text}
   </span>
 );
 
 const Divider = ({color}) => (
-  <hr style={{border:"none", borderTop:`1px solid ${color||C.navyLt}`, margin:"14px 0"}}/>
+  <hr style={{border:"none", borderTop:`1px solid ${color||C.frameBorder}`, margin:"14px 0"}}/>
 );
 
 const Card = ({children, style={}}) => (
-  <div style={{background:C.frame, border:`1px solid ${C.frameBorder}`,
-    borderRadius:10, padding:20, ...style}}>
+  <div style={{background:C.navyLt, border:`1.5px solid ${C.frameBorder}`,
+    borderRadius:8, padding:20, ...style}}>
     {children}
   </div>
 );
 
-/* ── NEW DESIGN SYSTEM CARD ──────────────────────────────────────────────────
-   Grey outer frame. Title sits IN the grey area at top — no black behind it.
-   Input area = black inner block. Results = back in grey at bottom.
-   Use height:"100%" on the outer div so rows stretch evenly.
-─────────────────────────────────────────────────────────────────────────── */
-const SectionCard = ({title, icon, color=C.teal, inputs, results, style={}}) => (
+/* ── DESIGN SYSTEM CARD ─────────────────────────────────────────────────── */
+const SectionCard = ({title, icon, color=C.teal, inputs, results, badge, style={}}) => (
   <div style={{
-    background: C.frame,
-    border: `1px solid ${C.frameBorder}`,
-    borderRadius: 10,
+    background: C.navyLt,
+    border: `1.5px solid ${C.frameBorder}`,
+    borderRadius: 8,
     display: "flex",
     flexDirection: "column",
     height: "100%",
@@ -255,17 +251,17 @@ const SectionCard = ({title, icon, color=C.teal, inputs, results, style={}}) => 
     overflow: "hidden",
     ...style
   }}>
-    {/* Title — lives in grey frame, NO black box behind it */}
+    {/* Title */}
     <div style={{padding:"12px 16px 10px", display:"flex", alignItems:"center", gap:8, flexShrink:0}}>
-      {icon && <span style={{fontSize:15, lineHeight:1, flexShrink:0}}>{icon}</span>}
-      <div style={{color, fontWeight:800, fontSize:13, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>{title}</div>
+      <div style={{color, fontWeight:700, fontSize:18, fontFamily:F.title, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis", flex:1}}>{title}</div>
+      {badge && <Badge text={badge.text} color={badge.color}/>}
     </div>
-    {/* Black input block — margin 0 12px so grey frame shows on sides */}
+    {/* Inner black zone */}
     {inputs && (
       <div style={{
         background: C.navyDk,
         margin: "0 12px",
-        borderRadius: 8,
+        borderRadius: 6,
         padding: "14px 16px",
         flex: 1,
         boxSizing: "border-box",
@@ -273,7 +269,7 @@ const SectionCard = ({title, icon, color=C.teal, inputs, results, style={}}) => 
         {inputs}
       </div>
     )}
-    {/* Results — back in grey frame at bottom */}
+    {/* Results area */}
     {results && (
       <div style={{padding:"10px 16px 14px", flexShrink:0}}>
         {results}
@@ -282,25 +278,23 @@ const SectionCard = ({title, icon, color=C.teal, inputs, results, style={}}) => 
   </div>
 );
 
-/* Helper: result value displayed in grey area (orange for totals, teal for calcs) */
+/* Helper: result value displayed in info area */
 const ResultRow = ({label, value, unit, color=C.amber, large=false}) => (
   <div style={{display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:4}}>
-    <span style={{color:C.grey, fontSize:10}}>{label}</span>
-    <span style={{color, fontWeight:large?900:700, fontSize:large?16:13, fontFamily:"monospace"}}>
-      {value}{unit && <span style={{color:C.grey, fontSize:10, fontWeight:400, marginLeft:4}}>{unit}</span>}
+    <span style={{color:C.grey, fontSize:11, fontFamily:F.body}}>{label}</span>
+    <span style={{color, fontWeight:large?900:700, fontSize:large?16:13, fontFamily:F.mono}}>
+      {value}{unit && <span style={{color:C.grey, fontSize:11, fontWeight:400, marginLeft:4}}>{unit}</span>}
     </span>
   </div>
 );
 
 const Warn = ({msg, type="warn"}) => {
   const col = type==="warn"?C.amber : type==="ok"?C.green : C.red;
-  const icon = type==="warn"?"⚠" : type==="ok"?"✓" : "✕";
   return (
-    <div style={{background:col+"14", border:`1px solid ${col}44`,
+    <div style={{background:col+"14", border:`1.5px solid ${C.frameBorder}`,
       borderLeft:`3px solid ${col}`, borderRadius:6,
-      padding:"8px 13px", color:col, fontSize:11,
+      padding:"9px 13px", color:col, fontSize:13, fontFamily:F.body,
       display:"flex", alignItems:"flex-start", gap:8, marginTop:8}}>
-      <span style={{fontWeight:800, fontSize:12, marginTop:1, flexShrink:0}}>{icon}</span>
       <span style={{lineHeight:1.5}}>{msg}</span>
     </div>
   );
