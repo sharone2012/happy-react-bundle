@@ -758,7 +758,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
   function renderAdmin() {
     return (
       <div style={s.body}>
-        <div style={{ fontSize: 16, fontWeight: 700, color: C.danger, marginBottom: 4 }}>🔒 ADMIN — DELETE & GOVERNANCE</div>
+        <div style={{ fontSize: 16, fontWeight: 700, color: C.danger, marginBottom: 4 }}>Locked ADMIN — DELETE & GOVERNANCE</div>
         <div style={{ color: C.textDim, fontSize: 11, marginBottom: 16 }}>Only Sharon (System Admin) can delete organisms from the database. All user additions are permanent unless removed by admin. Users with permission can add organisms — contact Sharon to grant access.</div>
 
         {adminMsg && <div style={s.alert(adminMsg.type === "ok" ? C.green : C.danger)}>{adminMsg.msg}</div>}
