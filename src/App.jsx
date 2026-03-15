@@ -423,8 +423,8 @@ export default function CFIBioManager() {
   }
 
   function unlockAdmin() {
-    if (adminPin === ADMIN_PIN) { setAdminUnlocked(true); setAdminMsg({ type: "ok", msg: "🔓 Admin access granted — Sharon." }); }
-    else { setAdminMsg({ type: "err", msg: "❌ Incorrect PIN." }); }
+    if (adminPin === ADMIN_PIN) { setAdminUnlocked(true); setAdminMsg({ type: "ok", msg: "Unlocked Admin access granted — Sharon." }); }
+    else { setAdminMsg({ type: "err", msg: "Fail Incorrect PIN." }); }
   }
 
   if (loading) return <div style={{ ...s.app, display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}><span style={{ color: C.accent }}>⌛ Loading CFI Biological Database…</span></div>;
