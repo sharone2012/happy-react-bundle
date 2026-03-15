@@ -546,7 +546,7 @@ export default function CFIBioManager() {
           </div>
           <div style={{ display: "flex", gap: 10, marginTop: 8 }}>
             <button style={s.btnFill(C.accent)} onClick={doResearch} disabled={researchLoading || !researchQ.trim()}>
-              {researchLoading ? "⌛ Researching…" : "🔬 RESEARCH THIS BIOLOGICAL"}
+              {researchLoading ? "Pending Researching..." : "RESEARCH THIS BIOLOGICAL"}
             </button>
             {autoFillResult && (
               <button style={s.btn(C.green)} onClick={applyAutoFill}>
