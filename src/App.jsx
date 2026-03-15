@@ -102,7 +102,7 @@ const C = {
   surface: "#161b22",
   card: "#1c2230",
   border: "#2d3748",
-  accent: "#00c4b4",
+  accent: "#33CFC1",
   gold: "#d4a853",
   danger: "#e53e3e",
   warn: "#f6ad55",
@@ -117,12 +117,12 @@ const s = {
   app: { background: C.bg, minHeight: "100vh", color: C.text, fontFamily: "'IBM Plex Mono', 'Courier New', monospace", fontSize: 13 },
   header: { background: C.surface, borderBottom: `2px solid ${C.accent}`, padding: "12px 24px", display: "flex", alignItems: "center", gap: 16 },
   logo: { fontSize: 11, color: C.accent, letterSpacing: 2, textTransform: "uppercase" },
-  title: { fontSize: 18, fontWeight: 700, color: C.text, margin: 0, fontFamily: "'Syne', sans-serif" },
+  title: { fontSize: 18, fontWeight: 700, color: C.text, margin: 0, fontFamily: "'Syne', sans-serif", paddingTop: 16 },
   tabs: { display: "flex", background: C.surface, borderBottom: `1px solid ${C.border}`, padding: "0 16px", gap: 2 },
-  tab: (active) => ({ padding: "10px 18px", background: active ? C.card : "transparent", color: active ? C.accent : C.textDim, border: "none", borderBottom: active ? `2px solid ${C.accent}` : "2px solid transparent", cursor: "pointer", fontFamily: "inherit", fontSize: 12, letterSpacing: 1, textTransform: "uppercase", fontWeight: active ? 700 : 400 }),
+  tab: (active) => ({ padding: "10px 18px", background: active ? C.card : "transparent", color: active ? C.accent : C.textDim, border: "none", borderBottom: active ? `2px solid ${C.accent}` : "2px solid transparent", cursor: "pointer", fontFamily: "inherit", fontSize: 15, letterSpacing: 1, textTransform: "uppercase", fontWeight: active ? 700 : 400 }),
   body: { padding: 20 },
   card: { background: C.card, border: `1px solid ${C.border}`, borderRadius: 6, padding: 16, marginBottom: 16 },
-  label: { display: "block", color: C.textDim, fontSize: 11, letterSpacing: 1, marginBottom: 4, textTransform: "uppercase" },
+  label: { display: "block", color: C.textDim, fontSize: 13, letterSpacing: 1, marginBottom: 4, textTransform: "uppercase", fontWeight: 600 },
   input: { width: "100%", background: "#0d1a2e", border: `1px solid ${C.blue}`, color: C.text, padding: "7px 10px", borderRadius: 4, fontFamily: "inherit", fontSize: 13, boxSizing: "border-box" },
   select: { width: "100%", background: "#0d1a2e", border: `1px solid ${C.blue}`, color: C.text, padding: "7px 10px", borderRadius: 4, fontFamily: "inherit", fontSize: 13 },
   textarea: { width: "100%", background: "#0d1a2e", border: `1px solid ${C.blue}`, color: C.text, padding: "7px 10px", borderRadius: 4, fontFamily: "inherit", fontSize: 12, resize: "vertical", minHeight: 80, boxSizing: "border-box" },
@@ -133,9 +133,9 @@ const s = {
   grid4: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 12 },
   fieldWrap: { marginBottom: 12 },
   aiBox: { background: "#0a1628", border: `1px solid ${C.accent}`, borderRadius: 6, padding: 14, marginTop: 12, whiteSpace: "pre-wrap", lineHeight: 1.7, fontSize: 12, color: C.text, maxHeight: 400, overflowY: "auto" },
-  badge: (col) => ({ display: "inline-block", background: col + "22", border: `1px solid ${col}`, color: col, borderRadius: 3, padding: "1px 6px", fontSize: 10, letterSpacing: 0.5 }),
-  table: { width: "100%", borderCollapse: "collapse", fontSize: 11 },
-  th: { background: C.surface, color: C.accent, padding: "7px 8px", textAlign: "left", borderBottom: `1px solid ${C.border}`, textTransform: "uppercase", letterSpacing: 0.5, whiteSpace: "nowrap" },
+  badge: (col) => ({ display: "inline-block", background: col + "22", border: `1px solid ${col}`, color: col, borderRadius: 3, padding: "1px 6px", fontSize: 13, letterSpacing: 0.5 }),
+  table: { width: "100%", borderCollapse: "collapse", fontSize: 13 },
+  th: { background: C.surface, color: C.accent, padding: "7px 8px", textAlign: "left", borderBottom: `1px solid ${C.border}`, textTransform: "uppercase", letterSpacing: 0.5, whiteSpace: "nowrap", fontWeight: 600 },
   td: { padding: "6px 8px", borderBottom: `1px solid ${C.border}`, verticalAlign: "top", color: C.text },
   tdMuted: { padding: "6px 8px", borderBottom: `1px solid ${C.border}`, verticalAlign: "top", color: C.textDim },
   alert: (col) => ({ background: col + "18", border: `1px solid ${col}`, color: col, borderRadius: 5, padding: "10px 14px", marginBottom: 12, fontSize: 12 }),
@@ -901,8 +901,11 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
 
     const CalcRow = ({ label, value, unit, color }) => (
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: `1px solid ${C.border}` }}>
-        <span style={{ color: C.textDim, fontSize: 12 }}>{label}</span>
-        <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 14, color: color || C.accent }}>{value} <span style={{ color: C.textDim, fontSize: 10, fontWeight: 400 }}>{unit}</span></span>
+        <span style={{ color: C.textDim, fontSize: 13, fontWeight: 600 }}>{label}</span>
+        <span style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 14, color: color || C.accent, textAlign: "right" }}>{value}</span>
+          <span style={{ color: C.textDim, fontSize: 13, fontWeight: 600, minWidth: 80, textAlign: "left" }}>{unit}</span>
+        </span>
       </div>
     );
 
@@ -919,9 +922,9 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             { label: "Blended Substrate", value: blendWet.toLocaleString(), unit: "t FW/month → S2", col: C.green },
           ].map((k, i) => (
             <div key={i} style={{ ...s.card, textAlign: "center", padding: 12 }}>
-              <div style={{ color: C.textDim, fontSize: 10, letterSpacing: 0.5, marginBottom: 4 }}>{k.label}</div>
+              <div style={{ color: C.textDim, fontSize: 13, fontWeight: 600, letterSpacing: 0.5, marginBottom: 4 }}>{k.label}</div>
               <div style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: k.col }}>{k.value}</div>
-              <div style={{ color: C.muted, fontSize: 9 }}>{k.unit}</div>
+              <div style={{ color: C.muted, fontSize: 13, fontWeight: 600 }}>{k.unit}</div>
             </div>
           ))}
         </div>
@@ -939,7 +942,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                   { label: "Operating Days", key: "daysMonth", unit: "days/month" },
                 ].map(f => (
                   <div key={f.key}>
-                    <label style={{ ...s.label, fontSize: 10 }}>{f.label} <span style={{ color: C.muted }}>({f.unit})</span></label>
+                    <label style={{ ...s.label, fontSize: 13 }}>{f.label} <span style={{ color: C.muted }}>({f.unit})</span></label>
                     <input type="number" style={s.input} value={s1[f.key]} onChange={e => upS1(f.key, Number(e.target.value))} />
                   </div>
                 ))}
@@ -973,7 +976,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
 
               {/* OPDC Press Discharge MC — CLASS A GUARDRAIL */}
               <div style={{ marginTop: 12, padding: 10, background: "#0d1a2e", borderRadius: 6, border: `1px solid ${C.border}` }}>
-                <label style={{ ...s.label, fontSize: 10 }}>OPDC Press Discharge MC <span style={{ color: C.muted }}>(%)</span></label>
+                <label style={{ ...s.label, fontSize: 13 }}>OPDC Press Discharge MC <span style={{ color: C.muted }}>(%)</span></label>
                 <input type="number" style={s.input} value={rawPressMC} onChange={e => upS1("opdcPressMC", Number(e.target.value))} />
                 <div style={{ marginTop: 6 }}>
                   <CalcRow label="Clamped Press MC (applied)" value={clampedPressMC} unit="%" color={pressMCFloored ? C.warn : C.green} />
@@ -1027,9 +1030,9 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
               { label: "Blend MC", value: blendMC, unit: "% (wet-weight-corrected)", col: C.accent },
             ].map((k, i) => (
               <div key={i} style={{ textAlign: "center" }}>
-                <div style={{ color: C.textDim, fontSize: 10, marginBottom: 3 }}>{k.label}</div>
+                <div style={{ color: C.textDim, fontSize: 13, fontWeight: 600, marginBottom: 3 }}>{k.label}</div>
                 <div style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 16, color: k.col }}>{k.value}</div>
-                <div style={{ color: C.muted, fontSize: 9 }}>{k.unit}</div>
+                <div style={{ color: C.muted, fontSize: 13, fontWeight: 600 }}>{k.unit}</div>
               </div>
             ))}
           </div>
@@ -1116,7 +1119,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
     const opt = OPTS[inocOption];
     const dailyFW = batchFWProt * batchesDay;
     const monthlyFW = dailyFW * 30;
-    const hcell = { padding: "7px 10px", color: C.accent, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", borderBottom: "1px solid #1e3a5c", textAlign: "center" };
+    const hcell = { padding: "7px 10px", color: C.accent, fontSize: 13, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", borderBottom: "1px solid #1e3a5c", textAlign: "center" };
     const dcell = (clr) => ({ padding: "6px 10px", color: clr || C.text, fontSize: 11, fontFamily: "monospace", textAlign: "center" });
 
     return (
@@ -1131,9 +1134,9 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
               ["Time after PKSA", ">= 24 hours", "< 24h = alkaline shock"],
             ].map(([label, range, kill]) => (
               <div key={label} style={{ background: "#060e1c", borderRadius: 6, padding: "8px 10px", borderLeft: "2px solid " + C.accent }}>
-                <div style={{ color: C.accent, fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</div>
+                <div style={{ color: C.accent, fontSize: 13, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</div>
                 <div style={{ color: C.green, fontFamily: "monospace", fontSize: 13, fontWeight: 700, margin: "3px 0" }}>{range}</div>
-                <div style={{ color: C.danger, fontSize: 9 }}>Kill: {kill}</div>
+                <div style={{ color: C.danger, fontSize: 13 }}>Kill: {kill}</div>
               </div>
             ))}
           </div>
@@ -1141,11 +1144,11 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
 
         <div style={{ display: "flex", gap: 16, marginBottom: 16, alignItems: "flex-end" }}>
           <div>
-            <div style={{ color: C.textDim, fontSize: 10, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.06em" }}>Batch size (t FW)</div>
+            <div style={{ color: C.textDim, fontSize: 13, fontWeight: 600, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.06em" }}>Batch size (t FW)</div>
             <input type="number" style={{ ...s.input, width: 90, background: "#0d1a2e", border: "1.5px solid #4299e1", color: C.gold, fontFamily: "monospace", fontWeight: 700 }} value={batchFWProt} onChange={e => setBatchFWProt(Number(e.target.value))} />
           </div>
           <div>
-            <div style={{ color: C.textDim, fontSize: 10, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.06em" }}>Batches/day</div>
+            <div style={{ color: C.textDim, fontSize: 13, fontWeight: 600, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.06em" }}>Batches/day</div>
             <input type="number" style={{ ...s.input, width: 70, background: "#0d1a2e", border: "1.5px solid #4299e1", color: C.gold, fontFamily: "monospace", fontWeight: 700 }} value={batchesDay} onChange={e => setBatchesDay(Number(e.target.value))} />
           </div>
           <div style={{ color: C.textDim, fontSize: 12 }}>
@@ -1180,7 +1183,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             <tr style={{ background: "#0a1628", borderTop: "2px solid " + C.accent }}>
               <td colSpan={5} style={{ padding: "8px 10px", color: C.accent, fontWeight: 700, fontSize: 12 }}>TOTAL — One-Shot Day 1</td>
               <td style={{ padding: "8px 10px", color: C.green, fontWeight: 700, fontFamily: "monospace", fontSize: 13, textAlign: "center" }}>$0.65</td>
-              <td style={{ padding: "8px 10px", color: C.textDim, fontSize: 10, textAlign: "center" }}>
+              <td style={{ padding: "8px 10px", color: C.textDim, fontSize: 13, textAlign: "center" }}>
                 ${(0.65 * batchFWProt).toFixed(0)} total / batch
               </td>
             </tr>
@@ -1194,7 +1197,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             return (
               <button key={k} onClick={() => setInocOption(k)} style={{ flex: 1, padding: "10px 8px", borderRadius: 7, border: "1.5px solid " + (inocOption === k ? C.accent : "#1e3a5c"), background: inocOption === k ? "#0b2a4a" : "#060e1c", cursor: "pointer", textAlign: "left" }}>
                 <div style={{ color: inocOption === k ? C.accent : C.textDim, fontWeight: 700, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 3 }}>Option {k} — {o2.name}</div>
-                <div style={{ color: C.textDim, fontSize: 10, marginBottom: 4 }}>{o2.desc}</div>
+                <div style={{ color: C.textDim, fontSize: 13, marginBottom: 4 }}>{o2.desc}</div>
                 <div style={{ color: C.green, fontFamily: "monospace", fontWeight: 700, fontSize: 13 }}>${o2.totalMin.toFixed(2)}{o2.totalMin !== o2.totalMax ? " - $" + o2.totalMax.toFixed(2) : ""} /t FW</div>
               </button>
             );
@@ -1285,8 +1288,8 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                     ))}
                   </div>
                 )}
-                <div style={{ color: C.danger, fontSize: 9, marginBottom: 3 }}>Kill zone: {c.kill}</div>
-                {res === "FAIL" && <div style={{ color: C.warn, fontSize: 10, marginTop: 4, fontStyle: "italic" }}>Action: {c.action}</div>}
+                <div style={{ color: C.danger, fontSize: 13, marginBottom: 3 }}>Kill zone: {c.kill}</div>
+                {res === "FAIL" && <div style={{ color: C.warn, fontSize: 13, marginTop: 4, fontStyle: "italic" }}>Action: {c.action}</div>}
               </div>
             );
           })}
@@ -1320,10 +1323,10 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
     function KPI({ label, value, unit, color, sub }) {
       return (
         <div style={{ background: "#060e1c", borderRadius: 7, padding: "10px 12px", textAlign: "center", borderTop: "2px solid " + (color || C.accent) }}>
-          <div style={{ color: C.textDim, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 3 }}>{label}</div>
+          <div style={{ color: C.textDim, fontSize: 13, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 3 }}>{label}</div>
           <div style={{ color: color || C.accent, fontFamily: "monospace", fontWeight: 800, fontSize: 18 }}>{value}</div>
-          <div style={{ color: C.textDim, fontSize: 9, marginTop: 2 }}>{unit}</div>
-          {sub && <div style={{ color: C.textDim, fontSize: 9, marginTop: 3, fontStyle: "italic" }}>{sub}</div>}
+          <div style={{ color: C.textDim, fontSize: 13, fontWeight: 600, marginTop: 2 }}>{unit}</div>
+          {sub && <div style={{ color: C.textDim, fontSize: 13, marginTop: 3, fontStyle: "italic" }}>{sub}</div>}
         </div>
       );
     }
@@ -1336,7 +1339,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             { label: "Moisture (%)", val: calcMC, set: setCalcMC, w: 80 },
           ].map(f => (
             <div key={f.label}>
-              <div style={{ color: C.textDim, fontSize: 10, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.06em" }}>{f.label}</div>
+               <div style={{ color: C.textDim, fontSize: 13, fontWeight: 600, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.06em" }}>{f.label}</div>
               <input type="number" style={{ ...s.input, width: f.w, background: "#0d1a2e", border: "1.5px solid #4299e1", color: C.gold, fontFamily: "monospace", fontWeight: 700 }} value={f.val} onChange={e => f.set(Number(e.target.value))} />
             </div>
           ))}
@@ -1354,7 +1357,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             <thead>
               <tr style={{ background: "#060e1c" }}>
                 {["Gas", "Mechanism", "Organism", "Reduction", "Emission Factor", "kg Reduced / batch", "Source"].map(h => (
-                  <th key={h} style={{ padding: "6px 8px", color: C.accent, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.06em", borderBottom: "1px solid #1e3a5c", textAlign: "left" }}>{h}</th>
+                  <th key={h} style={{ padding: "6px 8px", color: C.accent, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.06em", borderBottom: "1px solid #1e3a5c", textAlign: "left", fontWeight: 600 }}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -1376,7 +1379,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
               ))}
             </tbody>
           </table>
-          <div style={{ color: C.textDim, fontSize: 9, marginTop: 8 }}>Emission factors are literature estimates (kg gas/t FW). Replace with site-measured values when available. CO2 = DATA GAP — no peer-reviewed DOI confirmed.</div>
+          <div style={{ color: C.textDim, fontSize: 13, marginTop: 8 }}>Emission factors are literature estimates (kg gas/t FW). Replace with site-measured values when available. CO2 = DATA GAP — no peer-reviewed DOI confirmed.</div>
         </div>
 
         <div style={{ background: "#0a1628", border: "1px solid #1e3a5c", borderRadius: 8, padding: 16 }}>
@@ -1387,7 +1390,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
               { label: "PKSA rate (kg/t FW)", val: pksaKg, set: setPksaKg, w: 80 },
             ].map(f => (
               <div key={f.label}>
-                <div style={{ color: C.textDim, fontSize: 10, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.06em" }}>{f.label}</div>
+                <div style={{ color: C.textDim, fontSize: 13, fontWeight: 600, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.06em" }}>{f.label}</div>
                 <input type="number" style={{ ...s.input, width: f.w, background: "#0d1a2e", border: "1.5px solid #4299e1", color: C.gold, fontFamily: "monospace", fontWeight: 700 }} value={f.val} onChange={e => f.set(Number(e.target.value))} />
               </div>
             ))}
@@ -1426,7 +1429,7 @@ function DosageCalc({ organisms }) {
   const totalCostLow = chosenOrgs.reduce((a, o) => a + (o.costLow || 0), 0);
   const totalCostHigh = chosenOrgs.reduce((a, o) => a + (o.costHigh || 0), 0);
 
-  const C2 = { accent: "#00c4b4", gold: "#d4a853", green: "#48bb78", warn: "#f6ad55", danger: "#e53e3e", muted: "#718096", text: "#e2e8f0", textDim: "#a0aec0", border: "#2d3748", surface: "#161b22" };
+  const C2 = { accent: "#33CFC1", gold: "#d4a853", green: "#48bb78", warn: "#f6ad55", danger: "#e53e3e", muted: "#718096", text: "#e2e8f0", textDim: "#a0aec0", border: "#2d3748", surface: "#161b22" };
 
   return (
     <div>
