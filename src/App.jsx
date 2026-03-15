@@ -2487,7 +2487,7 @@ export default function CFI() {
                       onChange={v=>upS0("pomeCapturePct",Math.min(100,Math.max(0,+v)))}/>
                   </div>
                   <div style={{background:C.navyDk, border:"1px solid rgba(255,255,255,0.08)", borderRadius:8, padding:12, marginTop:12}}>
-                    <SectionHdr title="Section E: Carbon Credits Preview" color={C.green}/>
+                    <SectionHdr title="Section D: Carbon Credits Preview" color={C.green}/>
                     <div style={{color:C.grey, fontSize:10, marginTop:-6, marginBottom:10}}>Full methodology in the CO₂ tab</div>
                     <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:8}}>
                       {[
