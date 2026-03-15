@@ -870,7 +870,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           <span style={{ color: C.textDim, fontSize: 11 }}>Logged in as:</span>
           <input style={{ ...s.input, width: 140 }} value={userName} onChange={e => setUserName(e.target.value)} placeholder="Your name" />
           <span style={s.badge(C.green)}>{organisms.length} ORGANISMS</span>
-          {adminUnlocked && <span style={s.badge(C.danger)}>🔓 ADMIN</span>}
+          {adminUnlocked && <span style={s.badge(C.danger)}>ADMIN</span>}
         </div>
       </div>
 
