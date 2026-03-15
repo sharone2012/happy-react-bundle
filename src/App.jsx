@@ -1429,7 +1429,7 @@ function DosageCalc({ organisms }) {
   const totalCostLow = chosenOrgs.reduce((a, o) => a + (o.costLow || 0), 0);
   const totalCostHigh = chosenOrgs.reduce((a, o) => a + (o.costHigh || 0), 0);
 
-  const C2 = { accent: "#00c4b4", gold: "#d4a853", green: "#48bb78", warn: "#f6ad55", danger: "#e53e3e", muted: "#718096", text: "#e2e8f0", textDim: "#a0aec0", border: "#2d3748", surface: "#161b22" };
+  const C2 = { accent: "#33CFC1", gold: "#d4a853", green: "#48bb78", warn: "#f6ad55", danger: "#e53e3e", muted: "#718096", text: "#e2e8f0", textDim: "#a0aec0", border: "#2d3748", surface: "#161b22" };
 
   return (
     <div>
