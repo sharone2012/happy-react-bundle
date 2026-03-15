@@ -876,13 +876,13 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
 
       <div style={s.tabs}>
         {[
-          { id: "registry",    label: "📋 Registry" },
-          { id: "protocol",    label: "🧪 Protocol" },
-          { id: "gate",        label: "🚦 BSF Gate" },
-          { id: "calculators", label: "📊 Calculators" },
-          { id: "research",    label: "🔬 AI Research" },
-          { id: "add",         label: "➕ Add New" },
-          { id: "admin",       label: "🔒 Admin" },
+          { id: "registry",    label: "Registry" },
+          { id: "protocol",    label: "Protocol" },
+          { id: "gate",        label: "BSF Gate" },
+          { id: "calculators", label: "Calculators" },
+          { id: "research",    label: "AI Research" },
+          { id: "add",         label: "Add New" },
+          { id: "admin",       label: "Admin" },
           { id: "wb4",         label: "WB4 S3 Bio" },
           { id: "personas",    label: "Personas" },
         ].map(t => <button key={t.id} style={s.tab(tab === t.id)} onClick={() => setTab(t.id)}>{t.label}</button>)}
