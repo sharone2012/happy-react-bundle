@@ -859,6 +859,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
   }
 
 
+  return (
     <div style={s.app}>
       <div style={s.header}>
         <div>
