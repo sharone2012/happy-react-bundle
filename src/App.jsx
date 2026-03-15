@@ -870,6 +870,8 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
       {tab === "research"    && renderResearch()}
       {tab === "add"         && renderAdd()}
       {tab === "admin"       && renderAdmin()}
+      {tab === "wb4"         && renderWB4()}
+      {tab === "personas"    && renderPersonas()}
     </div>
   );
 

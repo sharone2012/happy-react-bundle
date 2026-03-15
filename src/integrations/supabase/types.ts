@@ -838,6 +838,7 @@ export type Database = {
           id: number
           om_quality_index: number | null
           parameter: string
+          pathway_type: string | null
           residue_type: string
           source_notes: string | null
           stage_code: string
@@ -860,6 +861,7 @@ export type Database = {
           id?: number
           om_quality_index?: number | null
           parameter: string
+          pathway_type?: string | null
           residue_type: string
           source_notes?: string | null
           stage_code: string
@@ -882,6 +884,7 @@ export type Database = {
           id?: number
           om_quality_index?: number | null
           parameter?: string
+          pathway_type?: string | null
           residue_type?: string
           source_notes?: string | null
           stage_code?: string
