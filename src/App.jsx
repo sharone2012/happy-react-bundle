@@ -63,16 +63,16 @@ const SEED_ORGANISMS = [
 ];
 
 const CATEGORIES = [
-  "🔥 Thermo Fungi", "🔥 Thermo Bacteria", "🔥 Thermo Actino",
-  "🍄 Lignin Fungi", "🍄 Cellulase Fungi", "🍄 Protein Fungi",
-  "🔬 Bacteria", "🧪 Yeast",
-  "❄️ N-Fixer", "🔴 P-Solubiliser", "💊 K-Mobiliser",
-  "🦠 Actinomycete", "⚗️ Enzyme",
-  "🌿 Algae-B Stream", "⚠️ CONDITIONAL"
+  "Thermo Fungi", "Thermo Bacteria", "Thermo Actino",
+  "Lignin Fungi", "Cellulase Fungi", "Protein Fungi",
+  "Bacteria", "Yeast",
+  "N-Fixer", "P-Solubiliser", "K-Mobiliser",
+  "Actinomycete", "Enzyme",
+  "Algae-B Stream", "CONDITIONAL"
 ];
 
 const FORMS = ["Dry", "Wet", "Liquid", "Liquid slurry", "Granule", "Paste"];
-const BSF_SAFE_OPTS = ["✅", "⚠️ Caution", "❌ TOXIC"];
+const BSF_SAFE_OPTS = ["OK", "Warning Caution", "Fail TOXIC"];
 
 const ADMIN_PIN = "CFI2026"; // Sharon's admin PIN
 
