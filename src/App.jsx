@@ -1022,7 +1022,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
 
         {/* S1 → S2 Connector */}
         <div style={{ ...s.card, border: `1px solid ${C.green}44` }}>
-          <div style={{ fontSize: 14, fontWeight: 700, color: C.green, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>S1 Output → S2 Connector</div>
+          <div style={{ fontSize: 18, fontWeight: 700, color: C.green, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>S1 Output → S2 Connector</div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
             {[
               { label: "Blended FW (EFB+OPDC)", value: blendWet.toLocaleString(), unit: "t/month", col: C.green },
