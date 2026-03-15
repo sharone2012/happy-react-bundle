@@ -1119,7 +1119,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
     const opt = OPTS[inocOption];
     const dailyFW = batchFWProt * batchesDay;
     const monthlyFW = dailyFW * 30;
-    const hcell = { padding: "7px 10px", color: C.accent, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", borderBottom: "1px solid #1e3a5c", textAlign: "center" };
+    const hcell = { padding: "7px 10px", color: C.accent, fontSize: 13, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", borderBottom: "1px solid #1e3a5c", textAlign: "center" };
     const dcell = (clr) => ({ padding: "6px 10px", color: clr || C.text, fontSize: 11, fontFamily: "monospace", textAlign: "center" });
 
     return (
