@@ -443,7 +443,7 @@ export default function CFIBioManager() {
         </div>
 
         <div style={{ ...s.alert("#38a169"), marginBottom: 12, fontSize: 11 }}>
-          <strong>v2 Mar 2026 UPDATES:</strong> Added Rhizopus oligosporus (#41) · Arthrospira platensis/Spirulina (#42) · Chlorella vulgaris (#43) · Bt ICBB 6095 updated EXCLUDED → ⚠️ CONDITIONAL (S3 timing-critical). Full 43-organism registry now loaded. 9 new enzyme rows. All categories updated.
+          <strong>v2 Mar 2026 UPDATES:</strong> Added Rhizopus oligosporus (#41) · Arthrospira platensis/Spirulina (#42) · Chlorella vulgaris (#43) · Bt ICBB 6095 updated EXCLUDED to Warning CONDITIONAL (S3 timing-critical). Full 43-organism registry now loaded. 9 new enzyme rows. All categories updated.
         </div>
 
         {/* Filters */}
