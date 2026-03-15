@@ -594,8 +594,8 @@ FORMAT: Return structured report with sections:
 9. CFI RECOMMENDATION (confidence, wave, warnings)
 
 CRITICAL SAFETY RULES:
-- BSF-Safe MUST be stated (✅ or ❌ with reasoning)
-- Bacillus thuringiensis = ALWAYS ❌ — Cry proteins kill BSF larvae
+- BSF-Safe MUST be stated (OK or Fail with reasoning)
+- Bacillus thuringiensis = ALWAYS Fail — Cry proteins kill BSF larvae
 - Flag any heat-sensitive organisms as WAVE 2 ONLY (<50°C)
 - Report any heavy metal accumulators that would exceed Indonesian SNI limits
 
