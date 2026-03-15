@@ -1183,7 +1183,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             <tr style={{ background: "#0a1628", borderTop: "2px solid " + C.accent }}>
               <td colSpan={5} style={{ padding: "8px 10px", color: C.accent, fontWeight: 700, fontSize: 12 }}>TOTAL — One-Shot Day 1</td>
               <td style={{ padding: "8px 10px", color: C.green, fontWeight: 700, fontFamily: "monospace", fontSize: 13, textAlign: "center" }}>$0.65</td>
-              <td style={{ padding: "8px 10px", color: C.textDim, fontSize: 10, textAlign: "center" }}>
+              <td style={{ padding: "8px 10px", color: C.textDim, fontSize: 13, textAlign: "center" }}>
                 ${(0.65 * batchFWProt).toFixed(0)} total / batch
               </td>
             </tr>
