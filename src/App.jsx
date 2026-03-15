@@ -197,7 +197,7 @@ RETURN a structured report with these exact sections:
 - Lignin degradation ability (% range)
 - Cellulose degradation ability (% range)
 - N-fixation capacity (if applicable, mg N/kg/day)
-- BSF Safe: ✅ or ❌ (EXPLAIN WHY)
+- BSF Safe: OK or Fail (EXPLAIN WHY)
 
 ## OPERATING PARAMETERS
 - Optimal temperature range (°C)
