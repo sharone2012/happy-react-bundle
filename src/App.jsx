@@ -2,77 +2,77 @@ import { useState, useEffect, useCallback } from "react";
 
 // ─── SEED DATA — full 43-organism registry (v2 Mar 2026) ──────────────────────
 const SEED_ORGANISMS = [
-  // ── THERMOPHILIC FUNGI ──────────────────────────────────────────────────────
-  { id: 1,  category: "🔥 Thermo Fungi",    name: "Thermomyces lanuginosus",        icbb: "—",         supplier: "Commercial / IPB Bogor",       fn: "Thermophilic cellulase/xylanase producer — active during 50-60°C hot phase. Wave 1.", temp: "50–60", bsfSafe: "✅", form: "Dry",    usdKg: 25,   doseLow: 0.05, doseHigh: 0.15,  kgLow: 0.175, kgHigh: 0.525, costLow: 4.38,  costHigh: 13.13, quote: "Alibaba/Novozymes",         addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Peak activity 55-60°C. Pair with xylanase enzyme." },
-  { id: 2,  category: "🔥 Thermo Fungi",    name: "Myceliophthora thermophila",     icbb: "—",         supplier: "DSM/Novozymes",                fn: "C1 cellulase system, industrial enzyme source. Wave 1.", temp: "45–55", bsfSafe: "✅", form: "Dry",    usdKg: 30,   doseLow: 0.05, doseHigh: 0.10,  kgLow: 0.175, kgHigh: 0.35,  costLow: 5.25,  costHigh: 10.5,  quote: "Novozymes Indonesia",          addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Superior C1 cellulase complement to T. reesei." },
-  { id: 3,  category: "🔥 Thermo Fungi",    name: "Chaetomium thermophilum",        icbb: "—",         supplier: "Research / IPB Bogor / LIPI",  fn: "Thermophilic cellulase, model organism. Wave 1.", temp: "50–60", bsfSafe: "✅", form: "Dry",    usdKg: 35,   doseLow: 0.03, doseHigh: 0.08,  kgLow: 0.105, kgHigh: 0.28,  costLow: 3.68,  costHigh: 9.8,   quote: "IPB Bogor/LIPI",               addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Research-grade; confirm availability IPB." },
-  // ── THERMOPHILIC BACTERIA ───────────────────────────────────────────────────
-  { id: 4,  category: "🔥 Thermo Bacteria", name: "Geobacillus stearothermophilus", icbb: "—",         supplier: "Commercial / LIPI Cibinong",   fn: "Thermophilic amylase/protease producer. Survives 70°C. Wave 1.", temp: "55–70", bsfSafe: "✅", form: "Dry",    usdKg: 15,   doseLow: 0.05, doseHigh: 0.15,  kgLow: 0.175, kgHigh: 0.525, costLow: 2.63,  costHigh: 7.88,  quote: "IndiaMART",                    addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Useful in extreme heat spikes." },
-  { id: 5,  category: "🔥 Thermo Bacteria", name: "Bacillus licheniformis",         icbb: "—",         supplier: "Commercial / Indotrading",     fn: "Thermotolerant protease/amylase. Heat-stable. Wave 1.", temp: "50–65", bsfSafe: "✅", form: "Dry",    usdKg: 8,    doseLow: 0.05, doseHigh: 0.20,  kgLow: 0.175, kgHigh: 0.7,   costLow: 1.4,   costHigh: 5.6,   quote: "Alibaba bulk / Indotrading",   addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). One of 9-org stack. Most cost-effective thermophilic protease." },
-  // ── THERMOPHILIC ACTINOMYCETES ──────────────────────────────────────────────
-  { id: 6,  category: "🔥 Thermo Actino",   name: "Thermobifida fusca",             icbb: "—",         supplier: "Research / ATCC / DSMZ",      fn: "Thermophilic actinomycete, true cellulase (CelA, CelB). Wave 1.", temp: "50–55", bsfSafe: "✅", form: "Dry",    usdKg: 40,   doseLow: 0.02, doseHigh: 0.05,  kgLow: 0.07,  kgHigh: 0.175, costLow: 2.8,   costHigh: 7.0,   quote: "ATCC/DSMZ",                   addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Research-grade. Low dose needed — expensive but effective." },
-  // ── WHITE-ROT / LIGNIN FUNGI ────────────────────────────────────────────────
-  { id: 7,  category: "🍄 Lignin Fungi",     name: "Phanerochaete sp. ICBB 9182",   icbb: "ICBB 9182", supplier: "Provibio / IPB Bogor ICBB",    fn: "Primary lignin destroyer (LiP, MnP, Laccase). EFB specialist. Wave 1.", temp: "25–42", bsfSafe: "✅", form: "Wet",    usdKg: 8,    doseLow: 0.05, doseHigh: 0.15,  kgLow: 0.5,   kgHigh: 1.0,   costLow: 4.0,   costHigh: 8.0,   quote: "ab2ti.org/provibio",           addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). IPB-verified for palm residues. Best local lignin degrader." },
-  { id: 8,  category: "🍄 Lignin Fungi",     name: "Phanerochaete chrysosporium",   icbb: "Wild-type", supplier: "Research / IPB / LIPI Cibinong",fn: "Strongest white-rot lignin degrader. LiP dominant.", temp: "37–42", bsfSafe: "✅", form: "Wet",    usdKg: 8,    doseLow: 0.05, doseHigh: 0.15,  kgLow: 0.5,   kgHigh: 1.0,   costLow: 4.0,   costHigh: 8.0,   quote: "IPB/LIPI Cibinong",           addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Wild-type — confirm IPB availability before ordering." },
-  { id: 9,  category: "🍄 Lignin Fungi",     name: "Pleurotus ostreatus",           icbb: "—",         supplier: "Tokopedia (bibit jamur) ✅",   fn: "Selective lignin degrader — preserves cellulose for BSF. Wave 1.", temp: "20–28", bsfSafe: "✅", form: "Wet",    usdKg: 0.3,  doseLow: 0.05, doseHigh: 0.15,  kgLow: 0.5,   kgHigh: 1.0,   costLow: 0.15,  costHigh: 0.3,   quote: "tokopedia.com/bibit-jamur",    addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Cheapest effective lignin fungi. Same-day local purchase." },
-  { id: 10, category: "🍄 Lignin Fungi",     name: "Trametes versicolor",           icbb: "—",         supplier: "Tokopedia / Alibaba",          fn: "Laccase-dominant lignin oxidizer. Turkey tail fungus.", temp: "25–30", bsfSafe: "✅", form: "Wet",    usdKg: 2,    doseLow: 0.03, doseHigh: 0.10,  kgLow: 0.3,   kgHigh: 0.7,   costLow: 0.6,   costHigh: 1.4,   quote: "Tokopedia/Alibaba",           addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Strong laccase — pairs well with Phanerochaete." },
-  { id: 11, category: "🍄 Lignin Fungi",     name: "Ganoderma lucidum",             icbb: "—",         supplier: "Tokopedia (commercial)",       fn: "Lignin degrader. ⚠️ CAUTION: closely related to Ganoderma boninense (oil palm pathogen).", temp: "25–30", bsfSafe: "⚠️ Caution", form: "Wet", usdKg: 1.5, doseLow: 0.03, doseHigh: 0.08, kgLow: 0.3, kgHigh: 0.56, costLow: 0.45, costHigh: 0.84, quote: "Tokopedia", addedBy: "System", addedDate: "2025-01-01", notes: "⚠️ Use verified G. lucidum strain only — NOT G. boninense. Confirm supplier speciation before using near palm plantation." },
-  // ── CELLULASE/BIOCONTROL FUNGI ──────────────────────────────────────────────
-  { id: 12, category: "🍄 Cellulase Fungi",  name: "Trichoderma harzianum/sp.",     icbb: "ICBB 9127", supplier: "Super Bio Boost / Tokopedia",  fn: "Aggressive cellulase + Ganoderma biocontrol (mycoparasite). Wave 2 ONLY in 9-org stack.", temp: "25–35", bsfSafe: "✅", form: "Dry",    usdKg: 1.5,  doseLow: 0.05, doseHigh: 0.15,  kgLow: 0.5,   kgHigh: 1.0,   costLow: 0.75,  costHigh: 1.5,   quote: "tokopedia.com/trichoderma",    addedBy: "System", addedDate: "2025-01-01", notes: "⚠️ 9-ORG STACK: Wave 2 (Day 3+) ONLY — MUST follow Rhizopus by 48-72h. Trichoderma is a mycoparasite — adds before Rhizopus establishes will kill it. Standard stack: Wave 1 OK." },
-  { id: 13, category: "🍄 Cellulase Fungi",  name: "Aspergillus niger",             icbb: "—",         supplier: "Commercial / Indotrading",     fn: "Industrial cellulase/pectinase. Deep fiber cleavage. Citric acid producer (pH 4-6). Wave 1.", temp: "30–37", bsfSafe: "✅", form: "Dry",    usdKg: 5,    doseLow: 0.03, doseHigh: 0.10,  kgLow: 0.3,   kgHigh: 0.7,   costLow: 1.5,   costHigh: 3.5,   quote: "Alibaba/IndiaMART",            addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). One of 9-org stack. Citric acid helps pH. Moderate synergy with Rhizopus (commonly co-cultured)." },
-  { id: 14, category: "🍄 Cellulase Fungi",  name: "Aspergillus oryzae",            icbb: "—",         supplier: "Tokopedia (koji starter) ✅",  fn: "Koji mold — amylase/protease. Fermentation substrate softening.", temp: "30–35", bsfSafe: "✅", form: "Dry",    usdKg: 3,    doseLow: 0.05, doseHigh: 0.15,  kgLow: 0.5,   kgHigh: 1.0,   costLow: 1.5,   costHigh: 3.0,   quote: "tokopedia.com/koji",           addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Food-grade. Same-day local purchase. Amylase uplift for starchy POME sludge blend." },
-  // ── PROTEIN FUNGI (NEW — Mar 2026) ─────────────────────────────────────────
-  { id: 41, category: "🍄 Protein Fungi",    name: "Rhizopus oligosporus",          icbb: "—",         supplier: "Tokopedia (ragi tempe) ✅",    fn: "Fast mycelial protein biosynthesis: protease + lipase + phytase. Binds EFB fibres. Amino acid enrichment (Lys, Met). Wave 1A (9-org) — must be established 48-72h before Trichoderma.", temp: "28–37", bsfSafe: "✅", form: "Dry",    usdKg: 0.5,  doseLow: 0.05, doseHigh: 0.15,  kgLow: 0.175, kgHigh: 0.525, costLow: 0.09,  costHigh: 0.26,  quote: "tokopedia.com/ragi-tempe",     addedBy: "System", addedDate: "2026-03-01", notes: "⚠️ 9-ORG CRITICAL TIMING: Wave 1A (Day 0). Trichoderma is a mycoparasite — will kill Rhizopus if added simultaneously. Add Trichoderma Wave 1B (Day 3) ONLY after Rhizopus mycelium is visibly established. Ref: Nout & Kiers 2005; Gupta et al. 2019." },
-  // ── YEAST ───────────────────────────────────────────────────────────────────
-  { id: 15, category: "🧪 Yeast",            name: "Saccharomyces cerevisiae",      icbb: "ICBB 8808", supplier: "Fermipan retail / Provibio",   fn: "NH₃ retention (50% reduction). N-trap (pulls NH4+ into biomass). Anti-odour. Protein factory at 45-55% CP. Wave 2.", temp: "25–35", bsfSafe: "✅", form: "Dry",    usdKg: 0.3,  doseLow: 0.05, doseHigh: 0.20,  kgLow: 0.4,   kgHigh: 1.5,   costLow: 0.12,  costHigh: 0.45,  quote: "tokopedia.com/fermipan",       addedBy: "System", addedDate: "2025-01-01", notes: "One of 9-org stack. Wave 1 (9-org: Wave 1A Day 0). Synergy: N-Trap with Lactobacillus; Yeast Bloom with Trichoderma. Active 25-35°C — kicks in after thermophilic peak cools. Locked ORG-008." },
-  // ── CELLULOLYTIC BACTERIA ───────────────────────────────────────────────────
-  { id: 16, category: "🔬 Bacteria",         name: "Microbacterium lactium",        icbb: "ICBB 7125", supplier: "Provibio / Jaipur Bio India",  fn: "Primary cellulose decomposer → glucose. ICBB palm specialist.", temp: "30–40", bsfSafe: "✅", form: "Wet",    usdKg: 3,    doseLow: 0.05, doseHigh: 0.10,  kgLow: 0.5,   kgHigh: 0.8,   costLow: 1.5,   costHigh: 2.4,   quote: "Jaipur Bio India / IPB",       addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). IPB ICBB strain — verified for EFB substrate." },
-  { id: 17, category: "🔬 Bacteria",         name: "Paenibacillus macerans",        icbb: "ICBB 8810", supplier: "Provibio / MarkNature",        fn: "Hemicellulase + nif genes (N-fixation). Bridges cellulase and N-fixer guilds.", temp: "30–45", bsfSafe: "✅", form: "Wet",    usdKg: 3,    doseLow: 0.05, doseHigh: 0.10,  kgLow: 0.5,   kgHigh: 0.8,   costLow: 1.5,   costHigh: 2.4,   quote: "MarkNature/IPB",               addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). ICBB strain. nif gene provides mild N-fixation even at wave 1 temperatures." },
-  { id: 18, category: "🔬 Bacteria",         name: "Bacillus subtilis",             icbb: "ICBB 8780", supplier: "Super Bio Boost / Ansel Biotech",fn: "PGPR, endospore shelf-life, initial cellulase. Extremely robust. Wave 1.", temp: "25–50", bsfSafe: "✅", form: "Dry",    usdKg: 0.2,  doseLow: 0.03, doseHigh: 0.05,  kgLow: 0.3,   kgHigh: 0.5,   costLow: 0.06,  costHigh: 0.1,   quote: "Ansel Biotech India",          addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). One of 9-org stack. Cheapest reliable bacteria. Endospore survives heat. Neutral-synergy with LAB." },
-  { id: 19, category: "🔬 Bacteria",         name: "Bacillus coagulans",            icbb: "—",         supplier: "Commercial / Alibaba",         fn: "Bridging bacteria — lactic acid + spore forming. P-solubiliser. Thermotolerant.", temp: "35–50", bsfSafe: "✅", form: "Dry",    usdKg: 2,    doseLow: 0.03, doseHigh: 0.08,  kgLow: 0.3,   kgHigh: 0.56,  costLow: 0.6,   costHigh: 1.12,  quote: "Alibaba",                      addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). One of 9-org stack. Acts as bridge between Bacilli and LAB — thermotolerant lactic acid producer." },
-  { id: 20, category: "🔬 Bacteria",         name: "Cellulomonas fimi",             icbb: "—",         supplier: "ATCC / IndiaMART",             fn: "Cellulolytic bacterium — cellulose and hemicellulose breakdown.", temp: "30–37", bsfSafe: "✅", form: "Wet",    usdKg: 4,    doseLow: 0.03, doseHigh: 0.08,  kgLow: 0.3,   kgHigh: 0.56,  costLow: 1.2,   costHigh: 2.24,  quote: "ATCC/IndiaMART",               addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Strong cellulose degrader. Less studied in palm context — pilot test recommended." },
-  { id: 21, category: "🔬 Bacteria",         name: "Lactobacillus sp.",             icbb: "ICBB 6099", supplier: "Provibio / EM-4 retail ✅",    fn: "LAB pH buffering 5.5–6.0. N-trap partner with Saccharomyces. CH₄ suppression. Wave 1.", temp: "25–40", bsfSafe: "✅", form: "Wet",    usdKg: 0.86, doseLow: 0.03, doseHigh: 0.10,  kgLow: 0.3,   kgHigh: 1.0,   costLow: 0.05,  costHigh: 0.17,  quote: "EM-4 retail Rp25k/L",          addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). One of 9-org stack. EM-4 = locally available everywhere in Indonesia. Creates pH 5.5-6.5 for Rhizopus/Aspergillus. N-Trap synergy: Lactobacillus + Saccharomyces." },
-  { id: 22, category: "🔬 Bacteria",         name: "Bacillus megaterium",           icbb: "—",         supplier: "IndiaMART",                    fn: "P-solubiliser (gluconic acid). Optional late-stage dose Day 14.", temp: "25–37", bsfSafe: "✅", form: "Dry",    usdKg: 1.5,  doseLow: 0.03, doseHigh: 0.05,  kgLow: 0.3,   kgHigh: 0.5,   costLow: 0.45,  costHigh: 0.75,  quote: "IndiaMART",                    addedBy: "System", addedDate: "2025-01-01", notes: "Optional Day 14 booster. P-solubilisation enhances frass fertiliser NPK. No conflict with other organisms." },
-  // ── N-FIXERS ────────────────────────────────────────────────────────────────
-  { id: 23, category: "❄️ N-Fixer",         name: "Azotobacter vinelandii",        icbb: "ICBB 9098", supplier: "Provibio / PT Pupuk Kaltim",   fn: "Free-living N₂ fixer — HIGHEST fixation rate 10–20 mg N/kg/day. ⚠️ Dies above 50°C. Wave 2 only.", temp: "<50 ⚠️", bsfSafe: "✅", form: "Wet",  usdKg: 0.4,  doseLow: 0.05, doseHigh: 0.20,  kgLow: 0.5,   kgHigh: 1.5,   costLow: 0.2,   costHigh: 0.6,   quote: "HumicFactory India / PT Kaltim", addedBy: "System", addedDate: "2025-01-01", notes: "⚠️ HARD GATE: TEMP MUST BE <50°C BEFORE APPLICATION. Wave 2 (Day 3+ in 9-org / Day 5+ standard). One of 9-org stack. Produces alginate cysts — excellent pH tolerance 6.0-8.5." },
-  { id: 24, category: "❄️ N-Fixer",         name: "Azospirillum lipoferum",        icbb: "ICBB 6088", supplier: "Provibio / Jaipur Bio India",  fn: "Associative N-fixer + IAA phytohormone. Improves frass agronomic value.", temp: "<50 ⚠️", bsfSafe: "✅", form: "Wet",  usdKg: 1.0,  doseLow: 0.05, doseHigh: 0.10,  kgLow: 0.5,   kgHigh: 0.8,   costLow: 0.5,   costHigh: 0.8,   quote: "Jaipur Bio India",             addedBy: "System", addedDate: "2025-01-01", notes: "⚠️ TEMP GATE <50°C. Wave 2. IAA phytohormone enhances root uptake when frass is applied to soil." },
-  { id: 25, category: "❄️ N-Fixer",         name: "Bradyrhizobium japonicum",      icbb: "ICBB 9251", supplier: "Provibio / Pioneer Agro India", fn: "Soil-phase N-fixer — benefits frass fertiliser in-field. Wave 2/Soil.", temp: "<45 ⚠️", bsfSafe: "✅", form: "Wet",  usdKg: 1.5,  doseLow: 0.03, doseHigh: 0.05,  kgLow: 0.3,   kgHigh: 0.5,   costLow: 0.45,  costHigh: 0.75,  quote: "Pioneer Agro India",           addedBy: "System", addedDate: "2025-01-01", notes: "⚠️ TEMP GATE <45°C. Wave 2. Primarily active in soil rather than substrate. Lower priority in substrate vs Azotobacter." },
-  // ── P-SOLUBILISERS ──────────────────────────────────────────────────────────
-  { id: 26, category: "🔴 P-Solubiliser",   name: "Pseudomonas fluorescens",       icbb: "—",         supplier: "Super Bio Boost / Katyayani",  fn: "P-solubiliser (gluconic/citric acid) + HCN biocontrol vs Ganoderma. Wave 2/Soil.", temp: "25–30", bsfSafe: "✅", form: "Wet",    usdKg: 2.4,  doseLow: 0.05, doseHigh: 0.10,  kgLow: 0.5,   kgHigh: 0.8,   costLow: 1.2,   costHigh: 1.92,  quote: "Katyayani Organics India",    addedBy: "System", addedDate: "2025-01-01", notes: "Wave 2 or optional Day 14+. HCN production doubles as Ganoderma biocontrol. Do not apply in sealed/poorly-ventilated spaces." },
-  // ── K-MOBILISERS ────────────────────────────────────────────────────────────
-  { id: 27, category: "💊 K-Mobiliser",     name: "Bacillus mucilaginosus",        icbb: "—",         supplier: "IndiaMART / Alibaba",          fn: "K-solubiliser from silicate minerals. Enhances K bioavailability in frass.", temp: "25–37", bsfSafe: "✅", form: "Dry",    usdKg: 3,    doseLow: 0.03, doseHigh: 0.08,  kgLow: 0.3,   kgHigh: 0.56,  costLow: 0.9,   costHigh: 1.68,  quote: "IndiaMART",                    addedBy: "System", addedDate: "2025-01-01", notes: "Optional frass upgrade. Most effective in soil; can be applied at Day 14+ in substrate." },
-  { id: 28, category: "💊 K-Mobiliser",     name: "Frateuria aurantia",            icbb: "—",         supplier: "IARI India",                   fn: "K-mobiliser specialist — highest K release rate of any biofertiliser.", temp: "25–30", bsfSafe: "✅", form: "Wet",    usdKg: 4,    doseLow: 0.03, doseHigh: 0.05,  kgLow: 0.3,   kgHigh: 0.4,   costLow: 1.2,   costHigh: 1.6,   quote: "IARI India",                   addedBy: "System", addedDate: "2025-01-01", notes: "Optional. Best applied directly to soil/frass rather than hot substrate. Sensitive to pH >7." },
-  // ── ACTINOMYCETES ───────────────────────────────────────────────────────────
-  { id: 29, category: "🦠 Actinomycete",    name: "Streptomyces sp. ICBB 9155",   icbb: "ICBB 9155", supplier: "Provibio / IPB ICBB Bogor",    fn: "Lignocellulolytic + antibiotic production (pathogen control). Final dose Day 21.", temp: "25–37", bsfSafe: "✅", form: "Dry",    usdKg: 5,    doseLow: 0.02, doseHigh: 0.05,  kgLow: 0.2,   kgHigh: 0.4,   costLow: 1.0,   costHigh: 2.0,   quote: "ab2ti.org/ICBB",               addedBy: "System", addedDate: "2025-01-01", notes: "Day 21 / BSF handoff. Suppresses pathogens before substrate transfer to S4. ICBB-verified palm strain." },
-  { id: 30, category: "🦠 Actinomycete",    name: "Streptomyces sp. ICBB 9469",   icbb: "ICBB 9469", supplier: "Provibio / IPB ICBB Bogor",    fn: "Complementary antibiotic profile to ICBB 9155. Broad-spectrum pathogen control.", temp: "25–37", bsfSafe: "✅", form: "Dry",    usdKg: 5,    doseLow: 0.02, doseHigh: 0.05,  kgLow: 0.2,   kgHigh: 0.4,   costLow: 1.0,   costHigh: 2.0,   quote: "ab2ti.org/ICBB",               addedBy: "System", addedDate: "2025-01-01", notes: "Day 21 / BSF handoff. Use alongside ICBB 9155 for broad-spectrum cover." },
-  // ── CONDITIONAL (Bt — UPDATED Mar 2026) ────────────────────────────────────
-  { id: 31, category: "⚠️ CONDITIONAL",     name: "Bacillus thuringiensis ICBB 6095", icbb: "ICBB 6095", supplier: "Provibio",               fn: "⚠️ CONDITIONAL — S3 composting phase ONLY, before BSF introduction. Cry protein biopesticide (Diptera-toxic). HARD GATE: confirm titre decay <10⁴ CFU/g before S4 loading. Never use if BSF larvae are present.", temp: "25–45", bsfSafe: "⚠️ Caution", form: "Dry", usdKg: 0.15, doseLow: 0, doseHigh: 0, kgLow: 0, kgHigh: 0, costLow: 0, costHigh: 0, quote: "IPB ICBB — CONDITIONAL USE ONLY", addedBy: "System", addedDate: "2026-03-01", notes: "⚠️ GUARDRAIL UPDATE Mar 2026: Status changed from EXCLUDED → CONDITIONAL. S3 composting phase only (before BSF introduction). Apply only during Wave 1-1B composting. HARD GATE before S4: titre must decay to <10⁴ CFU/g confirmed by lab test. Never apply if BSF larvae are present in substrate. Ref: CFI-BIO-2026-03." },
-  // ── ENZYMES ─────────────────────────────────────────────────────────────────
-  { id: 32, category: "⚗️ Enzyme",          name: "Cellulase — T. reesei (EC 3.2.1.4)", icbb: "EC 3.2.1.4", supplier: "Novozymes Indonesia",  fn: "β-1,4-glycosidic cleavage → glucose. +35-45% IVDMD uplift. Core Wave 1 enzyme.", temp: "45–55", bsfSafe: "✅", form: "Dry",    usdKg: 15,   doseLow: 0.01, doseHigh: 0.05,  kgLow: 0.105, kgHigh: 0.525, costLow: 1.58,  costHigh: 7.88,  quote: "novozymes.com",                addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Industrial gold standard. Pair with xylanase and β-glucosidase for full cellulose cascade." },
-  { id: 33, category: "⚗️ Enzyme",          name: "Xylanase (EC 3.2.1.8)",         icbb: "EC 3.2.1.8", supplier: "Commercial / Alibaba",       fn: "β-1,4-xylosidic hemicellulose cleavage → xylose. Strips hemi shield from cellulose.", temp: "40–55", bsfSafe: "✅", form: "Dry",    usdKg: 17,   doseLow: 0.01, doseHigh: 0.05,  kgLow: 0.08,  kgHigh: 0.42,  costLow: 1.36,  costHigh: 7.14,  quote: "Alibaba bulk",                 addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Must pair with cellulase — xylan coat blocks cellulase access to cellulose fibres." },
-  { id: 34, category: "⚗️ Enzyme",          name: "Laccase (EC 1.10.3.2)",         icbb: "EC 1.10.3.2", supplier: "Commercial / Alibaba",      fn: "Phenolic detoxification — opens lignin surface for fungal attack. Optional booster.", temp: "30–50", bsfSafe: "✅", form: "Dry",    usdKg: 20,   doseLow: 0.01, doseHigh: 0.03,  kgLow: 0.05,  kgHigh: 0.21,  costLow: 1.0,   costHigh: 4.2,   quote: "Alibaba bulk",                 addedBy: "System", addedDate: "2025-01-01", notes: "Optional Wave 1 booster (Day 3-7). Pre-opens lignin surface before white-rot fungi colonise." },
-  { id: 35, category: "⚗️ Enzyme",          name: "Pectinase (EC 3.2.1.15)",       icbb: "EC 3.2.1.15", supplier: "Commercial / DSM",          fn: "Pectin breakdown — softens cell walls. Useful for OPDC blend.", temp: "40–50", bsfSafe: "✅", form: "Dry",    usdKg: 12,   doseLow: 0.005,doseHigh: 0.02,  kgLow: 0.035, kgHigh: 0.14,  costLow: 0.42,  costHigh: 1.68,  quote: "DSM Singapore / Alibaba",      addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Particularly useful when OPDC content > 30% of blend." },
-  { id: 36, category: "⚗️ Enzyme",          name: "Lipase (EC 3.1.1.3)",           icbb: "EC 3.1.1.3", supplier: "Novozymes Indonesia",        fn: "Fat/lipid breakdown. Relevant for OPDC 3-8% lipid content reduction.", temp: "35–45", bsfSafe: "✅", form: "Dry",    usdKg: 18,   doseLow: 0.005,doseHigh: 0.02,  kgLow: 0.035, kgHigh: 0.14,  costLow: 0.63,  costHigh: 2.52,  quote: "novozymes.com",                addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Reduces lipid content which can cause BSF FCR issues if substrate is too fatty." },
-  { id: 37, category: "⚗️ Enzyme",          name: "Protease (EC 3.4.x.x)",         icbb: "EC 3.4",    supplier: "Commercial / Alibaba",        fn: "Protein accessibility for BSF larvae. Cleaves intact protein structures.", temp: "40–55", bsfSafe: "✅", form: "Dry",    usdKg: 10,   doseLow: 0.005,doseHigh: 0.02,  kgLow: 0.035, kgHigh: 0.14,  costLow: 0.35,  costHigh: 1.4,   quote: "Alibaba bulk",                 addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Especially useful for OPDC protein fraction — increases BSF bioavailable N." },
-  { id: 38, category: "⚗️ Enzyme",          name: "Amylase (EC 3.2.1.1)",          icbb: "EC 3.2.1.1", supplier: "Commercial / Indotrading",   fn: "Starch → glucose. Relevant for POME sludge blend (starch residue).", temp: "55–70", bsfSafe: "✅", form: "Dry",    usdKg: 8,    doseLow: 0.01, doseHigh: 0.03,  kgLow: 0.07,  kgHigh: 0.21,  costLow: 0.56,  costHigh: 1.68,  quote: "Alibaba bulk",                 addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Higher temp optimum — active during early hot phase. Low dose needed." },
-  { id: 39, category: "⚗️ Enzyme",          name: "Mannanase (EC 3.2.1.78)",       icbb: "EC 3.2.1.78", supplier: "Alibaba / DSM",             fn: "Mannan breakdown — important for palm kernel substrate (PKM/PKE blends).", temp: "45–55", bsfSafe: "✅", form: "Dry",    usdKg: 22,   doseLow: 0.005,doseHigh: 0.02,  kgLow: 0.035, kgHigh: 0.14,  costLow: 0.77,  costHigh: 3.08,  quote: "Alibaba/DSM",                  addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Most relevant when PKM/PKE supplementation is used in BSF substrate blend." },
-  { id: 40, category: "⚗️ Enzyme",          name: "β-glucosidase (EC 3.2.1.21)",   icbb: "EC 3.2.1.21", supplier: "Novozymes",                fn: "Final cellulose cascade step — cleaves cellobiose → glucose. Prevents product inhibition.", temp: "45–55", bsfSafe: "✅", form: "Dry",    usdKg: 25,   doseLow: 0.005,doseHigh: 0.015, kgLow: 0.035, kgHigh: 0.105, costLow: 0.88,  costHigh: 2.63,  quote: "novozymes.com",                addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Critical pair with cellulase — without β-glucosidase, cellobiose accumulates and inhibits cellulase activity." },
-  // ── ALGAE — STREAM B HYDRATOR (NEW — Mar 2026) ─────────────────────────────
-  { id: 42, category: "🌿 Algae-B Stream",  name: "Arthrospira platensis (Spirulina)", icbb: "—",      supplier: "CFI On-site POME Raceway ($0 OpEx)", fn: "STREAM B HYDRATION LIQUOR. Grown in POME raceways — free tropical sunlight. 1.25 g DM/L POME. 65% CP (Met + Lys). Delivers 2.31 kg DM algae per tonne EFB DM via 1,850 L hydration. Neonate BSF survival +22%. FCR -0.7. BSF meal 45%→56% CP.", temp: "25–38 tropical", bsfSafe: "✅", form: "Liquid slurry", usdKg: 0, doseLow: 0, doseHigh: 0, kgLow: 2.31, kgHigh: 2.31, costLow: 0, costHigh: 0, quote: "On-site raceway — see ALGAE_HYDRATOR tab in Excel", addedBy: "System", addedDate: "2026-03-01", notes: "⭐ CFI PRIMARY CHOICE. $0 ongoing OpEx — CapEx only (~$32,400 raceway build). Replaces hydration water in S3 substrate prep. Spirulina superior to Chlorella: higher CP, better tropical temp tolerance. At 60 TPH: 207.9 kg algae DM/day, 135 kg Spirulina protein/day. Refs: Holman et al. 2012; Becker 2007; Lam & Lee 2012." },
-  { id: 43, category: "🌿 Algae-B Stream",  name: "Chlorella vulgaris",            icbb: "—",         supplier: "CFI On-site POME Raceway ($0 OpEx)", fn: "STREAM B HYDRATION LIQUOR (backup to Spirulina). Grown in POME raceways. 1.1 g DM/L POME. 45% CP (Lys-rich). Delivers 2.03 kg DM algae per tonne EFB DM via 1,850 L hydration. Neonate BSF survival +15%. FCR -0.5. BSF meal 45%→51% CP.", temp: "20–30", bsfSafe: "✅", form: "Liquid slurry", usdKg: 0, doseLow: 0, doseHigh: 0, kgLow: 2.03, kgHigh: 2.03, costLow: 0, costHigh: 0, quote: "On-site raceway — see ALGAE_HYDRATOR tab in Excel", addedBy: "System", addedDate: "2026-03-01", notes: "✅ Backup option to Spirulina. Faster doubling time (2-4 days vs 3-5 days) but lower CP. May require centrifuge for harvest (vs gravity sedimentation for Spirulina). POME BOD removal 35-50%. Refs: Richmond 2004; Becker 2013; Lam & Lee 2012." },
+  // -- THERMOPHILIC FUNGI --
+  { id: 1,  category: "Thermo Fungi",    name: "Thermomyces lanuginosus",        icbb: "—",         supplier: "Commercial / IPB Bogor",       fn: "Thermophilic cellulase/xylanase producer — active during 50-60 C hot phase. Wave 1.", temp: "50-60", bsfSafe: "OK", form: "Dry",    usdKg: 25,   doseLow: 0.05, doseHigh: 0.15,  kgLow: 0.175, kgHigh: 0.525, costLow: 4.38,  costHigh: 13.13, quote: "Alibaba/Novozymes",         addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Peak activity 55-60 C. Pair with xylanase enzyme." },
+  { id: 2,  category: "Thermo Fungi",    name: "Myceliophthora thermophila",     icbb: "—",         supplier: "DSM/Novozymes",                fn: "C1 cellulase system, industrial enzyme source. Wave 1.", temp: "45-55", bsfSafe: "OK", form: "Dry",    usdKg: 30,   doseLow: 0.05, doseHigh: 0.10,  kgLow: 0.175, kgHigh: 0.35,  costLow: 5.25,  costHigh: 10.5,  quote: "Novozymes Indonesia",          addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Superior C1 cellulase complement to T. reesei." },
+  { id: 3,  category: "Thermo Fungi",    name: "Chaetomium thermophilum",        icbb: "—",         supplier: "Research / IPB Bogor / LIPI",  fn: "Thermophilic cellulase, model organism. Wave 1.", temp: "50-60", bsfSafe: "OK", form: "Dry",    usdKg: 35,   doseLow: 0.03, doseHigh: 0.08,  kgLow: 0.105, kgHigh: 0.28,  costLow: 3.68,  costHigh: 9.8,   quote: "IPB Bogor/LIPI",               addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Research-grade; confirm availability IPB." },
+  // -- THERMOPHILIC BACTERIA --
+  { id: 4,  category: "Thermo Bacteria", name: "Geobacillus stearothermophilus", icbb: "—",         supplier: "Commercial / LIPI Cibinong",   fn: "Thermophilic amylase/protease producer. Survives 70 C. Wave 1.", temp: "55-70", bsfSafe: "OK", form: "Dry",    usdKg: 15,   doseLow: 0.05, doseHigh: 0.15,  kgLow: 0.175, kgHigh: 0.525, costLow: 2.63,  costHigh: 7.88,  quote: "IndiaMART",                    addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Useful in extreme heat spikes." },
+  { id: 5,  category: "Thermo Bacteria", name: "Bacillus licheniformis",         icbb: "—",         supplier: "Commercial / Indotrading",     fn: "Thermotolerant protease/amylase. Heat-stable. Wave 1.", temp: "50-65", bsfSafe: "OK", form: "Dry",    usdKg: 8,    doseLow: 0.05, doseHigh: 0.20,  kgLow: 0.175, kgHigh: 0.7,   costLow: 1.4,   costHigh: 5.6,   quote: "Alibaba bulk / Indotrading",   addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). One of 9-org stack. Most cost-effective thermophilic protease." },
+  // -- THERMOPHILIC ACTINOMYCETES --
+  { id: 6,  category: "Thermo Actino",   name: "Thermobifida fusca",             icbb: "—",         supplier: "Research / ATCC / DSMZ",      fn: "Thermophilic actinomycete, true cellulase (CelA, CelB). Wave 1.", temp: "50-55", bsfSafe: "OK", form: "Dry",    usdKg: 40,   doseLow: 0.02, doseHigh: 0.05,  kgLow: 0.07,  kgHigh: 0.175, costLow: 2.8,   costHigh: 7.0,   quote: "ATCC/DSMZ",                   addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Research-grade. Low dose needed — expensive but effective." },
+  // -- WHITE-ROT / LIGNIN FUNGI --
+  { id: 7,  category: "Lignin Fungi",     name: "Phanerochaete sp. ICBB 9182",   icbb: "ICBB 9182", supplier: "Provibio / IPB Bogor ICBB",    fn: "Primary lignin destroyer (LiP, MnP, Laccase). EFB specialist. Wave 1.", temp: "25-42", bsfSafe: "OK", form: "Wet",    usdKg: 8,    doseLow: 0.05, doseHigh: 0.15,  kgLow: 0.5,   kgHigh: 1.0,   costLow: 4.0,   costHigh: 8.0,   quote: "ab2ti.org/provibio",           addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). IPB-verified for palm residues. Best local lignin degrader." },
+  { id: 8,  category: "Lignin Fungi",     name: "Phanerochaete chrysosporium",   icbb: "Wild-type", supplier: "Research / IPB / LIPI Cibinong",fn: "Strongest white-rot lignin degrader. LiP dominant.", temp: "37-42", bsfSafe: "OK", form: "Wet",    usdKg: 8,    doseLow: 0.05, doseHigh: 0.15,  kgLow: 0.5,   kgHigh: 1.0,   costLow: 4.0,   costHigh: 8.0,   quote: "IPB/LIPI Cibinong",           addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Wild-type — confirm IPB availability before ordering." },
+  { id: 9,  category: "Lignin Fungi",     name: "Pleurotus ostreatus",           icbb: "—",         supplier: "Tokopedia (bibit jamur) OK",   fn: "Selective lignin degrader — preserves cellulose for BSF. Wave 1.", temp: "20-28", bsfSafe: "OK", form: "Wet",    usdKg: 0.3,  doseLow: 0.05, doseHigh: 0.15,  kgLow: 0.5,   kgHigh: 1.0,   costLow: 0.15,  costHigh: 0.3,   quote: "tokopedia.com/bibit-jamur",    addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Cheapest effective lignin fungi. Same-day local purchase." },
+  { id: 10, category: "Lignin Fungi",     name: "Trametes versicolor",           icbb: "—",         supplier: "Tokopedia / Alibaba",          fn: "Laccase-dominant lignin oxidizer. Turkey tail fungus.", temp: "25-30", bsfSafe: "OK", form: "Wet",    usdKg: 2,    doseLow: 0.03, doseHigh: 0.10,  kgLow: 0.3,   kgHigh: 0.7,   costLow: 0.6,   costHigh: 1.4,   quote: "Tokopedia/Alibaba",           addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Strong laccase — pairs well with Phanerochaete." },
+  { id: 11, category: "Lignin Fungi",     name: "Ganoderma lucidum",             icbb: "—",         supplier: "Tokopedia (commercial)",       fn: "Lignin degrader. Warning CAUTION: closely related to Ganoderma boninense (oil palm pathogen).", temp: "25-30", bsfSafe: "Warning Caution", form: "Wet", usdKg: 1.5, doseLow: 0.03, doseHigh: 0.08, kgLow: 0.3, kgHigh: 0.56, costLow: 0.45, costHigh: 0.84, quote: "Tokopedia", addedBy: "System", addedDate: "2025-01-01", notes: "Warning Use verified G. lucidum strain only — NOT G. boninense. Confirm supplier speciation before using near palm plantation." },
+  // -- CELLULASE/BIOCONTROL FUNGI --
+  { id: 12, category: "Cellulase Fungi",  name: "Trichoderma harzianum/sp.",     icbb: "ICBB 9127", supplier: "Super Bio Boost / Tokopedia",  fn: "Aggressive cellulase + Ganoderma biocontrol (mycoparasite). Wave 2 ONLY in 9-org stack.", temp: "25-35", bsfSafe: "OK", form: "Dry",    usdKg: 1.5,  doseLow: 0.05, doseHigh: 0.15,  kgLow: 0.5,   kgHigh: 1.0,   costLow: 0.75,  costHigh: 1.5,   quote: "tokopedia.com/trichoderma",    addedBy: "System", addedDate: "2025-01-01", notes: "Warning 9-ORG STACK: Wave 2 (Day 3+) ONLY — MUST follow Rhizopus by 48-72h. Trichoderma is a mycoparasite — adds before Rhizopus establishes will kill it. Standard stack: Wave 1 OK." },
+  { id: 13, category: "Cellulase Fungi",  name: "Aspergillus niger",             icbb: "—",         supplier: "Commercial / Indotrading",     fn: "Industrial cellulase/pectinase. Deep fiber cleavage. Citric acid producer (pH 4-6). Wave 1.", temp: "30-37", bsfSafe: "OK", form: "Dry",    usdKg: 5,    doseLow: 0.03, doseHigh: 0.10,  kgLow: 0.3,   kgHigh: 0.7,   costLow: 1.5,   costHigh: 3.5,   quote: "Alibaba/IndiaMART",            addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). One of 9-org stack. Citric acid helps pH. Moderate synergy with Rhizopus (commonly co-cultured)." },
+  { id: 14, category: "Cellulase Fungi",  name: "Aspergillus oryzae",            icbb: "—",         supplier: "Tokopedia (koji starter) OK",  fn: "Koji mold — amylase/protease. Fermentation substrate softening.", temp: "30-35", bsfSafe: "OK", form: "Dry",    usdKg: 3,    doseLow: 0.05, doseHigh: 0.15,  kgLow: 0.5,   kgHigh: 1.0,   costLow: 1.5,   costHigh: 3.0,   quote: "tokopedia.com/koji",           addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Food-grade. Same-day local purchase. Amylase uplift for starchy POME sludge blend." },
+  // -- PROTEIN FUNGI (NEW — Mar 2026) --
+  { id: 41, category: "Protein Fungi",    name: "Rhizopus oligosporus",          icbb: "—",         supplier: "Tokopedia (ragi tempe) OK",    fn: "Fast mycelial protein biosynthesis: protease + lipase + phytase. Binds EFB fibres. Amino acid enrichment (Lys, Met). Wave 1A (9-org) — must be established 48-72h before Trichoderma.", temp: "28-37", bsfSafe: "OK", form: "Dry",    usdKg: 0.5,  doseLow: 0.05, doseHigh: 0.15,  kgLow: 0.175, kgHigh: 0.525, costLow: 0.09,  costHigh: 0.26,  quote: "tokopedia.com/ragi-tempe",     addedBy: "System", addedDate: "2026-03-01", notes: "Warning 9-ORG CRITICAL TIMING: Wave 1A (Day 0). Trichoderma is a mycoparasite — will kill Rhizopus if added simultaneously. Add Trichoderma Wave 1B (Day 3) ONLY after Rhizopus mycelium is visibly established. Ref: Nout & Kiers 2005; Gupta et al. 2019." },
+  // -- YEAST --
+  { id: 15, category: "Yeast",            name: "Saccharomyces cerevisiae",      icbb: "ICBB 8808", supplier: "Fermipan retail / Provibio",   fn: "NH3 retention (50% reduction). N-trap (pulls NH4+ into biomass). Anti-odour. Protein factory at 45-55% CP. Wave 2.", temp: "25-35", bsfSafe: "OK", form: "Dry",    usdKg: 0.3,  doseLow: 0.05, doseHigh: 0.20,  kgLow: 0.4,   kgHigh: 1.5,   costLow: 0.12,  costHigh: 0.45,  quote: "tokopedia.com/fermipan",       addedBy: "System", addedDate: "2025-01-01", notes: "One of 9-org stack. Wave 1 (9-org: Wave 1A Day 0). Synergy: N-Trap with Lactobacillus; Yeast Bloom with Trichoderma. Active 25-35 C — kicks in after thermophilic peak cools. Locked ORG-008." },
+  // -- CELLULOLYTIC BACTERIA --
+  { id: 16, category: "Bacteria",         name: "Microbacterium lactium",        icbb: "ICBB 7125", supplier: "Provibio / Jaipur Bio India",  fn: "Primary cellulose decomposer to glucose. ICBB palm specialist.", temp: "30-40", bsfSafe: "OK", form: "Wet",    usdKg: 3,    doseLow: 0.05, doseHigh: 0.10,  kgLow: 0.5,   kgHigh: 0.8,   costLow: 1.5,   costHigh: 2.4,   quote: "Jaipur Bio India / IPB",       addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). IPB ICBB strain — verified for EFB substrate." },
+  { id: 17, category: "Bacteria",         name: "Paenibacillus macerans",        icbb: "ICBB 8810", supplier: "Provibio / MarkNature",        fn: "Hemicellulase + nif genes (N-fixation). Bridges cellulase and N-fixer guilds.", temp: "30-45", bsfSafe: "OK", form: "Wet",    usdKg: 3,    doseLow: 0.05, doseHigh: 0.10,  kgLow: 0.5,   kgHigh: 0.8,   costLow: 1.5,   costHigh: 2.4,   quote: "MarkNature/IPB",               addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). ICBB strain. nif gene provides mild N-fixation even at wave 1 temperatures." },
+  { id: 18, category: "Bacteria",         name: "Bacillus subtilis",             icbb: "ICBB 8780", supplier: "Super Bio Boost / Ansel Biotech",fn: "PGPR, endospore shelf-life, initial cellulase. Extremely robust. Wave 1.", temp: "25-50", bsfSafe: "OK", form: "Dry",    usdKg: 0.2,  doseLow: 0.03, doseHigh: 0.05,  kgLow: 0.3,   kgHigh: 0.5,   costLow: 0.06,  costHigh: 0.1,   quote: "Ansel Biotech India",          addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). One of 9-org stack. Cheapest reliable bacteria. Endospore survives heat. Neutral-synergy with LAB." },
+  { id: 19, category: "Bacteria",         name: "Bacillus coagulans",            icbb: "—",         supplier: "Commercial / Alibaba",         fn: "Bridging bacteria — lactic acid + spore forming. P-solubiliser. Thermotolerant.", temp: "35-50", bsfSafe: "OK", form: "Dry",    usdKg: 2,    doseLow: 0.03, doseHigh: 0.08,  kgLow: 0.3,   kgHigh: 0.56,  costLow: 0.6,   costHigh: 1.12,  quote: "Alibaba",                      addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). One of 9-org stack. Acts as bridge between Bacilli and LAB — thermotolerant lactic acid producer." },
+  { id: 20, category: "Bacteria",         name: "Cellulomonas fimi",             icbb: "—",         supplier: "ATCC / IndiaMART",             fn: "Cellulolytic bacterium — cellulose and hemicellulose breakdown.", temp: "30-37", bsfSafe: "OK", form: "Wet",    usdKg: 4,    doseLow: 0.03, doseHigh: 0.08,  kgLow: 0.3,   kgHigh: 0.56,  costLow: 1.2,   costHigh: 2.24,  quote: "ATCC/IndiaMART",               addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Strong cellulose degrader. Less studied in palm context — pilot test recommended." },
+  { id: 21, category: "Bacteria",         name: "Lactobacillus sp.",             icbb: "ICBB 6099", supplier: "Provibio / EM-4 retail OK",    fn: "LAB pH buffering 5.5-6.0. N-trap partner with Saccharomyces. CH4 suppression. Wave 1.", temp: "25-40", bsfSafe: "OK", form: "Wet",    usdKg: 0.86, doseLow: 0.03, doseHigh: 0.10,  kgLow: 0.3,   kgHigh: 1.0,   costLow: 0.05,  costHigh: 0.17,  quote: "EM-4 retail Rp25k/L",          addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). One of 9-org stack. EM-4 = locally available everywhere in Indonesia. Creates pH 5.5-6.5 for Rhizopus/Aspergillus. N-Trap synergy: Lactobacillus + Saccharomyces." },
+  { id: 22, category: "Bacteria",         name: "Bacillus megaterium",           icbb: "—",         supplier: "IndiaMART",                    fn: "P-solubiliser (gluconic acid). Optional late-stage dose Day 14.", temp: "25-37", bsfSafe: "OK", form: "Dry",    usdKg: 1.5,  doseLow: 0.03, doseHigh: 0.05,  kgLow: 0.3,   kgHigh: 0.5,   costLow: 0.45,  costHigh: 0.75,  quote: "IndiaMART",                    addedBy: "System", addedDate: "2025-01-01", notes: "Optional Day 14 booster. P-solubilisation enhances frass fertiliser NPK. No conflict with other organisms." },
+  // -- N-FIXERS --
+  { id: 23, category: "N-Fixer",         name: "Azotobacter vinelandii",        icbb: "ICBB 9098", supplier: "Provibio / PT Pupuk Kaltim",   fn: "Free-living N2 fixer — HIGHEST fixation rate 10-20 mg N/kg/day. Warning Dies above 50 C. Wave 2 only.", temp: "<50 Warning", bsfSafe: "OK", form: "Wet",  usdKg: 0.4,  doseLow: 0.05, doseHigh: 0.20,  kgLow: 0.5,   kgHigh: 1.5,   costLow: 0.2,   costHigh: 0.6,   quote: "HumicFactory India / PT Kaltim", addedBy: "System", addedDate: "2025-01-01", notes: "Warning HARD GATE: TEMP MUST BE <50 C BEFORE APPLICATION. Wave 2 (Day 3+ in 9-org / Day 5+ standard). One of 9-org stack. Produces alginate cysts — excellent pH tolerance 6.0-8.5." },
+  { id: 24, category: "N-Fixer",         name: "Azospirillum lipoferum",        icbb: "ICBB 6088", supplier: "Provibio / Jaipur Bio India",  fn: "Associative N-fixer + IAA phytohormone. Improves frass agronomic value.", temp: "<50 Warning", bsfSafe: "OK", form: "Wet",  usdKg: 1.0,  doseLow: 0.05, doseHigh: 0.10,  kgLow: 0.5,   kgHigh: 0.8,   costLow: 0.5,   costHigh: 0.8,   quote: "Jaipur Bio India",             addedBy: "System", addedDate: "2025-01-01", notes: "Warning TEMP GATE <50 C. Wave 2. IAA phytohormone enhances root uptake when frass is applied to soil." },
+  { id: 25, category: "N-Fixer",         name: "Bradyrhizobium japonicum",      icbb: "ICBB 9251", supplier: "Provibio / Pioneer Agro India", fn: "Soil-phase N-fixer — benefits frass fertiliser in-field. Wave 2/Soil.", temp: "<45 Warning", bsfSafe: "OK", form: "Wet",  usdKg: 1.5,  doseLow: 0.03, doseHigh: 0.05,  kgLow: 0.3,   kgHigh: 0.5,   costLow: 0.45,  costHigh: 0.75,  quote: "Pioneer Agro India",           addedBy: "System", addedDate: "2025-01-01", notes: "Warning TEMP GATE <45 C. Wave 2. Primarily active in soil rather than substrate. Lower priority in substrate vs Azotobacter." },
+  // -- P-SOLUBILISERS --
+  { id: 26, category: "P-Solubiliser",   name: "Pseudomonas fluorescens",       icbb: "—",         supplier: "Super Bio Boost / Katyayani",  fn: "P-solubiliser (gluconic/citric acid) + HCN biocontrol vs Ganoderma. Wave 2/Soil.", temp: "25-30", bsfSafe: "OK", form: "Wet",    usdKg: 2.4,  doseLow: 0.05, doseHigh: 0.10,  kgLow: 0.5,   kgHigh: 0.8,   costLow: 1.2,   costHigh: 1.92,  quote: "Katyayani Organics India",    addedBy: "System", addedDate: "2025-01-01", notes: "Wave 2 or optional Day 14+. HCN production doubles as Ganoderma biocontrol. Do not apply in sealed/poorly-ventilated spaces." },
+  // -- K-MOBILISERS --
+  { id: 27, category: "K-Mobiliser",     name: "Bacillus mucilaginosus",        icbb: "—",         supplier: "IndiaMART / Alibaba",          fn: "K-solubiliser from silicate minerals. Enhances K bioavailability in frass.", temp: "25-37", bsfSafe: "OK", form: "Dry",    usdKg: 3,    doseLow: 0.03, doseHigh: 0.08,  kgLow: 0.3,   kgHigh: 0.56,  costLow: 0.9,   costHigh: 1.68,  quote: "IndiaMART",                    addedBy: "System", addedDate: "2025-01-01", notes: "Optional frass upgrade. Most effective in soil; can be applied at Day 14+ in substrate." },
+  { id: 28, category: "K-Mobiliser",     name: "Frateuria aurantia",            icbb: "—",         supplier: "IARI India",                   fn: "K-mobiliser specialist — highest K release rate of any biofertiliser.", temp: "25-30", bsfSafe: "OK", form: "Wet",    usdKg: 4,    doseLow: 0.03, doseHigh: 0.05,  kgLow: 0.3,   kgHigh: 0.4,   costLow: 1.2,   costHigh: 1.6,   quote: "IARI India",                   addedBy: "System", addedDate: "2025-01-01", notes: "Optional. Best applied directly to soil/frass rather than hot substrate. Sensitive to pH >7." },
+  // -- ACTINOMYCETES --
+  { id: 29, category: "Actinomycete",    name: "Streptomyces sp. ICBB 9155",   icbb: "ICBB 9155", supplier: "Provibio / IPB ICBB Bogor",    fn: "Lignocellulolytic + antibiotic production (pathogen control). Final dose Day 21.", temp: "25-37", bsfSafe: "OK", form: "Dry",    usdKg: 5,    doseLow: 0.02, doseHigh: 0.05,  kgLow: 0.2,   kgHigh: 0.4,   costLow: 1.0,   costHigh: 2.0,   quote: "ab2ti.org/ICBB",               addedBy: "System", addedDate: "2025-01-01", notes: "Day 21 / BSF handoff. Suppresses pathogens before substrate transfer to S4. ICBB-verified palm strain." },
+  { id: 30, category: "Actinomycete",    name: "Streptomyces sp. ICBB 9469",   icbb: "ICBB 9469", supplier: "Provibio / IPB ICBB Bogor",    fn: "Complementary antibiotic profile to ICBB 9155. Broad-spectrum pathogen control.", temp: "25-37", bsfSafe: "OK", form: "Dry",    usdKg: 5,    doseLow: 0.02, doseHigh: 0.05,  kgLow: 0.2,   kgHigh: 0.4,   costLow: 1.0,   costHigh: 2.0,   quote: "ab2ti.org/ICBB",               addedBy: "System", addedDate: "2025-01-01", notes: "Day 21 / BSF handoff. Use alongside ICBB 9155 for broad-spectrum cover." },
+  // -- CONDITIONAL (Bt — UPDATED Mar 2026) --
+  { id: 31, category: "CONDITIONAL",     name: "Bacillus thuringiensis ICBB 6095", icbb: "ICBB 6095", supplier: "Provibio",               fn: "Warning CONDITIONAL — S3 composting phase ONLY, before BSF introduction. Cry protein biopesticide (Diptera-toxic). HARD GATE: confirm titre decay <10^4 CFU/g before S4 loading. Never use if BSF larvae are present.", temp: "25-45", bsfSafe: "Warning Caution", form: "Dry", usdKg: 0.15, doseLow: 0, doseHigh: 0, kgLow: 0, kgHigh: 0, costLow: 0, costHigh: 0, quote: "IPB ICBB — CONDITIONAL USE ONLY", addedBy: "System", addedDate: "2026-03-01", notes: "Warning GUARDRAIL UPDATE Mar 2026: Status changed from EXCLUDED to CONDITIONAL. S3 composting phase only (before BSF introduction). Apply only during Wave 1-1B composting. HARD GATE before S4: titre must decay to <10^4 CFU/g confirmed by lab test. Never apply if BSF larvae are present in substrate. Ref: CFI-BIO-2026-03." },
+  // -- ENZYMES --
+  { id: 32, category: "Enzyme",          name: "Cellulase — T. reesei (EC 3.2.1.4)", icbb: "EC 3.2.1.4", supplier: "Novozymes Indonesia",  fn: "Beta-1,4-glycosidic cleavage to glucose. +35-45% IVDMD uplift. Core Wave 1 enzyme.", temp: "45-55", bsfSafe: "OK", form: "Dry",    usdKg: 15,   doseLow: 0.01, doseHigh: 0.05,  kgLow: 0.105, kgHigh: 0.525, costLow: 1.58,  costHigh: 7.88,  quote: "novozymes.com",                addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Industrial gold standard. Pair with xylanase and beta-glucosidase for full cellulose cascade." },
+  { id: 33, category: "Enzyme",          name: "Xylanase (EC 3.2.1.8)",         icbb: "EC 3.2.1.8", supplier: "Commercial / Alibaba",       fn: "Beta-1,4-xylosidic hemicellulose cleavage to xylose. Strips hemi shield from cellulose.", temp: "40-55", bsfSafe: "OK", form: "Dry",    usdKg: 17,   doseLow: 0.01, doseHigh: 0.05,  kgLow: 0.08,  kgHigh: 0.42,  costLow: 1.36,  costHigh: 7.14,  quote: "Alibaba bulk",                 addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Must pair with cellulase — xylan coat blocks cellulase access to cellulose fibres." },
+  { id: 34, category: "Enzyme",          name: "Laccase (EC 1.10.3.2)",         icbb: "EC 1.10.3.2", supplier: "Commercial / Alibaba",      fn: "Phenolic detoxification — opens lignin surface for fungal attack. Optional booster.", temp: "30-50", bsfSafe: "OK", form: "Dry",    usdKg: 20,   doseLow: 0.01, doseHigh: 0.03,  kgLow: 0.05,  kgHigh: 0.21,  costLow: 1.0,   costHigh: 4.2,   quote: "Alibaba bulk",                 addedBy: "System", addedDate: "2025-01-01", notes: "Optional Wave 1 booster (Day 3-7). Pre-opens lignin surface before white-rot fungi colonise." },
+  { id: 35, category: "Enzyme",          name: "Pectinase (EC 3.2.1.15)",       icbb: "EC 3.2.1.15", supplier: "Commercial / DSM",          fn: "Pectin breakdown — softens cell walls. Useful for OPDC blend.", temp: "40-50", bsfSafe: "OK", form: "Dry",    usdKg: 12,   doseLow: 0.005,doseHigh: 0.02,  kgLow: 0.035, kgHigh: 0.14,  costLow: 0.42,  costHigh: 1.68,  quote: "DSM Singapore / Alibaba",      addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Particularly useful when OPDC content > 30% of blend." },
+  { id: 36, category: "Enzyme",          name: "Lipase (EC 3.1.1.3)",           icbb: "EC 3.1.1.3", supplier: "Novozymes Indonesia",        fn: "Fat/lipid breakdown. Relevant for OPDC 3-8% lipid content reduction.", temp: "35-45", bsfSafe: "OK", form: "Dry",    usdKg: 18,   doseLow: 0.005,doseHigh: 0.02,  kgLow: 0.035, kgHigh: 0.14,  costLow: 0.63,  costHigh: 2.52,  quote: "novozymes.com",                addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Reduces lipid content which can cause BSF FCR issues if substrate is too fatty." },
+  { id: 37, category: "Enzyme",          name: "Protease (EC 3.4.x.x)",         icbb: "EC 3.4",    supplier: "Commercial / Alibaba",        fn: "Protein accessibility for BSF larvae. Cleaves intact protein structures.", temp: "40-55", bsfSafe: "OK", form: "Dry",    usdKg: 10,   doseLow: 0.005,doseHigh: 0.02,  kgLow: 0.035, kgHigh: 0.14,  costLow: 0.35,  costHigh: 1.4,   quote: "Alibaba bulk",                 addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Especially useful for OPDC protein fraction — increases BSF bioavailable N." },
+  { id: 38, category: "Enzyme",          name: "Amylase (EC 3.2.1.1)",          icbb: "EC 3.2.1.1", supplier: "Commercial / Indotrading",   fn: "Starch to glucose. Relevant for POME sludge blend (starch residue).", temp: "55-70", bsfSafe: "OK", form: "Dry",    usdKg: 8,    doseLow: 0.01, doseHigh: 0.03,  kgLow: 0.07,  kgHigh: 0.21,  costLow: 0.56,  costHigh: 1.68,  quote: "Alibaba bulk",                 addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Higher temp optimum — active during early hot phase. Low dose needed." },
+  { id: 39, category: "Enzyme",          name: "Mannanase (EC 3.2.1.78)",       icbb: "EC 3.2.1.78", supplier: "Alibaba / DSM",             fn: "Mannan breakdown — important for palm kernel substrate (PKM/PKE blends).", temp: "45-55", bsfSafe: "OK", form: "Dry",    usdKg: 22,   doseLow: 0.005,doseHigh: 0.02,  kgLow: 0.035, kgHigh: 0.14,  costLow: 0.77,  costHigh: 3.08,  quote: "Alibaba/DSM",                  addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Most relevant when PKM/PKE supplementation is used in BSF substrate blend." },
+  { id: 40, category: "Enzyme",          name: "beta-glucosidase (EC 3.2.1.21)",   icbb: "EC 3.2.1.21", supplier: "Novozymes",                fn: "Final cellulose cascade step — cleaves cellobiose to glucose. Prevents product inhibition.", temp: "45-55", bsfSafe: "OK", form: "Dry",    usdKg: 25,   doseLow: 0.005,doseHigh: 0.015, kgLow: 0.035, kgHigh: 0.105, costLow: 0.88,  costHigh: 2.63,  quote: "novozymes.com",                addedBy: "System", addedDate: "2025-01-01", notes: "Wave 1 (Day 0). Critical pair with cellulase — without beta-glucosidase, cellobiose accumulates and inhibits cellulase activity." },
+  // -- ALGAE — STREAM B HYDRATOR (NEW — Mar 2026) --
+  { id: 42, category: "Algae-B Stream",  name: "Arthrospira platensis (Spirulina)", icbb: "—",      supplier: "CFI On-site POME Raceway ($0 OpEx)", fn: "STREAM B HYDRATION LIQUOR. Grown in POME raceways — free tropical sunlight. 1.25 g DM/L POME. 65% CP (Met + Lys). Delivers 2.31 kg DM algae per tonne EFB DM via 1,850 L hydration. Neonate BSF survival +22%. FCR -0.7. BSF meal 45%->56% CP.", temp: "25-38 tropical", bsfSafe: "OK", form: "Liquid slurry", usdKg: 0, doseLow: 0, doseHigh: 0, kgLow: 2.31, kgHigh: 2.31, costLow: 0, costHigh: 0, quote: "On-site raceway — see ALGAE_HYDRATOR tab in Excel", addedBy: "System", addedDate: "2026-03-01", notes: "CFI PRIMARY CHOICE. $0 ongoing OpEx — CapEx only (~$32,400 raceway build). Replaces hydration water in S3 substrate prep. Spirulina superior to Chlorella: higher CP, better tropical temp tolerance. At 60 TPH: 207.9 kg algae DM/day, 135 kg Spirulina protein/day. Refs: Holman et al. 2012; Becker 2007; Lam & Lee 2012." },
+  { id: 43, category: "Algae-B Stream",  name: "Chlorella vulgaris",            icbb: "—",         supplier: "CFI On-site POME Raceway ($0 OpEx)", fn: "STREAM B HYDRATION LIQUOR (backup to Spirulina). Grown in POME raceways. 1.1 g DM/L POME. 45% CP (Lys-rich). Delivers 2.03 kg DM algae per tonne EFB DM via 1,850 L hydration. Neonate BSF survival +15%. FCR -0.5. BSF meal 45%->51% CP.", temp: "20-30", bsfSafe: "OK", form: "Liquid slurry", usdKg: 0, doseLow: 0, doseHigh: 0, kgLow: 2.03, kgHigh: 2.03, costLow: 0, costHigh: 0, quote: "On-site raceway — see ALGAE_HYDRATOR tab in Excel", addedBy: "System", addedDate: "2026-03-01", notes: "OK Backup option to Spirulina. Faster doubling time (2-4 days vs 3-5 days) but lower CP. May require centrifuge for harvest (vs gravity sedimentation for Spirulina). POME BOD removal 35-50%. Refs: Richmond 2004; Becker 2013; Lam & Lee 2012." },
 ];
 
 const CATEGORIES = [
-  "🔥 Thermo Fungi", "🔥 Thermo Bacteria", "🔥 Thermo Actino",
-  "🍄 Lignin Fungi", "🍄 Cellulase Fungi", "🍄 Protein Fungi",
-  "🔬 Bacteria", "🧪 Yeast",
-  "❄️ N-Fixer", "🔴 P-Solubiliser", "💊 K-Mobiliser",
-  "🦠 Actinomycete", "⚗️ Enzyme",
-  "🌿 Algae-B Stream", "⚠️ CONDITIONAL"
+  "Thermo Fungi", "Thermo Bacteria", "Thermo Actino",
+  "Lignin Fungi", "Cellulase Fungi", "Protein Fungi",
+  "Bacteria", "Yeast",
+  "N-Fixer", "P-Solubiliser", "K-Mobiliser",
+  "Actinomycete", "Enzyme",
+  "Algae-B Stream", "CONDITIONAL"
 ];
 
 const FORMS = ["Dry", "Wet", "Liquid", "Liquid slurry", "Granule", "Paste"];
-const BSF_SAFE_OPTS = ["✅", "⚠️ Caution", "❌ TOXIC"];
+const BSF_SAFE_OPTS = ["OK", "Warning Caution", "Fail TOXIC"];
 
 const ADMIN_PIN = "CFI2026"; // Sharon's admin PIN
 
@@ -299,8 +299,8 @@ export default function CFIBioManager() {
 
   function blankForm() {
     return {
-      category: "🔬 Bacteria", name: "", icbb: "—", supplier: "",
-      fn: "", temp: "", bsfSafe: "✅", form: "Dry",
+      category: "Bacteria", name: "", icbb: "—", supplier: "",
+      fn: "", temp: "", bsfSafe: "OK", form: "Dry",
       usdKg: "", doseLow: "", doseHigh: "", kgLow: "", kgHigh: "",
       costLow: "", costHigh: "", quote: "", notes: "",
       source: "", wave: "Wave 1"
@@ -313,7 +313,7 @@ export default function CFIBioManager() {
   const filtered = organisms.filter(o => {
     const qmatch = !searchQ || o.name.toLowerCase().includes(searchQ.toLowerCase()) || o.fn.toLowerCase().includes(searchQ.toLowerCase()) || o.category.toLowerCase().includes(searchQ.toLowerCase());
     const cmatch = filterCat === "ALL" || o.category === filterCat;
-    const bmatch = filterBSF === "ALL" || o.bsfSafe === filterBSF || (filterBSF === "✅" && o.bsfSafe === "✅") || (filterBSF === "❌" && o.bsfSafe.includes("❌"));
+    const bmatch = filterBSF === "ALL" || o.bsfSafe === filterBSF || (filterBSF === "OK" && o.bsfSafe === "OK") || (filterBSF === "Fail" && o.bsfSafe.includes("Fail"));
     return qmatch && cmatch && bmatch;
   });
 
@@ -356,7 +356,7 @@ export default function CFIBioManager() {
       name: orgName,
       fn: getLine("Primary function") || getLine("Primary Function"),
       temp: getLine("Optimal temperature range") || getLine("Temperature"),
-      bsfSafe: text.includes("BSF Safe: ✅") || text.includes("BSF-Safe: ✅") ? "✅" : text.includes("❌") ? "❌ TOXIC" : "⚠️ Caution",
+      bsfSafe: text.includes("BSF Safe: OK") || text.includes("BSF-Safe: OK") || text.includes("BSF Safe: ✅") || text.includes("BSF-Safe: ✅") ? "OK" : text.includes("❌") || text.includes("Fail") ? "Fail TOXIC" : "Warning Caution",
       supplier: getLine("Indonesian supplier") || getLine("Best quote"),
       quote: getLine("Best quote link") || getLine("Quote"),
       usdKg: getLine("\\$/kg estimate") || getLine("\\$/kg"),
@@ -366,25 +366,25 @@ export default function CFIBioManager() {
     };
     // Guess category
     if (text.includes("Spirulina") || text.includes("Chlorella") || text.includes("algae") || text.includes("microalgae")) {
-      afForm.category = "🌿 Algae-B Stream";
+      afForm.category = "Algae-B Stream";
     } else if (text.includes("Rhizopus") || text.includes("tempeh") || (text.toLowerCase().includes("protein fungi") || (text.toLowerCase().includes("fungi") && text.includes("protease") && text.includes("lipase")))) {
-      afForm.category = "🍄 Protein Fungi";
+      afForm.category = "Protein Fungi";
     } else if (text.includes("thermophil") || text.includes("Thermomyces") || text.includes("Geobacillus")) {
-      afForm.category = text.toLowerCase().includes("fungi") ? "🔥 Thermo Fungi" : "🔥 Thermo Bacteria";
+      afForm.category = text.toLowerCase().includes("fungi") ? "Thermo Fungi" : "Thermo Bacteria";
     } else if (text.includes("N-fix") || text.includes("Azotobacter") || text.includes("Azospirillum")) {
-      afForm.category = "❄️ N-Fixer";
+      afForm.category = "N-Fixer";
     } else if (text.toLowerCase().includes("lignin") && (text.toLowerCase().includes("fungi") || text.toLowerCase().includes("mushroom"))) {
-      afForm.category = "🍄 Lignin Fungi";
+      afForm.category = "Lignin Fungi";
     } else if (text.toLowerCase().includes("cellulas") && (text.toLowerCase().includes("fungi"))) {
-      afForm.category = "🍄 Cellulase Fungi";
+      afForm.category = "Cellulase Fungi";
     } else if (text.toLowerCase().includes("fungi") || text.toLowerCase().includes("mushroom")) {
-      afForm.category = "🍄 Lignin Fungi";
+      afForm.category = "Lignin Fungi";
     } else if (text.toLowerCase().includes("enzyme") || text.toLowerCase().includes("cellulase")) {
-      afForm.category = "⚗️ Enzyme";
+      afForm.category = "Enzyme";
     } else if (text.includes("Streptomyces") || text.toLowerCase().includes("actinomycete")) {
-      afForm.category = "🦠 Actinomycete";
+      afForm.category = "Actinomycete";
     } else if (text.includes("Yeast") || text.includes("Saccharomyces") || text.includes("yeast")) {
-      afForm.category = "🧪 Yeast";
+      afForm.category = "Yeast";
     }
     setAutoFillResult(afForm);
   }
@@ -407,7 +407,7 @@ export default function CFIBioManager() {
     await saveOrgs(updated);
     await saveNextId(nextId + 1);
     setNextId(nextId + 1);
-    setFormMsg({ type: "ok", msg: `✅ ${form.name} added to the database by ${userName} on ${now}.` });
+    setFormMsg({ type: "ok", msg: `OK ${form.name} added to the database by ${userName} on ${now}.` });
     setForm(blankForm());
     setTimeout(() => setFormMsg(null), 4000);
   }
@@ -423,11 +423,11 @@ export default function CFIBioManager() {
   }
 
   function unlockAdmin() {
-    if (adminPin === ADMIN_PIN) { setAdminUnlocked(true); setAdminMsg({ type: "ok", msg: "🔓 Admin access granted — Sharon." }); }
-    else { setAdminMsg({ type: "err", msg: "❌ Incorrect PIN." }); }
+    if (adminPin === ADMIN_PIN) { setAdminUnlocked(true); setAdminMsg({ type: "ok", msg: "Unlocked Admin access granted — Sharon." }); }
+    else { setAdminMsg({ type: "err", msg: "Fail Incorrect PIN." }); }
   }
 
-  if (loading) return <div style={{ ...s.app, display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}><span style={{ color: C.accent }}>⌛ Loading CFI Biological Database…</span></div>;
+  if (loading) return <div style={{ ...s.app, display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}><span style={{ color: C.accent }}>Pending Loading CFI Biological Database...</span></div>;
 
   // ── REGISTRY TAB ────────────────────────────────────────────────────────────
   function renderRegistry() {
@@ -443,27 +443,27 @@ export default function CFIBioManager() {
         </div>
 
         <div style={{ ...s.alert("#38a169"), marginBottom: 12, fontSize: 11 }}>
-          <strong>v2 Mar 2026 UPDATES:</strong> Added Rhizopus oligosporus (#41) · Arthrospira platensis/Spirulina (#42) · Chlorella vulgaris (#43) · Bt ICBB 6095 updated EXCLUDED → ⚠️ CONDITIONAL (S3 timing-critical). Full 43-organism registry now loaded. 9 new enzyme rows. All categories updated.
+          <strong>v2 Mar 2026 UPDATES:</strong> Added Rhizopus oligosporus (#41) · Arthrospira platensis/Spirulina (#42) · Chlorella vulgaris (#43) · Bt ICBB 6095 updated EXCLUDED to Warning CONDITIONAL (S3 timing-critical). Full 43-organism registry now loaded. 9 new enzyme rows. All categories updated.
         </div>
 
         {/* Filters */}
         <div style={{ display: "flex", gap: 10, marginBottom: 14, flexWrap: "wrap", alignItems: "center" }}>
-          <input placeholder="🔍 Search name, function, category…" style={s.searchBox} value={searchQ} onChange={e => setSearchQ(e.target.value)} />
+          <input placeholder="Search name, function, category..." style={s.searchBox} value={searchQ} onChange={e => setSearchQ(e.target.value)} />
           <select style={{ ...s.select, width: 180 }} value={filterCat} onChange={e => setFilterCat(e.target.value)}>
             <option value="ALL">All Categories</option>
             {CATEGORIES.map(c => <option key={c}>{c}</option>)}
           </select>
           <select style={{ ...s.select, width: 140 }} value={filterBSF} onChange={e => setFilterBSF(e.target.value)}>
             <option value="ALL">All BSF Safety</option>
-            <option value="✅">✅ BSF-Safe</option>
-            <option value="❌">❌ Excluded</option>
-            <option value="⚠️ Caution">⚠️ Caution</option>
+            <option value="OK">OK BSF-Safe</option>
+            <option value="Fail">Fail Excluded</option>
+            <option value="Warning Caution">Warning Caution</option>
           </select>
         </div>
 
         {userAdded.length > 0 && (
           <div style={s.alert(C.green)}>
-            <strong>🆕 {userAdded.length} User-Added Organism{userAdded.length > 1 ? "s" : ""}:</strong>{" "}
+            <strong>NEW {userAdded.length} User-Added Organism{userAdded.length > 1 ? "s" : ""}:</strong>{" "}
             {userAdded.map(o => `${o.name} (by ${o.addedBy}, ${o.addedDate})`).join(" · ")}
           </div>
         )}
@@ -492,10 +492,10 @@ export default function CFIBioManager() {
             </thead>
             <tbody>
               {filtered.map(o => (
-                <tr key={o.id} style={{ background: o.bsfSafe.includes("❌") ? "#1a0a0a" : o.category.includes("CONDITIONAL") ? "#1a150a" : o.category.includes("Algae") ? "#0a1a0d" : o.addedBy !== "System" ? "#0a1a0d" : "transparent" }}>
+                <tr key={o.id} style={{ background: o.bsfSafe.includes("Fail") ? "#1a0a0a" : o.category.includes("CONDITIONAL") ? "#1a150a" : o.category.includes("Algae") ? "#0a1a0d" : o.addedBy !== "System" ? "#0a1a0d" : "transparent" }}>
                   <td style={{ ...s.tdMuted, width: 28 }}>{o.id}</td>
                   <td style={s.td}><span style={s.badge(catColor(o.category))}>{o.category}</span></td>
-                  <td style={{ ...s.td, fontWeight: 600, color: o.bsfSafe.includes("❌") ? C.danger : o.category.includes("CONDITIONAL") ? C.warn : o.category.includes("Algae") ? C.green : C.text, minWidth: 180 }}>
+                  <td style={{ ...s.td, fontWeight: 600, color: o.bsfSafe.includes("Fail") ? C.danger : o.category.includes("CONDITIONAL") ? C.warn : o.category.includes("Algae") ? C.green : C.text, minWidth: 180 }}>
                     {o.name}
                     {o.addedBy !== "System" && <span style={{ ...s.badge(C.green), marginLeft: 5 }}>NEW</span>}
                   </td>
@@ -546,11 +546,11 @@ export default function CFIBioManager() {
           </div>
           <div style={{ display: "flex", gap: 10, marginTop: 8 }}>
             <button style={s.btnFill(C.accent)} onClick={doResearch} disabled={researchLoading || !researchQ.trim()}>
-              {researchLoading ? "⌛ Researching…" : "🔬 RESEARCH THIS BIOLOGICAL"}
+              {researchLoading ? "Pending Researching..." : "RESEARCH THIS BIOLOGICAL"}
             </button>
             {autoFillResult && (
               <button style={s.btn(C.green)} onClick={applyAutoFill}>
-                📋 AUTO-FILL ADD FORM → GO TO ADD TAB
+                AUTO-FILL ADD FORM -> GO TO ADD TAB
               </button>
             )}
           </div>
@@ -562,7 +562,7 @@ export default function CFIBioManager() {
             <div style={s.aiBox}>{researchResult}</div>
             {autoFillResult && (
               <div style={{ ...s.alert(C.green), marginTop: 12 }}>
-                ✅ Fields extracted from research. Click <strong>AUTO-FILL ADD FORM</strong> above to populate the Add New Biological form automatically.
+                OK Fields extracted from research. Click <strong>AUTO-FILL ADD FORM</strong> above to populate the Add New Biological form automatically.
               </div>
             )}
           </div>
@@ -570,7 +570,7 @@ export default function CFIBioManager() {
 
         {/* PROMPT DISPLAY */}
         <div style={s.card}>
-          <div style={{ color: C.gold, fontSize: 11, letterSpacing: 1, marginBottom: 8, textTransform: "uppercase" }}>📄 CFI Biological Research Prompt Template</div>
+          <div style={{ color: C.gold, fontSize: 11, letterSpacing: 1, marginBottom: 8, textTransform: "uppercase" }}>CFI Biological Research Prompt Template</div>
           <div style={{ color: C.textDim, fontSize: 11, marginBottom: 8 }}>This is the prompt automatically used when you research a biological. Copy and use in any AI system (Perplexity, GPT, Gemini etc.):</div>
           <div style={{ ...s.aiBox, maxHeight: 300, background: "#0d1628" }}>
 {`MASTER CFI BIOLOGICAL RESEARCH PROMPT
@@ -594,8 +594,8 @@ FORMAT: Return structured report with sections:
 9. CFI RECOMMENDATION (confidence, wave, warnings)
 
 CRITICAL SAFETY RULES:
-- BSF-Safe MUST be stated (✅ or ❌ with reasoning)
-- Bacillus thuringiensis = ALWAYS ❌ — Cry proteins kill BSF larvae
+- BSF-Safe MUST be stated (OK or Fail with reasoning)
+- Bacillus thuringiensis = ALWAYS Fail — Cry proteins kill BSF larvae
 - Flag any heat-sensitive organisms as WAVE 2 ONLY (<50°C)
 - Report any heavy metal accumulators that would exceed Indonesian SNI limits
 
@@ -616,9 +616,9 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
         {formMsg && <div style={s.alert(formMsg.type === "ok" ? C.green : C.danger)}>{formMsg.msg}</div>}
 
         <div style={{ ...s.card, marginBottom: 12, background: "#0a1a1a" }}>
-          <div style={{ color: C.accent, fontSize: 11, letterSpacing: 1, marginBottom: 8, textTransform: "uppercase" }}>🤖 Use AI Research First</div>
+          <div style={{ color: C.accent, fontSize: 11, letterSpacing: 1, marginBottom: 8, textTransform: "uppercase" }}>Use AI Research First</div>
           <div style={{ color: C.textDim, fontSize: 11 }}>Go to the <strong>AI Research</strong> tab to look up any organism. The AI will research dosing, pricing, suppliers, and BSF compatibility, then auto-fill this form. Or fill manually below.</div>
-          <button style={{ ...s.btn(C.accent), marginTop: 10 }} onClick={() => setTab("research")}>→ GO TO AI RESEARCH ENGINE</button>
+          <button style={{ ...s.btn(C.accent), marginTop: 10 }} onClick={() => setTab("research")}>GO TO AI RESEARCH ENGINE</button>
         </div>
 
         <form onSubmit={handleAdd}>
@@ -695,8 +695,8 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                 <option>Compost only (no BSF)</option>
               </select>
             </div>
-            {form.bsfSafe !== "✅" && (
-              <div style={s.alert(C.danger)}>⚠️ NON-BSF-SAFE ORGANISM — This organism will be flagged in the registry. It may only be used in compost (S5B) pathways. Confirm you have verified this before adding.</div>
+            {form.bsfSafe !== "OK" && (
+              <div style={s.alert(C.danger)}>Warning NON-BSF-SAFE ORGANISM — This organism will be flagged in the registry. It may only be used in compost (S5B) pathways. Confirm you have verified this before adding.</div>
             )}
           </div>
 
@@ -746,8 +746,8 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           </div>
 
           <div style={{ display: "flex", gap: 10 }}>
-            <button type="submit" style={s.btnFill(C.accent)}>💾 SAVE TO DATABASE</button>
-            <button type="button" style={s.btn(C.muted)} onClick={() => setForm(blankForm())}>✕ CLEAR FORM</button>
+            <button type="submit" style={s.btnFill(C.accent)}>SAVE TO DATABASE</button>
+            <button type="button" style={s.btn(C.muted)} onClick={() => setForm(blankForm())}>CLEAR FORM</button>
           </div>
         </form>
       </div>
@@ -758,14 +758,14 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
   function renderAdmin() {
     return (
       <div style={s.body}>
-        <div style={{ fontSize: 16, fontWeight: 700, color: C.danger, marginBottom: 4 }}>🔒 ADMIN — DELETE & GOVERNANCE</div>
+        <div style={{ fontSize: 16, fontWeight: 700, color: C.danger, marginBottom: 4 }}>Locked ADMIN — DELETE & GOVERNANCE</div>
         <div style={{ color: C.textDim, fontSize: 11, marginBottom: 16 }}>Only Sharon (System Admin) can delete organisms from the database. All user additions are permanent unless removed by admin. Users with permission can add organisms — contact Sharon to grant access.</div>
 
         {adminMsg && <div style={s.alert(adminMsg.type === "ok" ? C.green : C.danger)}>{adminMsg.msg}</div>}
 
         {!adminUnlocked ? (
           <div style={s.card}>
-            <div style={{ color: C.warn, marginBottom: 12, fontSize: 13 }}>🔑 Enter Admin PIN to unlock delete permissions:</div>
+            <div style={{ color: C.warn, marginBottom: 12, fontSize: 13 }}>Enter Admin PIN to unlock delete permissions:</div>
             <div style={{ display: "flex", gap: 10 }}>
               <input type="password" style={{ ...s.input, width: 200 }} value={adminPin} onChange={e => setAdminPin(e.target.value)} placeholder="Enter PIN" onKeyDown={e => e.key === "Enter" && unlockAdmin()} />
               <button style={s.btnFill(C.danger)} onClick={unlockAdmin}>UNLOCK</button>
@@ -773,11 +773,11 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           </div>
         ) : (
           <>
-            <div style={s.alert(C.warn)}>🔓 Admin unlocked — Sharon. You can delete any organism. System-seeded organisms (id ≤ {SEED_ORGANISMS.length}) should only be deleted with caution.</div>
+            <div style={s.alert(C.warn)}>Unlocked Admin unlocked — Sharon. You can delete any organism. System-seeded organisms (id ≤ {SEED_ORGANISMS.length}) should only be deleted with caution.</div>
 
             {deleteTarget && (
               <div style={s.alert(C.danger)}>
-                <strong>⚠️ CONFIRM DELETE:</strong> "{organisms.find(o => o.id === deleteTarget)?.name}" — this is permanent and cannot be undone.
+                <strong>Warning CONFIRM DELETE:</strong> "{organisms.find(o => o.id === deleteTarget)?.name}" — this is permanent and cannot be undone.
                 <div style={{ marginTop: 8, display: "flex", gap: 10 }}>
                   <button style={s.btnFill(C.danger)} onClick={() => handleDelete(deleteTarget)}>YES — DELETE PERMANENTLY</button>
                   <button style={s.btn(C.muted)} onClick={() => setDeleteTarget(null)}>CANCEL</button>
@@ -870,19 +870,19 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           <span style={{ color: C.textDim, fontSize: 11 }}>Logged in as:</span>
           <input style={{ ...s.input, width: 140 }} value={userName} onChange={e => setUserName(e.target.value)} placeholder="Your name" />
           <span style={s.badge(C.green)}>{organisms.length} ORGANISMS</span>
-          {adminUnlocked && <span style={s.badge(C.danger)}>🔓 ADMIN</span>}
+          {adminUnlocked && <span style={s.badge(C.danger)}>ADMIN</span>}
         </div>
       </div>
 
       <div style={s.tabs}>
         {[
-          { id: "registry",    label: "📋 Registry" },
-          { id: "protocol",    label: "🧪 Protocol" },
-          { id: "gate",        label: "🚦 BSF Gate" },
-          { id: "calculators", label: "📊 Calculators" },
-          { id: "research",    label: "🔬 AI Research" },
-          { id: "add",         label: "➕ Add New" },
-          { id: "admin",       label: "🔒 Admin" },
+          { id: "registry",    label: "Registry" },
+          { id: "protocol",    label: "Protocol" },
+          { id: "gate",        label: "BSF Gate" },
+          { id: "calculators", label: "Calculators" },
+          { id: "research",    label: "AI Research" },
+          { id: "add",         label: "Add New" },
+          { id: "admin",       label: "Admin" },
           { id: "wb4",         label: "WB4 S3 Bio" },
           { id: "personas",    label: "Personas" },
         ].map(t => <button key={t.id} style={s.tab(tab === t.id)} onClick={() => setTab(t.id)}>{t.label}</button>)}
@@ -1233,7 +1233,7 @@ function DosageCalc({ organisms }) {
 
   return (
     <div>
-      <div style={{ color: C2.accent, fontSize: 13, fontWeight: 700, letterSpacing: 1, marginBottom: 10, textTransform: "uppercase" }}>📐 Dosage Calculator</div>
+      <div style={{ color: C2.accent, fontSize: 13, fontWeight: 700, letterSpacing: 1, marginBottom: 10, textTransform: "uppercase" }}>Dosage Calculator</div>
       <div style={{ display: "flex", gap: 16, marginBottom: 14 }}>
         <div>
           <label style={{ display: "block", color: C2.textDim, fontSize: 11, marginBottom: 3 }}>Batch size (t FW)</label>
