@@ -221,6 +221,876 @@ export type Database = {
         }
         Relationships: []
       }
+      cfi_kernel_crushing_plants: {
+        Row: {
+          capacity_t_kernels_day: number | null
+          cfi_pkm_opportunity: string | null
+          confidence_level: string | null
+          created_at: string | null
+          district: string | null
+          est_pkm_output_t_month: number | null
+          id: string
+          kcp_name: string
+          notes: string | null
+          on_site_at_mill: boolean | null
+          owner_id: string | null
+          pkm_price_usd_t: string | null
+          province: string | null
+        }
+        Insert: {
+          capacity_t_kernels_day?: number | null
+          cfi_pkm_opportunity?: string | null
+          confidence_level?: string | null
+          created_at?: string | null
+          district?: string | null
+          est_pkm_output_t_month?: number | null
+          id?: string
+          kcp_name: string
+          notes?: string | null
+          on_site_at_mill?: boolean | null
+          owner_id?: string | null
+          pkm_price_usd_t?: string | null
+          province?: string | null
+        }
+        Update: {
+          capacity_t_kernels_day?: number | null
+          cfi_pkm_opportunity?: string | null
+          confidence_level?: string | null
+          created_at?: string | null
+          district?: string | null
+          est_pkm_output_t_month?: number | null
+          id?: string
+          kcp_name?: string
+          notes?: string | null
+          on_site_at_mill?: boolean | null
+          owner_id?: string | null
+          pkm_price_usd_t?: string | null
+          province?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_kernel_crushing_plants_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_mill_owners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cfi_master_prompts: {
+        Row: {
+          applies_to: string[] | null
+          category: string
+          full_prompt_text: string
+          id: number
+          is_active: boolean | null
+          last_updated: string | null
+          persona_scope: string | null
+          priority_order: number
+          prompt_code: string
+          prompt_name: string
+          version: string | null
+        }
+        Insert: {
+          applies_to?: string[] | null
+          category: string
+          full_prompt_text: string
+          id?: number
+          is_active?: boolean | null
+          last_updated?: string | null
+          persona_scope?: string | null
+          priority_order: number
+          prompt_code: string
+          prompt_name: string
+          version?: string | null
+        }
+        Update: {
+          applies_to?: string[] | null
+          category?: string
+          full_prompt_text?: string
+          id?: number
+          is_active?: boolean | null
+          last_updated?: string | null
+          persona_scope?: string | null
+          priority_order?: number
+          prompt_code?: string
+          prompt_name?: string
+          version?: string | null
+        }
+        Relationships: []
+      }
+      cfi_mill_owners: {
+        Row: {
+          cfi_contact_status: string | null
+          cfi_notes: string | null
+          cfi_prospect_tier: string | null
+          company: string
+          created_at: string | null
+          has_kernel_crushing_plant: boolean | null
+          hq_city: string | null
+          hq_country: string | null
+          id: string
+          ispo_status: string | null
+          jv_partners: string | null
+          kcp_count: number | null
+          number_of_mills: number | null
+          parent_controlling_group: string | null
+          pkm_available_on_site: boolean | null
+          planted_area_ha: number | null
+          province_locations: string | null
+          rank: number | null
+          rspo_status: string | null
+          stock_exchange: string | null
+          website: string | null
+        }
+        Insert: {
+          cfi_contact_status?: string | null
+          cfi_notes?: string | null
+          cfi_prospect_tier?: string | null
+          company: string
+          created_at?: string | null
+          has_kernel_crushing_plant?: boolean | null
+          hq_city?: string | null
+          hq_country?: string | null
+          id?: string
+          ispo_status?: string | null
+          jv_partners?: string | null
+          kcp_count?: number | null
+          number_of_mills?: number | null
+          parent_controlling_group?: string | null
+          pkm_available_on_site?: boolean | null
+          planted_area_ha?: number | null
+          province_locations?: string | null
+          rank?: number | null
+          rspo_status?: string | null
+          stock_exchange?: string | null
+          website?: string | null
+        }
+        Update: {
+          cfi_contact_status?: string | null
+          cfi_notes?: string | null
+          cfi_prospect_tier?: string | null
+          company?: string
+          created_at?: string | null
+          has_kernel_crushing_plant?: boolean | null
+          hq_city?: string | null
+          hq_country?: string | null
+          id?: string
+          ispo_status?: string | null
+          jv_partners?: string | null
+          kcp_count?: number | null
+          number_of_mills?: number | null
+          parent_controlling_group?: string | null
+          pkm_available_on_site?: boolean | null
+          planted_area_ha?: number | null
+          province_locations?: string | null
+          rank?: number | null
+          rspo_status?: string | null
+          stock_exchange?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
+      cfi_mills_60tph: {
+        Row: {
+          capacity_tph: number | null
+          cfi_approach_status: string | null
+          cfi_prospect_priority: string | null
+          confirmed_soil_type: string | null
+          contact_email: string | null
+          contact_name: string | null
+          created_at: string | null
+          data_confidence: string | null
+          district: string | null
+          est_efb_at_60tph_t_yr: number | null
+          est_opdc_t_yr: number | null
+          id: string
+          ispo_certified: boolean | null
+          latitude: number | null
+          longitude: number | null
+          mill_id: number
+          mill_name: string | null
+          notes: string | null
+          owner_id: string | null
+          province: string | null
+          province_soil_id: string | null
+          rspo_certified: boolean | null
+        }
+        Insert: {
+          capacity_tph?: number | null
+          cfi_approach_status?: string | null
+          cfi_prospect_priority?: string | null
+          confirmed_soil_type?: string | null
+          contact_email?: string | null
+          contact_name?: string | null
+          created_at?: string | null
+          data_confidence?: string | null
+          district?: string | null
+          est_efb_at_60tph_t_yr?: number | null
+          est_opdc_t_yr?: number | null
+          id?: string
+          ispo_certified?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
+          mill_id: number
+          mill_name?: string | null
+          notes?: string | null
+          owner_id?: string | null
+          province?: string | null
+          province_soil_id?: string | null
+          rspo_certified?: boolean | null
+        }
+        Update: {
+          capacity_tph?: number | null
+          cfi_approach_status?: string | null
+          cfi_prospect_priority?: string | null
+          confirmed_soil_type?: string | null
+          contact_email?: string | null
+          contact_name?: string | null
+          created_at?: string | null
+          data_confidence?: string | null
+          district?: string | null
+          est_efb_at_60tph_t_yr?: number | null
+          est_opdc_t_yr?: number | null
+          id?: string
+          ispo_certified?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
+          mill_id?: number
+          mill_name?: string | null
+          notes?: string | null
+          owner_id?: string | null
+          province?: string | null
+          province_soil_id?: string | null
+          rspo_certified?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_mills_60tph_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_mill_owners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cfi_mills_60tph_province_soil_id_fkey"
+            columns: ["province_soil_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_province_soil_lookup"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cfi_product_soil_response: {
+        Row: {
+          amf_confidence: string | null
+          amf_habitat_response_coeff: number | null
+          amf_inoculation_effect_pct: number | null
+          amf_p_environment_score_coeff: number | null
+          amf_p_uptake_efficiency_mult: number | null
+          confidence_overall: string | null
+          created_at: string | null
+          data_source: string | null
+          dehydrogenase_response_factor: number | null
+          enzyme_confidence: string | null
+          fb_ratio_alpha_coeff: number | null
+          fb_ratio_amf_contribution: number | null
+          fb_ratio_beta_coeff: number | null
+          fb_ratio_confidence: string | null
+          fb_ratio_plfa_required: boolean | null
+          id: number
+          is_active: boolean | null
+          mbc_confidence: string | null
+          mbc_note: string | null
+          mbc_response_mg_kg_per_t_ha: number | null
+          mbc_synergy_factor: number | null
+          mrs_amf_degraded: number | null
+          mrs_amf_target: number | null
+          mrs_amf_weight: number | null
+          mrs_enzyme_weight: number | null
+          mrs_fb_degraded: number | null
+          mrs_fb_target: number | null
+          mrs_fb_weight: number | null
+          mrs_mbc_degraded: number | null
+          mrs_mbc_target: number | null
+          mrs_mbc_weight: number | null
+          phosphatase_response_factor: number | null
+          product_id: string
+          product_name: string
+          soil_key: string
+          supabase_reference: string
+          updated_at: string | null
+          wave2_description: string | null
+          wave2_slot_active: boolean | null
+        }
+        Insert: {
+          amf_confidence?: string | null
+          amf_habitat_response_coeff?: number | null
+          amf_inoculation_effect_pct?: number | null
+          amf_p_environment_score_coeff?: number | null
+          amf_p_uptake_efficiency_mult?: number | null
+          confidence_overall?: string | null
+          created_at?: string | null
+          data_source?: string | null
+          dehydrogenase_response_factor?: number | null
+          enzyme_confidence?: string | null
+          fb_ratio_alpha_coeff?: number | null
+          fb_ratio_amf_contribution?: number | null
+          fb_ratio_beta_coeff?: number | null
+          fb_ratio_confidence?: string | null
+          fb_ratio_plfa_required?: boolean | null
+          id?: number
+          is_active?: boolean | null
+          mbc_confidence?: string | null
+          mbc_note?: string | null
+          mbc_response_mg_kg_per_t_ha?: number | null
+          mbc_synergy_factor?: number | null
+          mrs_amf_degraded?: number | null
+          mrs_amf_target?: number | null
+          mrs_amf_weight?: number | null
+          mrs_enzyme_weight?: number | null
+          mrs_fb_degraded?: number | null
+          mrs_fb_target?: number | null
+          mrs_fb_weight?: number | null
+          mrs_mbc_degraded?: number | null
+          mrs_mbc_target?: number | null
+          mrs_mbc_weight?: number | null
+          phosphatase_response_factor?: number | null
+          product_id: string
+          product_name: string
+          soil_key: string
+          supabase_reference: string
+          updated_at?: string | null
+          wave2_description?: string | null
+          wave2_slot_active?: boolean | null
+        }
+        Update: {
+          amf_confidence?: string | null
+          amf_habitat_response_coeff?: number | null
+          amf_inoculation_effect_pct?: number | null
+          amf_p_environment_score_coeff?: number | null
+          amf_p_uptake_efficiency_mult?: number | null
+          confidence_overall?: string | null
+          created_at?: string | null
+          data_source?: string | null
+          dehydrogenase_response_factor?: number | null
+          enzyme_confidence?: string | null
+          fb_ratio_alpha_coeff?: number | null
+          fb_ratio_amf_contribution?: number | null
+          fb_ratio_beta_coeff?: number | null
+          fb_ratio_confidence?: string | null
+          fb_ratio_plfa_required?: boolean | null
+          id?: number
+          is_active?: boolean | null
+          mbc_confidence?: string | null
+          mbc_note?: string | null
+          mbc_response_mg_kg_per_t_ha?: number | null
+          mbc_synergy_factor?: number | null
+          mrs_amf_degraded?: number | null
+          mrs_amf_target?: number | null
+          mrs_amf_weight?: number | null
+          mrs_enzyme_weight?: number | null
+          mrs_fb_degraded?: number | null
+          mrs_fb_target?: number | null
+          mrs_fb_weight?: number | null
+          mrs_mbc_degraded?: number | null
+          mrs_mbc_target?: number | null
+          mrs_mbc_weight?: number | null
+          phosphatase_response_factor?: number | null
+          product_id?: string
+          product_name?: string
+          soil_key?: string
+          supabase_reference?: string
+          updated_at?: string | null
+          wave2_description?: string | null
+          wave2_slot_active?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_product_soil_response_soil_key_fkey"
+            columns: ["soil_key"]
+            isOneToOne: false
+            referencedRelation: "cfi_soil_profiles"
+            referencedColumns: ["soil_key"]
+          },
+        ]
+      }
+      cfi_province_soil_lookup: {
+        Row: {
+          cec_cmol_high: number | null
+          cec_cmol_low: number | null
+          cfi_n_loss_flag: string | null
+          cfi_p_fixation_flag: string | null
+          cfi_priority_amendment: string | null
+          created_at: string | null
+          data_source: string | null
+          dominant_soil_wrb: string | null
+          drainage_class: string | null
+          id: string
+          island: string | null
+          liming_required: boolean | null
+          n_leaching_base_pct_max: number | null
+          n_leaching_base_pct_min: number | null
+          notes: string | null
+          p_fixation_base_pct_max: number | null
+          p_fixation_base_pct_min: number | null
+          palm_area_ha_est: number | null
+          peat_present: boolean | null
+          ph_max: number | null
+          ph_min: number | null
+          province: string
+          rainfall_mm_yr_high: number | null
+          rainfall_mm_yr_low: number | null
+          region: string | null
+          secondary_soil_wrb: string | null
+        }
+        Insert: {
+          cec_cmol_high?: number | null
+          cec_cmol_low?: number | null
+          cfi_n_loss_flag?: string | null
+          cfi_p_fixation_flag?: string | null
+          cfi_priority_amendment?: string | null
+          created_at?: string | null
+          data_source?: string | null
+          dominant_soil_wrb?: string | null
+          drainage_class?: string | null
+          id?: string
+          island?: string | null
+          liming_required?: boolean | null
+          n_leaching_base_pct_max?: number | null
+          n_leaching_base_pct_min?: number | null
+          notes?: string | null
+          p_fixation_base_pct_max?: number | null
+          p_fixation_base_pct_min?: number | null
+          palm_area_ha_est?: number | null
+          peat_present?: boolean | null
+          ph_max?: number | null
+          ph_min?: number | null
+          province: string
+          rainfall_mm_yr_high?: number | null
+          rainfall_mm_yr_low?: number | null
+          region?: string | null
+          secondary_soil_wrb?: string | null
+        }
+        Update: {
+          cec_cmol_high?: number | null
+          cec_cmol_low?: number | null
+          cfi_n_loss_flag?: string | null
+          cfi_p_fixation_flag?: string | null
+          cfi_priority_amendment?: string | null
+          created_at?: string | null
+          data_source?: string | null
+          dominant_soil_wrb?: string | null
+          drainage_class?: string | null
+          id?: string
+          island?: string | null
+          liming_required?: boolean | null
+          n_leaching_base_pct_max?: number | null
+          n_leaching_base_pct_min?: number | null
+          notes?: string | null
+          p_fixation_base_pct_max?: number | null
+          p_fixation_base_pct_min?: number | null
+          palm_area_ha_est?: number | null
+          peat_present?: boolean | null
+          ph_max?: number | null
+          ph_min?: number | null
+          province?: string
+          rainfall_mm_yr_high?: number | null
+          rainfall_mm_yr_low?: number | null
+          region?: string | null
+          secondary_soil_wrb?: string | null
+        }
+        Relationships: []
+      }
+      cfi_soil_coefficients: {
+        Row: {
+          bd_floor_g_cm3: number | null
+          bd_positive_feedback_loop: boolean | null
+          bd_response_delta_g_cm3_per_som_pct: number | null
+          cec_response_confidence: string | null
+          cec_response_per_som_pct: number | null
+          created_at: string | null
+          decay_factor_annual: number | null
+          decay_factor_confidence: string | null
+          decay_factor_note: string | null
+          humic_cec_factor_cmol_kg: number | null
+          humic_cec_factor_confidence: string | null
+          humus_formation_confidence: string | null
+          humus_formation_fract_bf: number | null
+          humus_formation_fract_bfplus: number | null
+          humus_formation_fract_cp: number | null
+          id: number
+          is_active: boolean | null
+          k_leach_combined_rf: number | null
+          k_leach_confidence: string | null
+          k_leach_rf_bfplus: number | null
+          k_leach_rf_cp: number | null
+          n_fix_wave2_confidence: string
+          n_fix_wave2_kg_n_ha_yr: number
+          n_fix_wave2_organisms: string | null
+          n_fix_wave2_potential_kg_n_ha_yr_high: number | null
+          n_fix_wave2_potential_kg_n_ha_yr_low: number | null
+          n_fix_wave2_status: string
+          n_leach_combined_rf: number | null
+          n_leach_confidence: string | null
+          n_leach_rf_bf: number | null
+          n_leach_rf_bfplus: number | null
+          n_leach_rf_cp: number | null
+          n_leach_rf_vgam: number | null
+          om_retention_1yr_fract_bf: number | null
+          om_retention_1yr_fract_bfplus: number | null
+          om_retention_1yr_fract_cp: number | null
+          om_retention_confidence: string | null
+          p_casio3_rf_at_2_5_t_ha: number | null
+          p_casio3_rf_at_4_5_t_ha: number | null
+          p_fix_combined_rf: number | null
+          p_fix_confidence: string | null
+          p_fix_rf_amf: number | null
+          p_fix_rf_bf: number | null
+          p_fix_rf_bfplus: number | null
+          p_fix_rf_cp: number | null
+          p_fix_rf_vgam: number | null
+          soil_key: string
+          supabase_reference: string
+          updated_at: string | null
+          version: string | null
+          whc_formula_applies: boolean | null
+          whc_formula_note: string | null
+          whc_response_confidence: string | null
+          whc_response_mm_per_som_pct: number | null
+        }
+        Insert: {
+          bd_floor_g_cm3?: number | null
+          bd_positive_feedback_loop?: boolean | null
+          bd_response_delta_g_cm3_per_som_pct?: number | null
+          cec_response_confidence?: string | null
+          cec_response_per_som_pct?: number | null
+          created_at?: string | null
+          decay_factor_annual?: number | null
+          decay_factor_confidence?: string | null
+          decay_factor_note?: string | null
+          humic_cec_factor_cmol_kg?: number | null
+          humic_cec_factor_confidence?: string | null
+          humus_formation_confidence?: string | null
+          humus_formation_fract_bf?: number | null
+          humus_formation_fract_bfplus?: number | null
+          humus_formation_fract_cp?: number | null
+          id?: number
+          is_active?: boolean | null
+          k_leach_combined_rf?: number | null
+          k_leach_confidence?: string | null
+          k_leach_rf_bfplus?: number | null
+          k_leach_rf_cp?: number | null
+          n_fix_wave2_confidence?: string
+          n_fix_wave2_kg_n_ha_yr?: number
+          n_fix_wave2_organisms?: string | null
+          n_fix_wave2_potential_kg_n_ha_yr_high?: number | null
+          n_fix_wave2_potential_kg_n_ha_yr_low?: number | null
+          n_fix_wave2_status?: string
+          n_leach_combined_rf?: number | null
+          n_leach_confidence?: string | null
+          n_leach_rf_bf?: number | null
+          n_leach_rf_bfplus?: number | null
+          n_leach_rf_cp?: number | null
+          n_leach_rf_vgam?: number | null
+          om_retention_1yr_fract_bf?: number | null
+          om_retention_1yr_fract_bfplus?: number | null
+          om_retention_1yr_fract_cp?: number | null
+          om_retention_confidence?: string | null
+          p_casio3_rf_at_2_5_t_ha?: number | null
+          p_casio3_rf_at_4_5_t_ha?: number | null
+          p_fix_combined_rf?: number | null
+          p_fix_confidence?: string | null
+          p_fix_rf_amf?: number | null
+          p_fix_rf_bf?: number | null
+          p_fix_rf_bfplus?: number | null
+          p_fix_rf_cp?: number | null
+          p_fix_rf_vgam?: number | null
+          soil_key: string
+          supabase_reference: string
+          updated_at?: string | null
+          version?: string | null
+          whc_formula_applies?: boolean | null
+          whc_formula_note?: string | null
+          whc_response_confidence?: string | null
+          whc_response_mm_per_som_pct?: number | null
+        }
+        Update: {
+          bd_floor_g_cm3?: number | null
+          bd_positive_feedback_loop?: boolean | null
+          bd_response_delta_g_cm3_per_som_pct?: number | null
+          cec_response_confidence?: string | null
+          cec_response_per_som_pct?: number | null
+          created_at?: string | null
+          decay_factor_annual?: number | null
+          decay_factor_confidence?: string | null
+          decay_factor_note?: string | null
+          humic_cec_factor_cmol_kg?: number | null
+          humic_cec_factor_confidence?: string | null
+          humus_formation_confidence?: string | null
+          humus_formation_fract_bf?: number | null
+          humus_formation_fract_bfplus?: number | null
+          humus_formation_fract_cp?: number | null
+          id?: number
+          is_active?: boolean | null
+          k_leach_combined_rf?: number | null
+          k_leach_confidence?: string | null
+          k_leach_rf_bfplus?: number | null
+          k_leach_rf_cp?: number | null
+          n_fix_wave2_confidence?: string
+          n_fix_wave2_kg_n_ha_yr?: number
+          n_fix_wave2_organisms?: string | null
+          n_fix_wave2_potential_kg_n_ha_yr_high?: number | null
+          n_fix_wave2_potential_kg_n_ha_yr_low?: number | null
+          n_fix_wave2_status?: string
+          n_leach_combined_rf?: number | null
+          n_leach_confidence?: string | null
+          n_leach_rf_bf?: number | null
+          n_leach_rf_bfplus?: number | null
+          n_leach_rf_cp?: number | null
+          n_leach_rf_vgam?: number | null
+          om_retention_1yr_fract_bf?: number | null
+          om_retention_1yr_fract_bfplus?: number | null
+          om_retention_1yr_fract_cp?: number | null
+          om_retention_confidence?: string | null
+          p_casio3_rf_at_2_5_t_ha?: number | null
+          p_casio3_rf_at_4_5_t_ha?: number | null
+          p_fix_combined_rf?: number | null
+          p_fix_confidence?: string | null
+          p_fix_rf_amf?: number | null
+          p_fix_rf_bf?: number | null
+          p_fix_rf_bfplus?: number | null
+          p_fix_rf_cp?: number | null
+          p_fix_rf_vgam?: number | null
+          soil_key?: string
+          supabase_reference?: string
+          updated_at?: string | null
+          version?: string | null
+          whc_formula_applies?: boolean | null
+          whc_formula_note?: string | null
+          whc_response_confidence?: string | null
+          whc_response_mm_per_som_pct?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_soil_coefficients_soil_key_fkey"
+            columns: ["soil_key"]
+            isOneToOne: false
+            referencedRelation: "cfi_soil_profiles"
+            referencedColumns: ["soil_key"]
+          },
+        ]
+      }
+      cfi_soil_profiles: {
+        Row: {
+          al_sat_degraded_pct_high: number | null
+          al_sat_degraded_pct_low: number | null
+          al_sat_target_pct_max: number | null
+          amf_colonisation_degraded_pct_high: number | null
+          amf_colonisation_degraded_pct_low: number | null
+          amf_colonisation_target_pct_high: number | null
+          amf_colonisation_target_pct_low: number | null
+          avail_p_degraded_mg_kg_high: number | null
+          avail_p_degraded_mg_kg_low: number | null
+          avail_p_target_mg_kg_high: number | null
+          avail_p_target_mg_kg_low: number | null
+          base_sat_degraded_pct_high: number | null
+          base_sat_degraded_pct_low: number | null
+          base_sat_target_pct_high: number | null
+          base_sat_target_pct_low: number | null
+          bd_degraded_g_cm3_high: number | null
+          bd_degraded_g_cm3_low: number | null
+          bd_target_g_cm3_high: number | null
+          bd_target_g_cm3_low: number | null
+          cec_degraded_cmol_high: number | null
+          cec_degraded_cmol_low: number | null
+          cec_target_cmol_high: number | null
+          cec_target_cmol_low: number | null
+          confidence_level: string | null
+          coverage_pct_indonesia: number | null
+          created_at: string | null
+          data_source: string | null
+          exch_k_degraded_cmol_high: number | null
+          exch_k_degraded_cmol_low: number | null
+          exch_k_target_cmol_high: number | null
+          exch_k_target_cmol_low: number | null
+          fb_ratio_degraded_high: number | null
+          fb_ratio_degraded_low: number | null
+          fb_ratio_target_high: number | null
+          fb_ratio_target_low: number | null
+          id: number
+          is_active: boolean | null
+          is_peat: boolean | null
+          k_leach_fract_baseline: number
+          local_name: string | null
+          mbc_degraded_mg_kg_high: number | null
+          mbc_degraded_mg_kg_low: number | null
+          mbc_target_mg_kg_high: number | null
+          mbc_target_mg_kg_low: number | null
+          n_leach_fract_baseline: number
+          notes: string | null
+          p_fix_fraction_baseline: number
+          p_leach_fract_baseline: number | null
+          peat_ghg_baseline_t_co2e_ha_yr: number | null
+          peat_irreversible_dry_risk: boolean | null
+          peat_n_mechanism: string | null
+          peat_organic_c_pct: number | null
+          peat_subsidence_cm_yr: number | null
+          ph_degraded_high: number | null
+          ph_degraded_low: number | null
+          ph_target_high: number | null
+          ph_target_low: number | null
+          soil_group_name: string
+          soil_key: string
+          som_degraded_pct_high: number | null
+          som_degraded_pct_low: number | null
+          som_target_pct_high: number | null
+          som_target_pct_low: number | null
+          supabase_reference: string
+          texture_degraded: string | null
+          texture_target: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          al_sat_degraded_pct_high?: number | null
+          al_sat_degraded_pct_low?: number | null
+          al_sat_target_pct_max?: number | null
+          amf_colonisation_degraded_pct_high?: number | null
+          amf_colonisation_degraded_pct_low?: number | null
+          amf_colonisation_target_pct_high?: number | null
+          amf_colonisation_target_pct_low?: number | null
+          avail_p_degraded_mg_kg_high?: number | null
+          avail_p_degraded_mg_kg_low?: number | null
+          avail_p_target_mg_kg_high?: number | null
+          avail_p_target_mg_kg_low?: number | null
+          base_sat_degraded_pct_high?: number | null
+          base_sat_degraded_pct_low?: number | null
+          base_sat_target_pct_high?: number | null
+          base_sat_target_pct_low?: number | null
+          bd_degraded_g_cm3_high?: number | null
+          bd_degraded_g_cm3_low?: number | null
+          bd_target_g_cm3_high?: number | null
+          bd_target_g_cm3_low?: number | null
+          cec_degraded_cmol_high?: number | null
+          cec_degraded_cmol_low?: number | null
+          cec_target_cmol_high?: number | null
+          cec_target_cmol_low?: number | null
+          confidence_level?: string | null
+          coverage_pct_indonesia?: number | null
+          created_at?: string | null
+          data_source?: string | null
+          exch_k_degraded_cmol_high?: number | null
+          exch_k_degraded_cmol_low?: number | null
+          exch_k_target_cmol_high?: number | null
+          exch_k_target_cmol_low?: number | null
+          fb_ratio_degraded_high?: number | null
+          fb_ratio_degraded_low?: number | null
+          fb_ratio_target_high?: number | null
+          fb_ratio_target_low?: number | null
+          id?: number
+          is_active?: boolean | null
+          is_peat?: boolean | null
+          k_leach_fract_baseline: number
+          local_name?: string | null
+          mbc_degraded_mg_kg_high?: number | null
+          mbc_degraded_mg_kg_low?: number | null
+          mbc_target_mg_kg_high?: number | null
+          mbc_target_mg_kg_low?: number | null
+          n_leach_fract_baseline: number
+          notes?: string | null
+          p_fix_fraction_baseline: number
+          p_leach_fract_baseline?: number | null
+          peat_ghg_baseline_t_co2e_ha_yr?: number | null
+          peat_irreversible_dry_risk?: boolean | null
+          peat_n_mechanism?: string | null
+          peat_organic_c_pct?: number | null
+          peat_subsidence_cm_yr?: number | null
+          ph_degraded_high?: number | null
+          ph_degraded_low?: number | null
+          ph_target_high?: number | null
+          ph_target_low?: number | null
+          soil_group_name: string
+          soil_key: string
+          som_degraded_pct_high?: number | null
+          som_degraded_pct_low?: number | null
+          som_target_pct_high?: number | null
+          som_target_pct_low?: number | null
+          supabase_reference: string
+          texture_degraded?: string | null
+          texture_target?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          al_sat_degraded_pct_high?: number | null
+          al_sat_degraded_pct_low?: number | null
+          al_sat_target_pct_max?: number | null
+          amf_colonisation_degraded_pct_high?: number | null
+          amf_colonisation_degraded_pct_low?: number | null
+          amf_colonisation_target_pct_high?: number | null
+          amf_colonisation_target_pct_low?: number | null
+          avail_p_degraded_mg_kg_high?: number | null
+          avail_p_degraded_mg_kg_low?: number | null
+          avail_p_target_mg_kg_high?: number | null
+          avail_p_target_mg_kg_low?: number | null
+          base_sat_degraded_pct_high?: number | null
+          base_sat_degraded_pct_low?: number | null
+          base_sat_target_pct_high?: number | null
+          base_sat_target_pct_low?: number | null
+          bd_degraded_g_cm3_high?: number | null
+          bd_degraded_g_cm3_low?: number | null
+          bd_target_g_cm3_high?: number | null
+          bd_target_g_cm3_low?: number | null
+          cec_degraded_cmol_high?: number | null
+          cec_degraded_cmol_low?: number | null
+          cec_target_cmol_high?: number | null
+          cec_target_cmol_low?: number | null
+          confidence_level?: string | null
+          coverage_pct_indonesia?: number | null
+          created_at?: string | null
+          data_source?: string | null
+          exch_k_degraded_cmol_high?: number | null
+          exch_k_degraded_cmol_low?: number | null
+          exch_k_target_cmol_high?: number | null
+          exch_k_target_cmol_low?: number | null
+          fb_ratio_degraded_high?: number | null
+          fb_ratio_degraded_low?: number | null
+          fb_ratio_target_high?: number | null
+          fb_ratio_target_low?: number | null
+          id?: number
+          is_active?: boolean | null
+          is_peat?: boolean | null
+          k_leach_fract_baseline?: number
+          local_name?: string | null
+          mbc_degraded_mg_kg_high?: number | null
+          mbc_degraded_mg_kg_low?: number | null
+          mbc_target_mg_kg_high?: number | null
+          mbc_target_mg_kg_low?: number | null
+          n_leach_fract_baseline?: number
+          notes?: string | null
+          p_fix_fraction_baseline?: number
+          p_leach_fract_baseline?: number | null
+          peat_ghg_baseline_t_co2e_ha_yr?: number | null
+          peat_irreversible_dry_risk?: boolean | null
+          peat_n_mechanism?: string | null
+          peat_organic_c_pct?: number | null
+          peat_subsidence_cm_yr?: number | null
+          ph_degraded_high?: number | null
+          ph_degraded_low?: number | null
+          ph_target_high?: number | null
+          ph_target_low?: number | null
+          soil_group_name?: string
+          soil_key?: string
+          som_degraded_pct_high?: number | null
+          som_degraded_pct_low?: number | null
+          som_target_pct_high?: number | null
+          som_target_pct_low?: number | null
+          supabase_reference?: string
+          texture_degraded?: string | null
+          texture_target?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       cfi_solutions: {
         Row: {
           agent: string | null
@@ -293,6 +1163,57 @@ export type Database = {
           uplift_pct?: number | null
           uploaded_at?: string | null
           uploaded_by?: string | null
+        }
+        Relationships: []
+      }
+      cfi_traders_refiners_jv: {
+        Row: {
+          annual_cpo_volume_mt: number | null
+          cfi_engagement_angle: string | null
+          cfi_relevance: string | null
+          company: string
+          contact_priority: string | null
+          created_at: string | null
+          hq_country: string | null
+          id: string
+          key_brands: string | null
+          notes: string | null
+          owns_mills: boolean | null
+          processes_ffb: boolean | null
+          role: string | null
+          sustainability_cert: string | null
+        }
+        Insert: {
+          annual_cpo_volume_mt?: number | null
+          cfi_engagement_angle?: string | null
+          cfi_relevance?: string | null
+          company: string
+          contact_priority?: string | null
+          created_at?: string | null
+          hq_country?: string | null
+          id?: string
+          key_brands?: string | null
+          notes?: string | null
+          owns_mills?: boolean | null
+          processes_ffb?: boolean | null
+          role?: string | null
+          sustainability_cert?: string | null
+        }
+        Update: {
+          annual_cpo_volume_mt?: number | null
+          cfi_engagement_angle?: string | null
+          cfi_relevance?: string | null
+          company?: string
+          contact_priority?: string | null
+          created_at?: string | null
+          hq_country?: string | null
+          id?: string
+          key_brands?: string | null
+          notes?: string | null
+          owns_mills?: boolean | null
+          processes_ffb?: boolean | null
+          role?: string | null
+          sustainability_cert?: string | null
         }
         Relationships: []
       }
@@ -640,6 +1561,465 @@ export type Database = {
         }
         Relationships: []
       }
+      s3_algae_uplift: {
+        Row: {
+          algae_dm_per_t_efb_kg: number | null
+          algae_species: string
+          algae_type: string | null
+          amino_acid_profile: string | null
+          baseline_bsf_meal_cp_pct: number | null
+          biomass_yield_g_per_l: number | null
+          bsf_fcr_reduction: number | null
+          bsf_neonate_survival_uplift_pct: number | null
+          capex_raceway_usd: number | null
+          cfi_recommendation: string | null
+          crude_protein_pct_dm: number | null
+          final_bsf_meal_cp_pct: number | null
+          hydration_volume_l_per_t_efb_dm: number | null
+          id: number
+          last_updated: string | null
+          notes: string | null
+          opex_monthly_usd: number | null
+          protein_added_kg_per_t_efb: number | null
+        }
+        Insert: {
+          algae_dm_per_t_efb_kg?: number | null
+          algae_species: string
+          algae_type?: string | null
+          amino_acid_profile?: string | null
+          baseline_bsf_meal_cp_pct?: number | null
+          biomass_yield_g_per_l?: number | null
+          bsf_fcr_reduction?: number | null
+          bsf_neonate_survival_uplift_pct?: number | null
+          capex_raceway_usd?: number | null
+          cfi_recommendation?: string | null
+          crude_protein_pct_dm?: number | null
+          final_bsf_meal_cp_pct?: number | null
+          hydration_volume_l_per_t_efb_dm?: number | null
+          id?: number
+          last_updated?: string | null
+          notes?: string | null
+          opex_monthly_usd?: number | null
+          protein_added_kg_per_t_efb?: number | null
+        }
+        Update: {
+          algae_dm_per_t_efb_kg?: number | null
+          algae_species?: string
+          algae_type?: string | null
+          amino_acid_profile?: string | null
+          baseline_bsf_meal_cp_pct?: number | null
+          biomass_yield_g_per_l?: number | null
+          bsf_fcr_reduction?: number | null
+          bsf_neonate_survival_uplift_pct?: number | null
+          capex_raceway_usd?: number | null
+          cfi_recommendation?: string | null
+          crude_protein_pct_dm?: number | null
+          final_bsf_meal_cp_pct?: number | null
+          hydration_volume_l_per_t_efb_dm?: number | null
+          id?: number
+          last_updated?: string | null
+          notes?: string | null
+          opex_monthly_usd?: number | null
+          protein_added_kg_per_t_efb?: number | null
+        }
+        Relationships: []
+      }
+      s3_antagonism_matrix: {
+        Row: {
+          id: number
+          last_updated: string | null
+          org_a: string
+          org_b: string
+          relationship: string
+          relationship_note: string | null
+          resolution: string | null
+          safe_to_co_dose: boolean
+        }
+        Insert: {
+          id?: number
+          last_updated?: string | null
+          org_a: string
+          org_b: string
+          relationship: string
+          relationship_note?: string | null
+          resolution?: string | null
+          safe_to_co_dose: boolean
+        }
+        Update: {
+          id?: number
+          last_updated?: string | null
+          org_a?: string
+          org_b?: string
+          relationship?: string
+          relationship_note?: string | null
+          resolution?: string | null
+          safe_to_co_dose?: boolean
+        }
+        Relationships: []
+      }
+      s3_capex: {
+        Row: {
+          category: string | null
+          derate_applied: boolean | null
+          description: string
+          id: number
+          item_code: string
+          last_updated: string | null
+          notes: string | null
+          quantity: number | null
+          supplier_region: string | null
+          total_cost_usd: number | null
+          unit_cost_usd: number | null
+        }
+        Insert: {
+          category?: string | null
+          derate_applied?: boolean | null
+          description: string
+          id?: number
+          item_code: string
+          last_updated?: string | null
+          notes?: string | null
+          quantity?: number | null
+          supplier_region?: string | null
+          total_cost_usd?: number | null
+          unit_cost_usd?: number | null
+        }
+        Update: {
+          category?: string | null
+          derate_applied?: boolean | null
+          description?: string
+          id?: number
+          item_code?: string
+          last_updated?: string | null
+          notes?: string | null
+          quantity?: number | null
+          supplier_region?: string | null
+          total_cost_usd?: number | null
+          unit_cost_usd?: number | null
+        }
+        Relationships: []
+      }
+      s3_inoculation_timeline: {
+        Row: {
+          action: string
+          day_number: number
+          gate_pass: string | null
+          id: number
+          last_updated: string | null
+          notes: string | null
+          operator_action: string | null
+          organisms: string[] | null
+          ph_target: string | null
+          substrate_check: string | null
+          temp_target_c: string | null
+          time_window: string | null
+        }
+        Insert: {
+          action: string
+          day_number: number
+          gate_pass?: string | null
+          id?: number
+          last_updated?: string | null
+          notes?: string | null
+          operator_action?: string | null
+          organisms?: string[] | null
+          ph_target?: string | null
+          substrate_check?: string | null
+          temp_target_c?: string | null
+          time_window?: string | null
+        }
+        Update: {
+          action?: string
+          day_number?: number
+          gate_pass?: string | null
+          id?: number
+          last_updated?: string | null
+          notes?: string | null
+          operator_action?: string | null
+          organisms?: string[] | null
+          ph_target?: string | null
+          substrate_check?: string | null
+          temp_target_c?: string | null
+          time_window?: string | null
+        }
+        Relationships: []
+      }
+      s3_nine_org_dosing: {
+        Row: {
+          amber_warning: string | null
+          bsf_safe: string | null
+          c_to_n_impact: string | null
+          category: string | null
+          cellulose_reduction_pct_max: number | null
+          cellulose_reduction_pct_min: number | null
+          cost_per_kg_usd: number | null
+          cost_per_tonne_fw_usd: number | null
+          data_confidence: string | null
+          dose_pct_dm: number | null
+          id: number
+          is_active: boolean | null
+          last_updated: string | null
+          lignin_reduction_pct_max: number | null
+          lignin_reduction_pct_min: number | null
+          monthly_kg_required: number | null
+          monthly_opex_usd: number | null
+          n_fixation_mg_per_kg_per_day: number | null
+          notes: string | null
+          optimal_ph_high: number | null
+          optimal_ph_low: number | null
+          optimal_temp_c_high: number | null
+          optimal_temp_c_low: number | null
+          organism_name: string
+          primary_target: string | null
+          provibio_icbb: string | null
+          references_doi: string | null
+          references_dois: string | null
+          shelf_life_days_at_4c: number | null
+          stack_position: number
+          supplier_source: string | null
+          wave: string
+        }
+        Insert: {
+          amber_warning?: string | null
+          bsf_safe?: string | null
+          c_to_n_impact?: string | null
+          category?: string | null
+          cellulose_reduction_pct_max?: number | null
+          cellulose_reduction_pct_min?: number | null
+          cost_per_kg_usd?: number | null
+          cost_per_tonne_fw_usd?: number | null
+          data_confidence?: string | null
+          dose_pct_dm?: number | null
+          id?: number
+          is_active?: boolean | null
+          last_updated?: string | null
+          lignin_reduction_pct_max?: number | null
+          lignin_reduction_pct_min?: number | null
+          monthly_kg_required?: number | null
+          monthly_opex_usd?: number | null
+          n_fixation_mg_per_kg_per_day?: number | null
+          notes?: string | null
+          optimal_ph_high?: number | null
+          optimal_ph_low?: number | null
+          optimal_temp_c_high?: number | null
+          optimal_temp_c_low?: number | null
+          organism_name: string
+          primary_target?: string | null
+          provibio_icbb?: string | null
+          references_doi?: string | null
+          references_dois?: string | null
+          shelf_life_days_at_4c?: number | null
+          stack_position: number
+          supplier_source?: string | null
+          wave: string
+        }
+        Update: {
+          amber_warning?: string | null
+          bsf_safe?: string | null
+          c_to_n_impact?: string | null
+          category?: string | null
+          cellulose_reduction_pct_max?: number | null
+          cellulose_reduction_pct_min?: number | null
+          cost_per_kg_usd?: number | null
+          cost_per_tonne_fw_usd?: number | null
+          data_confidence?: string | null
+          dose_pct_dm?: number | null
+          id?: number
+          is_active?: boolean | null
+          last_updated?: string | null
+          lignin_reduction_pct_max?: number | null
+          lignin_reduction_pct_min?: number | null
+          monthly_kg_required?: number | null
+          monthly_opex_usd?: number | null
+          n_fixation_mg_per_kg_per_day?: number | null
+          notes?: string | null
+          optimal_ph_high?: number | null
+          optimal_ph_low?: number | null
+          optimal_temp_c_high?: number | null
+          optimal_temp_c_low?: number | null
+          organism_name?: string
+          primary_target?: string | null
+          provibio_icbb?: string | null
+          references_doi?: string | null
+          references_dois?: string | null
+          shelf_life_days_at_4c?: number | null
+          stack_position?: number
+          supplier_source?: string | null
+          wave?: string
+        }
+        Relationships: []
+      }
+      s3_npk_contribution: {
+        Row: {
+          annual_total_kg: number | null
+          confidence: string | null
+          contribution_kg_per_t_dm: number | null
+          contribution_mg_kg_dm_day: number | null
+          five_day_high_kg: number | null
+          five_day_low_kg: number | null
+          id: number
+          last_updated: string | null
+          mechanism: string
+          monthly_high_kg: number | null
+          monthly_low_kg: number | null
+          monthly_total_kg: number | null
+          notes: string | null
+          nutrient: string
+          organism_name: string
+          references_dois: string | null
+        }
+        Insert: {
+          annual_total_kg?: number | null
+          confidence?: string | null
+          contribution_kg_per_t_dm?: number | null
+          contribution_mg_kg_dm_day?: number | null
+          five_day_high_kg?: number | null
+          five_day_low_kg?: number | null
+          id?: number
+          last_updated?: string | null
+          mechanism: string
+          monthly_high_kg?: number | null
+          monthly_low_kg?: number | null
+          monthly_total_kg?: number | null
+          notes?: string | null
+          nutrient: string
+          organism_name: string
+          references_dois?: string | null
+        }
+        Update: {
+          annual_total_kg?: number | null
+          confidence?: string | null
+          contribution_kg_per_t_dm?: number | null
+          contribution_mg_kg_dm_day?: number | null
+          five_day_high_kg?: number | null
+          five_day_low_kg?: number | null
+          id?: number
+          last_updated?: string | null
+          mechanism?: string
+          monthly_high_kg?: number | null
+          monthly_low_kg?: number | null
+          monthly_total_kg?: number | null
+          notes?: string | null
+          nutrient?: string
+          organism_name?: string
+          references_dois?: string | null
+        }
+        Relationships: []
+      }
+      s3_opex_monthly: {
+        Row: {
+          basis: string | null
+          category: string
+          description: string
+          id: number
+          item_code: string
+          last_updated: string | null
+          monthly_cost_usd: number | null
+          notes: string | null
+          quantity_per_month: number | null
+          stream: string | null
+          unit: string | null
+          unit_cost_usd: number | null
+        }
+        Insert: {
+          basis?: string | null
+          category: string
+          description: string
+          id?: number
+          item_code: string
+          last_updated?: string | null
+          monthly_cost_usd?: number | null
+          notes?: string | null
+          quantity_per_month?: number | null
+          stream?: string | null
+          unit?: string | null
+          unit_cost_usd?: number | null
+        }
+        Update: {
+          basis?: string | null
+          category?: string
+          description?: string
+          id?: number
+          item_code?: string
+          last_updated?: string | null
+          monthly_cost_usd?: number | null
+          notes?: string | null
+          quantity_per_month?: number | null
+          stream?: string | null
+          unit?: string | null
+          unit_cost_usd?: number | null
+        }
+        Relationships: []
+      }
+      s3_procurement: {
+        Row: {
+          commercial_form: string | null
+          commercial_link: string | null
+          commercial_price_usd_kg: number | null
+          commercial_supplier: string | null
+          id: number
+          last_updated: string | null
+          lead_time_days: number | null
+          minimum_order_kg: number | null
+          monthly_cost_commercial_usd: number | null
+          monthly_cost_provibio_usd: number | null
+          monthly_kg_required: number | null
+          organism_name: string
+          provibio_available: boolean
+          provibio_form: string | null
+          provibio_icbb: string | null
+          provibio_price_usd_kg: number | null
+          rationale: string | null
+          recommended_source: string | null
+          saving_usd_if_provibio: number | null
+          stack_position: number | null
+        }
+        Insert: {
+          commercial_form?: string | null
+          commercial_link?: string | null
+          commercial_price_usd_kg?: number | null
+          commercial_supplier?: string | null
+          id?: number
+          last_updated?: string | null
+          lead_time_days?: number | null
+          minimum_order_kg?: number | null
+          monthly_cost_commercial_usd?: number | null
+          monthly_cost_provibio_usd?: number | null
+          monthly_kg_required?: number | null
+          organism_name: string
+          provibio_available: boolean
+          provibio_form?: string | null
+          provibio_icbb?: string | null
+          provibio_price_usd_kg?: number | null
+          rationale?: string | null
+          recommended_source?: string | null
+          saving_usd_if_provibio?: number | null
+          stack_position?: number | null
+        }
+        Update: {
+          commercial_form?: string | null
+          commercial_link?: string | null
+          commercial_price_usd_kg?: number | null
+          commercial_supplier?: string | null
+          id?: number
+          last_updated?: string | null
+          lead_time_days?: number | null
+          minimum_order_kg?: number | null
+          monthly_cost_commercial_usd?: number | null
+          monthly_cost_provibio_usd?: number | null
+          monthly_kg_required?: number | null
+          organism_name?: string
+          provibio_available?: boolean
+          provibio_form?: string | null
+          provibio_icbb?: string | null
+          provibio_price_usd_kg?: number | null
+          rationale?: string | null
+          recommended_source?: string | null
+          saving_usd_if_provibio?: number | null
+          stack_position?: number | null
+        }
+        Relationships: []
+      }
       visitor_registry: {
         Row: {
           country: string | null
@@ -687,7 +2067,70 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      cfi_kcp_map: {
+        Row: {
+          capacity_t_kernels_day: number | null
+          cfi_pkm_opportunity: string | null
+          cfi_prospect_tier: string | null
+          confidence_level: string | null
+          district: string | null
+          est_pkm_output_t_month: number | null
+          kcp_name: string | null
+          on_site_at_mill: boolean | null
+          owner_company: string | null
+          pkm_price_usd_t: string | null
+          province: string | null
+        }
+        Relationships: []
+      }
+      cfi_mill_full_profile: {
+        Row: {
+          capacity_tph: number | null
+          cfi_approach_status: string | null
+          cfi_n_loss_flag: string | null
+          cfi_p_fixation_flag: string | null
+          cfi_priority_amendment: string | null
+          cfi_prospect_priority: string | null
+          cfi_prospect_tier: string | null
+          data_confidence: string | null
+          district: string | null
+          effective_soil_type: string | null
+          est_efb_at_60tph_t_yr: number | null
+          est_opdc_t_yr: number | null
+          ispo_certified: boolean | null
+          latitude: number | null
+          longitude: number | null
+          mill_id: number | null
+          mill_name: string | null
+          notes: string | null
+          owner_company: string | null
+          owner_rspo_status: string | null
+          parent_controlling_group: string | null
+          peat_present: boolean | null
+          ph_max: number | null
+          ph_min: number | null
+          pkm_available_on_site: boolean | null
+          province: string | null
+          rspo_certified: boolean | null
+          soil_confidence: string | null
+        }
+        Relationships: []
+      }
+      cfi_tier1_targets: {
+        Row: {
+          cfi_contact_status: string | null
+          cfi_prospect_tier: string | null
+          company: string | null
+          has_kernel_crushing_plant: boolean | null
+          mills_in_db: number | null
+          pkm_available_on_site: boolean | null
+          rank: number | null
+          rspo_status: string | null
+          total_efb_t_yr: number | null
+          total_opdc_t_yr: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
