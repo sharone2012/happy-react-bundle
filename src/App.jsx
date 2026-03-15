@@ -119,7 +119,7 @@ const s = {
   logo: { fontSize: 11, color: C.accent, letterSpacing: 2, textTransform: "uppercase" },
   title: { fontSize: 18, fontWeight: 700, color: C.text, margin: 0, fontFamily: "'Syne', sans-serif", paddingTop: 16 },
   tabs: { display: "flex", background: C.surface, borderBottom: `1px solid ${C.border}`, padding: "0 16px", gap: 2 },
-  tab: (active) => ({ padding: "10px 18px", background: active ? C.card : "transparent", color: active ? C.accent : C.textDim, border: "none", borderBottom: active ? `2px solid ${C.accent}` : "2px solid transparent", cursor: "pointer", fontFamily: "inherit", fontSize: 12, letterSpacing: 1, textTransform: "uppercase", fontWeight: active ? 700 : 400 }),
+  tab: (active) => ({ padding: "10px 18px", background: active ? C.card : "transparent", color: active ? C.accent : C.textDim, border: "none", borderBottom: active ? `2px solid ${C.accent}` : "2px solid transparent", cursor: "pointer", fontFamily: "inherit", fontSize: 15, letterSpacing: 1, textTransform: "uppercase", fontWeight: active ? 700 : 400 }),
   body: { padding: 20 },
   card: { background: C.card, border: `1px solid ${C.border}`, borderRadius: 6, padding: 16, marginBottom: 16 },
   label: { display: "block", color: C.textDim, fontSize: 11, letterSpacing: 1, marginBottom: 4, textTransform: "uppercase" },
