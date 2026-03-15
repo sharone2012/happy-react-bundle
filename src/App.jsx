@@ -1218,7 +1218,7 @@ function DosageCalc({ organisms }) {
   const [dm, setDm] = useState(35);
   const [selected, setSelected] = useState([]);
 
-  const safeOrgs = organisms.filter(o => o.bsfSafe === "✅");
+  const safeOrgs = organisms.filter(o => o.bsfSafe === "OK");
   const dmMass = batchFW * dm / 100;
 
   function toggle(id) {
