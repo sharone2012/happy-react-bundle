@@ -773,7 +773,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           </div>
         ) : (
           <>
-            <div style={s.alert(C.warn)}>🔓 Admin unlocked — Sharon. You can delete any organism. System-seeded organisms (id ≤ {SEED_ORGANISMS.length}) should only be deleted with caution.</div>
+            <div style={s.alert(C.warn)}>Unlocked Admin unlocked — Sharon. You can delete any organism. System-seeded organisms (id ≤ {SEED_ORGANISMS.length}) should only be deleted with caution.</div>
 
             {deleteTarget && (
               <div style={s.alert(C.danger)}>
