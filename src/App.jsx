@@ -1233,7 +1233,7 @@ function DosageCalc({ organisms }) {
 
   return (
     <div>
-      <div style={{ color: C2.accent, fontSize: 13, fontWeight: 700, letterSpacing: 1, marginBottom: 10, textTransform: "uppercase" }}>📐 Dosage Calculator</div>
+      <div style={{ color: C2.accent, fontSize: 13, fontWeight: 700, letterSpacing: 1, marginBottom: 10, textTransform: "uppercase" }}>Dosage Calculator</div>
       <div style={{ display: "flex", gap: 16, marginBottom: 14 }}>
         <div>
           <label style={{ display: "block", color: C2.textDim, fontSize: 11, marginBottom: 3 }}>Batch size (t FW)</label>
