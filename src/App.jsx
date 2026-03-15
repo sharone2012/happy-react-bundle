@@ -1136,7 +1136,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
               <div key={label} style={{ background: "#060e1c", borderRadius: 6, padding: "8px 10px", borderLeft: "2px solid " + C.accent }}>
                 <div style={{ color: C.accent, fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</div>
                 <div style={{ color: C.green, fontFamily: "monospace", fontSize: 13, fontWeight: 700, margin: "3px 0" }}>{range}</div>
-                <div style={{ color: C.danger, fontSize: 9 }}>Kill: {kill}</div>
+                <div style={{ color: C.danger, fontSize: 13 }}>Kill: {kill}</div>
               </div>
             ))}
           </div>
