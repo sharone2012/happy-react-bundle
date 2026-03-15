@@ -448,16 +448,16 @@ export default function CFIBioManager() {
 
         {/* Filters */}
         <div style={{ display: "flex", gap: 10, marginBottom: 14, flexWrap: "wrap", alignItems: "center" }}>
-          <input placeholder="🔍 Search name, function, category…" style={s.searchBox} value={searchQ} onChange={e => setSearchQ(e.target.value)} />
+          <input placeholder="Search name, function, category..." style={s.searchBox} value={searchQ} onChange={e => setSearchQ(e.target.value)} />
           <select style={{ ...s.select, width: 180 }} value={filterCat} onChange={e => setFilterCat(e.target.value)}>
             <option value="ALL">All Categories</option>
             {CATEGORIES.map(c => <option key={c}>{c}</option>)}
           </select>
           <select style={{ ...s.select, width: 140 }} value={filterBSF} onChange={e => setFilterBSF(e.target.value)}>
             <option value="ALL">All BSF Safety</option>
-            <option value="✅">✅ BSF-Safe</option>
-            <option value="❌">❌ Excluded</option>
-            <option value="⚠️ Caution">⚠️ Caution</option>
+            <option value="OK">OK BSF-Safe</option>
+            <option value="Fail">Fail Excluded</option>
+            <option value="Warning Caution">Warning Caution</option>
           </select>
         </div>
 
