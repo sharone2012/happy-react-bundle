@@ -313,7 +313,7 @@ export default function CFIBioManager() {
   const filtered = organisms.filter(o => {
     const qmatch = !searchQ || o.name.toLowerCase().includes(searchQ.toLowerCase()) || o.fn.toLowerCase().includes(searchQ.toLowerCase()) || o.category.toLowerCase().includes(searchQ.toLowerCase());
     const cmatch = filterCat === "ALL" || o.category === filterCat;
-    const bmatch = filterBSF === "ALL" || o.bsfSafe === filterBSF || (filterBSF === "✅" && o.bsfSafe === "✅") || (filterBSF === "❌" && o.bsfSafe.includes("❌"));
+    const bmatch = filterBSF === "ALL" || o.bsfSafe === filterBSF || (filterBSF === "OK" && o.bsfSafe === "OK") || (filterBSF === "Fail" && o.bsfSafe.includes("Fail"));
     return qmatch && cmatch && bmatch;
   });
 
