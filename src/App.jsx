@@ -618,7 +618,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
         <div style={{ ...s.card, marginBottom: 12, background: "#0a1a1a" }}>
           <div style={{ color: C.accent, fontSize: 11, letterSpacing: 1, marginBottom: 8, textTransform: "uppercase" }}>Use AI Research First</div>
           <div style={{ color: C.textDim, fontSize: 11 }}>Go to the <strong>AI Research</strong> tab to look up any organism. The AI will research dosing, pricing, suppliers, and BSF compatibility, then auto-fill this form. Or fill manually below.</div>
-          <button style={{ ...s.btn(C.accent), marginTop: 10 }} onClick={() => setTab("research")}>→ GO TO AI RESEARCH ENGINE</button>
+          <button style={{ ...s.btn(C.accent), marginTop: 10 }} onClick={() => setTab("research")}>GO TO AI RESEARCH ENGINE</button>
         </div>
 
         <form onSubmit={handleAdd}>
