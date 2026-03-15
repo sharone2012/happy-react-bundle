@@ -562,7 +562,7 @@ export default function CFIBioManager() {
             <div style={s.aiBox}>{researchResult}</div>
             {autoFillResult && (
               <div style={{ ...s.alert(C.green), marginTop: 12 }}>
-                ✅ Fields extracted from research. Click <strong>AUTO-FILL ADD FORM</strong> above to populate the Add New Biological form automatically.
+                OK Fields extracted from research. Click <strong>AUTO-FILL ADD FORM</strong> above to populate the Add New Biological form automatically.
               </div>
             )}
           </div>
