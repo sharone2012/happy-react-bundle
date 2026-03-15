@@ -1030,9 +1030,9 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
               { label: "Blend MC", value: blendMC, unit: "% (wet-weight-corrected)", col: C.accent },
             ].map((k, i) => (
               <div key={i} style={{ textAlign: "center" }}>
-                <div style={{ color: C.textDim, fontSize: 10, marginBottom: 3 }}>{k.label}</div>
+                <div style={{ color: C.textDim, fontSize: 13, fontWeight: 600, marginBottom: 3 }}>{k.label}</div>
                 <div style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 16, color: k.col }}>{k.value}</div>
-                <div style={{ color: C.muted, fontSize: 9 }}>{k.unit}</div>
+                <div style={{ color: C.muted, fontSize: 13, fontWeight: 600 }}>{k.unit}</div>
               </div>
             ))}
           </div>
