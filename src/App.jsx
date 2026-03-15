@@ -863,13 +863,13 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
   // ── S1 TAB — MECHANICAL PRE-PROCESSING ─────────────────────────────────────
   function renderS1() {
     // Derived calculations
-    const effFFB     = +(s1.ffbCapacity * s1.utilisation / 100).toFixed(2);
-    const efbTPH     = +(effFFB * 0.225).toFixed(3);
+    const effFFB     = +(s1.ffbCapacity * s1.utilisation / 100).toFixed(1);
+    const efbTPH     = +(effFFB * 0.225).toFixed(1);
     const efbTPD     = +(efbTPH * s1.hrsDay).toFixed(1);
-    const efbMonthWet= +(efbTPD * s1.daysMonth).toFixed(0);
+    const efbMonthWet= +(efbTPD * s1.daysMonth).toFixed(1);
     const efbDMFrac  = (100 - s1.efbMC) / 100;
     const efbDMpd    = +(efbTPD * efbDMFrac).toFixed(1);
-    const efbMonthDM = +(efbDMpd * s1.daysMonth).toFixed(0);
+    const efbMonthDM = +(efbDMpd * s1.daysMonth).toFixed(1);
 
     // OPDC natural yield = 15.2% of EFB fresh weight
     const opdcNatTPD = +(efbTPD * 0.152).toFixed(2);
