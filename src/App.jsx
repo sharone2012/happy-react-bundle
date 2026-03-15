@@ -356,7 +356,7 @@ export default function CFIBioManager() {
       name: orgName,
       fn: getLine("Primary function") || getLine("Primary Function"),
       temp: getLine("Optimal temperature range") || getLine("Temperature"),
-      bsfSafe: text.includes("BSF Safe: OK") || text.includes("BSF-Safe: OK") || text.includes("BSF Safe: ✅") || text.includes("BSF-Safe: ✅") ? "OK" : text.includes("❌") || text.includes("Fail") ? "Fail TOXIC" : "Warning Caution",
+      bsfSafe: text.includes("BSF Safe: OK") || text.includes("BSF-Safe: OK") ? "OK" : text.includes("Fail") ? "Fail TOXIC" : "Warning Caution",
       supplier: getLine("Indonesian supplier") || getLine("Best quote"),
       quote: getLine("Best quote link") || getLine("Quote"),
       usdKg: getLine("\\$/kg estimate") || getLine("\\$/kg"),
