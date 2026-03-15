@@ -117,7 +117,7 @@ const s = {
   app: { background: C.bg, minHeight: "100vh", color: C.text, fontFamily: "'IBM Plex Mono', 'Courier New', monospace", fontSize: 13 },
   header: { background: C.surface, borderBottom: `2px solid ${C.accent}`, padding: "12px 24px", display: "flex", alignItems: "center", gap: 16 },
   logo: { fontSize: 11, color: C.accent, letterSpacing: 2, textTransform: "uppercase" },
-  title: { fontSize: 18, fontWeight: 700, color: C.text, margin: 0 },
+  title: { fontSize: 18, fontWeight: 700, color: C.text, margin: 0, fontFamily: "'Syne', sans-serif" },
   tabs: { display: "flex", background: C.surface, borderBottom: `1px solid ${C.border}`, padding: "0 16px", gap: 2 },
   tab: (active) => ({ padding: "10px 18px", background: active ? C.card : "transparent", color: active ? C.accent : C.textDim, border: "none", borderBottom: active ? `2px solid ${C.accent}` : "2px solid transparent", cursor: "pointer", fontFamily: "inherit", fontSize: 12, letterSpacing: 1, textTransform: "uppercase", fontWeight: active ? 700 : 400 }),
   body: { padding: 20 },
