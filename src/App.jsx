@@ -671,7 +671,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             <div style={s.grid3}>
               <div style={s.fieldWrap}>
                 <label style={s.label}>Temperature Range °C</label>
-                <input style={s.input} value={form.temp} onChange={e => setF("temp", e.target.value)} placeholder="e.g. 50–65 or <50 ⚠️" />
+                <input style={s.input} value={form.temp} onChange={e => setF("temp", e.target.value)} placeholder="e.g. 50-65 or <50 Warning" />
               </div>
               <div style={s.fieldWrap}>
                 <label style={s.label}>BSF Safety *</label>
