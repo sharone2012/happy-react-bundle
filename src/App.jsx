@@ -492,7 +492,7 @@ export default function CFIBioManager() {
             </thead>
             <tbody>
               {filtered.map(o => (
-                <tr key={o.id} style={{ background: o.bsfSafe.includes("❌") ? "#1a0a0a" : o.category.includes("CONDITIONAL") ? "#1a150a" : o.category.includes("Algae") ? "#0a1a0d" : o.addedBy !== "System" ? "#0a1a0d" : "transparent" }}>
+                <tr key={o.id} style={{ background: o.bsfSafe.includes("Fail") ? "#1a0a0a" : o.category.includes("CONDITIONAL") ? "#1a150a" : o.category.includes("Algae") ? "#0a1a0d" : o.addedBy !== "System" ? "#0a1a0d" : "transparent" }}>
                   <td style={{ ...s.tdMuted, width: 28 }}>{o.id}</td>
                   <td style={s.td}><span style={s.badge(catColor(o.category))}>{o.category}</span></td>
                   <td style={{ ...s.td, fontWeight: 600, color: o.bsfSafe.includes("❌") ? C.danger : o.category.includes("CONDITIONAL") ? C.warn : o.category.includes("Algae") ? C.green : C.text, minWidth: 180 }}>
