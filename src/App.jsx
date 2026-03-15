@@ -1148,7 +1148,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             <input type="number" style={{ ...s.input, width: 90, background: "#0d1a2e", border: "1.5px solid #4299e1", color: C.gold, fontFamily: "monospace", fontWeight: 700 }} value={batchFWProt} onChange={e => setBatchFWProt(Number(e.target.value))} />
           </div>
           <div>
-            <div style={{ color: C.textDim, fontSize: 10, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.06em" }}>Batches/day</div>
+            <div style={{ color: C.textDim, fontSize: 13, fontWeight: 600, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.06em" }}>Batches/day</div>
             <input type="number" style={{ ...s.input, width: 70, background: "#0d1a2e", border: "1.5px solid #4299e1", color: C.gold, fontFamily: "monospace", fontWeight: 700 }} value={batchesDay} onChange={e => setBatchesDay(Number(e.target.value))} />
           </div>
           <div style={{ color: C.textDim, fontSize: 12 }}>
