@@ -1058,7 +1058,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
 
     return (
       <div style={s.panel}>
-        <div style={{ color: C.accent, fontWeight: 700, fontSize: 13, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 4 }}>BSF Handoff Gate</div>
+        <div style={{ color: C.accent, fontWeight: 700, fontSize: 18, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 4, fontFamily: "'Syne', sans-serif" }}>BSF Handoff Gate</div>
         <div style={{ color: C.textDim, fontSize: 11, marginBottom: 16 }}>All 6 criteria must PASS before introducing BSF larvae. Enter measured substrate values.</div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16 }}>
           {CRITERIA.map((c, idx) => {
