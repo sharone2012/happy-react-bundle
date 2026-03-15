@@ -746,8 +746,8 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           </div>
 
           <div style={{ display: "flex", gap: 10 }}>
-            <button type="submit" style={s.btnFill(C.accent)}>💾 SAVE TO DATABASE</button>
-            <button type="button" style={s.btn(C.muted)} onClick={() => setForm(blankForm())}>✕ CLEAR FORM</button>
+            <button type="submit" style={s.btnFill(C.accent)}>SAVE TO DATABASE</button>
+            <button type="button" style={s.btn(C.muted)} onClick={() => setForm(blankForm())}>CLEAR FORM</button>
           </div>
         </form>
       </div>
