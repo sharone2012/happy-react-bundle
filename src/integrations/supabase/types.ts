@@ -98,8 +98,12 @@ export type Database = {
       canonical_lab_data: {
         Row: {
           basis: string | null
+          confidence_level: string | null
+          created_by: string | null
           guardrail_note: string | null
           id: number
+          is_ai_generated: boolean | null
+          is_approved: boolean | null
           lock_class: string | null
           parameter: string
           source_ref: string | null
@@ -112,8 +116,12 @@ export type Database = {
         }
         Insert: {
           basis?: string | null
+          confidence_level?: string | null
+          created_by?: string | null
           guardrail_note?: string | null
           id?: number
+          is_ai_generated?: boolean | null
+          is_approved?: boolean | null
           lock_class?: string | null
           parameter: string
           source_ref?: string | null
@@ -126,8 +134,12 @@ export type Database = {
         }
         Update: {
           basis?: string | null
+          confidence_level?: string | null
+          created_by?: string | null
           guardrail_note?: string | null
           id?: number
+          is_ai_generated?: boolean | null
+          is_approved?: boolean | null
           lock_class?: string | null
           parameter?: string
           source_ref?: string | null
@@ -154,10 +166,15 @@ export type Database = {
           gwp100: number | null
           gwp20: number | null
           id: number
+          insetting_price_high_usd: number | null
+          insetting_price_low_usd: number | null
+          is_verified: boolean | null
           mcf_value: number | null
           method_liquid: string | null
           method_solid: string | null
           notes: string | null
+          offsetting_price_high_usd: number | null
+          offsetting_price_low_usd: number | null
           opdc_capture_pct: number | null
           opdc_t_day: number | null
           pome_capture_pct: number | null
@@ -166,6 +183,9 @@ export type Database = {
           revenue_base_usd: number | null
           revenue_high_usd: number | null
           revenue_low_usd: number | null
+          stream: string | null
+          verification_body: string | null
+          verification_date: string | null
         }
         Insert: {
           calculation_date?: string | null
@@ -180,10 +200,15 @@ export type Database = {
           gwp100?: number | null
           gwp20?: number | null
           id?: number
+          insetting_price_high_usd?: number | null
+          insetting_price_low_usd?: number | null
+          is_verified?: boolean | null
           mcf_value?: number | null
           method_liquid?: string | null
           method_solid?: string | null
           notes?: string | null
+          offsetting_price_high_usd?: number | null
+          offsetting_price_low_usd?: number | null
           opdc_capture_pct?: number | null
           opdc_t_day?: number | null
           pome_capture_pct?: number | null
@@ -192,6 +217,9 @@ export type Database = {
           revenue_base_usd?: number | null
           revenue_high_usd?: number | null
           revenue_low_usd?: number | null
+          stream?: string | null
+          verification_body?: string | null
+          verification_date?: string | null
         }
         Update: {
           calculation_date?: string | null
@@ -206,10 +234,15 @@ export type Database = {
           gwp100?: number | null
           gwp20?: number | null
           id?: number
+          insetting_price_high_usd?: number | null
+          insetting_price_low_usd?: number | null
+          is_verified?: boolean | null
           mcf_value?: number | null
           method_liquid?: string | null
           method_solid?: string | null
           notes?: string | null
+          offsetting_price_high_usd?: number | null
+          offsetting_price_low_usd?: number | null
           opdc_capture_pct?: number | null
           opdc_t_day?: number | null
           pome_capture_pct?: number | null
@@ -218,54 +251,84 @@ export type Database = {
           revenue_base_usd?: number | null
           revenue_high_usd?: number | null
           revenue_low_usd?: number | null
+          stream?: string | null
+          verification_body?: string | null
+          verification_date?: string | null
         }
         Relationships: []
       }
       cfi_kernel_crushing_plants: {
         Row: {
+          associated_mill_owner: string | null
           capacity_t_kernels_day: number | null
           cfi_pkm_opportunity: string | null
           confidence_level: string | null
           created_at: string | null
-          district: string | null
           est_pkm_output_t_month: number | null
           id: string
           kcp_name: string
-          notes: string | null
+          kcp_type: string | null
+          kernels_sourced_from: string | null
+          location_city_port: string | null
+          location_province: string | null
           on_site_at_mill: boolean | null
+          operator_company: string
           owner_id: string | null
+          parent_group: string | null
+          pkm_crude_protein_pct: number | null
+          pkm_moisture_pct: number | null
           pkm_price_usd_t: string | null
-          province: string | null
+          pkm_sold_to: string | null
+          pkm_type: string | null
+          source: string | null
         }
         Insert: {
+          associated_mill_owner?: string | null
           capacity_t_kernels_day?: number | null
           cfi_pkm_opportunity?: string | null
           confidence_level?: string | null
           created_at?: string | null
-          district?: string | null
           est_pkm_output_t_month?: number | null
           id?: string
           kcp_name: string
-          notes?: string | null
+          kcp_type?: string | null
+          kernels_sourced_from?: string | null
+          location_city_port?: string | null
+          location_province?: string | null
           on_site_at_mill?: boolean | null
+          operator_company: string
           owner_id?: string | null
+          parent_group?: string | null
+          pkm_crude_protein_pct?: number | null
+          pkm_moisture_pct?: number | null
           pkm_price_usd_t?: string | null
-          province?: string | null
+          pkm_sold_to?: string | null
+          pkm_type?: string | null
+          source?: string | null
         }
         Update: {
+          associated_mill_owner?: string | null
           capacity_t_kernels_day?: number | null
           cfi_pkm_opportunity?: string | null
           confidence_level?: string | null
           created_at?: string | null
-          district?: string | null
           est_pkm_output_t_month?: number | null
           id?: string
           kcp_name?: string
-          notes?: string | null
+          kcp_type?: string | null
+          kernels_sourced_from?: string | null
+          location_city_port?: string | null
+          location_province?: string | null
           on_site_at_mill?: boolean | null
+          operator_company?: string
           owner_id?: string | null
+          parent_group?: string | null
+          pkm_crude_protein_pct?: number | null
+          pkm_moisture_pct?: number | null
           pkm_price_usd_t?: string | null
-          province?: string | null
+          pkm_sold_to?: string | null
+          pkm_type?: string | null
+          source?: string | null
         }
         Relationships: [
           {
@@ -321,73 +384,70 @@ export type Database = {
       }
       cfi_mill_owners: {
         Row: {
-          cfi_contact_status: string | null
           cfi_notes: string | null
           cfi_prospect_tier: string | null
           company: string
           created_at: string | null
           has_kernel_crushing_plant: boolean | null
-          hq_city: string | null
-          hq_country: string | null
           id: string
-          ispo_status: string | null
           jv_partners: string | null
-          kcp_count: number | null
+          kcp_capacity_tpd: string | null
+          kcp_locations: string | null
+          kcp_operator: string | null
+          mill_capacity_tph: string | null
           number_of_mills: number | null
+          ownership_type: string | null
           parent_controlling_group: string | null
           pkm_available_on_site: boolean | null
+          pkm_volume_est_t_month: string | null
           planted_area_ha: number | null
           province_locations: string | null
           rank: number | null
           rspo_status: string | null
-          stock_exchange: string | null
-          website: string | null
         }
         Insert: {
-          cfi_contact_status?: string | null
           cfi_notes?: string | null
           cfi_prospect_tier?: string | null
           company: string
           created_at?: string | null
           has_kernel_crushing_plant?: boolean | null
-          hq_city?: string | null
-          hq_country?: string | null
           id?: string
-          ispo_status?: string | null
           jv_partners?: string | null
-          kcp_count?: number | null
+          kcp_capacity_tpd?: string | null
+          kcp_locations?: string | null
+          kcp_operator?: string | null
+          mill_capacity_tph?: string | null
           number_of_mills?: number | null
+          ownership_type?: string | null
           parent_controlling_group?: string | null
           pkm_available_on_site?: boolean | null
+          pkm_volume_est_t_month?: string | null
           planted_area_ha?: number | null
           province_locations?: string | null
           rank?: number | null
           rspo_status?: string | null
-          stock_exchange?: string | null
-          website?: string | null
         }
         Update: {
-          cfi_contact_status?: string | null
           cfi_notes?: string | null
           cfi_prospect_tier?: string | null
           company?: string
           created_at?: string | null
           has_kernel_crushing_plant?: boolean | null
-          hq_city?: string | null
-          hq_country?: string | null
           id?: string
-          ispo_status?: string | null
           jv_partners?: string | null
-          kcp_count?: number | null
+          kcp_capacity_tpd?: string | null
+          kcp_locations?: string | null
+          kcp_operator?: string | null
+          mill_capacity_tph?: string | null
           number_of_mills?: number | null
+          ownership_type?: string | null
           parent_controlling_group?: string | null
           pkm_available_on_site?: boolean | null
+          pkm_volume_est_t_month?: string | null
           planted_area_ha?: number | null
           province_locations?: string | null
           rank?: number | null
           rspo_status?: string | null
-          stock_exchange?: string | null
-          website?: string | null
         }
         Relationships: []
       }
@@ -395,74 +455,92 @@ export type Database = {
         Row: {
           capacity_tph: number | null
           cfi_approach_status: string | null
-          cfi_prospect_priority: string | null
+          cfi_contact_email: string | null
+          cfi_contact_name: string | null
+          cfi_efb_available: boolean | null
+          cfi_notes: string | null
           confirmed_soil_type: string | null
-          contact_email: string | null
-          contact_name: string | null
           created_at: string | null
-          data_confidence: string | null
-          district: string | null
+          district_kabupaten: string | null
           est_efb_at_60tph_t_yr: number | null
+          est_efb_output_t_yr: number | null
+          est_ffb_processed_t_yr: number | null
           est_opdc_t_yr: number | null
+          est_pkm_t_yr: number | null
           id: string
-          ispo_certified: boolean | null
           latitude: number | null
           longitude: number | null
-          mill_id: number
-          mill_name: string | null
-          notes: string | null
+          mill_id: number | null
+          mill_name: string
+          nearest_city_port: string | null
+          owner_company: string | null
           owner_id: string | null
           province: string | null
           province_soil_id: string | null
-          rspo_certified: boolean | null
+          rspo_status: string | null
+          soil_confirmed_by: string | null
+          soil_confirmed_date: string | null
+          updated_at: string | null
         }
         Insert: {
           capacity_tph?: number | null
           cfi_approach_status?: string | null
-          cfi_prospect_priority?: string | null
+          cfi_contact_email?: string | null
+          cfi_contact_name?: string | null
+          cfi_efb_available?: boolean | null
+          cfi_notes?: string | null
           confirmed_soil_type?: string | null
-          contact_email?: string | null
-          contact_name?: string | null
           created_at?: string | null
-          data_confidence?: string | null
-          district?: string | null
+          district_kabupaten?: string | null
           est_efb_at_60tph_t_yr?: number | null
+          est_efb_output_t_yr?: number | null
+          est_ffb_processed_t_yr?: number | null
           est_opdc_t_yr?: number | null
+          est_pkm_t_yr?: number | null
           id?: string
-          ispo_certified?: boolean | null
           latitude?: number | null
           longitude?: number | null
-          mill_id: number
-          mill_name?: string | null
-          notes?: string | null
+          mill_id?: number | null
+          mill_name: string
+          nearest_city_port?: string | null
+          owner_company?: string | null
           owner_id?: string | null
           province?: string | null
           province_soil_id?: string | null
-          rspo_certified?: boolean | null
+          rspo_status?: string | null
+          soil_confirmed_by?: string | null
+          soil_confirmed_date?: string | null
+          updated_at?: string | null
         }
         Update: {
           capacity_tph?: number | null
           cfi_approach_status?: string | null
-          cfi_prospect_priority?: string | null
+          cfi_contact_email?: string | null
+          cfi_contact_name?: string | null
+          cfi_efb_available?: boolean | null
+          cfi_notes?: string | null
           confirmed_soil_type?: string | null
-          contact_email?: string | null
-          contact_name?: string | null
           created_at?: string | null
-          data_confidence?: string | null
-          district?: string | null
+          district_kabupaten?: string | null
           est_efb_at_60tph_t_yr?: number | null
+          est_efb_output_t_yr?: number | null
+          est_ffb_processed_t_yr?: number | null
           est_opdc_t_yr?: number | null
+          est_pkm_t_yr?: number | null
           id?: string
-          ispo_certified?: boolean | null
           latitude?: number | null
           longitude?: number | null
-          mill_id?: number
-          mill_name?: string | null
-          notes?: string | null
+          mill_id?: number | null
+          mill_name?: string
+          nearest_city_port?: string | null
+          owner_company?: string | null
           owner_id?: string | null
           province?: string | null
           province_soil_id?: string | null
-          rspo_certified?: boolean | null
+          rspo_status?: string | null
+          soil_confirmed_by?: string | null
+          soil_confirmed_date?: string | null
+          updated_at?: string | null
         }
         Relationships: [
           {
@@ -514,6 +592,9 @@ export type Database = {
           mrs_mbc_degraded: number | null
           mrs_mbc_target: number | null
           mrs_mbc_weight: number | null
+          n_fix_wave2_organisms: string | null
+          n_fix_wave2_potential_kg_n_ha_yr_high: number | null
+          n_fix_wave2_potential_kg_n_ha_yr_low: number | null
           phosphatase_response_factor: number | null
           product_id: string
           product_name: string
@@ -555,6 +636,9 @@ export type Database = {
           mrs_mbc_degraded?: number | null
           mrs_mbc_target?: number | null
           mrs_mbc_weight?: number | null
+          n_fix_wave2_organisms?: string | null
+          n_fix_wave2_potential_kg_n_ha_yr_high?: number | null
+          n_fix_wave2_potential_kg_n_ha_yr_low?: number | null
           phosphatase_response_factor?: number | null
           product_id: string
           product_name: string
@@ -596,6 +680,9 @@ export type Database = {
           mrs_mbc_degraded?: number | null
           mrs_mbc_target?: number | null
           mrs_mbc_weight?: number | null
+          n_fix_wave2_organisms?: string | null
+          n_fix_wave2_potential_kg_n_ha_yr_high?: number | null
+          n_fix_wave2_potential_kg_n_ha_yr_low?: number | null
           phosphatase_response_factor?: number | null
           product_id?: string
           product_name?: string
@@ -617,88 +704,196 @@ export type Database = {
       }
       cfi_province_soil_lookup: {
         Row: {
-          cec_cmol_high: number | null
-          cec_cmol_low: number | null
+          cec_max_cmol: number | null
+          cec_min_cmol: number | null
           cfi_n_loss_flag: string | null
           cfi_p_fixation_flag: string | null
           cfi_priority_amendment: string | null
+          climate_class: string | null
           created_at: string | null
-          data_source: string | null
-          dominant_soil_wrb: string | null
+          dominant_soil_local: string
+          dominant_soil_wrb: string
           drainage_class: string | null
           id: string
-          island: string | null
+          island: string
+          k_leaching_risk: string | null
           liming_required: boolean | null
+          mg_leaching_risk: string | null
           n_leaching_base_pct_max: number | null
           n_leaching_base_pct_min: number | null
-          notes: string | null
+          n_leaching_high_rain_uplift: string | null
+          n_primary_loss_pathway: string | null
+          p_1st_yr_recovery_no_mgmt: string | null
+          p_1st_yr_recovery_vgam: string | null
           p_fixation_base_pct_max: number | null
           p_fixation_base_pct_min: number | null
-          palm_area_ha_est: number | null
+          p_fixation_mechanism: string | null
+          peat_depth_class: string | null
           peat_present: boolean | null
           ph_max: number | null
           ph_min: number | null
+          ph_target_palm: string | null
           province: string
-          rainfall_mm_yr_high: number | null
-          rainfall_mm_yr_low: number | null
-          region: string | null
+          rainfall_mm_yr_max: number | null
+          rainfall_mm_yr_min: number | null
+          region: string
+          secondary_soil_local: string | null
           secondary_soil_wrb: string | null
+          source_1: string | null
+          source_2: string | null
+          temp_c_avg_max: number | null
+          temp_c_avg_min: number | null
         }
         Insert: {
-          cec_cmol_high?: number | null
-          cec_cmol_low?: number | null
+          cec_max_cmol?: number | null
+          cec_min_cmol?: number | null
           cfi_n_loss_flag?: string | null
           cfi_p_fixation_flag?: string | null
           cfi_priority_amendment?: string | null
+          climate_class?: string | null
           created_at?: string | null
-          data_source?: string | null
-          dominant_soil_wrb?: string | null
+          dominant_soil_local: string
+          dominant_soil_wrb: string
           drainage_class?: string | null
           id?: string
-          island?: string | null
+          island: string
+          k_leaching_risk?: string | null
           liming_required?: boolean | null
+          mg_leaching_risk?: string | null
           n_leaching_base_pct_max?: number | null
           n_leaching_base_pct_min?: number | null
-          notes?: string | null
+          n_leaching_high_rain_uplift?: string | null
+          n_primary_loss_pathway?: string | null
+          p_1st_yr_recovery_no_mgmt?: string | null
+          p_1st_yr_recovery_vgam?: string | null
           p_fixation_base_pct_max?: number | null
           p_fixation_base_pct_min?: number | null
-          palm_area_ha_est?: number | null
+          p_fixation_mechanism?: string | null
+          peat_depth_class?: string | null
           peat_present?: boolean | null
           ph_max?: number | null
           ph_min?: number | null
+          ph_target_palm?: string | null
           province: string
-          rainfall_mm_yr_high?: number | null
-          rainfall_mm_yr_low?: number | null
-          region?: string | null
+          rainfall_mm_yr_max?: number | null
+          rainfall_mm_yr_min?: number | null
+          region: string
+          secondary_soil_local?: string | null
           secondary_soil_wrb?: string | null
+          source_1?: string | null
+          source_2?: string | null
+          temp_c_avg_max?: number | null
+          temp_c_avg_min?: number | null
         }
         Update: {
-          cec_cmol_high?: number | null
-          cec_cmol_low?: number | null
+          cec_max_cmol?: number | null
+          cec_min_cmol?: number | null
           cfi_n_loss_flag?: string | null
           cfi_p_fixation_flag?: string | null
           cfi_priority_amendment?: string | null
+          climate_class?: string | null
           created_at?: string | null
-          data_source?: string | null
-          dominant_soil_wrb?: string | null
+          dominant_soil_local?: string
+          dominant_soil_wrb?: string
           drainage_class?: string | null
           id?: string
-          island?: string | null
+          island?: string
+          k_leaching_risk?: string | null
           liming_required?: boolean | null
+          mg_leaching_risk?: string | null
           n_leaching_base_pct_max?: number | null
           n_leaching_base_pct_min?: number | null
-          notes?: string | null
+          n_leaching_high_rain_uplift?: string | null
+          n_primary_loss_pathway?: string | null
+          p_1st_yr_recovery_no_mgmt?: string | null
+          p_1st_yr_recovery_vgam?: string | null
           p_fixation_base_pct_max?: number | null
           p_fixation_base_pct_min?: number | null
-          palm_area_ha_est?: number | null
+          p_fixation_mechanism?: string | null
+          peat_depth_class?: string | null
           peat_present?: boolean | null
           ph_max?: number | null
           ph_min?: number | null
+          ph_target_palm?: string | null
           province?: string
-          rainfall_mm_yr_high?: number | null
-          rainfall_mm_yr_low?: number | null
-          region?: string | null
+          rainfall_mm_yr_max?: number | null
+          rainfall_mm_yr_min?: number | null
+          region?: string
+          secondary_soil_local?: string | null
           secondary_soil_wrb?: string | null
+          source_1?: string | null
+          source_2?: string | null
+          temp_c_avg_max?: number | null
+          temp_c_avg_min?: number | null
+        }
+        Relationships: []
+      }
+      cfi_residue_analysis: {
+        Row: {
+          analytical_method: string | null
+          category: string
+          confidence_level: string | null
+          created_at: string | null
+          direction: string | null
+          id: number
+          om_quality_index: number | null
+          parameter: string
+          residue_type: string
+          source_notes: string | null
+          stage_code: string
+          stage_label: string
+          total_value_usd: number | null
+          unit: string | null
+          updated_at: string | null
+          value_numeric: number | null
+          value_text: string | null
+          value_usd_per_t_dm: number | null
+          vs_stage0_numeric: number | null
+          vs_stage0_pct: string | null
+        }
+        Insert: {
+          analytical_method?: string | null
+          category: string
+          confidence_level?: string | null
+          created_at?: string | null
+          direction?: string | null
+          id?: number
+          om_quality_index?: number | null
+          parameter: string
+          residue_type: string
+          source_notes?: string | null
+          stage_code: string
+          stage_label: string
+          total_value_usd?: number | null
+          unit?: string | null
+          updated_at?: string | null
+          value_numeric?: number | null
+          value_text?: string | null
+          value_usd_per_t_dm?: number | null
+          vs_stage0_numeric?: number | null
+          vs_stage0_pct?: string | null
+        }
+        Update: {
+          analytical_method?: string | null
+          category?: string
+          confidence_level?: string | null
+          created_at?: string | null
+          direction?: string | null
+          id?: number
+          om_quality_index?: number | null
+          parameter?: string
+          residue_type?: string
+          source_notes?: string | null
+          stage_code?: string
+          stage_label?: string
+          total_value_usd?: number | null
+          unit?: string | null
+          updated_at?: string | null
+          value_numeric?: number | null
+          value_text?: string | null
+          value_usd_per_t_dm?: number | null
+          vs_stage0_numeric?: number | null
+          vs_stage0_pct?: string | null
         }
         Relationships: []
       }
@@ -1094,11 +1289,14 @@ export type Database = {
       cfi_solutions: {
         Row: {
           agent: string | null
+          applied_to_table: string | null
           benefit_usd: number | null
           confidence: string | null
           cost_usd: number | null
           id: number
+          is_approved: boolean | null
           last_updated: string | null
+          persona_used: string | null
           process_params: Json | null
           product_metrics_after: Json | null
           product_metrics_before: Json | null
@@ -1118,11 +1316,14 @@ export type Database = {
         }
         Insert: {
           agent?: string | null
+          applied_to_table?: string | null
           benefit_usd?: number | null
           confidence?: string | null
           cost_usd?: number | null
           id?: number
+          is_approved?: boolean | null
           last_updated?: string | null
+          persona_used?: string | null
           process_params?: Json | null
           product_metrics_after?: Json | null
           product_metrics_before?: Json | null
@@ -1142,11 +1343,14 @@ export type Database = {
         }
         Update: {
           agent?: string | null
+          applied_to_table?: string | null
           benefit_usd?: number | null
           confidence?: string | null
           cost_usd?: number | null
           id?: number
+          is_approved?: boolean | null
           last_updated?: string | null
+          persona_used?: string | null
           process_params?: Json | null
           product_metrics_after?: Json | null
           product_metrics_before?: Json | null
@@ -1168,52 +1372,46 @@ export type Database = {
       }
       cfi_traders_refiners_jv: {
         Row: {
-          annual_cpo_volume_mt: number | null
-          cfi_engagement_angle: string | null
+          certification: string | null
           cfi_relevance: string | null
           company: string
-          contact_priority: string | null
           created_at: string | null
           hq_country: string | null
           id: string
-          key_brands: string | null
-          notes: string | null
+          indonesia_operations: string | null
           owns_mills: boolean | null
           processes_ffb: boolean | null
           role: string | null
-          sustainability_cert: string | null
+          scale_sourcing: string | null
+          status: string | null
         }
         Insert: {
-          annual_cpo_volume_mt?: number | null
-          cfi_engagement_angle?: string | null
+          certification?: string | null
           cfi_relevance?: string | null
           company: string
-          contact_priority?: string | null
           created_at?: string | null
           hq_country?: string | null
           id?: string
-          key_brands?: string | null
-          notes?: string | null
+          indonesia_operations?: string | null
           owns_mills?: boolean | null
           processes_ffb?: boolean | null
           role?: string | null
-          sustainability_cert?: string | null
+          scale_sourcing?: string | null
+          status?: string | null
         }
         Update: {
-          annual_cpo_volume_mt?: number | null
-          cfi_engagement_angle?: string | null
+          certification?: string | null
           cfi_relevance?: string | null
           company?: string
-          contact_priority?: string | null
           created_at?: string | null
           hq_country?: string | null
           id?: string
-          key_brands?: string | null
-          notes?: string | null
+          indonesia_operations?: string | null
           owns_mills?: boolean | null
           processes_ffb?: boolean | null
           role?: string | null
-          sustainability_cert?: string | null
+          scale_sourcing?: string | null
+          status?: string | null
         }
         Relationships: []
       }
@@ -1418,11 +1616,79 @@ export type Database = {
         }
         Relationships: []
       }
+      emissions_results: {
+        Row: {
+          ch4_t: number | null
+          co2e_100yr_t: number | null
+          co2e_20yr_t: number | null
+          emissions_result_id: string
+          energy_kwh: number | null
+          estate_id: string | null
+          mill_id: string | null
+          n2o_t: number | null
+          period: string
+          residue_id: string | null
+          scenario: string
+        }
+        Insert: {
+          ch4_t?: number | null
+          co2e_100yr_t?: number | null
+          co2e_20yr_t?: number | null
+          emissions_result_id?: string
+          energy_kwh?: number | null
+          estate_id?: string | null
+          mill_id?: string | null
+          n2o_t?: number | null
+          period: string
+          residue_id?: string | null
+          scenario: string
+        }
+        Update: {
+          ch4_t?: number | null
+          co2e_100yr_t?: number | null
+          co2e_20yr_t?: number | null
+          emissions_result_id?: string
+          energy_kwh?: number | null
+          estate_id?: string | null
+          mill_id?: string | null
+          n2o_t?: number | null
+          period?: string
+          residue_id?: string | null
+          scenario?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "emissions_results_estate_id_fkey"
+            columns: ["estate_id"]
+            isOneToOne: false
+            referencedRelation: "estates"
+            referencedColumns: ["estate_id"]
+          },
+          {
+            foreignKeyName: "emissions_results_mill_id_fkey"
+            columns: ["mill_id"]
+            isOneToOne: false
+            referencedRelation: "mills"
+            referencedColumns: ["mill_id"]
+          },
+          {
+            foreignKeyName: "emissions_results_residue_id_fkey"
+            columns: ["residue_id"]
+            isOneToOne: false
+            referencedRelation: "residues"
+            referencedColumns: ["residue_id"]
+          },
+        ]
+      }
       equipment_catalogue: {
         Row: {
           annual_maintenance: number | null
           capacity_unit: string | null
           capex_usd: number | null
+          capex_usd_high: number | null
+          capex_usd_low: number | null
+          capex_usd_mid: number | null
+          derate_factor: number | null
           derated_capacity: number | null
           guardrail_note: string | null
           id: number
@@ -1434,12 +1700,17 @@ export type Database = {
           nameplate_capacity: number | null
           nameplate_kw: number | null
           notes: string | null
+          oem_origin: string | null
           stage: string | null
         }
         Insert: {
           annual_maintenance?: number | null
           capacity_unit?: string | null
           capex_usd?: number | null
+          capex_usd_high?: number | null
+          capex_usd_low?: number | null
+          capex_usd_mid?: number | null
+          derate_factor?: number | null
           derated_capacity?: number | null
           guardrail_note?: string | null
           id?: number
@@ -1451,12 +1722,17 @@ export type Database = {
           nameplate_capacity?: number | null
           nameplate_kw?: number | null
           notes?: string | null
+          oem_origin?: string | null
           stage?: string | null
         }
         Update: {
           annual_maintenance?: number | null
           capacity_unit?: string | null
           capex_usd?: number | null
+          capex_usd_high?: number | null
+          capex_usd_low?: number | null
+          capex_usd_mid?: number | null
+          derate_factor?: number | null
           derated_capacity?: number | null
           guardrail_note?: string | null
           id?: number
@@ -1468,6 +1744,7 @@ export type Database = {
           nameplate_capacity?: number | null
           nameplate_kw?: number | null
           notes?: string | null
+          oem_origin?: string | null
           stage?: string | null
         }
         Relationships: [
@@ -1509,6 +1786,235 @@ export type Database = {
           tier?: string | null
         }
         Relationships: []
+      }
+      estate_residue_baseline: {
+        Row: {
+          application_pattern: string | null
+          application_rate_dm_ha_yr: number | null
+          baseline_agronomic_fate:
+            | Database["public"]["Enums"]["agronomic_fate"]
+            | null
+          baseline_discard_fate:
+            | Database["public"]["Enums"]["discard_fate"]
+            | null
+          baseline_treatment: Database["public"]["Enums"]["baseline_treatment_type"]
+          ef_n2o_baseline: number | null
+          estate_id: string | null
+          estate_residue_id: string
+          mcf_baseline_default: number | null
+          mcf_baseline_user: number | null
+          pile_height_class: string | null
+          residue_id: string | null
+        }
+        Insert: {
+          application_pattern?: string | null
+          application_rate_dm_ha_yr?: number | null
+          baseline_agronomic_fate?:
+            | Database["public"]["Enums"]["agronomic_fate"]
+            | null
+          baseline_discard_fate?:
+            | Database["public"]["Enums"]["discard_fate"]
+            | null
+          baseline_treatment: Database["public"]["Enums"]["baseline_treatment_type"]
+          ef_n2o_baseline?: number | null
+          estate_id?: string | null
+          estate_residue_id?: string
+          mcf_baseline_default?: number | null
+          mcf_baseline_user?: number | null
+          pile_height_class?: string | null
+          residue_id?: string | null
+        }
+        Update: {
+          application_pattern?: string | null
+          application_rate_dm_ha_yr?: number | null
+          baseline_agronomic_fate?:
+            | Database["public"]["Enums"]["agronomic_fate"]
+            | null
+          baseline_discard_fate?:
+            | Database["public"]["Enums"]["discard_fate"]
+            | null
+          baseline_treatment?: Database["public"]["Enums"]["baseline_treatment_type"]
+          ef_n2o_baseline?: number | null
+          estate_id?: string | null
+          estate_residue_id?: string
+          mcf_baseline_default?: number | null
+          mcf_baseline_user?: number | null
+          pile_height_class?: string | null
+          residue_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "estate_residue_baseline_estate_id_fkey"
+            columns: ["estate_id"]
+            isOneToOne: false
+            referencedRelation: "estates"
+            referencedColumns: ["estate_id"]
+          },
+          {
+            foreignKeyName: "estate_residue_baseline_residue_id_fkey"
+            columns: ["residue_id"]
+            isOneToOne: false
+            referencedRelation: "residues"
+            referencedColumns: ["residue_id"]
+          },
+        ]
+      }
+      estates: {
+        Row: {
+          climate_band: string | null
+          estate_id: string
+          mill_id: string | null
+          name: string
+          notes: string | null
+          soil_id: string | null
+        }
+        Insert: {
+          climate_band?: string | null
+          estate_id?: string
+          mill_id?: string | null
+          name: string
+          notes?: string | null
+          soil_id?: string | null
+        }
+        Update: {
+          climate_band?: string | null
+          estate_id?: string
+          mill_id?: string | null
+          name?: string
+          notes?: string | null
+          soil_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "estates_mill_id_fkey"
+            columns: ["mill_id"]
+            isOneToOne: false
+            referencedRelation: "mills"
+            referencedColumns: ["mill_id"]
+          },
+          {
+            foreignKeyName: "estates_soil_id_fkey"
+            columns: ["soil_id"]
+            isOneToOne: false
+            referencedRelation: "soils"
+            referencedColumns: ["soil_id"]
+          },
+        ]
+      }
+      lab_analyses: {
+        Row: {
+          adl_frac_dm: number | null
+          b0_kg_ch4_per_kg_cod: number | null
+          c_frac_dm: number | null
+          cf_frac_dm: number | null
+          cod_kg_m3: number | null
+          dm_fraction: number | null
+          ee_frac_dm: number | null
+          is_preferred: boolean | null
+          lab_id: string
+          n_frac_dm: number | null
+          ndf_frac_dm: number | null
+          residue_id: string | null
+          sample_date: string
+        }
+        Insert: {
+          adl_frac_dm?: number | null
+          b0_kg_ch4_per_kg_cod?: number | null
+          c_frac_dm?: number | null
+          cf_frac_dm?: number | null
+          cod_kg_m3?: number | null
+          dm_fraction?: number | null
+          ee_frac_dm?: number | null
+          is_preferred?: boolean | null
+          lab_id?: string
+          n_frac_dm?: number | null
+          ndf_frac_dm?: number | null
+          residue_id?: string | null
+          sample_date: string
+        }
+        Update: {
+          adl_frac_dm?: number | null
+          b0_kg_ch4_per_kg_cod?: number | null
+          c_frac_dm?: number | null
+          cf_frac_dm?: number | null
+          cod_kg_m3?: number | null
+          dm_fraction?: number | null
+          ee_frac_dm?: number | null
+          is_preferred?: boolean | null
+          lab_id?: string
+          n_frac_dm?: number | null
+          ndf_frac_dm?: number | null
+          residue_id?: string | null
+          sample_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lab_analyses_residue_id_fkey"
+            columns: ["residue_id"]
+            isOneToOne: false
+            referencedRelation: "residues"
+            referencedColumns: ["residue_id"]
+          },
+        ]
+      }
+      mills: {
+        Row: {
+          capacity_tph: number
+          mill_id: string
+          name: string
+          operating_days_m: number
+          operating_hours_d: number
+          utilisation_pct: number
+        }
+        Insert: {
+          capacity_tph: number
+          mill_id?: string
+          name: string
+          operating_days_m: number
+          operating_hours_d: number
+          utilisation_pct: number
+        }
+        Update: {
+          capacity_tph?: number
+          mill_id?: string
+          name?: string
+          operating_days_m?: number
+          operating_hours_d?: number
+          utilisation_pct?: number
+        }
+        Relationships: []
+      }
+      project_pathways: {
+        Row: {
+          mcf_project_default: number
+          mcf_project_user: number | null
+          project_fate: Database["public"]["Enums"]["project_fate"]
+          project_pathway_id: string
+          residue_id: string | null
+        }
+        Insert: {
+          mcf_project_default: number
+          mcf_project_user?: number | null
+          project_fate: Database["public"]["Enums"]["project_fate"]
+          project_pathway_id?: string
+          residue_id?: string | null
+        }
+        Update: {
+          mcf_project_default?: number
+          mcf_project_user?: number | null
+          project_fate?: Database["public"]["Enums"]["project_fate"]
+          project_pathway_id?: string
+          residue_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_pathways_residue_id_fkey"
+            columns: ["residue_id"]
+            isOneToOne: false
+            referencedRelation: "residues"
+            referencedColumns: ["residue_id"]
+          },
+        ]
       }
       report_builder: {
         Row: {
@@ -1560,6 +2066,63 @@ export type Database = {
           soil_type?: string | null
         }
         Relationships: []
+      }
+      residues: {
+        Row: {
+          code: string
+          name: string
+          residue_id: string
+        }
+        Insert: {
+          code: string
+          name: string
+          residue_id?: string
+        }
+        Update: {
+          code?: string
+          name?: string
+          residue_id?: string
+        }
+        Relationships: []
+      }
+      residues_mass: {
+        Row: {
+          dm_t_per_month: number | null
+          estate_id: string | null
+          ffb_share_pct: number | null
+          residue_id: string | null
+          residues_mass_id: string
+        }
+        Insert: {
+          dm_t_per_month?: number | null
+          estate_id?: string | null
+          ffb_share_pct?: number | null
+          residue_id?: string | null
+          residues_mass_id?: string
+        }
+        Update: {
+          dm_t_per_month?: number | null
+          estate_id?: string | null
+          ffb_share_pct?: number | null
+          residue_id?: string | null
+          residues_mass_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "residues_mass_estate_id_fkey"
+            columns: ["estate_id"]
+            isOneToOne: false
+            referencedRelation: "estates"
+            referencedColumns: ["estate_id"]
+          },
+          {
+            foreignKeyName: "residues_mass_residue_id_fkey"
+            columns: ["residue_id"]
+            isOneToOne: false
+            referencedRelation: "residues"
+            referencedColumns: ["residue_id"]
+          },
+        ]
       }
       s3_algae_uplift: {
         Row: {
@@ -2020,6 +2583,27 @@ export type Database = {
         }
         Relationships: []
       }
+      soils: {
+        Row: {
+          drainage: string | null
+          name: string
+          notes: string | null
+          soil_id: string
+        }
+        Insert: {
+          drainage?: string | null
+          name: string
+          notes?: string | null
+          soil_id?: string
+        }
+        Update: {
+          drainage?: string | null
+          name?: string
+          notes?: string | null
+          soil_id?: string
+        }
+        Relationships: []
+      }
       visitor_registry: {
         Row: {
           country: string | null
@@ -2067,67 +2651,76 @@ export type Database = {
       }
     }
     Views: {
-      cfi_kcp_map: {
+      v_bsf_performance: {
         Row: {
-          capacity_t_kernels_day: number | null
-          cfi_pkm_opportunity: string | null
-          cfi_prospect_tier: string | null
-          confidence_level: string | null
-          district: string | null
-          est_pkm_output_t_month: number | null
-          kcp_name: string | null
-          on_site_at_mill: boolean | null
-          owner_company: string | null
-          pkm_price_usd_t: string | null
-          province: string | null
+          parameter: string | null
+          residue_type: string | null
+          source_notes: string | null
+          stage_code: string | null
+          unit: string | null
+          value_numeric: number | null
+          value_text: string | null
+        }
+        Insert: {
+          parameter?: string | null
+          residue_type?: string | null
+          source_notes?: string | null
+          stage_code?: string | null
+          unit?: string | null
+          value_numeric?: number | null
+          value_text?: string | null
+        }
+        Update: {
+          parameter?: string | null
+          residue_type?: string | null
+          source_notes?: string | null
+          stage_code?: string | null
+          unit?: string | null
+          value_numeric?: number | null
+          value_text?: string | null
         }
         Relationships: []
       }
-      cfi_mill_full_profile: {
+      v_pke_nutrient_journey: {
         Row: {
-          capacity_tph: number | null
-          cfi_approach_status: string | null
-          cfi_n_loss_flag: string | null
-          cfi_p_fixation_flag: string | null
-          cfi_priority_amendment: string | null
-          cfi_prospect_priority: string | null
-          cfi_prospect_tier: string | null
-          data_confidence: string | null
-          district: string | null
-          effective_soil_type: string | null
-          est_efb_at_60tph_t_yr: number | null
-          est_opdc_t_yr: number | null
-          ispo_certified: boolean | null
-          latitude: number | null
-          longitude: number | null
-          mill_id: number | null
-          mill_name: string | null
-          notes: string | null
-          owner_company: string | null
-          owner_rspo_status: string | null
-          parent_controlling_group: string | null
-          peat_present: boolean | null
-          ph_max: number | null
-          ph_min: number | null
-          pkm_available_on_site: boolean | null
-          province: string | null
-          rspo_certified: boolean | null
-          soil_confidence: string | null
+          direction: string | null
+          parameter: string | null
+          stage_code: string | null
+          stage_label: string | null
+          unit: string | null
+          value_numeric: number | null
+          value_usd_per_t_dm: number | null
+          vs_stage0_pct: string | null
+        }
+        Insert: {
+          direction?: string | null
+          parameter?: string | null
+          stage_code?: string | null
+          stage_label?: string | null
+          unit?: string | null
+          value_numeric?: number | null
+          value_usd_per_t_dm?: number | null
+          vs_stage0_pct?: string | null
+        }
+        Update: {
+          direction?: string | null
+          parameter?: string | null
+          stage_code?: string | null
+          stage_label?: string | null
+          unit?: string | null
+          value_numeric?: number | null
+          value_usd_per_t_dm?: number | null
+          vs_stage0_pct?: string | null
         }
         Relationships: []
       }
-      cfi_tier1_targets: {
+      v_pke_value_progression: {
         Row: {
-          cfi_contact_status: string | null
-          cfi_prospect_tier: string | null
-          company: string | null
-          has_kernel_crushing_plant: boolean | null
-          mills_in_db: number | null
-          pkm_available_on_site: boolean | null
-          rank: number | null
-          rspo_status: string | null
-          total_efb_t_yr: number | null
-          total_opdc_t_yr: number | null
+          om_quality_index: number | null
+          stage_code: string | null
+          stage_label: string | null
+          total_value_usd: number | null
+          uplift_vs_prev_stage: number | null
         }
         Relationships: []
       }
@@ -2136,7 +2729,24 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      agronomic_fate:
+        | "MULCHED_IN_FIELD"
+        | "ROW_INTERROW_COMPOSTING"
+        | "WINDROW_COMPOSTING_PAD"
+        | "INCORPORATED_INTO_SOIL"
+        | "OTHER_STRUCTURED_PROGRAM"
+      baseline_treatment_type: "DISCARDED_AS_WASTE" | "AGRONOMIC_MANAGEMENT"
+      discard_fate:
+        | "UNMANAGED_SHALLOW_PILE_LT3M"
+        | "UNMANAGED_DEEP_PILE_GE5M"
+        | "DUMPED_FIELD_SCATTERED"
+        | "OPEN_BURNING"
+        | "TO_PONDS"
+      project_fate:
+        | "CFI_BSF"
+        | "CFI_COMPOST"
+        | "CFI_BSF_PLUS_COMPOST"
+        | "CFI_COVERED_LAGOON_FLARE"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2263,6 +2873,28 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      agronomic_fate: [
+        "MULCHED_IN_FIELD",
+        "ROW_INTERROW_COMPOSTING",
+        "WINDROW_COMPOSTING_PAD",
+        "INCORPORATED_INTO_SOIL",
+        "OTHER_STRUCTURED_PROGRAM",
+      ],
+      baseline_treatment_type: ["DISCARDED_AS_WASTE", "AGRONOMIC_MANAGEMENT"],
+      discard_fate: [
+        "UNMANAGED_SHALLOW_PILE_LT3M",
+        "UNMANAGED_DEEP_PILE_GE5M",
+        "DUMPED_FIELD_SCATTERED",
+        "OPEN_BURNING",
+        "TO_PONDS",
+      ],
+      project_fate: [
+        "CFI_BSF",
+        "CFI_COMPOST",
+        "CFI_BSF_PLUS_COMPOST",
+        "CFI_COVERED_LAGOON_FLARE",
+      ],
+    },
   },
 } as const
