@@ -834,7 +834,30 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
     );
   }
 
-  return (
+  // ── WB4 S3 BIO TAB (placeholder) ──────────────────────────────────────────
+  function renderWB4() {
+    return (
+      <div style={s.body}>
+        <div style={s.card}>
+          <h3 style={{ color: C.accent, margin: "0 0 8px" }}>WB4 S3 Bio</h3>
+          <p style={{ color: C.textDim, fontSize: 12 }}>Placeholder — WB4 S3 Biological conditioning module. Component code pending.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // ── PERSONAS TAB (placeholder) ────────────────────────────────────────────
+  function renderPersonas() {
+    return (
+      <div style={s.body}>
+        <div style={s.card}>
+          <h3 style={{ color: C.accent, margin: "0 0 8px" }}>Personas</h3>
+          <p style={{ color: C.textDim, fontSize: 12 }}>Placeholder — AI Persona management module. Component code pending.</p>
+        </div>
+      </div>
+    );
+  }
+
     <div style={s.app}>
       <div style={s.header}>
         <div>
@@ -858,6 +881,8 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           { id: "research",    label: "🔬 AI Research" },
           { id: "add",         label: "➕ Add New" },
           { id: "admin",       label: "🔒 Admin" },
+          { id: "wb4",         label: "WB4 S3 Bio" },
+          { id: "personas",    label: "Personas" },
         ].map(t => <button key={t.id} style={s.tab(tab === t.id)} onClick={() => setTab(t.id)}>{t.label}</button>)}
       </div>
 
@@ -868,6 +893,8 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
       {tab === "research"    && renderResearch()}
       {tab === "add"         && renderAdd()}
       {tab === "admin"       && renderAdmin()}
+      {tab === "wb4"         && renderWB4()}
+      {tab === "personas"    && renderPersonas()}
     </div>
   );
 
