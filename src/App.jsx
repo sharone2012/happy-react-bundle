@@ -366,25 +366,25 @@ export default function CFIBioManager() {
     };
     // Guess category
     if (text.includes("Spirulina") || text.includes("Chlorella") || text.includes("algae") || text.includes("microalgae")) {
-      afForm.category = "🌿 Algae-B Stream";
+      afForm.category = "Algae-B Stream";
     } else if (text.includes("Rhizopus") || text.includes("tempeh") || (text.toLowerCase().includes("protein fungi") || (text.toLowerCase().includes("fungi") && text.includes("protease") && text.includes("lipase")))) {
-      afForm.category = "🍄 Protein Fungi";
+      afForm.category = "Protein Fungi";
     } else if (text.includes("thermophil") || text.includes("Thermomyces") || text.includes("Geobacillus")) {
-      afForm.category = text.toLowerCase().includes("fungi") ? "🔥 Thermo Fungi" : "🔥 Thermo Bacteria";
+      afForm.category = text.toLowerCase().includes("fungi") ? "Thermo Fungi" : "Thermo Bacteria";
     } else if (text.includes("N-fix") || text.includes("Azotobacter") || text.includes("Azospirillum")) {
-      afForm.category = "❄️ N-Fixer";
+      afForm.category = "N-Fixer";
     } else if (text.toLowerCase().includes("lignin") && (text.toLowerCase().includes("fungi") || text.toLowerCase().includes("mushroom"))) {
-      afForm.category = "🍄 Lignin Fungi";
+      afForm.category = "Lignin Fungi";
     } else if (text.toLowerCase().includes("cellulas") && (text.toLowerCase().includes("fungi"))) {
-      afForm.category = "🍄 Cellulase Fungi";
+      afForm.category = "Cellulase Fungi";
     } else if (text.toLowerCase().includes("fungi") || text.toLowerCase().includes("mushroom")) {
-      afForm.category = "🍄 Lignin Fungi";
+      afForm.category = "Lignin Fungi";
     } else if (text.toLowerCase().includes("enzyme") || text.toLowerCase().includes("cellulase")) {
-      afForm.category = "⚗️ Enzyme";
+      afForm.category = "Enzyme";
     } else if (text.includes("Streptomyces") || text.toLowerCase().includes("actinomycete")) {
-      afForm.category = "🦠 Actinomycete";
+      afForm.category = "Actinomycete";
     } else if (text.includes("Yeast") || text.includes("Saccharomyces") || text.includes("yeast")) {
-      afForm.category = "🧪 Yeast";
+      afForm.category = "Yeast";
     }
     setAutoFillResult(afForm);
   }
