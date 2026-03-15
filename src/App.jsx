@@ -427,7 +427,7 @@ export default function CFIBioManager() {
     else { setAdminMsg({ type: "err", msg: "Fail Incorrect PIN." }); }
   }
 
-  if (loading) return <div style={{ ...s.app, display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}><span style={{ color: C.accent }}>⌛ Loading CFI Biological Database…</span></div>;
+  if (loading) return <div style={{ ...s.app, display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}><span style={{ color: C.accent }}>Pending Loading CFI Biological Database...</span></div>;
 
   // ── REGISTRY TAB ────────────────────────────────────────────────────────────
   function renderRegistry() {
