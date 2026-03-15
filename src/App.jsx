@@ -860,6 +860,187 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
     );
   }
 
+  // ── S1 TAB — MECHANICAL PRE-PROCESSING ─────────────────────────────────────
+  function renderS1() {
+    // Derived calculations
+    const effFFB     = +(s1.ffbCapacity * s1.utilisation / 100).toFixed(2);
+    const efbTPH     = +(effFFB * 0.225).toFixed(3);
+    const efbTPD     = +(efbTPH * s1.hrsDay).toFixed(1);
+    const efbMonthWet= +(efbTPD * s1.daysMonth).toFixed(0);
+    const efbDMFrac  = (100 - s1.efbMC) / 100;
+    const efbDMpd    = +(efbTPD * efbDMFrac).toFixed(1);
+    const efbMonthDM = +(efbDMpd * s1.daysMonth).toFixed(0);
+
+    // OPDC natural yield = 15.2% of EFB fresh weight
+    const opdcNatTPD = +(efbTPD * 0.152).toFixed(2);
+    const opdcNatDM  = +(opdcNatTPD * (100 - s1.opdcMC) / 100).toFixed(2);
+    const totalDMTarget = s1.efbPct > 0 ? efbDMpd / (s1.efbPct / 100) : 0;
+    const opdcDMreq  = +(totalDMTarget * (s1.opdcPct / 100)).toFixed(1);
+    const opdcShortfall = +(opdcDMreq - opdcNatDM).toFixed(1);
+    const opdcMonthDM = +(opdcDMreq * s1.daysMonth).toFixed(0);
+
+    // Blend MC (wet-weight-weighted)
+    const efbDMfrac2    = (100 - s1.efbMC) / 100;
+    const opdcDMfrac2   = (100 - s1.opdcMC) / 100;
+    const blendWetPerDM = (s1.efbPct / 100) / efbDMfrac2 + (s1.opdcPct / 100) / opdcDMfrac2;
+    const blendMC       = +(100 * (1 - 1 / blendWetPerDM)).toFixed(1);
+    const blendDMfrac   = (100 - blendMC) / 100;
+    const blendDM       = +(efbMonthDM + opdcMonthDM).toFixed(0);
+    const blendWet      = +(blendDM / blendDMfrac).toFixed(0);
+
+    // ── CLASS A GUARDRAIL: OPDC Press Discharge MC — hard clamp at 40% ──
+    const rawPressMC    = s1.opdcPressMC;
+    const clampedPressMC = Math.max(40, rawPressMC);
+    const pressMCFloored = rawPressMC <= 40;
+
+    // Equipment sizing
+    const shredderTPH  = +(efbTPH / 0.65).toFixed(1);
+    const hammerTPH    = +(efbTPH * 0.3 / 0.65).toFixed(1);
+    const screwPressTPH= +(opdcNatTPD * 1.1 / 24 / 0.65).toFixed(2);
+    const conveyorTPH  = +(efbTPH * 1.2).toFixed(1);
+
+    const CalcRow = ({ label, value, unit, color }) => (
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: `1px solid ${C.border}` }}>
+        <span style={{ color: C.textDim, fontSize: 12 }}>{label}</span>
+        <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 14, color: color || C.accent }}>{value} <span style={{ color: C.textDim, fontSize: 10, fontWeight: 400 }}>{unit}</span></span>
+      </div>
+    );
+
+    return (
+      <div style={s.body}>
+        <div style={{ fontSize: 18, fontWeight: 700, color: C.accent, marginBottom: 12, fontFamily: "'Syne', sans-serif" }}>S1 — Mechanical Pre-Processing</div>
+
+        {/* KPI Row */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 16 }}>
+          {[
+            { label: "EFB Monthly (wet)", value: efbMonthWet.toLocaleString(), unit: "t/month", col: C.accent },
+            { label: "EFB DM Monthly", value: efbMonthDM.toLocaleString(), unit: "t DM/month", col: C.accent },
+            { label: "OPDC DM Required", value: opdcMonthDM.toLocaleString(), unit: "t DM/month", col: C.gold },
+            { label: "Blended Substrate", value: blendWet.toLocaleString(), unit: "t FW/month → S2", col: C.green },
+          ].map((k, i) => (
+            <div key={i} style={{ ...s.card, textAlign: "center", padding: 12 }}>
+              <div style={{ color: C.textDim, fontSize: 10, letterSpacing: 0.5, marginBottom: 4 }}>{k.label}</div>
+              <div style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: k.col }}>{k.value}</div>
+              <div style={{ color: C.muted, fontSize: 9 }}>{k.unit}</div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          {/* LEFT: Mill Inputs + EFB */}
+          <div>
+            <div style={s.card}>
+              <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section A: Mill Parameters</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                {[
+                  { label: "FFB Capacity", key: "ffbCapacity", unit: "TPH" },
+                  { label: "Utilisation", key: "utilisation", unit: "%" },
+                  { label: "Operating Hours", key: "hrsDay", unit: "hrs/day" },
+                  { label: "Operating Days", key: "daysMonth", unit: "days/month" },
+                ].map(f => (
+                  <div key={f.key}>
+                    <label style={{ ...s.label, fontSize: 10 }}>{f.label} <span style={{ color: C.muted }}>({f.unit})</span></label>
+                    <input type="number" style={s.input} value={s1[f.key]} onChange={e => upS1(f.key, Number(e.target.value))} />
+                  </div>
+                ))}
+              </div>
+              <div style={{ marginTop: 10 }}>
+                <CalcRow label="Effective FFB" value={effFFB} unit="TPH" color={C.green} />
+                <CalcRow label="Monthly FFB" value={(effFFB * s1.hrsDay * s1.daysMonth).toLocaleString()} unit="t/month" color={C.green} />
+              </div>
+            </div>
+
+            <div style={s.card}>
+              <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section B: EFB Pre-Processing</div>
+              <CalcRow label="EFB Nameplate Throughput" value={efbTPH} unit="TPH (wet)" />
+              <CalcRow label="EFB Daily (wet)" value={efbTPD} unit="t/day" />
+              <CalcRow label="EFB DM at mill" value={(efbDMFrac * 100).toFixed(1)} unit="%" />
+              <CalcRow label="EFB DM per day" value={efbDMpd} unit="t DM/day" />
+              <CalcRow label="EFB Monthly (wet)" value={efbMonthWet.toLocaleString()} unit="t/month" />
+              <CalcRow label="EFB Monthly DM" value={efbMonthDM.toLocaleString()} unit="t DM/month" />
+            </div>
+          </div>
+
+          {/* RIGHT: OPDC */}
+          <div>
+            <div style={s.card}>
+              <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section C: OPDC Pre-Processing</div>
+              <CalcRow label="Natural OPDC (wet, 15.2%)" value={opdcNatTPD} unit="t/day" />
+              <CalcRow label="Natural OPDC DM" value={opdcNatDM} unit="t DM/day" />
+              <CalcRow label="OPDC DM Required (blend)" value={opdcDMreq} unit="t DM/day" color={C.gold} />
+              <CalcRow label="OPDC Shortfall" value={opdcShortfall > 0 ? opdcShortfall : "0"} unit="t DM/day" color={opdcShortfall > 0 ? C.danger : C.green} />
+              <CalcRow label="OPDC Monthly DM (required)" value={opdcMonthDM.toLocaleString()} unit="t DM/month" />
+
+              {/* OPDC Press Discharge MC — CLASS A GUARDRAIL */}
+              <div style={{ marginTop: 12, padding: 10, background: "#0d1a2e", borderRadius: 6, border: `1px solid ${C.border}` }}>
+                <label style={{ ...s.label, fontSize: 10 }}>OPDC Press Discharge MC <span style={{ color: C.muted }}>(%)</span></label>
+                <input type="number" style={s.input} value={rawPressMC} onChange={e => upS1("opdcPressMC", Number(e.target.value))} />
+                <div style={{ marginTop: 6 }}>
+                  <CalcRow label="Clamped Press MC (applied)" value={clampedPressMC} unit="%" color={pressMCFloored ? C.warn : C.green} />
+                </div>
+                {pressMCFloored && (
+                  <div style={{ background: C.warn + "18", border: `1px solid ${C.warn}`, color: C.warn, borderRadius: 5, padding: "10px 14px", marginTop: 8, fontSize: 12, lineHeight: 1.6 }}>
+                    <strong>CLASS A GUARDRAIL:</strong> OPDC Press MC floored at 40% — below this threshold pore damage kills BSF colonisation. Check press settings.
+                  </div>
+                )}
+              </div>
+
+              {opdcShortfall > 0 && (
+                <div style={s.alert(C.warn)}>
+                  Source {(opdcShortfall * s1.daysMonth).toFixed(0)} t DM/month OPDC externally
+                </div>
+              )}
+            </div>
+
+            <div style={s.card}>
+              <div style={{ fontSize: 14, fontWeight: 700, color: C.gold, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section D: Equipment Sizing</div>
+              <div style={{ fontSize: 12, color: C.textDim, lineHeight: 1.8 }}>
+                <div>• <span style={{ color: C.gold }}>Shredder:</span> {shredderTPH} TPH nameplate (÷0.65 Asian derating)</div>
+                <div>• <span style={{ color: C.gold }}>Hammer Mill:</span> {hammerTPH} TPH (30% to 2mm fraction)</div>
+                <div>• <span style={{ color: C.gold }}>Screw Press (OPDC):</span> {screwPressTPH} TPH target</div>
+                <div>• <span style={{ color: C.gold }}>Conveyor:</span> {conveyorTPH} TPH design (20% margin)</div>
+                <div>• <span style={{ color: C.accent }}>Particle Target:</span> 2mm for BSF substrate</div>
+                <div>• <span style={{ color: C.accent }}>Asian Derating Factor:</span> 0.65× nameplate</div>
+              </div>
+            </div>
+
+            <div style={s.card}>
+              <div style={{ fontSize: 14, fontWeight: 700, color: C.danger, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>OPDC Constraints</div>
+              <div style={{ fontSize: 12, color: C.textDim, lineHeight: 1.8 }}>
+                <div>• <span style={{ color: C.danger }}>NEVER below 40% MC</span> — pore damage kills BSF</div>
+                <div>• Target 45–55% MC at press discharge</div>
+                <div>• OPDC N: 2.40% DM (CFI confirmed)</div>
+                <div>• OPDC yield: 15.2% of EFB fresh weight</div>
+                <div>• Lignin 30.7%, C:N 20 (high protein vs EFB)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* S1 → S2 Connector */}
+        <div style={{ ...s.card, border: `1px solid ${C.green}44` }}>
+          <div style={{ fontSize: 14, fontWeight: 700, color: C.green, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>S1 Output → S2 Connector</div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
+            {[
+              { label: "Blended FW (EFB+OPDC)", value: blendWet.toLocaleString(), unit: "t/month", col: C.green },
+              { label: "Blended DM", value: blendDM.toLocaleString(), unit: "t DM/month", col: C.green },
+              { label: "Blend MC", value: blendMC, unit: "% (wet-weight-corrected)", col: C.accent },
+            ].map((k, i) => (
+              <div key={i} style={{ textAlign: "center" }}>
+                <div style={{ color: C.textDim, fontSize: 10, marginBottom: 3 }}>{k.label}</div>
+                <div style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 16, color: k.col }}>{k.value}</div>
+                <div style={{ color: C.muted, fontSize: 9 }}>{k.unit}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{ ...s.alert(C.green), marginTop: 10, fontSize: 11 }}>
+            {blendWet.toLocaleString()} t FW/month total substrate (EFB+OPDC) ready for Stage 2
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // ── PERSONAS TAB (placeholder) ────────────────────────────────────────────
   function renderPersonas() {
     return (
