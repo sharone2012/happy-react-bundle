@@ -559,6 +559,63 @@ export type Database = {
           },
         ]
       }
+      cfi_personas: {
+        Row: {
+          active: boolean | null
+          contact_email: string | null
+          country: string | null
+          created_at: string | null
+          full_title: string | null
+          governance_layer: string | null
+          id: number
+          institution: string | null
+          key_contributions: string[] | null
+          persona_code: string
+          persona_name: string
+          prompt_priority: number | null
+          role_in_cfi: string | null
+          short_title: string | null
+          sort_order: number | null
+          specialisations: string[] | null
+        }
+        Insert: {
+          active?: boolean | null
+          contact_email?: string | null
+          country?: string | null
+          created_at?: string | null
+          full_title?: string | null
+          governance_layer?: string | null
+          id?: number
+          institution?: string | null
+          key_contributions?: string[] | null
+          persona_code: string
+          persona_name: string
+          prompt_priority?: number | null
+          role_in_cfi?: string | null
+          short_title?: string | null
+          sort_order?: number | null
+          specialisations?: string[] | null
+        }
+        Update: {
+          active?: boolean | null
+          contact_email?: string | null
+          country?: string | null
+          created_at?: string | null
+          full_title?: string | null
+          governance_layer?: string | null
+          id?: number
+          institution?: string | null
+          key_contributions?: string[] | null
+          persona_code?: string
+          persona_name?: string
+          prompt_priority?: number | null
+          role_in_cfi?: string | null
+          short_title?: string | null
+          sort_order?: number | null
+          specialisations?: string[] | null
+        }
+        Relationships: []
+      }
       cfi_product_soil_response: {
         Row: {
           amf_confidence: string | null
