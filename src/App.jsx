@@ -896,7 +896,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
     // Equipment sizing
     const shredderTPH  = +(efbTPH / 0.65).toFixed(1);
     const hammerTPH    = +(efbTPH * 0.3 / 0.65).toFixed(1);
-    const screwPressTPH= +(opdcNatTPD * 1.1 / 24 / 0.65).toFixed(2);
+    const screwPressTPH= +(opdcNatTPD * 1.1 / 24 / 0.65).toFixed(1);
     const conveyorTPH  = +(efbTPH * 1.2).toFixed(1);
 
     const CalcRow = ({ label, value, unit, color }) => (
