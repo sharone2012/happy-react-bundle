@@ -570,7 +570,7 @@ export default function CFIBioManager() {
 
         {/* PROMPT DISPLAY */}
         <div style={s.card}>
-          <div style={{ color: C.gold, fontSize: 11, letterSpacing: 1, marginBottom: 8, textTransform: "uppercase" }}>📄 CFI Biological Research Prompt Template</div>
+          <div style={{ color: C.gold, fontSize: 11, letterSpacing: 1, marginBottom: 8, textTransform: "uppercase" }}>CFI Biological Research Prompt Template</div>
           <div style={{ color: C.textDim, fontSize: 11, marginBottom: 8 }}>This is the prompt automatically used when you research a biological. Copy and use in any AI system (Perplexity, GPT, Gemini etc.):</div>
           <div style={{ ...s.aiBox, maxHeight: 300, background: "#0d1628" }}>
 {`MASTER CFI BIOLOGICAL RESEARCH PROMPT
