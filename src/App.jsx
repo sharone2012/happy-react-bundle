@@ -117,7 +117,7 @@ const s = {
   app: { background: C.bg, minHeight: "100vh", color: C.text, fontFamily: "'IBM Plex Mono', 'Courier New', monospace", fontSize: 13 },
   header: { background: C.surface, borderBottom: `2px solid ${C.accent}`, padding: "12px 24px", display: "flex", alignItems: "center", gap: 16 },
   logo: { fontSize: 11, color: C.accent, letterSpacing: 2, textTransform: "uppercase" },
-  title: { fontSize: 18, fontWeight: 700, color: C.text, margin: 0 },
+  title: { fontSize: 18, fontWeight: 700, color: C.text, margin: 0, fontFamily: "'Syne', sans-serif" },
   tabs: { display: "flex", background: C.surface, borderBottom: `1px solid ${C.border}`, padding: "0 16px", gap: 2 },
   tab: (active) => ({ padding: "10px 18px", background: active ? C.card : "transparent", color: active ? C.accent : C.textDim, border: "none", borderBottom: active ? `2px solid ${C.accent}` : "2px solid transparent", cursor: "pointer", fontFamily: "inherit", fontSize: 12, letterSpacing: 1, textTransform: "uppercase", fontWeight: active ? 700 : 400 }),
   body: { padding: 20 },
@@ -436,7 +436,7 @@ export default function CFIBioManager() {
       <div style={s.body}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
           <div>
-            <div style={{ fontSize: 16, fontWeight: 700, color: C.accent }}>S3 ORGANISM REGISTRY</div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: C.accent, fontFamily: "'Syne', sans-serif" }}>S3 ORGANISM REGISTRY</div>
             <div style={{ color: C.textDim, fontSize: 11, marginTop: 2 }}>{organisms.length} organisms total · {userAdded.length} user-added · Showing {filtered.length} · <span style={{ color: "#f6e05e" }}>v2 Mar 2026</span></div>
           </div>
           <button style={s.btnFill(C.accent)} onClick={() => setTab("add")}>+ ADD NEW BIOLOGICAL</button>
@@ -530,7 +530,7 @@ export default function CFIBioManager() {
   function renderResearch() {
     return (
       <div style={s.body}>
-        <div style={{ fontSize: 16, fontWeight: 700, color: C.accent, marginBottom: 4 }}>AI BIOLOGICAL RESEARCH ENGINE</div>
+        <div style={{ fontSize: 18, fontWeight: 700, color: C.accent, marginBottom: 4, fontFamily: "'Syne', sans-serif" }}>AI BIOLOGICAL RESEARCH ENGINE</div>
         <div style={{ color: C.textDim, fontSize: 11, marginBottom: 16 }}>Enter a biological organism name — the AI will research full specifications, dosing, suppliers, and CFI compatibility using the Master Persona framework.</div>
 
         <div style={s.card}>
@@ -610,7 +610,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
   function renderAdd() {
     return (
       <div style={s.body}>
-        <div style={{ fontSize: 16, fontWeight: 700, color: C.accent, marginBottom: 4 }}>ADD NEW BIOLOGICAL</div>
+        <div style={{ fontSize: 18, fontWeight: 700, color: C.accent, marginBottom: 4, fontFamily: "'Syne', sans-serif" }}>ADD NEW BIOLOGICAL</div>
         <div style={{ color: C.textDim, fontSize: 11, marginBottom: 16 }}>All fields match CFI S3 Organism Registry format. Blue fields = inputs. New organisms are shown with a GREEN "NEW" badge in the registry. Only Sharon (Admin) can delete organisms.</div>
 
         {formMsg && <div style={s.alert(formMsg.type === "ok" ? C.green : C.danger)}>{formMsg.msg}</div>}
@@ -758,7 +758,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
   function renderAdmin() {
     return (
       <div style={s.body}>
-        <div style={{ fontSize: 16, fontWeight: 700, color: C.danger, marginBottom: 4 }}>Locked ADMIN — DELETE & GOVERNANCE</div>
+        <div style={{ fontSize: 18, fontWeight: 700, color: C.danger, marginBottom: 4, fontFamily: "'Syne', sans-serif" }}>Locked ADMIN — DELETE & GOVERNANCE</div>
         <div style={{ color: C.textDim, fontSize: 11, marginBottom: 16 }}>Only Sharon (System Admin) can delete organisms from the database. All user additions are permanent unless removed by admin. Users with permission can add organisms — contact Sharon to grant access.</div>
 
         {adminMsg && <div style={s.alert(adminMsg.type === "ok" ? C.green : C.danger)}>{adminMsg.msg}</div>}
@@ -1058,7 +1058,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
 
     return (
       <div style={s.panel}>
-        <div style={{ color: C.accent, fontWeight: 700, fontSize: 13, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 4 }}>BSF Handoff Gate</div>
+        <div style={{ color: C.accent, fontWeight: 700, fontSize: 18, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 4, fontFamily: "'Syne', sans-serif" }}>BSF Handoff Gate</div>
         <div style={{ color: C.textDim, fontSize: 11, marginBottom: 16 }}>All 6 criteria must PASS before introducing BSF larvae. Enter measured substrate values.</div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16 }}>
           {CRITERIA.map((c, idx) => {
