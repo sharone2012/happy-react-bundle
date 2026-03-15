@@ -2666,6 +2666,79 @@ export type Database = {
       }
     }
     Views: {
+      cfi_kcp_map: {
+        Row: {
+          capacity_t_kernels_day: number | null
+          cfi_pkm_opportunity: string | null
+          cfi_prospect_tier: string | null
+          confidence_level: string | null
+          est_pkm_output_t_month: number | null
+          kcp_name: string | null
+          location_city_port: string | null
+          location_province: string | null
+          on_site_at_mill: boolean | null
+          operator_company: string | null
+          owner_company: string | null
+          pkm_price_usd_t: string | null
+          pkm_type: string | null
+        }
+        Relationships: []
+      }
+      cfi_mill_full_profile: {
+        Row: {
+          capacity_tph: number | null
+          cfi_approach_status: string | null
+          cfi_n_loss_flag: string | null
+          cfi_notes: string | null
+          cfi_p_fixation_flag: string | null
+          cfi_priority_amendment: string | null
+          cfi_prospect_tier: string | null
+          dominant_soil_local: string | null
+          efb_t_yr: number | null
+          has_kernel_crushing_plant: boolean | null
+          island: string | null
+          latitude: number | null
+          liming_required: boolean | null
+          longitude: number | null
+          mill_id: number | null
+          mill_name: string | null
+          n_loss_pct_max: number | null
+          n_loss_pct_min: number | null
+          opdc_t_yr: number | null
+          owner_company: string | null
+          p_fix_pct_max: number | null
+          p_fix_pct_min: number | null
+          peat_present: boolean | null
+          ph_max: number | null
+          ph_min: number | null
+          pkm_available_on_site: boolean | null
+          pkm_t_yr_est: number | null
+          province: string | null
+          rainfall_mm_yr_max: number | null
+          rainfall_mm_yr_min: number | null
+          region: string | null
+          rspo_status: string | null
+          soil_confidence: string | null
+          soil_type: string | null
+        }
+        Relationships: []
+      }
+      cfi_tier1_targets: {
+        Row: {
+          cfi_prospect_tier: string | null
+          company: string | null
+          has_kernel_crushing_plant: boolean | null
+          mills_in_database: number | null
+          number_of_mills: number | null
+          pkm_available_on_site: boolean | null
+          planted_area_ha: number | null
+          province_locations: string | null
+          rspo_status: string | null
+          total_efb_t_yr: number | null
+          total_opdc_t_yr: number | null
+        }
+        Relationships: []
+      }
       v_bsf_performance: {
         Row: {
           parameter: string | null
