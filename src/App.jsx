@@ -1323,10 +1323,10 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
     function KPI({ label, value, unit, color, sub }) {
       return (
         <div style={{ background: "#060e1c", borderRadius: 7, padding: "10px 12px", textAlign: "center", borderTop: "2px solid " + (color || C.accent) }}>
-          <div style={{ color: C.textDim, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 3 }}>{label}</div>
+          <div style={{ color: C.textDim, fontSize: 13, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 3 }}>{label}</div>
           <div style={{ color: color || C.accent, fontFamily: "monospace", fontWeight: 800, fontSize: 18 }}>{value}</div>
-          <div style={{ color: C.textDim, fontSize: 9, marginTop: 2 }}>{unit}</div>
-          {sub && <div style={{ color: C.textDim, fontSize: 9, marginTop: 3, fontStyle: "italic" }}>{sub}</div>}
+          <div style={{ color: C.textDim, fontSize: 13, fontWeight: 600, marginTop: 2 }}>{unit}</div>
+          {sub && <div style={{ color: C.textDim, fontSize: 13, marginTop: 3, fontStyle: "italic" }}>{sub}</div>}
         </div>
       );
     }
