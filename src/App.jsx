@@ -436,7 +436,7 @@ export default function CFIBioManager() {
       <div style={s.body}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
           <div>
-            <div style={{ fontSize: 16, fontWeight: 700, color: C.accent }}>S3 ORGANISM REGISTRY</div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: C.accent, fontFamily: "'Syne', sans-serif" }}>S3 ORGANISM REGISTRY</div>
             <div style={{ color: C.textDim, fontSize: 11, marginTop: 2 }}>{organisms.length} organisms total · {userAdded.length} user-added · Showing {filtered.length} · <span style={{ color: "#f6e05e" }}>v2 Mar 2026</span></div>
           </div>
           <button style={s.btnFill(C.accent)} onClick={() => setTab("add")}>+ ADD NEW BIOLOGICAL</button>
