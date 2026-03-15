@@ -1210,6 +1210,9 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
       </div>
     );
   }
+
+// ─── DOSAGE CALCULATOR SUB-COMPONENT ─────────────────────────────────────────
+function DosageCalc({ organisms }) {
   const [batchFW, setBatchFW] = useState(1000);
   const [dm, setDm] = useState(35);
   const [selected, setSelected] = useState([]);
