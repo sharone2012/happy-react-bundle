@@ -463,7 +463,7 @@ export default function CFIBioManager() {
 
         {userAdded.length > 0 && (
           <div style={s.alert(C.green)}>
-            <strong>🆕 {userAdded.length} User-Added Organism{userAdded.length > 1 ? "s" : ""}:</strong>{" "}
+            <strong>NEW {userAdded.length} User-Added Organism{userAdded.length > 1 ? "s" : ""}:</strong>{" "}
             {userAdded.map(o => `${o.name} (by ${o.addedBy}, ${o.addedDate})`).join(" · ")}
           </div>
         )}
