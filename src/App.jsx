@@ -1357,7 +1357,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             <thead>
               <tr style={{ background: "#060e1c" }}>
                 {["Gas", "Mechanism", "Organism", "Reduction", "Emission Factor", "kg Reduced / batch", "Source"].map(h => (
-                  <th key={h} style={{ padding: "6px 8px", color: C.accent, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.06em", borderBottom: "1px solid #1e3a5c", textAlign: "left" }}>{h}</th>
+                  <th key={h} style={{ padding: "6px 8px", color: C.accent, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.06em", borderBottom: "1px solid #1e3a5c", textAlign: "left", fontWeight: 600 }}>{h}</th>
                 ))}
               </tr>
             </thead>
