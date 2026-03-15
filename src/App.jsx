@@ -610,7 +610,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
   function renderAdd() {
     return (
       <div style={s.body}>
-        <div style={{ fontSize: 16, fontWeight: 700, color: C.accent, marginBottom: 4 }}>ADD NEW BIOLOGICAL</div>
+        <div style={{ fontSize: 18, fontWeight: 700, color: C.accent, marginBottom: 4, fontFamily: "'Syne', sans-serif" }}>ADD NEW BIOLOGICAL</div>
         <div style={{ color: C.textDim, fontSize: 11, marginBottom: 16 }}>All fields match CFI S3 Organism Registry format. Blue fields = inputs. New organisms are shown with a GREEN "NEW" badge in the registry. Only Sharon (Admin) can delete organisms.</div>
 
         {formMsg && <div style={s.alert(formMsg.type === "ok" ? C.green : C.danger)}>{formMsg.msg}</div>}
