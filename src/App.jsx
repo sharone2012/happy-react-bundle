@@ -102,7 +102,7 @@ const C = {
   surface: "#161b22",
   card: "#1c2230",
   border: "#2d3748",
-  accent: "#33CFC1",
+  accent: "#47D4C7",
   gold: "#d4a853",
   danger: "#e53e3e",
   warn: "#f6ad55",
