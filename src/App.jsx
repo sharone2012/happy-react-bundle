@@ -530,7 +530,7 @@ export default function CFIBioManager() {
   function renderResearch() {
     return (
       <div style={s.body}>
-        <div style={{ fontSize: 16, fontWeight: 700, color: C.accent, marginBottom: 4 }}>AI BIOLOGICAL RESEARCH ENGINE</div>
+        <div style={{ fontSize: 18, fontWeight: 700, color: C.accent, marginBottom: 4, fontFamily: "'Syne', sans-serif" }}>AI BIOLOGICAL RESEARCH ENGINE</div>
         <div style={{ color: C.textDim, fontSize: 11, marginBottom: 16 }}>Enter a biological organism name — the AI will research full specifications, dosing, suppliers, and CFI compatibility using the Master Persona framework.</div>
 
         <div style={s.card}>
