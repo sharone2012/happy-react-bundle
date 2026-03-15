@@ -174,8 +174,8 @@ ORGANISM: ${orgName}
 USER CONTEXT: ${context || "General palm oil residue bioconversion application"}
 
 CRITICAL RULES:
-1. BSF-Safe = ✅ ONLY if organism produces NO toxins/compounds harmful to Hermetia illucens larvae. Flag any Cry proteins, insecticidal compounds, or heavy metal accumulators as ❌.
-2. Bacillus thuringiensis = ALWAYS ❌ BSF-TOXIC — non-negotiable.
+1. BSF-Safe = OK ONLY if organism produces NO toxins/compounds harmful to Hermetia illucens larvae. Flag any Cry proteins, insecticidal compounds, or heavy metal accumulators as Fail.
+2. Bacillus thuringiensis = ALWAYS Fail BSF-TOXIC — non-negotiable.
 3. Temp ranges must be verified for palm residue composting context (50–70°C thermophilic phase, then 25–45°C mesophilic).
 4. Prices must be realistic for Indonesia/SE Asia/India procurement in USD/kg.
 5. If data is uncertain, state "DATA GAP" and mark confidence LOW.
