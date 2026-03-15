@@ -1078,6 +1078,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           { id: "research",    label: "AI Research" },
           { id: "add",         label: "Add New" },
           { id: "admin",       label: "Admin" },
+          { id: "s1",          label: "S1 Mechanical" },
           { id: "wb4",         label: "WB4 S3 Bio" },
           { id: "personas",    label: "Personas" },
         ].map(t => <button key={t.id} style={s.tab(tab === t.id)} onClick={() => setTab(t.id)}>{t.label}</button>)}
@@ -1090,6 +1091,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
       {tab === "research"    && renderResearch()}
       {tab === "add"         && renderAdd()}
       {tab === "admin"       && renderAdmin()}
+      {tab === "s1"          && renderS1()}
       {tab === "wb4"         && renderWB4()}
       {tab === "personas"    && renderPersonas()}
     </div>
