@@ -122,7 +122,7 @@ const s = {
   tab: (active) => ({ padding: "10px 18px", background: active ? C.card : "transparent", color: active ? C.accent : C.textDim, border: "none", borderBottom: active ? `2px solid ${C.accent}` : "2px solid transparent", cursor: "pointer", fontFamily: "inherit", fontSize: 15, letterSpacing: 1, textTransform: "uppercase", fontWeight: active ? 700 : 400 }),
   body: { padding: 20 },
   card: { background: C.card, border: `1px solid ${C.border}`, borderRadius: 6, padding: 16, marginBottom: 16 },
-  label: { display: "block", color: C.textDim, fontSize: 11, letterSpacing: 1, marginBottom: 4, textTransform: "uppercase" },
+  label: { display: "block", color: C.textDim, fontSize: 13, letterSpacing: 1, marginBottom: 4, textTransform: "uppercase", fontWeight: 600 },
   input: { width: "100%", background: "#0d1a2e", border: `1px solid ${C.blue}`, color: C.text, padding: "7px 10px", borderRadius: 4, fontFamily: "inherit", fontSize: 13, boxSizing: "border-box" },
   select: { width: "100%", background: "#0d1a2e", border: `1px solid ${C.blue}`, color: C.text, padding: "7px 10px", borderRadius: 4, fontFamily: "inherit", fontSize: 13 },
   textarea: { width: "100%", background: "#0d1a2e", border: `1px solid ${C.blue}`, color: C.text, padding: "7px 10px", borderRadius: 4, fontFamily: "inherit", fontSize: 12, resize: "vertical", minHeight: 80, boxSizing: "border-box" },
