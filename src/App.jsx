@@ -102,7 +102,7 @@ const C = {
   surface: "#161b22",
   card: "#1c2230",
   border: "#2d3748",
-  accent: "#33CFC1",
+  accent: "#47D4C7",
   gold: "#d4a853",
   danger: "#e53e3e",
   warn: "#f6ad55",
@@ -863,21 +863,21 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
   // ── S1 TAB — MECHANICAL PRE-PROCESSING ─────────────────────────────────────
   function renderS1() {
     // Derived calculations
-    const effFFB     = +(s1.ffbCapacity * s1.utilisation / 100).toFixed(2);
-    const efbTPH     = +(effFFB * 0.225).toFixed(3);
+    const effFFB     = +(s1.ffbCapacity * s1.utilisation / 100).toFixed(1);
+    const efbTPH     = +(effFFB * 0.225).toFixed(1);
     const efbTPD     = +(efbTPH * s1.hrsDay).toFixed(1);
-    const efbMonthWet= +(efbTPD * s1.daysMonth).toFixed(0);
+    const efbMonthWet= +(efbTPD * s1.daysMonth).toFixed(1);
     const efbDMFrac  = (100 - s1.efbMC) / 100;
     const efbDMpd    = +(efbTPD * efbDMFrac).toFixed(1);
-    const efbMonthDM = +(efbDMpd * s1.daysMonth).toFixed(0);
+    const efbMonthDM = +(efbDMpd * s1.daysMonth).toFixed(1);
 
     // OPDC natural yield = 15.2% of EFB fresh weight
-    const opdcNatTPD = +(efbTPD * 0.152).toFixed(2);
-    const opdcNatDM  = +(opdcNatTPD * (100 - s1.opdcMC) / 100).toFixed(2);
+    const opdcNatTPD = +(efbTPD * 0.152).toFixed(1);
+    const opdcNatDM  = +(opdcNatTPD * (100 - s1.opdcMC) / 100).toFixed(1);
     const totalDMTarget = s1.efbPct > 0 ? efbDMpd / (s1.efbPct / 100) : 0;
     const opdcDMreq  = +(totalDMTarget * (s1.opdcPct / 100)).toFixed(1);
     const opdcShortfall = +(opdcDMreq - opdcNatDM).toFixed(1);
-    const opdcMonthDM = +(opdcDMreq * s1.daysMonth).toFixed(0);
+    const opdcMonthDM = +(opdcDMreq * s1.daysMonth).toFixed(1);
 
     // Blend MC (wet-weight-weighted)
     const efbDMfrac2    = (100 - s1.efbMC) / 100;
@@ -885,8 +885,8 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
     const blendWetPerDM = (s1.efbPct / 100) / efbDMfrac2 + (s1.opdcPct / 100) / opdcDMfrac2;
     const blendMC       = +(100 * (1 - 1 / blendWetPerDM)).toFixed(1);
     const blendDMfrac   = (100 - blendMC) / 100;
-    const blendDM       = +(efbMonthDM + opdcMonthDM).toFixed(0);
-    const blendWet      = +(blendDM / blendDMfrac).toFixed(0);
+    const blendDM       = +(efbMonthDM + opdcMonthDM).toFixed(1);
+    const blendWet      = +(blendDM / blendDMfrac).toFixed(1);
 
     // ── CLASS A GUARDRAIL: OPDC Press Discharge MC — hard clamp at 40% ──
     const rawPressMC    = s1.opdcPressMC;
@@ -896,18 +896,22 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
     // Equipment sizing
     const shredderTPH  = +(efbTPH / 0.65).toFixed(1);
     const hammerTPH    = +(efbTPH * 0.3 / 0.65).toFixed(1);
-    const screwPressTPH= +(opdcNatTPD * 1.1 / 24 / 0.65).toFixed(2);
+    const screwPressTPH= +(opdcNatTPD * 1.1 / 24 / 0.65).toFixed(1);
     const conveyorTPH  = +(efbTPH * 1.2).toFixed(1);
 
-    const CalcRow = ({ label, value, unit, color }) => (
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: `1px solid ${C.border}` }}>
-        <span style={{ color: C.textDim, fontSize: 13, fontWeight: 600 }}>{label}</span>
-        <span style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-          <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 14, color: color || C.accent, textAlign: "right" }}>{value}</span>
-          <span style={{ color: C.textDim, fontSize: 13, fontWeight: 600, minWidth: 80, textAlign: "left" }}>{unit}</span>
-        </span>
-      </div>
-    );
+    const BOLD_ROWS = ["Monthly FFB", "EFB Monthly (wet)", "EFB Monthly DM", "OPDC Monthly DM (required)", "Blended Substrate"];
+    const CalcRow = ({ label, value, unit, color }) => {
+      const isBold = BOLD_ROWS.some(b => label.includes(b.replace(" (required)", "")) || b.includes(label));
+      return (
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: `1px solid ${C.border}` }}>
+          <span style={{ color: isBold ? "#d0dce8" : C.textDim, fontSize: 13, fontWeight: isBold ? 700 : 600 }}>{label}</span>
+          <span style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: isBold ? 16 : 14, color: color || C.accent, textAlign: "right" }}>{value}</span>
+            <span style={{ color: C.textDim, fontSize: 13, fontWeight: 600, minWidth: 80, textAlign: "left" }}>{unit}</span>
+          </span>
+        </div>
+      );
+    };
 
     return (
       <div style={s.body}>
@@ -922,9 +926,9 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             { label: "Blended Substrate", value: blendWet.toLocaleString(), unit: "t FW/month → S2", col: C.green },
           ].map((k, i) => (
             <div key={i} style={{ ...s.card, textAlign: "center", padding: 12 }}>
-              <div style={{ color: C.textDim, fontSize: 13, fontWeight: 600, letterSpacing: 0.5, marginBottom: 4 }}>{k.label}</div>
+              <div style={{ color: "#b8c7d6", fontSize: 13, fontWeight: 700, letterSpacing: 0.5, marginBottom: 4 }}>{k.label}</div>
               <div style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: k.col }}>{k.value}</div>
-              <div style={{ color: C.muted, fontSize: 13, fontWeight: 600 }}>{k.unit}</div>
+              <div style={{ color: "#8899aa", fontSize: 11, fontWeight: 600 }}>{k.unit}</div>
             </div>
           ))}
         </div>
@@ -1008,8 +1012,8 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             </div>
 
             <div style={s.card}>
-              <div style={{ fontSize: 14, fontWeight: 700, color: C.danger, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>OPDC Constraints</div>
-              <div style={{ fontSize: 12, color: C.textDim, lineHeight: 1.8 }}>
+              <div style={{ fontSize: 18, fontWeight: 700, color: C.danger, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>OPDC Constraints</div>
+              <div style={{ fontSize: 14, color: C.textDim, lineHeight: 1.8 }}>
                 <div>• <span style={{ color: C.danger }}>NEVER below 40% MC</span> — pore damage kills BSF</div>
                 <div>• Target 45–55% MC at press discharge</div>
                 <div>• OPDC N: 2.40% DM (CFI confirmed)</div>
@@ -1022,7 +1026,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
 
         {/* S1 → S2 Connector */}
         <div style={{ ...s.card, border: `1px solid ${C.green}44` }}>
-          <div style={{ fontSize: 14, fontWeight: 700, color: C.green, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>S1 Output → S2 Connector</div>
+          <div style={{ fontSize: 18, fontWeight: 700, color: C.green, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>S1 Output → S2 Connector</div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
             {[
               { label: "Blended FW (EFB+OPDC)", value: blendWet.toLocaleString(), unit: "t/month", col: C.green },
@@ -1030,9 +1034,9 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
               { label: "Blend MC", value: blendMC, unit: "% (wet-weight-corrected)", col: C.accent },
             ].map((k, i) => (
               <div key={i} style={{ textAlign: "center" }}>
-                <div style={{ color: C.textDim, fontSize: 13, fontWeight: 600, marginBottom: 3 }}>{k.label}</div>
-                <div style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 16, color: k.col }}>{k.value}</div>
-                <div style={{ color: C.muted, fontSize: 13, fontWeight: 600 }}>{k.unit}</div>
+                <div style={{ color: "#b8c7d6", fontSize: 14, fontWeight: 700, marginBottom: 3 }}>{k.label}</div>
+                <div style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: k.col }}>{k.value}</div>
+                <div style={{ color: "#8899aa", fontSize: 11, fontWeight: 600 }}>{k.unit}</div>
               </div>
             ))}
           </div>
@@ -1429,7 +1433,7 @@ function DosageCalc({ organisms }) {
   const totalCostLow = chosenOrgs.reduce((a, o) => a + (o.costLow || 0), 0);
   const totalCostHigh = chosenOrgs.reduce((a, o) => a + (o.costHigh || 0), 0);
 
-  const C2 = { accent: "#33CFC1", gold: "#d4a853", green: "#48bb78", warn: "#f6ad55", danger: "#e53e3e", muted: "#718096", text: "#e2e8f0", textDim: "#a0aec0", border: "#2d3748", surface: "#161b22" };
+  const C2 = { accent: "#47D4C7", gold: "#d4a853", green: "#48bb78", warn: "#f6ad55", danger: "#e53e3e", muted: "#718096", text: "#e2e8f0", textDim: "#a0aec0", border: "#2d3748", surface: "#161b22" };
 
   return (
     <div>
