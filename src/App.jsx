@@ -1339,7 +1339,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             { label: "Moisture (%)", val: calcMC, set: setCalcMC, w: 80 },
           ].map(f => (
             <div key={f.label}>
-              <div style={{ color: C.textDim, fontSize: 10, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.06em" }}>{f.label}</div>
+               <div style={{ color: C.textDim, fontSize: 13, fontWeight: 600, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.06em" }}>{f.label}</div>
               <input type="number" style={{ ...s.input, width: f.w, background: "#0d1a2e", border: "1.5px solid #4299e1", color: C.gold, fontFamily: "monospace", fontWeight: 700 }} value={f.val} onChange={e => f.set(Number(e.target.value))} />
             </div>
           ))}
