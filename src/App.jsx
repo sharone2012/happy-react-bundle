@@ -1379,7 +1379,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
               ))}
             </tbody>
           </table>
-          <div style={{ color: C.textDim, fontSize: 9, marginTop: 8 }}>Emission factors are literature estimates (kg gas/t FW). Replace with site-measured values when available. CO2 = DATA GAP — no peer-reviewed DOI confirmed.</div>
+          <div style={{ color: C.textDim, fontSize: 13, marginTop: 8 }}>Emission factors are literature estimates (kg gas/t FW). Replace with site-measured values when available. CO2 = DATA GAP — no peer-reviewed DOI confirmed.</div>
         </div>
 
         <div style={{ background: "#0a1628", border: "1px solid #1e3a5c", borderRadius: 8, padding: 16 }}>
