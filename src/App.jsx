@@ -299,8 +299,8 @@ export default function CFIBioManager() {
 
   function blankForm() {
     return {
-      category: "🔬 Bacteria", name: "", icbb: "—", supplier: "",
-      fn: "", temp: "", bsfSafe: "✅", form: "Dry",
+      category: "Bacteria", name: "", icbb: "—", supplier: "",
+      fn: "", temp: "", bsfSafe: "OK", form: "Dry",
       usdKg: "", doseLow: "", doseHigh: "", kgLow: "", kgHigh: "",
       costLow: "", costHigh: "", quote: "", notes: "",
       source: "", wave: "Wave 1"
