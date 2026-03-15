@@ -858,6 +858,8 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           { id: "research",    label: "🔬 AI Research" },
           { id: "add",         label: "➕ Add New" },
           { id: "admin",       label: "🔒 Admin" },
+          { id: "wb4",         label: "WB4 S3 Bio" },
+          { id: "personas",    label: "Personas" },
         ].map(t => <button key={t.id} style={s.tab(tab === t.id)} onClick={() => setTab(t.id)}>{t.label}</button>)}
       </div>
 
