@@ -2697,7 +2697,7 @@ export default function CFI() {
 
               {/* ── F: POME SLUDGE ── */}
               <Card>
-                <SectionHdr title="Section F: POS Palm Oil Sludge" color={C.blue}/>
+                <SectionHdr title="Section G: POS Palm Oil Sludge" color={C.blue}/>
                 <div style={{display:"flex", alignItems:"center", gap:16, marginBottom:16}}>
                   <div style={{display:"flex", alignItems:"center", gap:10}}>
                     <input type="checkbox" checked={pomeActive} readOnly
