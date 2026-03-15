@@ -1,0 +1,265 @@
+**CFI Supabase**
+
+**Complete Upload & Management Guide**
+
+*Circular Fertiliser Industries \| Bogor, West Java \| March 2026*
+
+*v1.0 --- Beginner Edition*
+
+**1. What is Supabase and How CFI Uses It**
+
+Supabase is your live database. Think of it as a very smart Excel
+spreadsheet that lives on the internet, that your React dashboard
+(Lovable) reads from. Every number, organism name, chemical dose, and
+lab value that appears on your dashboard can come from Supabase instead
+of being hardcoded.
+
+The CFI Supabase database has 11 core tables:
+
+  ------------------------ ------------------------------------- ---------
+  **Table Name**           **What It Stores**                    **\#
+                                                                 Rows**
+
+  cfi_feedstock_values     Lab values for EFB, OPDC, POME sludge \~31
+
+  cfi_chemical_library     20 chemicals --- prices, doses, RSPO  20
+                           status                                
+
+  cfi_biological_library   43 organisms --- BSF safety, conflict 43
+                           lists                                 
+
+  cfi_pricing              Urea, TSP, MOP, BSF product prices    \~15
+
+  cfi_guardrails           Locked constants --- CLASS A cannot   \~25
+                           be changed                            
+
+  cfi_lab_results          New lab uploads with delta flags      Grows
+                                                                 over time
+
+  cfi_data_gaps            Confirmed missing data (e.g. POME     \~10
+                           C:N)                                  
+
+  cfi_conflict_log         Rejected values --- IMMUTABLE         Grows
+                                                                 over time
+
+  cfi_soil_profiles        5 Indonesian palm soil types          5
+
+  cfi_change_log           Every single data change ---          Grows
+                           IMMUTABLE                             over time
+
+  cfi_solutions            Data lake from AI research runs       Grows
+                                                                 over time
+  ------------------------ ------------------------------------- ---------
+
+> *RULE: Supabase is append-only. You NEVER delete rows. You soft-delete
+> using is_active = false. The change_log and conflict_log can NEVER be
+> deleted.*
+
+**2. How to Log In to Supabase (Step by Step)**
+
+> **1.** Open your browser and go to: https://supabase.com
+>
+> **2.** Click \'Sign In\' in the top right corner.
+>
+> **3.** Use the email you used to create the CFI project.
+>
+> **4.** Once logged in, you will see your Dashboard. Look for the
+> project called \'CFI\' or the project ID: lcpbtnipkvrmuwllymfw
+>
+> **5.** Click on that project. You are now inside your CFI database.
+
+**2.1 The Three Things You Need to Know About**
+
+> • Table Editor --- this is where you can see your data like a
+> spreadsheet (read-only view, good for checking)
+>
+> • SQL Editor --- this is where you paste SQL code to add data, create
+> tables, or run queries
+>
+> • API Settings --- this is where you find your URL and API key (you
+> already have these)
+>
+> *Your CFI credentials: URL = https://lcpbtnipkvrmuwllymfw.supabase.co
+> \| Anon Key = sb_publishable_xJ9N0RaYXbY07m8DvtG_zQ\_-m8Zzm23*
+
+**3. The SQL Editor --- How to Upload Data**
+
+The SQL Editor is where all uploads happen. Every time you want to add
+data to Supabase, you paste SQL code here.
+
+**3.1 How to Open a New Query (CRITICAL --- Always Do This First)**
+
+> **1.** Click \'SQL Editor\' in the left sidebar (looks like a \> \_
+> icon).
+>
+> **2.** Click the big blue \'+ New Query\' button in the top left.
+>
+> **3.** A blank tab opens. Paste your SQL here.
+>
+> **4.** Click the green \'Run\' button (or press Ctrl+Enter /
+> Cmd+Enter).
+>
+> **5.** You should see \'Success. No rows returned\' or a result table
+> below.
+>
+> *WARNING: NEVER paste DROP or DELETE statements into an existing
+> schema tab. Always use a fresh \'+ New Query\' tab. Pasting into the
+> wrong tab has caused previous schema errors.*
+
+**3.2 What SQL to Use --- The Two Types of Upload**
+
+**Type 1 --- INSERT (adding new rows)**
+
+Use this when you have new data that does not exist yet in the table.
+Example:
+
+> INSERT INTO cfi_feedstock_values (stream, parameter, value, unit,
+> source)
+>
+> VALUES (\'EFB\', \'moisture_pct\', 62.5, \'% wb\', \'CFI canonical Mar
+> 2026\')
+>
+> ON CONFLICT DO NOTHING;
+
+**Type 2 --- UPDATE (changing an existing row)**
+
+Use this only for CLASS B, C, or D values (never CLASS A guardrails).
+Example:
+
+> UPDATE cfi_pricing
+>
+> SET price_usd = 360, effective_date = NOW()
+>
+> WHERE product = \'urea\' AND is_active = true;
+
+**Type 3 --- CREATE TABLE (adding a new table)**
+
+When Claude\'s gap analysis finds data that does not fit any existing
+table, Claude will write you a CREATE TABLE statement. Paste it in a new
+query tab exactly as written.
+
+> *Always log changes in cfi_change_log after any UPDATE. Claude will
+> include this INSERT automatically in every SQL block it writes for
+> you.*
+
+**4. The CFI Data Flow: File → Claude → Supabase → Dashboard**
+
+Here is the exact journey every piece of data takes:
+
+> • Step 1 --- You have a file: lab result PDF, Excel workbook, research
+> doc, or data table.
+>
+> • Step 2 --- You upload it to this Claude Project chat with the CFI
+> Upload Prompt (see Document 2).
+>
+> • Step 3 --- Claude reads the file, identifies which Supabase table
+> the data belongs to, checks for duplicates, and checks for conflicts.
+>
+> • Step 4 --- Claude writes SQL INSERT / UPDATE / CREATE TABLE
+> statements.
+>
+> • Step 5 --- You copy the SQL. Open Supabase → SQL Editor → New Query
+> → paste → Run.
+>
+> • Step 6 --- Claude confirms the data is live and updates any related
+> dashboard calculations.
+>
+> *You never write SQL yourself. Claude writes it. You paste and run.
+> That is the entire workflow.*
+
+**5. How to Check If Your Upload Worked**
+
+After running SQL in Supabase, there are two ways to verify:
+
+**5.1 In the Table Editor**
+
+> **1.** Click \'Table Editor\' in the left sidebar.
+>
+> **2.** Find the table you just updated (e.g. cfi_feedstock_values).
+>
+> **3.** You should see your new row at the bottom.
+
+**5.2 Run a SELECT Query**
+
+In a new SQL Editor tab, paste:
+
+> SELECT \* FROM cfi_feedstock_values ORDER BY created_at DESC LIMIT 10;
+
+This shows the 10 most recently added rows. Your new data should be at
+the top.
+
+**5.3 Check the Change Log**
+
+> SELECT \* FROM cfi_change_log ORDER BY timestamp DESC LIMIT 5;
+
+Every accepted data change must appear here. If it does not, the log
+INSERT was missed --- ask Claude to write a corrective log entry.
+
+**6. CLASS A Guardrails --- What You Can NEVER Change in Supabase**
+
+Some values are permanently locked (CLASS A). These appear in
+cfi_guardrails with is_guardrail_locked = true. The UI shows them for
+reference only. You cannot update them via SQL either --- they require a
+code change + brief update + workbook update in the same session.
+
+  ------------------- ---------------------- ----------------------------
+  **Locked Value**    **Current Setting**    **Why Locked**
+
+  OPDC yield          15.2% of EFB fresh     Mass balance anchor ---
+                      weight                 changing breaks entire
+                                             pipeline
+
+  OPDC press MC floor 40% minimum            Below this pore damage kills
+                                             BSF colonisation
+
+  5-day biological    5 days hard rule       Biological science minimum
+  minimum                                    --- cannot be shortened
+
+  BSF intro pH gate   ≤8.0                   Above this kills BSF
+                                             colonisation
+
+  BSF intro temp gate ≤30°C                  Above this kills BSF
+                                             colonisation
+
+  N conversion factor 4.67 (not 6.25)        CFI frass-specific --- 6.25
+                                             overstates protein
+
+  PKSA cost           \$0 / t                Mill waste --- always free
+                                             to CFI
+
+  Carbon model        213,827 t CO2e/yr      Locked methodology ---
+                                             ACM0022/VM0042
+
+  Feedipedia POME EE  REJECTED permanently   Material mismatch + mass
+                                             balance failure
+  ------------------- ---------------------- ----------------------------
+
+**7. Quick Reference Cheat Sheet**
+
+  ------------------ ------------------------------- --------------------
+  **Action**         **How**                         **Where in
+                                                     Supabase**
+
+  Add new lab data   Paste SQL INSERT from Claude    SQL Editor → New
+                                                     Query
+
+  Update a price     Paste SQL UPDATE from Claude    SQL Editor → New
+                                                     Query
+
+  View a table       Click Table Editor → select     Table Editor
+                     table                           
+
+  Create a new table Paste SQL CREATE TABLE from     SQL Editor → New
+                     Claude                          Query
+
+  Check what changed Run SELECT on cfi_change_log    SQL Editor → New
+                                                     Query
+
+  Check rejected     Run SELECT on cfi_conflict_log  SQL Editor → New
+  data                                               Query
+
+  Check data gaps    Run SELECT on cfi_data_gaps     SQL Editor → New
+                                                     Query
+
+  Never do this      Delete rows / empty tables      NEVER
+  ------------------ ------------------------------- --------------------

@@ -1,0 +1,1323 @@
++-----------------------------------------------------------------------+
+| **CIRCULAR FERTILISER INDUSTRIES**                                    |
+|                                                                       |
+| **CFI --- LOVABLE PROJECT BRIEF**                                     |
+|                                                                       |
+| v4.2 · March 2026 · Bogor, West Java, Indonesia                       |
+|                                                                       |
+| 60 TPH Fresh Fruit Bunch Mill · Palm Waste Bioconversion · S0--S6     |
+| Pipeline                                                              |
++-----------------------------------------------------------------------+
+
+  --------------- --------------- --------------------- ------------------
+  **STATUS**      **PLATFORM**    **BUILD TARGET**      **LAST UPDATED**
+
+  **ACTIVE ---    Lovable /       CFI_FULL_BUILD React  11 March 2026
+  v4.2**          React +         Dashboard             
+                  Supabase                              
+  --------------- --------------- --------------------- ------------------
+
+  -----------------------------------------------------------------------
+  **TABLE OF CONTENTS**
+
+  -----------------------------------------------------------------------
+
+**1.** Executive Summary
+
+**2.** Project Overview --- CFI, Location & Mill
+
+**3.** Pipeline Architecture: S0 → S6
+
+**4.** Feedstock Specifications (EFB · OPDC · POME Sludge)
+
+**5.** S2 --- Chemical Treatment Library & Process Parameters
+
+**6.** S3 --- Biological Library (43 Organisms)
+
+**7.** S4 --- BSF Rearing & Greenhouse Configuration
+
+**8.** S5/S6 --- Products, Yields & Market Valuation
+
+**9.** Carbon Credits Module
+
+**10.** Infrastructure & CAPEX Summary
+
+**11.** Nutrient Ledger & Soil Calculator
+
+**12.** React Dashboard Architecture (CFI_FULL_BUILD v19+)
+
+**13.** Excel Workbooks (WB1--WB6)
+
+**14.** Lovable Build Specification
+
+**15.** Admin Panel Specification
+
+**16.** Data Update Protocol
+
+**17.** Supabase Schema
+
+**18.** Change Log & Version History
+
+**19.** Living Document Instructions
+
+**1. Executive Summary**
+
+Circular Fertiliser Industries (CFI) is a palm oil mill waste
+bioconversion operation located in Bogor, West Java, Indonesia. The host
+mill processes 60 tonnes per hour (TPH) of fresh fruit bunches (FFB).
+CFI captures three mill waste streams --- Empty Fruit Bunches (EFB), Oil
+Palm Decanter Cake (OPDC), and POME sludge --- and transforms them
+through a six-stage biological pipeline (S0→S6) into Black Soldier Fly
+(BSF)-derived products and biofertiliser frass.
+
++-----------------+-----------------+-----------------+-----------------+
+| **60 TPH FFB**  | **\~720 t/day   | **\~110 t/day   | **\~30 t/day    |
+|                 | WW**            | WW**            | WW**            |
+| Mill Capacity   |                 |                 |                 |
+|                 | EFB Daily       | OPDC Daily      | POME Sludge     |
++-----------------+-----------------+-----------------+-----------------+
+
++-----------------+-----------------+-----------------+-----------------+
+| **\~213,827 t** | **\             | **52--60% CP**  | **\~\$12.50/t   |
+|                 | $4.3--6.4M/yr** |                 | FW**            |
+| CO₂e Avoided    |                 | BSF Meal Grade  |                 |
+| (annual)        | Carbon Revenue  |                 | Frass NPK Value |
++-----------------+-----------------+-----------------+-----------------+
+
+The primary customer is the plantation estate operation itself (Sinar
+Mas, Wilmar, Astra Agro or equivalent), not smallholder farmers. CFI
+supplies biofertiliser back to the estate at a displacement value versus
+synthetic NPK.
+
+This brief specifies the complete React dashboard (CFI_FULL_BUILD) to be
+built in Lovable, connected to a Supabase backend, covering all pipeline
+stages, product valuation, carbon credits, administration, and the
+orchestration layer.
+
+**2. Project Overview**
+
+**2.1 Company**
+
+  ----------------------- -----------------------------------------------
+  **Parameter**           **Value**
+
+  Company name            **Circular Fertiliser Industries (CFI)**
+
+  Location                Bogor, West Java, Indonesia
+
+  Host mill               Palm oil mill, 60 TPH FFB processing capacity
+
+  Plantation client       Estate company (Sinar Mas / Wilmar / Astra
+                          Agro)
+
+  Operating schedule      24 hr/day, \~300 days/year
+
+  FFB throughput          60 t/hr × 20 hr milling = 1,200 t FFB/day
+
+  Project currency        USD (primary) / IDR (secondary)
+  ----------------------- -----------------------------------------------
+
+**2.2 Waste Stream Volumes (at 60 TPH Full Capacity)**
+
+  ----------------- ----------------- ----------- ----------- --------------
+  **Stream**        **Source**        **Daily     **Daily     **Key
+                                      WW**        DM**        Constraint**
+
+  EFB               Empty Fruit       \~720 t/day \~270 t DM  62.5% MC; 2mm
+                    Bunches ---                               grind
+                    post-threshing                            
+
+  OPDC              Oil Palm Decanter \~110 t/day \~33 t DM   ≥40% MC
+                    Cake --- 15.2% of                         post-press
+                    EFB FW                                    
+
+  POME Sludge       Centrifuge        \~30 t/day  \~6 t DM    82% MC; Fe
+                    discharge at mill                         drives
+                    exit                                      inclusion
+  ----------------- ----------------- ----------- ----------- --------------
+
+  -----------------------------------------------------------------------
+  LOCKED: OPDC yield = 15.2% of EFB fresh weight. Never override without
+  explicit instruction. OPDC press discharge moisture floor = 40% WW ---
+  below this threshold pore damage kills BSF colonisation.
+
+  -----------------------------------------------------------------------
+
+**3. Pipeline Architecture: S0 → S6**
+
+The pipeline consists of seven distinct stages. Each stage has a
+dedicated tab in the React dashboard. All stages share a persistent
+Nutrient Ledger panel showing N, P, K, Ca, Mg, and OM in both % DM and
+kg/day with synthetic fertiliser replacement value.
+
+  ----------- ---------------- ---------------- -------------------- -----------------
+  **Stage**   **Name**         **Inputs**       **Outputs**          **Key Gates**
+
+  **S0**      Feedstock Inputs FFB mill         EFB / OPDC / POME    User-adjustable
+                               throughput; %    mass balance         capture %
+                               capture                               
+
+  **S1**      Pre-Processing   Raw EFB, OPDC,   2mm milled EFB;      EFB: 2mm D90;
+                               POME sludge      dewatered OPDC;      OPDC ≥40% MC
+                                                decanted sludge      
+
+  **S2**      Chemical         Milled EFB +     30--35% lignin       pH ≤8.0 gate
+              Treatment        OPDC; PKSA       reduction; pH        before S3/S4
+                                                6.5--8.0 after       
+                                                neutralisation       
+
+  **S3**      Biological       pH-neutralised   Biology-ready        5-day hard
+              Treatment        substrate;       substrate; 5-day     minimum; Temp
+                               microbes         minimum dwell        ≤30°C before BSF
+
+  **S4**      BSF Rearing      Biology-ready    Prepupae (biomass);  pH ≤8.0 Wave-1
+                               substrate; BSF   partially-digested   trigger; Temp
+                               larvae           frass                \<50°C Wave-2
+
+  **S5**      Product          BSF prepupae +   Insect meal; BSF     Defatting;
+              Extraction       frass            oil; chitin; wet     drying;
+                                                frass                certification
+
+  **S6**      Frass            Wet frass from   Granulated / bagged  Heavy metal
+              Biofertiliser    S4               biofertiliser        screen; NPK label
+                                                                     compliance
+
+  **CC**      Carbon Credits   Diverted waste   CO₂e avoided; VCU    FOD + COD IPCC
+                               streams          issuance             methods
+  ----------- ---------------- ---------------- -------------------- -----------------
+
+**4. Feedstock Specifications**
+
+**4.1 Canonical Lab Values --- LOCKED**
+
+  -----------------------------------------------------------------------
+  These values are GUARDRAIL-LOCKED. They cannot be changed in the UI.
+  Any update requires an explicit Claude instruction + change log entry +
+  workbook update simultaneously.
+
+  -----------------------------------------------------------------------
+
+  -------------- ------------ ---------- ------------- ---------- -------------
+  **Stream**     **Moisture   **Lignin   **Crude       **C:N      **Notes**
+                 (WW)**       (%DM)**    Protein       Ratio**    
+                                         (%DM)**                  
+
+  **EFB**        62.5%        22%        4.75%         60         2mm grind
+                                                                  required
+
+  **OPDC         70%          30.7%      14.5%         20         Press ≥40% MC
+  (Decanter                                                       always
+  Cake)**                                                         
+
+  **EFB+OPDC     ---          25%        8.14%         32         DM-weighted
+  60:40 Blend**                                                   calc only
+
+  **POME         82% WB       ---        11% DM        **DATA     Ash 28% DM
+  Sludge**                                             GAP**      
+  -------------- ------------ ---------- ------------- ---------- -------------
+
+**4.2 POME Sludge --- Canonical Values (Guardrails-Verified Mar 2026)**
+
+  ----------------------- ----------------------- -----------------------
+  **Parameter**           **Value**               **Status**
+
+  Moisture content        82% WB                  Accepted
+
+  Ash                     28% DM                  Accepted
+
+  Crude Protein           11% DM                  Accepted
+
+  Ether Extract (EE/fat)  10% DM (range 5--20%)   Accepted
+
+  Total N                 1.76% DM                Accepted
+
+  ADL (acid detergent     7.6%                    Accepted from
+  lignin)                                         Feedipedia
+
+  ADF                     22.1%                   Accepted from
+                                                  Feedipedia
+
+  NDF                     28.2% (high variance)   Accepted from
+                                                  Feedipedia
+
+  C:N Ratio               **NOT ESTABLISHED**     DATA GAP --- no
+                                                  estimate
+
+  EE 29.2% DM (Feedipedia **PERMANENTLY           Material mismatch ---
+  \'decanted\')           REJECTED**              processed feed
+                                                  ingredient vs fresh
+                                                  mill sludge
+  ----------------------- ----------------------- -----------------------
+
+**4.3 POME Iron (Fe) --- Inclusion Rate Logic**
+
+Heavy metals of concern: Fe (3,000--8,000 mg/kg DM) and Mn (100--475
+mg/kg DM). Fe result drives POME sludge inclusion rate in substrate
+blend:
+
+  ----------------- ----------------- -----------------------------------
+  **Fe Level (mg/kg **POME Inclusion  **Action**
+  DM)**             (WW %)**          
+
+  \< 3,000          **Up to 20%**     Standard inclusion
+
+  3,000 -- 5,000    **10--15%**       Reduced inclusion
+
+  5,000 -- 8,000    **5--10%**        Minimal inclusion; CaCO₃ amendment
+
+  \> 8,000          **CaCO₃ amendment CaCO₃ added to chelate excess iron
+                    required**        
+  ----------------- ----------------- -----------------------------------
+
+**4.4 Daily NPK Loadings**
+
+  ----------------- ------------- ------------- ------------- --------------
+  **Stream**        **N           **P           **K           **Notes**
+                    (kg/day)**    (kg/day)**    (kg/day)**    
+
+  EFB               ---           ---           ---           Primary
+                                                              carbon/fibre
+                                                              source
+
+  POME Sludge       **102**       **24**        **42**        High N
+                                                              relative to
+                                                              volume
+
+  **Combined        **582**       **197**       **930**       Full capacity
+  3-Stream**                                                  
+  ----------------- ------------- ------------- ------------- --------------
+
+**5. S2 --- Chemical Treatment Library & Process Parameters**
+
+**5.1 PKSA --- Primary Alkali (Locked)**
+
+  ----------------------- -----------------------------------------------
+  **Parameter**           **Value**
+
+  Chemical                **PKSA (Palm Kernel Shell Ash)**
+
+  Cost                    **\$0.00 --- mill waste; LOCKED. Commercial
+                          purchase price as override only.**
+
+  Dose rate               6--10 kg/t substrate
+
+  Target pH               pH 10--12 during treatment
+
+  Particle size target    2mm (EFB, post S1 milling)
+
+  Mixing time             60--90 minutes
+
+  Lignin reduction        **30--35% reduction**
+  achieved                
+
+  Neutralisation method   24h CO₂ carbonation with 2 turnings (@8--12hr,
+                          \@16--20hr); CaCO₃ accelerator optional
+
+  Post-neutralisation pH  **6.5--8.0**
+  target                  
+  ----------------------- -----------------------------------------------
+
+**5.2 Chemical Library --- Master Prices (20 Chemicals)**
+
+All prices editable in the Admin Panel and in
+CFI_S2_Chemical_Impact_Matrix.xlsx MASTER PRICES tab. Blue =
+user-editable. PKSA cost = \$0 locked.
+
+  --------- ------------------- ------------- -------------- ------------ ------------ ------------
+  **ID**    **Chemical**        **Group**     **RSPO**       **\$/kg**    **Dose %     **\$/t FW
+                                                                          DM**         (mid)**
+
+  **---**   **PKSA (Palm Kernel Primary       ✅ Mill waste  **\$0.00**   6--10 kg/t   **\$0.00**
+            Shell Ash)**        Alkali                                                 
+
+  1         NaOH                Alkaline      ⚠ ALERT        \$0.35       2--5%        \$4.29
+
+  2         KOH                 Alkaline      ⚠ Docs needed  \$0.50       2--5%        \$6.13
+
+  3         Ca(OH)₂ ---         Alkaline      ✅ RSPO        \$0.12       3--8%        \$2.31
+            Hydrated Lime                                                              
+
+  4         CaO --- Quicklime   Alkaline      ✅ RSPO        \$0.10       2--5%        \$1.23
+
+  5         CaCO₃ ---           Alkaline      ✅ RSPO        \$0.06       3--8%        \$1.16
+            Agricultural Lime   Buffer                                                 
+
+  10        Citric Acid         Acid / pH     ✅ RSPO        \$0.80       0.5--2%      \$3.50
+                                Corrector                                              
+
+  11        PAA --- Peracetic   Oxidative     **🔴           \$1.20       0.5--1.5%    \$4.20
+            Acid                              RESTRICTED**                             
+
+  13        Gypsum CaSO₄·2H₂O   N-Retention   ✅ RSPO        \$0.20       2--5%        \$2.45
+
+  14        Biochar             Amendment     ✅ RSPO        \$0.05       3--7%        \$0.88
+            (PKS-derived)                                                              
+
+  16        Cellulase (T.       Enzyme        ✅ RSPO        \$8.00       0.1--0.3%    \$5.60
+            reesei)                                                                    
+
+  17        Xylanase (GH11, A.  Enzyme        ✅ RSPO        \$6.00       0.1--0.3%    \$4.20
+            niger)                                                                     
+
+  18        Laccase (T.         Enzyme        ✅ RSPO        \$12.00      0.05--0.2%   \$5.25
+            versicolor)                                                                
+  --------- ------------------- ------------- -------------- ------------ ------------ ------------
+
+  -----------------------------------------------------------------------
+  NaOH GUARDRAIL: Allowed but MUST trigger a visible amber warning in the
+  UI and in any Excel/Python scripts. Never silently permit NaOH at full
+  dose.
+
+  -----------------------------------------------------------------------
+
+**6. S3 --- Biological Library (43 Organisms)**
+
+The biological library contains 43 organisms across 15 categories. Each
+organism has a BSF safety flag (safe / conditional / blocked). The
+conflict engine prevents incompatible combinations. BSF is the primary
+commercial organism; all others are substrate preparation or enhancement
+agents.
+
+**6.1 BSF Inoculation Gates --- HARD CONSTRAINTS**
+
+  ----------------------- ----------------------- -----------------------
+  **Gate**                **Condition**           **Type**
+
+  Biological minimum      **5 days dwell before   **HARD GATE ---
+                          BSF introduction**      non-negotiable**
+
+  Temperature gate (BSF   **Substrate temperature **HARD GATE**
+  entry)                  ≤ 30°C**                
+
+  Wave 1 inoculation      **pH sensor reading ≤   **pH sensor --- NOT
+  trigger                 8.0**                   temperature**
+
+  Wave 2 gate             **Temperature \< 50°C** Protects N-fixing
+                                                  bacteria
+
+  Bt (Provibio ICBB 6095) **S3 composting phase   **⚠ CONDITIONAL ---
+                          ONLY before BSF;        amber warning
+                          confirm titre \< 10⁴    required**
+                          CFU/g before S4         
+                          loading**               
+  ----------------------- ----------------------- -----------------------
+
+**6.2 BSF Substrate Protein Ceiling**
+
+  -----------------------------------------------------------------------
+  No combination of CFI\'s available palm streams achieves ≥15% DM CP.
+  Maximum achievable \~14.5% (100% OPDC or PKE). Both strategies operate
+  in the marginal CP zone (10--15%). This is accepted given low feedstock
+  cost and inoculation uplift factors. N conversion factor: N × 4.67 (not
+  6.25) for true protein.
+
+  -----------------------------------------------------------------------
+
+**6.3 Key Organism Categories (15 Total)**
+
+  ------------------- --------------------------- -----------------------
+  **Category**        **Purpose**                 **BSF Safety**
+
+  **Black Soldier Fly Primary commercial organism **SAFE --- primary**
+  (BSF)**             --- biomass production      
+
+  Cellulose Degrader  Breaks cellulose in EFB for SAFE
+                      BSF access                  
+
+  Lignin Degrader     White rot / laccase         SAFE
+                      producers for lignin        
+                      reduction                   
+
+  N-Fixer             Azotobacter, Rhizobium ---  SAFE
+                      atmospheric N fixation      
+
+  P-Solubiliser       Bacillus megaterium,        SAFE
+                      Aspergillus --- P           
+                      bioavailability             
+
+  K-Mobiliser         Frateuria aurantia,         SAFE
+                      Bacillus mucilaginosus      
+
+  Actinomycete        Streptomyces spp ---        SAFE
+                      pathogen suppression +      
+                      lignocellulose              
+
+  Yeast               Saccharomyces, Candida ---  SAFE --- apply pre-BSF
+                      fermentation support        only
+
+  Conditional (Bt)    Bacillus thuringiensis /    **⚠ CONDITIONAL --- S3
+                      Provibio ICBB 6095          only, titre check
+                                                  required**
+
+  Protein Fungi       Arthrospira platensis       SAFE --- supplement
+                      (spirulina) --- BSF meal    only
+                      upgrade                     
+
+  Algae               Chlorella vulgaris ---      SAFE
+                      backup algae option         
+  ------------------- --------------------------- -----------------------
+
+  -----------------------------------------------------------------------
+  NEVER CITE: Retracted MDPI Processes 8:337 yeast paper. Permanently
+  excluded from all references. Do not cite any Feedipedia EE 29.2% DM
+  POME figure (material definition mismatch).
+
+  -----------------------------------------------------------------------
+
+**7. S4 --- BSF Rearing & Greenhouse Configuration**
+
+**7.1 Greenhouse Layout**
+
+  ----------------------- ----------------------- -----------------------
+  **Parameter**           **GH-A (BSF             **GH-B
+                          Inoculation)**          (Drying/Finishing)**
+
+  Function                Active BSF rearing with Post-BSF drying and
+                          wave inoculation        frass maturation
+
+  Substrate depth         **30cm                  30--50cm
+                          (BSF-compatible)**      
+
+  Floor space rule        **1 t wet = 2 m² floor  1 t wet = 2 m² floor
+                          area**                  area
+
+  Access bay              Truck reverses → hopper Same
+                          → screw/belt conveyor → 
+                          GH floor                
+
+  Perimeter               Concrete block walls +  Concrete block + floor
+                          concrete floor (fully   
+                          sealed)                 
+
+  Cladding                PVC to ground ---       PVC or equivalent
+                          touches concrete; zero  
+                          water ingress           
+
+  Sprinklers              **Dual-purpose:         Wash-down + moisture
+                          POME/water moisture +   
+                          liquid                  
+                          biological/chemical     
+                          application**           
+
+  Sensors                 Full suite: pH, temp,   Reduced sensor suite
+                          humidity (per wave gate 
+                          requirements)           
+
+  Gutters                 Rain gutters per        Rain gutters
+                          engineering drawings    
+
+  Plumbing                **Water supply +        Water supply +
+                          drainage/leachate +     wash-down
+                          wash-down**             
+
+  Material handling       1× Bobcat (15 t/hr      Shared Bobcat
+                          spreading; 12 t/hr      
+                          scooping)               
+  ----------------------- ----------------------- -----------------------
+
+**7.2 PKE Supplementation**
+
+  ----------------------- -----------------------------------------------
+  **Parameter**           **Value**
+
+  PKE (Palm Kernel        Used to boost substrate CP to \~15% DM target
+  Expeller)               
+
+  PKE CP content          **\~18--20% DM CP**
+
+  Cost basis              \$0 when sourced as mill by-product; market
+                          price as override
+
+  CP ceiling note         Maximum achievable blend CP \~14.5% ---
+                          marginal zone accepted
+
+  Selenium limit          **NOT to exceed 15 mg/kg substrate**
+
+  Calcium                 **Do NOT supplement --- no calcium addition**
+  ----------------------- -----------------------------------------------
+
+**8. S5/S6 --- Products, Yields & Market Valuation**
+
+**8.1 BSF Product Targets**
+
+  ----------------- ------------------- ----------------- ------------------------
+  **Product**       **Specification**   **Market**        **Price Range**
+
+  **Insect Meal**   **52--60% CP        EU/US Pet food,   **\$3,500--\$6,500/t**
+                    defatted**          hypoallergenic    
+                                        dog food          
+
+  **BSF Oil**       Lauric acid-rich;   Feed / food grade Min \$1.40/kg; premium
+                    FSSC 22000          / cosmetics       \$3--5/kg
+
+  **Chitin**        From pupal casings  Pharmaceutical /  \$20--\$80/kg
+                                        agricultural      (grade-dependent)
+
+  **Frass           Granulated;         Estate plantation \~\$12.50/t FW
+  Biofertiliser**   NPK-labelled        (back to client)  replacement value
+  ----------------- ------------------- ----------------- ------------------------
+
+  -----------------------------------------------------------------------
+  Primary commercial target: Premium hypoallergenic pet food /
+  monoprotein dog food at 52--60% CP defatted meal. FSSC 22000 + ISO
+  22716 certification unlocks 3--9× price uplift on BSF oil.
+
+  -----------------------------------------------------------------------
+
+**8.2 Frass NPK Replacement Value**
+
+Frass biofertiliser is valued against synthetic equivalents. Canonical
+synthetic prices used in all models:
+
+  ----------------- ----------------- ----------------- -----------------
+  **Synthetic**     **Nutrient**      **Price Basis**   **CFI Special
+                                                        Rate**
+
+  Urea              N (46%)           \$350/t standard  **\$1.50/kg N ---
+                                                        Sinar Mas
+                                                        actual**
+
+  TSP               P (46%)           \$450/t           ---
+
+  MOP               K (60%)           \$380/t           ---
+
+  Kieserite         Mg (27%)          \$280/t           ---
+
+  Ag Lime           Ca                \$80/t            ---
+
+  Organic Matter    OM                \$60/t × quality  VGAM
+                                      index             soil-adjusted
+  ----------------- ----------------- ----------------- -----------------
+
+**8.3 VGAM Soil-Adjusted Fertiliser Value**
+
+CFI\'s VGAM (Variable Gain Agronomic Model) adjusts fertiliser
+replacement value by soil type and management tier. Four management
+tiers: VGAM (Very Good Agronomic Management) / GAM / Poor / Abandoned.
+Frass value is highest on Histosols (peat soils) and lowest on
+Spodosols.
+
+**8.4 Indonesian Soil Types --- Palm Estate Coverage**
+
+  ------------- -------------- --------- ----------------------- --------------
+  **Soil**      **Coverage**   **pH**    **Key Properties**      **CFI N/P
+                                                                 Reduction**
+
+  Inceptisols   39%            4.1       Best fertility; CEC     −40% N, −50% P
+                                         15.4, N 2.7g/kg         
+
+  Ultisols      24%            4.5       Clay-rich, acidic; low  Baseline
+                                         BS 22% --- NPK baseline 
+
+  Oxisols       8%             4.4       Fe/Al oxides, low P     ---
+                                         retention               
+
+  **Histosols   7%             3.8       Peat/organic; high C    **−80% N, −70%
+  (peat)**                               24.5%; drainage issues  P**
+
+  Spodosols     \~22%          4.77      Sandy, lowest           ---
+                                         fertility; 31% lower    
+                                         yield than Ultisols     
+  ------------- -------------- --------- ----------------------- --------------
+
+**9. Carbon Credits Module**
+
+The carbon credits module is hardcoded using IPCC methods. All constants
+are LOCKED and visible in the UI. No estimation --- FOD method for solid
+residues; COD method for POME wastewater.
+
+  ----------------------- -----------------------------------------------
+  **Parameter**           **Value**
+
+  Method --- solid        **FOD (First Order Decay) --- IPCC 2006 Vol.5
+  residues                Ch.2**
+
+  Method --- POME         **COD (Chemical Oxygen Demand) method**
+
+  GWP₁₀₀ (CH₄)            28
+
+  GWP₂₀ (CH₄)             84
+
+  MCF values              Per Verra ACM0022 v3.1
+
+  Residue capture         EFB, OPDC, POME sludge --- default 100%;
+  overrides               user-adjustable
+
+  **CO₂e avoided (full    **\~213,827 t CO₂e/year**
+  capacity)**             
+
+  **Annual carbon         **\$4.3M -- \$6.4M/year (carbon price scenario
+  revenue**               dependent)**
+  ----------------------- -----------------------------------------------
+
+  -----------------------------------------------------------------------
+  All IPCC/Verra constants are LOCKED in code. Carbon methodology
+  constants cannot be overridden through the Admin Panel. Changes require
+  a code update + explicit documented instruction.
+
+  -----------------------------------------------------------------------
+
+**10. Infrastructure & CAPEX Summary**
+
+**10.1 Equipment CAPEX by Stage**
+
+  ------------ -------------- ----------- ----------------- ------------------
+  **Stage**    **Line**       **Equip.    **Total Cost      **Notes**
+                              Count**     USD**             
+
+  Shared/All   Shared         2           \$81,000          Bobcat + lime
+                                                            dosing
+
+  Stage 1      EFB            10          \$184,000         Shredder, hammer
+                                                            mill, screen,
+                                                            buffer bin
+
+  Stage 1      OPDC           4           \$38,000          Receiving + feed
+                                                            conveyor + buffer
+                                                            bin
+
+  Stage 1      OPDC ---       4           \$39,000          Excl. DEC-SLD-101
+               Sludge                                       (RFQ:
+               Pre-Skim                                     \$80k--\$150k
+                                                            est.)
+
+  Stage 2      EFB            28          \$541,000         6× paddle mixers,
+                                                            2× screw presses,
+                                                            bays, conveyors
+
+  Stage 2      OPDC           13          \$162,000         2× mixers, 1×
+                                                            press, bays
+
+  Stage 3      Shared         1           \$30,000          Final mixer
+                                                            M-MIX-FINAL-01
+
+  **TOTAL      **All**        **62**      **\$1,075,000**   \+ RFQ items
+  (Known)**                                                 (decanter, BSF GH
+                                                            package)
+  ------------ -------------- ----------- ----------------- ------------------
+
+  -----------------------------------------------------------------------
+  3-PHASE DECANTER (DEC-SLD-101): RFQ Required. Estimated \$80k--\$150k.
+  This is the largest single unknown outside the BSF greenhouse package.
+  Priority RFQ target.
+
+  -----------------------------------------------------------------------
+
+**10.2 Equipment Derating**
+
+Asian/China equipment derated at 65% of nameplate capacity by default
+across all models. This is applied in all mass balance calculations.
+
+**11. Nutrient Ledger & Soil Calculator**
+
+The Nutrient Ledger is a persistent panel displayed at the end of every
+stage tab in the React dashboard. It shows nutrient flow through the
+pipeline at each stage, enabling the estate agronomist to see the NPK
+value building across the process.
+
+**11.1 Nutrient Ledger Panel --- Required Fields**
+
+  ----------------------- ----------------------- -----------------------
+  **Field**               **Unit 1**              **Unit 2**
+
+  Nitrogen (N)            \% DM                   kg/day
+
+  Phosphorus (P)          \% DM                   kg/day
+
+  Potassium (K)           \% DM                   kg/day
+
+  Calcium (Ca)            \% DM                   kg/day
+
+  Magnesium (Mg)          \% DM                   kg/day
+
+  Organic Matter (OM)     \% DM                   kg/day
+
+  Soil-adjusted effective By soil type (VGAM      USD/t FW
+  value                   tier)                   
+
+  NPK replacement cost    USD/day                 USD/tonne
+  ----------------------- ----------------------- -----------------------
+
+**11.2 Soil Calculator**
+
+The Soil Calculator (CFI_Soil_Calculator_v4_PUBLISHED.jsx) allows the
+estate agronomist to calculate site-specific fertiliser replacement
+value based on soil type, management tier, and product blend. It uses
+the five Indonesian soil profiles and the VGAM/GAM/Poor/Abandoned
+management tiers. Peak fertiliser cost at Year 7--15:
+\$10--\$16/palm/yr.
+
+**12. React Dashboard Architecture (CFI_FULL_BUILD v19+)**
+
+**12.1 Tab Structure**
+
+  --------- ----------------- ----------- ----------------------------------
+  **Tab     **Tab Name**      **Stage**   **Key Components**
+  Index**                                 
+
+  0         S0 --- Feedstock  S0          Mill details, capture %, blend
+            Inputs                        selector, carbon preview (Sections
+                                          A--E redesigned)
+
+  1         S1 ---            S1          EFB shredding/milling, OPDC
+            Pre-Processing                receiving, POME sludge decanting,
+                                          CAPEX
+
+  2         S2 --- Chemical   S2          Chemical selector, PKSA mixer
+            Treatment                     calc, neutralisation bay calc,
+                                          cost table
+
+  3         S3 --- Biological S3          Organism selector, conflict
+            Treatment                     engine, 5-day gate, dose
+                                          calculator
+
+  4         S4 --- BSF        S4          Wave 1/2 inoculation gates, Bay
+            Rearing                       A/B grow-out, PKM dose, mass
+                                          balance
+
+  5         S5 --- Product    S5          Meal/oil/chitin yields, ARV panel,
+            Extraction                    certification selector, revenue
+                                          model
+
+  6         S6 --- Frass      S6          Frass NPK, granulation, VGAM
+            Biofertiliser                 soil-adjusted value, bagging
+
+  7         Soil Calculator   ---         5 soil types, 4 management tiers,
+                                          synthetic equivalents
+
+  8         Carbon Credits    CC          FOD + COD methods, locked IPCC
+                                          constants, override capture %, KPI
+                                          bar
+
+  9         Summary           ---         Full pipeline summary, revenue
+                                          waterfall, NPK replacement total
+
+  10        Orchestration     ---         Agent status, data lake cards,
+                                          YAML/JSON upload, Supabase
+                                          integration
+  --------- ----------------- ----------- ----------------------------------
+
+**12.2 Colour Convention (MUST be consistent throughout)**
+
+  ----------------------- -----------------------------------------------
+  **Colour**              **Use**
+
+  Amber text on navy      **User-editable input fields**
+  background              
+
+  Green text              **Calculated output values**
+
+  Teal                    **Cross-sheet / cross-tab references**
+
+  Red                     **Guardrail alerts / hard gates / blocked
+                          values**
+
+  Navy background         Primary background for all stage panels
+  (#0B1929)               
+  ----------------------- -----------------------------------------------
+
+**12.3 React Technical Rules**
+
+-   No template literals in JSX text nodes
+
+-   No self-closing divs
+
+-   All \< in JSX text use entity encoding or JS expressions
+
+-   No raw \${} in JSX text nodes --- use JS expressions
+
+-   Babel-strict compliance --- all syntax must be Babel-parseable
+
+-   Tailwind core utility classes only --- no compiled Tailwind
+
+-   State management: useState, useReducer (no
+    localStorage/sessionStorage)
+
+-   All C:N ratios formula-driven --- never hardcoded
+
+-   PKSA cost always \$0 in UI --- commercial override only in Admin
+    Panel
+
+**13. Excel Workbooks (WB1--WB6)**
+
+Six interconnected Excel workbooks cover detailed financial and process
+modelling. Each workbook is built with Python/openpyxl following the
+MASTER_INPUTS-first architecture. All workbooks share a single source of
+truth via cross-workbook links.
+
+  -------------- ----------- ------------ ---------- ---------------------------------
+  **Workbook**   **Stage**   **Status**   **Tabs**   **Key Content**
+
+  **WB1**        Master      Planned      ---        MASTER_INPUTS --- single source
+                                                     of truth for all WBs
+
+  **WB2**        S1          **✅         11         436 formulas; OPDC machinery
+                             Complete**              register; POME sludge; 13-role
+                                                     headcount
+
+  **WB3**        S2          Specified    11         USER_GUIDE, S2_RECEIVER,
+                                                     INPUTS_S2, CHEMICAL_LIBRARY,
+                                                     MASS_BALANCE, CHEMICAL_COSTS,
+                                                     EQUIPMENT, S2_OPEX, S2_COSTS,
+                                                     CONFLICT_CHECK, RECALC_CHECK
+
+  **WB4**        S3          Planned      ---        Biological library; inoculation
+                                                     timeline; S3 costs
+
+  **WB5**        S4          **✅         10         Dual-track Bay A/B grow-out; PKM
+                             Complete**              supplementation; mass balance;
+                                                     CAPEX/OPEX
+
+  **WB6**        S5/S6       **✅         10         Frass NPK replacement value;
+                             Complete**              insect meal/oil/chitin yields;
+                                                     certification arbitrage; revenue
+                                                     model; VGAM; carbon credits
+  -------------- ----------- ------------ ---------- ---------------------------------
+
+**13.1 Workbook Architecture Rules**
+
+-   All workbooks use Python/openpyxl for creation and editing
+
+-   recalc.py must run post-save --- zero formula errors on recalc is
+    the completion standard
+
+-   All C:N ratios are formula-driven --- never hardcoded in any
+    workbook
+
+-   Data-only=True when reading cell values for mass balance
+    verification
+
+-   merge_cells() must be called before writing to merged ranges
+
+-   Cross-workbook links use teal colour convention
+
+-   WB3 (S2) is fully specified and ready to build --- 11-tab structure
+    confirmed
+
+**14. Lovable Build Specification**
+
+This section specifies exactly what Lovable needs to build --- the
+components, behaviour, data connections, and interactions for the CFI
+React dashboard.
+
+**14.1 Core Application**
+
+  ----------------------- -----------------------------------------------
+  **Parameter**           **Specification**
+
+  Framework               React 18 with hooks (useState, useReducer,
+                          useMemo, useEffect)
+
+  Styling                 Tailwind CSS (core utility classes only --- no
+                          JIT compiler)
+
+  Backend                 Supabase --- PostgreSQL + Storage + Auth +
+                          Realtime
+
+  State management        React state (no Redux, no localStorage)
+
+  Charts                  Recharts (already in CFI_FULL_BUILD)
+
+  Icons                   lucide-react@0.383.0
+
+  File upload             YAML/JSON config files --- drag-and-drop in
+                          Orchestration tab
+
+  Entry file              CFI_FULL_BUILD_v\[latest\].jsx --- single file,
+                          Babel-strict
+  ----------------------- -----------------------------------------------
+
+**14.2 S0 Input Page --- Section Specifications**
+
+The S0 redesign (CFI_S0_Redesign.jsx) established the pattern for all
+input sections:
+
+  ------------- ----------------------- -------------------------------------
+  **Section**   **Title**               **Fields**
+
+  A             Enter Your Details      Company name; ID code; first+last
+                                        name; email; telephone
+
+  B             Oil Palm Mill FFB       FFB t/hr; utilisation %; operating
+                Processing Capacity     hours/day; operating days/month
+
+  C             Choose Residues for     EFB (toggle+%), OPDC (toggle+%), POME
+                Biological Processing   sludge (toggle+%)
+
+  D             Captured % of Mill      EFB %; OPDC %; POME %
+                Processing Capacity     
+                Used                    
+
+  E             Carbon Credits Preview  Live KPI bar: t CO₂e/yr; annual
+                                        revenue range; full methodology note
+  ------------- ----------------------- -------------------------------------
+
+**14.3 Persistent Nutrient Ledger Panel**
+
+Every stage tab MUST end with the Nutrient Ledger panel (6 nutrients × 3
+columns: % DM \| kg/day \| soil-adjusted effective value). The NPK
+replacement cost in USD/tonne and USD/day must be shown for each stage
+output.
+
+**14.4 Orchestration Tab**
+
+  ----------------------- -----------------------------------------------
+  **Component**           **Specification**
+
+  Data Lake cards         Filterable by stage (S0--S6), category
+                          (biology/BSF/soil/carbon/finishing/math).
+                          Expandable before/after metrics. Source
+                          provenance shown.
+
+  Agent Status panel      7 agents shown: Master Discovery, Biology, BSF,
+                          Soil/Palm, Finishing, Carbon, Math RSM. Shows
+                          schedule + last/next run timestamp.
+
+  Config upload           Drag-and-drop YAML/JSON. Validates structure
+                          before accepting. Shows note about Supabase
+                          integration.
+
+  Materials registry      Core: EFB, OPDC, POME_sludge. Additives: PKE,
+                          PMF, fronds, CPO.
+
+  Footer note             \'v\[version\] --- append-only DB\'
+  ----------------------- -----------------------------------------------
+
+**15. Admin Panel Specification**
+
+The Admin Panel gives CFI the ability to update reference data without
+touching source code. It must be accessible only to authenticated admin
+users via Supabase Auth. Seven modules are required:
+
+  ----------------- ----------------------------- ------------------------
+  **Module**        **Description**               **Supabase Table**
+
+  **1. Chemical     Edit prices, dose rates, RSPO cfi_chemical_library
+  Library Editor**  status for all 20 chemicals.  
+                    PKSA \$0 is read-only ---     
+                    cannot be changed via Admin   
+                    Panel.                        
+
+  **2. Biological   Add/edit organism records:    cfi_biological_library
+  Library Editor**  name, category, BSF safety    
+                    flag, dose rate, conflict     
+                    list, notes.                  
+
+  **3. Feedstock    Update lab values for EFB,    cfi_feedstock_values
+  Value Updater**   OPDC, POME sludge. CLASS A    
+                    values (guardrail-locked) are 
+                    READ-ONLY --- display change  
+                    history only.                 
+
+  **4. Pricing      Update synthetic fertiliser   cfi_pricing
+  Updater**         prices (Urea, TSP, MOP,       
+                    Kieserite, Ag Lime, OM).      
+                    Update BSF product market     
+                    prices.                       
+
+  **5.              View all guardrail-locked     cfi_guardrails
+  Rule/Constraint   rules. CLASS A = READ-ONLY    
+  Manager**         (code + brief + workbook      
+                    update required). CLASS B/C/D 
+                    = editable.                   
+
+  **6. Lab Results  Upload new lab results        cfi_lab_results
+  Importer**        (JSON/CSV). Auto-triggers     
+                    delta check: if any value     
+                    deviates \>20% from           
+                    canonical, shows amber alert  
+                    before accepting.             
+
+  **7. Change Log   Read-only audit log. Shows    cfi_change_log
+  Viewer**          every data change: timestamp, 
+                    changed-by, old value, new    
+                    value, class (A/B/C/D).       
+  ----------------- ----------------------------- ------------------------
+
+**15.1 Change Classification System**
+
+  ----------- ----------------- ----------------- --------------------------
+  **Class**   **Type**          **Where Updated** **Examples**
+
+  **CLASS A** Hard constraints  Code + Brief +    OPDC yield %, OPDC press
+              --- LOCKED        Workbook          MC floor, BSF gates, PKSA
+                                simultaneously    \$0
+
+  **CLASS B** Reference data    Admin Panel only  Synthetic fertiliser
+                                                  prices, lab values within
+                                                  ±20% of canonical
+
+  **CLASS C** Library entries   Admin Panel only  New organisms, new
+                                                  chemicals, new soil
+                                                  profiles
+
+  **CLASS D** UI/logic          Code update       New tabs, component
+              adjustments                         redesigns, layout changes
+  ----------- ----------------- ----------------- --------------------------
+
+**16. Data Update Protocol**
+
+All data updates must follow this protocol. Nothing changes without:
+Classify → Log → Apply → Verify.
+
+**16.1 General Update Workflow**
+
+-   1\. CLASSIFY the change: Is it CLASS A, B, C, or D?
+
+-   2\. LOG intent: Record in cfi_change_log before making any change.
+
+-   3\. APPLY: For CLASS A --- update code + this brief + relevant
+    workbook in the same session. For CLASS B/C --- Admin Panel only.
+
+-   4\. VERIFY: Confirm the change flows correctly through all dependent
+    calculations.
+
+-   5\. CONFIRM: If delta \> 20% from canonical, amber alert must be
+    shown before accepting.
+
+**16.2 New Lab Results Workflow**
+
+-   1\. Upload JSON/CSV via Admin Panel → Lab Results Importer.
+
+-   2\. System auto-calculates delta vs canonical values for each
+    parameter.
+
+-   3\. If any delta \> 20%: AMBER ALERT shown --- user must explicitly
+    confirm before update is accepted.
+
+-   4\. POME Fe result auto-triggers inclusion rate recalculation (see
+    Section 4.3).
+
+-   5\. All accepted values are logged to cfi_lab_results with
+    timestamp, source, and analyst name.
+
+-   6\. CLASS A values (guardrail-locked) are shown for reference only
+    --- cannot be updated via this route.
+
+**16.3 New Chemical or Organism**
+
+-   1\. Admin Panel → Chemical Library Editor or Biological Library
+    Editor.
+
+-   2\. All required fields must be completed before save (no partial
+    records).
+
+-   3\. For organisms: BSF safety flag is mandatory. Conflict list must
+    be checked against existing organisms.
+
+-   4\. For chemicals: RSPO status field mandatory. If RSPO = Restricted
+    or Alert, a warning display flag is set automatically.
+
+-   5\. New entries are visible immediately in the React dashboard after
+    save.
+
+**16.4 Price Changes**
+
+-   Admin Panel → Pricing Updater.
+
+-   Change takes effect immediately in all dashboard calculations.
+
+-   Logged to change log with old and new values.
+
+-   Carbon credit methodology constants are NOT editable via Admin Panel
+    --- code update required.
+
+**17. Supabase Schema**
+
+All tables are append-only. Deletes are soft-deletes (is_active=false).
+The cfi_change_log is immutable --- no row can ever be deleted from it.
+
+**17.1 Core Tables (11 Tables)**
+
+  ------------------------------ ----------------------------- ------------------
+  **Table**                      **Purpose**                   **Key Fields**
+
+  **cfi_guardrails**             All guardrail-locked          key, value, class,
+                                 constants.                    locked
+                                 is_guardrail_locked boolean.  
+                                 Read-only for CLASS A.        
+
+  **cfi_feedstock_values**       Canonical lab values for EFB, stream, parameter,
+                                 OPDC, POME sludge with        value, unit,
+                                 version history               source
+
+  **cfi_chemical_library**       20 chemicals with prices,     id, name, group,
+                                 dose rates, RSPO status,      rspo,
+                                 safety flags                  price_usd_kg,
+                                                               dose_low,
+                                                               dose_high
+
+  **cfi_biological_library**     43 organisms with BSF safety  id, name,
+                                 flags, conflict lists, dose   category,
+                                 rates                         bsf_safety,
+                                                               conflict_ids
+
+  **cfi_pricing**                Synthetic fertiliser and BSF  product,
+                                 product market prices         price_usd, unit,
+                                                               effective_date
+
+  **cfi_lab_results**            Uploaded lab results with     stream, parameter,
+                                 delta flags and approval      value, delta_pct,
+                                 status                        approved_by
+
+  **cfi_data_gaps**              Tracks confirmed data gaps    parameter, stream,
+                                 (e.g. POME C:N). Prevents     status, notes
+                                 estimate from being accepted  
+                                 as fact.                      
+
+  **cfi_conflict_log**           Resolved data conflicts. EE   source, parameter,
+                                 29.2% pre-rejected.           reason_rejected,
+                                 Immutable.                    date
+
+  **cfi_soil_profiles**          5 Indonesian palm soil types  soil_type,
+                                 with N/P reduction factors    coverage_pct, ph,
+                                                               n_reduction,
+                                                               p_reduction
+
+  **cfi_change_log**             IMMUTABLE audit trail. Every  timestamp, user,
+                                 data change logged here.      table, field,
+                                 Never delete.                 old_value,
+                                                               new_value, class
+
+  **cfi_orchestration_agents**   7 discovery agents: status,   agent_name,
+                                 schedule, last/next run       status, schedule,
+                                                               last_run, next_run
+  ------------------------------ ----------------------------- ------------------
+
+**17.2 Storage Buckets**
+
+  ----------------------- -----------------------------------------------
+  **Bucket**              **Contents**
+
+  cfi-lab-reports         Uploaded PDF/CSV lab reports from Balai
+                          Penelitian Tanah Bogor, Eurofins, Sucofindo
+
+  cfi-literature          Scientific literature, IPCC/Verra methodology
+                          documents
+
+  cfi-internal            Internal documents, engineering reports
+
+  cfi-configs             YAML/JSON configuration files uploaded via
+                          Orchestration tab
+  ----------------------- -----------------------------------------------
+
+**18. Change Log & Version History**
+
+  ------------- ----------- ----------- ------------------------------------------
+  **Version**   **Date**    **Class**   **Change**
+
+  v1.0          Oct 2025    A           Initial brief --- pipeline concept, S0--S6
+                                        structure, EFB/OPDC/POME streams
+
+  v2.0          Dec 2025    A           OPDC yield locked at 15.2% of EFB FW; OPDC
+                                        press MC floor 40%; Asian equipment
+                                        derating 65%
+
+  v3.0          Feb 2026    A           POME sludge canonical values
+                                        guardrails-verified; Feedipedia EE 29.2%
+                                        permanently rejected; MDPI Processes 8:337
+                                        retracted --- never cite
+
+  v3.1          Feb 2026    B/C         NaOH status changed from BLOCKED to
+                                        ALLOWED-WITH-WARNING; Bt (Provibio ICBB
+                                        6095) changed from BLOCKED to CONDITIONAL
+                                        (S3 only); biological library expanded to
+                                        43 organisms
+
+  v4.0          Mar 2026    D           React dashboard v19: Orchestration tab
+                                        added (tab index 10); 7 agents; data lake
+                                        cards; YAML/JSON upload; materials
+                                        registry
+
+  v4.1          Mar 2026    D           Admin Panel specification (7 modules);
+                                        Data Update Protocol; Change
+                                        Classification System (CLASS A/B/C/D);
+                                        Supabase 11-table schema
+
+  v4.2          11 Mar 2026 D           Full brief rebuild --- all 19 sections
+                                        complete; EPC CAPEX data integrated
+                                        (\$1.075M known; DEC-SLD-101 RFQ noted);
+                                        S0 section redesign specs; GH-A/GH-B
+                                        sprinkler + plumbing specs added; POME Fe
+                                        inclusion rate table formalised
+  ------------- ----------- ----------- ------------------------------------------
+
+**19. Living Document Instructions**
+
+This brief is a living document. It must be updated whenever CFI\'s
+process parameters, guardrails, product targets, or dashboard
+architecture change. Failure to update the brief breaks continuity
+across sessions.
+
+**19.1 When to Update This Brief**
+
+-   Any CLASS A guardrail change (mandatory --- code + brief + workbook
+    in same session)
+
+-   Any new canonical lab value accepted or rejected
+
+-   New organism or chemical added to libraries
+
+-   New React dashboard version with structural changes (new tabs, new
+    panels)
+
+-   New workbook built or significantly revised
+
+-   Any CAPEX or equipment decision confirmed (RFQs received, decisions
+    made)
+
+-   Any pricing update that changes financial model assumptions
+    materially
+
+-   New Supabase tables or schema changes
+
+**19.2 Version Numbering**
+
+  ----------------------- -----------------------------------------------
+  **Increment**           **When**
+
+  Major (v5.0)            Complete restructure, new pipeline stages, or
+                          major guardrail overhaul
+
+  Minor (v4.3)            New sections, new CLASS A changes, or
+                          significant content additions (3+ sections)
+
+  Patch (v4.2.1)          Corrections, small additions, typo fixes, CLASS
+                          B/C updates
+  ----------------------- -----------------------------------------------
+
+**19.3 How to Instruct Claude to Update This Brief**
+
+Use this standard format when requesting a brief update:
+
+  -----------------------------------------------------------------------
+  Standard instruction: \"UPDATE BRIEF: \[describe change\]. CLASS
+  \[A/B/C/D\]. \[Old value\] → \[New value\]. Update Section \[X\].\"
+  Example: \"UPDATE BRIEF: OPDC moisture floor raised from 40% to 45%.
+  CLASS A. Old: 40% → New: 45%. Update Sections 2, 3, 7.\"
+
+  -----------------------------------------------------------------------
+
+**19.4 Storage & Distribution**
+
+-   Master copy: This Claude Project --- always upload updated .docx to
+    project files
+
+-   Working copy: /mnt/project/ directory (project files)
+
+-   Output copy: /mnt/user-data/outputs/ (download link for each build)
+
+-   Lovable upload: Upload current version to Lovable project knowledge
+    before each build session
+
+-   Do NOT share the brief externally without removing Section 19
+    (Living Document Instructions)
+
++-----------------------------------------------------------------------+
+| **CFI_Lovable_Project_Brief_v4_2**                                    |
+|                                                                       |
+| Circular Fertiliser Industries · Bogor, West Java, Indonesia · 11     |
+| March 2026                                                            |
+|                                                                       |
+| *CONFIDENTIAL --- Internal Use Only*                                  |
++-----------------------------------------------------------------------+

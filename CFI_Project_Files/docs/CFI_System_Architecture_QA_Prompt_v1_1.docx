@@ -1,0 +1,1197 @@
+**CIRCULAR FERTILISER INDUSTRIES**
+
+**CFI SYSTEM ARCHITECTURE --- FULL QA AUDIT PROMPT**
+
+Dual-Persona: Prompt Engineer + Systems Architect
+
+Claude · Lovable · Supabase · React · SQL · AI Reference Audit
+
+*Version: 1.0 \| March 2026 \| CONFIDENTIAL --- Sharon Perlstein Only*
+
+**SECTION 0 --- PERSONA ACTIVATION & SCOPE**
+
+> PERSONA STACK ACTIVE FOR THIS ENTIRE PROMPT RUN:\
+> \
+> PERSONA 1 --- PROMPT ENGINEER (Senior, 15+ years)\
+> Role: Validate all AI prompt quality, persona activation, guardrail
+> integrity,\
+> anti-hallucination coverage, and instruction hierarchy compliance.\
+> Checks: Prompt completeness, instruction conflicts, override vectors,
+> edge cases.\
+> \
+> PERSONA 2 --- SYSTEMS ARCHITECT (Enterprise, 20+ years)\
+> Role: Validate end-to-end system design, data flow integrity, API
+> contracts,\
+> database schema completeness, calculator logic, and integration
+> health.\
+> Checks: Supabase schema vs app reality, Lovable ↔ Supabase wiring, SQL
+> AI provenance,\
+> calculator coverage gaps, version conflicts, security posture.\
+> \
+> BOTH PERSONAS RUN SIMULTANEOUSLY. Where they conflict, document both
+> positions.\
+> REPORT EVERY FINDING --- no suppression of inconvenient results.
+
+**0.1 Document Hierarchy (applies throughout this run)**
+
+Priority order for all decisions during this QA run:
+
+-   **1 --- GUARDRAILS (CFI_Master_AI_Prompt_v4 +
+    3\_\_PROMPT_Guardrails): locked constants, CLASS A values, guardrail
+    triggers**
+
+-   2 --- ANTI-HALLUCINATION (2\_\_PROMPT_Anti-Hallucination): source
+    reality rules, banned phrases, DATA GAP protocol
+
+-   3 --- RESEARCH INTENSITY (1\_\_PROMPT_Research_Intensity): evidence
+    standards, confidence levels
+
+-   4 --- PERSONA ENHANCED (4\_\_PROMPT_Persona_Enhanced): expert panel
+    checks
+
+-   5 --- PROCESS ENGINEER (6\_\_PROMPT_Process_Engineer):
+    Stage-specific engineering specs
+
+**0.2 Source Inventory --- Pull All Available Architecture Documents**
+
+Before running any QA checks, locate and read ALL of the following in
+this project:
+
+1.  Claude\_\_\_Supabase\_\_\_Lovable\_\_Production_Architecture_Guide.md
+    --- current production architecture
+
+2.  CFI_Lovable_Project_Brief_v4_2.docx --- Lovable deployment brief and
+    component registry
+
+3.  CFI_Supabase_Guide.docx --- Supabase table definitions, workflow,
+    CLASS A guardrails
+
+4.  CFI_Master_AI_Prompt_v4.docx --- Master governing prompt v4.0
+
+5.  CFI_Design_System_v3_Lovable.md --- UI colour tokens, font rules,
+    component standards
+
+6.  CFI_QA_Test_Prompt_v24.json --- Previous QA test battery (19 tests,
+    47% pass rate)
+
+7.  CFI_IT_System_Architecture_v3_1.odt --- Legacy v3.1 architecture
+    (Excel/GitHub era, Feb 2026) --- reference only
+
+8.  All CFI_Migration\*.sql files (Migration4 through Migration9) ---
+    live DB schema
+
+9.  CFI_FULL_BUILD_v25.jsx --- Current main dashboard build
+
+10. All standalone calculator JSX files --- individual module inventory
+
+11. Memory / project context (userMemories) --- canonical values,
+    guardrails, locked constants
+
+> CRITICAL INSTRUCTION: This prompt QA is run against the CURRENT state
+> of the project.\
+> The v3.1 ODT architecture (Excel/GitHub era) is HISTORICAL REFERENCE
+> only.\
+> The live system is: Claude Claude.ai Project + Lovable
+> (happy-react-bundle.lovable.app)\
+> + Supabase (lcpbtnipkvrmuwllymfw.supabase.co) + React JSX single-file
+> components.\
+> Any finding that conflicts with this fact is an ARCHITECTURE
+> REGRESSION --- flag immediately.
+
+**SECTION 1 --- CURRENT SYSTEM ARCHITECTURE OVERVIEW**
+
+**1.1 Architecture Layers (as of March 2026)**
+
+  -------------------------------------------------------------------------------------------------
+  **Layer**       **Platform / Tool**                  **Role**                 **Version /
+                                                                                Status**
+  --------------- ------------------------------------ ------------------------ -------------------
+  AI Engine       Claude Sonnet 4.6 (Anthropic)        Research, QA, SQL        claude-sonnet-4-6
+                                                       writing, code            \| Active
+                                                       generation, persona runs 
+
+  Knowledge Base  Claude Project (this project)        Single source of truth   March 2026 \|
+                                                       for all CFI prompts, JSX Active
+                                                       files, SQL migrations,   
+                                                       data documents           
+
+  Frontend        Lovable                              React single-page        v25+ \| Live
+                  (happy-react-bundle.lovable.app)     dashboard. File upload   
+                                                       via + button. No code    
+                                                       modification.            
+
+  Backend DB      Supabase                             PostgreSQL. 11 core      sb_publishable key
+                  (lcpbtnipkvrmuwllymfw.supabase.co)   tables + lab_analysis    \| Live
+                                                       schema. Append-only.     
+
+  Auth / Admin    Sharon Perlstein only                Sole admin for Lovable,  Owner-only \|
+                                                       Supabase, Claude         Locked
+                                                       project, GitHub (legacy) 
+
+  Notifications   Zapier → Gmail webhook               Visitor email            Active
+                                                       notifications from       
+                                                       dashboard                
+
+  Legacy          GitHub + Excel (18 workbooks)        v3.1 architecture ---    Historical ref only
+  (archived)                                           Excel/VBA/Python         
+                                                       pipeline. NOT active.    
+  -------------------------------------------------------------------------------------------------
+
+**1.2 Data Flow --- End to End**
+
+The canonical CFI data flow as of March 2026:
+
+12. Sharon uploads file (PDF / Excel / Word / lab result) to Claude
+    Project chat
+
+13. Claude reads file using active persona stack (Guardrails \>
+    Anti-Hallucination \> Research \> Persona \> Process Engineer)
+
+14. Claude writes SQL INSERT / UPDATE / CREATE TABLE statements
+
+15. Sharon copies SQL → opens Supabase SQL Editor → New Query tab →
+    pastes → runs
+
+16. Lovable React app reads live data from Supabase via
+    \@supabase/supabase-js direct client
+
+17. Dashboard auto-updates via Supabase Realtime subscriptions
+
+18. All CLASS A values remain locked --- no UI or SQL can overwrite them
+
+**1.3 QA Audit Scope for This Run**
+
+-   All calculator JSX components --- coverage, logic correctness, data
+    source compliance
+
+-   All Supabase tables --- schema completeness, missing fields, AI
+    provenance check
+
+-   All SQL migrations (4--9) --- integrity, conflicts, guardrail
+    compliance
+
+-   Lovable deployment --- version alignment, known bug status, publish
+    state
+
+-   Claude Project prompt stack --- hierarchy compliance, persona
+    completeness
+
+-   Design system compliance --- colour tokens, font rules, alert
+    severity
+
+-   Security posture --- service_role exposure, RLS, audit logging
+
+-   AI reference in database --- is AI-generated data properly tagged
+    and auditable?
+
+**SECTION 2 --- CALCULATOR & COMPONENT INVENTORY**
+
+QA INSTRUCTION: For EACH calculator below, perform the following checks
+in order:
+
+-   CHECK A: Does the component read its inputs from Supabase or are
+    values hardcoded?
+
+-   CHECK B: Are all canonical values (MC, DM, NPK, C:N) consistent with
+    memory guardrails?
+
+-   CHECK C: Does C:N use DM-weighted formula (never wet-weight
+    average)?
+
+-   CHECK D: Does the revenue formula omit the erroneous /1000 division
+    (BUG-REV-001 status)?
+
+-   CHECK E: Is NaOH alert rendered as AMBER (not RED) --- GR-11
+    compliance?
+
+-   CHECK F: Is Bt/Provibio alert rendered as AMBER with titre decay
+    check?
+
+-   CHECK G: Does OPDC blend enforce 40% MC floor (GR-02 compliance)?
+
+-   CHECK H: Is the 5-day biological minimum hard-coded and not
+    overridable?
+
+-   CHECK I: Are Asian/Chinese equipment specs derated at 65% nameplate?
+
+-   CHECK J: Is N conversion factor 4.67 (not 6.25) used throughout?
+
+**2.1 Main Dashboard --- CFI_FULL_BUILD_v25.jsx**
+
+  ------------------------------------------------------------------------
+  **Item**        **Expected State**          **QA Check Required**
+  --------------- --------------------------- ----------------------------
+  File            CFI_FULL_BUILD_v25.jsx      Confirm this is the file
+                  (\~400KB single file)       deployed on Lovable
+
+  Stage coverage  S0--S6 stages +             Sections 14 and 15 ---
+                  multi-residue calculator +  confirm present or flag
+                  AI Research Engine          PENDING
+
+  Revenue formula No /1000 division ---       CHECK D --- critical,
+                  BUG-REV-001 patched         revenues understated 1000x
+                                              if unpatched
+
+  CAPEX waterfall 3-tier: +8% contingency →   Single 15% was wrong ---
+                  +20% EPC → +20% developer   confirm 3-tier present
+                  markup                      
+
+  GH Calculator   Derived from S0 source      CHECK A --- feedTpd must be
+                  inputs (FFB throughput),    formula-derived
+                  not hardcoded 326 tpd       
+
+  NaOH alert      AMBER (not RED)             CHECK E --- GR-11 compliance
+
+  PKE nitrogen    38.6 kg N/t DM (not 29.0)   Confirm correct multiplier
+
+  Stream routing  EFB → compost (CP \< 5% BSF Biologically mandated ---
+  EFB             floor)                      confirm routing locked
+
+  Stream routing  OPDC + POS → BSF pathway    Confirm routing correct
+  OPDC/POS                                    
+
+  Supabase        \@supabase/supabase-js with Not MCP --- production
+  connection      VITE\_ env vars             pattern only
+  ------------------------------------------------------------------------
+
+**2.2 Standalone Stream DM Calculators**
+
+  ---------------------------------------------------------------------------------------
+  **Calculator File**             **Stream**   **Key Locked Values** **Missing / Gaps**
+  ------------------------------- ------------ --------------------- --------------------
+  CFI_EFB_DM_Calc.jsx             EFB          MC 62.5% wb, protein  Confirm PKSA dose
+                                               4.75%, lignin 22%,    6--10 kg/t, 2mm
+                                               C:N 60 (DM-weighted)  particle size locked
+
+  CFI_OPDC_DM_Calc.jsx            OPDC         MC 70% wb, protein    Confirm OPDC yield
+                                               14.5%, lignin 30.7%,  locked at 15.2% EFB
+                                               C:N 20 (DM-weighted). fresh = 4.2% FFB
+                                               Press discharge floor 
+                                               40% MC.               
+
+  CFI_POS_DM_v4.jsx               POS (Palm    MC 82% wb, Ash 28%    Fe inclusion
+                                  Oil Sludge)  DM, CP 11% DM, EE 10% protocol
+                                               DM, N 1.76% DM. C:N = CFI-LAB-POME-001.
+                                               DATA GAP. Feedipedia  C:N flagged DATA
+                                               EE 29.2% DM           GAP?
+                                               PERMANENTLY REJECTED. 
+
+  CFI_POME_DM_Calculator_v3.jsx   POME / POS   Confirm: POS ≠ POME.  Verify no conflation
+                                               POS captured at mill  of POME (pond
+                                               exit sludge pit, NOT  liquid) with POS
+                                               pond.                 (sludge)
+  ---------------------------------------------------------------------------------------
+
+**2.3 Stage-Specific Calculators**
+
+  ------------------------------------------------------------------------------------------------------
+  **Calculator File**                         **Stage**       **Function**        **QA Checks**
+  ------------------------------------------- --------------- ------------------- ----------------------
+  CFI_S0_Redesign.jsx                         S0 Mechanical   FFB input, stream   Inputs manual --- no
+                                                              separation, press   auto-defaults for mill
+                                                              sizing, truck       capacity. OPDC yield
+                                                              cycles, bay counts  15.2% locked.
+
+  CFI_S1S2_Calculator.jsx                     S1--S2          PKSA alkaline       5-day biological
+                                              Pre-treatment   pre-treatment:      minimum enforced? pH
+                                                              6--10 kg/t, pH      gate ≤8.0 before BSF?
+                                                              10--12, 60--90 min, 
+                                                              30--35% lignin      
+                                                              reduction. 24hr     
+                                                              neutralisation, 2   
+                                                              turnings.           
+
+  CFI_GH_Calculator.jsx                       S3 Greenhouse   GH zone sizing, bay Patch: hardcoded 326
+                                                              counts, CAPEX.      replaced by derived
+                                                              feedTpd MUST be     calc. Confirm patched
+                                                              formula-derived     version deployed.
+                                                              from FFB            
+                                                              throughput.         
+
+  CFI_AG_Management_Planning_Calculator.jsx   AG Management   VGAM / GAM / Poor / Strictly 4 tiers ---
+                                                              Abandoned tiers.    no intermediate or
+                                                              Soil targeting by   custom tiers allowed.
+                                                              type.               
+  ------------------------------------------------------------------------------------------------------
+
+**2.4 Nutrient & NPK Calculators**
+
+  ------------------------------------------------------------------------------------
+  **Calculator File**           **Function**       **Canonical Data   **QA Check**
+                                                   Required**         
+  ----------------------------- ------------------ ------------------ ----------------
+  CFI_NPK_Value_Dashboard.jsx   NPK value per      Combined daily: N  Confirm
+                                stream, combined   582 kg, P 197 kg,  DM-weighted, not
+                                3-stream daily     K 930 kg (60 TPH   WW-weighted. No
+                                totals             mill)              /1000 error.
+
+  CFI_Nutrient_Ledger.jsx       Full nutrient      All 3 streams: EFB Ledger must
+                                accounting ---     N 378 kg/day, OPDC balance.
+                                inputs vs outputs  N 102 kg/day, POS  Document any
+                                across stages      N 102 kg/day       unaccounted NPK
+                                                   (approx)           losses.
+
+  CFI_Treatment_Optimizer.jsx   Chemical treatment PKSA \$0, lime     NaOH alert:
+                                optimisation ---   cost TBD, NaOH     AMBER not RED.
+                                PKSA vs lime vs    AMBER WARNING      Sodium
+                                NaOH               mandatory          accumulation
+                                                                      risk noted?
+  ------------------------------------------------------------------------------------
+
+**2.5 Soil & Biology Calculators**
+
+  -------------------------------------------------------------------------------------------------------
+  **Calculator File**                    **Function**       **Key Data**              **QA Checks**
+  -------------------------------------- ------------------ ------------------------- -------------------
+  CFI_Soil_Calculator_v4_PUBLISHED.jsx   Soil type          5 types: Inceptisols 39%, PUBLISHED version
+                                         targeting by       Ultisols 24%, Oxisols 8%, --- confirm in sync
+                                         Indonesian palm    Histosols 7%, Spodosols   with v25 main
+                                         soil order         \~22%. Histosols: 80%     build. Peat data in
+                                                            less N, 70% less P.       scope?
+
+  CFI_SoilBio_Viz_v3.jsx                 Soil biology       Degraded vs target ranges Reads from
+                                         visualisation ---  per soil order (from      cfi_soil_profiles
+                                         microbiome, AMF,   Migration 7               table? Or
+                                         FB ratio           cfi_soil_profiles)        hardcoded?
+
+  CFI_Bio_Database_Manager_v2.jsx        Biological         43 organisms in           Bt guardrail: AMBER
+                                         organism database  cfi_biological_library.   not excluded. Titre
+                                         manager (43        Bt/Provibio AMBER flag.   decay check
+                                         organisms)         Conflict lists.           present?
+  -------------------------------------------------------------------------------------------------------
+
+**2.6 Lab Display Calculators**
+
+  -----------------------------------------------------------------------------------------
+  **Calculator File**            **Version**   **Function**          **QA Check**
+  ------------------------------ ------------- --------------------- ----------------------
+  CFI_Stage_Lab_Display.jsx      v1            Original              SUPERSEDED by v2 ---
+                                               stage-by-stage lab    confirm not deployed
+                                               data display          on Lovable
+
+  CFI_Stage_Lab_Display_v2.jsx   v2            Enhanced lab display  Should read from
+                                               with delta flags vs   cfi_lab_results table.
+                                               canonical             Delta flags working?
+
+  CFI_Final_Lab_Display.jsx      Final         Final consolidated    Confirm canonical
+                                               lab analysis display  values match memory
+                                                                     guardrails exactly
+  -----------------------------------------------------------------------------------------
+
+**2.7 Data Pipeline Component**
+
+  ------------------------------------------------------------------------------------
+  **Calculator File**            **Function**       **Architecture Check**
+  ------------------------------ ------------------ ----------------------------------
+  CFI_Data_Upload_Pipeline.jsx   File upload UI for Must use Supabase Storage + Edge
+                                 Sharon to submit   Function pattern (NOT MCP direct).
+                                 lab results into   File → Claude API → SQL →
+                                 Supabase           Supabase.
+
+  ------------------------------------------------------------------------------------
+
+**2.8 CALCULATOR QA --- MISSING COMPONENTS CHECKLIST**
+
+> THE FOLLOWING CALCULATORS / SECTIONS ARE FLAGGED PENDING --- CONFIRM
+> STATUS:\
+> \
+> PENDING-01: Section 14 (Multi-Residue Calculator) in
+> CFI_FULL_BUILD_v25 --- present or stub?\
+> PENDING-02: Section 15 (AI Research Engine) in CFI_FULL_BUILD_v25 ---
+> present or stub?\
+> PENDING-03: S4 OPEX Tab (monthly labour, power, inoculant costs) ---
+> not yet built\
+> PENDING-04: S4--S6 electricity OPEX --- flagged TBD in memory\
+> PENDING-05: GH-A bay count sign-off (windrow \~470 vs tray \~49) ---
+> PENDING design sign-off\
+> PENDING-06: GH-B structural option (currently defaulting to Opt 3
+> corrugated iron) --- not confirmed\
+> PENDING-07: DEC-SLD-101 three-phase sludge decanter RFQ ---
+> \$80k--\$150k range, primary CAPEX gap
+
+**SECTION 3 --- SUPABASE DATABASE INVENTORY & QA**
+
+Project URL: https://lcpbtnipkvrmuwllymfw.supabase.co
+
+Auth key: sb_publishable_xJ9N0RaYXbY07m8DvtG_zQ\_-m8Zzm23 (publishable
+--- frontend safe)
+
+RULE: Supabase is APPEND-ONLY. No row deletions. Soft-delete via
+is_active = false. change_log and conflict_log are IMMUTABLE.
+
+**3.1 Core Tables (11 tables --- public schema)**
+
+  ------------------------------------------------------------------------------------------------
+  **Table Name**           **Row      **Contents**   **What It Stores**    **Known Gaps / QA
+                           Count**                                         Checks**
+  ------------------------ ---------- -------------- --------------------- -----------------------
+  cfi_feedstock_values     \~31 rows  Lab values     EFB, OPDC, POS        C:N for POS = DATA GAP.
+                                                     canonical lab         Feedipedia EE 29.2% DM
+                                                     parameters (MC, CP,   = PERMANENTLY REJECTED
+                                                     EE, lignin, C:N, NPK) flag present?
+
+  cfi_chemical_library     20 rows    Chemical specs 20 chemicals: PKSA    NaOH must carry
+                                                     (\$0 locked), lime,   AMBER_WARNING flag in
+                                                     NaOH, H2O2, CaCO3.    notes or warning_level
+                                                     Prices, RSPO status,  field. Check present?
+                                                     doses.                
+
+  cfi_biological_library   43 rows    Organisms      43 organisms          Bt (ICBB 6095) must
+                                                     including Provibio    have AMBER_WARNING.
+                                                     9-strain consortium   Titre decay threshold
+                                                     (ICBB), BSF,          10\^4 CFU/g. Is this in
+                                                     Bt/Bacillus           DB?
+                                                     thuringiensis.        
+                                                     Conflict lists,       
+                                                     safety ratings.       
+
+  cfi_pricing              \~15 rows  Market prices  Urea, TSP, MOP, BSF   Carbon price range
+                                                     meal price, frass     \$50--120/t insetting;
+                                                     price, carbon credit  \$15--40/t offsetting.
+                                                     price ranges          Are both ranges
+                                                                           present?
+
+  cfi_guardrails           \~25 rows  CLASS A locked OPDC yield 15.2%,     All 9 CLASS A values
+                                      constants      press MC floor 40%,   present?
+                                                     5-day minimum, BSF pH is_guardrail_locked =
+                                                     gate ≤8.0, BSF temp   TRUE on all? Cannot be
+                                                     gate ≤30°C, N factor  overridden by SQL
+                                                     4.67, PKSA \$0,       UPDATE.
+                                                     carbon 213,827 t      
+                                                     CO2e/yr               
+
+  cfi_lab_results          Grows over New lab data   Sharon-uploaded lab   Are new uploads
+                           time                      results with delta    triggering delta
+                                                     flags vs canonical.   comparisons vs
+                                                     ICP-OES packages      cfi_feedstock_values?
+                                                     A--D.                 Delta flag logic in
+                                                                           place?
+
+  cfi_data_gaps            \~10 rows  Missing data   Confirmed missing     Is POS C:N listed? Is
+                                      registry       data points requiring POS Fe (3,000--8,000
+                                                     lab analysis (e.g.    range) listed as
+                                                     POS C:N, POS Fe/Mn    pending ICP-OES?
+                                                     actual)               
+
+  cfi_conflict_log         Grows over Rejected       All                   Feedipedia POME EE
+                           time       values         rejected/superseded   29.2% DM rejection
+                                                     values --- IMMUTABLE. entry present? Date and
+                                                     Feedipedia EE 29.2%   reason recorded?
+                                                     rejection must be     
+                                                     here.                 
+
+  cfi_soil_profiles        5 rows (+  Soil baseline  5--6 Indonesian palm  6 soil orders in
+                           1 Histosol data           soil orders:          Migration 7 vs 5 rows
+                           = 6)                      Inceptisols,          cited in Supabase Guide
+                                                     Ultisols, Oxisols,    --- reconcile count.
+                                                     Histosols/peat,       Andisol scope?
+                                                     Spodosols, Andisol    
+                                                     (if in scope)         
+
+  cfi_change_log           Grows over Audit trail    Every data change --- Is every SQL UPDATE
+                           time                      IMMUTABLE. table,     accompanied by a
+                                                     column, old_value,    cfi_change_log INSERT?
+                                                     new_value,            Claude writes both in
+                                                     changed_by,           same block?
+                                                     timestamp.            
+
+  cfi_solutions            Grows over AI research    Data lake from AI     AI PROVENANCE GAP ---
+                           time       outputs        research runs         see Section 5. No
+                                                     (Perplexity / Claude  source_model or
+                                                     personas). Research   is_ai_generated field
+                                                     findings, source      confirmed.
+                                                     citations, confidence 
+                                                     levels.               
+  ------------------------------------------------------------------------------------------------
+
+**3.2 lab_analysis Schema Tables (migrations 4--6)**
+
+These tables live in the lab_analysis schema --- separate from the
+public schema above.
+
+  --------------------------------------------------------------------------------------------------
+  **Table / Schema**                  **Migration**   **Contents**          **QA Checks**
+  ----------------------------------- --------------- --------------------- ------------------------
+  lab_analysis.cfi_file_catalogue     Migration 4     11 rows (LAB-001 to   Is POS (Palm Oil Sludge)
+                                                      LAB-011). Maps each   present as LAB-011?
+                                                      lab file to table +   Confirm 11 rows total.
+                                                      residue. POS added as 
+                                                      LAB-011.              
+
+  lab_analysis.cfi_residue_registry   Migration 4     10 rows: EFB, OPDC,   POS pathway = S4 BSF
+                                                      OPF, OPT, POME, PKE,  (not pond). Confirm
+                                                      CPO, BSF, PMF, POS.   cfi_primary_pathway =
+                                                      Pipeline stage +      \'S4_BSF\'. POME ≠ POS
+                                                      primary pathway per   --- separate entries?
+                                                      residue.              
+
+  lab_analysis.cfi_pos_analysis       Migration 4     POS-specific lab      CFI-LAB-POME-001
+                                                      analysis table.       protocol embedded? Fe
+                                                      Canonical locked      \<3000 = 20% WW;
+                                                      values + Fe inclusion 3000--5000 = 10--15%;
+                                                      protocol.             5000--8000 = 5--10%;
+                                                                            \>8000 = CaCO3
+                                                                            amendment.
+
+  OPF / OPT tables                    Migrations 5--6 OPF (Oil Palm Frond)  Migration 5 fix +
+                                                      and OPT (Oil Palm     Migration 6 research fix
+                                                      Trunk) data           both applied? No
+                                                      corrections and       residual wrong values
+                                                      research updates.     from v1?
+  --------------------------------------------------------------------------------------------------
+
+**3.3 Soil & Product Response Tables (migrations 7--9)**
+
+  ------------------------------------------------------------------------------------------------
+  **Table**                   **Migration**   **Row     **Contents**          **QA Checks**
+                                              Count**                         
+  --------------------------- --------------- --------- --------------------- --------------------
+  cfi_soil_profiles           Migration 7     6 soil    Degraded vs target    All 6 orders
+                                              orders    ranges for physical,  present: Inceptisol,
+                                                        chemical, microbiome  Ultisol, Oxisol,
+                                                        properties per soil   Histosol,
+                                                        order. LDE confidence Sandy/Spodosol,
+                                                        flagged.              Andisol?
+                                                                              confidence_level
+                                                                              field populated?
+
+  cfi_soil_coefficients       Migration 8     TBD       NPK efficiency        Are coefficients
+                                                        coefficients,         cross-referenced to
+                                                        leaching fractions, P cfi_soil_profiles
+                                                        fixation rates per    FK? No orphaned
+                                                        soil type             rows?
+
+  cfi_product_soil_response   Migration 9     TBD       CFI product (frass,   Histosol: 80% less
+                                                        biochar, compost)     N, 70% less P
+                                                        response by soil type hardcoded as locked
+                                                        --- yield uplift,     coefficients? Source
+                                                        nutrient use          cited for each?
+                                                        efficiency            
+  ------------------------------------------------------------------------------------------------
+
+**3.4 Database Architecture --- What Is Missing**
+
+> CONFIRMED DATABASE GAPS --- ACTION REQUIRED:\
+> \
+> GAP-DB-01: No cfi_equipment table confirmed in live DB.\
+> 73-row equipment catalogue (from CFI_Supabase_Database.sql) ---
+> migration status unknown.\
+> DEC-SLD-101 sludge decanter (\$80k--\$150k) is primary CAPEX gap ---
+> must be in equipment table.\
+> \
+> GAP-DB-02: No cfi_carbon_credits table confirmed.\
+> Carbon model: 213,827 t CO2e/yr, \$4.3--6.4M/yr. Methods
+> ACM0022/AMS-III.H/VM0041.\
+> Insetting \$50--120/t and offsetting \$15--40/t price ranges --- not
+> in any confirmed migration.\
+> \
+> GAP-DB-03: cfi_solutions has no AI provenance fields.\
+> Research run outputs lack source_model, run_date, persona_used,
+> confidence_level.\
+> See Section 5 for full AI Reference Audit.\
+> \
+> GAP-DB-04: 11-table schema (CFI_Supabase_Step5.sql) vs 9 confirmed
+> migrations.\
+> Migrations 1--3 status unknown. Orchestration table and visitor
+> registry --- not confirmed live.\
+> \
+> GAP-DB-05: S4 OPEX data --- no table confirmed for monthly labour,
+> power, inoculant costs.
+
+**SECTION 4 --- LOVABLE / CLAUDE / SUPABASE INTEGRATION QA**
+
+**4.1 Lovable Deployment Checks**
+
+  ------------------------------------------------------------------------------------
+  **Check   **Item**         **Expected**                      **QA Action**
+  ID**                                                         
+  --------- ---------------- --------------------------------- -----------------------
+  LV-01     Live URL         happy-react-bundle.lovable.app    Confirm URL responds.
+                                                               No 404.
+
+  LV-02     Deployed file    CFI_FULL_BUILD_v25.jsx (not v23)  Confirm v25 is live.
+                                                               v23_FIXED is superseded
+                                                               --- must not be
+                                                               deployed.
+
+  LV-03     Upload method    Attach JSX via + button with      Never use Lovable\'s
+                             \'Replace App.jsx exactly as-is.  own code editor for
+                             Do not modify any code.\'         pre-built files.
+
+  LV-04     Supabase env     VITE_SUPABASE_URL and             If missing, Supabase
+            vars             VITE_SUPABASE_PUBLISHABLE_KEY set client returns null and
+                             in Lovable project settings       all DB reads fail
+                                                               silently.
+
+  LV-05     React version    Single-file React component. No   Any multi-file split =
+                             external CSS files. No separate   deployment risk.
+                             JS files.                         Enforce single-file
+                                                               rule.
+
+  LV-06     Babel validation No template literals, no          Run Babel parse before
+                             self-closing divs, no raw \${} in each upload.
+                             JSX text nodes, all \< in JSX use 
+                             entity encoding                   
+
+  LV-07     Design system    CFI_Design_System_v3_Lovable.md   Check colour tokens in
+                             applied: Syne/DM Sans/DM Mono     latest JSX match design
+                             fonts, C{} colour block, Title    system exactly.
+                             Case, no emoji                    
+
+  LV-08     Known bugs       BUG-REV-001 (revenue /1000),      47% pass rate on v23
+                             GR-11 (NaOH RED vs AMBER),        QA. Confirm all 6 bugs
+                             OPDC-only formula, OPDC MC floor, patched in v25.
+                             CAPEX waterfall, PKE multiplier   
+  ------------------------------------------------------------------------------------
+
+**4.2 Supabase Security Checks**
+
+  ----------------------------------------------------------------------------------------------------------
+  **Check   **Security       **Required State**                                **Risk If Failed**
+  ID**      Item**                                                             
+  --------- ---------------- ------------------------------------------------- -----------------------------
+  SEC-01    service_role key service_role key NEVER in client-side (Lovable)   Full DB bypass of all RLS.
+            exposure         code. Edge Functions only.                        CRITICAL exposure.
+
+  SEC-02    Publishable key  sb_publishable_xJ9N0RaYXbY07m8DvtG_zQ\_-m8Zzm23   Low risk --- publishable key
+            in frontend      --- frontend safe. Correctly used.                is designed for browser use.
+
+  SEC-03    Row Level        RLS enabled on all user-facing tables.            Without RLS, any browser can
+            Security (RLS)   cfi_guardrails: read-only to anon.                write to any table.
+
+  SEC-04    AI pipeline      is_approved = false on AI-written rows.           Human review required before
+            writes           created_by = \'ai_pipeline\'.                     AI data influences
+                                                                               calculations.
+
+  SEC-05    Audit log        AFTER INSERT trigger → cfi_change_log for every   No forensic trail for AI
+                             write.                                            pipeline data. Compliance
+                                                                               gap.
+
+  SEC-06    MCP in           Supabase MCP = development only per Supabase      MCP write mode allows
+            production       docs. NOT used for production writes.             arbitrary destructive SQL.
+                                                                               Prompt injection risk.
+  ----------------------------------------------------------------------------------------------------------
+
+**4.3 Claude API Integration Points**
+
+  -------------------------------------------------------------------------------------------------------
+  **Integration**   **Method**                              **Status**       **Notes**
+  ----------------- --------------------------------------- ---------------- ----------------------------
+  Claude → SQL      Manual: Claude writes SQL, Sharon       Active           Every SQL block must include
+  writing           pastes into Supabase SQL Editor         production       cfi_change_log INSERT.
+                                                            workflow         
+
+  Claude → JSX      Claude generates full JSX in project,   Active           Babel validation required
+  generation        Sharon uploads to Lovable via + button                   before upload.
+
+  Edge Function →   POST to                                 Architecture     For CFI_Data_Upload_Pipeline
+  Claude API        https://api.anthropic.com/v1/messages   documented,      --- confirm Edge Function
+                    using claude-sonnet-4-6                 implementation   deployed in Supabase.
+                                                            status TBD       
+
+  Claude API in     Available for AI-powered React          Capability       Note: model string uses
+  Artifacts         artifacts (claude-sonnet-4-20250514)    available        claude-sonnet-4-20250514 in
+                                                                             artifact API calls.
+
+  Supabase MCP (dev Connected via                           Dev use only     Must NOT be used for any
+  only)             https://mcp.supabase.com/mcp ---                         production data writes.
+                    development prototype only                               Read-only for inspection.
+  -------------------------------------------------------------------------------------------------------
+
+**SECTION 5 --- AI REFERENCE AUDIT IN SQL DATABASE**
+
+The Systems Architect and Prompt Engineer both flag this as a CRITICAL
+GAP in the current architecture.
+
+**5.1 Current State of AI Provenance in Supabase**
+
+Audit all migrations (4--9) and confirmed table schemas for the
+following AI-tracking fields:
+
+  -------------------------------------------------------------------------------------
+  **Field Name**     **Purpose**          **Present in DB?**  **Severity If Missing**
+  ------------------ -------------------- ------------------- -------------------------
+  source_model       Which AI model       NOT FOUND in any    HIGH --- cannot
+                     generated this row   migration           distinguish AI-generated
+                     (e.g.                                    from lab-confirmed data
+                     claude-sonnet-4-6)                       
+
+  is_ai_generated    Boolean flag: TRUE   NOT FOUND in any    HIGH --- AI-derived LDE
+                     if value came from   migration           values mixed with
+                     Claude/AI research                       LAB-CONFIRMED without
+                     run                                      flag
+
+  ai_run_id          Links row to a       NOT FOUND           MEDIUM --- no
+                     specific Claude                          traceability from DB row
+                     session or research                      back to Claude
+                     run                                      conversation
+
+  persona_used       Which persona(s)     NOT FOUND           MEDIUM --- no audit trail
+                     generated this value                     for expert panel
+                     (e.g. \'Chemistry                        decisions
+                     Professor\')                             
+
+  confidence_level   LDE-HIGH /           PRESENT in          HIGH --- missing from
+                     LDE-MODERATE /       cfi_soil_profiles   cfi_feedstock_values,
+                     LDE-LOW /            only                cfi_biological_library
+                     LAB-CONFIRMED                            
+
+  is_approved        Human review flag    NOT FOUND in core   HIGH --- no
+                     --- FALSE until      tables              human-in-the-loop gate on
+                     Sharon approves                          AI data
+                     AI-written rows                          
+
+  created_by         Who/what created the NOT FOUND           MEDIUM --- no provenance
+                     row ---                                  on existing rows
+                     \'ai_pipeline\',                         
+                     \'sharon\',                              
+                     \'lab_upload\'                           
+
+  data_source        Source citation      PRESENT in          HIGH --- missing from
+                     (Author, Year,       cfi_soil_profiles   most core tables
+                     Journal)             only                
+  -------------------------------------------------------------------------------------
+
+**5.2 The Risk: AI-Derived Data vs Lab-Confirmed Data**
+
+> ARCHITECTURE RISK --- AI PROVENANCE GAP:\
+> \
+> The cfi_solutions table stores \'data lake from AI research runs\' but
+> has NO confirmed schema.\
+> If cfi_solutions rows have no is_ai_generated flag, they cannot be
+> programmatically filtered\
+> from lab-confirmed canonical values in cfi_feedstock_values.\
+> \
+> In the fertiliser business, a regulator or EIB auditor asking \'where
+> did this NPK value\
+> come from?\' must receive: Author + Year + Journal (Lab-Confirmed) OR
+> Claude session ID\
+> + persona + confidence level (AI-Derived). The current DB provides
+> neither systematically.\
+> \
+> SPECIFIC EXAMPLES OF UNTAGGED AI DATA IN CURRENT DB:\
+> - cfi_soil_profiles: all rows tagged LDE (Literature-Derived
+> Estimates) --- GOOD\
+> - cfi_feedstock_values: no confidence_level or source field ---
+> UNKNOWN provenance\
+> - cfi_biological_library: 43 organisms --- source of each organism
+> property unknown\
+> - cfi_solutions: schema unknown --- may have zero provenance fields
+
+**5.3 Recommended AI Provenance Patch (SQL)**
+
+QA INSTRUCTION: Generate the following SQL migration as Migration 10 and
+present to Sharon for review:
+
+\-- CFI MIGRATION 10 --- AI Provenance Fields
+
+\-- Adds AI tracking columns to all core tables lacking them
+
+\-- Run in fresh Supabase SQL Editor tab
+
+ALTER TABLE cfi_feedstock_values
+
+ADD COLUMN IF NOT EXISTS confidence_level TEXT
+
+CHECK (confidence_level IN
+(\'LDE-HIGH\',\'LDE-MODERATE\',\'LDE-LOW\',\'LAB-CONFIRMED\')),
+
+ADD COLUMN IF NOT EXISTS data_source TEXT,
+
+ADD COLUMN IF NOT EXISTS is_ai_generated BOOLEAN DEFAULT FALSE,
+
+ADD COLUMN IF NOT EXISTS is_approved BOOLEAN DEFAULT TRUE,
+
+ADD COLUMN IF NOT EXISTS created_by TEXT DEFAULT \'canonical_lock\';
+
+ALTER TABLE cfi_chemical_library
+
+ADD COLUMN IF NOT EXISTS warning_level TEXT CHECK (warning_level IN
+(\'AMBER\',\'RED\',\'GREEN\',\'NONE\')),
+
+ADD COLUMN IF NOT EXISTS warning_reason TEXT;
+
+ALTER TABLE cfi_biological_library
+
+ADD COLUMN IF NOT EXISTS warning_level TEXT CHECK (warning_level IN
+(\'AMBER\',\'RED\',\'GREEN\',\'NONE\')),
+
+ADD COLUMN IF NOT EXISTS warning_reason TEXT,
+
+ADD COLUMN IF NOT EXISTS titre_decay_threshold TEXT;
+
+\-- Set NaOH warning
+
+UPDATE cfi_chemical_library SET warning_level = \'AMBER\',
+
+warning_reason = \'Sodium accumulation risk --- monitor soil Na levels\'
+
+WHERE chemical_name ILIKE \'%NaOH%\' OR chemical_name ILIKE \'%sodium
+hydroxide%\';
+
+\-- Set Bt/Provibio ICBB 6095 warning
+
+UPDATE cfi_biological_library SET warning_level = \'AMBER\',
+
+titre_decay_threshold = \'10\^4 CFU/g --- confirm before S4 BSF
+loading\',
+
+warning_reason = \'Apply S3 composting phase only. Confirm titre decay
+before S4.\'
+
+WHERE organism_name ILIKE \'%thuringiensis%\' OR strain_id = \'ICBB
+6095\';
+
+**5.4 cfi_solutions Table --- Schema QA**
+
+QA INSTRUCTION: Run the following query in Supabase to inspect the
+actual schema of cfi_solutions:
+
+SELECT column_name, data_type, is_nullable, column_default
+
+FROM information_schema.columns
+
+WHERE table_name = \'cfi_solutions\'
+
+ORDER BY ordinal_position;
+
+Expected minimum fields for AI research outputs:
+
+-   research_question TEXT --- the prompt/question submitted
+
+-   source_model TEXT --- AI model used (claude-sonnet-4-6, perplexity,
+    etc.)
+
+-   persona_used TEXT --- expert persona(s) active during run
+
+-   confidence_level TEXT --- LDE-HIGH / LDE-MODERATE / LDE-LOW
+
+-   source_citations JSONB --- array of Author/Year/Journal/DOI
+
+-   is_approved BOOLEAN --- Sharon review gate
+
+-   run_date TIMESTAMPTZ --- when the research run occurred
+
+-   applied_to_table TEXT --- which Supabase table was updated from this
+    run
+
+**SECTION 6 --- PROMPT STACK & PERSONA QA**
+
+**6.1 Prompt Hierarchy Compliance Check**
+
+  -----------------------------------------------------------------------------------------------------------
+  **Prompt File**                       **Priority**   **Persona / Role**           **QA Check**
+  ------------------------------------- -------------- ---------------------------- -------------------------
+  1\_\_PROMPT_Research_Intensity.docx   3              Research standard: 99-Power, Is research intensity
+                                                       10+ peer-reviewed sources,   applied to ALL data
+                                                       cross-verify                 outputs, or only when
+                                                                                    explicitly invoked?
+
+  2\_\_PROMPT_Anti-Hallucination.docx   2              Source reality rules. Every  Banned phrase list
+                                                       value needs                  current? DATA GAP trigger
+                                                       Author/Year/Title/Journal.   working? No
+                                                       Banned phrases.              back-propagation of
+                                                                                    errors?
+
+  3\_\_PROMPT_Guardrails.docx           1 (HIGHEST)    Configuration Lock. CLASS A  All 9 CLASS A values in
+                                                       locked constants. Cannot be  cfi_guardrails match this
+                                                       overridden.                  document? PKSA \$0, N
+                                                                                    factor 4.67, OPDC 15.2%,
+                                                                                    etc.
+
+  4\_\_PROMPT_Persona_Enhanced.docx     4              13-expert panel: Chemistry,  All 13 experts present?
+                                                       Biology, Microbiology,       Consultation protocol
+                                                       Agronomy, Soil, Engineering, (automatic triggers)
+                                                       Finance, Regulatory,         active?
+                                                       Entomology (EU + US), Vet    
+                                                       Nutrition, Field             
+                                                       Microbiologist, Research     
+                                                       Methods                      
+
+  6\_\_PROMPT_Process_Engineer.pdf      5 (LOWEST)     Stage 1--2 mechanical +      Process engineer checks
+                                                       chemical engineering.        applied to S0--S2
+                                                       Equipment sizing, CAPEX,     calculator outputs?
+                                                       layout, suppliers.           
+
+  CFI_Master_AI_Prompt_v4.docx          MASTER         Integrates all above.        Document hierarchy from
+                                                       Governs all CFI AI work.     Section 0 matches v4
+                                                                                    prompt? No conflicts?
+  -----------------------------------------------------------------------------------------------------------
+
+**6.2 Persona Coverage --- Missing Personas Check**
+
+The following personas are documented in memory / project files. Confirm
+all are active:
+
+  ------------------------------------------------------------------------------------------
+  **Persona   **Persona Name**      **Confirmed in Project Files?**     **Gap?**
+  Number**                                                              
+  ----------- --------------------- ----------------------------------- --------------------
+  1           Chemistry Professor   Yes ---                             None
+              (25+ yrs)             4\_\_PROMPT_Persona_Enhanced.docx   
+
+  2           Biology Professor     Yes                                 None
+              (25+ yrs)                                                 
+
+  3           Microbiology          Yes                                 None
+              Professor (25+ yrs)                                       
+
+  4           Agronomy Professor    Yes                                 None
+              (25+ yrs)                                                 
+
+  5           Soil Science          Yes                                 None
+              Professor (25+ yrs)                                       
+
+  6           Process / Chemical    Yes                                 None
+              Engineer                                                  
+
+  7           Finance / Economics   Partial --- check Persona doc       Confirm present
+              Professor             section 7                           
+
+  8           Regulatory /          Partial --- check Persona doc       RSPO, EU organic,
+              Compliance Professor  section 8                           Indonesian
+                                                                        regulations
+
+  9           Field Microbiologist  Yes                                 None
+              & Inoculant Designer                                      
+              (20+ yrs)                                                 
+
+  10          Research Methods      Yes                                 Polices citation
+              Professor (25+ yrs)                                       quality
+
+  11          European Entomology   Yes --- UTH Thessaly link           None
+              Professor (30+ yrs)                                       
+
+  12          US Entomology         Yes                                 None
+              Professor (30+ yrs)                                       
+
+  13          Vet Nutrition &       Yes                                 None
+              Animal Husbandry                                          
+              Professor (20+ yrs)                                       
+
+  Pending-3   Perplexity Persona 3  Memory: confirmation pending        PENDING --- confirm
+                                                                        or build
+
+  Pending-4   Perplexity Persona 4  Memory: confirmation pending        PENDING --- confirm
+                                                                        or build
+  ------------------------------------------------------------------------------------------
+
+**6.3 Guardrail Compliance --- Hard-Wire Checks**
+
+> SYSTEMS ARCHITECT CHECK --- Run these verifications against
+> CFI_FULL_BUILD_v25.jsx source code:\
+> \
+> GC-01: Search for \'/ 1000\' or \'/1000\' in revenue calculations →
+> should return ZERO hits\
+> GC-02: Search for \'NaOH\' → all instances must show amber alert (not
+> red)\
+> GC-03: Search for \'thuringiensis\' or \'Bt\' → all instances must
+> show amber alert\
+> GC-04: Search for \'feedTpd\' → must be formula-derived, not hardcoded
+> number\
+> GC-05: Search for \'6.25\' in N conversion → should return ZERO hits
+> (use 4.67 only)\
+> GC-06: Search for \'contingency\' → must show 3-tier (8%, 20%, 20%),
+> not single 15%\
+> GC-07: Search for \'29.0\' or \'29.2\' in PKE/POME context → should
+> return ZERO hits\
+> GC-08: Search for \'opdc.\*mc.\*floor\' or \'40\' near OPDC press
+> logic → must enforce ≥40% MC\
+> GC-09: Search for \'fiveDay\' or \'5.\*day.\*minimum\' → must be
+> hard-coded, not user-adjustable\
+> GC-10: Search for \'ph.\*8\' near BSF intro logic → gate must be ≤8.0
+> before BSF inoculation
+
+**SECTION 7 --- ARCHITECTURE GAPS & PRIORITY RECOMMENDATIONS**
+
+**7.1 Critical Gaps (Address Immediately)**
+
+  ----------------------------------------------------------------------------------------
+  **Gap     **Description**          **Impact**              **Recommended Action**
+  ID**                                                       
+  --------- ------------------------ ----------------------- -----------------------------
+  CRIT-01   AI provenance missing    Cannot audit            Deploy Migration 10 (Section
+            from all core tables     AI-generated vs         5.3). Add confidence_level,
+            except cfi_soil_profiles lab-confirmed data. EIB is_ai_generated, data_source,
+                                     investor documentation  is_approved to all core
+                                     risk.                   tables.
+
+  CRIT-02   NaOH and Bt warning      GR-11 guardrail         Add warning_level column
+            levels not confirmed in  violation if dashboard  (Migration 10). Update NaOH
+            cfi_chemical_library /   reads from DB and DB    and Bt rows immediately.
+            cfi_biological_library   lacks warning_level     
+                                     field.                  
+
+  CRIT-03   v25 QA pass rate unknown May still carry 6       Run
+            (last confirmed: v23 =   critical bugs. Revenue  CFI_QA_Test_Prompt_v24.json
+            47%)                     1000x understatement is against v25. Document new
+                                     investor-visible.       pass rate.
+
+  CRIT-04   cfi_solutions schema     AI research data may be Run schema inspection query
+            unknown                  completely              (Section 5.4). Rebuild if no
+                                     unprovenance-tracked.   provenance fields.
+  ----------------------------------------------------------------------------------------
+
+**7.2 High Priority Gaps**
+
+  -------------------------------------------------------------------------
+  **Gap     **Description**     **Recommended Action**
+  ID**                          
+  --------- ------------------- -------------------------------------------
+  HIGH-01   S4 OPEX tab not     Build S4 OPEX section: monthly labour
+            built               (Indonesian wage rates), power (kWh × IDR
+                                tariff), inoculant costs (Provibio pricing
+                                from IPB ICBB).
+
+  HIGH-02   S14 multi-residue   Open CFI_FULL_BUILD_v25.jsx --- search for
+            calculator and S15  Section14 and Section15. If stubs, build
+            AI Research Engine  next sprint.
+            status unknown      
+
+  HIGH-03   DEC-SLD-101         Add to cfi_equipment. RFQ from 3 Indonesian
+            three-phase sludge  suppliers. \$80k--\$150k range. Must be
+            decanter not in     locked before CAPEX finalised.
+            equipment table     
+
+  HIGH-04   cfi_equipment table Run: SELECT EXISTS (SELECT 1 FROM
+            migration status    information_schema.tables WHERE table_name
+            unknown (was in     = \'cfi_equipment\'); in Supabase. If
+            Step5 schema)       absent, deploy from
+                                CFI_Supabase_Database.sql.
+
+  HIGH-05   Zapier → Gmail      Test visitor email notification flow.
+            webhook --- no      Document webhook URL and Gmail trigger in
+            monitoring          architecture doc.
+            confirmed           
+
+  HIGH-06   Carbon credits      Create cfi_carbon_credits table: baseline
+            table missing from  213,827 t CO2e/yr, method ACM0022/VM0041,
+            confirmed           insetting and offsetting price ranges,
+            migrations          registry (Verra/Gold Standard/CDM).
+  -------------------------------------------------------------------------
+
+**7.3 Architecture Evolution --- Where We Came From**
+
+This section is for the Systems Architect record. It documents the
+architectural pivot from v3.1 (Feb 2026) to current (March 2026):
+
+  ---------------------------------------------------------------------------
+  **Dimension**      **v3.1 Architecture (Feb   **Current Architecture (March
+                     2026 --- ODT)**            2026 --- Active)**
+  ------------------ -------------------------- -----------------------------
+  Frontend           18 Excel workbooks (.xlsx) Single React JSX file
+                     in GitHub private repo     deployed on Lovable
+
+  Backend            Python/VBA automation      Supabase PostgreSQL with 11+
+                     scripts, GitHub Actions    tables
+
+  AI Layer           None --- all calculations  Claude Sonnet 4.6 via Claude
+                     were Excel formulas        Project + API
+
+  Data entry         Sharon manually enters in  Sharon uploads file to Claude
+                     Excel cells (YELLOW =      → Claude writes SQL → Sharon
+                     input)                     pastes into Supabase
+
+  Partner output     CFI_PARTNER_MANAGER.xlsx   Lovable dashboard (live URL)
+                     generates Excel reports    --- no separate file
+                     (email only, 30-day links) generation needed
+
+  Auth / Access      VBA sharon_owner_lock.vba  Sharon is sole admin of
+                     blocks all non-Sharon      Lovable + Supabase + Claude
+                     username                   Project
+
+  OPDC yield         v3.1 had WRONG value: 13%  LOCKED at 15.2% EFB fresh =
+                     FFB (correction C10        4.2% FFB = \~60.5 t/day at 60
+                     applied)                   TPH
+
+  Mill capacity      v3.1 had wrong default:    CURRENT: No default. User
+                     12t DM/day auto-populated  enters manually. Design basis
+                                                = 60 TPH FFB.
+
+  Stream count       v3.1: 2 streams (EFB +     CURRENT: 3-stream DM fraction
+                     OPDC)                      system: EFB + OPDC + POS
+                                                (remainder)
+  ---------------------------------------------------------------------------
+
+**SECTION 8 --- REPORT DELIVERY INSTRUCTIONS**
+
+After running all checks in Sections 0--7, deliver the QA report in the
+following format:
+
+**8.1 Executive Summary (top of report)**
+
+-   Pass / Fail / Partial for each of the 7 sections
+
+-   Count of CRITICAL, HIGH, and MEDIUM findings
+
+-   Overall system health: GREEN / AMBER / RED rating with justification
+
+-   Top 3 actions for Sharon to take this session
+
+**8.2 Section-by-Section Findings Table**
+
+For each finding, document:
+
+  -----------------------------------------------------------------------
+  **Field**          **Format**
+  ------------------ ----------------------------------------------------
+  Finding ID         e.g. SEC-01, DB-03, CALC-07
+
+  Section            1--7 + sub-section
+
+  Severity           CRITICAL / HIGH / MEDIUM / LOW / INFO
+
+  Status             PASS / FAIL / PARTIAL / PENDING
+
+  Description        What was found (factual, no interpretation)
+
+  Evidence           File name + line number OR SQL query + result
+
+  Recommended Action Specific, actionable. No vague recommendations.
+
+  Owner              Sharon / Claude / IPB / UTH / Supabase
+  -----------------------------------------------------------------------
+
+**8.3 SQL Actions Generated**
+
+Any SQL generated during the QA run (e.g. Migration 10, schema
+inspections) must be:
+
+-   Presented separately from findings, clearly labelled
+
+-   Include DROP IF EXISTS safety clause
+
+-   Include cfi_change_log INSERT for any UPDATE or CREATE
+
+-   Reviewed by Sharon before execution --- not auto-executed
+
+**8.4 Architecture Diagram (Optional)**
+
+If requested, generate a Mermaid.js flowchart of the current
+architecture showing:
+
+-   Sharon (user) → Claude Project → SQL → Supabase → Lovable →
+    Dashboard
+
+-   Edge Function pathway (Sharon → CFI_Data_Upload_Pipeline → Supabase
+    Storage → Claude API → DB)
+
+-   Data classification layer: CLASS A (guardrails) vs CLASS B/C/D
+    (updatable)
+
+> FINAL REMINDER FOR THIS QA RUN:\
+> \
+> 1. Do NOT invent any values. Every finding must cite a specific file,
+> line, or query result.\
+> 2. DATA GAP is always better than a fabricated value.\
+> 3. CLASS A guardrails cannot be changed by this QA process --- they
+> can only be flagged if violated.\
+> 4. Sharon is the only decision-maker. This report advises. Sharon
+> approves all changes.\
+> 5. Any SQL generated must be reviewed and manually run by Sharon in
+> Supabase SQL Editor.\
+> 6. If a section cannot be assessed because a file is missing or
+> unreadable, state this explicitly.\
+> 7. Complete every section. Do not skip sections due to complexity.
+
+*END OF CFI SYSTEM ARCHITECTURE QA PROMPT v1.0 --- March 2026*

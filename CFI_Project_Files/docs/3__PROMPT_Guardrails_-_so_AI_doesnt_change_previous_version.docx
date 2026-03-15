@@ -1,0 +1,298 @@
+# GUARDRAILS --- MANDATORY PRE-FLIGHT & IN-FLIGHT CHECKS
+
+Upload this document alongside SHORT_PROMPT.docx,
+ANTI_HALLUCINATION.docx, PERSONA.docx, and RESEARCH_INTENSITY.docx. This
+document takes HIGHEST PRIORITY when any conflict exists between
+governing documents.
+
+## SECTION 1 --- DOCUMENT HIERARCHY (WHICH RULES WIN)
+
+**When multiple governing documents are uploaded, apply this priority
+order:\
+**
+
+PRIORITY 1 (HIGHEST): GUARDRAILS.docx (this document)
+
+PRIORITY 2: ANTI_HALLUCINATION.docx
+
+PRIORITY 3: RESEARCH_INTENSITY.docx (run-specific configuration)
+
+PRIORITY 4: PERSONA.docx
+
+PRIORITY 5: SHORT_PROMPT.docx (master template)
+
+**RULE:** If RESEARCH_INTENSITY.docx specifies a NARROWER scope than
+SHORT_PROMPT.docx (e.g., fewer soil types, fewer regions, fewer
+management levels), the NARROWER scope in RESEARCH_INTENSITY wins.
+SHORT_PROMPT.docx is the master template showing ALL POSSIBLE options.
+RESEARCH_INTENSITY.docx is the RUN-SPECIFIC configuration showing WHAT
+TO ACTUALLY DO THIS RUN.
+
+## SECTION 2 --- MANDATORY DOCUMENT RECONCILIATION (STEP 0)
+
+**BEFORE any research, table building, or data work, you MUST:\
+**
+
+2.1 Read ALL uploaded governing documents completely.
+
+2.2 Compare the SOIL TYPE lists across all documents. If they differ,
+use the RESEARCH_INTENSITY.docx list (narrower scope wins).
+
+2.3 Compare the REGION lists across all documents. Same rule ---
+narrower wins.
+
+2.4 Compare the PLANTATION TYPE / MANAGEMENT lists. Same rule.
+
+2.5 Compare the CLIMATE ZONE lists. Same rule.
+
+2.6 If ANY conflict is found between documents, you MUST:
+
+a\) List the conflict explicitly to the user.
+
+b\) State which document takes priority per Section 1.
+
+c\) Ask the user to confirm before proceeding.
+
+2.7 You MUST NOT proceed past Step 0 until all document conflicts are
+resolved.
+
+## SECTION 3 --- CONFIGURATION LOCK (STEP 0.5)
+
+**After document reconciliation, you MUST print a CONFIGURATION LOCK
+SUMMARY and get user approval before any work begins.\
+**
+
+The CONFIGURATION LOCK SUMMARY must contain:
+
+MATERIAL: \[exact material name\]
+
+REGION(S): \[list only those specified in RESEARCH_INTENSITY\]
+
+SOIL TYPE(S): \[list only those specified in RESEARCH_INTENSITY\]
+
+PLANTATION TYPE(S): \[list only those specified\]
+
+CLIMATE ZONE(S): \[list only those specified\]
+
+WORKFLOW STAGES: \[which stages\]
+
+TABLES TO BUILD: \[A, B, C, D --- which ones\]
+
+GOVERNING DOCUMENTS: \[list all uploaded docs and their priority\]
+
+**RULE:** You MUST NOT include any soil type, region, plantation type,
+or climate zone that is NOT explicitly listed in the
+RESEARCH_INTENSITY.docx configuration. The SHORT_PROMPT.docx master list
+shows what is POSSIBLE, not what is ACTIVE for this run.
+
+**SCOPE LOCK:** Once the user approves the Configuration Lock, NO
+additional soils, regions, or management scenarios may be added during
+table building. If during research you discover data for a soil/region
+not in the locked configuration, you MUST note it as \"OUT OF SCOPE ---
+available for future run\" and NOT include it in any table.
+
+## SECTION 4 --- CITATION BLOCKLIST (BANNED PHRASES)
+
+**The following phrases are NEVER acceptable as citations or references
+in any table, note, or text. If you cannot find a real source, use
+\"DATA GAP\" instead.\
+**
+
+BANNED: \"Industry data\"
+
+BANNED: \"Industry benchmarks\"
+
+BANNED: \"Industry reports\"
+
+BANNED: \"Industry estimates\"
+
+BANNED: \"Corporate sustainability reports\" (without specific company,
+year, title)
+
+BANNED: \"Company data\"
+
+BANNED: \"Mill records\"
+
+BANNED: \"PTPN reports\" (without specific PTPN number, year, title)
+
+BANNED: \"Soil surveys\" (without specific survey name, year, author)
+
+BANNED: \"Field observations\"
+
+BANNED: \"Field data\"
+
+BANNED: \"Local data\"
+
+BANNED: \"ScienceDirect \[year\]\" (without authors, title, journal,
+volume, pages)
+
+BANNED: \"Google Scholar\"
+
+BANNED: \"Research papers\"
+
+BANNED: \"Literature\"
+
+BANNED: \"Various sources\"
+
+BANNED: \"Estimated\"
+
+BANNED: \"Proportional estimate\"
+
+BANNED: \"Calculated estimate\"
+
+BANNED: \"Peat hydrology\" or any topic name used as if it were a
+reference
+
+BANNED: \"BPS statistics\" (without specific publication title, year,
+URL)
+
+BANNED: Any URL without author, year, title, and access date
+
+BANNED: Any wiki-style source (Wikipedia, Akvopedia, etc.) as a PRIMARY
+source
+
+BANNED: \"Personal communication\" (without named person, institution,
+date)
+
+**RULE:** If you catch yourself writing any phrase from this blocklist,
+STOP and replace it with either a real citation (Author, Year, Title,
+Journal) or \"DATA GAP --- no peer-reviewed source found\".
+
+## SECTION 5 --- ESTIMATE = DATA GAP (NO EXCEPTIONS)
+
+**Any value that is estimated, projected, proportionally scaled,
+interpolated, or extrapolated from other data MUST be tagged as DATA
+GAP.\
+**
+
+5.1 The word \"Estimated\" in any Method or Notes column = DATA GAP.
+
+5.2 The phrase \"Proportional estimate\" = DATA GAP.
+
+5.3 Values derived by scaling from one region/soil to another = DATA
+GAP.
+
+5.4 Values derived by applying a ratio from a different material = DATA
+GAP.
+
+5.5 The ONLY acceptable non-DATA-GAP derivations are:
+
+a\) Standard stoichiometric conversions (P→P₂O₅, K→K₂O, N→CP)
+
+b\) Standard analytical derivations (NDF-ADF=Hemicellulose,
+ADF-ADL=Cellulose)
+
+c\) Values calculated from measured inputs using published formulas
+(e.g., Dulong HHV)
+
+These derivations MUST show the calculation and cite the formula source.
+
+## SECTION 6 --- SCOPE CREEP PREVENTION
+
+6.1 Before adding ANY row to any table (D1, D2, D3, Summary), check:
+
+\"Is this soil/region/management level in my CONFIGURATION LOCK?\"
+
+If NO → Do not add the row. Note it as \"Available data exists for \[X\]
+--- out of scope this run.\"
+
+6.2 Before adding ANY scenario column, check:
+
+\"Is this scenario based on a soil/region/management in my CONFIGURATION
+LOCK?\"
+
+If NO → Do not add the scenario.
+
+6.3 PEAT / HISTOSOL SPECIFIC RULE:
+
+**If Peat / Histosol is NOT in the RESEARCH_INTENSITY soil list, you
+MUST NOT:**
+
+a\) Include peat regions (Riau peat, Jambi peat, C. Kalimantan peat) in
+any table.
+
+b\) Include peat soil chemistry sections.
+
+c\) Apply peat-specific C:N ratios, decomposition rates, or emission
+factors.
+
+d\) You MAY add a single note: \"Peat data available --- not in scope
+for this run.\"
+
+## SECTION 7 --- INTERNAL CONSISTENCY GATE (BEFORE DELIVERY)
+
+Before delivering ANY workbook, you MUST verify:
+
+7.1 CROSS-SHEET CONSISTENCY:
+
+Every value that appears in more than one sheet (e.g., C:N in D1, BSF,
+and Summary) MUST be identical or explicitly explained if different.
+
+Run a manual cross-check: pick 5 parameters that appear in multiple
+sheets and verify they match.
+
+7.2 ANALYTICAL METHOD CONSISTENCY:
+
+If two values come from different analytical methods (e.g., Van Soest vs
+Wise chlorite), you MUST:
+
+a\) Label each value with its method.
+
+b\) Add a note explaining why they differ.
+
+c\) NEVER present values from different methods as if they should sum or
+be directly compared.
+
+7.3 TABLE COMPLETENESS CHECK:
+
+The prompt requires Tables A, B, C, D. Before delivery, confirm:
+
+\[ \] Table A exists and has: CHNS-O, ash, minerals, energy
+
+\[ \] Table B exists and has: Proximate, fiber, nutritional, BSF columns
+
+\[ \] Table C exists and has: Agronomic values, oxide conversions,
+replacement values
+
+\[ \] Table D exists and has: Carbon scenarios, IPCC factors, credits
+
+\[ \] Source Registry Table exists
+
+\[ \] Weighted Calculation Examples (≥10 parameters)
+
+\[ \] Quality Summary Dashboard
+
+\[ \] Mathematical Verification Checks
+
+\[ \] Conflict Resolution Log
+
+If ANY of these is missing, the workbook is INCOMPLETE --- do not
+deliver without flagging.
+
+## SECTION 8 --- MANDATORY SELF-AUDIT (FINAL STEP)
+
+After building the workbook but BEFORE delivering to the user:
+
+8.1 Pick 3 random citations from the workbook. For each one, verify:
+
+a\) It has Authors, Year, Title, Journal/Publisher.
+
+b\) It is NOT on the Citation Blocklist (Section 4).
+
+c\) The value attributed to it is plausible for the material.
+
+8.2 Pick 3 random numeric values. For each one, verify:
+
+a\) It appears in the correct unit and basis (DM vs as-received).
+
+b\) If it appears in multiple sheets, it is consistent.
+
+c\) It is not tagged \"Estimated\" without being marked DATA GAP.
+
+8.3 Check the CONFIGURATION LOCK against every D-table row:
+
+a\) Every soil in D tables is in the Configuration Lock.
+
+b\) Every region in D tables is in the Configuration Lock.
+
+c\) No out-of-scope items have crept in.

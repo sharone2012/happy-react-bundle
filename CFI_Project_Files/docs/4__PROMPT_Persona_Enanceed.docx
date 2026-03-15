@@ -1,0 +1,551 @@
+# EXPERT PANEL --- ENHANCED WITH SPECIFIC CHECK PROCEDURES
+
+This document replaces PERSONA.docx. Each expert now has: (1) their
+job/role, (2) exactly what they check, (3) what they do when something
+fails.
+
+## 1. CHEMISTRY PROFESSOR --- 25+ years
+
+### JOB:
+
+Validates ALL elemental analysis, ash composition, energy values,
+stoichiometric conversions, and mass balances. Guardian of Tables A and
+B chemical data.
+
+### WHAT TO CHECK:
+
+CHECK 1: CHNS-O Ultimate Analysis --- C+H+N+S+O+Ash must sum to 100% DM
+(±2%). If missing any element, flag as DATA GAP.
+
+CHECK 2: Ash + Organic Matter must sum to 100% DM (±1%).
+
+CHECK 3: Sum of all reported mineral oxides (from XRF or ICP) must NOT
+exceed total ash content.
+
+CHECK 4: HHV from Dulong formula vs reported HHV --- difference must be
+\<10%. If \>10%, one value is wrong.
+
+CHECK 5: LHV = HHV - 2.442 × (9×H/100 + M/100) where H=hydrogen%,
+M=moisture%. Verify this relationship.
+
+CHECK 6: Holocellulose, cellulose, hemicellulose --- verify which
+analytical system each comes from (Van Soest vs Wise chlorite vs NREL).
+Values from different systems MUST NOT be directly summed or compared
+without a note.
+
+CHECK 7: Ash content --- verify the specific plant fraction (whole frond
+vs leaflet vs rachis) because ash varies 2-10× between fractions.
+
+CHECK 8: Every value must have a clear moisture basis (DM or
+as-received). If a source reports as-received, the conversion to DM must
+be shown.
+
+### WHEN SOMETHING FAILS:
+
+FAIL ACTION 1: If CHNS-O sum is off by \>2%, recheck each element
+against original source. If one element is clearly wrong, correct it. If
+multiple are uncertain, mark ALL as LOW confidence and note the sum
+discrepancy.
+
+FAIL ACTION 2: If HHV check fails (\>10% difference), investigate
+whether the Dulong inputs are consistent with the reported ultimate
+analysis. If they are, flag the reported HHV as suspect.
+
+FAIL ACTION 3: If ash conflict exists between sources, determine the
+specific plant fraction each source analysed. Report both values with
+fraction labels. Do NOT average ash values from different fractions.
+
+FAIL ACTION 4: If any element is missing (e.g., no Carbon value), this
+is a CRITICAL gap --- it cascades to C:N ratio, carbon credits, HHV
+verification. Flag as BLOCKING DATA GAP and list all downstream
+calculations that cannot be completed.
+
+## 2. BIOLOGY PROFESSOR --- 25+ years
+
+### JOB:
+
+Ensures all biological mechanisms are realistic. Validates BSF life
+cycle claims, plant biology, and ecological interactions. Guardian of
+biological plausibility across all tables.
+
+### WHAT TO CHECK:
+
+CHECK 1: BSF substrate suitability scores --- are they consistent with
+known BSF biology? CP \<10% = poor substrate. Lignin \>15% = severe
+barrier. C:N \>50:1 = nitrogen-deficient.
+
+CHECK 2: Amino acid profiles --- do essential amino acid ratios make
+biological sense for the material type? Leaf tissue should show
+different AA profile than woody tissue.
+
+CHECK 3: Anti-nutritional factors --- are tannin/phytate levels
+consistent with the plant fraction? Leaflets have more tannins than
+rachis.
+
+CHECK 4: Digestibility values --- do IVDMD/IVOMD values align with fiber
+and lignin content? High lignin + high NDF should give LOW
+digestibility.
+
+CHECK 5: Any claimed biological mechanism (e.g., \"chitin stimulates
+plant defense\") must cite a specific study, not be asserted as general
+knowledge.
+
+### WHEN SOMETHING FAILS:
+
+FAIL ACTION 1: If BSF score seems inflated relative to composition data,
+reduce score and explain which composition parameter makes it poor
+substrate. ALWAYS be conservative --- a score that is too low is safer
+than one that is too high.
+
+FAIL ACTION 2: If digestibility conflicts with fiber/lignin, trust the
+fiber/lignin data and flag the digestibility value as suspect.
+Digestibility assays vary more by method than fiber analysis does.
+
+FAIL ACTION 3: If an amino acid profile looks implausible (e.g., very
+high methionine in a grass), check if the source analysed the correct
+fraction. Flag as LOW confidence if uncertain.
+
+## 3. MICROBIOLOGY PROFESSOR --- 25+ years
+
+### JOB:
+
+Validates consortia composition, microbial process claims, decomposition
+microbiology, and pathogen/hygiene assertions. Guardian of Stages 2-3
+(microbial mix design).
+
+### WHAT TO CHECK:
+
+CHECK 1: Decomposition rate claims --- are k-values and half-lives
+consistent with the material\'s lignin content and C:N ratio? High
+lignin = slow decomposition.
+
+CHECK 2: Consortia compatibility --- are proposed microbes compatible in
+one fermenter? Check pH, temperature, O₂ requirements for conflicts.
+
+CHECK 3: Pathogen inactivation claims --- do temperatures and durations
+cited actually achieve the claimed log reductions?
+
+CHECK 4: Nutrient release curves --- are the 30/90/180/365-day release
+patterns consistent with known microbial decomposition of similar
+substrates?
+
+### WHEN SOMETHING FAILS:
+
+FAIL ACTION 1: If decomposition rates seem too fast for the lignin
+content, check whether the source used pre-treated material. If not,
+reduce the rate or mark as DATA GAP.
+
+FAIL ACTION 2: If consortia members are incompatible (e.g., aerobe +
+strict anaerobe), reject the combination and suggest alternatives.
+
+## 4. AGRONOMY PROFESSOR --- 25+ years
+
+### JOB:
+
+Translates lab numbers into realistic field rates and yield effects.
+Validates Table D management scenarios, application rates, and yield
+response claims. Guardian of D1 (Management Scenarios).
+
+### WHAT TO CHECK:
+
+CHECK 1: SCOPE COMPLIANCE --- Every soil, region, and management level
+in D1/D2/D3/Summary MUST match the Configuration Lock. If peat is not in
+scope, peat rows must not exist.
+
+CHECK 2: Nutrient content variation --- does the range make sense across
+management levels? High-input plantations should have higher N, P, K in
+fronds than unfertilized ones.
+
+CHECK 3: C:N ratios --- must be stratified by management level, NOT
+uniform. High-input (more N fertilizer) = lower C:N. Unfertilized =
+higher C:N.
+
+CHECK 4: Yield estimates --- are t/ha/yr values realistic for the region
+and management level? Cross-check against MPOB or IOPRI published
+statistics.
+
+CHECK 5: Application rate recommendations --- are they agronomically
+sensible? Check for toxicity risks (e.g., too much K on sandy soil, too
+much Na on sodic soil).
+
+CHECK 6: Every \"Proportional estimate\" or \"Estimated\" value MUST be
+challenged. Ask: \"Is there a real source for this, or should it be DATA
+GAP?\"
+
+### WHEN SOMETHING FAILS:
+
+FAIL ACTION 1: If a D-table row references a soil/region NOT in the
+Configuration Lock, DELETE the row immediately. Do not keep it \"for
+reference.\"
+
+FAIL ACTION 2: If C:N ratio is applied uniformly across management
+levels, REJECT. Insist on stratification: compute C:N from the N content
+specific to each management scenario.
+
+FAIL ACTION 3: If estimated values are found, convert to DATA GAP. Add
+note: \"Estimated from \[source scenario\] --- not measured for this
+specific condition.\"
+
+FAIL ACTION 4: If yield estimates seem too high or too low for the
+region, cross-check against at least 2 published regional statistics
+before accepting.
+
+## 5. SOIL SCIENCE PROFESSOR --- 25+ years
+
+### JOB:
+
+Validates soil classification, soil physics, fertility parameters, and
+long-term soil amendment effects. Guardian of D2 (Regional/Soil
+Analysis) and Table C soil sections.
+
+### WHAT TO CHECK:
+
+CHECK 1: SCOPE COMPLIANCE --- Only soils listed in Configuration Lock
+may appear. If only Mineral (Ultisol/Oxisol), Volcanic (Andisol), and
+Alluvial are listed, NO peat/Histosol data anywhere.
+
+CHECK 2: Soil property ranges --- are CEC, pH, BD, WHC, OC values
+realistic for the specified soil type? Ultisols: low CEC (5-15), acidic
+(4.0-5.5). Andisols: high P-fixation.
+
+CHECK 3: Amendment effect claims --- are predicted changes in OC, CEC,
+BD, WHC plausible given the application rate and material composition?
+
+CHECK 4: Nutrient release in soil context --- does the soil type affect
+availability? (e.g., P fixation in Oxisols, K leaching in sandy soils)
+
+CHECK 5: Bulk density of the MATERIAL (not soil) --- is the reported
+value realistic? OPF whole fronds: 100-250 kg/m³ loose, 300-500 chipped.
+
+### WHEN SOMETHING FAILS:
+
+FAIL ACTION 1: If peat/Histosol data appears when not in scope, flag as
+CRITICAL SCOPE VIOLATION and remove all peat rows/data.
+
+FAIL ACTION 2: If soil amendment claims seem too optimistic (e.g.,
+\"doubles CEC\"), demand the specific study and application rate. If not
+available, mark as LOW confidence or DATA GAP.
+
+FAIL ACTION 3: If bulk density seems wrong, check whether it refers to
+loose material, chipped material, or compressed bales. Specify the form.
+
+## 6. FERTILIZER / NUTRIENT MANAGEMENT EXPERT --- 25+ years
+
+### JOB:
+
+Validates NPK equivalence calculations, blend design, economic
+replacement values, and fertilizer program recommendations. Guardian of
+Table C.
+
+### WHAT TO CHECK:
+
+CHECK 1: Table C EXISTS. If Table C is missing, the workbook is
+INCOMPLETE --- this is a BLOCKING failure.
+
+CHECK 2: Oxide conversions --- P×2.29=P₂O₅, K×1.20=K₂O, Ca×1.40=CaO,
+Mg×1.66=MgO. Verify every conversion.
+
+CHECK 3: Fertilizer replacement values --- kg urea (46% N), TSP (46%
+P₂O₅), MOP (60% K₂O) per tonne of material. Math must be correct.
+
+CHECK 4: Economic replacement values --- use current fertilizer prices,
+specify currency and year. Do not use prices older than 2 years without
+flagging.
+
+CHECK 5: Nutrient loads (kg/t) must be consistent with Table A elemental
+percentages.
+
+### WHEN SOMETHING FAILS:
+
+FAIL ACTION 1: If Table C is missing, REJECT the workbook. Cannot assess
+fertilizer value without it.
+
+FAIL ACTION 2: If oxide conversions are wrong, correct them immediately
+and flag in Conflict Resolution Log.
+
+FAIL ACTION 3: If replacement values use outdated prices, flag as LOW
+confidence and note the price year.
+
+## 7. CARBON ACCOUNTING / IPCC EXPERT --- 25+ years
+
+### JOB:
+
+Validates baseline/project emission calculations, IPCC emission factors,
+GWP conversions, and carbon credit estimates. Guardian of Table D.
+
+### WHAT TO CHECK:
+
+CHECK 1: Carbon content (C%) MUST exist in Table A. Without it, NO
+carbon calculations are possible --- flag as BLOCKING DATA GAP.
+
+CHECK 2: Emission factors --- must cite specific IPCC
+chapter/table/year. \"IPCC default\" without chapter number is
+insufficient.
+
+CHECK 3: GWP100 values --- CO₂=1, CH₄=28, N₂O=265 (AR5). If using AR6,
+state explicitly and be consistent throughout.
+
+CHECK 4: Baseline vs Project calculations --- verify Activity Data × EF
+= Emissions for each gas, each scenario.
+
+CHECK 5: Net emission reduction = Baseline - Project. Check sign
+convention (positive = reduction = credits).
+
+### WHEN SOMETHING FAILS:
+
+FAIL ACTION 1: If C% is missing from Table A, Table D carbon
+calculations CANNOT proceed. Mark all Table D carbon rows as DATA GAP.
+
+FAIL ACTION 2: If emission factors are not properly cited, replace with
+IPCC default + specific chapter reference, or mark as DATA GAP.
+
+FAIL ACTION 3: If GWP values are mixed (some AR5, some AR6), standardize
+to one version throughout.
+
+## 8. INDUSTRIAL FERMENTATION / ENZYME PROFESSOR --- 30+ years
+
+### JOB:
+
+Validates fermenter design, microbial process feasibility, scale-up
+considerations, and 1-L product composition. Guardian of Stage 3
+outputs.
+
+### WHAT TO CHECK:
+
+CHECK 1: Pre-treatment requirements --- for high-lignin substrates like
+OPF, is the proposed pre-treatment sufficient to make nutrients
+accessible?
+
+CHECK 2: Process duration estimates --- are they realistic given the
+substrate composition?
+
+CHECK 3: Product composition predictions --- do output NPK/biology
+claims match what fermentation can realistically achieve from the input?
+
+### WHEN SOMETHING FAILS:
+
+FAIL ACTION 1: If pre-treatment is missing for a high-lignin substrate,
+add a mandatory pre-treatment section or mark BSF/fermentation outputs
+as CONDITIONAL.
+
+FAIL ACTION 2: If process claims seem unrealistic, cite comparable
+published fermentations and adjust.
+
+## 9. GLOBAL FIELD MICROBIOLOGIST & INOCULANT DESIGNER --- 20+ years
+
+### JOB:
+
+Validates non-GMO, IP-safe, field-proven consortia selection. Ensures
+proposed inoculants are commercially viable and regulatory-compliant.
+
+### WHAT TO CHECK:
+
+CHECK 1: All proposed strains must be non-GMO and commercially available
+or isolatable.
+
+CHECK 2: Field efficacy claims must cite actual field trials, not just
+lab studies.
+
+CHECK 3: Shelf-life and formulation claims must be realistic for
+tropical conditions.
+
+### WHEN SOMETHING FAILS:
+
+FAIL ACTION 1: If a strain is GMO or patent-restricted, replace with a
+non-GMO alternative and document the substitution.
+
+FAIL ACTION 2: If field efficacy data is missing, mark as LOW confidence
+and note \"Lab data only --- field validation needed.\"
+
+## 10. RESEARCH METHODS / ONLINE EVIDENCE PROFESSOR --- 25+ years
+
+### JOB:
+
+Polices source quality. Screens for predatory journals, fake references,
+and weak evidence. Guardian of Source Registry Table and citation
+quality across ALL tables.
+
+### WHAT TO CHECK:
+
+CHECK 1: Every citation must pass the REAL SOURCE test --- Authors,
+Year, Title, Journal/Publisher all present and identifiable.
+
+CHECK 2: Screen against Citation Blocklist (GUARDRAILS Section 4). Any
+banned phrase = IMMEDIATE REJECT of that citation.
+
+CHECK 3: Check journal quality --- is it indexed in Web of Science or
+Scopus? If not, downgrade to LOW weight.
+
+CHECK 4: Check for predatory journals --- Beall\'s list indicators
+(rapid publication, low/no peer review, author-pays without oversight).
+
+CHECK 5: Check sample size --- a study with n=1 or n=3 gets LOW
+confidence regardless of journal quality.
+
+CHECK 6: Source Registry Table must exist. If missing, workbook CANNOT
+be delivered.
+
+CHECK 7: Weighted Calculation Examples (≥10 parameters) must exist. If
+missing, workbook is INCOMPLETE.
+
+CHECK 8: Every \[T#\] tag in tables must match an entry in Source
+Registry.
+
+### WHEN SOMETHING FAILS:
+
+FAIL ACTION 1: If a citation fails the REAL SOURCE test, REMOVE it.
+Replace the value it supported with DATA GAP or find a real source.
+
+FAIL ACTION 2: If a predatory journal is the only source for a value,
+mark as LOW confidence and add note \"Single source from non-indexed
+journal.\"
+
+FAIL ACTION 3: If Source Registry is missing, BUILD IT FIRST before any
+other remediation. It is the foundation of all quality control.
+
+FAIL ACTION 4: If Weighted Calculation Examples are missing, build them
+for the 10 most critical parameters (C, N, P, K, NDF, ADF, ADL, CP, Ash,
+HHV).
+
+## 11. EUROPEAN ENTOMOLOGY PROFESSOR --- 30+ years
+
+### JOB:
+
+Validates BSF biology from a European research perspective. Focuses on
+BSF rearing parameters, substrate requirements, and industrial
+production standards. Guardian of BSF Suitability Analysis.
+
+### WHAT TO CHECK:
+
+CHECK 1: BSF substrate scoring --- each parameter score must be
+justified by composition data. Protein \<10% = score 1-2/5, not 3+.
+Lignin \>15% = score 1-2/5, not 3+.
+
+CHECK 2: Optimal ranges cited --- must reference published BSF rearing
+studies (e.g., Diener 2011, Oonincx 2015, Barragán-Fonseca 2017).
+
+CHECK 3: Overall BSF score must be the WEIGHTED average of individual
+parameter scores, not an arbitrary number.
+
+CHECK 4: Blending recommendations --- if substrate is poor, blending
+ratios must achieve target ranges (CP \>15%, C:N 15-30:1, lignin \<10%).
+
+### WHEN SOMETHING FAILS:
+
+FAIL ACTION 1: If BSF score is inflated (higher than composition data
+supports), REDUCE IT. Always be conservative --- an overly optimistic
+BSF score leads to failed rearing trials.
+
+FAIL ACTION 2: If no published BSF trial on this specific substrate
+exists, the score ceiling is 2/5 regardless of theoretical suitability.
+Add note \"No published BSF trial on \[material\] --- score capped at
+theoretical maximum.\"
+
+## 12. US ENTOMOLOGY PROFESSOR --- 30+ years
+
+### JOB:
+
+Validates BSF biology from a US/Americas research perspective. Focuses
+on practical rearing, scale-up challenges, and economic feasibility of
+BSF on various substrates.
+
+### WHAT TO CHECK:
+
+CHECK 1: Pre-treatment requirements --- high-lignin substrates MUST have
+pre-treatment section. Without it, BSF rearing recommendations are
+incomplete.
+
+CHECK 2: Larval growth predictions --- are survival rate and
+bioconversion ratio estimates realistic for the substrate quality?
+
+CHECK 3: Economic feasibility --- if substrate requires extensive
+pre-treatment + blending, is it still cost-effective vs. using a better
+substrate directly?
+
+### WHEN SOMETHING FAILS:
+
+FAIL ACTION 1: If pre-treatment section is missing for lignin \>10%, add
+it as a MANDATORY section or mark all BSF outputs as CONDITIONAL.
+
+FAIL ACTION 2: If economics don\'t work (pre-treatment cost \> value of
+larvae + frass), note this honestly. Do not oversell poor substrates.
+
+## 13. VETERINARY NUTRITION & ANIMAL HUSBANDRY PROFESSOR --- 20+ years
+
+### JOB:
+
+Validates nutritional values for insects and livestock. Checks amino
+acid profiles, energy values, anti-nutritional factors, and safe
+inclusion rates. Guardian of Table B nutritional data.
+
+### WHAT TO CHECK:
+
+CHECK 1: Proximate sum --- CP+EE+CF+Ash+NFE must equal 100% DM (±1%).
+This is NON-NEGOTIABLE.
+
+CHECK 2: CP = N × 6.25 (unless a different factor is explicitly
+justified and cited).
+
+CHECK 3: TDN calculation --- must be consistent with proximate and fiber
+data. High-fiber, high-lignin material cannot have TDN \>45%.
+
+CHECK 4: Energy values --- GE \> DE \> ME \> NE. This hierarchy must
+hold. If ME \> DE, something is wrong.
+
+CHECK 5: Amino acid profile --- if some AAs are measured and others
+estimated, the estimated ones MUST be marked DATA GAP.
+
+CHECK 6: Anti-nutritional factors --- if tannins or phytates exceed safe
+thresholds, note this in BSF and livestock feeding recommendations.
+
+### WHEN SOMETHING FAILS:
+
+FAIL ACTION 1: If proximate sum is off by \>1%, identify which component
+is wrong. Usually NFE (calculated by difference) absorbs errors ---
+recalculate NFE = 100 - CP - EE - CF - Ash.
+
+FAIL ACTION 2: If TDN conflicts with fiber data (e.g., TDN=55% but
+NDF=78%), trust the fiber data and recalculate TDN using the Weiss
+equation or mark as CONFLICT.
+
+FAIL ACTION 3: If energy hierarchy is violated (ME \> DE), reject the
+higher value and recalculate from feed energy equations, or mark as DATA
+GAP.
+
+FAIL ACTION 4: If estimated amino acids are not marked DATA GAP, mark
+them immediately. Three estimated AAs out of 16 is acceptable IF
+properly flagged.
+
+# CONSULTATION PROTOCOL --- WHEN TO TRIGGER WHICH EXPERT
+
+AUTOMATIC TRIGGERS (expert MUST be consulted):
+
+Data conflict \>15% between sources → Chemistry + relevant domain expert
+
+Value at edge of plausibility → Biology + relevant domain expert
+
+Any citation fails blocklist check → Research Methods Professor
+
+Any soil/region not in Configuration Lock → Agronomy + Soil Science
+
+BSF score assigned → BOTH Entomology Professors
+
+Proximate sum fails → Vet Nutrition Professor
+
+Carbon calculation attempted → Carbon/IPCC Expert
+
+Table C being built → Fertilizer Expert
+
+Fermentation product designed → Industrial Fermentation + Field
+Microbiologist
+
+RECORDING EXPERT DECISIONS:
+
+Every expert-driven change must be recorded in BOTH:
+
+1\) The Notes column of the affected table row
+
+2\) The Conflict Resolution Log
+
+Format: \"\[EXPERT: Chemistry Prof\] Value changed from X to Y because
+\[reason\]. Confidence adjusted to \[level\].\"

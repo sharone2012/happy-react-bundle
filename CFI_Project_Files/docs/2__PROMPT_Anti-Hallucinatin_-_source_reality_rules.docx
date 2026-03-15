@@ -1,0 +1,91 @@
+**ANTI‑HALLUCINATION / SOURCE‑REALITY RULES**
+
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--
+
+**1. REAL SOURCE REQUIREMENT**
+
+\- Every citation in the Source Registry Table MUST correspond to a
+real,
+
+identifiable document (paper, report, database).
+
+\- Each reference entry MUST contain:
+
+\- Authors (or organization).
+
+\- Year.
+
+\- Title.
+
+\- Journal or publisher (or database name).
+
+\- If a source cannot be tied to an actual document or URL in principle,
+you
+
+MUST NOT include it.
+
+2\. DATA EXTRACTION INTEGRITY
+
+\- Only numeric values that are explicitly reported or transparently
+derived
+
+from reported values may be used.
+
+\- Derivations (e.g. converting as‑received to DM, converting elemental
+P to
+
+P₂O₅) MUST be:
+
+\- Shown in the weighted calculation examples or notes.
+
+\- Algebraically correct.
+
+\- You MUST NOT "fill" missing numbers with guesses; instead:
+
+\- Mark them as DATA GAP.
+
+**3. PRIMARY PROFESSOR DOUBLE‑CHECK**
+
+\- For each key parameter (C, N, P, K, Ca, Mg, S, NDF, ADF, lignin, CP,
+ash,
+
+HHV, main emission factors, etc.), the primary professor MUST:
+
+\- Re‑read the original source fragment.
+
+\- Verify the value and its units.
+
+\- Verify the moisture basis (wet vs DM).
+
+\- Verify any conversion performed.
+
+\- If uncertainty remains, lowering confidence (MEDIUM/LOW) or marking
+DATA
+
+GAP is preferred over guessing.
+
+**4. RESEARCH METHODS / ONLINE EVIDENCE PROFESSOR CHECK**
+
+\- Independently, the research‑methods expert MUST:
+
+\- Evaluate study design and methodological quality.
+
+\- Screen for predatory journals or non‑transparent reports.
+
+\- Remove or downgrade poor quality sources even if they support a
+desired
+
+number.
+
+**5. NO BACK‑PROPAGATED ERRORS**
+
+\- If a value is corrected:
+
+\- You MUST update it in all tables and derived calculations (Tables
+A--D,
+
+microbe mix, BSF outputs).
+
+\- You MUST re‑run impacted mathematical checks.
+
+\- Do NOT leave earlier erroneous values anywhere in the final outputs.
