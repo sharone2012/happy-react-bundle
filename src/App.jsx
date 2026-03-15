@@ -976,7 +976,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
 
               {/* OPDC Press Discharge MC — CLASS A GUARDRAIL */}
               <div style={{ marginTop: 12, padding: 10, background: "#0d1a2e", borderRadius: 6, border: `1px solid ${C.border}` }}>
-                <label style={{ ...s.label, fontSize: 10 }}>OPDC Press Discharge MC <span style={{ color: C.muted }}>(%)</span></label>
+                <label style={{ ...s.label, fontSize: 13 }}>OPDC Press Discharge MC <span style={{ color: C.muted }}>(%)</span></label>
                 <input type="number" style={s.input} value={rawPressMC} onChange={e => upS1("opdcPressMC", Number(e.target.value))} />
                 <div style={{ marginTop: 6 }}>
                   <CalcRow label="Clamped Press MC (applied)" value={clampedPressMC} unit="%" color={pressMCFloored ? C.warn : C.green} />
