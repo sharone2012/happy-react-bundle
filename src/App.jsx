@@ -885,8 +885,8 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
     const blendWetPerDM = (s1.efbPct / 100) / efbDMfrac2 + (s1.opdcPct / 100) / opdcDMfrac2;
     const blendMC       = +(100 * (1 - 1 / blendWetPerDM)).toFixed(1);
     const blendDMfrac   = (100 - blendMC) / 100;
-    const blendDM       = +(efbMonthDM + opdcMonthDM).toFixed(0);
-    const blendWet      = +(blendDM / blendDMfrac).toFixed(0);
+    const blendDM       = +(efbMonthDM + opdcMonthDM).toFixed(1);
+    const blendWet      = +(blendDM / blendDMfrac).toFixed(1);
 
     // ── CLASS A GUARDRAIL: OPDC Press Discharge MC — hard clamp at 40% ──
     const rawPressMC    = s1.opdcPressMC;
