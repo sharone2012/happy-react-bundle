@@ -174,8 +174,8 @@ ORGANISM: ${orgName}
 USER CONTEXT: ${context || "General palm oil residue bioconversion application"}
 
 CRITICAL RULES:
-1. BSF-Safe = ✅ ONLY if organism produces NO toxins/compounds harmful to Hermetia illucens larvae. Flag any Cry proteins, insecticidal compounds, or heavy metal accumulators as ❌.
-2. Bacillus thuringiensis = ALWAYS ❌ BSF-TOXIC — non-negotiable.
+1. BSF-Safe = OK ONLY if organism produces NO toxins/compounds harmful to Hermetia illucens larvae. Flag any Cry proteins, insecticidal compounds, or heavy metal accumulators as Fail.
+2. Bacillus thuringiensis = ALWAYS Fail BSF-TOXIC — non-negotiable.
 3. Temp ranges must be verified for palm residue composting context (50–70°C thermophilic phase, then 25–45°C mesophilic).
 4. Prices must be realistic for Indonesia/SE Asia/India procurement in USD/kg.
 5. If data is uncertain, state "DATA GAP" and mark confidence LOW.
@@ -197,7 +197,7 @@ RETURN a structured report with these exact sections:
 - Lignin degradation ability (% range)
 - Cellulose degradation ability (% range)
 - N-fixation capacity (if applicable, mg N/kg/day)
-- BSF Safe: ✅ or ❌ (EXPLAIN WHY)
+- BSF Safe: OK or Fail (EXPLAIN WHY)
 
 ## OPERATING PARAMETERS
 - Optimal temperature range (°C)
@@ -356,7 +356,7 @@ export default function CFIBioManager() {
       name: orgName,
       fn: getLine("Primary function") || getLine("Primary Function"),
       temp: getLine("Optimal temperature range") || getLine("Temperature"),
-      bsfSafe: text.includes("BSF Safe: OK") || text.includes("BSF-Safe: OK") || text.includes("BSF Safe: ✅") || text.includes("BSF-Safe: ✅") ? "OK" : text.includes("❌") || text.includes("Fail") ? "Fail TOXIC" : "Warning Caution",
+      bsfSafe: text.includes("BSF Safe: OK") || text.includes("BSF-Safe: OK") ? "OK" : text.includes("Fail") ? "Fail TOXIC" : "Warning Caution",
       supplier: getLine("Indonesian supplier") || getLine("Best quote"),
       quote: getLine("Best quote link") || getLine("Quote"),
       usdKg: getLine("\\$/kg estimate") || getLine("\\$/kg"),
@@ -671,7 +671,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             <div style={s.grid3}>
               <div style={s.fieldWrap}>
                 <label style={s.label}>Temperature Range °C</label>
-                <input style={s.input} value={form.temp} onChange={e => setF("temp", e.target.value)} placeholder="e.g. 50–65 or <50 ⚠️" />
+                <input style={s.input} value={form.temp} onChange={e => setF("temp", e.target.value)} placeholder="e.g. 50-65 or <50 Warning" />
               </div>
               <div style={s.fieldWrap}>
                 <label style={s.label}>BSF Safety *</label>
@@ -1218,7 +1218,7 @@ function DosageCalc({ organisms }) {
   const [dm, setDm] = useState(35);
   const [selected, setSelected] = useState([]);
 
-  const safeOrgs = organisms.filter(o => o.bsfSafe === "✅");
+  const safeOrgs = organisms.filter(o => o.bsfSafe === "OK");
   const dmMass = batchFW * dm / 100;
 
   function toggle(id) {
