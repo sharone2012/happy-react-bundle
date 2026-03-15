@@ -942,7 +942,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                   { label: "Operating Days", key: "daysMonth", unit: "days/month" },
                 ].map(f => (
                   <div key={f.key}>
-                    <label style={{ ...s.label, fontSize: 10 }}>{f.label} <span style={{ color: C.muted }}>({f.unit})</span></label>
+                    <label style={{ ...s.label, fontSize: 13 }}>{f.label} <span style={{ color: C.muted }}>({f.unit})</span></label>
                     <input type="number" style={s.input} value={s1[f.key]} onChange={e => upS1(f.key, Number(e.target.value))} />
                   </div>
                 ))}
