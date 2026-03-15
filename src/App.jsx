@@ -695,8 +695,8 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                 <option>Compost only (no BSF)</option>
               </select>
             </div>
-            {form.bsfSafe !== "✅" && (
-              <div style={s.alert(C.danger)}>⚠️ NON-BSF-SAFE ORGANISM — This organism will be flagged in the registry. It may only be used in compost (S5B) pathways. Confirm you have verified this before adding.</div>
+            {form.bsfSafe !== "OK" && (
+              <div style={s.alert(C.danger)}>Warning NON-BSF-SAFE ORGANISM — This organism will be flagged in the registry. It may only be used in compost (S5B) pathways. Confirm you have verified this before adding.</div>
             )}
           </div>
 
