@@ -407,7 +407,7 @@ export default function CFIBioManager() {
     await saveOrgs(updated);
     await saveNextId(nextId + 1);
     setNextId(nextId + 1);
-    setFormMsg({ type: "ok", msg: `✅ ${form.name} added to the database by ${userName} on ${now}.` });
+    setFormMsg({ type: "ok", msg: `OK ${form.name} added to the database by ${userName} on ${now}.` });
     setForm(blankForm());
     setTimeout(() => setFormMsg(null), 4000);
   }
