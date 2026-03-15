@@ -1288,8 +1288,8 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                     ))}
                   </div>
                 )}
-                <div style={{ color: C.danger, fontSize: 9, marginBottom: 3 }}>Kill zone: {c.kill}</div>
-                {res === "FAIL" && <div style={{ color: C.warn, fontSize: 10, marginTop: 4, fontStyle: "italic" }}>Action: {c.action}</div>}
+                <div style={{ color: C.danger, fontSize: 13, marginBottom: 3 }}>Kill zone: {c.kill}</div>
+                {res === "FAIL" && <div style={{ color: C.warn, fontSize: 13, marginTop: 4, fontStyle: "italic" }}>Action: {c.action}</div>}
               </div>
             );
           })}
