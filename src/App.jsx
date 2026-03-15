@@ -550,7 +550,7 @@ export default function CFIBioManager() {
             </button>
             {autoFillResult && (
               <button style={s.btn(C.green)} onClick={applyAutoFill}>
-                📋 AUTO-FILL ADD FORM → GO TO ADD TAB
+                AUTO-FILL ADD FORM -> GO TO ADD TAB
               </button>
             )}
           </div>
