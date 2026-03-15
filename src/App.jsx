@@ -1197,7 +1197,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             return (
               <button key={k} onClick={() => setInocOption(k)} style={{ flex: 1, padding: "10px 8px", borderRadius: 7, border: "1.5px solid " + (inocOption === k ? C.accent : "#1e3a5c"), background: inocOption === k ? "#0b2a4a" : "#060e1c", cursor: "pointer", textAlign: "left" }}>
                 <div style={{ color: inocOption === k ? C.accent : C.textDim, fontWeight: 700, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 3 }}>Option {k} — {o2.name}</div>
-                <div style={{ color: C.textDim, fontSize: 10, marginBottom: 4 }}>{o2.desc}</div>
+                <div style={{ color: C.textDim, fontSize: 13, marginBottom: 4 }}>{o2.desc}</div>
                 <div style={{ color: C.green, fontFamily: "monospace", fontWeight: 700, fontSize: 13 }}>${o2.totalMin.toFixed(2)}{o2.totalMin !== o2.totalMax ? " - $" + o2.totalMax.toFixed(2) : ""} /t FW</div>
               </button>
             );
