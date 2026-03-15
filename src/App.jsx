@@ -1012,8 +1012,8 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             </div>
 
             <div style={s.card}>
-              <div style={{ fontSize: 14, fontWeight: 700, color: C.danger, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>OPDC Constraints</div>
-              <div style={{ fontSize: 12, color: C.textDim, lineHeight: 1.8 }}>
+              <div style={{ fontSize: 18, fontWeight: 700, color: C.danger, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>OPDC Constraints</div>
+              <div style={{ fontSize: 14, color: C.textDim, lineHeight: 1.8 }}>
                 <div>• <span style={{ color: C.danger }}>NEVER below 40% MC</span> — pore damage kills BSF</div>
                 <div>• Target 45–55% MC at press discharge</div>
                 <div>• OPDC N: 2.40% DM (CFI confirmed)</div>
