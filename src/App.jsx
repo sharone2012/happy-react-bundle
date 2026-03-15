@@ -899,15 +899,19 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
     const screwPressTPH= +(opdcNatTPD * 1.1 / 24 / 0.65).toFixed(1);
     const conveyorTPH  = +(efbTPH * 1.2).toFixed(1);
 
-    const CalcRow = ({ label, value, unit, color }) => (
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: `1px solid ${C.border}` }}>
-        <span style={{ color: C.textDim, fontSize: 13, fontWeight: 600 }}>{label}</span>
-        <span style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-          <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 14, color: color || C.accent, textAlign: "right" }}>{value}</span>
-          <span style={{ color: C.textDim, fontSize: 13, fontWeight: 600, minWidth: 80, textAlign: "left" }}>{unit}</span>
-        </span>
-      </div>
-    );
+    const BOLD_ROWS = ["Monthly FFB", "EFB Monthly (wet)", "EFB Monthly DM", "OPDC Monthly DM (required)", "Blended Substrate"];
+    const CalcRow = ({ label, value, unit, color }) => {
+      const isBold = BOLD_ROWS.some(b => label.includes(b.replace(" (required)", "")) || b.includes(label));
+      return (
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: `1px solid ${C.border}` }}>
+          <span style={{ color: isBold ? "#d0dce8" : C.textDim, fontSize: 13, fontWeight: isBold ? 700 : 600 }}>{label}</span>
+          <span style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: isBold ? 16 : 14, color: color || C.accent, textAlign: "right" }}>{value}</span>
+            <span style={{ color: C.textDim, fontSize: 13, fontWeight: 600, minWidth: 80, textAlign: "left" }}>{unit}</span>
+          </span>
+        </div>
+      );
+    };
 
     return (
       <div style={s.body}>
