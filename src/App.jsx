@@ -765,7 +765,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
 
         {!adminUnlocked ? (
           <div style={s.card}>
-            <div style={{ color: C.warn, marginBottom: 12, fontSize: 13 }}>🔑 Enter Admin PIN to unlock delete permissions:</div>
+            <div style={{ color: C.warn, marginBottom: 12, fontSize: 13 }}>Enter Admin PIN to unlock delete permissions:</div>
             <div style={{ display: "flex", gap: 10 }}>
               <input type="password" style={{ ...s.input, width: 200 }} value={adminPin} onChange={e => setAdminPin(e.target.value)} placeholder="Enter PIN" onKeyDown={e => e.key === "Enter" && unlockAdmin()} />
               <button style={s.btnFill(C.danger)} onClick={unlockAdmin}>UNLOCK</button>
