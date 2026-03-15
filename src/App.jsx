@@ -287,6 +287,20 @@ export default function CFIBioManager() {
   const [pksaKg, setPksaKg]     = useState(20);
   const [pksaBatch, setPksaBatch] = useState(100);
 
+  // ── S1 Mechanical Pre-Processing state ────────────────────────────────────
+  const [s1, setS1] = useState({
+    ffbCapacity: 60,    // TPH
+    utilisation: 85,    // %
+    hrsDay: 24,
+    daysMonth: 30,
+    efbMC: 62.5,        // % wet basis (canonical)
+    opdcMC: 70,         // % wet basis (natural from decanter)
+    efbPct: 60,         // dry basis blend %
+    opdcPct: 40,        // dry basis blend %
+    opdcPressMC: 50,    // % target press discharge MC — CLASS A GUARDRAIL: min 40%
+  });
+  const upS1 = (k, v) => setS1(p => ({ ...p, [k]: v }));
+
   useEffect(() => {
     (async () => {
       const orgs = await loadOrgs();
