@@ -777,7 +777,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
 
             {deleteTarget && (
               <div style={s.alert(C.danger)}>
-                <strong>⚠️ CONFIRM DELETE:</strong> "{organisms.find(o => o.id === deleteTarget)?.name}" — this is permanent and cannot be undone.
+                <strong>Warning CONFIRM DELETE:</strong> "{organisms.find(o => o.id === deleteTarget)?.name}" — this is permanent and cannot be undone.
                 <div style={{ marginTop: 8, display: "flex", gap: 10 }}>
                   <button style={s.btnFill(C.danger)} onClick={() => handleDelete(deleteTarget)}>YES — DELETE PERMANENTLY</button>
                   <button style={s.btn(C.muted)} onClick={() => setDeleteTarget(null)}>CANCEL</button>
