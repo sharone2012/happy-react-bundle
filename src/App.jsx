@@ -838,9 +838,9 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
   function renderWB4() {
     return (
       <div style={s.body}>
-        <div style={s.card}>
-          <h3 style={{ color: C.accent, margin: "0 0 8px" }}>WB4 S3 Bio</h3>
-          <p style={{ color: C.textDim, fontSize: 12 }}>Placeholder — WB4 S3 Biological conditioning module. Component code pending.</p>
+        <div style={{ background: "#1A3A5C", border: "1.5px solid #1E6B8C", borderRadius: 8, padding: "32px 24px", textAlign: "center" }}>
+          <h3 style={{ color: "#F5A623", fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 20, margin: "0 0 8px" }}>WB4 S3 Bio</h3>
+          <p style={{ color: "#8BA0B4", fontFamily: "'DM Sans', sans-serif", fontSize: 14, margin: 0 }}>Coming Soon</p>
         </div>
       </div>
     );
@@ -850,13 +850,14 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
   function renderPersonas() {
     return (
       <div style={s.body}>
-        <div style={s.card}>
-          <h3 style={{ color: C.accent, margin: "0 0 8px" }}>Personas</h3>
-          <p style={{ color: C.textDim, fontSize: 12 }}>Placeholder — AI Persona management module. Component code pending.</p>
+        <div style={{ background: "#1A3A5C", border: "1.5px solid #1E6B8C", borderRadius: 8, padding: "32px 24px", textAlign: "center" }}>
+          <h3 style={{ color: "#F5A623", fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 20, margin: "0 0 8px" }}>Personas</h3>
+          <p style={{ color: "#8BA0B4", fontFamily: "'DM Sans', sans-serif", fontSize: 14, margin: 0 }}>Coming Soon</p>
         </div>
       </div>
     );
   }
+
 
     <div style={s.app}>
       <div style={s.header}>
