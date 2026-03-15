@@ -1806,6 +1806,7 @@ export type Database = {
           estate_residue_id: string
           mcf_baseline_default: number | null
           mcf_baseline_user: number | null
+          model_notes: string | null
           pile_height_class: string | null
           residue_id: string | null
         }
@@ -1824,6 +1825,7 @@ export type Database = {
           estate_residue_id?: string
           mcf_baseline_default?: number | null
           mcf_baseline_user?: number | null
+          model_notes?: string | null
           pile_height_class?: string | null
           residue_id?: string | null
         }
@@ -1842,6 +1844,7 @@ export type Database = {
           estate_residue_id?: string
           mcf_baseline_default?: number | null
           mcf_baseline_user?: number | null
+          model_notes?: string | null
           pile_height_class?: string | null
           residue_id?: string | null
         }
@@ -2093,6 +2096,9 @@ export type Database = {
           dm_t_per_month: number | null
           estate_id: string | null
           ffb_share_pct: number | null
+          fw_t_per_month: number | null
+          mass_basis: string | null
+          notes: string | null
           residue_id: string | null
           residues_mass_id: string
         }
@@ -2100,6 +2106,9 @@ export type Database = {
           dm_t_per_month?: number | null
           estate_id?: string | null
           ffb_share_pct?: number | null
+          fw_t_per_month?: number | null
+          mass_basis?: string | null
+          notes?: string | null
           residue_id?: string | null
           residues_mass_id?: string
         }
@@ -2107,6 +2116,9 @@ export type Database = {
           dm_t_per_month?: number | null
           estate_id?: string | null
           ffb_share_pct?: number | null
+          fw_t_per_month?: number | null
+          mass_basis?: string | null
+          notes?: string | null
           residue_id?: string | null
           residues_mass_id?: string
         }
