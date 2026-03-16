@@ -35,7 +35,7 @@ export default function UnitInput({
     border: `1px solid ${C_UNIT.border}`,
     borderRadius: 4,
     background: C_UNIT.bg,
-    padding: "4px 8px",
+    padding: "4px 4px 4px 8px",
     width: "auto",
   };
 
@@ -69,8 +69,8 @@ export default function UnitInput({
   };
 
   const unitStyle = {
-    width: 48,
-    paddingLeft: 6,
+    width: 28,
+    paddingLeft: 3,
     fontSize: 9,
     color: C_UNIT.dimText,
     whiteSpace: "nowrap",
