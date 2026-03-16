@@ -35,7 +35,7 @@ export default function UnitInput({
     border: `1px solid ${C_UNIT.border}`,
     borderRadius: 4,
     background: C_UNIT.bg,
-    padding: "4px 8px",
+    padding: "4px 4px 4px 8px",
     width: "auto",
   };
 
