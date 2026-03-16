@@ -973,16 +973,21 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           <div>
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section C: OPDC Pre-Processing</div>
-              <CalcRow label="Natural OPDC (wet, 15.2%)" value={opdcNatTPD} unit="t/day" />
+              <CalcRow label="Natural OPDC wet 15.2%" value={opdcNatTPD} unit="t/day" />
               <CalcRow label="Natural OPDC DM" value={opdcNatDM} unit="t DM/day" />
-              <CalcRow label="OPDC DM Required (blend)" value={opdcDMreq} unit="t DM/day" color={C.gold} />
+              <CalcRow label="OPDC DM Required" value={opdcDMreq} unit="t DM/day" color={C.gold} />
               <CalcRow label="OPDC Shortfall" value={opdcShortfall > 0 ? opdcShortfall : "0"} unit="t DM/day" color={opdcShortfall > 0 ? C.danger : C.green} />
-              <CalcRow label="OPDC Monthly DM (required)" value={opdcMonthDM.toLocaleString()} unit="t DM/month" />
+              <CalcRow label="OPDC Monthly DM" value={opdcMonthDM.toLocaleString()} unit="t DM/month" />
 
               {/* OPDC Press Discharge MC — CLASS A GUARDRAIL */}
               <div style={{ marginTop: 12, padding: 10, background: "#0d1a2e", borderRadius: 6, border: `1px solid ${C.border}` }}>
-                <label style={{ ...s.label, fontSize: 13 }}>OPDC Press Discharge MC <span style={{ color: C.muted }}>(%)</span></label>
-                <input type="number" style={s.input} value={rawPressMC} onChange={e => upS1("opdcPressMC", Number(e.target.value))} />
+                <div style={{ display: "flex", alignItems: "center", padding: "5px 0", borderBottom: "0.5px solid " + C.border }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 11, fontWeight: 500, color: C.text }}>OPDC Press Discharge MC</div>
+                    <div style={{ fontSize: 9, color: "#8899aa" }}>%</div>
+                  </div>
+                  <input type="number" style={{ ...s.input, width: 64, textAlign: "right", margin: 0 }} value={rawPressMC} onChange={e => upS1("opdcPressMC", Number(e.target.value))} />
+                </div>
                 <div style={{ marginTop: 6 }}>
                   <CalcRow label="Clamped Press MC (applied)" value={clampedPressMC} unit="%" color={pressMCFloored ? C.warn : C.green} />
                 </div>
