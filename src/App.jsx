@@ -918,10 +918,10 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
         {/* KPI Row */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 16 }}>
           {[
-            { label: "EFB Monthly", value: efbMonthWet.toLocaleString(), unit: "t FW/month", col: C.accent },
-            { label: "EFB DM Monthly", value: efbMonthDM.toLocaleString(), unit: "t DM/month", col: C.accent },
-            { label: "OPDC DM Required", value: opdcMonthDM.toLocaleString(), unit: "t DM/month", col: C.gold },
-            { label: "Blended Substrate", value: blendWet.toLocaleString(), unit: "t FW/month → S2", col: C.green },
+              { label: "EFB Monthly (FW)", value: efbMonthWet.toLocaleString(), unit: "t/month", col: C.accent },
+            { label: "EFB Monthly (DM)", value: efbMonthDM.toLocaleString(), unit: "t/month", col: C.accent },
+            { label: "OPDC Required (DM)", value: opdcMonthDM.toLocaleString(), unit: "t/month", col: C.gold },
+            { label: "Blended Substrate (FW)", value: blendWet.toLocaleString(), unit: "t/month → S2", col: C.green },
           ].map((k, i) => (
             <div key={i} style={{ ...s.card, textAlign: "center", padding: 12 }}>
               <div style={{ color: "#b8c7d6", fontSize: 13, fontWeight: 700, letterSpacing: 0.5, marginBottom: 4 }}>{k.label}</div>
