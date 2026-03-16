@@ -942,13 +942,15 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                   { label: "Utilisation", key: "utilisation", unit: "%" },
                   { label: "Operating Hours", key: "hrsDay", unit: "hrs/day" },
                   { label: "Operating Days", key: "daysMonth", unit: "days/month" },
-                ].map(f => (
+              ].map(f => (
                   <div key={f.key} style={{ display: "flex", alignItems: "center", padding: "5px 0", borderBottom: "0.5px solid " + C.border }}>
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: 11, fontWeight: 500, color: C.text }}>{f.label}</div>
-                      <div style={{ fontSize: 9, color: "#8899aa" }}>{f.unit}</div>
                     </div>
-                    <input type="number" style={{ ...s.input, width: 64, textAlign: "right", margin: 0 }} value={s1[f.key]} onChange={e => upS1(f.key, Number(e.target.value))} />
+                    <div style={{ display: "flex", alignItems: "center", ...s.input, width: 110, padding: "4px 8px", margin: 0 }}>
+                      <input type="number" style={{ background: "transparent", border: "none", color: C.textLight, fontSize: 13, fontFamily: "'DM Mono', monospace", width: "100%", textAlign: "left", outline: "none", padding: 0, margin: 0 }} value={s1[f.key]} onChange={e => upS1(f.key, Number(e.target.value))} />
+                      <span style={{ fontSize: 11, color: "#8899aa", marginLeft: 4, whiteSpace: "nowrap" }}>{f.unit}</span>
+                    </div>
                   </div>
                 ))}
               </div>
