@@ -931,7 +931,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           ))}
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
           {/* LEFT: Mill Inputs + EFB */}
           <div>
             <div style={s.card}>
