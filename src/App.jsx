@@ -947,7 +947,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: 11, fontWeight: 500, color: C.text }}>{f.label}</div>
                   </div>
-                  <div style={{ display: "inline-flex", alignItems: "center", background: "#091525", border: `1px solid ${C.blue}`, borderRadius: 4, padding: "4px 8px", minWidth: 96 }}>
+                  <div style={{ display: "inline-flex", alignItems: "center", background: "#091525", border: `1px solid ${C.accent}`, borderRadius: 4, padding: "5px 10px", width: "auto" }}>
                     <input
                       type="number"
                       style={{
