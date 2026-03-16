@@ -918,7 +918,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
         {/* KPI Row */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 16 }}>
           {[
-            { label: "EFB Monthly (wet)", value: efbMonthWet.toLocaleString(), unit: "t/month", col: C.accent },
+            { label: "EFB Monthly", value: efbMonthWet.toLocaleString(), unit: "t FW/month", col: C.accent },
             { label: "EFB DM Monthly", value: efbMonthDM.toLocaleString(), unit: "t DM/month", col: C.accent },
             { label: "OPDC DM Required", value: opdcMonthDM.toLocaleString(), unit: "t DM/month", col: C.gold },
             { label: "Blended Substrate", value: blendWet.toLocaleString(), unit: "t FW/month → S2", col: C.green },
