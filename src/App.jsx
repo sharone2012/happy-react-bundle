@@ -960,11 +960,11 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
 
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section B: EFB Pre-Processing</div>
-              <CalcRow label="EFB Nameplate Throughput" value={efbTPH} unit="TPH (wet)" />
-              <CalcRow label="EFB Daily (wet)" value={efbTPD} unit="t/day" />
+              <CalcRow label="EFB Nameplate Throughput" value={efbTPH} unit="TPH wet" />
+              <CalcRow label="EFB Daily" value={efbTPD} unit="t FW/day" />
               <CalcRow label="EFB DM at mill" value={(efbDMFrac * 100).toFixed(1)} unit="%" />
               <CalcRow label="EFB DM per day" value={efbDMpd} unit="t DM/day" />
-              <CalcRow label="EFB Monthly (wet)" value={efbMonthWet.toLocaleString()} unit="t/month" />
+              <CalcRow label="EFB Monthly" value={efbMonthWet.toLocaleString()} unit="t FW/month" />
               <CalcRow label="EFB Monthly DM" value={efbMonthDM.toLocaleString()} unit="t DM/month" />
             </div>
           </div>
