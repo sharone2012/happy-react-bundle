@@ -976,7 +976,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           <div>
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section C: OPDC Pre-Processing</div>
-              <CalcRow label="Natural OPDC (wet, 15.2%)" value={opdcNatTPD} unit="t/day" />
+              <CalcRow label="Natural OPDC (FW, 15.2%)" value={opdcNatTPD} unit="t/day" />
               <CalcRow label="Natural OPDC (DM)" value={opdcNatDM} unit="t/day" />
               <CalcRow label="OPDC Required (DM)" value={opdcDMreq} unit="t/day" color={C.gold} />
               <CalcRow label="OPDC Shortfall (DM)" value={opdcShortfall > 0 ? opdcShortfall : "0"} unit="t/day" color={opdcShortfall > 0 ? C.danger : C.green} />
