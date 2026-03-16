@@ -1003,7 +1003,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
 
               {opdcShortfall > 0 && (
                 <div style={s.alert(C.warn)}>
-                  Source {(opdcShortfall * s1.daysMonth).toFixed(0)} t DM/month OPDC externally
+                  Source {(opdcShortfall * s1.daysMonth).toFixed(0)} t/month OPDC externally
                 </div>
               )}
             </div>
