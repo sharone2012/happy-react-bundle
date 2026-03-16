@@ -936,7 +936,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           <div>
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section A: Mill Parameters</div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
                 {[
                   { label: "FFB Capacity", key: "ffbCapacity", unit: "TPH" },
                   { label: "Utilisation", key: "utilisation", unit: "%" },
