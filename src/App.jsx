@@ -947,7 +947,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: 11, fontWeight: 500, color: C.text }}>{f.label}</div>
                   </div>
-                  <div style={{ display: "inline-flex", alignItems: "center", ...s.input, padding: "3px 6px", margin: 0, minWidth: 96 }}>
+                  <div style={{ display: "inline-flex", alignItems: "center", background: "#091525", border: `1px solid ${C.blue}`, borderRadius: 4, padding: "4px 8px", minWidth: 96 }}>
                     <input
                       type="number"
                       style={{
@@ -966,15 +966,15 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                       value={s1[f.key]}
                       onChange={e => upS1(f.key, Number(e.target.value))}
                     />
-                    <div style={{ width: 52, marginLeft: 6, textAlign: "left" }}>
+                    <span style={{ width: 52, marginLeft: 6, textAlign: "left", fontSize: 9, lineHeight: 1.15, color: C.textDim }}>
                       {f.unit.includes("/") ? (
                         f.unit.split("/").map((part, i) => (
-                          <div key={i} style={{ fontSize: 9, lineHeight: 1.1, color: C.textDim }}>{i === 0 ? part.trim() : "/" + part.trim()}</div>
+                          <div key={i}>{i === 0 ? part.trim() : "/" + part.trim()}</div>
                         ))
                       ) : (
-                        <div style={{ fontSize: 9, lineHeight: 1.1, color: C.textDim }}>{f.unit}</div>
+                        f.unit
                       )}
-                    </div>
+                    </span>
                   </div>
                 </div>
               ))}
