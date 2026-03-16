@@ -957,7 +957,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
               <div style={{ marginTop: 10 }}>
                 {[
                   { label: "Effective FFB", value: effFFB, unit: "TPH", color: C.green },
-                  { label: "Monthly FFB", value: (effFFB * s1.hrsDay * s1.daysMonth).toLocaleString(), unit: "t/month", color: C.green },
+                  { label: "Monthly FFB", value: (effFFB * s1.hrsDay * s1.daysMonth).toLocaleString(), unit: "tonnes", color: C.green },
                 ].map((r, i) => (
                   <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "5px 0", borderBottom: "0.5px solid " + C.border }}>
                     <div style={{ fontSize: 11, fontWeight: r.label.includes("Monthly") ? 700 : 500, color: r.label.includes("Monthly") ? "#d0dce8" : C.textDim }}>{r.label}</div>

@@ -69,8 +69,8 @@ export default function UnitInput({
   };
 
   const unitStyle = {
-    width: 48,
-    paddingLeft: 6,
+    width: 28,
+    paddingLeft: 3,
     fontSize: 9,
     color: C_UNIT.dimText,
     whiteSpace: "nowrap",
