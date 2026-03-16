@@ -932,7 +932,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           ))}
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr 2fr", gap: 12 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1.4fr) minmax(0, 1.4fr) minmax(0, 1.4fr)", gap: 12 }}>
           {/* COL 1: Mill Parameters */}
           <div>
             <div style={s.card}>
