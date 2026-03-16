@@ -948,35 +948,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: 11, fontWeight: 500, color: C.text }}>{f.label}</div>
                   </div>
-                  <div style={{ display: "inline-flex", alignItems: "center", background: "#091525", border: `1px solid ${C.accent}`, borderRadius: 4, padding: "5px 10px", width: "auto" }}>
-                    <input
-                      type="number"
-                      style={{
-                        background: "transparent",
-                        border: "none",
-                        color: C.textLight,
-                        fontSize: 13,
-                        fontFamily: "'DM Mono', monospace",
-                        width: 40,
-                        textAlign: "right",
-                        outline: "none",
-                        padding: 0,
-                        margin: 0,
-                        flexShrink: 0,
-                      }}
-                      value={s1[f.key]}
-                      onChange={e => upS1(f.key, Number(e.target.value))}
-                    />
-                    <span style={{ width: 52, paddingLeft: 6, textAlign: "left", fontSize: 9, lineHeight: 1.15, color: C.textDim }}>
-                      {f.unit.includes("/") ? (
-                        f.unit.split("/").map((part, i) => (
-                          <div key={i}>{i === 0 ? part.trim() : "/" + part.trim()}</div>
-                        ))
-                      ) : (
-                        f.unit
-                      )}
-                    </span>
-                  </div>
+                  <UnitInput value={s1[f.key]} onChange={v => upS1(f.key, v)} unit={f.unit} />
                 </div>
               ))}
               </div>
@@ -987,10 +959,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                 ].map((r, i) => (
                   <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "5px 0", borderBottom: "0.5px solid " + C.border }}>
                     <div style={{ fontSize: 11, fontWeight: r.label.includes("Monthly") ? 700 : 500, color: r.label.includes("Monthly") ? "#d0dce8" : C.textDim }}>{r.label}</div>
-                    <div style={{ display: "inline-flex", alignItems: "center", padding: "5px 10px" }}>
-                      <div style={{ width: 40, textAlign: "right", fontFamily: "'DM Mono', monospace", fontWeight: r.label.includes("Monthly") ? 700 : 600, fontSize: 13, color: r.color, whiteSpace: "nowrap" }}>{r.value}</div>
-                      <span style={{ width: 52, paddingLeft: 6, textAlign: "left", fontSize: 9, lineHeight: 1.15, color: C.textDim, whiteSpace: "nowrap" }}>{r.unit}</span>
-                    </div>
+                    <UnitInput value={r.value} unit={r.unit} readOnly color={r.color} />
                   </div>
                 ))}
               </div>
