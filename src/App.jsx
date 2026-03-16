@@ -988,17 +988,17 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: 11, fontWeight: r.label.includes("Monthly") ? 700 : 500, color: r.label.includes("Monthly") ? "#d0dce8" : C.textDim }}>{r.label}</div>
                     </div>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", minWidth: 96 }}>
+                    <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "flex-end", minWidth: 96, padding: "4px 8px" }}>
                       <div style={{ width: 36, textAlign: "right", fontFamily: "'DM Mono', monospace", fontWeight: r.label.includes("Monthly") ? 700 : 600, fontSize: 13, color: r.color }}>{r.value}</div>
-                      <div style={{ width: 52, marginLeft: 6, textAlign: "left" }}>
+                      <span style={{ width: 52, marginLeft: 6, textAlign: "left", fontSize: 9, lineHeight: 1.15, color: C.textDim }}>
                         {r.unit.includes("/") ? (
                           r.unit.split("/").map((part, j) => (
-                            <div key={j} style={{ fontSize: 9, lineHeight: 1.1, color: C.textDim }}>{j === 0 ? part.trim() : "/" + part.trim()}</div>
+                            <div key={j}>{j === 0 ? part.trim() : "/" + part.trim()}</div>
                           ))
                         ) : (
-                          <div style={{ fontSize: 9, lineHeight: 1.1, color: C.textDim }}>{r.unit}</div>
+                          r.unit
                         )}
-                      </div>
+                      </span>
                     </div>
                   </div>
                 ))}
