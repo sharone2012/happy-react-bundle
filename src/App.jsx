@@ -943,9 +943,12 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                   { label: "Operating Hours", key: "hrsDay", unit: "hrs/day" },
                   { label: "Operating Days", key: "daysMonth", unit: "days/month" },
                 ].map(f => (
-                  <div key={f.key}>
-                    <label style={{ ...s.label, fontSize: 13 }}>{f.label} <span style={{ color: C.muted }}>({f.unit})</span></label>
-                    <input type="number" style={s.input} value={s1[f.key]} onChange={e => upS1(f.key, Number(e.target.value))} />
+                  <div key={f.key} style={{ display: "flex", alignItems: "center", padding: "5px 0", borderBottom: "0.5px solid " + C.border }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: 11, fontWeight: 500, color: C.text }}>{f.label}</div>
+                      <div style={{ fontSize: 9, color: "#8899aa" }}>{f.unit}</div>
+                    </div>
+                    <input type="number" style={{ ...s.input, width: 64, textAlign: "right", margin: 0 }} value={s1[f.key]} onChange={e => upS1(f.key, Number(e.target.value))} />
                   </div>
                 ))}
               </div>
