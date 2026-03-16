@@ -965,8 +965,28 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                 ))}
               </div>
               <div style={{ marginTop: 10 }}>
-                <CalcRow label="Effective FFB" value={effFFB} unit="TPH" color={C.green} />
-                <CalcRow label="Monthly FFB" value={(effFFB * s1.hrsDay * s1.daysMonth).toLocaleString()} unit="t/month" color={C.green} />
+                {[
+                  { label: "Effective FFB", value: effFFB, unit: "TPH", color: C.green },
+                  { label: "Monthly FFB", value: (effFFB * s1.hrsDay * s1.daysMonth).toLocaleString(), unit: "t/month", color: C.green },
+                ].map((r, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", padding: "5px 0", borderBottom: "0.5px solid " + C.border }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: 11, fontWeight: r.label.includes("Monthly") ? 700 : 500, color: r.label.includes("Monthly") ? "#d0dce8" : C.textDim }}>{r.label}</div>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+                      <div style={{ width: 52, textAlign: "left", fontFamily: "'DM Mono', monospace", fontWeight: r.label.includes("Monthly") ? 700 : 600, fontSize: 13, color: r.color }}>{r.value}</div>
+                      <div style={{ width: 52, marginLeft: 6, textAlign: "left" }}>
+                        {r.unit.includes("/") ? (
+                          r.unit.split("/").map((part, j) => (
+                            <div key={j} style={{ fontSize: 9, lineHeight: 1.1, color: "#8899aa" }}>{j === 0 ? part.trim() : "/" + part.trim()}</div>
+                          ))
+                        ) : (
+                          <div style={{ fontSize: 9, lineHeight: 1.1, color: "#8899aa" }}>{r.unit}</div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
