@@ -932,9 +932,9 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           ))}
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr 2fr", gap: 12 }}>
           {/* COL 1: Mill Parameters */}
-          <div style={{ maxWidth: 300 }}>
+          <div>
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section A: Mill Parameters</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
@@ -944,11 +944,13 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                   { label: "Operating Hours", key: "hrsDay", unit: "hrs/day" },
                   { label: "Operating Days", key: "daysMonth", unit: "days/month" },
               ].map(f => (
-                <div key={f.key} style={{ display: "flex", alignItems: "center", padding: "5px 0", borderBottom: "0.5px solid " + C.border }}>
+                <div key={f.key} style={{ display: "flex", alignItems: "center", padding: "6px 0", borderBottom: "0.5px solid " + C.border }}>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: 11, fontWeight: 500, color: C.text }}>{f.label}</div>
                   </div>
-                  <UnitInput value={s1[f.key]} onChange={v => upS1(f.key, v)} unit={f.unit} />
+                  <div style={{ marginLeft: "auto" }}>
+                    <UnitInput value={s1[f.key]} onChange={v => upS1(f.key, v)} unit={f.unit} />
+                  </div>
                 </div>
               ))}
               </div>
