@@ -1036,7 +1036,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
               <div key={i} style={{ textAlign: "center" }}>
                 <div style={{ color: "#b8c7d6", fontSize: 14, fontWeight: 700, marginBottom: 3 }}>{k.label}</div>
                 <div style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: k.col }}>{k.value}</div>
-                <div style={{ color: "#8899aa", fontSize: 11, fontWeight: 600 }}>{k.unit}</div>
+                <div style={{ color: "#9daab8", fontSize: 13, fontWeight: 600 }}>{k.unit}</div>
               </div>
             ))}
           </div>
