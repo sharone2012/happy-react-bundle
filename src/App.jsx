@@ -947,10 +947,10 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: 11, fontWeight: 500, color: C.text }}>{f.label}</div>
                     </div>
-                    <div style={{ display: "flex", alignItems: "center", ...s.input, width: 100, padding: "3px 6px", margin: 0 }}>
-                      <input type="number" style={{ background: "transparent", border: "none", color: C.textLight, fontSize: 13, fontFamily: "'DM Mono', monospace", minWidth: 36, textAlign: "left", outline: "none", padding: 0, margin: 0 }} value={s1[f.key]} onChange={e => upS1(f.key, Number(e.target.value))} />
-                      <span style={{ fontSize: 11, color: "#8899aa", marginLeft: 4, whiteSpace: "nowrap" }}>{f.unit}</span>
+                    <div style={{ display: "inline-flex", alignItems: "center", ...s.input, width: 52, padding: "3px 6px", margin: 0 }}>
+                      <input type="number" style={{ background: "transparent", border: "none", color: C.textLight, fontSize: 13, fontFamily: "'DM Mono', monospace", width: "100%", textAlign: "left", outline: "none", padding: 0, margin: 0 }} value={s1[f.key]} onChange={e => upS1(f.key, Number(e.target.value))} />
                     </div>
+                    <span style={{ fontSize: 11, color: "#8899aa", marginLeft: 6, whiteSpace: "nowrap" }}>{f.unit}</span>
                   </div>
                 ))}
               </div>
