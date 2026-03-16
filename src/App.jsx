@@ -943,26 +943,41 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                   { label: "Operating Hours", key: "hrsDay", unit: "hrs/day" },
                   { label: "Operating Days", key: "daysMonth", unit: "days/month" },
               ].map(f => (
-                  <div key={f.key} style={{ display: "flex", alignItems: "center", padding: "5px 0", borderBottom: "0.5px solid " + C.border }}>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 11, fontWeight: 500, color: C.text }}>{f.label}</div>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
-                      <div style={{ display: "inline-flex", alignItems: "center", ...s.input, width: 52, padding: "3px 6px", margin: 0 }}>
-                        <input type="number" style={{ background: "transparent", border: "none", color: C.textLight, fontSize: 13, fontFamily: "'DM Mono', monospace", width: "100%", textAlign: "left", outline: "none", padding: 0, margin: 0 }} value={s1[f.key]} onChange={e => upS1(f.key, Number(e.target.value))} />
-                      </div>
-                      <div style={{ width: 52, marginLeft: 6, textAlign: "left" }}>
-                        {f.unit.includes("/") ? (
-                          f.unit.split("/").map((part, i) => (
-                            <div key={i} style={{ fontSize: 9, lineHeight: 1.1, color: "#8899aa" }}>{i === 0 ? part.trim() : "/" + part.trim()}</div>
-                          ))
-                        ) : (
-                          <div style={{ fontSize: 9, lineHeight: 1.1, color: "#8899aa" }}>{f.unit}</div>
-                        )}
-                      </div>
+                <div key={f.key} style={{ display: "flex", alignItems: "center", padding: "5px 0", borderBottom: "0.5px solid " + C.border }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 11, fontWeight: 500, color: C.text }}>{f.label}</div>
+                  </div>
+                  <div style={{ display: "inline-flex", alignItems: "center", ...s.input, padding: "3px 6px", margin: 0, minWidth: 96 }}>
+                    <input
+                      type="number"
+                      style={{
+                        background: "transparent",
+                        border: "none",
+                        color: C.textLight,
+                        fontSize: 13,
+                        fontFamily: "'DM Mono', monospace",
+                        width: 36,
+                        textAlign: "right",
+                        outline: "none",
+                        padding: 0,
+                        margin: 0,
+                        flexShrink: 0,
+                      }}
+                      value={s1[f.key]}
+                      onChange={e => upS1(f.key, Number(e.target.value))}
+                    />
+                    <div style={{ width: 52, marginLeft: 6, textAlign: "left" }}>
+                      {f.unit.includes("/") ? (
+                        f.unit.split("/").map((part, i) => (
+                          <div key={i} style={{ fontSize: 9, lineHeight: 1.1, color: C.textDim }}>{i === 0 ? part.trim() : "/" + part.trim()}</div>
+                        ))
+                      ) : (
+                        <div style={{ fontSize: 9, lineHeight: 1.1, color: C.textDim }}>{f.unit}</div>
+                      )}
                     </div>
                   </div>
-                ))}
+                </div>
+              ))}
               </div>
               <div style={{ marginTop: 10 }}>
                 {[
@@ -973,15 +988,15 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: 11, fontWeight: r.label.includes("Monthly") ? 700 : 500, color: r.label.includes("Monthly") ? "#d0dce8" : C.textDim }}>{r.label}</div>
                     </div>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
-                      <div style={{ width: 52, textAlign: "left", fontFamily: "'DM Mono', monospace", fontWeight: r.label.includes("Monthly") ? 700 : 600, fontSize: 13, color: r.color }}>{r.value}</div>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", minWidth: 96 }}>
+                      <div style={{ width: 36, textAlign: "right", fontFamily: "'DM Mono', monospace", fontWeight: r.label.includes("Monthly") ? 700 : 600, fontSize: 13, color: r.color }}>{r.value}</div>
                       <div style={{ width: 52, marginLeft: 6, textAlign: "left" }}>
                         {r.unit.includes("/") ? (
                           r.unit.split("/").map((part, j) => (
-                            <div key={j} style={{ fontSize: 9, lineHeight: 1.1, color: "#8899aa" }}>{j === 0 ? part.trim() : "/" + part.trim()}</div>
+                            <div key={j} style={{ fontSize: 9, lineHeight: 1.1, color: C.textDim }}>{j === 0 ? part.trim() : "/" + part.trim()}</div>
                           ))
                         ) : (
-                          <div style={{ fontSize: 9, lineHeight: 1.1, color: "#8899aa" }}>{r.unit}</div>
+                          <div style={{ fontSize: 9, lineHeight: 1.1, color: C.textDim }}>{r.unit}</div>
                         )}
                       </div>
                     </div>
