@@ -1006,30 +1006,30 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             </div>
           </div>
 
-          {/* COL 3: Equipment Sizing + Constraints */}
-          <div>
-            <div style={s.card}>
-              <div style={{ fontSize: 14, fontWeight: 700, color: C.gold, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section D: Equipment Sizing</div>
-              <div style={{ fontSize: 14, color: C.textDim, lineHeight: 2.0 }}>
-                <div>• <span style={{ color: C.gold }}>Shredder:</span> <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: C.gold }}>{shredderTPH}</span> <span style={{ fontSize: 11, color: "#8899aa" }}>TPH nameplate (÷0.65 Asian derating)</span></div>
-                <div>• <span style={{ color: C.gold }}>Hammer Mill:</span> <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: C.gold }}>{hammerTPH}</span> <span style={{ fontSize: 11, color: "#8899aa" }}>TPH (30% to 2mm fraction)</span></div>
-                <div>• <span style={{ color: C.gold }}>Screw Press (OPDC):</span> <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: C.gold }}>{screwPressTPH}</span> <span style={{ fontSize: 11, color: "#8899aa" }}>TPH target</span></div>
-                <div>• <span style={{ color: C.gold }}>Conveyor:</span> <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: C.gold }}>{conveyorTPH}</span> <span style={{ fontSize: 11, color: "#8899aa" }}>TPH design (20% margin)</span></div>
-                <div>• <span style={{ color: C.accent }}>Particle Target:</span> <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: C.accent }}>2mm</span> <span style={{ fontSize: 11, color: "#8899aa" }}>for BSF substrate</span></div>
-                <div>• <span style={{ color: C.accent }}>Asian Derating Factor:</span> <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: C.accent }}>0.65×</span> <span style={{ fontSize: 11, color: "#8899aa" }}>nameplate</span></div>
-              </div>
-            </div>
+        </div>
 
-            <div style={s.card}>
-              <div style={{ fontSize: 18, fontWeight: 700, color: C.danger, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>OPDC Constraints</div>
-              <div style={{ fontSize: 14, color: C.textDim, lineHeight: 1.8 }}>
-                <div>• <span style={{ color: C.danger }}>NEVER below 40% MC</span> — pore damage kills BSF</div>
-                <div>• Target 45–55% MC at press discharge</div>
-                <div>• OPDC N: 2.40% DM (CFI confirmed)</div>
-                <div>• OPDC yield: 15.2% of EFB fresh weight</div>
-                <div>• Lignin 30.7%, C:N 20 (high protein vs EFB)</div>
-              </div>
-            </div>
+        {/* Section D: Equipment Sizing — full width */}
+        <div style={s.card}>
+          <div style={{ fontSize: 14, fontWeight: 700, color: C.gold, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section D: Equipment Sizing</div>
+          <div style={{ fontSize: 14, color: C.textDim, lineHeight: 2.0 }}>
+            <div>• <span style={{ color: C.gold }}>Shredder:</span> <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: C.gold }}>{shredderTPH}</span> <span style={{ fontSize: 11, color: "#8899aa" }}>TPH nameplate (÷0.65 Asian derating)</span></div>
+            <div>• <span style={{ color: C.gold }}>Hammer Mill:</span> <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: C.gold }}>{hammerTPH}</span> <span style={{ fontSize: 11, color: "#8899aa" }}>TPH (30% to 2mm fraction)</span></div>
+            <div>• <span style={{ color: C.gold }}>Screw Press (OPDC):</span> <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: C.gold }}>{screwPressTPH}</span> <span style={{ fontSize: 11, color: "#8899aa" }}>TPH target</span></div>
+            <div>• <span style={{ color: C.gold }}>Conveyor:</span> <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: C.gold }}>{conveyorTPH}</span> <span style={{ fontSize: 11, color: "#8899aa" }}>TPH design (20% margin)</span></div>
+            <div>• <span style={{ color: C.accent }}>Particle Target:</span> <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: C.accent }}>2mm</span> <span style={{ fontSize: 11, color: "#8899aa" }}>for BSF substrate</span></div>
+            <div>• <span style={{ color: C.accent }}>Asian Derating Factor:</span> <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: C.accent }}>0.65×</span> <span style={{ fontSize: 11, color: "#8899aa" }}>nameplate</span></div>
+          </div>
+        </div>
+
+        {/* OPDC Constraints — full width */}
+        <div style={s.card}>
+          <div style={{ fontSize: 18, fontWeight: 700, color: C.danger, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>OPDC Constraints</div>
+          <div style={{ fontSize: 14, color: C.textDim, lineHeight: 1.8 }}>
+            <div>• <span style={{ color: C.danger }}>NEVER below 40% MC</span> — pore damage kills BSF</div>
+            <div>• Target 45–55% MC at press discharge</div>
+            <div>• OPDC N: 2.40% DM (CFI confirmed)</div>
+            <div>• OPDC yield: 15.2% of EFB fresh weight</div>
+            <div>• Lignin 30.7%, C:N 20 (high protein vs EFB)</div>
           </div>
         </div>
 
