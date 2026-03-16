@@ -932,7 +932,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
-          {/* LEFT: Mill Inputs + EFB */}
+          {/* COL 1: Mill Parameters */}
           <div>
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section A: Mill Parameters</div>
@@ -957,7 +957,10 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                 <CalcRow label="Monthly FFB" value={(effFFB * s1.hrsDay * s1.daysMonth).toLocaleString()} unit="t/month" color={C.green} />
               </div>
             </div>
+          </div>
 
+          {/* COL 2: EFB Pre-Processing */}
+          <div>
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section B: EFB Pre-Processing</div>
               <CalcRow label="EFB Nameplate Throughput" value={efbTPH} unit="TPH wet" />
@@ -969,7 +972,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             </div>
           </div>
 
-          {/* RIGHT: OPDC */}
+          {/* COL 3: OPDC Pre-Processing */}
           <div>
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section C: OPDC Pre-Processing</div>
