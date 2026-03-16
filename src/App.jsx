@@ -968,7 +968,8 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             </div>
           </div>
 
-          {/* COL 2: EFB Pre-Processing */}
+          {/* COL 2+3: EFB + OPDC Pre-Processing */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
           <div>
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section B: EFB Pre-Processing</div>
@@ -981,7 +982,6 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
             </div>
           </div>
 
-          {/* COL 3: OPDC Pre-Processing */}
           <div>
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section C: OPDC Pre-Processing</div>
@@ -1016,6 +1016,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                 </div>
               )}
             </div>
+          </div>
           </div>
 
         </div>
