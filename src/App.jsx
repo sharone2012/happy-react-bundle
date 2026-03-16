@@ -1062,7 +1062,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
 
 
   return (
-    <div style={s.app}>
+    <div style={{ ...s.app, zoom: 1.25 }}>
       <div style={s.header}>
         <div>
           <div style={s.logo}>CFI · Circular Fertiliser Industries · Bogor, West Java</div>
