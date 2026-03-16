@@ -1004,7 +1004,10 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                 </div>
               )}
             </div>
+          </div>
 
+          {/* COL 3: Equipment Sizing + Constraints */}
+          <div>
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.gold, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section D: Equipment Sizing</div>
               <div style={{ fontSize: 14, color: C.textDim, lineHeight: 2.0 }}>
