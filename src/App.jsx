@@ -1001,13 +1001,13 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
 
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.gold, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section D: Equipment Sizing</div>
-              <div style={{ fontSize: 12, color: C.textDim, lineHeight: 1.8 }}>
-                <div>• <span style={{ color: C.gold }}>Shredder:</span> {shredderTPH} TPH nameplate (÷0.65 Asian derating)</div>
-                <div>• <span style={{ color: C.gold }}>Hammer Mill:</span> {hammerTPH} TPH (30% to 2mm fraction)</div>
-                <div>• <span style={{ color: C.gold }}>Screw Press (OPDC):</span> {screwPressTPH} TPH target</div>
-                <div>• <span style={{ color: C.gold }}>Conveyor:</span> {conveyorTPH} TPH design (20% margin)</div>
-                <div>• <span style={{ color: C.accent }}>Particle Target:</span> 2mm for BSF substrate</div>
-                <div>• <span style={{ color: C.accent }}>Asian Derating Factor:</span> 0.65× nameplate</div>
+              <div style={{ fontSize: 14, color: C.textDim, lineHeight: 2.0 }}>
+                <div>• <span style={{ color: C.gold }}>Shredder:</span> <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: C.gold }}>{shredderTPH}</span> <span style={{ fontSize: 11, color: "#8899aa" }}>TPH nameplate (÷0.65 Asian derating)</span></div>
+                <div>• <span style={{ color: C.gold }}>Hammer Mill:</span> <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: C.gold }}>{hammerTPH}</span> <span style={{ fontSize: 11, color: "#8899aa" }}>TPH (30% to 2mm fraction)</span></div>
+                <div>• <span style={{ color: C.gold }}>Screw Press (OPDC):</span> <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: C.gold }}>{screwPressTPH}</span> <span style={{ fontSize: 11, color: "#8899aa" }}>TPH target</span></div>
+                <div>• <span style={{ color: C.gold }}>Conveyor:</span> <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: C.gold }}>{conveyorTPH}</span> <span style={{ fontSize: 11, color: "#8899aa" }}>TPH design (20% margin)</span></div>
+                <div>• <span style={{ color: C.accent }}>Particle Target:</span> <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: C.accent }}>2mm</span> <span style={{ fontSize: 11, color: "#8899aa" }}>for BSF substrate</span></div>
+                <div>• <span style={{ color: C.accent }}>Asian Derating Factor:</span> <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: C.accent }}>0.65×</span> <span style={{ fontSize: 11, color: "#8899aa" }}>nameplate</span></div>
               </div>
             </div>
 
