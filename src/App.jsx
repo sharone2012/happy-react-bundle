@@ -944,11 +944,13 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                   { label: "Operating Hours", key: "hrsDay", unit: "hrs/day" },
                   { label: "Operating Days", key: "daysMonth", unit: "days/month" },
               ].map(f => (
-                <div key={f.key} style={{ display: "flex", alignItems: "center", padding: "5px 0", borderBottom: "0.5px solid " + C.border }}>
+                <div key={f.key} style={{ display: "flex", alignItems: "center", padding: "6px 0", borderBottom: "0.5px solid " + C.border }}>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: 11, fontWeight: 500, color: C.text }}>{f.label}</div>
                   </div>
-                  <UnitInput value={s1[f.key]} onChange={v => upS1(f.key, v)} unit={f.unit} />
+                  <div style={{ marginLeft: "auto" }}>
+                    <UnitInput value={s1[f.key]} onChange={v => upS1(f.key, v)} unit={f.unit} />
+                  </div>
                 </div>
               ))}
               </div>
