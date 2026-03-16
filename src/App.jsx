@@ -933,7 +933,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
           {/* COL 1: Mill Parameters */}
-          <div style={{ maxWidth: 280 }}>
+          <div style={{ maxWidth: 300 }}>
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section A: Mill Parameters</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
