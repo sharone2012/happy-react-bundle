@@ -976,11 +976,11 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           <div>
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section C: OPDC Pre-Processing</div>
-              <CalcRow label="Natural OPDC wet 15.2%" value={opdcNatTPD} unit="t/day" />
-              <CalcRow label="Natural OPDC DM" value={opdcNatDM} unit="t DM/day" />
-              <CalcRow label="OPDC DM Required" value={opdcDMreq} unit="t DM/day" color={C.gold} />
-              <CalcRow label="OPDC Shortfall" value={opdcShortfall > 0 ? opdcShortfall : "0"} unit="t DM/day" color={opdcShortfall > 0 ? C.danger : C.green} />
-              <CalcRow label="OPDC Monthly DM" value={opdcMonthDM.toLocaleString()} unit="t DM/month" />
+              <CalcRow label="Natural OPDC (wet, 15.2%)" value={opdcNatTPD} unit="t/day" />
+              <CalcRow label="Natural OPDC (DM)" value={opdcNatDM} unit="t/day" />
+              <CalcRow label="OPDC Required (DM)" value={opdcDMreq} unit="t/day" color={C.gold} />
+              <CalcRow label="OPDC Shortfall (DM)" value={opdcShortfall > 0 ? opdcShortfall : "0"} unit="t/day" color={opdcShortfall > 0 ? C.danger : C.green} />
+              <CalcRow label="OPDC Monthly (DM)" value={opdcMonthDM.toLocaleString()} unit="t/month" />
 
               {/* OPDC Press Discharge MC — CLASS A GUARDRAIL */}
               <div style={{ marginTop: 12, padding: 10, background: "#0d1a2e", borderRadius: 6, border: `1px solid ${C.border}` }}>
