@@ -918,10 +918,10 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
         {/* KPI Row */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 16 }}>
           {[
-            { label: "EFB Monthly", value: efbMonthWet.toLocaleString(), unit: "t FW/month", col: C.accent },
-            { label: "EFB DM Monthly", value: efbMonthDM.toLocaleString(), unit: "t DM/month", col: C.accent },
-            { label: "OPDC DM Required", value: opdcMonthDM.toLocaleString(), unit: "t DM/month", col: C.gold },
-            { label: "Blended Substrate", value: blendWet.toLocaleString(), unit: "t FW/month → S2", col: C.green },
+              { label: "EFB Monthly (FW)", value: efbMonthWet.toLocaleString(), unit: "t/month", col: C.accent },
+            { label: "EFB Monthly (DM)", value: efbMonthDM.toLocaleString(), unit: "t/month", col: C.accent },
+            { label: "OPDC Required (DM)", value: opdcMonthDM.toLocaleString(), unit: "t/month", col: C.gold },
+            { label: "Blended Substrate (FW)", value: blendWet.toLocaleString(), unit: "t/month → S2", col: C.green },
           ].map((k, i) => (
             <div key={i} style={{ ...s.card, textAlign: "center", padding: 12 }}>
               <div style={{ color: "#b8c7d6", fontSize: 13, fontWeight: 700, letterSpacing: 0.5, marginBottom: 4 }}>{k.label}</div>
@@ -963,12 +963,12 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           <div>
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section B: EFB Pre-Processing</div>
-              <CalcRow label="EFB Nameplate Throughput" value={efbTPH} unit="TPH wet" />
-              <CalcRow label="EFB Daily" value={efbTPD} unit="t FW/day" />
-              <CalcRow label="EFB DM at mill" value={(efbDMFrac * 100).toFixed(1)} unit="%" />
-              <CalcRow label="EFB DM per day" value={efbDMpd} unit="t DM/day" />
-              <CalcRow label="EFB Monthly" value={efbMonthWet.toLocaleString()} unit="t FW/month" />
-              <CalcRow label="EFB Monthly DM" value={efbMonthDM.toLocaleString()} unit="t DM/month" />
+              <CalcRow label="EFB Nameplate Throughput (wet)" value={efbTPH} unit="TPH" />
+              <CalcRow label="EFB Daily (FW)" value={efbTPD} unit="t/day" />
+              <CalcRow label="EFB DM Fraction at Mill" value={(efbDMFrac * 100).toFixed(1)} unit="%" />
+              <CalcRow label="EFB Daily (DM)" value={efbDMpd} unit="t/day" />
+              <CalcRow label="EFB Monthly (FW)" value={efbMonthWet.toLocaleString()} unit="t/month" />
+              <CalcRow label="EFB Monthly (DM)" value={efbMonthDM.toLocaleString()} unit="t/month" />
             </div>
           </div>
 
@@ -976,11 +976,11 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           <div>
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section C: OPDC Pre-Processing</div>
-              <CalcRow label="Natural OPDC wet 15.2%" value={opdcNatTPD} unit="t/day" />
-              <CalcRow label="Natural OPDC DM" value={opdcNatDM} unit="t DM/day" />
-              <CalcRow label="OPDC DM Required" value={opdcDMreq} unit="t DM/day" color={C.gold} />
-              <CalcRow label="OPDC Shortfall" value={opdcShortfall > 0 ? opdcShortfall : "0"} unit="t DM/day" color={opdcShortfall > 0 ? C.danger : C.green} />
-              <CalcRow label="OPDC Monthly DM" value={opdcMonthDM.toLocaleString()} unit="t DM/month" />
+              <CalcRow label="Natural OPDC (wet, 15.2%)" value={opdcNatTPD} unit="t/day" />
+              <CalcRow label="Natural OPDC (DM)" value={opdcNatDM} unit="t/day" />
+              <CalcRow label="OPDC Required (DM)" value={opdcDMreq} unit="t/day" color={C.gold} />
+              <CalcRow label="OPDC Shortfall (DM)" value={opdcShortfall > 0 ? opdcShortfall : "0"} unit="t/day" color={opdcShortfall > 0 ? C.danger : C.green} />
+              <CalcRow label="OPDC Monthly (DM)" value={opdcMonthDM.toLocaleString()} unit="t/month" />
 
               {/* OPDC Press Discharge MC — CLASS A GUARDRAIL */}
               <div style={{ marginTop: 12, padding: 10, background: "#0d1a2e", borderRadius: 6, border: `1px solid ${C.border}` }}>
@@ -1041,9 +1041,9 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           <div style={{ fontSize: 18, fontWeight: 700, color: C.green, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>S1 Output → S2 Connector</div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
             {[
-              { label: "Blended FW", value: blendWet.toLocaleString(), unit: "t/month", col: C.green },
-              { label: "Blended DM", value: blendDM.toLocaleString(), unit: "t DM/month", col: C.green },
-              { label: "Blend MC", value: blendMC, unit: "% wet-weight-corrected", col: C.accent },
+              { label: "Blended (FW)", value: blendWet.toLocaleString(), unit: "t/month", col: C.green },
+              { label: "Blended (DM)", value: blendDM.toLocaleString(), unit: "t/month", col: C.green },
+              { label: "Blend MC (wet-weight)", value: blendMC, unit: "%", col: C.accent },
             ].map((k, i) => (
               <div key={i} style={{ textAlign: "center" }}>
                 <div style={{ color: "#b8c7d6", fontSize: 14, fontWeight: 700, marginBottom: 3 }}>{k.label}</div>
