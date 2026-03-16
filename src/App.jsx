@@ -899,16 +899,14 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
     const screwPressTPH= +(opdcNatTPD * 1.1 / 24 / 0.65).toFixed(1);
     const conveyorTPH  = +(efbTPH * 1.2).toFixed(1);
 
-    const BOLD_ROWS = ["Monthly FFB", "EFB Monthly (wet)", "EFB Monthly DM", "OPDC Monthly DM (required)", "Blended Substrate"];
+    const BOLD_ROWS = ["Monthly FFB", "EFB Monthly", "EFB Monthly DM", "OPDC Monthly DM", "Blended Substrate"];
     const CalcRow = ({ label, value, unit, color }) => {
-      const isBold = BOLD_ROWS.some(b => label.includes(b.replace(" (required)", "")) || b.includes(label));
+      const isBold = BOLD_ROWS.some(b => label.includes(b) || b.includes(label));
       return (
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: `1px solid ${C.border}` }}>
-          <span style={{ color: isBold ? "#d0dce8" : C.textDim, fontSize: 13, fontWeight: isBold ? 700 : 600 }}>{label}</span>
-          <span style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-            <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: isBold ? 16 : 14, color: color || C.accent, textAlign: "right" }}>{value}</span>
-            <span style={{ color: C.textDim, fontSize: 13, fontWeight: 600, minWidth: 80, textAlign: "left" }}>{unit}</span>
-          </span>
+        <div style={{ display: "flex", alignItems: "center", padding: "5px 0", borderBottom: "0.5px solid " + C.border }}>
+          <span style={{ flex: 1, color: isBold ? "#d0dce8" : C.textDim, fontSize: 11, fontWeight: isBold ? 700 : 500, textAlign: "left" }}>{label}</span>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontWeight: isBold ? 700 : 600, fontSize: 13, color: color || "#5aeada", minWidth: 52, textAlign: "right" }}>{value}</span>
+          <span style={{ color: "#8899aa", fontSize: 11, fontWeight: 500, minWidth: 72, paddingLeft: 8, textAlign: "left" }}>{unit}</span>
         </div>
       );
     };
@@ -920,7 +918,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
         {/* KPI Row */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 16 }}>
           {[
-            { label: "EFB Monthly (wet)", value: efbMonthWet.toLocaleString(), unit: "t/month", col: C.accent },
+            { label: "EFB Monthly", value: efbMonthWet.toLocaleString(), unit: "t FW/month", col: C.accent },
             { label: "EFB DM Monthly", value: efbMonthDM.toLocaleString(), unit: "t DM/month", col: C.accent },
             { label: "OPDC DM Required", value: opdcMonthDM.toLocaleString(), unit: "t DM/month", col: C.gold },
             { label: "Blended Substrate", value: blendWet.toLocaleString(), unit: "t FW/month → S2", col: C.green },
@@ -945,9 +943,12 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                   { label: "Operating Hours", key: "hrsDay", unit: "hrs/day" },
                   { label: "Operating Days", key: "daysMonth", unit: "days/month" },
                 ].map(f => (
-                  <div key={f.key}>
-                    <label style={{ ...s.label, fontSize: 13 }}>{f.label} <span style={{ color: C.muted }}>({f.unit})</span></label>
-                    <input type="number" style={s.input} value={s1[f.key]} onChange={e => upS1(f.key, Number(e.target.value))} />
+                  <div key={f.key} style={{ display: "flex", alignItems: "center", padding: "5px 0", borderBottom: "0.5px solid " + C.border }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: 11, fontWeight: 500, color: C.text }}>{f.label}</div>
+                      <div style={{ fontSize: 9, color: "#8899aa" }}>{f.unit}</div>
+                    </div>
+                    <input type="number" style={{ ...s.input, width: 64, textAlign: "right", margin: 0 }} value={s1[f.key]} onChange={e => upS1(f.key, Number(e.target.value))} />
                   </div>
                 ))}
               </div>
@@ -959,11 +960,11 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
 
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section B: EFB Pre-Processing</div>
-              <CalcRow label="EFB Nameplate Throughput" value={efbTPH} unit="TPH (wet)" />
-              <CalcRow label="EFB Daily (wet)" value={efbTPD} unit="t/day" />
+              <CalcRow label="EFB Nameplate Throughput" value={efbTPH} unit="TPH wet" />
+              <CalcRow label="EFB Daily" value={efbTPD} unit="t FW/day" />
               <CalcRow label="EFB DM at mill" value={(efbDMFrac * 100).toFixed(1)} unit="%" />
               <CalcRow label="EFB DM per day" value={efbDMpd} unit="t DM/day" />
-              <CalcRow label="EFB Monthly (wet)" value={efbMonthWet.toLocaleString()} unit="t/month" />
+              <CalcRow label="EFB Monthly" value={efbMonthWet.toLocaleString()} unit="t FW/month" />
               <CalcRow label="EFB Monthly DM" value={efbMonthDM.toLocaleString()} unit="t DM/month" />
             </div>
           </div>
@@ -972,16 +973,21 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           <div>
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section C: OPDC Pre-Processing</div>
-              <CalcRow label="Natural OPDC (wet, 15.2%)" value={opdcNatTPD} unit="t/day" />
+              <CalcRow label="Natural OPDC wet 15.2%" value={opdcNatTPD} unit="t/day" />
               <CalcRow label="Natural OPDC DM" value={opdcNatDM} unit="t DM/day" />
-              <CalcRow label="OPDC DM Required (blend)" value={opdcDMreq} unit="t DM/day" color={C.gold} />
+              <CalcRow label="OPDC DM Required" value={opdcDMreq} unit="t DM/day" color={C.gold} />
               <CalcRow label="OPDC Shortfall" value={opdcShortfall > 0 ? opdcShortfall : "0"} unit="t DM/day" color={opdcShortfall > 0 ? C.danger : C.green} />
-              <CalcRow label="OPDC Monthly DM (required)" value={opdcMonthDM.toLocaleString()} unit="t DM/month" />
+              <CalcRow label="OPDC Monthly DM" value={opdcMonthDM.toLocaleString()} unit="t DM/month" />
 
               {/* OPDC Press Discharge MC — CLASS A GUARDRAIL */}
               <div style={{ marginTop: 12, padding: 10, background: "#0d1a2e", borderRadius: 6, border: `1px solid ${C.border}` }}>
-                <label style={{ ...s.label, fontSize: 13 }}>OPDC Press Discharge MC <span style={{ color: C.muted }}>(%)</span></label>
-                <input type="number" style={s.input} value={rawPressMC} onChange={e => upS1("opdcPressMC", Number(e.target.value))} />
+                <div style={{ display: "flex", alignItems: "center", padding: "5px 0", borderBottom: "0.5px solid " + C.border }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 11, fontWeight: 500, color: C.text }}>OPDC Press Discharge MC</div>
+                    <div style={{ fontSize: 9, color: "#8899aa" }}>%</div>
+                  </div>
+                  <input type="number" style={{ ...s.input, width: 64, textAlign: "right", margin: 0 }} value={rawPressMC} onChange={e => upS1("opdcPressMC", Number(e.target.value))} />
+                </div>
                 <div style={{ marginTop: 6 }}>
                   <CalcRow label="Clamped Press MC (applied)" value={clampedPressMC} unit="%" color={pressMCFloored ? C.warn : C.green} />
                 </div>
@@ -1029,9 +1035,9 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           <div style={{ fontSize: 18, fontWeight: 700, color: C.green, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>S1 Output → S2 Connector</div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
             {[
-              { label: "Blended FW (EFB+OPDC)", value: blendWet.toLocaleString(), unit: "t/month", col: C.green },
+              { label: "Blended FW", value: blendWet.toLocaleString(), unit: "t/month", col: C.green },
               { label: "Blended DM", value: blendDM.toLocaleString(), unit: "t DM/month", col: C.green },
-              { label: "Blend MC", value: blendMC, unit: "% (wet-weight-corrected)", col: C.accent },
+              { label: "Blend MC", value: blendMC, unit: "% wet-weight-corrected", col: C.accent },
             ].map((k, i) => (
               <div key={i} style={{ textAlign: "center" }}>
                 <div style={{ color: "#b8c7d6", fontSize: 14, fontWeight: 700, marginBottom: 3 }}>{k.label}</div>
