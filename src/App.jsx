@@ -1041,9 +1041,9 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           <div style={{ fontSize: 18, fontWeight: 700, color: C.green, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>S1 Output → S2 Connector</div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
             {[
-              { label: "Blended FW", value: blendWet.toLocaleString(), unit: "t/month", col: C.green },
-              { label: "Blended DM", value: blendDM.toLocaleString(), unit: "t DM/month", col: C.green },
-              { label: "Blend MC", value: blendMC, unit: "% wet-weight-corrected", col: C.accent },
+              { label: "Blended (FW)", value: blendWet.toLocaleString(), unit: "t/month", col: C.green },
+              { label: "Blended (DM)", value: blendDM.toLocaleString(), unit: "t/month", col: C.green },
+              { label: "Blend MC (wet-weight)", value: blendMC, unit: "%", col: C.accent },
             ].map((k, i) => (
               <div key={i} style={{ textAlign: "center" }}>
                 <div style={{ color: "#b8c7d6", fontSize: 14, fontWeight: 700, marginBottom: 3 }}>{k.label}</div>
