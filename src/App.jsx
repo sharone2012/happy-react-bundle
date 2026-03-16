@@ -933,7 +933,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
           {/* COL 1: Mill Parameters */}
-          <div style={{ maxWidth: 280 }}>
+          <div style={{ maxWidth: 300 }}>
             <div style={s.card}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.accent, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>Section A: Mill Parameters</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
@@ -984,21 +984,11 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
                   { label: "Effective FFB", value: effFFB, unit: "TPH", color: C.green },
                   { label: "Monthly FFB", value: (effFFB * s1.hrsDay * s1.daysMonth).toLocaleString(), unit: "t/month", color: C.green },
                 ].map((r, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", padding: "5px 0", borderBottom: "0.5px solid " + C.border }}>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 11, fontWeight: r.label.includes("Monthly") ? 700 : 500, color: r.label.includes("Monthly") ? "#d0dce8" : C.textDim }}>{r.label}</div>
-                    </div>
-                    <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "flex-end", minWidth: 96, padding: "4px 8px" }}>
-                      <div style={{ width: 36, textAlign: "right", fontFamily: "'DM Mono', monospace", fontWeight: r.label.includes("Monthly") ? 700 : 600, fontSize: 13, color: r.color }}>{r.value}</div>
-                      <span style={{ width: 52, marginLeft: 6, textAlign: "left", fontSize: 9, lineHeight: 1.15, color: C.textDim }}>
-                        {r.unit.includes("/") ? (
-                          r.unit.split("/").map((part, j) => (
-                            <div key={j}>{j === 0 ? part.trim() : "/" + part.trim()}</div>
-                          ))
-                        ) : (
-                          r.unit
-                        )}
-                      </span>
+                  <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "5px 0", borderBottom: "0.5px solid " + C.border }}>
+                    <div style={{ fontSize: 11, fontWeight: r.label.includes("Monthly") ? 700 : 500, color: r.label.includes("Monthly") ? "#d0dce8" : C.textDim }}>{r.label}</div>
+                    <div style={{ display: "inline-flex", alignItems: "center", padding: "5px 10px" }}>
+                      <div style={{ width: 40, textAlign: "right", fontFamily: "'DM Mono', monospace", fontWeight: r.label.includes("Monthly") ? 700 : 600, fontSize: 13, color: r.color, whiteSpace: "nowrap" }}>{r.value}</div>
+                      <span style={{ width: 52, paddingLeft: 6, textAlign: "left", fontSize: 9, lineHeight: 1.15, color: C.textDim, whiteSpace: "nowrap" }}>{r.unit}</span>
                     </div>
                   </div>
                 ))}
