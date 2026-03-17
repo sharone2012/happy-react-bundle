@@ -875,10 +875,10 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
     // OPDC natural yield = 15.2% of EFB fresh weight
     const opdcNatTPD = +(efbTPD * 0.152).toFixed(1);
     const opdcNatDM  = +(opdcNatTPD * (100 - s1.opdcMC) / 100).toFixed(1);
-    const totalDMTarget = s1.efbPct > 0 ? efbDMpd / (s1.efbPct / 100) : 0;
-    const opdcDMreq  = +(totalDMTarget * (s1.opdcPct / 100)).toFixed(1);
-    const opdcShortfall = +(opdcDMreq - opdcNatDM).toFixed(1);
-    const opdcMonthDM = +(opdcDMreq * s1.daysMonth).toFixed(1);
+    // FIX-01/09: blend ratio is formula-driven from actual mill yields — not user-set sliders
+    const opdcDMreq     = opdcNatDM;  // OPDC supply = what the decanter actually produces
+    const opdcShortfall = 0;          // No shortfall — we use what's available
+    const opdcMonthDM   = +(opdcDMreq * s1.daysMonth).toFixed(1);
 
     // Blend MC (wet-weight-weighted)
     const efbDMfrac2    = (100 - s1.efbMC) / 100;
