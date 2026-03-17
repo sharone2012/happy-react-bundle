@@ -299,6 +299,9 @@ export default function CFIBioManager() {
     efbPct: 60,         // dry basis blend %
     opdcPct: 40,        // dry basis blend %
     opdcPressMC: 50,    // % target press discharge MC — CLASS A GUARDRAIL: min 40%
+    efbCapturePct: 100,
+    opdcCapturePct: 100,
+    pomeCapturePct: 100,
   });
   const upS1 = (k, v) => setS1(p => ({ ...p, [k]: v }));
 
@@ -900,6 +903,16 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
     const screwPressTPH= +(opdcNatTPD * 1.1 / 24 / 0.65).toFixed(1);
     const conveyorTPH  = +(efbTPH * 1.2).toFixed(1);
 
+    // OPDC + POME wet monthly for capture % calcs
+    const opdcMonthWet = +(opdcNatTPD * s1.daysMonth).toFixed(1);
+    const pomeTPD      = +(effFFB * s1.hrsDay * 0.67).toFixed(1);
+    const pomeMonthWet = +(pomeTPD * s1.daysMonth).toFixed(1);
+
+    // Capture % derived values
+    const efbCaptured  = +(efbMonthWet * s1.efbCapturePct / 100).toFixed(1);
+    const opdcCaptured = +(opdcMonthWet * s1.opdcCapturePct / 100).toFixed(1);
+    const pomeCaptured = +(pomeMonthWet * s1.pomeCapturePct / 100).toFixed(1);
+
     const BOLD_ROWS = ["Monthly FFB", "EFB Monthly", "EFB Monthly DM", "OPDC Monthly DM", "Blended Substrate"];
     const CalcRow = ({ label, value, unit, color }) => {
       const isBold = BOLD_ROWS.some(b => label.includes(b) || b.includes(label));
@@ -928,6 +941,48 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
               <div style={{ color: "#b8c7d6", fontSize: 13, fontWeight: 700, letterSpacing: 0.5, marginBottom: 4 }}>{k.label}</div>
               <div style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 18, color: k.col }}>{k.value}</div>
               <div style={{ color: "#9daab8", fontSize: 13, fontWeight: 600 }}>{k.unit}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* ── SECTION D — Residue capture % ─────────────────────── */}
+        <div style={{ borderLeft: "3px solid #00C9B1", background: "#0D1F33", borderRadius: 6, padding: "8px 12px", marginTop: 14, marginBottom: 10 }}>
+          <span style={{ color: "#00C9B1", fontWeight: 800, fontSize: 12 }}>D — Residue capture %</span>
+        </div>
+        <div style={{ background: "#070F1A", borderRadius: 8, padding: "14px 16px", marginBottom: 10 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+            {[
+              { label: "EFB capture", key: "efbCapturePct", base: efbMonthWet },
+              { label: "OPDC capture", key: "opdcCapturePct", base: opdcMonthWet },
+              { label: "POME capture", key: "pomeCapturePct", base: pomeMonthWet },
+            ].map(f => (
+              <div key={f.key}>
+                <div style={{ fontSize: 11, fontWeight: 500, color: "#8BA0B4", marginBottom: 4 }}>{f.label}</div>
+                <input
+                  type="number"
+                  min={0} max={100}
+                  value={s1[f.key]}
+                  onChange={e => {
+                    const v = Math.min(100, Math.max(0, Number(e.target.value)));
+                    upS1(f.key, v);
+                  }}
+                  style={{ width: "100%", background: "#142030", border: "1px solid #00C9B166", borderRadius: 6, color: "#fff", padding: "8px 12px", fontSize: 13, fontFamily: "'DM Mono', monospace", outline: "none", boxSizing: "border-box" }}
+                />
+                <div style={{ fontSize: 10, color: "#8BA0B4", marginTop: 4 }}>= {(+(f.base * s1[f.key] / 100).toFixed(1)).toLocaleString()} t FW/mo</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Section D results */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 16 }}>
+          {[
+            { label: "EFB captured", value: efbCaptured },
+            { label: "OPDC captured", value: opdcCaptured },
+            { label: "POME captured", value: pomeCaptured },
+          ].map((r, i) => (
+            <div key={i}>
+              <div style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 14, color: "#F5A623" }}>{r.value.toLocaleString()}</div>
+              <div style={{ fontSize: 10, color: "#8BA0B4" }}>{r.label} · t FW/mo</div>
             </div>
           ))}
         </div>
