@@ -2532,7 +2532,7 @@ export default function CFI() {
                   <div style={g4}>
                     <ResidueCard label="EFB"         active={s0.efbEnabled}        onClick={()=>upS0("efbEnabled",!s0.efbEnabled)}               sublabel="Empty Fruit Bunches"/>
                     <ResidueCard label="OPDC"        active={s0.opdcEnabled}       onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)}              sublabel="Decanter Cake"/>
-                    <ResidueCard label="POME SLUDGE" active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} sublabel={pomeActive?(pomePct>0.09?"Auto: "+pomePct+"% DM remainder":"Manual — ON"):"Click to activate"}/>
+                    <ResidueCard label="POME SLUDGE" active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} sublabel={pomeActive?(pctPOME>0.09?"Auto: "+pctPOME+"% DM remainder":"Manual — ON"):"Click to activate"}/>
                     <ResidueCard label="PKE" active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)} sublabel="Palm Kernel Expeller (Protein Booster)"/>
                   </div>
                   <Divider/>
@@ -2600,7 +2600,7 @@ export default function CFI() {
                           border:`1px solid ${pomeActive?"#4A9EDB50":"rgba(255,255,255,0.1)"}`,
                           borderRadius:10, padding:"2px 9px",
                           color:pomeActive?"#4A9EDB":C.grey, fontSize:10, fontWeight:800}}>
-                          {pomeActive ? pomePct+"% DM" : "0% — EFB+OPDC = 100%"}
+                          {pomeActive ? pctPOME+"% DM" : "0% — EFB+OPDC = 100%"}
                         </span>
                         {pomeActive && <span style={{background:pomeSupplyOK?"#3DCB7A20":"#E8404020",
                           border:`1px solid ${pomeSupplyOK?"#3DCB7A50":"#E8404050"}`,
@@ -2718,7 +2718,7 @@ export default function CFI() {
                       style={{accentColor:C.blue, width:16, height:16, cursor:"default"}}/>
                     <span style={{color:pomeActive?C.blue:C.grey, fontWeight:700, fontSize:13}}>
                       {pomeActive
-                        ? "POME Sludge ACTIVE — "+pomePct+"% DM auto-fill from EFB+OPDC remainder"
+                        ? "POME Sludge ACTIVE — "+pctPOME+"% DM auto-fill from EFB+OPDC remainder"
                         : "POME Sludge inactive — EFB+OPDC sum to 100%. Lower either fraction to activate."}
                     </span>
                   </div>
@@ -2749,7 +2749,7 @@ export default function CFI() {
                     <div style={{color:C.grey, fontSize:9, textTransform:"uppercase", letterSpacing:"0.09em", marginBottom:6}}>
                       Auto-fill DM fraction
                     </div>
-                    <div style={{color:"#4A9EDB", fontSize:18, fontWeight:900, fontFamily:"'DM Mono', monospace"}}>{pomePct}%</div>
+                    <div style={{color:"#4A9EDB", fontSize:18, fontWeight:900, fontFamily:"'DM Mono', monospace"}}>{pctPOME}%</div>
                     <div style={{color:C.grey, fontSize:9, marginTop:3}}>
                       = {pomeDMreq} t DM/day
                     </div>
