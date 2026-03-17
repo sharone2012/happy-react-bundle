@@ -235,6 +235,7 @@ export default function S0InputPage() {
   const efbDMpd       = +(efbTPD*((100-s0.efbMC)/100)).toFixed(1);
   const opdcNatTPD    = +(efbTPD*0.152).toFixed(2);
   const opdcNatDM     = +(opdcNatTPD*((100-s0.opdcMC)/100)).toFixed(2);
+  const opdcMonthWet  = +(opdcNatTPD*s0.daysMonth).toFixed(0);
   const blendTotal    = +s0.efbPct + +s0.opdcPct;
   const blendOK       = Math.abs(blendTotal-100) < 0.5;
   const opdcDMreq     = +(efbDMpd*(s0.opdcPct/s0.efbPct)).toFixed(1);
@@ -245,6 +246,7 @@ export default function S0InputPage() {
   const s1_blendWet   = +(s1_blendDM/((100-blendMC)/100)).toFixed(0);
 
   const pomeSludgeNatTPD  = +(effFFB*s0.hrsDay*0.0245).toFixed(1);
+  const pomeMonthWet      = +(pomeSludgeNatTPD*s0.daysMonth).toFixed(0);
   const pomeSludgeActMC   = s0.pomeSludgeDewatered ? 65 : s0.pomeSludgeMC;
   const pomeSludgeDMfrac  = (100-pomeSludgeActMC)/100;
   const pomeSludgeDMpd    = +(pomeSludgeNatTPD*pomeSludgeDMfrac).toFixed(2);
@@ -257,6 +259,10 @@ export default function S0InputPage() {
   const pomeN = +(pomeSludgeInclDM*17.6).toFixed(1);
   const pomeP = +(pomeSludgeInclDM*4.0).toFixed(1);
   const pomeK = +(pomeSludgeInclDM*7.0).toFixed(1);
+
+  const efbCapturedMonth  = +(efbMonthWet*(s0.efbCapturePct/100)).toFixed(0);
+  const opdcCapturedMonth = +(opdcMonthWet*(s0.opdcCapturePct/100)).toFixed(0);
+  const pomeCapturedMonth = +(pomeMonthWet*(s0.pomeCapturePct/100)).toFixed(0);
 
   const pkeDM   = s0.pkeEnabled?+(s0.pkeTPD*0.88).toFixed(1):0;
   const pkeN    = s0.pkeEnabled?+(pkeDM*29).toFixed(1):0;

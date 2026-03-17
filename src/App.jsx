@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import UnitInput from "./components/UnitInput";
+import S0InputPage from "./CFI_S0_Redesign";
 
 // ─── SEED DATA — full 43-organism registry (v2 Mar 2026) ──────────────────────
 const SEED_ORGANISMS = [
