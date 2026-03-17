@@ -1924,69 +1924,6 @@ export type Database = {
         }
         Relationships: []
       }
-      cfi_subsidiary_companies: {
-        Row: {
-          cfi_notes: string | null
-          created_at: string | null
-          data_confidence: string | null
-          district_kabupaten: string | null
-          estate_name_in_cfi_estates: string | null
-          id: string
-          is_estate_operator: boolean | null
-          ispo_status: string | null
-          latitude: number | null
-          longitude: number | null
-          mill_name: string | null
-          parent_company: string
-          planted_area_ha: number | null
-          province: string | null
-          rspo_status: string | null
-          source_url: string | null
-          subsidiary_name: string
-          subsidiary_role: string | null
-        }
-        Insert: {
-          cfi_notes?: string | null
-          created_at?: string | null
-          data_confidence?: string | null
-          district_kabupaten?: string | null
-          estate_name_in_cfi_estates?: string | null
-          id?: string
-          is_estate_operator?: boolean | null
-          ispo_status?: string | null
-          latitude?: number | null
-          longitude?: number | null
-          mill_name?: string | null
-          parent_company: string
-          planted_area_ha?: number | null
-          province?: string | null
-          rspo_status?: string | null
-          source_url?: string | null
-          subsidiary_name: string
-          subsidiary_role?: string | null
-        }
-        Update: {
-          cfi_notes?: string | null
-          created_at?: string | null
-          data_confidence?: string | null
-          district_kabupaten?: string | null
-          estate_name_in_cfi_estates?: string | null
-          id?: string
-          is_estate_operator?: boolean | null
-          ispo_status?: string | null
-          latitude?: number | null
-          longitude?: number | null
-          mill_name?: string | null
-          parent_company?: string
-          planted_area_ha?: number | null
-          province?: string | null
-          rspo_status?: string | null
-          source_url?: string | null
-          subsidiary_name?: string
-          subsidiary_role?: string | null
-        }
-        Relationships: []
-      }
       cfi_traders_refiners_jv: {
         Row: {
           certification: string | null
