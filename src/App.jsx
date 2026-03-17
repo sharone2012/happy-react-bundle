@@ -903,6 +903,16 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
     const screwPressTPH= +(opdcNatTPD * 1.1 / 24 / 0.65).toFixed(1);
     const conveyorTPH  = +(efbTPH * 1.2).toFixed(1);
 
+    // OPDC + POME wet monthly for capture % calcs
+    const opdcMonthWet = +(opdcNatTPD * s1.daysMonth).toFixed(1);
+    const pomeTPD      = +(effFFB * s1.hrsDay * 0.67).toFixed(1);
+    const pomeMonthWet = +(pomeTPD * s1.daysMonth).toFixed(1);
+
+    // Capture % derived values
+    const efbCaptured  = +(efbMonthWet * s1.efbCapturePct / 100).toFixed(1);
+    const opdcCaptured = +(opdcMonthWet * s1.opdcCapturePct / 100).toFixed(1);
+    const pomeCaptured = +(pomeMonthWet * s1.pomeCapturePct / 100).toFixed(1);
+
     const BOLD_ROWS = ["Monthly FFB", "EFB Monthly", "EFB Monthly DM", "OPDC Monthly DM", "Blended Substrate"];
     const CalcRow = ({ label, value, unit, color }) => {
       const isBold = BOLD_ROWS.some(b => label.includes(b) || b.includes(label));
