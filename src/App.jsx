@@ -1614,6 +1614,10 @@ export default function CFI() {
   const carbon_rev_annual = +(credits_annual * carbonPriceActive).toFixed(0);
   const carbon_rev_monthly= +(carbon_rev_annual / 12).toFixed(0);
 
+  const siteRegistered = !!(s0.plantName && s0.millName && s0.contactEmail);
+  const FREE_TABS = 3;
+  const FREE_SEARCHES = 5;
+
 
   // ── PKE DERIVED ──────────────────────────────────────────────────────────
   const pkeDMpd      = s0.pkeEnabled ? +(s0.pkeTPD * 0.88).toFixed(2) : 0;
