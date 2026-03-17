@@ -1391,6 +1391,8 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
 
 // ─── MAIN APP ─────────────────────────────────────────────────────────────────
 export default function CFI() {
+  console.log("[CFI] Component rendering...");
+  try {
   const [stage, setStage] = useState(0);
   const [tabsSeen, setTabsSeen]         = useState(new Set([0]));
   const [searchesUsed, setSearchesUsed] = useState(0);
