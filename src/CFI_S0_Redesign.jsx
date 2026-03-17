@@ -212,23 +212,6 @@ const AG_TIERS = [
 const FE_COLOR = {LOW:C.green, MODERATE:C.teal, HIGH:C.amber, CRITICAL:C.red, Untested:C.grey};
 
 // ═══════════════════════════════════════════════════════════════════════════
-const PLANT_OPTIONS = [
-  "Other — I will enter manually",
-  "Sinar Mas", "Wilmar", "Astra Agro", "Musim Mas", "Salim Group",
-  "Sampoerna Agro", "Bumitama", "Sawit Sumbermas", "Eagle High"
-];
-const MILL_OPTIONS = [
-  "I will enter manually", "PKS Bogor 1", "PKS Bogor 2",
-  "PKS Cikasungka", "PKS Rambutan", "PKS Adolina", "PKS Begerpang",
-  "PKS Gunung Bayu", "PKS Dolok Ilir", "PKS Sei Baruhur"
-];
-const PROVINCE_OPTIONS = [
-  "I will enter manually", "Aceh", "Sumatera Utara", "Sumatera Barat", "Riau",
-  "Kepulauan Riau", "Jambi", "Sumatera Selatan", "Bengkulu", "Lampung",
-  "Bangka Belitung", "Kalimantan Barat", "Kalimantan Tengah", "Kalimantan Selatan",
-  "Kalimantan Timur", "Kalimantan Utara", "Sulawesi Tengah", "Sulawesi Selatan",
-  "Papua Barat", "Papua", "Jawa Barat", "Jawa Tengah", "Jawa Timur", "Banten"
-];
 
 export default function S0InputPage() {
   const [s0,setS0] = useState({
