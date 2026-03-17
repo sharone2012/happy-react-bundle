@@ -374,17 +374,19 @@ export default function S0InputPage() {
               {/* Row 1: Plantation autocomplete + Estate */}
               <div style={g2}>
                 <div style={{position:"relative"}}>
-                  <input style={inputStyle} value={s0.plantName} onChange={e=>{up("plantName",e.target.value);up("_plantOpen",true);}}
+                  <input style={inputStyle} value={s0.plantName} onChange={e=>{up("plantName",e.target.value);up("millName","");up("_plantOpen",true);}}
                     onFocus={()=>up("_plantOpen",true)} onBlur={()=>setTimeout(()=>up("_plantOpen",false),150)}
-                    placeholder="Plantation / Company name" autoComplete="off"/>
-                  {s0._plantOpen && s0.plantName !== undefined && (()=>{
+                    placeholder={companies===null?"Loading companies…":"Plantation / Company name"} autoComplete="off"/>
+                  {s0._plantOpen && (()=>{
+                    const opts = companies || [];
+                    const all = ["I will enter manually", ...opts];
                     const q = (s0.plantName||"").toLowerCase();
-                    const filtered = PLANT_OPTIONS.filter(o=> !q || o.toLowerCase().includes(q));
+                    const filtered = all.filter(o=> !q || o.toLowerCase().includes(q));
                     return filtered.length > 0 ? (
-                      <div style={{position:"absolute",top:"100%",left:0,right:0,zIndex:50,background:C.navyDk,border:`1px solid ${C.teal}55`,borderRadius:6,maxHeight:180,overflowY:"auto",marginTop:2}}>
+                      <div style={{position:"absolute",top:"100%",left:0,right:0,zIndex:50,background:C.navyDk,border:`1px solid ${C.teal}55`,borderRadius:6,maxHeight:200,overflowY:"auto",marginTop:2}}>
                         {filtered.map(o=>(
-                          <div key={o} onMouseDown={()=>{up("plantName",o==="Other — I will enter manually"?"":o);up("_plantOpen",false);}}
-                            style={{padding:"8px 12px",fontSize:13,color:o==="Other — I will enter manually"?C.amber:C.white,cursor:"pointer",borderBottom:`1px solid rgba(255,255,255,0.04)`}}>
+                          <div key={o} onMouseDown={()=>{up("plantName",o==="I will enter manually"?"":o);up("_plantOpen",false);}}
+                            style={{padding:"8px 12px",fontSize:13,color:o==="I will enter manually"?C.amber:C.white,cursor:"pointer",borderBottom:`1px solid rgba(255,255,255,0.04)`}}>
                             {o}
                           </div>
                         ))}
@@ -397,9 +399,10 @@ export default function S0InputPage() {
               {/* Row 2: Mill dropdown + District */}
               <div style={{...g2, marginTop:10}}>
                 <div>
-                  <select style={{...inputStyle, appearance:"auto"}} value={s0.millName} onChange={e=>up("millName",e.target.value)}>
-                    <option value="">Mill name / Unit</option>
-                    {MILL_OPTIONS.map(o=><option key={o} value={o}>{o}</option>)}
+                  <select style={{...inputStyle, appearance:"auto", color: mills===null?C.grey:C.white}} value={s0.millName} onChange={e=>up("millName",e.target.value)}>
+                    <option value="">{mills===null?"Loading mills…":"Mill name / Unit"}</option>
+                    <option value="I will enter manually">I will enter manually</option>
+                    {(mills||[]).map(m=><option key={m.mill_name} value={m.mill_name}>{m.mill_name}</option>)}
                   </select>
                   {s0.millName==="I will enter manually" && (
                     <input style={{...inputStyle,marginTop:6}} value={s0.millManual} onChange={e=>up("millManual",e.target.value)} placeholder="Enter mill name manually"/>
@@ -410,9 +413,10 @@ export default function S0InputPage() {
               {/* Row 3: Province dropdown + Estate area */}
               <div style={{...g2, marginTop:10}}>
                 <div>
-                  <select style={{...inputStyle, appearance:"auto"}} value={s0.province} onChange={e=>up("province",e.target.value)}>
-                    <option value="">Province</option>
-                    {PROVINCE_OPTIONS.map(o=><option key={o} value={o}>{o}</option>)}
+                  <select style={{...inputStyle, appearance:"auto", color: provinces===null?C.grey:C.white}} value={s0.province} onChange={e=>up("province",e.target.value)}>
+                    <option value="">{provinces===null?"Loading provinces…":"Province"}</option>
+                    <option value="I will enter manually">I will enter manually</option>
+                    {(provinces||[]).map(o=><option key={o} value={o}>{o}</option>)}
                   </select>
                   {s0.province==="I will enter manually" && (
                     <input style={{...inputStyle,marginTop:6}} value={s0.provinceManual} onChange={e=>up("provinceManual",e.target.value)} placeholder="Enter province manually"/>
