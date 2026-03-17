@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 // ─── COLOUR TOKENS ──────────────────────────────────────────────────────────
 const C = {
@@ -211,23 +212,6 @@ const AG_TIERS = [
 const FE_COLOR = {LOW:C.green, MODERATE:C.teal, HIGH:C.amber, CRITICAL:C.red, Untested:C.grey};
 
 // ═══════════════════════════════════════════════════════════════════════════
-const PLANT_OPTIONS = [
-  "Other — I will enter manually",
-  "Sinar Mas", "Wilmar", "Astra Agro", "Musim Mas", "Salim Group",
-  "Sampoerna Agro", "Bumitama", "Sawit Sumbermas", "Eagle High"
-];
-const MILL_OPTIONS = [
-  "I will enter manually", "PKS Bogor 1", "PKS Bogor 2",
-  "PKS Cikasungka", "PKS Rambutan", "PKS Adolina", "PKS Begerpang",
-  "PKS Gunung Bayu", "PKS Dolok Ilir", "PKS Sei Baruhur"
-];
-const PROVINCE_OPTIONS = [
-  "I will enter manually", "Aceh", "Sumatera Utara", "Sumatera Barat", "Riau",
-  "Kepulauan Riau", "Jambi", "Sumatera Selatan", "Bengkulu", "Lampung",
-  "Bangka Belitung", "Kalimantan Barat", "Kalimantan Tengah", "Kalimantan Selatan",
-  "Kalimantan Timur", "Kalimantan Utara", "Sulawesi Tengah", "Sulawesi Selatan",
-  "Papua Barat", "Papua", "Jawa Barat", "Jawa Tengah", "Jawa Timur", "Banten"
-];
 
 export default function S0InputPage() {
   const [s0,setS0] = useState({
@@ -243,6 +227,39 @@ export default function S0InputPage() {
     carbonPriceScenario:"mid", carbonPriceCustom:25,
   });
   const up = (k,v) => setS0(p=>({...p,[k]:v}));
+
+  // ── SUPABASE LIVE DATA ──
+  const [companies, setCompanies] = useState(null);
+  const [mills, setMills] = useState(null);
+  const [provinces, setProvinces] = useState(null);
+
+  useEffect(() => {
+    supabase.from("cfi_mill_owners").select("company").order("company", { ascending: true })
+      .then(({ data, error }) => {
+        if (error || !data) { setCompanies([]); return; }
+        setCompanies([...new Set(data.map(r => r.company).filter(Boolean))]);
+      });
+    supabase.from("cfi_province_soil_lookup").select("province").order("province", { ascending: true })
+      .then(({ data, error }) => {
+        if (error || !data) { setProvinces([]); return; }
+        setProvinces([...new Set(data.map(r => r.province).filter(Boolean))]);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!s0.plantName || s0.plantName === "I will enter manually") { setMills([]); return; }
+    setMills(null);
+    supabase.from("cfi_mills_60tph").select("mill_name,province")
+      .eq("owner_company", s0.plantName).order("mill_name", { ascending: true })
+      .then(({ data, error }) => { setMills(error || !data ? [] : data); });
+  }, [s0.plantName]);
+
+  useEffect(() => {
+    if (s0.millName && s0.millName !== "I will enter manually" && mills) {
+      const match = mills.find(m => m.mill_name === s0.millName);
+      if (match?.province && !s0.province) up("province", match.province);
+    }
+  }, [s0.millName]);
 
   // ── DERIVED ─────────────────────────────────────────────────────────────
   const effFFB        = +(s0.ffbCapacity*(s0.utilisation/100)).toFixed(2);
@@ -357,17 +374,19 @@ export default function S0InputPage() {
               {/* Row 1: Plantation autocomplete + Estate */}
               <div style={g2}>
                 <div style={{position:"relative"}}>
-                  <input style={inputStyle} value={s0.plantName} onChange={e=>{up("plantName",e.target.value);up("_plantOpen",true);}}
+                  <input style={inputStyle} value={s0.plantName} onChange={e=>{up("plantName",e.target.value);up("millName","");up("_plantOpen",true);}}
                     onFocus={()=>up("_plantOpen",true)} onBlur={()=>setTimeout(()=>up("_plantOpen",false),150)}
-                    placeholder="Plantation / Company name" autoComplete="off"/>
-                  {s0._plantOpen && s0.plantName !== undefined && (()=>{
+                    placeholder={companies===null?"Loading companies…":"Plantation / Company name"} autoComplete="off"/>
+                  {s0._plantOpen && (()=>{
+                    const opts = companies || [];
+                    const all = ["I will enter manually", ...opts];
                     const q = (s0.plantName||"").toLowerCase();
-                    const filtered = PLANT_OPTIONS.filter(o=> !q || o.toLowerCase().includes(q));
+                    const filtered = all.filter(o=> !q || o.toLowerCase().includes(q));
                     return filtered.length > 0 ? (
-                      <div style={{position:"absolute",top:"100%",left:0,right:0,zIndex:50,background:C.navyDk,border:`1px solid ${C.teal}55`,borderRadius:6,maxHeight:180,overflowY:"auto",marginTop:2}}>
+                      <div style={{position:"absolute",top:"100%",left:0,right:0,zIndex:50,background:C.navyDk,border:`1px solid ${C.teal}55`,borderRadius:6,maxHeight:200,overflowY:"auto",marginTop:2}}>
                         {filtered.map(o=>(
-                          <div key={o} onMouseDown={()=>{up("plantName",o==="Other — I will enter manually"?"":o);up("_plantOpen",false);}}
-                            style={{padding:"8px 12px",fontSize:13,color:o==="Other — I will enter manually"?C.amber:C.white,cursor:"pointer",borderBottom:`1px solid rgba(255,255,255,0.04)`}}>
+                          <div key={o} onMouseDown={()=>{up("plantName",o==="I will enter manually"?"":o);up("_plantOpen",false);}}
+                            style={{padding:"8px 12px",fontSize:13,color:o==="I will enter manually"?C.amber:C.white,cursor:"pointer",borderBottom:`1px solid rgba(255,255,255,0.04)`}}>
                             {o}
                           </div>
                         ))}
@@ -380,9 +399,10 @@ export default function S0InputPage() {
               {/* Row 2: Mill dropdown + District */}
               <div style={{...g2, marginTop:10}}>
                 <div>
-                  <select style={{...inputStyle, appearance:"auto"}} value={s0.millName} onChange={e=>up("millName",e.target.value)}>
-                    <option value="">Mill name / Unit</option>
-                    {MILL_OPTIONS.map(o=><option key={o} value={o}>{o}</option>)}
+                  <select style={{...inputStyle, appearance:"auto", color: mills===null?C.grey:C.white}} value={s0.millName} onChange={e=>up("millName",e.target.value)}>
+                    <option value="">{mills===null?"Loading mills…":"Mill name / Unit"}</option>
+                    <option value="I will enter manually">I will enter manually</option>
+                    {(mills||[]).map(m=><option key={m.mill_name} value={m.mill_name}>{m.mill_name}</option>)}
                   </select>
                   {s0.millName==="I will enter manually" && (
                     <input style={{...inputStyle,marginTop:6}} value={s0.millManual} onChange={e=>up("millManual",e.target.value)} placeholder="Enter mill name manually"/>
@@ -393,9 +413,10 @@ export default function S0InputPage() {
               {/* Row 3: Province dropdown + Estate area */}
               <div style={{...g2, marginTop:10}}>
                 <div>
-                  <select style={{...inputStyle, appearance:"auto"}} value={s0.province} onChange={e=>up("province",e.target.value)}>
-                    <option value="">Province</option>
-                    {PROVINCE_OPTIONS.map(o=><option key={o} value={o}>{o}</option>)}
+                  <select style={{...inputStyle, appearance:"auto", color: provinces===null?C.grey:C.white}} value={s0.province} onChange={e=>up("province",e.target.value)}>
+                    <option value="">{provinces===null?"Loading provinces…":"Province"}</option>
+                    <option value="I will enter manually">I will enter manually</option>
+                    {(provinces||[]).map(o=><option key={o} value={o}>{o}</option>)}
                   </select>
                   {s0.province==="I will enter manually" && (
                     <input style={{...inputStyle,marginTop:6}} value={s0.provinceManual} onChange={e=>up("provinceManual",e.target.value)} placeholder="Enter province manually"/>
