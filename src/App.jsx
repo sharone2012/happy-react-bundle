@@ -812,8 +812,8 @@ const CFI_MATERIALS = CFI_MATERIALS_CORE.concat(CFI_MATERIALS_ADD);
 const MOCK_SOLUTIONS = [
   {
     solution_id:"CFI-BIO-001", step:"biology", soil_type:"Ultisol",
-    title:`Trichoderma + Bacillus Consortia on EFB/OPDC ${Math.round(pctEFB||89)}:${Math.round(pctOPDC||11)}`,  // FIX-05
-    substrate_context:{blend:`EFB ${Math.round(pctEFB||89)}:OPDC ${Math.round(pctOPDC||11)}`,DM_pct:38,MC_pct:65},
+    title:`Trichoderma + Bacillus Consortia on EFB/OPDC 89:11`,  // FIX-05
+    substrate_context:{blend:`EFB 89:OPDC 11`,DM_pct:38,MC_pct:65},
     biology_stack:{organisms:["Trichoderma asperellum ICBB-01","Bacillus subtilis ICBB-03"],dose:"2 kg/t"},
     process_conditions:{temp_C:45,moisture_pct:65,time_days:5,aeration:"forced"},
     product_metrics_before:{N_pct:1.20,P_pct:0.18,K_pct:0.80,CP_pct:8.14,CN_ratio:32},
