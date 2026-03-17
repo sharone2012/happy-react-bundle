@@ -935,6 +935,48 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           ))}
         </div>
 
+        {/* ── SECTION D — Residue capture % ─────────────────────── */}
+        <div style={{ borderLeft: "3px solid #00C9B1", background: "#0D1F33", borderRadius: 6, padding: "8px 12px", marginTop: 14, marginBottom: 10 }}>
+          <span style={{ color: "#00C9B1", fontWeight: 800, fontSize: 12 }}>D — Residue capture %</span>
+        </div>
+        <div style={{ background: "#070F1A", borderRadius: 8, padding: "14px 16px", marginBottom: 10 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+            {[
+              { label: "EFB capture", key: "efbCapturePct", base: efbMonthWet },
+              { label: "OPDC capture", key: "opdcCapturePct", base: opdcMonthWet },
+              { label: "POME capture", key: "pomeCapturePct", base: pomeMonthWet },
+            ].map(f => (
+              <div key={f.key}>
+                <div style={{ fontSize: 11, fontWeight: 500, color: "#8BA0B4", marginBottom: 4 }}>{f.label}</div>
+                <input
+                  type="number"
+                  min={0} max={100}
+                  value={s1[f.key]}
+                  onChange={e => {
+                    const v = Math.min(100, Math.max(0, Number(e.target.value)));
+                    upS1(f.key, v);
+                  }}
+                  style={{ width: "100%", background: "#142030", border: "1px solid #00C9B166", borderRadius: 6, color: "#fff", padding: "8px 12px", fontSize: 13, fontFamily: "'DM Mono', monospace", outline: "none", boxSizing: "border-box" }}
+                />
+                <div style={{ fontSize: 10, color: "#8BA0B4", marginTop: 4 }}>= {(+(f.base * s1[f.key] / 100).toFixed(1)).toLocaleString()} t FW/mo</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Section D results */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 16 }}>
+          {[
+            { label: "EFB captured", value: efbCaptured },
+            { label: "OPDC captured", value: opdcCaptured },
+            { label: "POME captured", value: pomeCaptured },
+          ].map((r, i) => (
+            <div key={i}>
+              <div style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 14, color: "#F5A623" }}>{r.value.toLocaleString()}</div>
+              <div style={{ fontSize: 10, color: "#8BA0B4" }}>{r.label} · t FW/mo</div>
+            </div>
+          ))}
+        </div>
+
         <div style={{ display: "grid", gridTemplateColumns: "1fr 3fr", gap: 12 }}>
           {/* COL 1: Mill Parameters */}
           <div>
