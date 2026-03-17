@@ -211,9 +211,27 @@ const AG_TIERS = [
 const FE_COLOR = {LOW:C.green, MODERATE:C.teal, HIGH:C.amber, CRITICAL:C.red, Untested:C.grey};
 
 // ═══════════════════════════════════════════════════════════════════════════
+const PLANT_OPTIONS = [
+  "Other — I will enter manually",
+  "Sinar Mas", "Wilmar", "Astra Agro", "Musim Mas", "Salim Group",
+  "Sampoerna Agro", "Bumitama", "Sawit Sumbermas", "Eagle High"
+];
+const MILL_OPTIONS = [
+  "I will enter manually", "PKS Bogor 1", "PKS Bogor 2",
+  "PKS Cikasungka", "PKS Rambutan", "PKS Adolina", "PKS Begerpang",
+  "PKS Gunung Bayu", "PKS Dolok Ilir", "PKS Sei Baruhur"
+];
+const PROVINCE_OPTIONS = [
+  "I will enter manually", "Aceh", "Sumatera Utara", "Sumatera Barat", "Riau",
+  "Kepulauan Riau", "Jambi", "Sumatera Selatan", "Bengkulu", "Lampung",
+  "Bangka Belitung", "Kalimantan Barat", "Kalimantan Tengah", "Kalimantan Selatan",
+  "Kalimantan Timur", "Kalimantan Utara", "Sulawesi Tengah", "Sulawesi Selatan",
+  "Papua Barat", "Papua", "Jawa Barat", "Jawa Tengah", "Jawa Timur", "Banten"
+];
+
 export default function S0InputPage() {
   const [s0,setS0] = useState({
-    plantName:"", estateName:"", millName:"", district:"", province:"", estateArea:"", gpsCoords:"", rspo:"none",
+    plantName:"", estateName:"", millName:"", millManual:"", district:"", province:"", provinceManual:"", estateArea:"", gpsCoords:"", rspo:"none",
     ffbCapacity:60, utilisation:85, hrsDay:24, daysMonth:30,
     efbPct:60, opdcPct:40, efbEnabled:true, opdcEnabled:true,
     efbMC:70, opdcMC:70,
@@ -336,19 +354,53 @@ export default function S0InputPage() {
                 A — Enter your site details below
               </div>
 
-              {/* Row 1 */}
+              {/* Row 1: Plantation autocomplete + Estate */}
               <div style={g2}>
-                <input style={inputStyle} value={s0.plantName} onChange={e=>up("plantName",e.target.value)} placeholder="Plantation / Company name"/>
+                <div style={{position:"relative"}}>
+                  <input style={inputStyle} value={s0.plantName} onChange={e=>{up("plantName",e.target.value);up("_plantOpen",true);}}
+                    onFocus={()=>up("_plantOpen",true)} onBlur={()=>setTimeout(()=>up("_plantOpen",false),150)}
+                    placeholder="Plantation / Company name" autoComplete="off"/>
+                  {s0._plantOpen && s0.plantName !== undefined && (()=>{
+                    const q = (s0.plantName||"").toLowerCase();
+                    const filtered = PLANT_OPTIONS.filter(o=> !q || o.toLowerCase().includes(q));
+                    return filtered.length > 0 ? (
+                      <div style={{position:"absolute",top:"100%",left:0,right:0,zIndex:50,background:C.navyDk,border:`1px solid ${C.teal}55`,borderRadius:6,maxHeight:180,overflowY:"auto",marginTop:2}}>
+                        {filtered.map(o=>(
+                          <div key={o} onMouseDown={()=>{up("plantName",o==="Other — I will enter manually"?"":o);up("_plantOpen",false);}}
+                            style={{padding:"8px 12px",fontSize:13,color:o==="Other — I will enter manually"?C.amber:C.white,cursor:"pointer",borderBottom:`1px solid rgba(255,255,255,0.04)`}}>
+                            {o}
+                          </div>
+                        ))}
+                      </div>
+                    ) : null;
+                  })()}
+                </div>
                 <input style={inputStyle} value={s0.estateName} onChange={e=>up("estateName",e.target.value)} placeholder="Estate name"/>
               </div>
-              {/* Row 2 */}
+              {/* Row 2: Mill dropdown + District */}
               <div style={{...g2, marginTop:10}}>
-                <input style={inputStyle} value={s0.millName} onChange={e=>up("millName",e.target.value)} placeholder="Mill name / Unit"/>
+                <div>
+                  <select style={{...inputStyle, appearance:"auto"}} value={s0.millName} onChange={e=>up("millName",e.target.value)}>
+                    <option value="">Mill name / Unit</option>
+                    {MILL_OPTIONS.map(o=><option key={o} value={o}>{o}</option>)}
+                  </select>
+                  {s0.millName==="I will enter manually" && (
+                    <input style={{...inputStyle,marginTop:6}} value={s0.millManual} onChange={e=>up("millManual",e.target.value)} placeholder="Enter mill name manually"/>
+                  )}
+                </div>
                 <input style={inputStyle} value={s0.district} onChange={e=>up("district",e.target.value)} placeholder="District / Kabupaten"/>
               </div>
-              {/* Row 3 */}
+              {/* Row 3: Province dropdown + Estate area */}
               <div style={{...g2, marginTop:10}}>
-                <input style={inputStyle} value={s0.province} onChange={e=>up("province",e.target.value)} placeholder="Province"/>
+                <div>
+                  <select style={{...inputStyle, appearance:"auto"}} value={s0.province} onChange={e=>up("province",e.target.value)}>
+                    <option value="">Province</option>
+                    {PROVINCE_OPTIONS.map(o=><option key={o} value={o}>{o}</option>)}
+                  </select>
+                  {s0.province==="I will enter manually" && (
+                    <input style={{...inputStyle,marginTop:6}} value={s0.provinceManual} onChange={e=>up("provinceManual",e.target.value)} placeholder="Enter province manually"/>
+                  )}
+                </div>
                 <input style={inputStyle} value={s0.estateArea} onChange={e=>up("estateArea",e.target.value)} placeholder="Total estate area (ha)"/>
               </div>
               {/* Row 4 — GPS half width */}
@@ -358,32 +410,6 @@ export default function S0InputPage() {
                   <div style={{color:C.grey, fontSize:11, fontStyle:"italic", marginTop:4}}>(Optional)</div>
                 </div>
                 <div/>
-              </div>
-
-              {/* Monthly temperature — auto-fetch placeholder */}
-              <div style={{marginTop:18}}>
-                <div style={{color:C.grey, fontSize:11, marginBottom:6}}>Monthly temperature — auto-fetched from location</div>
-                <div style={{display:"grid", gridTemplateColumns:"repeat(12,1fr)", gap:4}}>
-                  {["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map(m=>(
-                    <div key={m} style={{background:C.navyDk, border:`1px solid rgba(255,255,255,0.06)`, borderRadius:4, padding:"6px 0", textAlign:"center"}}>
-                      <div style={{color:C.grey, fontSize:8, marginBottom:2}}>{m}</div>
-                      <div style={{color:C.grey, fontSize:11}}>—°C</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Monthly rainfall — auto-fetch placeholder */}
-              <div style={{marginTop:12}}>
-                <div style={{color:C.grey, fontSize:11, marginBottom:6}}>Monthly rainfall — auto-fetched from location</div>
-                <div style={{display:"grid", gridTemplateColumns:"repeat(12,1fr)", gap:4}}>
-                  {["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map(m=>(
-                    <div key={m} style={{background:C.navyDk, border:`1px solid rgba(255,255,255,0.06)`, borderRadius:4, padding:"6px 0", textAlign:"center"}}>
-                      <div style={{color:C.grey, fontSize:8, marginBottom:2}}>{m}</div>
-                      <div style={{color:C.grey, fontSize:11}}>—mm</div>
-                    </div>
-                  ))}
-                </div>
               </div>
 
               {/* Status row */}
