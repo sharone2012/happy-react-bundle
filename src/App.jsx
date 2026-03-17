@@ -299,9 +299,6 @@ export default function CFIBioManager() {
     efbPct: 60,         // dry basis blend %
     opdcPct: 40,        // dry basis blend %
     opdcPressMC: 50,    // % target press discharge MC — CLASS A GUARDRAIL: min 40%
-    efbCapturePct: 100,
-    opdcCapturePct: 100,
-    pomeCapturePct: 100,
   });
   const upS1 = (k, v) => setS1(p => ({ ...p, [k]: v }));
 
