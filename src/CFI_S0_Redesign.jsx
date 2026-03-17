@@ -461,20 +461,43 @@ export default function S0InputPage() {
               </div>
               <Divider/>
 
-              {/* ── D: RESIDUE CAPTURE ── */}
-              <div style={{marginBottom:10}}>
-                <div style={{color:C.greyLt, fontWeight:800, fontSize:11, letterSpacing:"0.06em", marginBottom:4}}>
-                  D — CAPTURED % OF MILL PROCESSING CAPACITY USED
+              {/* ── D: Residue capture % ── */}
+              <div style={{borderLeft:`3px solid ${C.teal}`, background:"#0D1F33", borderRadius:6, padding:"8px 12px", marginTop:14, marginBottom:10}}>
+                <span style={{color:C.teal, fontWeight:800, fontSize:12}}>D — Residue capture %</span>
+              </div>
+              <div style={{background:C.navyDk, borderRadius:8, padding:"14px 16px", marginBottom:10}}>
+                <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12}}>
+                  {[
+                    {label:"EFB capture", key:"efbCapturePct", base:efbMonthWet, captured:efbCapturedMonth},
+                    {label:"OPDC capture", key:"opdcCapturePct", base:opdcMonthWet, captured:opdcCapturedMonth},
+                    {label:"POME capture", key:"pomeCapturePct", base:pomeMonthWet, captured:pomeCapturedMonth},
+                  ].map(f=>(
+                    <div key={f.key}>
+                      <div style={{color:C.grey, fontSize:11, fontWeight:700, marginBottom:4}}>{f.label} <span style={{fontWeight:500}}>%</span></div>
+                      <input
+                        type="number"
+                        min={0}
+                        max={100}
+                        value={s0[f.key]}
+                        onChange={e=>up(f.key, Math.min(100, Math.max(0, +e.target.value)))}
+                        style={{background:"#142030", border:`1px solid ${C.teal}66`, borderRadius:6, color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
+                      />
+                      <div style={{color:C.grey, fontSize:10, marginTop:4}}>= {f.captured.toLocaleString()} t FW/mo</div>
+                    </div>
+                  ))}
                 </div>
-                <div style={g3}>
-                  <BluField label="EFB %" value={s0.efbCapturePct}
-                    onChange={v=>up("efbCapturePct",Math.min(100,Math.max(0,+v)))}
-                    note={"= "+(+(efbMonthWet*(s0.efbCapturePct/100)).toFixed(0)).toLocaleString()+" t FW/mo"}/>
-                  <BluField label="OPDC %" value={s0.opdcCapturePct}
-                    onChange={v=>up("opdcCapturePct",Math.min(100,Math.max(0,+v)))}/>
-                  <BluField label="POME %" value={s0.pomeCapturePct}
-                    onChange={v=>up("pomeCapturePct",Math.min(100,Math.max(0,+v)))}/>
-                </div>
+              </div>
+              <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12, marginBottom:10}}>
+                {[
+                  {label:"EFB captured", value:efbCapturedMonth},
+                  {label:"OPDC captured", value:opdcCapturedMonth},
+                  {label:"POME captured", value:pomeCapturedMonth},
+                ].map(r=>(
+                  <div key={r.label}>
+                    <div style={{color:C.amber, fontWeight:700, fontSize:14}}>{r.value.toLocaleString()}</div>
+                    <div style={{color:C.grey, fontSize:10}}>{r.label} · t FW/mo</div>
+                  </div>
+                ))}
               </div>
 
               {/* ── E: CARBON CREDITS PREVIEW ── */}
