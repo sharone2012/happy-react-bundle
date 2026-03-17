@@ -213,7 +213,7 @@ const FE_COLOR = {LOW:C.green, MODERATE:C.teal, HIGH:C.amber, CRITICAL:C.red, Un
 // ═══════════════════════════════════════════════════════════════════════════
 export default function S0InputPage() {
   const [s0,setS0] = useState({
-    plantName:"", millName:"", district:"", province:"", contact:"", rspo:"none",
+    plantName:"", estateName:"", millName:"", district:"", province:"", estateArea:"", gpsCoords:"", rspo:"none",
     ffbCapacity:60, utilisation:85, hrsDay:24, daysMonth:30,
     efbPct:60, opdcPct:40, efbEnabled:true, opdcEnabled:true,
     efbMC:70, opdcMC:70,
