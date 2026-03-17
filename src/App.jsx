@@ -883,7 +883,11 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
     // Blend MC (wet-weight-weighted)
     const efbDMfrac2    = (100 - s1.efbMC) / 100;
     const opdcDMfrac2   = (100 - s1.opdcMC) / 100;
-    const blendWetPerDM = (s1.efbPct / 100) / efbDMfrac2 + (s1.opdcPct / 100) / opdcDMfrac2;
+    // FIX-10: wet-per-DM weighted by actual tonnage fractions, not phantom 60:40
+    const _totalBaseDM   = efbDMpd + opdcDMreq;
+    const _pctEFB_w      = _totalBaseDM > 0 ? efbDMpd / _totalBaseDM : 0.89;
+    const _pctOPDC_w     = _totalBaseDM > 0 ? opdcDMreq / _totalBaseDM : 0.11;
+    const blendWetPerDM  = _pctEFB_w / efbDMfrac2 + _pctOPDC_w / opdcDMfrac2;
     const blendMC       = +(100 * (1 - 1 / blendWetPerDM)).toFixed(1);
     const blendDMfrac   = (100 - blendMC) / 100;
     const blendDM       = +(efbMonthDM + opdcMonthDM).toFixed(1);
