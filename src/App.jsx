@@ -122,7 +122,7 @@ const S = {
   col:     { flex:1 },
   divider: { border:"none", borderTop:`1px solid ${C.sectionBorder}33`, margin:"12px 0" },
   tab:     (active) => ({
-    padding:"8px 18px", cursor:"pointer", borderRadius:"6px 6px 0 0",
+    padding:"8px 12px", cursor:"pointer", borderRadius:"6px 6px 0 0",
     background:active ? C.tealDk : C.inputSectionBg,
     color:active ? C.white : C.grey,
     fontSize:12, fontWeight:700, letterSpacing:"0.04em",
@@ -2306,7 +2306,7 @@ export default function CFI() {
       </div>
 
       {/* ── TAB BAR ── */}
-      <div style={{display:"flex", gap:2, padding:"0 24px", borderBottom:`2px solid ${C.teal}33`,
+      <div style={{display:"flex", flexWrap:"wrap", overflowX:"auto", gap:2, padding:"0 24px", borderBottom:`2px solid ${C.teal}33`,
                    background:C.infoSectionBg}}>
         {TABS.map((t,i)=>(
           <div key={i} style={S.tab(stage===i)} onClick={()=>handleTabClick(i)}>{t}</div>
