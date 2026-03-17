@@ -297,8 +297,7 @@ export default function CFIBioManager() {
     daysMonth: 30,
     efbMC: 62.5,        // % wet basis (canonical)
     opdcMC: 70,         // % wet basis (natural from decanter)
-    efbPct: 60,         // dry basis blend %
-    opdcPct: 40,        // dry basis blend %
+    // FIX-01: efbPct/opdcPct removed — blend ratio is formula-driven from natural yields
     opdcPressMC: 50,    // % target press discharge MC — CLASS A GUARDRAIL: min 40%
   });
   const upS1 = (k, v) => setS1(p => ({ ...p, [k]: v }));
@@ -876,15 +875,19 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
     // OPDC natural yield = 15.2% of EFB fresh weight
     const opdcNatTPD = +(efbTPD * 0.152).toFixed(1);
     const opdcNatDM  = +(opdcNatTPD * (100 - s1.opdcMC) / 100).toFixed(1);
-    const totalDMTarget = s1.efbPct > 0 ? efbDMpd / (s1.efbPct / 100) : 0;
-    const opdcDMreq  = +(totalDMTarget * (s1.opdcPct / 100)).toFixed(1);
-    const opdcShortfall = +(opdcDMreq - opdcNatDM).toFixed(1);
-    const opdcMonthDM = +(opdcDMreq * s1.daysMonth).toFixed(1);
+    // FIX-01/09: blend ratio is formula-driven from actual mill yields — not user-set sliders
+    const opdcDMreq     = opdcNatDM;  // OPDC supply = what the decanter actually produces
+    const opdcShortfall = 0;          // No shortfall — we use what's available
+    const opdcMonthDM   = +(opdcDMreq * s1.daysMonth).toFixed(1);
 
     // Blend MC (wet-weight-weighted)
     const efbDMfrac2    = (100 - s1.efbMC) / 100;
     const opdcDMfrac2   = (100 - s1.opdcMC) / 100;
-    const blendWetPerDM = (s1.efbPct / 100) / efbDMfrac2 + (s1.opdcPct / 100) / opdcDMfrac2;
+    // FIX-10: wet-per-DM weighted by actual tonnage fractions, not phantom 60:40
+    const _totalBaseDM   = efbDMpd + opdcDMreq;
+    const _pctEFB_w      = _totalBaseDM > 0 ? efbDMpd / _totalBaseDM : 0.89;
+    const _pctOPDC_w     = _totalBaseDM > 0 ? opdcDMreq / _totalBaseDM : 0.11;
+    const blendWetPerDM  = _pctEFB_w / efbDMfrac2 + _pctOPDC_w / opdcDMfrac2;
     const blendMC       = +(100 * (1 - 1 / blendWetPerDM)).toFixed(1);
     const blendDMfrac   = (100 - blendMC) / 100;
     const blendDM       = +(efbMonthDM + opdcMonthDM).toFixed(1);
