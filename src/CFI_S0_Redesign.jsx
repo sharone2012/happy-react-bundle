@@ -290,6 +290,8 @@ export default function S0InputPage() {
   const g2 = {display:"grid", gridTemplateColumns:"1fr 1fr", gap:12};
   const g3 = {display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12};
   const g4 = {display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:12};
+  const inputStyle = {background:"#1A3A5C", border:"1px solid #1E6B8C", borderRadius:6,
+    color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"};
 
   return (
     <div style={{background:C.navy, minHeight:"100vh", fontFamily:"'Inter','Segoe UI',system-ui,sans-serif", color:C.white}}>
