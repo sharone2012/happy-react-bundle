@@ -26,6 +26,7 @@ export type Database = {
           guardrail_flag: string | null
           guardrail_note: string | null
           id: number
+          industry_id: number | null
           last_updated: string | null
           lignin_degradation: boolean | null
           lock_class: string | null
@@ -52,6 +53,7 @@ export type Database = {
           guardrail_flag?: string | null
           guardrail_note?: string | null
           id?: number
+          industry_id?: number | null
           last_updated?: string | null
           lignin_degradation?: boolean | null
           lock_class?: string | null
@@ -78,6 +80,7 @@ export type Database = {
           guardrail_flag?: string | null
           guardrail_note?: string | null
           id?: number
+          industry_id?: number | null
           last_updated?: string | null
           lignin_degradation?: boolean | null
           lock_class?: string | null
@@ -93,7 +96,15 @@ export type Database = {
           strain_code?: string | null
           supplier_idn?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "biological_library_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
+        ]
       }
       canonical_lab_data: {
         Row: {
@@ -102,6 +113,7 @@ export type Database = {
           created_by: string | null
           guardrail_note: string | null
           id: number
+          industry_id: number | null
           is_ai_generated: boolean | null
           is_approved: boolean | null
           lock_class: string | null
@@ -120,6 +132,7 @@ export type Database = {
           created_by?: string | null
           guardrail_note?: string | null
           id?: number
+          industry_id?: number | null
           is_ai_generated?: boolean | null
           is_approved?: boolean | null
           lock_class?: string | null
@@ -138,6 +151,7 @@ export type Database = {
           created_by?: string | null
           guardrail_note?: string | null
           id?: number
+          industry_id?: number | null
           is_ai_generated?: boolean | null
           is_approved?: boolean | null
           lock_class?: string | null
@@ -150,7 +164,15 @@ export type Database = {
           verified_by?: string | null
           verified_date?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "canonical_lab_data_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
+        ]
       }
       carbon_credits: {
         Row: {
@@ -254,6 +276,125 @@ export type Database = {
           stream?: string | null
           verification_body?: string | null
           verification_date?: string | null
+        }
+        Relationships: []
+      }
+      cfi_feedstreams: {
+        Row: {
+          always_active: boolean | null
+          conversion_basis: string | null
+          conversion_factor: number | null
+          created_at: string | null
+          feedstream_id: number
+          industry_id: number
+          is_liquid: boolean | null
+          is_placeholder: boolean | null
+          is_seasonal: boolean | null
+          mc_default: number | null
+          mc_floor: number | null
+          sort_order: number | null
+          stream_abbr: string
+          stream_code: string
+          stream_description: string | null
+          stream_label: string
+          zero_cost: boolean | null
+        }
+        Insert: {
+          always_active?: boolean | null
+          conversion_basis?: string | null
+          conversion_factor?: number | null
+          created_at?: string | null
+          feedstream_id?: number
+          industry_id: number
+          is_liquid?: boolean | null
+          is_placeholder?: boolean | null
+          is_seasonal?: boolean | null
+          mc_default?: number | null
+          mc_floor?: number | null
+          sort_order?: number | null
+          stream_abbr: string
+          stream_code: string
+          stream_description?: string | null
+          stream_label: string
+          zero_cost?: boolean | null
+        }
+        Update: {
+          always_active?: boolean | null
+          conversion_basis?: string | null
+          conversion_factor?: number | null
+          created_at?: string | null
+          feedstream_id?: number
+          industry_id?: number
+          is_liquid?: boolean | null
+          is_placeholder?: boolean | null
+          is_seasonal?: boolean | null
+          mc_default?: number | null
+          mc_floor?: number | null
+          sort_order?: number | null
+          stream_abbr?: string
+          stream_code?: string
+          stream_description?: string | null
+          stream_label?: string
+          zero_cost?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_feedstreams_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
+        ]
+      }
+      cfi_industries: {
+        Row: {
+          agent_data_seeded: boolean | null
+          created_at: string | null
+          crop_name: string
+          estate_label: string
+          industry_id: number
+          industry_name: string
+          is_live: boolean | null
+          notes: string | null
+          operator_label: string
+          primary_country: string | null
+          processing_label: string
+          processing_unit: string
+          regulatory_body: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          agent_data_seeded?: boolean | null
+          created_at?: string | null
+          crop_name: string
+          estate_label: string
+          industry_id?: number
+          industry_name: string
+          is_live?: boolean | null
+          notes?: string | null
+          operator_label: string
+          primary_country?: string | null
+          processing_label: string
+          processing_unit: string
+          regulatory_body?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          agent_data_seeded?: boolean | null
+          created_at?: string | null
+          crop_name?: string
+          estate_label?: string
+          industry_id?: number
+          industry_name?: string
+          is_live?: boolean | null
+          notes?: string | null
+          operator_label?: string
+          primary_country?: string | null
+          processing_label?: string
+          processing_unit?: string
+          regulatory_body?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -1174,6 +1315,7 @@ export type Database = {
           fb_ratio_target_high: number | null
           fb_ratio_target_low: number | null
           id: number
+          industry_id: number | null
           is_active: boolean | null
           is_peat: boolean | null
           k_leach_fract_baseline: number
@@ -1243,6 +1385,7 @@ export type Database = {
           fb_ratio_target_high?: number | null
           fb_ratio_target_low?: number | null
           id?: number
+          industry_id?: number | null
           is_active?: boolean | null
           is_peat?: boolean | null
           k_leach_fract_baseline: number
@@ -1312,6 +1455,7 @@ export type Database = {
           fb_ratio_target_high?: number | null
           fb_ratio_target_low?: number | null
           id?: number
+          industry_id?: number | null
           is_active?: boolean | null
           is_peat?: boolean | null
           k_leach_fract_baseline?: number
@@ -1344,7 +1488,15 @@ export type Database = {
           texture_target?: string | null
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "cfi_soil_profiles_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
+        ]
       }
       cfi_solutions: {
         Row: {
@@ -1533,6 +1685,7 @@ export type Database = {
           guardrail_flag: string | null
           guardrail_note: string | null
           id: number
+          industry_id: number | null
           k_effect_pct: number | null
           last_updated: string | null
           lignin_reduction_pct: number | null
@@ -1556,6 +1709,7 @@ export type Database = {
           guardrail_flag?: string | null
           guardrail_note?: string | null
           id?: number
+          industry_id?: number | null
           k_effect_pct?: number | null
           last_updated?: string | null
           lignin_reduction_pct?: number | null
@@ -1579,6 +1733,7 @@ export type Database = {
           guardrail_flag?: string | null
           guardrail_note?: string | null
           id?: number
+          industry_id?: number | null
           k_effect_pct?: number | null
           last_updated?: string | null
           lignin_reduction_pct?: number | null
@@ -1590,7 +1745,15 @@ export type Database = {
           price_usd_per_t?: number | null
           supplier_idn?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "chemical_library_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
+        ]
       }
       dosage_analyser: {
         Row: {
@@ -1752,6 +1915,7 @@ export type Database = {
           derated_capacity: number | null
           guardrail_note: string | null
           id: number
+          industry_id: number | null
           installation_usd: number | null
           lifespan_years: number | null
           machine_name: string
@@ -1774,6 +1938,7 @@ export type Database = {
           derated_capacity?: number | null
           guardrail_note?: string | null
           id?: number
+          industry_id?: number | null
           installation_usd?: number | null
           lifespan_years?: number | null
           machine_name: string
@@ -1796,6 +1961,7 @@ export type Database = {
           derated_capacity?: number | null
           guardrail_note?: string | null
           id?: number
+          industry_id?: number | null
           installation_usd?: number | null
           lifespan_years?: number | null
           machine_name?: string
@@ -1808,6 +1974,13 @@ export type Database = {
           stage?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "equipment_catalogue_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
           {
             foreignKeyName: "equipment_catalogue_manufacturer_fkey"
             columns: ["manufacturer"]
@@ -2023,29 +2196,58 @@ export type Database = {
       mills: {
         Row: {
           capacity_tph: number
+          custom_stream_1_enabled: boolean | null
+          custom_stream_1_label: string | null
+          custom_stream_2_enabled: boolean | null
+          custom_stream_2_label: string | null
+          industry_id: number | null
           mill_id: string
           name: string
           operating_days_m: number
           operating_hours_d: number
+          session_count: number | null
+          session_date: string | null
           utilisation_pct: number
         }
         Insert: {
           capacity_tph: number
+          custom_stream_1_enabled?: boolean | null
+          custom_stream_1_label?: string | null
+          custom_stream_2_enabled?: boolean | null
+          custom_stream_2_label?: string | null
+          industry_id?: number | null
           mill_id?: string
           name: string
           operating_days_m: number
           operating_hours_d: number
+          session_count?: number | null
+          session_date?: string | null
           utilisation_pct: number
         }
         Update: {
           capacity_tph?: number
+          custom_stream_1_enabled?: boolean | null
+          custom_stream_1_label?: string | null
+          custom_stream_2_enabled?: boolean | null
+          custom_stream_2_label?: string | null
+          industry_id?: number | null
           mill_id?: string
           name?: string
           operating_days_m?: number
           operating_hours_d?: number
+          session_count?: number | null
+          session_date?: string | null
           utilisation_pct?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "mills_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
+        ]
       }
       project_pathways: {
         Row: {
