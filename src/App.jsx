@@ -1401,10 +1401,6 @@ export default function CFI() {
   const [visOrg,   setVisOrg]           = useState("");
   const [visSubmitted, setVisSubmitted] = useState(false);
 
-  const siteRegistered = !!(s0.plantName && s0.millName && s0.contactEmail);
-  const FREE_TABS = 3;
-  const FREE_SEARCHES = 5;
-
   const handleTabClick = (i) => {
     if (siteRegistered) { setStage(i); setTabsSeen(p => new Set([...p, i])); return; }
     const newSeen = new Set([...tabsSeen, i]);
