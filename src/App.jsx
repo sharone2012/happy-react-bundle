@@ -2306,7 +2306,7 @@ export default function CFI() {
       </div>
 
       {/* ── TAB BAR ── */}
-      <div style={{display:"flex", gap:2, padding:"0 24px", borderBottom:`2px solid ${C.teal}33`,
+      <div style={{display:"flex", flexWrap:"wrap", overflowX:"auto", gap:2, padding:"0 24px", borderBottom:`2px solid ${C.teal}33`,
                    background:C.infoSectionBg}}>
         {TABS.map((t,i)=>(
           <div key={i} style={S.tab(stage===i)} onClick={()=>handleTabClick(i)}>{t}</div>
