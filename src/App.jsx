@@ -2600,7 +2600,7 @@ export default function CFI() {
                           border:`1px solid ${pomeActive?"#4A9EDB50":"rgba(255,255,255,0.1)"}`,
                           borderRadius:10, padding:"2px 9px",
                           color:pomeActive?"#4A9EDB":C.grey, fontSize:10, fontWeight:800}}>
-                          {pomeActive ? pomePct+"% DM" : "0% — EFB+OPDC = 100%"}
+                          {pomeActive ? pctPOME+"% DM" : "0% — EFB+OPDC = 100%"}
                         </span>
                         {pomeActive && <span style={{background:pomeSupplyOK?"#3DCB7A20":"#E8404020",
                           border:`1px solid ${pomeSupplyOK?"#3DCB7A50":"#E8404050"}`,
