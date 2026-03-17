@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import UnitInput from "./components/UnitInput";
+import S0InputPage from "./CFI_S0_Redesign";
 
 // ─── SEED DATA — full 43-organism registry (v2 Mar 2026) ──────────────────────
 const SEED_ORGANISMS = [
@@ -1109,6 +1110,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
           { id: "research",    label: "AI Research" },
           { id: "add",         label: "Add New" },
           { id: "admin",       label: "Admin" },
+          { id: "s0",          label: "S0 Site Config" },
           { id: "s1",          label: "S1 Mechanical" },
           { id: "wb4",         label: "WB4 S3 Bio" },
           { id: "personas",    label: "Personas" },
@@ -1122,6 +1124,7 @@ DATA GAP RULE: If uncertain, state "DATA GAP" and give confidence tier.`}
       {tab === "research"    && renderResearch()}
       {tab === "add"         && renderAdd()}
       {tab === "admin"       && renderAdmin()}
+      {tab === "s0"          && <S0InputPage />}
       {tab === "s1"          && renderS1()}
       {tab === "wb4"         && renderWB4()}
       {tab === "personas"    && renderPersonas()}
