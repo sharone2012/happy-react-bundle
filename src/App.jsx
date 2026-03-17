@@ -2718,7 +2718,7 @@ export default function CFI() {
                       style={{accentColor:C.blue, width:16, height:16, cursor:"default"}}/>
                     <span style={{color:pomeActive?C.blue:C.grey, fontWeight:700, fontSize:13}}>
                       {pomeActive
-                        ? "POME Sludge ACTIVE — "+pomePct+"% DM auto-fill from EFB+OPDC remainder"
+                        ? "POME Sludge ACTIVE — "+pctPOME+"% DM auto-fill from EFB+OPDC remainder"
                         : "POME Sludge inactive — EFB+OPDC sum to 100%. Lower either fraction to activate."}
                     </span>
                   </div>
