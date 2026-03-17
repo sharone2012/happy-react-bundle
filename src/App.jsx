@@ -2532,7 +2532,7 @@ export default function CFI() {
                   <div style={g4}>
                     <ResidueCard label="EFB"         active={s0.efbEnabled}        onClick={()=>upS0("efbEnabled",!s0.efbEnabled)}               sublabel="Empty Fruit Bunches"/>
                     <ResidueCard label="OPDC"        active={s0.opdcEnabled}       onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)}              sublabel="Decanter Cake"/>
-                    <ResidueCard label="POME SLUDGE" active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} sublabel={pomeActive?(pomePct>0.09?"Auto: "+pomePct+"% DM remainder":"Manual — ON"):"Click to activate"}/>
+                    <ResidueCard label="POME SLUDGE" active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} sublabel={pomeActive?(pctPOME>0.09?"Auto: "+pctPOME+"% DM remainder":"Manual — ON"):"Click to activate"}/>
                     <ResidueCard label="PKE" active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)} sublabel="Palm Kernel Expeller (Protein Booster)"/>
                   </div>
                   <Divider/>
