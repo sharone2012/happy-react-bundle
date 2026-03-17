@@ -2749,7 +2749,7 @@ export default function CFI() {
                     <div style={{color:C.grey, fontSize:9, textTransform:"uppercase", letterSpacing:"0.09em", marginBottom:6}}>
                       Auto-fill DM fraction
                     </div>
-                    <div style={{color:"#4A9EDB", fontSize:18, fontWeight:900, fontFamily:"'DM Mono', monospace"}}>{pomePct}%</div>
+                    <div style={{color:"#4A9EDB", fontSize:18, fontWeight:900, fontFamily:"'DM Mono', monospace"}}>{pctPOME}%</div>
                     <div style={{color:C.grey, fontSize:9, marginTop:3}}>
                       = {pomeDMreq} t DM/day
                     </div>
