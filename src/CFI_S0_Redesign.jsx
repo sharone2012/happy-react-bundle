@@ -330,71 +330,66 @@ export default function S0InputPage() {
 
             {/* ── A: SITE IDENTITY ── */}
             <Card>
-              {/* Header row: section hdr + ID code box right-aligned */}
-              <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:14}}>
-                <div style={{background:"#0D1F33", borderLeft:`3px solid ${C.teal}`,
-                  borderRadius:8, padding:"11px 14px", display:"flex", alignItems:"center", gap:10, flex:1}}>
-                  <span style={{fontSize:17, lineHeight:1}}>🏭</span>
-                  <div style={{color:C.teal, fontWeight:800, fontSize:12, letterSpacing:"0.07em", textTransform:"uppercase"}}>
-                    A — ENTER YOUR DETAILS IN THE FIELDS BELOW
-                  </div>
-                </div>
-                <div style={{marginLeft:12, flexShrink:0}}>
-                  <div style={{color:C.grey, fontSize:9, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.09em", marginBottom:4, textAlign:"right"}}>ID Code</div>
-                  <input
-                    style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                      color:C.white, padding:"8px 12px", fontSize:13, width:90, outline:"none",
-                      boxSizing:"border-box", textAlign:"center"}}
-                    value={s0.idCode||""} onChange={e=>up("idCode",e.target.value)}
-                    placeholder="Number"/>
-                </div>
+              <div style={{color:C.teal, fontFamily:"'Syne',sans-serif", fontWeight:800, fontSize:18, marginBottom:14}}>
+                A — Enter your site details below
               </div>
+
               {/* Row 1 */}
               <div style={g2}>
-                <div>
-                  <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                    color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                    value={s0.plantName} onChange={e=>up("plantName",e.target.value)}
-                    placeholder="Plantation / Company Name"/>
-                </div>
-                <div>
-                  <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                    color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                    value={s0.millName} onChange={e=>up("millName",e.target.value)}
-                    placeholder="Mill Name / Unit"/>
-                </div>
+                <input style={inputStyle} value={s0.plantName} onChange={e=>up("plantName",e.target.value)} placeholder="Plantation / Company name"/>
+                <input style={inputStyle} value={s0.estateName} onChange={e=>up("estateName",e.target.value)} placeholder="Estate name"/>
               </div>
               {/* Row 2 */}
               <div style={{...g2, marginTop:10}}>
-                <div>
-                  <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                    color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                    value={s0.district} onChange={e=>up("district",e.target.value)}
-                    placeholder="District / Kabupaten"/>
-                </div>
-                <div>
-                  <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                    color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                    value={s0.province} onChange={e=>up("province",e.target.value)}
-                    placeholder="Province"/>
-                </div>
+                <input style={inputStyle} value={s0.millName} onChange={e=>up("millName",e.target.value)} placeholder="Mill name / Unit"/>
+                <input style={inputStyle} value={s0.district} onChange={e=>up("district",e.target.value)} placeholder="District / Kabupaten"/>
               </div>
-              {/* Row 3 — Name + Email replacing RSPO row */}
+              {/* Row 3 */}
+              <div style={{...g2, marginTop:10}}>
+                <input style={inputStyle} value={s0.province} onChange={e=>up("province",e.target.value)} placeholder="Province"/>
+                <input style={inputStyle} value={s0.estateArea} onChange={e=>up("estateArea",e.target.value)} placeholder="Total estate area (ha)"/>
+              </div>
+              {/* Row 4 — GPS half width */}
               <div style={{...g2, marginTop:10}}>
                 <div>
-                  <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                    color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                    value={s0.contactName||""} onChange={e=>up("contactName",e.target.value)}
-                    placeholder="First &amp; Last Name"/>
+                  <input style={inputStyle} value={s0.gpsCoords} onChange={e=>up("gpsCoords",e.target.value)} placeholder="GPS coordinates"/>
+                  <div style={{color:C.grey, fontSize:11, fontStyle:"italic", marginTop:4}}>(Optional)</div>
                 </div>
-                <div>
-                  <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                    color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                    value={s0.contactEmail||""} onChange={e=>up("contactEmail",e.target.value)}
-                    placeholder="Email &amp; Telephone"/>
+                <div/>
+              </div>
+
+              {/* Monthly temperature — auto-fetch placeholder */}
+              <div style={{marginTop:18}}>
+                <div style={{color:C.grey, fontSize:11, marginBottom:6}}>Monthly temperature — auto-fetched from location</div>
+                <div style={{display:"grid", gridTemplateColumns:"repeat(12,1fr)", gap:4}}>
+                  {["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map(m=>(
+                    <div key={m} style={{background:C.navyDk, border:`1px solid rgba(255,255,255,0.06)`, borderRadius:4, padding:"6px 0", textAlign:"center"}}>
+                      <div style={{color:C.grey, fontSize:8, marginBottom:2}}>{m}</div>
+                      <div style={{color:C.grey, fontSize:11}}>—°C</div>
+                    </div>
+                  ))}
                 </div>
               </div>
-              {/* RSPO hidden select kept for logic — no UI shown */}
+
+              {/* Monthly rainfall — auto-fetch placeholder */}
+              <div style={{marginTop:12}}>
+                <div style={{color:C.grey, fontSize:11, marginBottom:6}}>Monthly rainfall — auto-fetched from location</div>
+                <div style={{display:"grid", gridTemplateColumns:"repeat(12,1fr)", gap:4}}>
+                  {["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map(m=>(
+                    <div key={m} style={{background:C.navyDk, border:`1px solid rgba(255,255,255,0.06)`, borderRadius:4, padding:"6px 0", textAlign:"center"}}>
+                      <div style={{color:C.grey, fontSize:8, marginBottom:2}}>{m}</div>
+                      <div style={{color:C.grey, fontSize:11}}>—mm</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Status row */}
+              <div style={{marginTop:14, fontSize:12, fontWeight:700}}>
+                {siteOK
+                  ? <span style={{color:C.green}}>Site data complete</span>
+                  : <span style={{color:C.amber}}>Complete required fields to proceed</span>}
+              </div>
             </Card>
 
             {/* ── B: MILL CAPACITY ── */}
