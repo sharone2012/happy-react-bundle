@@ -1,10 +1,5 @@
 import { useState, useCallback } from "react";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-);
+import { supabase } from "@/integrations/supabase/client";
 
 // ─── DESIGN SYSTEM v3 ─────────────────────────────────────────────
 const ds = {

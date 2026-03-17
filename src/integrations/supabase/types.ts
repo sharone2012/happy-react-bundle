@@ -279,6 +279,68 @@ export type Database = {
         }
         Relationships: []
       }
+      cfi_estates: {
+        Row: {
+          area_ha: number | null
+          cfi_notes: string | null
+          created_at: string | null
+          data_confidence: string | null
+          district_kabupaten: string | null
+          estate_name: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          owner_company: string
+          owner_id: string | null
+          palm_age_range: string | null
+          province: string | null
+          rspo_certified: string | null
+          source_url: string | null
+        }
+        Insert: {
+          area_ha?: number | null
+          cfi_notes?: string | null
+          created_at?: string | null
+          data_confidence?: string | null
+          district_kabupaten?: string | null
+          estate_name: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          owner_company: string
+          owner_id?: string | null
+          palm_age_range?: string | null
+          province?: string | null
+          rspo_certified?: string | null
+          source_url?: string | null
+        }
+        Update: {
+          area_ha?: number | null
+          cfi_notes?: string | null
+          created_at?: string | null
+          data_confidence?: string | null
+          district_kabupaten?: string | null
+          estate_name?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          owner_company?: string
+          owner_id?: string | null
+          palm_age_range?: string | null
+          province?: string | null
+          rspo_certified?: string | null
+          source_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_estates_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_mill_owners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cfi_feedstreams: {
         Row: {
           always_active: boolean | null
@@ -592,6 +654,144 @@ export type Database = {
         }
         Relationships: []
       }
+      cfi_mill_registry: {
+        Row: {
+          alternative_name: string | null
+          cfi_notes: string | null
+          confidence: string | null
+          country: string | null
+          created_at: string | null
+          district: string | null
+          gfw_area_ha: number | null
+          gfw_date: string | null
+          gfw_fid: number | null
+          gfw_geostorage: string | null
+          group_name: string | null
+          id: number
+          is_cfi_prospect: boolean | null
+          is_indonesia: boolean | null
+          is_rspo_certified: boolean | null
+          iso: string | null
+          latitude: number | null
+          longitude: number | null
+          mill_name: string
+          parent_company: string | null
+          province: string | null
+          rspo_status: string | null
+          rspo_type: string | null
+          uml_id: string | null
+        }
+        Insert: {
+          alternative_name?: string | null
+          cfi_notes?: string | null
+          confidence?: string | null
+          country?: string | null
+          created_at?: string | null
+          district?: string | null
+          gfw_area_ha?: number | null
+          gfw_date?: string | null
+          gfw_fid?: number | null
+          gfw_geostorage?: string | null
+          group_name?: string | null
+          id?: number
+          is_cfi_prospect?: boolean | null
+          is_indonesia?: boolean | null
+          is_rspo_certified?: boolean | null
+          iso?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          mill_name: string
+          parent_company?: string | null
+          province?: string | null
+          rspo_status?: string | null
+          rspo_type?: string | null
+          uml_id?: string | null
+        }
+        Update: {
+          alternative_name?: string | null
+          cfi_notes?: string | null
+          confidence?: string | null
+          country?: string | null
+          created_at?: string | null
+          district?: string | null
+          gfw_area_ha?: number | null
+          gfw_date?: string | null
+          gfw_fid?: number | null
+          gfw_geostorage?: string | null
+          group_name?: string | null
+          id?: number
+          is_cfi_prospect?: boolean | null
+          is_indonesia?: boolean | null
+          is_rspo_certified?: boolean | null
+          iso?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          mill_name?: string
+          parent_company?: string | null
+          province?: string | null
+          rspo_status?: string | null
+          rspo_type?: string | null
+          uml_id?: string | null
+        }
+        Relationships: []
+      }
+      cfi_mill_soil_acidity: {
+        Row: {
+          acidity_class: number
+          created_at: string | null
+          id: number
+          lab_ph_measured: number | null
+          lookup_distance_km: number | null
+          mill_lat: number
+          mill_lon: number
+          mill_name: string
+          override_class: number | null
+          override_reason: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          acidity_class: number
+          created_at?: string | null
+          id?: number
+          lab_ph_measured?: number | null
+          lookup_distance_km?: number | null
+          mill_lat: number
+          mill_lon: number
+          mill_name: string
+          override_class?: number | null
+          override_reason?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          acidity_class?: number
+          created_at?: string | null
+          id?: number
+          lab_ph_measured?: number | null
+          lookup_distance_km?: number | null
+          mill_lat?: number
+          mill_lon?: number
+          mill_name?: string
+          override_class?: number | null
+          override_reason?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_mill_soil_acidity_acidity_class_fkey"
+            columns: ["acidity_class"]
+            isOneToOne: false
+            referencedRelation: "cfi_soil_acidity_classes"
+            referencedColumns: ["class_id"]
+          },
+          {
+            foreignKeyName: "cfi_mill_soil_acidity_override_class_fkey"
+            columns: ["override_class"]
+            isOneToOne: false
+            referencedRelation: "cfi_soil_acidity_classes"
+            referencedColumns: ["class_id"]
+          },
+        ]
+      }
       cfi_mills_60tph: {
         Row: {
           capacity_tph: number | null
@@ -696,6 +896,80 @@ export type Database = {
             columns: ["province_soil_id"]
             isOneToOne: false
             referencedRelation: "cfi_province_soil_lookup"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cfi_mills_all: {
+        Row: {
+          capacity_tph: number | null
+          cfi_notes: string | null
+          created_at: string | null
+          data_confidence: string | null
+          district_kabupaten: string | null
+          estate_name: string | null
+          has_kernel_crushing_plant: boolean | null
+          id: string
+          ispo_status: string | null
+          latitude: number | null
+          longitude: number | null
+          mill_name: string
+          nearest_city: string | null
+          owner_company: string
+          owner_id: string | null
+          province: string | null
+          rspo_status: string | null
+          source_url: string | null
+          year_commissioned: number | null
+        }
+        Insert: {
+          capacity_tph?: number | null
+          cfi_notes?: string | null
+          created_at?: string | null
+          data_confidence?: string | null
+          district_kabupaten?: string | null
+          estate_name?: string | null
+          has_kernel_crushing_plant?: boolean | null
+          id?: string
+          ispo_status?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          mill_name: string
+          nearest_city?: string | null
+          owner_company: string
+          owner_id?: string | null
+          province?: string | null
+          rspo_status?: string | null
+          source_url?: string | null
+          year_commissioned?: number | null
+        }
+        Update: {
+          capacity_tph?: number | null
+          cfi_notes?: string | null
+          created_at?: string | null
+          data_confidence?: string | null
+          district_kabupaten?: string | null
+          estate_name?: string | null
+          has_kernel_crushing_plant?: boolean | null
+          id?: string
+          ispo_status?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          mill_name?: string
+          nearest_city?: string | null
+          owner_company?: string
+          owner_id?: string | null
+          province?: string | null
+          rspo_status?: string | null
+          source_url?: string | null
+          year_commissioned?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_mills_all_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_mill_owners"
             referencedColumns: ["id"]
           },
         ]
@@ -1097,6 +1371,74 @@ export type Database = {
           vs_stage0_pct?: string | null
         }
         Relationships: []
+      }
+      cfi_soil_acidity_classes: {
+        Row: {
+          cfi_lime_flag: boolean
+          cfi_note: string | null
+          class_id: number
+          class_name: string
+          created_at: string | null
+          ph_max: number | null
+          ph_midpoint: number
+          ph_min: number | null
+          ph_range: string
+        }
+        Insert: {
+          cfi_lime_flag?: boolean
+          cfi_note?: string | null
+          class_id: number
+          class_name: string
+          created_at?: string | null
+          ph_max?: number | null
+          ph_midpoint: number
+          ph_min?: number | null
+          ph_range: string
+        }
+        Update: {
+          cfi_lime_flag?: boolean
+          cfi_note?: string | null
+          class_id?: number
+          class_name?: string
+          created_at?: string | null
+          ph_max?: number | null
+          ph_midpoint?: number
+          ph_min?: number | null
+          ph_range?: string
+        }
+        Relationships: []
+      }
+      cfi_soil_acidity_grid: {
+        Row: {
+          acidity_class: number
+          created_at: string | null
+          id: number
+          lat: number
+          lon: number
+        }
+        Insert: {
+          acidity_class: number
+          created_at?: string | null
+          id?: number
+          lat: number
+          lon: number
+        }
+        Update: {
+          acidity_class?: number
+          created_at?: string | null
+          id?: number
+          lat?: number
+          lon?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_soil_acidity_grid_acidity_class_fkey"
+            columns: ["acidity_class"]
+            isOneToOne: false
+            referencedRelation: "cfi_soil_acidity_classes"
+            referencedColumns: ["class_id"]
+          },
+        ]
       }
       cfi_soil_coefficients: {
         Row: {
@@ -3073,7 +3415,18 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      get_soil_acidity_class: {
+        Args: { p_lat: number; p_lon: number; p_max_distance_km?: number }
+        Returns: {
+          acidity_class: number
+          cfi_lime_flag: boolean
+          cfi_note: string
+          class_name: string
+          distance_km: number
+          ph_midpoint: number
+          ph_range: string
+        }[]
+      }
     }
     Enums: {
       agronomic_fate:
