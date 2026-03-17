@@ -297,8 +297,7 @@ export default function CFIBioManager() {
     daysMonth: 30,
     efbMC: 62.5,        // % wet basis (canonical)
     opdcMC: 70,         // % wet basis (natural from decanter)
-    efbPct: 60,         // dry basis blend %
-    opdcPct: 40,        // dry basis blend %
+    // FIX-01: efbPct/opdcPct removed — blend ratio is formula-driven from natural yields
     opdcPressMC: 50,    // % target press discharge MC — CLASS A GUARDRAIL: min 40%
   });
   const upS1 = (k, v) => setS1(p => ({ ...p, [k]: v }));
