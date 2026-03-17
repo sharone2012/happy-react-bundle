@@ -228,6 +228,39 @@ export default function S0InputPage() {
   });
   const up = (k,v) => setS0(p=>({...p,[k]:v}));
 
+  // ── SUPABASE LIVE DATA ──
+  const [companies, setCompanies] = useState(null);
+  const [mills, setMills] = useState(null);
+  const [provinces, setProvinces] = useState(null);
+
+  useEffect(() => {
+    supabase.from("cfi_mill_owners").select("company").order("company", { ascending: true })
+      .then(({ data, error }) => {
+        if (error || !data) { setCompanies([]); return; }
+        setCompanies([...new Set(data.map(r => r.company).filter(Boolean))]);
+      });
+    supabase.from("cfi_province_soil_lookup").select("province").order("province", { ascending: true })
+      .then(({ data, error }) => {
+        if (error || !data) { setProvinces([]); return; }
+        setProvinces([...new Set(data.map(r => r.province).filter(Boolean))]);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!s0.plantName || s0.plantName === "I will enter manually") { setMills([]); return; }
+    setMills(null);
+    supabase.from("cfi_mills_60tph").select("mill_name,province")
+      .eq("owner_company", s0.plantName).order("mill_name", { ascending: true })
+      .then(({ data, error }) => { setMills(error || !data ? [] : data); });
+  }, [s0.plantName]);
+
+  useEffect(() => {
+    if (s0.millName && s0.millName !== "I will enter manually" && mills) {
+      const match = mills.find(m => m.mill_name === s0.millName);
+      if (match?.province && !s0.province) up("province", match.province);
+    }
+  }, [s0.millName]);
+
   // ── DERIVED ─────────────────────────────────────────────────────────────
   const effFFB        = +(s0.ffbCapacity*(s0.utilisation/100)).toFixed(2);
   const monthFFB      = +(effFFB*s0.hrsDay*s0.daysMonth).toFixed(0);
