@@ -2429,13 +2429,25 @@ export default function CFI() {
                   <div style={{...g2, marginTop:10}}>
                     <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
                       color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                      value={s0.contactName||""} onChange={e=>upS0("contactName",e.target.value)}
-                      placeholder="First &amp; Last Name"/>
+                      value={s0.estateName||""} onChange={e=>upS0("estateName",e.target.value)}
+                      placeholder="Estate Name"/>
                     <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
                       color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                      value={s0.contactEmail||""} onChange={e=>upS0("contactEmail",e.target.value)}
-                      placeholder="Email &amp; Telephone"/>
+                      type="number"
+                      value={s0.estateArea||""} onChange={e=>upS0("estateArea",e.target.value)}
+                      placeholder="Total Estate Area (ha)"/>
                   </div>
+                  <div style={{...g2, marginTop:10}}>
+                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
+                      color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
+                      value={s0.gpsLat||""} onChange={e=>upS0("gpsLat",e.target.value)}
+                      placeholder="GPS Latitude"/>
+                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
+                      color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
+                      value={s0.gpsLon||""} onChange={e=>upS0("gpsLon",e.target.value)}
+                      placeholder="GPS Longitude"/>
+                  </div>
+                  <div style={{color:C.grey, fontSize:10, marginTop:4, fontStyle:"italic"}}>GPS coordinates are optional</div>
                 </Card>
 
                 {/* ── B: MILL CAPACITY ── */}
