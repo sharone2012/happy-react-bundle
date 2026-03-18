@@ -1527,6 +1527,7 @@ export default function CFI() {
   const pomeSludgeInclDMpd = +(pomeSludgeInclTPD * pomeSludgeDMfrac).toFixed(2);
   // Legacy alias for downstream refs
   const pomeSludgeInclPct  = pomeSludgeNatTPD > 0 ? +(pomeSludgeInclTPD / pomeSludgeNatTPD * 100).toFixed(1) : 0;
+  const pomePct            = pomeSludgeInclPct;
   const pomeSludgeInclDM   = pomeSludgeInclDMpd;
   // NPK from POME SLUDGE (kg/day) — canonical values per t DM
   const pomeN_kgpd  = +(pomeSludgeInclDMpd * 17.6).toFixed(1);
