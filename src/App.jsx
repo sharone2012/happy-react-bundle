@@ -2900,6 +2900,85 @@ export default function CFI() {
               {/* ── NUTRLEDGER ── */}
               <NutrLedger stg="S0 · Raw Blend Inputs" N={nl_N} P={nl_P} K={nl_K} Ca={nl_Ca} Mg={nl_Mg} OM={nl_OM} cn={nl_CN} wetPD={nl_wetPD} mc={blendMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.teal}/>
 
+              {/* ── PROCESS READINESS PANEL ── */}
+              {(() => {
+                const anyActive = s0.efbEnabled || s0.opdcEnabled || s0.posEnabled || s0.opfEnabled || s0.optEnabled || s0.pkeEnabled;
+                // ADL (Acid Detergent Lignin) % DM canonical values per stream
+                const adlMap = { efb: 22.5, opdc: 14.0, pos: 10.5, opf: 18.0, opt: 19.5, pke: 12.4 };
+                // MC canonical values per stream
+                const mcMap = { efb: +s0.efbMC, opdc: +s0.opdcMC, pos: 75, opf: 65, opt: 55, pke: 12 };
+                // Crude protein % DM canonical values per stream
+                const cpMap = { efb: 4.75, opdc: 14.5, pos: 11.0, opf: 5.5, opt: 6.0, pke: 18.0 };
+
+                // Build active stream weights (DM-based)
+                const streams = [];
+                if (s0.efbEnabled)  streams.push({ key: "efb",  dm: efbDMpd });
+                if (s0.opdcEnabled) streams.push({ key: "opdc", dm: opdcDMreq });
+                if (s0.posEnabled)  streams.push({ key: "pos",  dm: pomeSludgeInclDMpd || 0 });
+                if (s0.opfEnabled)  streams.push({ key: "opf",  dm: 0 });
+                if (s0.optEnabled)  streams.push({ key: "opt",  dm: 0 });
+                if (s0.pkeEnabled)  streams.push({ key: "pke",  dm: pkeDMpd || 0 });
+
+                const totalDM = streams.reduce((s, x) => s + x.dm, 0);
+
+                // Blend-weighted values
+                const blendADL = totalDM > 0 ? streams.reduce((s, x) => s + (x.dm / totalDM) * adlMap[x.key], 0) : null;
+                const blendCP  = totalDM > 0 ? streams.reduce((s, x) => s + (x.dm / totalDM) * cpMap[x.key], 0) : null;
+                // Wet-weight-weighted MC
+                const totalWet = streams.reduce((s, x) => s + (mcMap[x.key] > 0 ? x.dm / ((100 - mcMap[x.key]) / 100) : 0), 0);
+                const blendMCpre = totalWet > 0 ? +(100 * (1 - streams.reduce((s, x) => s + x.dm, 0) / totalWet)).toFixed(1) : null;
+
+                const cpColor = blendCP === null ? C.grey : blendCP >= 8 ? C.green : blendCP >= 5 ? C.amber : C.red;
+
+                const cellStyle = {
+                  background: C.innerZoneBg,
+                  border: `1px solid ${C.sectionBorder}44`,
+                  borderRadius: 6,
+                  padding: "10px 12px",
+                  textAlign: "center",
+                };
+                const valStyle = { fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: 16 };
+                const lblStyle = { color: C.grey, fontSize: 10, marginTop: 2 };
+
+                return (
+                  <div style={{ background: C.inputSectionBg, border: `1.5px solid ${C.sectionBorder}`, borderRadius: 10, padding: 14, marginTop: 14 }}>
+                    <div style={{ color: C.teal, fontWeight: 700, fontSize: 12, letterSpacing: 1, marginBottom: 10 }}>
+                      PROCESS READINESS
+                    </div>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 10 }}>
+                      {/* 1. Lignin % blend */}
+                      <div style={cellStyle}>
+                        <div style={{ ...valStyle, color: anyActive ? C.amber : C.grey }}>
+                          {anyActive && blendADL !== null ? blendADL.toFixed(1) + "%" : "—"}
+                        </div>
+                        <div style={lblStyle}>Lignin % blend (ADL-weighted)</div>
+                      </div>
+                      {/* 2. ADL % */}
+                      <div style={cellStyle}>
+                        <div style={{ ...valStyle, color: anyActive ? C.amberLt : C.grey }}>
+                          {anyActive && blendADL !== null ? blendADL.toFixed(1) + "%" : "—"}
+                        </div>
+                        <div style={lblStyle}>Acid detergent lignin (ADL %)</div>
+                      </div>
+                      {/* 3. Protein vs 8% floor */}
+                      <div style={cellStyle}>
+                        <div style={{ ...valStyle, color: anyActive ? cpColor : C.grey }}>
+                          {anyActive && blendCP !== null ? blendCP.toFixed(1) + "%" : "—"}
+                        </div>
+                        <div style={lblStyle}>Protein vs 8% floor</div>
+                      </div>
+                      {/* 4. Moisture % pre-process */}
+                      <div style={cellStyle}>
+                        <div style={{ ...valStyle, color: anyActive ? C.blue : C.grey }}>
+                          {anyActive && blendMCpre !== null ? blendMCpre + "%" : "—"}
+                        </div>
+                        <div style={lblStyle}>Moisture % pre-process</div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+
             </div>
           </div>
           );
