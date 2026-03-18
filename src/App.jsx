@@ -1614,7 +1614,7 @@ export default function CFI() {
   const carbon_rev_annual = +(credits_annual * carbonPriceActive).toFixed(0);
   const carbon_rev_monthly= +(carbon_rev_annual / 12).toFixed(0);
 
-  const siteRegistered = !!(s0.plantName && s0.millName && s0.contactEmail);
+  const siteRegistered = true;
   const FREE_TABS = 3;
   const FREE_SEARCHES = 5;
 
