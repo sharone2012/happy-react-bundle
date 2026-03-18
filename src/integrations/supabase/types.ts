@@ -354,6 +354,24 @@ export type Database = {
         }
         Relationships: []
       }
+      cfi_build_deploy: {
+        Row: {
+          content: string | null
+          created_at: string | null
+          id: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string | null
+          id: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
       cfi_estates: {
         Row: {
           area_ha: number | null
