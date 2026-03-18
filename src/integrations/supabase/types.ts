@@ -279,6 +279,81 @@ export type Database = {
         }
         Relationships: []
       }
+      cfi_access_codes: {
+        Row: {
+          code: string
+          created_at: string | null
+          expires_at: string | null
+          id: number
+          issued_to: string | null
+          max_uses: number | null
+          module: string
+          used_count: number | null
+        }
+        Insert: {
+          code: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: number
+          issued_to?: string | null
+          max_uses?: number | null
+          module: string
+          used_count?: number | null
+        }
+        Update: {
+          code?: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: number
+          issued_to?: string | null
+          max_uses?: number | null
+          module?: string
+          used_count?: number | null
+        }
+        Relationships: []
+      }
+      cfi_access_rules: {
+        Row: {
+          can_edit: boolean
+          can_export: boolean
+          can_view: boolean
+          created_at: string | null
+          id: number
+          is_enforced: boolean
+          module_key: string
+          module_label: string | null
+          notes: string | null
+          role_code: string
+          updated_at: string | null
+        }
+        Insert: {
+          can_edit?: boolean
+          can_export?: boolean
+          can_view?: boolean
+          created_at?: string | null
+          id?: number
+          is_enforced?: boolean
+          module_key: string
+          module_label?: string | null
+          notes?: string | null
+          role_code: string
+          updated_at?: string | null
+        }
+        Update: {
+          can_edit?: boolean
+          can_export?: boolean
+          can_view?: boolean
+          created_at?: string | null
+          id?: number
+          is_enforced?: boolean
+          module_key?: string
+          module_label?: string | null
+          notes?: string | null
+          role_code?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       cfi_estates: {
         Row: {
           area_ha: number | null
@@ -288,6 +363,7 @@ export type Database = {
           district_kabupaten: string | null
           estate_name: string
           id: string
+          industry_id: number | null
           latitude: number | null
           longitude: number | null
           owner_company: string
@@ -296,6 +372,7 @@ export type Database = {
           province: string | null
           rspo_certified: string | null
           source_url: string | null
+          updated_at: string | null
         }
         Insert: {
           area_ha?: number | null
@@ -305,6 +382,7 @@ export type Database = {
           district_kabupaten?: string | null
           estate_name: string
           id?: string
+          industry_id?: number | null
           latitude?: number | null
           longitude?: number | null
           owner_company: string
@@ -313,6 +391,7 @@ export type Database = {
           province?: string | null
           rspo_certified?: string | null
           source_url?: string | null
+          updated_at?: string | null
         }
         Update: {
           area_ha?: number | null
@@ -322,6 +401,7 @@ export type Database = {
           district_kabupaten?: string | null
           estate_name?: string
           id?: string
+          industry_id?: number | null
           latitude?: number | null
           longitude?: number | null
           owner_company?: string
@@ -330,8 +410,16 @@ export type Database = {
           province?: string | null
           rspo_certified?: string | null
           source_url?: string | null
+          updated_at?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "cfi_estates_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
           {
             foreignKeyName: "cfi_estates_owner_id_fkey"
             columns: ["owner_id"]
@@ -809,6 +897,7 @@ export type Database = {
           est_opdc_t_yr: number | null
           est_pkm_t_yr: number | null
           id: string
+          industry_id: number | null
           latitude: number | null
           longitude: number | null
           mill_id: number | null
@@ -839,6 +928,7 @@ export type Database = {
           est_opdc_t_yr?: number | null
           est_pkm_t_yr?: number | null
           id?: string
+          industry_id?: number | null
           latitude?: number | null
           longitude?: number | null
           mill_id?: number | null
@@ -869,6 +959,7 @@ export type Database = {
           est_opdc_t_yr?: number | null
           est_pkm_t_yr?: number | null
           id?: string
+          industry_id?: number | null
           latitude?: number | null
           longitude?: number | null
           mill_id?: number | null
@@ -884,6 +975,13 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "cfi_mills_60tph_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
           {
             foreignKeyName: "cfi_mills_60tph_owner_id_fkey"
             columns: ["owner_id"]
@@ -910,6 +1008,7 @@ export type Database = {
           estate_name: string | null
           has_kernel_crushing_plant: boolean | null
           id: string
+          industry_id: number | null
           ispo_status: string | null
           latitude: number | null
           longitude: number | null
@@ -931,6 +1030,7 @@ export type Database = {
           estate_name?: string | null
           has_kernel_crushing_plant?: boolean | null
           id?: string
+          industry_id?: number | null
           ispo_status?: string | null
           latitude?: number | null
           longitude?: number | null
@@ -952,6 +1052,7 @@ export type Database = {
           estate_name?: string | null
           has_kernel_crushing_plant?: boolean | null
           id?: string
+          industry_id?: number | null
           ispo_status?: string | null
           latitude?: number | null
           longitude?: number | null
@@ -965,6 +1066,13 @@ export type Database = {
           year_commissioned?: number | null
         }
         Relationships: [
+          {
+            foreignKeyName: "cfi_mills_all_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
           {
             foreignKeyName: "cfi_mills_all_owner_id_fkey"
             columns: ["owner_id"]
@@ -1371,6 +1479,277 @@ export type Database = {
           vs_stage0_pct?: string | null
         }
         Relationships: []
+      }
+      cfi_roles: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: number
+          role_code: string
+          role_name: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: number
+          role_code: string
+          role_name: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: number
+          role_code?: string
+          role_name?: string
+        }
+        Relationships: []
+      }
+      cfi_scenarios: {
+        Row: {
+          created_at: string | null
+          ffb_capacity_tph: number | null
+          id: number
+          notes: string | null
+          operating_days_month: number | null
+          operating_hrs_day: number | null
+          scenario_name: string
+          site_id: number | null
+          user_id: string | null
+          utilisation_pct: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          ffb_capacity_tph?: number | null
+          id?: number
+          notes?: string | null
+          operating_days_month?: number | null
+          operating_hrs_day?: number | null
+          scenario_name: string
+          site_id?: number | null
+          user_id?: string | null
+          utilisation_pct?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          ffb_capacity_tph?: number | null
+          id?: number
+          notes?: string | null
+          operating_days_month?: number | null
+          operating_hrs_day?: number | null
+          scenario_name?: string
+          site_id?: number | null
+          user_id?: string | null
+          utilisation_pct?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_scenarios_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cfi_sites: {
+        Row: {
+          agronomy_tier: string | null
+          baseline_site_id: number | null
+          blend_cn_dm_weighted: number | null
+          capacity_confirmed: boolean | null
+          cn_status: string | null
+          company_name: string | null
+          created_at: string | null
+          custom_stream_1_enabled: boolean | null
+          custom_stream_1_label: string | null
+          custom_stream_1_mix_kg: number | null
+          custom_stream_1_mix_pct: number | null
+          custom_stream_2_enabled: boolean | null
+          custom_stream_2_label: string | null
+          custom_stream_2_mix_kg: number | null
+          custom_stream_2_mix_pct: number | null
+          district: string | null
+          efb_enabled: boolean | null
+          efb_mix_kg: number | null
+          efb_mix_pct: number | null
+          estate_area_ha: number | null
+          estate_name: string | null
+          ffb_capacity_tph: number | null
+          gps_lat: number | null
+          gps_lng: number | null
+          id: number
+          industry_id: number | null
+          is_scenario: boolean | null
+          mill_name: string | null
+          mix_input_mode: string | null
+          monthly_ffb_t: number | null
+          opdc_enabled: boolean | null
+          opdc_mix_kg: number | null
+          opdc_mix_pct: number | null
+          operating_days_month: number | null
+          operating_hrs_day: number | null
+          opf_enabled: boolean | null
+          opf_mix_kg: number | null
+          opf_mix_pct: number | null
+          opt_enabled: boolean | null
+          opt_mix_kg: number | null
+          opt_mix_pct: number | null
+          pke_enabled: boolean | null
+          pke_mix_kg: number | null
+          pke_mix_pct: number | null
+          pome_enabled: boolean | null
+          pos_enabled: boolean | null
+          pos_mix_kg: number | null
+          pos_mix_pct: number | null
+          product_value_index: number | null
+          province: string | null
+          scenario_name: string | null
+          session_count: number | null
+          session_date: string | null
+          site_uuid: string | null
+          soil_type: string | null
+          streams_confirmed: boolean | null
+          updated_at: string | null
+          user_email: string | null
+          user_id: string | null
+          user_name: string | null
+          utilisation_pct: number | null
+        }
+        Insert: {
+          agronomy_tier?: string | null
+          baseline_site_id?: number | null
+          blend_cn_dm_weighted?: number | null
+          capacity_confirmed?: boolean | null
+          cn_status?: string | null
+          company_name?: string | null
+          created_at?: string | null
+          custom_stream_1_enabled?: boolean | null
+          custom_stream_1_label?: string | null
+          custom_stream_1_mix_kg?: number | null
+          custom_stream_1_mix_pct?: number | null
+          custom_stream_2_enabled?: boolean | null
+          custom_stream_2_label?: string | null
+          custom_stream_2_mix_kg?: number | null
+          custom_stream_2_mix_pct?: number | null
+          district?: string | null
+          efb_enabled?: boolean | null
+          efb_mix_kg?: number | null
+          efb_mix_pct?: number | null
+          estate_area_ha?: number | null
+          estate_name?: string | null
+          ffb_capacity_tph?: number | null
+          gps_lat?: number | null
+          gps_lng?: number | null
+          id?: number
+          industry_id?: number | null
+          is_scenario?: boolean | null
+          mill_name?: string | null
+          mix_input_mode?: string | null
+          monthly_ffb_t?: number | null
+          opdc_enabled?: boolean | null
+          opdc_mix_kg?: number | null
+          opdc_mix_pct?: number | null
+          operating_days_month?: number | null
+          operating_hrs_day?: number | null
+          opf_enabled?: boolean | null
+          opf_mix_kg?: number | null
+          opf_mix_pct?: number | null
+          opt_enabled?: boolean | null
+          opt_mix_kg?: number | null
+          opt_mix_pct?: number | null
+          pke_enabled?: boolean | null
+          pke_mix_kg?: number | null
+          pke_mix_pct?: number | null
+          pome_enabled?: boolean | null
+          pos_enabled?: boolean | null
+          pos_mix_kg?: number | null
+          pos_mix_pct?: number | null
+          product_value_index?: number | null
+          province?: string | null
+          scenario_name?: string | null
+          session_count?: number | null
+          session_date?: string | null
+          site_uuid?: string | null
+          soil_type?: string | null
+          streams_confirmed?: boolean | null
+          updated_at?: string | null
+          user_email?: string | null
+          user_id?: string | null
+          user_name?: string | null
+          utilisation_pct?: number | null
+        }
+        Update: {
+          agronomy_tier?: string | null
+          baseline_site_id?: number | null
+          blend_cn_dm_weighted?: number | null
+          capacity_confirmed?: boolean | null
+          cn_status?: string | null
+          company_name?: string | null
+          created_at?: string | null
+          custom_stream_1_enabled?: boolean | null
+          custom_stream_1_label?: string | null
+          custom_stream_1_mix_kg?: number | null
+          custom_stream_1_mix_pct?: number | null
+          custom_stream_2_enabled?: boolean | null
+          custom_stream_2_label?: string | null
+          custom_stream_2_mix_kg?: number | null
+          custom_stream_2_mix_pct?: number | null
+          district?: string | null
+          efb_enabled?: boolean | null
+          efb_mix_kg?: number | null
+          efb_mix_pct?: number | null
+          estate_area_ha?: number | null
+          estate_name?: string | null
+          ffb_capacity_tph?: number | null
+          gps_lat?: number | null
+          gps_lng?: number | null
+          id?: number
+          industry_id?: number | null
+          is_scenario?: boolean | null
+          mill_name?: string | null
+          mix_input_mode?: string | null
+          monthly_ffb_t?: number | null
+          opdc_enabled?: boolean | null
+          opdc_mix_kg?: number | null
+          opdc_mix_pct?: number | null
+          operating_days_month?: number | null
+          operating_hrs_day?: number | null
+          opf_enabled?: boolean | null
+          opf_mix_kg?: number | null
+          opf_mix_pct?: number | null
+          opt_enabled?: boolean | null
+          opt_mix_kg?: number | null
+          opt_mix_pct?: number | null
+          pke_enabled?: boolean | null
+          pke_mix_kg?: number | null
+          pke_mix_pct?: number | null
+          pome_enabled?: boolean | null
+          pos_enabled?: boolean | null
+          pos_mix_kg?: number | null
+          pos_mix_pct?: number | null
+          product_value_index?: number | null
+          province?: string | null
+          scenario_name?: string | null
+          session_count?: number | null
+          session_date?: string | null
+          site_uuid?: string | null
+          soil_type?: string | null
+          streams_confirmed?: boolean | null
+          updated_at?: string | null
+          user_email?: string | null
+          user_id?: string | null
+          user_name?: string | null
+          utilisation_pct?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_sites_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
+        ]
       }
       cfi_soil_acidity_classes: {
         Row: {
@@ -2031,6 +2410,72 @@ export type Database = {
           status?: string | null
         }
         Relationships: []
+      }
+      cfi_users: {
+        Row: {
+          approved: boolean | null
+          approved_at: string | null
+          approved_by: string | null
+          auth_user_id: string | null
+          created_at: string | null
+          email: string
+          full_name: string | null
+          id: number
+          industry_id: number | null
+          last_login: string | null
+          organisation: string | null
+          professor_pin: string | null
+          role_code: string | null
+          user_uuid: string | null
+        }
+        Insert: {
+          approved?: boolean | null
+          approved_at?: string | null
+          approved_by?: string | null
+          auth_user_id?: string | null
+          created_at?: string | null
+          email: string
+          full_name?: string | null
+          id?: number
+          industry_id?: number | null
+          last_login?: string | null
+          organisation?: string | null
+          professor_pin?: string | null
+          role_code?: string | null
+          user_uuid?: string | null
+        }
+        Update: {
+          approved?: boolean | null
+          approved_at?: string | null
+          approved_by?: string | null
+          auth_user_id?: string | null
+          created_at?: string | null
+          email?: string
+          full_name?: string | null
+          id?: number
+          industry_id?: number | null
+          last_login?: string | null
+          organisation?: string | null
+          professor_pin?: string | null
+          role_code?: string | null
+          user_uuid?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_users_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
+          {
+            foreignKeyName: "cfi_users_role_code_fkey"
+            columns: ["role_code"]
+            isOneToOne: false
+            referencedRelation: "cfi_roles"
+            referencedColumns: ["role_code"]
+          },
+        ]
       }
       change_log: {
         Row: {
@@ -3325,6 +3770,108 @@ export type Database = {
           source_tab?: string | null
           user_agent?: string | null
           visitor_name?: string
+        }
+        Relationships: []
+      }
+      weather_cache: {
+        Row: {
+          fetched_at: string | null
+          gps_lat: number | null
+          gps_lng: number | null
+          id: number
+          location_key: string | null
+          province: string | null
+          rain_apr: number | null
+          rain_aug: number | null
+          rain_dec: number | null
+          rain_feb: number | null
+          rain_jan: number | null
+          rain_jul: number | null
+          rain_jun: number | null
+          rain_mar: number | null
+          rain_may: number | null
+          rain_nov: number | null
+          rain_oct: number | null
+          rain_sep: number | null
+          source: string | null
+          temp_apr: number | null
+          temp_aug: number | null
+          temp_dec: number | null
+          temp_feb: number | null
+          temp_jan: number | null
+          temp_jul: number | null
+          temp_jun: number | null
+          temp_mar: number | null
+          temp_may: number | null
+          temp_nov: number | null
+          temp_oct: number | null
+          temp_sep: number | null
+        }
+        Insert: {
+          fetched_at?: string | null
+          gps_lat?: number | null
+          gps_lng?: number | null
+          id?: number
+          location_key?: string | null
+          province?: string | null
+          rain_apr?: number | null
+          rain_aug?: number | null
+          rain_dec?: number | null
+          rain_feb?: number | null
+          rain_jan?: number | null
+          rain_jul?: number | null
+          rain_jun?: number | null
+          rain_mar?: number | null
+          rain_may?: number | null
+          rain_nov?: number | null
+          rain_oct?: number | null
+          rain_sep?: number | null
+          source?: string | null
+          temp_apr?: number | null
+          temp_aug?: number | null
+          temp_dec?: number | null
+          temp_feb?: number | null
+          temp_jan?: number | null
+          temp_jul?: number | null
+          temp_jun?: number | null
+          temp_mar?: number | null
+          temp_may?: number | null
+          temp_nov?: number | null
+          temp_oct?: number | null
+          temp_sep?: number | null
+        }
+        Update: {
+          fetched_at?: string | null
+          gps_lat?: number | null
+          gps_lng?: number | null
+          id?: number
+          location_key?: string | null
+          province?: string | null
+          rain_apr?: number | null
+          rain_aug?: number | null
+          rain_dec?: number | null
+          rain_feb?: number | null
+          rain_jan?: number | null
+          rain_jul?: number | null
+          rain_jun?: number | null
+          rain_mar?: number | null
+          rain_may?: number | null
+          rain_nov?: number | null
+          rain_oct?: number | null
+          rain_sep?: number | null
+          source?: string | null
+          temp_apr?: number | null
+          temp_aug?: number | null
+          temp_dec?: number | null
+          temp_feb?: number | null
+          temp_jan?: number | null
+          temp_jul?: number | null
+          temp_jun?: number | null
+          temp_mar?: number | null
+          temp_may?: number | null
+          temp_nov?: number | null
+          temp_oct?: number | null
+          temp_sep?: number | null
         }
         Relationships: []
       }
