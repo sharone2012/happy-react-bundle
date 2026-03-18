@@ -104,6 +104,13 @@ export type Database = {
             referencedRelation: "cfi_industries"
             referencedColumns: ["industry_id"]
           },
+          {
+            foreignKeyName: "biological_library_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "v_industry_switcher"
+            referencedColumns: ["industry_id"]
+          },
         ]
       }
       canonical_lab_data: {
@@ -170,6 +177,13 @@ export type Database = {
             columns: ["industry_id"]
             isOneToOne: false
             referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
+          {
+            foreignKeyName: "canonical_lab_data_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "v_industry_switcher"
             referencedColumns: ["industry_id"]
           },
         ]
@@ -354,6 +368,75 @@ export type Database = {
         }
         Relationships: []
       }
+      cfi_agent8_queue: {
+        Row: {
+          agent_notes: string | null
+          analytical_method: string | null
+          assigned_run: string | null
+          confidence: string | null
+          created_at: string | null
+          id: number
+          industry_id: number
+          parameter: string
+          parameter_category: string | null
+          source_ref: string | null
+          status: string
+          stream_code: string
+          unit: string | null
+          updated_at: string | null
+          value_numeric: number | null
+        }
+        Insert: {
+          agent_notes?: string | null
+          analytical_method?: string | null
+          assigned_run?: string | null
+          confidence?: string | null
+          created_at?: string | null
+          id?: number
+          industry_id: number
+          parameter: string
+          parameter_category?: string | null
+          source_ref?: string | null
+          status?: string
+          stream_code: string
+          unit?: string | null
+          updated_at?: string | null
+          value_numeric?: number | null
+        }
+        Update: {
+          agent_notes?: string | null
+          analytical_method?: string | null
+          assigned_run?: string | null
+          confidence?: string | null
+          created_at?: string | null
+          id?: number
+          industry_id?: number
+          parameter?: string
+          parameter_category?: string | null
+          source_ref?: string | null
+          status?: string
+          stream_code?: string
+          unit?: string | null
+          updated_at?: string | null
+          value_numeric?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_agent8_queue_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
+          {
+            foreignKeyName: "cfi_agent8_queue_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "v_industry_switcher"
+            referencedColumns: ["industry_id"]
+          },
+        ]
+      }
       cfi_build_deploy: {
         Row: {
           content: string | null
@@ -439,6 +522,13 @@ export type Database = {
             referencedColumns: ["industry_id"]
           },
           {
+            foreignKeyName: "cfi_estates_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "v_industry_switcher"
+            referencedColumns: ["industry_id"]
+          },
+          {
             foreignKeyName: "cfi_estates_owner_id_fkey"
             columns: ["owner_id"]
             isOneToOne: false
@@ -513,6 +603,13 @@ export type Database = {
             referencedRelation: "cfi_industries"
             referencedColumns: ["industry_id"]
           },
+          {
+            foreignKeyName: "cfi_feedstreams_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "v_industry_switcher"
+            referencedColumns: ["industry_id"]
+          },
         ]
       }
       cfi_industries: {
@@ -562,6 +659,33 @@ export type Database = {
           processing_label?: string
           processing_unit?: string
           regulatory_body?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      cfi_industry_switcher_config: {
+        Row: {
+          config_key: string
+          config_value: string
+          description: string | null
+          id: number
+          professor_only: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          config_key: string
+          config_value: string
+          description?: string | null
+          id?: number
+          professor_only?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          config_key?: string
+          config_value?: string
+          description?: string | null
+          id?: number
+          professor_only?: boolean | null
           updated_at?: string | null
         }
         Relationships: []
@@ -1001,6 +1125,13 @@ export type Database = {
             referencedColumns: ["industry_id"]
           },
           {
+            foreignKeyName: "cfi_mills_60tph_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "v_industry_switcher"
+            referencedColumns: ["industry_id"]
+          },
+          {
             foreignKeyName: "cfi_mills_60tph_owner_id_fkey"
             columns: ["owner_id"]
             isOneToOne: false
@@ -1089,6 +1220,13 @@ export type Database = {
             columns: ["industry_id"]
             isOneToOne: false
             referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
+          {
+            foreignKeyName: "cfi_mills_all_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "v_industry_switcher"
             referencedColumns: ["industry_id"]
           },
           {
@@ -1767,6 +1905,13 @@ export type Database = {
             referencedRelation: "cfi_industries"
             referencedColumns: ["industry_id"]
           },
+          {
+            foreignKeyName: "cfi_sites_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "v_industry_switcher"
+            referencedColumns: ["industry_id"]
+          },
         ]
       }
       cfi_soil_acidity_classes: {
@@ -2235,6 +2380,13 @@ export type Database = {
             referencedRelation: "cfi_industries"
             referencedColumns: ["industry_id"]
           },
+          {
+            foreignKeyName: "cfi_soil_profiles_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "v_industry_switcher"
+            referencedColumns: ["industry_id"]
+          },
         ]
       }
       cfi_solutions: {
@@ -2487,6 +2639,13 @@ export type Database = {
             referencedColumns: ["industry_id"]
           },
           {
+            foreignKeyName: "cfi_users_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "v_industry_switcher"
+            referencedColumns: ["industry_id"]
+          },
+          {
             foreignKeyName: "cfi_users_role_code_fkey"
             columns: ["role_code"]
             isOneToOne: false
@@ -2619,6 +2778,13 @@ export type Database = {
             columns: ["industry_id"]
             isOneToOne: false
             referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
+          {
+            foreignKeyName: "chemical_library_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "v_industry_switcher"
             referencedColumns: ["industry_id"]
           },
         ]
@@ -2847,6 +3013,13 @@ export type Database = {
             columns: ["industry_id"]
             isOneToOne: false
             referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
+          {
+            foreignKeyName: "equipment_catalogue_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "v_industry_switcher"
             referencedColumns: ["industry_id"]
           },
           {
@@ -3113,6 +3286,13 @@ export type Database = {
             columns: ["industry_id"]
             isOneToOne: false
             referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
+          {
+            foreignKeyName: "mills_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "v_industry_switcher"
             referencedColumns: ["industry_id"]
           },
         ]
@@ -3995,6 +4175,27 @@ export type Database = {
           unit?: string | null
           value_numeric?: number | null
           value_text?: string | null
+        }
+        Relationships: []
+      }
+      v_industry_switcher: {
+        Row: {
+          agent_data_seeded: boolean | null
+          crop_name: string | null
+          estate_label: string | null
+          feedstreams: Json | null
+          industry_id: number | null
+          industry_name: string | null
+          is_live: boolean | null
+          notes: string | null
+          operator_label: string | null
+          primary_country: string | null
+          processing_label: string | null
+          processing_unit: string | null
+          regulatory_body: string | null
+          stream_count: number | null
+          tasks_complete: number | null
+          tasks_total: number | null
         }
         Relationships: []
       }
