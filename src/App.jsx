@@ -1442,8 +1442,13 @@ export default function CFI() {
   const [s0, setS0] = useState({
     plantName: "", millName: "", district: "", province: "", contact: "", rspo: "none",
     idCode: "", contactName: "", contactEmail: "",
+    estateName: "", estateArea: "", gpsLat: "", gpsLon: "",
     ffbCapacity: 60, utilisation: 85, hrsDay: 24, daysMonth: 30,
-    efbEnabled: true, opdcEnabled: true,  // FIX-01: efbPct/opdcPct removed — now formula-driven from actual yields
+    efbEnabled: false, opdcEnabled: false,
+    posEnabled: false, opfEnabled: false, optEnabled: false,
+    custom1Enabled: false, custom2Enabled: false,
+    capacityConfirmed: false, streamsConfirmed: false,
+    mixInputMode: "pct",
     efbMC: 62.5, opdcMC: 70, pksaMC: 5,  // BUG-01 FIX: EFB canonical MC = 62.5% wb
     pomeSludgeMC: 82,
     pomeSludgeDewatered: false,
@@ -1467,6 +1472,12 @@ export default function CFI() {
     dmppEnabled:    false,   // toggle — enables N₂O suppression credit pathway
     dmppDose:       1.5,     // kg DMPP per tonne frass (wet weight) — commercial range 1-2 kg/t
     dmppCostPerKg:  9,       // $/kg DMPP — commercial range $8-15/kg
+    // ── STREAM MIX (pct or kg) ──
+    efbMixPct: 0, opdcMixPct: 0, posMixPct: 0, opfMixPct: 0, optMixPct: 0,
+    pkeMixPct: 0, custom1MixPct: 0, custom2MixPct: 0,
+    efbMixKg: 0, opdcMixKg: 0, posMixKg: 0, opfMixKg: 0, optMixKg: 0,
+    pkeMixKg: 0, custom1MixKg: 0, custom2MixKg: 0,
+    custom1Label: "Custom 1", custom2Label: "Custom 2",
   });
 
   const upS0 = (k,v) => setS0(p=>({...p,[k]:v}));
@@ -2418,13 +2429,25 @@ export default function CFI() {
                   <div style={{...g2, marginTop:10}}>
                     <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
                       color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                      value={s0.contactName||""} onChange={e=>upS0("contactName",e.target.value)}
-                      placeholder="First &amp; Last Name"/>
+                      value={s0.estateName||""} onChange={e=>upS0("estateName",e.target.value)}
+                      placeholder="Estate Name"/>
                     <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
                       color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                      value={s0.contactEmail||""} onChange={e=>upS0("contactEmail",e.target.value)}
-                      placeholder="Email &amp; Telephone"/>
+                      type="number"
+                      value={s0.estateArea||""} onChange={e=>upS0("estateArea",e.target.value)}
+                      placeholder="Total Estate Area (ha)"/>
                   </div>
+                  <div style={{...g2, marginTop:10}}>
+                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
+                      color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
+                      value={s0.gpsLat||""} onChange={e=>upS0("gpsLat",e.target.value)}
+                      placeholder="GPS Latitude"/>
+                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
+                      color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
+                      value={s0.gpsLon||""} onChange={e=>upS0("gpsLon",e.target.value)}
+                      placeholder="GPS Longitude"/>
+                  </div>
+                  <div style={{color:C.grey, fontSize:10, marginTop:4, fontStyle:"italic"}}>GPS coordinates are optional</div>
                 </Card>
 
                 {/* ── B: MILL CAPACITY ── */}
@@ -2486,40 +2509,27 @@ export default function CFI() {
                     </div>
                   </div>
                   <Divider/>
-                  <div style={g4}>
-                    <KPI label="Effective FFB" value={effFFB} unit="TPH" color={C.green}/>
-                    <KPI label="Monthly FFB" value={monthFFB.toLocaleString()} unit="t/month" color={C.green}/>
-                    <KPI label="EFB at Discharge" value={efbTPH} unit="TPH wet" color={C.teal}/>
-                    <KPI label="EFB Monthly" value={efbMonthWet.toLocaleString()} unit="t/month wet" color={C.teal}/>
+                  {/* CONFIRM MILL CAPACITY BUTTON */}
+                  <div style={{textAlign:"center", marginTop:8}}>
+                    <button onClick={()=>upS0("capacityConfirmed",!s0.capacityConfirmed)}
+                      style={{background:s0.capacityConfirmed?C.green:C.teal, border:"none", color:C.pageBg,
+                        borderRadius:8, padding:"12px 32px", fontWeight:900, fontSize:13, cursor:"pointer",
+                        letterSpacing:"0.06em", transition:"all 0.15s"}}>
+                      {s0.capacityConfirmed ? "✓ MILL CAPACITY CONFIRMED" : "CONFIRM MILL CAPACITY"}
+                    </button>
+                    {!s0.capacityConfirmed && <div style={{color:C.grey, fontSize:10, marginTop:6}}>Confirm to lock values and unlock soil + stream selection</div>}
                   </div>
-                  <Divider/>
-                  <SectionHdr icon="📡" title="D — Captured % of Mill Processing Capacity Used" color={C.teal}/>
-                  <div style={g3}>
-                    <BluField label="EFB %" value={s0.efbCapturePct}
-                      onChange={v=>upS0("efbCapturePct",Math.min(100,Math.max(0,+v)))}
-                      note={"= "+(+(efbMonthWet*(s0.efbCapturePct/100)).toFixed(0)).toLocaleString()+" t FW/mo"}/>
-                    <BluField label="OPDC %" value={s0.opdcCapturePct}
-                      onChange={v=>upS0("opdcCapturePct",Math.min(100,Math.max(0,+v)))}/>
-                    <BluField label="POME %" value={s0.pomeCapturePct}
-                      onChange={v=>upS0("pomeCapturePct",Math.min(100,Math.max(0,+v)))}/>
-                  </div>
-                  <div style={{background:C.pageBg, border:"1px solid rgba(255,255,255,0.08)", borderRadius:8, padding:12, marginTop:12}}>
-                    <SectionHdr icon="" title="E — Carbon Credits Preview" color={C.green}/>
-                    <div style={{color:C.grey, fontSize:10, marginTop:-6, marginBottom:10}}>Full methodology in the CO₂ tab</div>
-                    <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:8}}>
-                      {[
-                        {l:"Monthly CO₂e",   v:co2est.toLocaleString()+" t",   c:C.green},
-                        {l:"Annual CO₂e",    v:co2annual.toLocaleString()+" t", c:C.green},
-                        {l:"Annual Revenue", v:"$"+carbRev.toLocaleString(),    c:C.amber},
-                        {l:"Carbon Price",   v:"$"+cprice+"/t",                 c:C.amberLt},
-                      ].map((k,i)=>(
-                        <div key={i} style={{textAlign:"center", minWidth:0}}>
-                          <div style={{color:C.grey, fontSize:9, textTransform:"uppercase", letterSpacing:"0.07em", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>{k.l}</div>
-                          <div style={{color:k.c, fontSize:13, fontWeight:900, marginTop:4, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>{k.v}</div>
-                        </div>
-                      ))}
+                  {/* Monthly KPIs — only shown after confirmed */}
+                  {s0.capacityConfirmed && (
+                    <div style={{marginTop:12}}>
+                      <div style={g4}>
+                        <KPI label="Monthly FFB" value={monthFFB.toLocaleString()} unit="t/month" color={C.green}/>
+                        <KPI label="EFB Monthly" value={efbMonthWet.toLocaleString()} unit="t FW/month" color={C.teal}/>
+                        <KPI label="OPDC Monthly" value={(+(opdcNatTPD*s0.daysMonth).toFixed(0)).toLocaleString()} unit="t FW/month" color={C.amber}/>
+                        <KPI label="Effective FFB" value={effFFB} unit="TPH" color={C.green}/>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </Card>
 
               </div>
@@ -2527,157 +2537,18 @@ export default function CFI() {
               {/* ════ RIGHT COLUMN ════ */}
               <div style={{display:"flex", flexDirection:"column", gap:16}}>
 
-                {/* ── C: RESIDUE SELECTION ── */}
+                {/* ── C: SOIL TYPE & AG MANAGEMENT — only after mill capacity confirmed ── */}
+                {s0.capacityConfirmed && (
                 <Card>
-                  <SectionHdr icon="" title="C — Choose Residues for Biological Processing" color={C.teal}/>
-                  <div style={g4}>
-                    <ResidueCard label="EFB"         active={s0.efbEnabled}        onClick={()=>upS0("efbEnabled",!s0.efbEnabled)}               sublabel="Empty Fruit Bunches"/>
-                    <ResidueCard label="OPDC"        active={s0.opdcEnabled}       onClick={()=>upS0("opdcEnabled",!s0.opdcEnabled)}              sublabel="Decanter Cake"/>
-                    <ResidueCard label="POME SLUDGE" active={pomeActive} onClick={()=>upS0("pomeEnabled",!s0.pomeEnabled)} sublabel={pomeActive?(pomePct>0.09?"Auto: "+pomePct+"% DM remainder":"Manual — ON"):"Click to activate"}/>
-                    <ResidueCard label="PKE" active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)} sublabel="Palm Kernel Expeller (Protein Booster)"/>
-                  </div>
-                  <Divider/>
-                  {/* FIX-01: Blend fractions are formula-driven — read-only display, not user-editable */}
-                  <div style={{textAlign:"center", marginBottom:4}}>
-                    <div style={{color:C.teal, fontWeight:800, fontSize:12, letterSpacing:"0.05em"}}>Blend Composition — Natural Mill Yield (DM Basis)</div>
-                    <div style={{color:C.grey, fontSize:10, marginTop:4}}>Auto-calculated from FFB throughput — not user-editable</div>
-                  </div>
-                  <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:10, marginBottom:12}}>
-                    {/* EFB — read-only */}
-                    <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
-                      <div style={{color:C.teal, fontWeight:700, fontSize:11, textAlign:"center"}}>EFB</div>
-                      <div style={{background:"#0A1624", border:`1px solid ${C.teal}44`, borderRadius:6,
-                        color:C.teal, padding:"8px 0", fontSize:15, fontWeight:700,
-                        width:"100%", boxSizing:"border-box", textAlign:"center"}}>
-                        {pctEFB > 0 ? pctEFB+"%" : "—"}
-                      </div>
-                      <div style={{color:C.grey, fontSize:9, textAlign:"center"}}>calculated</div>
-                    </div>
-                    {/* POME Sludge */}
-                    <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
-                      <div style={{color:"#4A9EDB", fontWeight:700, fontSize:11, textAlign:"center", lineHeight:1.2}}>POME<br/>Sludge</div>
-                      <div style={{background:"#0A1624", border:`1px solid #4A9EDB44`, borderRadius:6,
-                        color:pomeActive?"#4A9EDB":C.grey, padding:"8px 0", fontSize:15, fontWeight:700,
-                        width:"100%", boxSizing:"border-box", textAlign:"center", lineHeight:"1.4"}}>
-                        {pomeActive ? pctPOME+"%" : "—"}
-                      </div>
-                      <div style={{color:C.grey, fontSize:9, textAlign:"center"}}>Fe-gated</div>
-                    </div>
-                    {/* OPDC — read-only */}
-                    <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
-                      <div style={{color:C.amber, fontWeight:700, fontSize:11, textAlign:"center"}}>OPDC</div>
-                      <div style={{background:"#0A1624", border:`1px solid ${C.amber}44`, borderRadius:6,
-                        color:C.amber, padding:"8px 0", fontSize:15, fontWeight:700,
-                        width:"100%", boxSizing:"border-box", textAlign:"center"}}>
-                        {pctOPDC > 0 ? pctOPDC+"%" : "—"}
-                      </div>
-                      <div style={{color:C.grey, fontSize:9, textAlign:"center"}}>calculated</div>
-                    </div>
-                    {/* PKE */}
-                    <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
-                      <div style={{color:"#9B59B6", fontWeight:700, fontSize:11, textAlign:"center", lineHeight:1.2}}>PKE</div>
-                      <div style={{background:"#0A1624", border:`1px solid #9B59B644`, borderRadius:6,
-                        color:s0.pkeEnabled?"#9B59B6":C.grey, padding:"8px 0", fontSize:15, fontWeight:700,
-                        width:"100%", boxSizing:"border-box", textAlign:"center"}}>
-                        {s0.pkeEnabled ? pctPKE+"%" : "—"}
-                      </div>
-                      <div style={{color:C.grey, fontSize:9, textAlign:"center"}}>calculated</div>
-                    </div>
-                  </div>
-                  {/* POME auto-fill display */}
-                  <div style={{background:"#0A1624", border:`1px solid ${pomeActive?"#4A9EDB55":"rgba(255,255,255,0.06)"}`,
-                    borderRadius:8, padding:"11px 14px", marginBottom:10}}>
-                    <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:6}}>
-                      <div style={{display:"flex", alignItems:"center", gap:8}}>
-                        <div style={{width:8, height:8, borderRadius:"50%",
-                          background:pomeActive?"#4A9EDB":"#4A9EDB44",
-                          border:"2px solid #4A9EDB", transition:"all 0.2s"}}/>
-                        <span style={{color:pomeActive?"#4A9EDB":C.grey, fontWeight:700, fontSize:12}}>
-                          POME Sludge — auto-fills remainder
-                        </span>
-                      </div>
-                      <div style={{display:"flex", gap:6, flexWrap:"wrap"}}>
-                        <span style={{background:pomeActive?"#4A9EDB20":"rgba(255,255,255,0.04)",
-                          border:`1px solid ${pomeActive?"#4A9EDB50":"rgba(255,255,255,0.1)"}`,
-                          borderRadius:10, padding:"2px 9px",
-                          color:pomeActive?"#4A9EDB":C.grey, fontSize:10, fontWeight:800}}>
-                          {pomeActive ? pomePct+"% DM" : "0% — EFB+OPDC = 100%"}
-                        </span>
-                        {pomeActive && <span style={{background:pomeSupplyOK?"#3DCB7A20":"#E8404020",
-                          border:`1px solid ${pomeSupplyOK?"#3DCB7A50":"#E8404050"}`,
-                          borderRadius:10, padding:"2px 9px",
-                          color:pomeSupplyOK?C.green:C.red, fontSize:10, fontWeight:800}}>
-                          {pomeSupplyOK ? "✓ Supply OK" : "✕ Supply gap "+pomeShortfall+" t/day"}
-                        </span>}
-                      </div>
-                    </div>
-                    {pomeActive && (
-                      <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8, marginTop:10}}>
-                        <div style={{textAlign:"center"}}>
-                          <div style={{color:C.grey, fontSize:9, textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:3}}>DM required</div>
-                          <div style={{color:"#4A9EDB", fontWeight:900, fontFamily:"'DM Mono', monospace", fontSize:13}}>{pomeDMreq} t/day</div>
-                        </div>
-                        <div style={{textAlign:"center"}}>
-                          <div style={{color:C.grey, fontSize:9, textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:3}}>Wet t/day @ {pomeSludgeActMC}% MC</div>
-                          <div style={{color:pomeSupplyOK?C.green:C.red, fontWeight:900, fontFamily:"'DM Mono', monospace", fontSize:13}}>{pomeWetReq} t/day</div>
-                          <div style={{color:C.grey, fontSize:9}}>mill yields {pomeSludgeNatTPD} t/day</div>
-                        </div>
-                        <div style={{textAlign:"center"}}>
-                          <div style={{color:C.grey, fontSize:9, textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:3}}>Dilution factor</div>
-                          <div style={{color:C.tealLt, fontWeight:900, fontFamily:"'DM Mono', monospace", fontSize:13}}>{pomeDilutionFactor}×</div>
-                          <div style={{color:C.grey, fontSize:9}}>wet t per t DM</div>
-                        </div>
-                      </div>
-                    )}
-                    {!pomeActive && <div style={{color:C.grey, fontSize:10, marginTop:5}}>Lower EFB% or OPDC% below 100 total to activate POME auto-fill.</div>}
-                  </div>
-                  <Warn type="ok" msg={"EFB "+pctEFB+"% + OPDC "+pctOPDC+"%" + (pomeActive?" + POME "+pctPOME+"%":"")+" — Natural Mill Yield ✓"}  /* FIX-01 *//>
-                  <Divider/>
-                  <div style={g3}>
-                    <CalcField label="Blended Moisture" unit="%" value={blendMC}/>
-                    <CalcField label="Blend DM Content" unit="%" value={(100-blendMC).toFixed(1)}/>
-                    <CalcField label="Blend C:N (DM Ratio)" unit="ratio" value={blendCN||"—"}
-                      note={blendCN?blendCN<=25?"✓ Optimal for BSF (15–25)":blendCN<=35?" Marginal — add POME/PKE":"✕ High — BSF yield penalty":undefined}/>
-                  </div>
-                  <div style={{...g2, marginTop:10}}>
-                    <CalcField label="Blend CP % DM (DM-weighted)" unit="% crude protein"
-                      value={blendCP ? blendCP+"%" : "—"}
-                      note={blendCP?blendCP>=15?"✓ Strong (≥15%)":blendCP>=10?" Marginal (10–15%) — PKE advised":"✕ Low (<10%) — increase OPDC or PKE":undefined}/>
-                    <div style={{background:C.pageBg, borderRadius:8, padding:"10px 12px"}}>
-                      <div style={{color:C.grey, fontSize:9, textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:7}}>% of Total Substrate DM</div>
-                      <div style={{display:"flex", gap:10, flexWrap:"wrap"}}>
-                        {[
-                          {l:"EFB",  v:pctEFB,  c:C.teal},
-                          {l:"OPDC", v:pctOPDC, c:C.amber},
-                          ...(pomeActive?[{l:"POME", v:pctPOME, c:"#4A9EDB"}]:[]),
-                          ...(s0.pkeEnabled?[{l:"PKE", v:pctPKE, c:"#9B59B6"}]:[]),
-                        ].map((s,i)=>(
-                          <div key={i} style={{textAlign:"center"}}>
-                            <div style={{color:s.c, fontWeight:900, fontSize:14, fontFamily:"'DM Mono', monospace"}}>{s.v}%</div>
-                            <div style={{color:C.grey, fontSize:9}}>{s.l}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div style={{...g2, marginTop:12}}>
-                    <CalcField label="Monthly Substrate → S3" unit="t FW/month" value={s1_blendWet.toLocaleString()}/>
-                    <CalcField label="Monthly Substrate DM" unit="t DM/month" value={s1_blendDM.toLocaleString()}/>
-                  </div>
-                </Card>
-
-                {/* ── SOIL TYPE & AG MANAGEMENT ── */}
-                <Card>
-                  <SectionHdr icon="🌍" title="E — Soil Type &amp; Fertiliser Requirements" color={C.teal}/>
+                  <SectionHdr icon="🌍" title="C — Soil Type &amp; Agronomy Management" color={C.teal}/>
                   <div style={{display:"block", color:C.grey, fontSize:10, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.09em", marginBottom:8}}>Indonesian Soil Classification</div>
-                  <div style={{display:"flex", gap:8, flexWrap:"wrap", marginBottom:4}}>
-                    {SOILS.map(so=>(
+                  <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8, marginBottom:8}}>
+                    {[...SOILS, {id:"andisol", name:"Andisols", pct:"2%", ph:"5.2", cec:"22.0", desc:"Volcanic, high fertility", nAdj:-0.20, pAdj:-0.30, dmppEfficacy:0.32, dmppNote:"Volcanic — moderate N₂O."}].map(so=>(
                       <div key={so.id} onClick={()=>upS0("soil",so.id)}
                         style={{background:s0.soil===so.id?C.teal+"20":C.pageBg,
                           border:`1px solid ${s0.soil===so.id?C.teal+"77":"rgba(255,255,255,0.07)"}`,
                           borderBottom:s0.soil===so.id?`2px solid ${C.teal}`:"2px solid transparent",
-                          borderRadius:8, padding:"9px 13px", cursor:"pointer",
-                          flex:"1 1 auto", minWidth:120, transition:"all 0.15s"}}>
+                          borderRadius:8, padding:"9px 13px", cursor:"pointer", transition:"all 0.15s"}}>
                         <div style={{color:s0.soil===so.id?C.teal:C.white, fontWeight:700, fontSize:12}}>{so.name}</div>
                         <div style={{color:C.grey, fontSize:10, marginTop:3}}>{so.pct} · pH {so.ph} · CEC {so.cec}</div>
                         <div style={{color:C.grey, fontSize:9, marginTop:2}}>{so.desc}</div>
@@ -2703,6 +2574,105 @@ export default function CFI() {
                     ))}
                   </div>
                 </Card>
+                )}
+
+                {/* ── D: STREAM SELECTION — 9 streams, all starting OFF ── */}
+                {s0.capacityConfirmed && (
+                <Card>
+                  <SectionHdr icon="" title="D — Select Residue Streams" color={C.teal}/>
+                  <div style={{color:C.grey, fontSize:10, marginBottom:10}}>Toggle streams ON/OFF. EFB off will auto-deselect OPDC. POME is locked (liquid — sent to pond).</div>
+                  <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8}}>
+                    {[
+                      {key:"efbEnabled",     label:"EFB",     sub:"Empty fruit bunches"},
+                      {key:"opdcEnabled",    label:"OPDC",    sub:"Oil palm decanter cake", needsEfb:true},
+                      {key:"posEnabled",     label:"POS",     sub:"Palm oil sludge"},
+                      {key:"opfEnabled",     label:"OPF",     sub:"Oil palm fronds"},
+                      {key:"optEnabled",     label:"OPT",     sub:"Oil palm trunks"},
+                      {key:"pomeEnabled",    label:"POME",    sub:"Liquid — sent to pond", locked:true},
+                      {key:"pkeEnabled",     label:"PKE",     sub:"Palm kernel expeller"},
+                      {key:"custom1Enabled", label:s0.custom1Label||"Custom 1", sub:"User-defined stream"},
+                      {key:"custom2Enabled", label:s0.custom2Label||"Custom 2", sub:"User-defined stream"},
+                    ].map(st=>{
+                      const active = st.locked ? false : !!s0[st.key];
+                      const disabled = st.locked || (st.needsEfb && !s0.efbEnabled);
+                      return (
+                        <ResidueCard key={st.key} label={st.label} active={active}
+                          locked={st.locked}
+                          onClick={()=>{
+                            if(disabled) return;
+                            const newVal = !s0[st.key];
+                            upS0(st.key, newVal);
+                            // EFB off → auto-deselect OPDC
+                            if(st.key==="efbEnabled" && !newVal) upS0("opdcEnabled", false);
+                          }}
+                          sublabel={st.sub + (disabled && st.needsEfb && !st.locked ? " (requires EFB)" : "")}/>
+                      );
+                    })}
+                  </div>
+                </Card>
+                )}
+
+                {/* ── D2: STREAM MIX INPUTS + CONFIRM STREAMS ── */}
+                {s0.capacityConfirmed && (()=>{
+                  const activeStreams = [
+                    s0.efbEnabled     && {key:"efb",     label:"EFB"},
+                    s0.opdcEnabled    && {key:"opdc",    label:"OPDC"},
+                    s0.posEnabled     && {key:"pos",     label:"POS"},
+                    s0.opfEnabled     && {key:"opf",     label:"OPF"},
+                    s0.optEnabled     && {key:"opt",     label:"OPT"},
+                    s0.pkeEnabled     && {key:"pke",     label:"PKE"},
+                    s0.custom1Enabled && {key:"custom1", label:s0.custom1Label||"Custom 1"},
+                    s0.custom2Enabled && {key:"custom2", label:s0.custom2Label||"Custom 2"},
+                  ].filter(Boolean);
+                  if(activeStreams.length===0) return null;
+                  const isPct = s0.mixInputMode==="pct";
+                  const totalPct = activeStreams.reduce((sum,st)=>sum+(+(s0[st.key+"MixPct"])||0),0);
+                  const pctValid = Math.abs(totalPct-100)<0.1;
+                  const canConfirm = isPct ? pctValid : true;
+                  return (
+                  <Card>
+                    <SectionHdr icon="" title="D2 — Stream Mix &amp; Confirmation" color={C.teal}/>
+                    <div style={{display:"flex", alignItems:"center", gap:12, marginBottom:12}}>
+                      <div style={{color:C.grey, fontSize:11, fontWeight:700}}>Input mode:</div>
+                      <PillToggle options={[{v:"pct",l:"% (percentage)"},{v:"kg",l:"KG (absolute)"}]}
+                        value={s0.mixInputMode} onChange={v=>upS0("mixInputMode",v)}/>
+                    </div>
+                    <div style={{display:"grid", gridTemplateColumns:"repeat("+Math.min(activeStreams.length,4)+", 1fr)", gap:10, marginBottom:12}}>
+                      {activeStreams.map(st=>{
+                        const fieldKey = st.key+"Mix"+(isPct?"Pct":"Kg");
+                        return (
+                          <div key={st.key}>
+                            <div style={{color:C.teal, fontSize:11, fontWeight:700, marginBottom:4}}>{st.label}</div>
+                            <input type="number" min="0" step={isPct?"1":"0.1"}
+                              style={{...S.input, textAlign:"center"}}
+                              value={s0[fieldKey]||""}
+                              onChange={e=>upS0(fieldKey, +e.target.value||0)}/>
+                            <div style={{color:C.grey, fontSize:9, marginTop:2, textAlign:"center"}}>{isPct?"%":"kg"}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    {isPct && (
+                      <div style={{textAlign:"center", marginBottom:10}}>
+                        <span style={{color:pctValid?C.green:C.red, fontWeight:800, fontSize:13}}>
+                          Total: {totalPct.toFixed(1)}%
+                        </span>
+                        {!pctValid && <span style={{color:C.red, fontSize:11, marginLeft:8}}>Must equal 100%</span>}
+                      </div>
+                    )}
+                    <div style={{textAlign:"center"}}>
+                      <button onClick={()=>{if(canConfirm) upS0("streamsConfirmed",!s0.streamsConfirmed);}}
+                        style={{background:s0.streamsConfirmed?C.green:canConfirm?C.teal:C.grey,
+                          border:"none", color:C.pageBg, borderRadius:8, padding:"12px 32px",
+                          fontWeight:900, fontSize:13, cursor:canConfirm?"pointer":"not-allowed",
+                          letterSpacing:"0.06em", opacity:canConfirm?1:0.5, transition:"all 0.15s"}}>
+                        {s0.streamsConfirmed ? "✓ STREAMS CONFIRMED" : "CONFIRM STREAMS"}
+                      </button>
+                      {!canConfirm && isPct && <div style={{color:C.red, fontSize:10, marginTop:6}}>Percentages must sum to 100% before confirming</div>}
+                    </div>
+                  </Card>
+                  );
+                })()}
 
               </div>
             </div>
