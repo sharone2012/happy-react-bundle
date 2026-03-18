@@ -2509,40 +2509,27 @@ export default function CFI() {
                     </div>
                   </div>
                   <Divider/>
-                  <div style={g4}>
-                    <KPI label="Effective FFB" value={effFFB} unit="TPH" color={C.green}/>
-                    <KPI label="Monthly FFB" value={monthFFB.toLocaleString()} unit="t/month" color={C.green}/>
-                    <KPI label="EFB at Discharge" value={efbTPH} unit="TPH wet" color={C.teal}/>
-                    <KPI label="EFB Monthly" value={efbMonthWet.toLocaleString()} unit="t/month wet" color={C.teal}/>
+                  {/* CONFIRM MILL CAPACITY BUTTON */}
+                  <div style={{textAlign:"center", marginTop:8}}>
+                    <button onClick={()=>upS0("capacityConfirmed",!s0.capacityConfirmed)}
+                      style={{background:s0.capacityConfirmed?C.green:C.teal, border:"none", color:C.pageBg,
+                        borderRadius:8, padding:"12px 32px", fontWeight:900, fontSize:13, cursor:"pointer",
+                        letterSpacing:"0.06em", transition:"all 0.15s"}}>
+                      {s0.capacityConfirmed ? "✓ MILL CAPACITY CONFIRMED" : "CONFIRM MILL CAPACITY"}
+                    </button>
+                    {!s0.capacityConfirmed && <div style={{color:C.grey, fontSize:10, marginTop:6}}>Confirm to lock values and unlock soil + stream selection</div>}
                   </div>
-                  <Divider/>
-                  <SectionHdr icon="📡" title="D — Captured % of Mill Processing Capacity Used" color={C.teal}/>
-                  <div style={g3}>
-                    <BluField label="EFB %" value={s0.efbCapturePct}
-                      onChange={v=>upS0("efbCapturePct",Math.min(100,Math.max(0,+v)))}
-                      note={"= "+(+(efbMonthWet*(s0.efbCapturePct/100)).toFixed(0)).toLocaleString()+" t FW/mo"}/>
-                    <BluField label="OPDC %" value={s0.opdcCapturePct}
-                      onChange={v=>upS0("opdcCapturePct",Math.min(100,Math.max(0,+v)))}/>
-                    <BluField label="POME %" value={s0.pomeCapturePct}
-                      onChange={v=>upS0("pomeCapturePct",Math.min(100,Math.max(0,+v)))}/>
-                  </div>
-                  <div style={{background:C.pageBg, border:"1px solid rgba(255,255,255,0.08)", borderRadius:8, padding:12, marginTop:12}}>
-                    <SectionHdr icon="" title="E — Carbon Credits Preview" color={C.green}/>
-                    <div style={{color:C.grey, fontSize:10, marginTop:-6, marginBottom:10}}>Full methodology in the CO₂ tab</div>
-                    <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:8}}>
-                      {[
-                        {l:"Monthly CO₂e",   v:co2est.toLocaleString()+" t",   c:C.green},
-                        {l:"Annual CO₂e",    v:co2annual.toLocaleString()+" t", c:C.green},
-                        {l:"Annual Revenue", v:"$"+carbRev.toLocaleString(),    c:C.amber},
-                        {l:"Carbon Price",   v:"$"+cprice+"/t",                 c:C.amberLt},
-                      ].map((k,i)=>(
-                        <div key={i} style={{textAlign:"center", minWidth:0}}>
-                          <div style={{color:C.grey, fontSize:9, textTransform:"uppercase", letterSpacing:"0.07em", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>{k.l}</div>
-                          <div style={{color:k.c, fontSize:13, fontWeight:900, marginTop:4, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>{k.v}</div>
-                        </div>
-                      ))}
+                  {/* Monthly KPIs — only shown after confirmed */}
+                  {s0.capacityConfirmed && (
+                    <div style={{marginTop:12}}>
+                      <div style={g4}>
+                        <KPI label="Monthly FFB" value={monthFFB.toLocaleString()} unit="t/month" color={C.green}/>
+                        <KPI label="EFB Monthly" value={efbMonthWet.toLocaleString()} unit="t FW/month" color={C.teal}/>
+                        <KPI label="OPDC Monthly" value={(+(opdcNatTPD*s0.daysMonth).toFixed(0)).toLocaleString()} unit="t FW/month" color={C.amber}/>
+                        <KPI label="Effective FFB" value={effFFB} unit="TPH" color={C.green}/>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </Card>
 
               </div>
