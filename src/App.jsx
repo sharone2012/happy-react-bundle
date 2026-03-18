@@ -1442,8 +1442,13 @@ export default function CFI() {
   const [s0, setS0] = useState({
     plantName: "", millName: "", district: "", province: "", contact: "", rspo: "none",
     idCode: "", contactName: "", contactEmail: "",
+    estateName: "", estateArea: "", gpsLat: "", gpsLon: "",
     ffbCapacity: 60, utilisation: 85, hrsDay: 24, daysMonth: 30,
-    efbEnabled: true, opdcEnabled: true,  // FIX-01: efbPct/opdcPct removed — now formula-driven from actual yields
+    efbEnabled: false, opdcEnabled: false,
+    posEnabled: false, opfEnabled: false, optEnabled: false,
+    custom1Enabled: false, custom2Enabled: false,
+    capacityConfirmed: false, streamsConfirmed: false,
+    mixInputMode: "pct",
     efbMC: 62.5, opdcMC: 70, pksaMC: 5,  // BUG-01 FIX: EFB canonical MC = 62.5% wb
     pomeSludgeMC: 82,
     pomeSludgeDewatered: false,
@@ -1467,6 +1472,12 @@ export default function CFI() {
     dmppEnabled:    false,   // toggle — enables N₂O suppression credit pathway
     dmppDose:       1.5,     // kg DMPP per tonne frass (wet weight) — commercial range 1-2 kg/t
     dmppCostPerKg:  9,       // $/kg DMPP — commercial range $8-15/kg
+    // ── STREAM MIX (pct or kg) ──
+    efbMixPct: 0, opdcMixPct: 0, posMixPct: 0, opfMixPct: 0, optMixPct: 0,
+    pkeMixPct: 0, custom1MixPct: 0, custom2MixPct: 0,
+    efbMixKg: 0, opdcMixKg: 0, posMixKg: 0, opfMixKg: 0, optMixKg: 0,
+    pkeMixKg: 0, custom1MixKg: 0, custom2MixKg: 0,
+    custom1Label: "Custom 1", custom2Label: "Custom 2",
   });
 
   const upS0 = (k,v) => setS0(p=>({...p,[k]:v}));
