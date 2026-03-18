@@ -812,8 +812,8 @@ const CFI_MATERIALS = CFI_MATERIALS_CORE.concat(CFI_MATERIALS_ADD);
 const MOCK_SOLUTIONS = [
   {
     solution_id:"CFI-BIO-001", step:"biology", soil_type:"Ultisol",
-    title:"Trichoderma + Bacillus Consortia on EFB/OPDC 60:40",
-    substrate_context:{blend:"EFB 60:OPDC 40",DM_pct:38,MC_pct:65},
+    title:`Trichoderma + Bacillus Consortia on EFB/OPDC ${Math.round(pctEFB||89)}:${Math.round(pctOPDC||11)}`,  // FIX-05
+    substrate_context:{blend:`EFB ${Math.round(pctEFB||89)}:OPDC ${Math.round(pctOPDC||11)}`,DM_pct:38,MC_pct:65},
     biology_stack:{organisms:["Trichoderma asperellum ICBB-01","Bacillus subtilis ICBB-03"],dose:"2 kg/t"},
     process_conditions:{temp_C:45,moisture_pct:65,time_days:5,aeration:"forced"},
     product_metrics_before:{N_pct:1.20,P_pct:0.18,K_pct:0.80,CP_pct:8.14,CN_ratio:32},
@@ -1443,7 +1443,7 @@ export default function CFI() {
     plantName: "", millName: "", district: "", province: "", contact: "", rspo: "none",
     idCode: "", contactName: "", contactEmail: "",
     ffbCapacity: 60, utilisation: 85, hrsDay: 24, daysMonth: 30,
-    efbPct: 60, opdcPct: 40, efbEnabled: true, opdcEnabled: true,
+    efbEnabled: true, opdcEnabled: true,  // FIX-01: efbPct/opdcPct removed — now formula-driven from actual yields
     efbMC: 62.5, opdcMC: 70, pksaMC: 5,  // BUG-01 FIX: EFB canonical MC = 62.5% wb
     pomeSludgeMC: 82,
     pomeSludgeDewatered: false,
@@ -1482,22 +1482,24 @@ export default function CFI() {
   // OPDC: 15.2% of EFB fresh weight
   const opdcNatTPD= useMemo(()=> +(efbTPD * 0.152).toFixed(2), [efbTPD]);
   const opdcNatDM = useMemo(()=> +(opdcNatTPD * (100-s0.opdcMC)/100).toFixed(2), [opdcNatTPD, s0.opdcMC]);
-  // Required OPDC DM for 40% blend (dry basis)
-  // ── 3-STREAM BLEND: EFB% + OPDC% + POME% = 100% DM — POME auto-fills remainder ──
-  const pomePct       = +Math.max(0, 100 - s0.efbPct - s0.opdcPct).toFixed(2);
-  const pomeActive    = s0.pomeEnabled || pomePct > 0.09;
-  const blendOK       = true; // always valid — pomePct auto-fills remainder
-  const totalDMTarget = s0.efbPct > 0 ? efbDMpd / (s0.efbPct / 100) : 0;
-  const opdcDMreq     = useMemo(()=> +(totalDMTarget * (s0.opdcPct / 100)).toFixed(1), [totalDMTarget, s0.opdcPct]);
-  const opdcShortfall = useMemo(()=> +(opdcDMreq - opdcNatDM).toFixed(1), [opdcDMreq, opdcNatDM]);
+  // ── FIX-01/09: OPDC uses actual decanter yield — no phantom totalDMTarget ──
+  // Natural ratio at 60 TPH: EFB ~89% DM / OPDC ~11% DM. Formula-driven, not user-set.
+  const opdcDMreq     = opdcNatDM;  // OPDC supply = actual decanter output (15.2% of EFB FW × DM frac)
+  const opdcShortfall = 0;          // No shortfall — we use what the mill produces
+  // FIX-03: pomeActive governed by user toggle only — POS inclusion via Fe gate, not blend remainder
+  const pomeActive    = s0.pomeEnabled;
+  const blendOK       = true;
   // Monthly substrate entering Stage 3
   const s1_efbMonthDM  = +(efbDMpd * s0.daysMonth).toFixed(0);
   const s1_opdcMonthDM = +(opdcDMreq * s0.daysMonth).toFixed(0);
   const s1_blendDM     = +(s1_efbMonthDM + s1_opdcMonthDM).toFixed(0);
-  // ── BLEND MC (wet-weight-weighted — correct formula) ──
+  // ── BLEND MC (wet-weight-weighted — FIX-10: uses natural tonnage fractions not phantom 60:40) ──
   const efbDMfrac2     = (100 - s0.efbMC) / 100;
   const opdcDMfrac2    = (100 - s0.opdcMC) / 100;
-  const blendWetPerDM  = (s0.efbPct/100) / efbDMfrac2 + (s0.opdcPct/100) / opdcDMfrac2;
+  const _baseTotalDM   = efbDMpd + opdcDMreq;
+  const _pctEFB_w      = _baseTotalDM > 0 ? efbDMpd / _baseTotalDM : 0.89;
+  const _pctOPDC_w     = _baseTotalDM > 0 ? opdcDMreq / _baseTotalDM : 0.11;
+  const blendWetPerDM  = _pctEFB_w / efbDMfrac2 + _pctOPDC_w / opdcDMfrac2;
   const blendMC        = +(100 * (1 - 1/blendWetPerDM)).toFixed(1);
   const blendDMfrac    = (100 - blendMC)/100;
   const s1_blendWet    = +(s1_blendDM / blendDMfrac).toFixed(0);
@@ -1513,9 +1515,9 @@ export default function CFI() {
     : pomeFe < 3000 ? "LOW" : pomeFe < 5000 ? "MODERATE" : pomeFe < 8000 ? "HIGH" : "CRITICAL";
   const pomeSludgeMaxPct   = isNaN(pomeFe) ? 20
     : pomeFe < 3000 ? 20 : pomeFe < 5000 ? 15 : pomeFe < 8000 ? 10 : 5;
-  // Auto-calculated from DM remainder
+  // FIX-03/09: POS inclusion driven by Fe gate max %, not blend remainder phantom total
   const pomeSludgeEnabled  = pomeActive;
-  const pomeDMreq          = +(totalDMTarget * (pomePct / 100)).toFixed(2);
+  const pomeDMreq          = +(pomeSludgeNatTPD * (pomeSludgeMaxPct/100) * pomeSludgeDMfrac).toFixed(2);  // Fe-gate capped
   const pomeWetReq         = pomeSludgeDMfrac > 0 ? +(pomeDMreq / pomeSludgeDMfrac).toFixed(1) : 0;
   const pomeSupplyOK       = pomeWetReq <= pomeSludgeNatTPD * 1.001;
   const pomeShortfall      = +Math.max(0, pomeWetReq - pomeSludgeNatTPD).toFixed(1);
@@ -1637,9 +1639,13 @@ export default function CFI() {
   // Blend C:N (DM-weighted)
   const blendCN_efb    = efbDMpd * 8.5 * 60;    // EFB N=8.5 kg/t DM (0.85% measured) × C:N 60
   const blendCN_opdc   = opdcDMreq * 26.0 * 20;  // OPDC N=26.0 kg/t DM (2.60% locked) × C:N 20
-  const blendCN_pome   = pomeSludgeInclDMpd * 17.6 * 15;  // POS N=17.6 kg/t DM (1.76% measured) × C:N 15
-  const blendCN_pke    = pkeDMpd * 28.8 * 15;   // PKE N=28.8 kg/t DM (CP18/6.25 — feed basis) × C:N 15
-  const blendCN_totalN = efbN_kgpd + opdcN_kgpd + pomeN_kgpd + pkeNpd;
+  // FIX-02: POS C:N is a CONFIRMED DATA GAP — no peer-reviewed value for centrifuge discharge POS
+  // C:N=15 is unverified. Excluded from blendCN until ICP-OES result received (Balai Penelitian Tanah Bogor).
+  const POS_CN_DATAGAP = true;
+  const blendCN_pome   = 0;  // FIX-02: POS excluded from C:N calc — DATA GAP
+  const pkeCN_calc     = 45 / 3.86;  // FIX-11: formula-driven; pkeC=45% DM, pkeN=3.86% DM → C:N≈11.7
+  const blendCN_pke    = pkeDMpd * 28.8 * pkeCN_calc;  // PKE N=28.8 kg/t DM × C:N 11.7
+  const blendCN_totalN = efbN_kgpd + opdcN_kgpd + (POS_CN_DATAGAP ? 0 : pomeN_kgpd) + pkeNpd;  // FIX-02: POS excluded
   const blendCN_totalC = blendCN_efb + blendCN_opdc + blendCN_pome + blendCN_pke;
   const blendCN        = blendCN_totalN > 0 ? +(blendCN_totalC / blendCN_totalN).toFixed(1) : null;
 
@@ -1848,12 +1854,17 @@ export default function CFI() {
 
   // ── FULL PIPELINE LAB DERIVATION (formula-driven, responds to S2+S3 choices) ──────────────
   // S0 raw blend baseline
-  const lab_s0_lignin  = blendCN ? +(s0.efbPct/100*22 + s0.opdcPct/100*30.7 + (pomeActive?pomePct/100*7.6:0)).toFixed(1) : 25;
+  // FIX-04: use actual DM fractions (~89% EFB / ~11% OPDC) not phantom efbPct/opdcPct
+  const _labTotalDM   = efbDMpd + opdcDMreq + (pomeActive ? pomeSludgeInclDMpd : 0);
+  const _labEFBfrac   = _labTotalDM > 0 ? efbDMpd / _labTotalDM : 0.89;
+  const _labOPDCfrac  = _labTotalDM > 0 ? opdcDMreq / _labTotalDM : 0.11;
+  const _labPOMEfrac  = _labTotalDM > 0 && pomeActive ? pomeSludgeInclDMpd / _labTotalDM : 0;
+  const lab_s0_lignin  = blendCN ? +(_labEFBfrac*22 + _labOPDCfrac*30.7 + _labPOMEfrac*7.6).toFixed(1) : 25;
   const lab_s0_CN      = blendCN || 32;
   const lab_s0_N       = +(totalDMpd>0 ? totalN_kgpd/totalDMpd/10 : 0.95).toFixed(2);
   const lab_s0_P       = +(totalDMpd>0 ? totalP_kgpd/totalDMpd/10 : 0.14).toFixed(2);
   const lab_s0_K       = +(totalDMpd>0 ? totalK_kgpd/totalDMpd/10 : 0.83).toFixed(2);
-  const lab_s0_OM      = +(s0.efbPct/100*85 + s0.opdcPct/100*78 + (pomeActive?pomePct/100*72:0) + (s0.pkeEnabled?pctPKE/100*82:0)).toFixed(1);
+  const lab_s0_OM      = +(_labEFBfrac*85 + _labOPDCfrac*78 + _labPOMEfrac*72 + (s0.pkeEnabled?pctPKE/100*82:0)).toFixed(1);  // FIX-04
   const lab_s0_CP      = blendCP || 8.0;
   const lab_s0_pH      = 5.5;
 
@@ -2525,21 +2536,21 @@ export default function CFI() {
                     <ResidueCard label="PKE" active={s0.pkeEnabled} onClick={()=>upS0("pkeEnabled",!s0.pkeEnabled)} sublabel="Palm Kernel Expeller (Protein Booster)"/>
                   </div>
                   <Divider/>
-                  {/* Blend fraction header */}
+                  {/* FIX-01: Blend fractions are formula-driven — read-only display, not user-editable */}
                   <div style={{textAlign:"center", marginBottom:4}}>
-                    <div style={{color:C.teal, fontWeight:800, fontSize:12, letterSpacing:"0.05em"}}>Choose Blend — Enter % (total must be 100%)</div>
-                    <div style={{color:C.grey, fontSize:10, marginTop:4}}>Blend Fraction (DM Basis) %</div>
+                    <div style={{color:C.teal, fontWeight:800, fontSize:12, letterSpacing:"0.05em"}}>Blend Composition — Natural Mill Yield (DM Basis)</div>
+                    <div style={{color:C.grey, fontSize:10, marginTop:4}}>Auto-calculated from FFB throughput — not user-editable</div>
                   </div>
                   <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:10, marginBottom:12}}>
-                    {/* EFB */}
+                    {/* EFB — read-only */}
                     <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
                       <div style={{color:C.teal, fontWeight:700, fontSize:11, textAlign:"center"}}>EFB</div>
-                      <input style={{background:"#142030", border:`1px solid ${C.teal}66`, borderRadius:6,
-                        color:C.white, padding:"8px 0", fontSize:15, fontWeight:700,
-                        width:"100%", outline:"none", boxSizing:"border-box", textAlign:"center"}}
-                        value={s0.efbPct}
-                        onChange={e=>e.target.value}
-                        onBlur={e=>{const nv=Math.min(+e.target.value,100); upS0("efbPct",nv); if(nv + s0.opdcPct > 100) upS0("opdcPct",+(100-nv).toFixed(1));}}/>
+                      <div style={{background:"#0A1624", border:`1px solid ${C.teal}44`, borderRadius:6,
+                        color:C.teal, padding:"8px 0", fontSize:15, fontWeight:700,
+                        width:"100%", boxSizing:"border-box", textAlign:"center"}}>
+                        {pctEFB > 0 ? pctEFB+"%" : "—"}
+                      </div>
+                      <div style={{color:C.grey, fontSize:9, textAlign:"center"}}>calculated</div>
                     </div>
                     {/* POME Sludge */}
                     <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
@@ -2547,19 +2558,19 @@ export default function CFI() {
                       <div style={{background:"#0A1624", border:`1px solid #4A9EDB44`, borderRadius:6,
                         color:pomeActive?"#4A9EDB":C.grey, padding:"8px 0", fontSize:15, fontWeight:700,
                         width:"100%", boxSizing:"border-box", textAlign:"center", lineHeight:"1.4"}}>
-                        {pomeActive ? pomePct+"%" : "—"}
+                        {pomeActive ? pctPOME+"%" : "—"}
                       </div>
-                      <div style={{color:C.grey, fontSize:9, textAlign:"center"}}>auto-fills</div>
+                      <div style={{color:C.grey, fontSize:9, textAlign:"center"}}>Fe-gated</div>
                     </div>
-                    {/* OPDC */}
+                    {/* OPDC — read-only */}
                     <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
                       <div style={{color:C.amber, fontWeight:700, fontSize:11, textAlign:"center"}}>OPDC</div>
-                      <input style={{background:"#142030", border:`1px solid ${C.amber}66`, borderRadius:6,
-                        color:C.white, padding:"8px 0", fontSize:15, fontWeight:700,
-                        width:"100%", outline:"none", boxSizing:"border-box", textAlign:"center"}}
-                        value={s0.opdcPct}
-                        onChange={e=>e.target.value}
-                        onBlur={e=>{const nv=Math.min(+e.target.value,100); upS0("opdcPct",nv); if(nv + s0.efbPct > 100) upS0("efbPct",+(100-nv).toFixed(1));}}/>
+                      <div style={{background:"#0A1624", border:`1px solid ${C.amber}44`, borderRadius:6,
+                        color:C.amber, padding:"8px 0", fontSize:15, fontWeight:700,
+                        width:"100%", boxSizing:"border-box", textAlign:"center"}}>
+                        {pctOPDC > 0 ? pctOPDC+"%" : "—"}
+                      </div>
+                      <div style={{color:C.grey, fontSize:9, textAlign:"center"}}>calculated</div>
                     </div>
                     {/* PKE */}
                     <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:4}}>
@@ -2619,7 +2630,7 @@ export default function CFI() {
                     )}
                     {!pomeActive && <div style={{color:C.grey, fontSize:10, marginTop:5}}>Lower EFB% or OPDC% below 100 total to activate POME auto-fill.</div>}
                   </div>
-                  <Warn type="ok" msg={"EFB "+s0.efbPct+"% + OPDC "+s0.opdcPct+"%" + (pomeActive?" + POME "+pomePct+"%":"")+" = 100% DM ✓"}/>
+                  <Warn type="ok" msg={"EFB "+pctEFB+"% + OPDC "+pctOPDC+"%" + (pomeActive?" + POME "+pctPOME+"%":"")+" — Natural Mill Yield ✓"}  /* FIX-01 *//>
                   <Divider/>
                   <div style={g3}>
                     <CalcField label="Blended Moisture" unit="%" value={blendMC}/>
@@ -5704,7 +5715,7 @@ export default function CFI() {
                 <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0 20px"}}>
                   <div><span style={{color:C.teal}}>Plantation:</span> {s0.plantName || "—"} | <span style={{color:C.teal}}>Mill:</span> {s0.millName || "—"}</div>
                   <div><span style={{color:C.teal}}>Soil:</span> {SOILS.find(s=>s.id===s0.soil)?.name} | <span style={{color:C.teal}}>AG:</span> {AG_TIERS.find(a=>a.id===s0.ag)?.name}</div>
-                  <div><span style={{color:C.amber}}>Blend:</span> EFB {s0.efbPct}% + OPDC {s0.opdcPct}% (DM basis) | MC {blendMC}% | C:N {blendCN||"—"}
+                  <div><span style={{color:C.amber}}>Blend:</span> EFB {pctEFB}% + OPDC {pctOPDC}% (DM basis, natural yield) | MC {blendMC}% | C:N {blendCN||"—"}
                     {pomeActive && <span style={{color:C.blue}}> + POME Sludge {pomeSludgeInclTPD} t/day ({pomeSludgeInclPct}% WW, Fe: {pomeSludgeFeStatus})</span>}
                     {s0.pkeEnabled && <span style={{color:C.amber}}> + PKE {s0.pkeTPD} t/day</span>}
                   </div>
@@ -5772,7 +5783,7 @@ export default function CFI() {
 
       {/* ── FOOTER ── */}
       <div style={{textAlign:"center", color:C.grey, fontSize:10, marginTop:20, borderTop:`1px solid ${C.inputSectionBg}`, paddingTop:12}}>
-        CFI Bioconversion System · S0→S6 + Carbon Credits · All 31 Chemicals · All 40 Organisms · Bt NOW ALLOWED (timing-critical) · IPCC FOD + COD Carbon Model · Nutrient Ledger S0→S6 · Orchestration Layer · Core: EFB OPDC POS · Additives: PKE PMF fronds CPO · Supabase LIVE · v24b · NPK LOCKED: EFB N=0.85% P=0.30% K=2.0%; OPDC N=2.60% P=0.45% K=1.80%; PKE N=2.88% (feed ÷6.25); all high-yield estate sources
+        CFI Bioconversion System · S0→S6 + Carbon Credits · All 31 Chemicals · All 40 Organisms · Bt NOW ALLOWED (timing-critical) · IPCC FOD + COD Carbon Model · Nutrient Ledger S0→S6 · Orchestration Layer · Core: EFB OPDC POS · Additives: PKE PMF fronds CPO · Supabase LIVE · v26 — FIX-01→11 applied · NPK LOCKED: EFB N=0.85% P=0.30% K=2.0%; OPDC N=2.60% P=0.45% K=1.80%; PKE N=2.88% (feed ÷6.25); all high-yield estate sources
       </div>
     </div>
   );
