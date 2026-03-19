@@ -1,4 +1,6 @@
 import { useState, useMemo, useRef, useCallback, useEffect } from "react";
+import LoginPage from "./LoginPage";
+import { supabase } from "@/integrations/supabase/client";
 
 
 // ─── SUPABASE LIVE CONNECTION ─────────────────────────────────────────────────
@@ -1391,6 +1393,13 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
 
 // ─── MAIN APP ─────────────────────────────────────────────────────────────────
 export default function CFI() {
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session: s } }) => setSession(s));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => setSession(s));
+    return () => subscription.unsubscribe();
+  }, []);
   const [stage, setStage] = useState(0);
   const [tabsSeen, setTabsSeen]         = useState(new Set([0]));
   const [searchesUsed, setSearchesUsed] = useState(0);
@@ -2288,6 +2297,8 @@ export default function CFI() {
     link.href = "https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;600;700&family=DM+Mono:wght@500;700&display=swap";
     document.head.appendChild(link);
   }, []);
+
+  if (!session) return <LoginPage onLoginSuccess={() => {}} />;
 
   return (
     <div style={{background:C.pageBg, minHeight:"100vh", fontFamily:"'DM Sans', sans-serif",
