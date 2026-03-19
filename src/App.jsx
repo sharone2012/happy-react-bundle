@@ -1,4 +1,6 @@
 import { useState, useMemo, useRef, useCallback, useEffect } from "react";
+import LoginPage from "./LoginPage";
+import { supabase } from "@/integrations/supabase/client";
 
 
 // ─── SUPABASE LIVE CONNECTION ─────────────────────────────────────────────────
