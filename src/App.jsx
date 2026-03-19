@@ -2298,6 +2298,8 @@ export default function CFI() {
     document.head.appendChild(link);
   }, []);
 
+  if (!session) return <LoginPage onLoginSuccess={() => {}} />;
+
   return (
     <div style={{background:C.pageBg, minHeight:"100vh", fontFamily:"'DM Sans', sans-serif",
                  color:C.white, padding:"0 0 40px"}}>
