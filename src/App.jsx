@@ -1393,6 +1393,13 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
 
 // ─── MAIN APP ─────────────────────────────────────────────────────────────────
 export default function CFI() {
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session: s } }) => setSession(s));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => setSession(s));
+    return () => subscription.unsubscribe();
+  }, []);
   const [stage, setStage] = useState(0);
   const [tabsSeen, setTabsSeen]         = useState(new Set([0]));
   const [searchesUsed, setSearchesUsed] = useState(0);
