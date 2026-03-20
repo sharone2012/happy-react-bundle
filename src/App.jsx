@@ -2372,7 +2372,7 @@ export default function CFI() {
       </div>
 
       {/* ── CONTENT ── */}
-      <div style={{padding:"16px 22px 60px", maxWidth:1200, margin:"0 auto"}}>
+      <div style={{padding:"16px 22px 60px", minWidth:1400, margin:"0 auto"}}>
 
         {/* ════════════════════ S T A G E  0 ════════════════════ */}
         {stage===0 && (
@@ -2426,10 +2426,10 @@ export default function CFI() {
               </div>
             </div>
 
-            {/* ── TWO-COLUMN ROW ── */}
-            <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:16, alignItems:"start"}}>
+            {/* ── ROW 1: A | B | C | G — 4 columns ── */}
+            <div style={{display:"grid", gridTemplateColumns:"repeat(4, 1fr)", gap:16, alignItems:"start"}}>
 
-              {/* ════ LEFT COLUMN ════ */}
+              {/* ════ COL 1: A ════ */}
               <div style={{display:"flex", flexDirection:"column", gap:16}}>
 
                 {/* ── A: SITE IDENTITY ── */}
@@ -2506,11 +2506,18 @@ export default function CFI() {
                   );
                 })()}
 
-                {/* ── B: MILL CAPACITY ── */}
+              </div>
+
+              {/* ════ COL 2: B ════ */}
+              <div style={{display:"flex", flexDirection:"column", gap:16}}>
+                {/* ── B: CPO MILL PROCESSING ── */}
                 <Card>
-                  <SectionHdr icon="" title="B — Oil Palm Mill Fresh Fruit Bunch Processing Capacity" color={C.teal}/>
+                  <SectionHdr icon="" title="B — CPO Mill Processing" color={C.teal}/>
+                  <div style={{fontFamily:"'DM Sans', sans-serif",fontSize:11,color:"rgba(168,189,208,0.55)",padding:"0 14px 8px",marginTop:-4}}>
+                    Auto-detected · Override available
+                  </div>
                   <div style={{display:"flex", justifyContent:"center"}}>
-                    <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"24px 48px", maxWidth:520}}>
+                    <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"16px 24px", maxWidth:520}}>
                       {/* Row 1: FFB Processing | Capacity Utilisation */}
                       <div style={{display:"flex", flexDirection:"column", alignItems:"flex-end", gap:6}}>
                         <div style={{textAlign:"right"}}>
@@ -2588,17 +2595,17 @@ export default function CFI() {
                   )}
                 </Card>
 
-            </div>
+              </div>
 
-              {/* ════ RIGHT COLUMN ════ */}
+              {/* ════ COL 3: C ════ */}
               <div style={{display:"flex", flexDirection:"column", gap:16}}>
 
                 {/* ── C: SOIL TYPE & AG MANAGEMENT — only after mill capacity confirmed ── */}
                 {s0.capacityConfirmed && (
                 <Card>
-                  <SectionHdr icon="🌍" title="C — Soil Type &amp; Agronomy Management" color={C.teal}/>
+                  <SectionHdr icon="" title="C — Soil Type &amp; Agronomy Management" color={C.teal}/>
                   <div style={{display:"block", color:C.grey, fontSize:10, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.09em", marginBottom:8}}>Indonesian Soil Classification</div>
-                  <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8, marginBottom:8}}>
+                  <div style={{display:"grid", gridTemplateColumns:"1fr", gap:6, marginBottom:8}}>
                     {[...SOILS, {id:"andisol", name:"Andisols", pct:"2%", ph:"5.2", cec:"22.0", desc:"Volcanic, high fertility", nAdj:-0.20, pAdj:-0.30, dmppEfficacy:0.32, dmppNote:"Volcanic — moderate N₂O."}].map(so=>(
                       <div key={so.id} onClick={()=>upS0("soil",so.id)}
                         style={{background:s0.soil===so.id?C.teal+"20":C.pageBg,
@@ -2632,12 +2639,107 @@ export default function CFI() {
                 </Card>
                 )}
 
+              </div>
+
+              {/* ════ COL 4: G — PKE ════ */}
+              <div style={{display:"flex", flexDirection:"column", gap:16}}>
+                <Card>
+                  <SectionHdr icon="" title="G — PKE Palm Kernel Expeller (Protein Booster — Optional)" color={C.amber}/>
+                  <div style={{display:"flex", alignItems:"center", gap:16, marginBottom:s0.pkeEnabled?16:0, flexWrap:"wrap"}}>
+                    <label style={{display:"flex", alignItems:"center", gap:10, cursor:"pointer"}}>
+                      <input type="checkbox" checked={s0.pkeEnabled}
+                        onChange={e=>upS0("pkeEnabled",e.target.checked)}
+                        style={{accentColor:C.amber, width:16, height:16, cursor:"pointer"}}/>
+                      <span style={{color:s0.pkeEnabled?C.amber:C.grey, fontWeight:700, fontSize:13}}>
+                        Include PKE — Purchased Protein Booster (raises substrate CP for BSF)
+                      </span>
+                    </label>
+                    <Badge text="$160 / t wet" color={C.amber}/>
+                    <Badge text="NOT MILL WASTE — PURCHASED INPUT" color={C.red}/>
+                  </div>
+                  {s0.pkeEnabled && (
+                    <div>
+                      <div style={{background:"#0A1624", border:"1px solid rgba(155,89,182,0.3)",
+                        borderRadius:8, padding:"12px 14px", marginBottom:12}}>
+                        <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, alignItems:"center"}}>
+                          <div>
+                            <div style={{color:C.grey, fontSize:10, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:6}}>
+                              C:N Target <span style={{color:"#9B59B6aa", fontSize:9}}>[BSF optimum 15–25]</span>
+                            </div>
+                            <input type="number" min={15} max={35} step={1}
+                              value={s0.cnTarget}
+                              onChange={e=>upS0("cnTarget",+e.target.value)}
+                              style={{background:"#142030", border:"1px solid #9B59B655",
+                                borderRadius:6, color:C.white, padding:"8px 12px",
+                                fontSize:14, fontWeight:700, width:"100%",
+                                outline:"none", boxSizing:"border-box"}}/>
+                          </div>
+                          <div style={{background:C.pageBg, borderRadius:8, padding:"10px 14px"}}>
+                            <div style={{color:C.grey, fontSize:9, textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:4}}>
+                              Recommended PKE to hit C:N {s0.cnTarget}
+                            </div>
+                            <div style={{color:"#9B59B6", fontSize:17, fontWeight:900, fontFamily:"'DM Mono', monospace"}}>
+                              {pkeRecWet > 0 ? pkeRecWet+" t/day" : "Not required"}
+                            </div>
+                            {pkeRecWet > 0 && (
+                              <div style={{color:C.grey, fontSize:9, marginTop:3}}>
+                                Base C:N {baseCN3} → with {pkeRecWet} t/day PKE → {s0.cnTarget}
+                              </div>
+                            )}
+                            {pkeRecWet === 0 && (
+                              <div style={{color:C.green, fontSize:9, marginTop:3}}>
+                                Blend already at or below C:N {s0.cnTarget}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:12}}>
+                        <BluField label="PKE Addition Rate" unit="t/day wet"
+                          value={s0.pkeTPD} onChange={v=>upS0("pkeTPD",+v)}
+                          note={"Rec: "+pkeRecWet+" t/day for C:N "+s0.cnTarget}/>
+                        <CalcField label="PKE Dry Matter" unit="t DM/day" value={pkeDM}/>
+                      </div>
+                      <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:12}}>
+                        <CalcField label="PKE % of Total DM" unit="% substrate" value={pctPKE+"%"}/>
+                        <CalcField label="Daily PKE Cost" unit="USD/day" value={"$"+pkeCost.toLocaleString()}/>
+                      </div>
+                      {pkeRecWet > 0 && Math.abs(s0.pkeTPD - pkeRecWet) > 0.5 && (
+                        <Warn msg={"Recommended dose for C:N "+s0.cnTarget+" is "+pkeRecWet+" t/day. Current: "+s0.pkeTPD+" t/day."}/>
+                      )}
+                      {pkeRecWet > 0 && Math.abs(s0.pkeTPD - pkeRecWet) <= 0.5 && (
+                        <Warn type="ok" msg={"PKE dose matches C:N "+s0.cnTarget+" target."}/>
+                      )}
+                      <div style={{background:C.pageBg, borderRadius:6, padding:"10px 14px",
+                        display:"flex", flexWrap:"wrap", gap:"12px 28px", marginTop:8}}>
+                        <span style={{color:C.grey, fontSize:11}}>
+                          <span style={{color:C.amber, fontWeight:700}}>PKE profile: </span>
+                          CP 18% DM · N 3.86% DM · C:N 15 · Lignin 12.4% ADL · MC 12% · Fat 9% DM
+                        </span>
+                        <span style={{color:C.grey, fontSize:11}}>
+                          <span style={{color:C.red, fontWeight:700}}>Monthly cost: </span>
+                          {"$"+(pkeCost*s0.daysMonth).toLocaleString()}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </Card>
+              </div>
+
+            </div>
+
+            {/* ── ROW 2: D | E | F | H — 4 columns ── */}
+            <div style={{display:"grid", gridTemplateColumns:"repeat(4, 1fr)", gap:16, alignItems:"start", marginTop:16}}>
+
+              {/* ════ COL 1: D — STREAM SELECTION ════ */}
+              <div style={{display:"flex", flexDirection:"column", gap:16}}>
+
                 {/* ── D: STREAM SELECTION — 9 streams, all starting OFF ── */}
                 {s0.capacityConfirmed && (
                 <Card>
                   <SectionHdr icon="" title="D — Select Residue Streams" color={C.teal}/>
                   <div style={{color:C.grey, fontSize:10, marginBottom:10}}>Toggle streams ON/OFF. EFB off will auto-deselect OPDC. POME is locked (liquid — sent to pond).</div>
-                  <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8}}>
+                  <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8}}>
                     {[
                       {key:"efbEnabled",     label:"EFB",     sub:"Empty fruit bunches"},
                       {key:"opdcEnabled",    label:"OPDC",    sub:"Oil palm decanter cake", needsEfb:true},
@@ -2731,15 +2833,32 @@ export default function CFI() {
                 })()}
 
               </div>
-            </div>
 
-            {/* ── FULL-WIDTH SECTIONS BELOW ── */}
-            <div style={{display:"flex", flexDirection:"column", gap:16, marginTop:16}}>
+              {/* ════ COL 2: E — BLEND ANALYSIS ════ */}
+              <div style={{display:"flex", flexDirection:"column", gap:16}}>
+                <Card>
+                  <SectionHdr icon="" title="E — Blend Analysis" color={C.amber}/>
+                  <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8}}>
+                    <KPI label="Total DM" value={(efbDMpd+opdcDMreq+pomeSludgeInclDMpd+pkeDMpd).toFixed(1)} unit="t DM/day" color={C.teal}/>
+                    <KPI label="Blend C:N" value={blendCN||"—"} unit="ratio" color={blendCN&&blendCN<=25?C.green:blendCN&&blendCN<=35?C.amber:C.red}/>
+                    <KPI label="Blend CP" value={blendCP?blendCP.toFixed(1)+"%":"—"} unit="crude protein" color={blendCP&&blendCP>=8?C.green:C.amber}/>
+                    <KPI label="Blend MC" value={blendMC?blendMC+"%":"—"} unit="moisture" color={C.blue}/>
+                  </div>
+                  {blendCN && (
+                    <div style={{marginTop:8}}>
+                      {blendCN>=15&&blendCN<=25 && <Warn type="ok" msg={"C:N "+blendCN+" — OPTIMAL (15–25)"}/>}
+                      {blendCN>25&&blendCN<=35  && <Warn type="warn" msg={"C:N "+blendCN+" — MARGINAL (target 15–25)"}/>}
+                      {blendCN>35 && <Warn msg={"C:N "+blendCN+" — HIGH. Add POME/PKE."}/>}
+                    </div>
+                  )}
+                </Card>
+              </div>
 
-              {/* ── F: POME SLUDGE ── */}
+              {/* ════ COL 3: F — POME SLUDGE ════ */}
+              <div style={{display:"flex", flexDirection:"column", gap:16}}>
               <Card>
-                <SectionHdr icon="" title="F — POME Sludge (Third Waste Stream)" color={C.blue}/>
-                <div style={{display:"flex", alignItems:"center", gap:16, marginBottom:16}}>
+                <SectionHdr icon="" title="F — POME Sludge" color={C.blue}/>
+                <div style={{display:"flex", alignItems:"center", gap:8, marginBottom:12, flexWrap:"wrap"}}>
                   <div style={{display:"flex", alignItems:"center", gap:10}}>
                     <input type="checkbox" checked={pomeActive} readOnly
                       style={{accentColor:C.blue, width:16, height:16, cursor:"default"}}/>
