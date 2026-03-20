@@ -257,84 +257,22 @@ export default function SiteSetup() {
       {/* ── PAGE CONTENT ── */}
       <div style={{ padding:'16px 22px 80px', minWidth:1400 }}>
 
-        {/* ════ ROW 1: SectionAB | C | G ════ */}
-        <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr', gap:14, alignItems:'stretch', marginBottom:16 }}>
-
-          {/* ── A+B: SITE DETAILS + MILL PROCESSING (Supabase-connected) ── */}
+        {/* ════ ROW 1: A (1fr) + B (2fr) ════ */}
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 2fr', gap:16, marginBottom:16 }}>
           <SectionAB onSiteConfirmed={handleSiteData} siteId={siteId} setSiteId={setSiteId} />
+        </div>
+
+        {/* ════ ROW 2: C (1fr) + D (1fr) ════ */}
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16, marginBottom:16 }}>
           <SectionC
             siteId={siteId}
             gpsSoilSuggestion={siteData?.soilSuggestion || null}
             onSoilConfirmed={(data) => setSoilData(data)}
           />
-
-          {/* ── C: MILL MONTHLY RESULTS ── */}
-          <div style={card}>
-            <div style={secTitle}>C — Mill Monthly Results</div>
-            <div style={secSub}>Calculated from mill capacity inputs</div>
-            <div style={cbody}>
-              <div style={{ textAlign:'center', padding:'10px 0' }}>
-                <div style={{ fontSize:11, color:C.grey, marginBottom:4 }}>FFB Processed</div>
-                <div style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:22, color:C.amber }}>
-                  {fmtT(ffbMonth)} <span style={{ fontSize:12, color:C.grey }}>t/month</span>
-                </div>
-              </div>
-              <div style={{ textAlign:'center', fontSize:16, color:C.grey }}>↓</div>
-              <div style={{ textAlign:'center', padding:'6px 0' }}>
-                <div style={{ fontSize:11, color:C.grey, marginBottom:4 }}>EFB Discharged</div>
-                <div style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:18, color:C.amber }}>
-                  {fmtT(maxT.efb)} <span style={{ fontSize:12, color:C.grey }}>t/month</span>
-                </div>
-              </div>
-              <div style={{ fontSize:11, color:C.grey, fontWeight:700, marginTop:8, marginBottom:4 }}>Additional CPO Mill Residues</div>
-              <div style={grid2}>
-                {[
-                  { lbl:'Decanter Cake', val:maxT.opdc },
-                  { lbl:'Palm Oil Sludge', val:maxT.pos },
-                ].map(r=>(
-                  <div key={r.lbl} style={mixCell}>
-                    <span style={{ fontSize:11, color:C.grey }}>{r.lbl}</span>
-                    <span style={{ fontFamily:Fnt.mono, fontSize:12, fontWeight:700, color:C.amber }}>{fmtT(r.val)} t/month</span>
-                  </div>
-                ))}
-                <div style={mixCell}>
-                  <span style={{ fontSize:11, color:C.grey }}>POME Liquid</span>
-                  <span style={{ fontFamily:Fnt.mono, fontSize:12, fontWeight:700, color:C.amber }}>{fmtT(maxT.pome)} t/month</span>
-                </div>
-                <div style={mixCell}>
-                  <div>
-                    <span style={{ fontSize:11, color:C.grey }}>Palm Mesocarp Fiber</span>
-                    <div style={{ fontFamily:Fnt.mono, fontSize:12, fontWeight:700, color:C.amber }}>{fmtT(maxT.pmf)} t/month</div>
-                  </div>
-                  <span style={{ fontSize:9, color:C.grey }}>Does Mill Have Boiler?</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* ── G: SOIL ORIGIN ── */}
-          <div style={card}>
-            <div style={secTitle}>G — Soil Origin</div>
-            <div style={secSub}>Auto-detected · Override available</div>
-            <div style={cbody}>
-              <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
-                {SOILS.map(s=>(
-                  <div key={s.id} onClick={()=>setSelectedSoil(s.id)} style={{ background:selectedSoil===s.id?C.tealDim:C.navyDeep, border:'1.5px solid '+(selectedSoil===s.id?C.tealBdr:C.bdrCalc), borderRadius:8, padding:'20px 24px', cursor:'pointer', transition:'all 0.12s' }}>
-                    <div style={{ fontFamily:Fnt.syne, fontSize:14, fontWeight:700, color:selectedSoil===s.id?C.teal:C.grey }}>
-                      {s.name}{s.peat? <span style={{ color:C.red, fontSize:10, marginLeft:6 }}>(Peat)</span>:null}{selectedSoil===s.id?' ✓':''}
-                    </div>
-                    <div style={{ fontSize:11, color:C.grey, marginTop:2 }}>pH {s.ph} · CEC {s.cec}</div>
-                    <div style={{ fontSize:10, color:'rgba(168,189,208,0.5)', marginTop:2 }}>{s.cov}</div>
-                  </div>
-                ))}
-              </div>
-              <div style={{ marginTop:10, padding:'10px 13px', background:C.navyDeep, borderRadius:8, border:'1px solid '+C.bdrCalc }}>
-                <div style={{ fontFamily:Fnt.syne, fontSize:13, fontWeight:700, color:C.teal, marginBottom:6 }}>{soilData.name}</div>
-                {soilData.pills.map((p,i)=>(<span key={i} style={chips[p.cls]}>{p.txt}</span>))}
-              </div>
-            </div>
-          </div>
-
+          <SectionD
+            siteId={siteId}
+            onStreamsChanged={(data) => setStreamData(data)}
+          />
         </div>
 
         {/* ════ ROW 2: D | E | F | G-TOTAL ════ */}
