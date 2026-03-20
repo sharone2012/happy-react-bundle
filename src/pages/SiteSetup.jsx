@@ -68,6 +68,7 @@ export default function SiteSetup() {
   const [siteId, setSiteId] = useState(null);
   const [siteData, setSiteData] = useState(null);
   const [soilData, setSoilData] = useState(null);
+  const [streamData, setStreamData] = useState(null);
   const handleSiteData = useCallback((data) => {
     setSiteData(data);
     if (data.monthlyFFB) {
