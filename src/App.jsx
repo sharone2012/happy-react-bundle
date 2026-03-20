@@ -2496,6 +2496,30 @@ export default function CFI() {
                             <div style={{fontFamily:"'DM Sans', sans-serif",fontSize:10,color:"rgba(168,189,208,0.55)",fontStyle:"italic",marginTop:-6}}>(Optional — improves soil and weather precision)</div>
                           </div>
                         </div>
+                        {/* Auto-fetch: Monthly Temperature */}
+                        <div style={{marginTop:14}}>
+                          <div style={{fontFamily:"'DM Sans', sans-serif",fontWeight:600,fontSize:11,color:C.grey,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:6}}>Monthly Temperature — Auto-fetched From Location</div>
+                          <div style={{display:"grid",gridTemplateColumns:"repeat(12, 1fr)",gap:4}}>
+                            {["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map((m,i)=>(
+                              <div key={m} style={{background:"#1A3A5C",border:"1px solid #1E6B8C",borderRadius:4,padding:"6px 2px",textAlign:"center"}}>
+                                <div style={{fontFamily:"'DM Sans', sans-serif",fontSize:8,color:C.grey,marginBottom:2}}>{m}</div>
+                                <div style={{fontFamily:"'DM Mono', monospace",fontWeight:700,fontSize:11,color:s0.gpsCoords?C.amber:C.grey}}>{s0.monthlyTemp[i]?s0.monthlyTemp[i]+"°C":"—°C"}</div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        {/* Auto-fetch: Monthly Rainfall */}
+                        <div style={{marginTop:10}}>
+                          <div style={{fontFamily:"'DM Sans', sans-serif",fontWeight:600,fontSize:11,color:C.grey,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:6}}>Monthly Rainfall — Auto-fetched From Location</div>
+                          <div style={{display:"grid",gridTemplateColumns:"repeat(12, 1fr)",gap:4}}>
+                            {["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map((m,i)=>(
+                              <div key={m} style={{background:"#1A3A5C",border:"1px solid #1E6B8C",borderRadius:4,padding:"6px 2px",textAlign:"center"}}>
+                                <div style={{fontFamily:"'DM Sans', sans-serif",fontSize:8,color:C.grey,marginBottom:2}}>{m}</div>
+                                <div style={{fontFamily:"'DM Mono', monospace",fontWeight:700,fontSize:11,color:s0.gpsCoords?C.amber:C.grey}}>{s0.monthlyRain[i]?s0.monthlyRain[i]+"mm":"—mm"}</div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   );
