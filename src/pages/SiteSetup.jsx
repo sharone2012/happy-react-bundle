@@ -68,9 +68,8 @@ export default function SiteSetup() {
   const [siteData, setSiteData] = useState(null);
   const [soilData, setSoilData] = useState(null);
   const handleSiteData = useCallback((data) => {
-    // Receive confirmed site data from SectionAB
+    setSiteData(data);
     if (data.monthlyFFB) {
-      // Update mill-derived values when SectionAB confirms
       setMill(m => ({ ...m, ffb: data.ffb_capacity_tph || m.ffb, util: data.utilisation_pct || m.util, hrs: data.operating_hrs_day || m.hrs, days: data.operating_days_month || m.days }));
       setBConfirmed(true);
     }
