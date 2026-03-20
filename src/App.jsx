@@ -36,42 +36,43 @@ function supaInsert(table, record) {
 // ─── CFI DESIGN SYSTEM v3 — COLOUR TOKENS ────────────────────────────────────
 // Locked: March 2026. Change via Admin Panel only.
 const C = {
-  // Page & app backgrounds
-  pageBg:        "#070D16",
-  appBg:         "#0B1422",
-  // Section backgrounds (4 types)
-  inputSectionBg:"#1A3A5C",   // Type A — user input sections
-  infoSectionBg: "#153352",   // Type B — calculated info sections
-  resultSectionBg:"#153352",  // Type C — result sections (same as info)
-  alertSectionBg:"#060C14",   // Type D — alert/warning sections
-  // Section border (universal — all section types)
-  sectionBorder: "#1E6B8C",   // 1.5px steel blue
-  // Inner zones
-  innerZoneBg:   "#060C14",   // Black input zone inside Type A sections
-  inputBoxBg:    "#153352",   // Individual number input boxes
-  inputBoxBorder:"#1E6B8C",   // Input box border (matches section border)
-  // Alert banners
+  navy:      "#060C14",
+  navyMid:   "#0A1628",
+  navyCard:  "#111E33",
+  navyField: "#142030",
+  navyDeep:  "#0C1E33",
+  teal:      "#40D7C5",
+  tealDim:   "rgba(64,215,197,0.12)",
+  tealBdr:   "rgba(64,215,197,0.60)",
+  amber:     "#F5A623",
+  green:     "#00A249",
+  greenDim:  "rgba(0,162,73,0.13)",
+  grey:      "#A8BDD0",
+  greyLt:    "rgba(168,189,208,0.55)",
+  white:     "#FFFFFF",
+  bdrCalc:   "rgba(139,160,180,0.18)",
+  // Legacy aliases kept for backward compat
+  pageBg:        "#060C14",
+  appBg:         "#0A1628",
+  inputSectionBg:"#111E33",
+  infoSectionBg: "#111E33",
+  resultSectionBg:"#111E33",
+  alertSectionBg:"#060C14",
+  sectionBorder: "rgba(64,215,197,0.13)",
+  innerZoneBg:   "#060C14",
+  inputBoxBg:    "#142030",
+  inputBoxBorder:"rgba(139,160,180,0.22)",
   alertBannerBg: "rgba(232,64,64,0.15)",
-  // Accent colours
-  teal:   "#00C9B1",
   tealDk: "#009E8C",
   tealLt: "#5EEADA",
-  amber:  "#F5A623",
   amberLt:"#FFD080",
   red:    "#E84040",
-  green:  "#3DCB7A",
   blue:   "#4A9EDB",
   purple: "#9B59B6",
-  white:  "#F0F4F8",
-  grey:   "#8BA0B4",
-  greyMd: "#A8B8C7",   // 25% lighter than grey — table headers, sub-labels
-  greyLt: "#C4D3E0",
-  pastelGreen:"#A8E6C1", // Total row in tables
-  // Legacy aliases (keep for backward compat with existing code)
-  navy:   "#0B1422",
-  navyMid:"#153352",
+  greyMd: "#A8B8C7",
+  greyLtSolid: "#C4D3E0",
+  pastelGreen:"#A8E6C1",
   navyLt: "#1A3A5C",
-  navyDk: "#070D16",
 };
 
 // ─── CFI DESIGN SYSTEM v3 — STYLE TOKENS ────────────────────────────────────
