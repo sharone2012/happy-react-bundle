@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
+import SectionAB from "../components/CFI_S0_SectionAB";
 
 // ── DESIGN TOKENS ──────────────────────────────────────────
 const C = {
@@ -61,7 +62,18 @@ const ESTATE_STREAMS = ['pke','opf','opt'];
 
 // ── MAIN COMPONENT ─────────────────────────────────────────
 export default function SiteSetup() {
-  // ── Section A state
+  // ── SectionAB state
+  const [siteId, setSiteId] = useState(null);
+  const handleSiteData = useCallback((data) => {
+    // Receive confirmed site data from SectionAB
+    if (data.monthlyFFB) {
+      // Update mill-derived values when SectionAB confirms
+      setMill(m => ({ ...m, ffb: data.ffb_capacity_tph || m.ffb, util: data.utilisation_pct || m.util, hrs: data.operating_hrs_day || m.hrs, days: data.operating_days_month || m.days }));
+      setBConfirmed(true);
+    }
+  }, []);
+
+  // ── Section A state (kept for other sections that reference site)
   const [site, setSite] = useState({ company:'', estate:'', millName:'', gpsLat:'', gpsLon:'', province:'', district:'', country:'Indonesia' });
   const upSite = (k,v) => setSite(s => ({...s,[k]:v}));
 
@@ -241,76 +253,11 @@ export default function SiteSetup() {
       {/* ── PAGE CONTENT ── */}
       <div style={{ padding:'16px 22px 80px', minWidth:1400 }}>
 
-        {/* ════ ROW 1: A | B | C | G ════ */}
-        <div style={row4}>
+        {/* ════ ROW 1: SectionAB | C | G ════ */}
+        <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr', gap:14, alignItems:'stretch', marginBottom:16 }}>
 
-          {/* ── A: SITE DETAILS ── */}
-          <div style={card}>
-            <div style={secTitle}>A — Enter Your Details</div>
-            <div style={secSub}>Mill identity · Location · GPS coordinates</div>
-            <div style={cbody}>
-              <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-                <input placeholder="Company name" value={site.company} onChange={e=>upSite('company',e.target.value)} style={fInput} />
-                <div style={grid2}>
-                  <input placeholder="Estate / Plantation" value={site.estate} onChange={e=>upSite('estate',e.target.value)} style={fInput} />
-                  <input placeholder="Mill name #" value={site.millName} onChange={e=>upSite('millName',e.target.value)} style={fInput} />
-                </div>
-                <div style={grid2}>
-                  <input placeholder="Province" value={site.province} onChange={e=>upSite('province',e.target.value)} style={fInput} />
-                  <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
-                    <div>
-                      <div style={{ fontSize:9, color:C.grey, marginBottom:3, letterSpacing:'0.06em' }}>GPS LATITUDE</div>
-                      <input placeholder="optional" value={site.gpsLat} onChange={e=>upSite('gpsLat',e.target.value)} style={{...fInput, fontSize:12}} />
-                    </div>
-                    <div>
-                      <div style={{ fontSize:9, color:C.grey, marginBottom:3, letterSpacing:'0.06em' }}>GPS LONGITUDE</div>
-                      <input placeholder="optional" value={site.gpsLon} onChange={e=>upSite('gpsLon',e.target.value)} style={{...fInput, fontSize:12}} />
-                    </div>
-                  </div>
-                </div>
-                <input placeholder="District / Kabupaten" value={site.district} onChange={e=>upSite('district',e.target.value)} style={fInput} />
-                <input placeholder="Country" value={site.country} onChange={e=>upSite('country',e.target.value)} style={fInput} />
-              </div>
-            </div>
-          </div>
-
-          {/* ── B: CPO MILL PROCESSING ── */}
-          <div style={card}>
-            <div style={secTitle}>B — CPO Mill Processing</div>
-            <div style={secSub}>Auto-detected · Override available</div>
-            <div style={cbody}>
-              <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-                {[
-                  { lbl:'FFB Capacity', key:'ffb', unit:'T / hr', max:3 },
-                  { lbl:'Utilization Rate', key:'util', unit:'%', max:3 },
-                  { lbl:'Operating Hours', key:'hrs', unit:'hr / day', max:2 },
-                  { lbl:'Days / month', key:'days', unit:'days', max:2 },
-                ].map(row=>(
-                  <div key={row.key} style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
-                    <span style={{ fontSize:13, color:C.grey, fontWeight:600 }}>{row.lbl}</span>
-                    <div style={{ display:'flex', alignItems:'center', gap:6 }}>
-                      <input
-                        type="number"
-                        value={mill[row.key]}
-                        onChange={e=>upMill(row.key,e.target.value)}
-                        readOnly={bConfirmed}
-                        style={{ background:'#000', border:'1.5px solid '+C.tealBdr, borderRadius:7, color:C.teal, fontFamily:Fnt.mono, fontSize:14, fontWeight:800, padding:'8px 10px', width:76, height:38, textAlign:'center', outline:'none', cursor:bConfirmed?'not-allowed':'text', MozAppearance:'textfield' }}
-                      />
-                      <span style={{ fontSize:11, color:C.grey }}>{row.unit}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div style={{ padding:'12px 16px', borderTop:'1px solid rgba(64,215,197,0.08)' }}>
-              <button onClick={()=>setBConfirmed(c=>!c)} style={confirmBtn}>
-                {bConfirmed ? '✓ Confirmed — Click To Edit' : 'Confirm Mill Processing'}
-              </button>
-              <div style={{ textAlign:'center', fontSize:10, color:C.grey, marginTop:6 }}>
-                {bConfirmed ? 'C and E updated · Click to unlock' : 'Lock values and cascade to C & E'}
-              </div>
-            </div>
-          </div>
+          {/* ── A+B: SITE DETAILS + MILL PROCESSING (Supabase-connected) ── */}
+          <SectionAB onSiteConfirmed={handleSiteData} siteId={siteId} setSiteId={setSiteId} />
 
           {/* ── C: MILL MONTHLY RESULTS ── */}
           <div style={card}>
