@@ -1,4 +1,5 @@
 import { useState, useMemo, useRef, useCallback, useEffect } from "react";
+import SiteSetup from "./CFI_S0_Page";
 import LoginPage from "./LoginPage";
 import { supabase } from "@/integrations/supabase/client";
 
