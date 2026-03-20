@@ -2614,7 +2614,19 @@ export default function CFI() {
                   )}
                 </Card>
 
+              {/* ── BATCH 2 — BOTTOM STRIP ── */}
+              <div style={{display:"flex",gap:8,flexWrap:"wrap",marginTop:16,padding:"10px 0"}}>
+                <span style={{fontFamily:"'DM Mono', monospace",fontSize:11,fontWeight:600,padding:"4px 12px",borderRadius:12,
+                  background:"rgba(64,215,197,0.08)",border:"1px solid rgba(64,215,197,0.25)",color:"#A8BDD0"}}>
+                  POS · — t/m
+                </span>
+                <span style={{fontFamily:"'DM Mono', monospace",fontSize:11,fontWeight:600,padding:"4px 12px",borderRadius:12,
+                  background:"rgba(64,215,197,0.08)",border:"1px solid rgba(64,215,197,0.25)",color:"#A8BDD0"}}>
+                  PMF · — t/m
+                </span>
               </div>
+
+            </div>
 
               {/* ════ RIGHT COLUMN ════ */}
               <div style={{display:"flex", flexDirection:"column", gap:16}}>
