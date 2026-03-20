@@ -3134,13 +3134,16 @@ export default function CFI() {
                           {/* Panel 4 — EMISSIONS SIGNAL */}
                           <div>
                             <div style={panelTitle}>EMISSIONS SIGNAL</div>
-                            <div style={statusStyle("#F5A623")}>— RESTRICTED</div>
+                            <div style={{ fontFamily:"'DM Mono',monospace", fontSize:13, fontWeight:800, color:"#8BA0B4", marginBottom:6 }}>— RESTRICTED</div>
+                            <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:10, color:"rgba(168,189,208,0.45)" }}>Access code required</div>
                           </div>
                           {/* Panel 5 — COMMERCIAL SIGNAL */}
                           <div>
                             <div style={panelTitle}>COMMERCIAL SIGNAL</div>
                             <div style={panelBody}>
-                              × weather × agronomy
+                              NPK replacement value<br/>
+                              vs synthetic price<br/>
+                              Soil × weather × agronomy
                             </div>
                           </div>
                         </>);
