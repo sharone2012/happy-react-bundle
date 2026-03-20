@@ -1451,7 +1451,7 @@ export default function CFI() {
 
   // ── S0 STATE ──
   const [s0, setS0] = useState({
-    plantName: "", millName: "", district: "", province: "", contact: "", rspo: "none",
+    plantName: "", millName: "", district: "", province: "", contact: "", rspo: "none", country: "Indonesia",
     idCode: "", contactName: "", contactEmail: "",
     estateName: "", estateArea: "", gpsLat: "", gpsLon: "", gpsCoords: "",
     monthlyTemp: [27,27,27,28,28,27,27,27,27,27,27,27],
