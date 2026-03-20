@@ -2302,43 +2302,73 @@ export default function CFI() {
   if (!session) return <LoginPage onLoginSuccess={() => {}} />;
 
   return (
-    <div style={{background:C.pageBg, minHeight:"100vh", fontFamily:"'DM Sans', sans-serif",
-                 color:C.white, padding:"0 0 40px"}}>
+    <div style={{background:"#060C14", minHeight:"100vh", fontFamily:"'DM Sans', sans-serif",
+                 color:"#FFFFFF", padding:"0 0 40px"}}>
 
-      {/* ── HEADER ── */}
-      <div style={{background:C.inputSectionBg,
-                   borderBottom:`2px solid ${C.teal}44`, padding:"16px 24px",
-                   display:"flex", alignItems:"center", justifyContent:"space-between"}}>
-        <div style={{display:"flex", alignItems:"center", gap:12}}>
-          <div style={{background:C.teal, width:36, height:36, borderRadius:8, display:"flex",
-                       alignItems:"center", justifyContent:"center", fontSize:18}}></div>
-          <div>
-            <div style={{color:C.teal, fontWeight:900, fontSize:16, letterSpacing:"0.06em"}}>
-              CIRCULAR FERTILISER INDUSTRIES
-            </div>
-            <div style={{color:C.grey, fontSize:11}}>Palm Oil Bioconversion System · 60 TPH FFB Mill · West Java</div>
+      {/* ── TIER 1 — TOP HEADER ROW ── */}
+      <div style={{position:"sticky", top:0, zIndex:100, height:80, background:"#0A1628",
+                   display:"flex", alignItems:"center", padding:"0 24px", gap:16}}>
+        {/* Brand block */}
+        <div style={{flexShrink:0}}>
+          <div style={{display:"flex", alignItems:"baseline", gap:0}}>
+            <span style={{fontFamily:"'EB Garamond', serif", fontWeight:700, fontSize:26, color:"#FFFFFF"}}>CFI</span>
+            <span style={{color:"rgba(255,255,255,0.25)", fontSize:22, margin:"0 6px"}}>&middot;</span>
+            <span style={{fontFamily:"'EB Garamond', serif", fontWeight:700, fontSize:20, color:"#40D7C5", letterSpacing:"0.10em"}}>DEEP TECH</span>
+          </div>
+          <div style={{fontFamily:"'DM Sans', sans-serif", fontSize:11, color:"#40D7C5", marginTop:4, whiteSpace:"nowrap"}}>
+            Soil Microbiome Engineering &amp; Biofertiliser Production for Closed‑Loop Nutrient Recycling in Agricultural Systems
           </div>
         </div>
-        <div style={{display:"flex", gap:6}}>
-          {["S0","S1","S2","S3","S4","S5","S6","CAPEX","CO₂","∑"].map((s,i)=>(
-            <div key={i} style={{background: stage===i ? C.teal : C.inputSectionBg,
-                                  color: stage===i ? C.pageBg : C.grey,
-                                  borderRadius:4, padding:"3px 10px", fontSize:11, fontWeight:700,
-                                  cursor:"pointer"}} onClick={()=>handleTabClick(i)}>{s}</div>
+
+        {/* Short stage buttons */}
+        <div style={{display:"flex", gap:4, marginLeft:"auto"}}>
+          {["S0","S1","S2","S3","S4","S5","S6","CAPEX","\u03A3"].map((s,i)=>(
+            <div key={i} onClick={()=>handleTabClick(i)}
+              style={{background: stage===i ? "#40D7C5" : "rgba(168,189,208,0.09)",
+                      color: stage===i ? "#060C14" : "#A8BDD0",
+                      border: `1px solid ${stage===i ? "#40D7C5" : "rgba(168,189,208,0.18)"}`,
+                      borderRadius:4, padding:"3px 9px",
+                      fontFamily:"'DM Mono', monospace", fontWeight:700, fontSize:11,
+                      cursor:"pointer", transition:"all 0.15s"}}>{s}</div>
           ))}
+        </div>
+
+        {/* Status chips */}
+        <div style={{display:"flex", gap:6, marginLeft:16}}>
+          <span style={{color:"#00A249", border:"1px solid rgba(0,162,73,0.4)", background:"rgba(0,162,73,0.13)",
+                        fontFamily:"'DM Mono', monospace", fontWeight:700, fontSize:11, padding:"3px 10px", borderRadius:12}}>
+            Valid
+          </span>
+          <span style={{color:"#40D7C5", border:"1px solid rgba(64,215,197,0.48)", background:"rgba(64,215,197,0.12)",
+                        fontFamily:"'DM Mono', monospace", fontWeight:700, fontSize:11, padding:"3px 10px", borderRadius:12}}>
+            Blend Valid
+          </span>
+          <span style={{color:"#F5A623", border:"1px solid rgba(245,166,35,0.4)", background:"rgba(245,166,35,0.10)",
+                        fontFamily:"'DM Mono', monospace", fontWeight:700, fontSize:11, padding:"3px 10px", borderRadius:12}}>
+            Soil: {SOILS.find(s=>s.id===s0.soilType)?.name || "Not set"}
+          </span>
         </div>
       </div>
 
-      {/* ── TAB BAR ── */}
-      <div style={{display:"flex", gap:2, padding:"0 24px", borderBottom:`2px solid ${C.teal}33`,
-                   background:C.infoSectionBg}}>
+      {/* ── TIER 2 — FULL-NAME TAB BAR ── */}
+      <div style={{background:"#0A1628", borderBottom:"2px solid rgba(64,215,197,0.20)",
+                   display:"flex", justifyContent:"center", alignItems:"flex-end", gap:2, padding:"12px 24px 0"}}>
         {TABS.map((t,i)=>(
-          <div key={i} style={S.tab(stage===i)} onClick={()=>handleTabClick(i)}>{t}</div>
+          <div key={i} onClick={()=>handleTabClick(i)}
+            style={{fontFamily:"'DM Mono', monospace", fontWeight:700, fontSize:12,
+                    borderRadius:"6px 6px 0 0", padding:"8px 18px", cursor:"pointer",
+                    background: stage===i ? "#40D7C5" : "transparent",
+                    color: stage===i ? "#060C14" : "#40D7C5",
+                    border: stage===i ? "1px solid #40D7C5" : "1px solid transparent",
+                    borderBottom:"none", transition:"all 0.15s"}}
+            onMouseEnter={e=>{if(stage!==i){e.currentTarget.style.color="#FFFFFF";e.currentTarget.style.background="rgba(168,189,208,0.08)"}}}
+            onMouseLeave={e=>{if(stage!==i){e.currentTarget.style.color="#40D7C5";e.currentTarget.style.background="transparent"}}}
+          >{t}</div>
         ))}
       </div>
 
       {/* ── CONTENT ── */}
-      <div style={{padding:"20px 24px", maxWidth:1100, margin:"0 auto"}}>
+      <div style={{padding:"16px 22px 60px", maxWidth:1200, margin:"0 auto"}}>
 
         {/* ════════════════════ S T A G E  0 ════════════════════ */}
         {stage===0 && (
