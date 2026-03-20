@@ -3081,6 +3081,7 @@ export default function CFI() {
                       <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
                         <span style={pillStyle}>POS · — t/m</span>
                         <span style={pillStyle}>PMF · — t/m</span>
+                        <span style={pillStyle}>POME · — t/m</span>
                       </div>
                     )}
                   </div>
