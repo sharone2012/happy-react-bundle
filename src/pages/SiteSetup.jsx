@@ -190,7 +190,7 @@ export default function SiteSetup() {
     <div style={{ background:C.navy, minHeight:'100vh', color:C.white, fontFamily:Fnt.dm }}>
 
       {/* ── TOP NAV ── */}
-      <div style={{ background:C.navyMid, borderBottom:'1px solid rgba(64,215,197,0.12)', padding:'10px 22px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+      <div style={{ background:C.navyMid, borderBottom:'1px solid rgba(64,215,197,0.12)', padding:'10px 22px', minHeight:90, display:'flex', alignItems:'center', justifyContent:'space-between' }}>
 
         <div style={{ display:'flex', alignItems:'center', gap:16 }}>
 
@@ -210,24 +210,25 @@ export default function SiteSetup() {
 
         </div>
 
-        <div style={{ display:'flex', gap:4 }}>
-          {['S0','S1','S2','S3','S4','S5','S6','CAPEX','Σ'].map((s,i)=>(
-            <div key={s} style={{ padding:'5px 10px', fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:i===0?C.teal:C.grey, background:i===0?C.tealDim:'transparent', borderRadius:6, cursor:'pointer' }}>{s}</div>
-          ))}
-        </div>
-
-        <div style={{ display:'flex', gap:12, alignItems:'center' }}>
-          <span style={{ fontSize:10, fontFamily:Fnt.mono, color:C.green, fontWeight:700 }}>✓ Valid</span>
-          <span style={{ fontSize:10, fontFamily:Fnt.mono, color:C.green, fontWeight:700 }}>✓ Blend Valid</span>
-          <span style={{ fontSize:10, fontFamily:Fnt.mono, color:C.teal, fontWeight:700 }}>Soil: {soilData.name}</span>
+        <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-end', gap:6 }}>
+          <div style={{ display:'flex', gap:4 }}>
+            {['S0','S1','S2','S3','S4','S5A','S5B','S6','CAPEX','Σ'].map((s,i)=>(
+              <div key={s} style={{ padding:'5px 10px', fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:i===0?C.teal:C.grey, background:i===0?C.tealDim:'transparent', borderRadius:6, cursor:'pointer' }}>{s}</div>
+            ))}
+          </div>
+          <div style={{ display:'flex', gap:12, alignItems:'center' }}>
+            <span style={{ fontSize:10, fontFamily:Fnt.mono, color:C.green, fontWeight:700 }}>✓ Valid</span>
+            <span style={{ fontSize:10, fontFamily:Fnt.mono, color:C.green, fontWeight:700 }}>✓ Blend Valid</span>
+            <span style={{ fontSize:10, fontFamily:Fnt.mono, color:C.teal, fontWeight:700 }}>Soil: {soilData.name}</span>
+          </div>
         </div>
 
       </div>
 
       {/* ── FULL-NAME TAB BAR ── */}
       <div style={{ display:'flex', gap:0, background:C.navyMid, borderBottom:'1px solid rgba(64,215,197,0.08)', padding:'0 22px' }}>
-        {['Site Setup','Pre-Processing','Pre-Treatment','Biologicals','BSF','Biofertiliser / Other','Emissions','Financials','Summary'].map((t,i)=>(
-          <div key={t} style={{ padding:'8px 16px', fontSize:11, fontWeight:i===0?700:500, color:i===0?C.teal:C.grey, borderBottom:i===0?'2px solid '+C.teal:'2px solid transparent', cursor:'pointer' }}>{t}</div>
+        {['Site Setup','Pre-Processing','Pre-Treatment','Biologicals','BSF','Biofertiliser / Other','Emissions','Financials','Summary','Lab Analysis','Soil Science'].map((t,i)=>(
+          <div key={t} style={{ padding:'7px 12px', fontSize:11, fontWeight:i===0?700:500, color:i===0?C.teal:C.grey, borderBottom:i===0?'2px solid '+C.teal:'2px solid transparent', cursor:'pointer', whiteSpace:'nowrap' }}>{t}</div>
         ))}
       </div>
 
