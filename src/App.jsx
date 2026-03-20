@@ -2833,15 +2833,32 @@ export default function CFI() {
                 })()}
 
               </div>
-            </div>
 
-            {/* ── FULL-WIDTH SECTIONS BELOW ── */}
-            <div style={{display:"flex", flexDirection:"column", gap:16, marginTop:16}}>
+              {/* ════ COL 2: E — BLEND ANALYSIS ════ */}
+              <div style={{display:"flex", flexDirection:"column", gap:16}}>
+                <Card>
+                  <SectionHdr icon="" title="E — Blend Analysis" color={C.amber}/>
+                  <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8}}>
+                    <KPI label="Total DM" value={(efbDMpd+opdcDMreq+pomeSludgeInclDMpd+pkeDMpd).toFixed(1)} unit="t DM/day" color={C.teal}/>
+                    <KPI label="Blend C:N" value={blendCN||"—"} unit="ratio" color={blendCN&&blendCN<=25?C.green:blendCN&&blendCN<=35?C.amber:C.red}/>
+                    <KPI label="Blend CP" value={blendCP?blendCP.toFixed(1)+"%":"—"} unit="crude protein" color={blendCP&&blendCP>=8?C.green:C.amber}/>
+                    <KPI label="Blend MC" value={blendMC?blendMC+"%":"—"} unit="moisture" color={C.blue}/>
+                  </div>
+                  {blendCN && (
+                    <div style={{marginTop:8}}>
+                      {blendCN>=15&&blendCN<=25 && <Warn type="ok" msg={"C:N "+blendCN+" — OPTIMAL (15–25)"}/>}
+                      {blendCN>25&&blendCN<=35  && <Warn type="warn" msg={"C:N "+blendCN+" — MARGINAL (target 15–25)"}/>}
+                      {blendCN>35 && <Warn msg={"C:N "+blendCN+" — HIGH. Add POME/PKE."}/>}
+                    </div>
+                  )}
+                </Card>
+              </div>
 
-              {/* ── F: POME SLUDGE ── */}
+              {/* ════ COL 3: F — POME SLUDGE ════ */}
+              <div style={{display:"flex", flexDirection:"column", gap:16}}>
               <Card>
-                <SectionHdr icon="" title="F — POME Sludge (Third Waste Stream)" color={C.blue}/>
-                <div style={{display:"flex", alignItems:"center", gap:16, marginBottom:16}}>
+                <SectionHdr icon="" title="F — POME Sludge" color={C.blue}/>
+                <div style={{display:"flex", alignItems:"center", gap:8, marginBottom:12, flexWrap:"wrap"}}>
                   <div style={{display:"flex", alignItems:"center", gap:10}}>
                     <input type="checkbox" checked={pomeActive} readOnly
                       style={{accentColor:C.blue, width:16, height:16, cursor:"default"}}/>
