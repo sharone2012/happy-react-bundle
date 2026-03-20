@@ -2426,10 +2426,10 @@ export default function CFI() {
               </div>
             </div>
 
-            {/* ── TWO-COLUMN ROW ── */}
-            <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:16, alignItems:"start"}}>
+            {/* ── ROW 1: A | B | C | G — 4 columns ── */}
+            <div style={{display:"grid", gridTemplateColumns:"repeat(4, 1fr)", gap:16, alignItems:"start"}}>
 
-              {/* ════ LEFT COLUMN ════ */}
+              {/* ════ COL 1: A ════ */}
               <div style={{display:"flex", flexDirection:"column", gap:16}}>
 
                 {/* ── A: SITE IDENTITY ── */}
