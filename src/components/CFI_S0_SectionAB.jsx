@@ -62,10 +62,10 @@ const S = {
     color: C.grey, marginTop: 3, display: "block",
   },
   input: {
-    background: C.navyMid, border: `1.5px solid ${C.border}`,
-    borderRadius: 6, color: C.amber, fontFamily: T.mono,
-    fontWeight: 600, fontSize: 14, padding: "8px 12px",
-    width: "100%", boxSizing: "border-box", outline: "none",
+    background: "#000000", border: "1px solid rgba(168,189,208,0.20)",
+    borderRadius: 7, color: "#E8F0FE", fontFamily: "'DM Sans', sans-serif",
+    fontWeight: 700, fontSize: 14, padding: "10px 13px",
+    width: "100%", boxSizing: "border-box", outline: "none", minHeight: 42,
   },
   zone: {
     background: C.black, borderRadius: 8,
