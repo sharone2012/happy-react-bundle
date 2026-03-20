@@ -2291,7 +2291,7 @@ export default function CFI() {
   };
 
   // ─── TABS ─────────────────────────────────────────────────────────────────
-  const TABS = ["Site Setup","Pre-Processing","Pre-Treatment","Biologicals","BSF","Biofertiliser / Other","Emissions","Financials","Summary","Orchestration"];
+  const TABS = ["Site Setup","Pre-Processing","Pre-Treatment","Biologicals","BSF","Biofertiliser / Other","Emissions","Financials","Summary","Lab Analysis","Soil Science"];
 
   // ─── FONT INJECTION ─────────────────────────────────────────────────────────
   useEffect(function(){
