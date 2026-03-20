@@ -2449,9 +2449,9 @@ export default function CFI() {
                     </div>
                   );
                   return (
-                    <div style={{background:C.navyCard||"#111E33",border:"1.5px solid rgba(64,215,197,0.13)",borderRadius:11,overflow:"hidden"}}>
+                    <div style={{background:C.navyCard||"#111E33",border:"1.5px solid #1E6B8C",borderRadius:11,overflow:"hidden"}}>
                       {/* Section Title */}
-                      <div style={{fontFamily:"'Syne', sans-serif",fontWeight:700,fontSize:15,color:"#FFFFFF",padding:"12px 16px 10px",borderBottom:"1px solid rgba(64,215,197,0.12)"}}>
+                      <div style={{fontFamily:"'Syne', sans-serif",fontWeight:700,fontSize:18,color:"#00C9B1",padding:"12px 16px 10px",borderBottom:"1px solid rgba(64,215,197,0.12)"}}>
                         A — Enter your site details below
                       </div>
                       {/* Subtitle */}
