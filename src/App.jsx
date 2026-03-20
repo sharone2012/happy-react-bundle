@@ -2429,68 +2429,53 @@ export default function CFI() {
               <div style={{display:"flex", flexDirection:"column", gap:16}}>
 
                 {/* ── A: SITE IDENTITY ── */}
-                <Card>
-                  <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:14}}>
-                    <div style={{background:"#0D1F33", borderLeft:`3px solid ${C.teal}`,
-                      borderRadius:8, padding:"11px 14px", display:"flex", alignItems:"center", gap:10, flex:1}}>
-                      <span style={{fontSize:17, lineHeight:1}}></span>
-                      <div style={{color:C.teal, fontWeight:800, fontSize:12, letterSpacing:"0.07em", textTransform:"uppercase"}}>
-                        A — ENTER YOUR DETAILS IN THE FIELDS BELOW
+                {(() => {
+                  const aFieldLabel = {fontFamily:"'DM Mono', monospace",fontWeight:700,fontSize:11,color:C.grey,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:4};
+                  const aFieldInput = {background:C.navyField||"#142030",border:"1px solid rgba(139,160,180,0.22)",borderRadius:7,padding:"9px 13px",color:C.amber,fontFamily:"'DM Mono', monospace",fontWeight:700,fontSize:13,width:"100%",outline:"none",boxSizing:"border-box"};
+                  const aFieldInputFocus = {borderColor:C.tealBdr||"rgba(64,215,197,0.60)"};
+                  const AField = ({label, value, field, placeholder}) => (
+                    <div style={{marginBottom:10}}>
+                      <div style={aFieldLabel}>{label}</div>
+                      <input
+                        style={aFieldInput}
+                        value={value||""}
+                        onChange={e=>upS0(field,e.target.value)}
+                        placeholder={placeholder||""}
+                        onFocus={e=>{e.target.style.borderColor=aFieldInputFocus.borderColor}}
+                        onBlur={e=>{e.target.style.borderColor="rgba(139,160,180,0.22)"}}
+                      />
+                    </div>
+                  );
+                  return (
+                    <div style={{background:C.navyCard||"#111E33",border:"1.5px solid rgba(64,215,197,0.13)",borderRadius:11,overflow:"hidden"}}>
+                      {/* Section Title */}
+                      <div style={{fontFamily:"'Syne', sans-serif",fontWeight:700,fontSize:15,color:"#FFFFFF",padding:"12px 16px 10px",borderBottom:"1px solid rgba(64,215,197,0.12)"}}>
+                        A — Enter Details
+                      </div>
+                      {/* Subtitle */}
+                      <div style={{fontFamily:"'DM Sans', sans-serif",fontSize:11,color:"rgba(168,189,208,0.55)",padding:"6px 16px 8px"}}>
+                        Mill identity · Auto-saves on page exit
+                      </div>
+                      {/* Fields */}
+                      <div style={{padding:"4px 16px 16px"}}>
+                        <AField label="PLANTATION / COMPANY" value={s0.plantName} field="plantName" placeholder="Enter plantation or company name"/>
+                        <AField label="ESTATE NAME" value={s0.estateName} field="estateName" placeholder="Enter estate name"/>
+                        <AField label="MILL NAME / UNIT" value={s0.millName} field="millName" placeholder="Enter mill name or unit"/>
+                        <AField label="DISTRICT" value={s0.district} field="district" placeholder="District / Kabupaten"/>
+                        <AField label="PROVINCE" value={s0.province} field="province" placeholder="Province"/>
+                        <div style={{marginBottom:10}}>
+                          <div style={{...aFieldLabel,display:"flex",alignItems:"baseline",gap:6}}>
+                            GPS COORDINATES <span style={{fontFamily:"'DM Sans', sans-serif",fontWeight:400,fontSize:10,color:"rgba(168,189,208,0.55)",fontStyle:"italic",textTransform:"none",letterSpacing:0}}>(optional)</span>
+                          </div>
+                          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+                            <input style={aFieldInput} value={s0.gpsLat||""} onChange={e=>upS0("gpsLat",e.target.value)} placeholder="Latitude"/>
+                            <input style={aFieldInput} value={s0.gpsLon||""} onChange={e=>upS0("gpsLon",e.target.value)} placeholder="Longitude"/>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div style={{marginLeft:12, flexShrink:0}}>
-                      <div style={{color:C.grey, fontSize:9, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.09em", marginBottom:4, textAlign:"right"}}>ID Code</div>
-                      <input
-                        style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                          color:C.white, padding:"8px 12px", fontSize:13, width:90, outline:"none",
-                          boxSizing:"border-box", textAlign:"center"}}
-                        value={s0.idCode||""} onChange={e=>upS0("idCode",e.target.value)}
-                        placeholder="Number"/>
-                    </div>
-                  </div>
-                  <div style={g2}>
-                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                      color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                      value={s0.plantName} onChange={e=>upS0("plantName",e.target.value)}
-                      placeholder="Plantation / Company Name"/>
-                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                      color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                      value={s0.millName} onChange={e=>upS0("millName",e.target.value)}
-                      placeholder="Mill Name / Unit"/>
-                  </div>
-                  <div style={{...g2, marginTop:10}}>
-                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                      color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                      value={s0.district} onChange={e=>upS0("district",e.target.value)}
-                      placeholder="District / Kabupaten"/>
-                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                      color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                      value={s0.province} onChange={e=>upS0("province",e.target.value)}
-                      placeholder="Province"/>
-                  </div>
-                  <div style={{...g2, marginTop:10}}>
-                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                      color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                      value={s0.estateName||""} onChange={e=>upS0("estateName",e.target.value)}
-                      placeholder="Estate Name"/>
-                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                      color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                      type="number"
-                      value={s0.estateArea||""} onChange={e=>upS0("estateArea",e.target.value)}
-                      placeholder="Total Estate Area (ha)"/>
-                  </div>
-                  <div style={{...g2, marginTop:10}}>
-                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                      color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                      value={s0.gpsLat||""} onChange={e=>upS0("gpsLat",e.target.value)}
-                      placeholder="GPS Latitude"/>
-                    <input style={{background:"#142030", border:`1px solid ${C.teal}55`, borderRadius:6,
-                      color:C.white, padding:"8px 12px", fontSize:13, width:"100%", outline:"none", boxSizing:"border-box"}}
-                      value={s0.gpsLon||""} onChange={e=>upS0("gpsLon",e.target.value)}
-                      placeholder="GPS Longitude"/>
-                  </div>
-                  <div style={{color:C.grey, fontSize:10, marginTop:4, fontStyle:"italic"}}>GPS coordinates are optional</div>
-                </Card>
+                  );
+                })()}
 
                 {/* ── B: MILL CAPACITY ── */}
                 <Card>
