@@ -2595,17 +2595,17 @@ export default function CFI() {
                   )}
                 </Card>
 
-            </div>
+              </div>
 
-              {/* ════ RIGHT COLUMN ════ */}
+              {/* ════ COL 3: C ════ */}
               <div style={{display:"flex", flexDirection:"column", gap:16}}>
 
                 {/* ── C: SOIL TYPE & AG MANAGEMENT — only after mill capacity confirmed ── */}
                 {s0.capacityConfirmed && (
                 <Card>
-                  <SectionHdr icon="🌍" title="C — Soil Type &amp; Agronomy Management" color={C.teal}/>
+                  <SectionHdr icon="" title="C — Soil Type &amp; Agronomy Management" color={C.teal}/>
                   <div style={{display:"block", color:C.grey, fontSize:10, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.09em", marginBottom:8}}>Indonesian Soil Classification</div>
-                  <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8, marginBottom:8}}>
+                  <div style={{display:"grid", gridTemplateColumns:"1fr", gap:6, marginBottom:8}}>
                     {[...SOILS, {id:"andisol", name:"Andisols", pct:"2%", ph:"5.2", cec:"22.0", desc:"Volcanic, high fertility", nAdj:-0.20, pAdj:-0.30, dmppEfficacy:0.32, dmppNote:"Volcanic — moderate N₂O."}].map(so=>(
                       <div key={so.id} onClick={()=>upS0("soil",so.id)}
                         style={{background:s0.soil===so.id?C.teal+"20":C.pageBg,
