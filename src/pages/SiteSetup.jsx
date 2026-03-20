@@ -260,6 +260,11 @@ export default function SiteSetup() {
 
           {/* ── A+B: SITE DETAILS + MILL PROCESSING (Supabase-connected) ── */}
           <SectionAB onSiteConfirmed={handleSiteData} siteId={siteId} setSiteId={setSiteId} />
+          <SectionC
+            siteId={siteId}
+            gpsSoilSuggestion={siteData?.soilSuggestion || null}
+            onSoilConfirmed={(data) => setSoilData(data)}
+          />
 
           {/* ── C: MILL MONTHLY RESULTS ── */}
           <div style={card}>
