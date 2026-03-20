@@ -1728,6 +1728,7 @@ export type Database = {
           efb_enabled: boolean | null
           efb_mix_kg: number | null
           efb_mix_pct: number | null
+          efb_volume_t: number | null
           estate_area_ha: number | null
           estate_name: string | null
           ffb_capacity_tph: number | null
@@ -1742,21 +1743,29 @@ export type Database = {
           opdc_enabled: boolean | null
           opdc_mix_kg: number | null
           opdc_mix_pct: number | null
+          opdc_volume_t: number | null
           operating_days_month: number | null
           operating_hrs_day: number | null
           opf_enabled: boolean | null
           opf_mix_kg: number | null
           opf_mix_pct: number | null
+          opf_volume_t: number | null
           opt_enabled: boolean | null
           opt_mix_kg: number | null
           opt_mix_pct: number | null
+          opt_volume_t: number | null
           pke_enabled: boolean | null
           pke_mix_kg: number | null
           pke_mix_pct: number | null
+          pke_volume_t: number | null
+          pmf_enabled: boolean | null
+          pmf_volume_t: number | null
           pome_enabled: boolean | null
+          pome_volume_t: number | null
           pos_enabled: boolean | null
           pos_mix_kg: number | null
           pos_mix_pct: number | null
+          pos_volume_t: number | null
           product_value_index: number | null
           province: string | null
           scenario_name: string | null
@@ -1791,6 +1800,7 @@ export type Database = {
           efb_enabled?: boolean | null
           efb_mix_kg?: number | null
           efb_mix_pct?: number | null
+          efb_volume_t?: number | null
           estate_area_ha?: number | null
           estate_name?: string | null
           ffb_capacity_tph?: number | null
@@ -1805,21 +1815,29 @@ export type Database = {
           opdc_enabled?: boolean | null
           opdc_mix_kg?: number | null
           opdc_mix_pct?: number | null
+          opdc_volume_t?: number | null
           operating_days_month?: number | null
           operating_hrs_day?: number | null
           opf_enabled?: boolean | null
           opf_mix_kg?: number | null
           opf_mix_pct?: number | null
+          opf_volume_t?: number | null
           opt_enabled?: boolean | null
           opt_mix_kg?: number | null
           opt_mix_pct?: number | null
+          opt_volume_t?: number | null
           pke_enabled?: boolean | null
           pke_mix_kg?: number | null
           pke_mix_pct?: number | null
+          pke_volume_t?: number | null
+          pmf_enabled?: boolean | null
+          pmf_volume_t?: number | null
           pome_enabled?: boolean | null
+          pome_volume_t?: number | null
           pos_enabled?: boolean | null
           pos_mix_kg?: number | null
           pos_mix_pct?: number | null
+          pos_volume_t?: number | null
           product_value_index?: number | null
           province?: string | null
           scenario_name?: string | null
@@ -1854,6 +1872,7 @@ export type Database = {
           efb_enabled?: boolean | null
           efb_mix_kg?: number | null
           efb_mix_pct?: number | null
+          efb_volume_t?: number | null
           estate_area_ha?: number | null
           estate_name?: string | null
           ffb_capacity_tph?: number | null
@@ -1868,21 +1887,29 @@ export type Database = {
           opdc_enabled?: boolean | null
           opdc_mix_kg?: number | null
           opdc_mix_pct?: number | null
+          opdc_volume_t?: number | null
           operating_days_month?: number | null
           operating_hrs_day?: number | null
           opf_enabled?: boolean | null
           opf_mix_kg?: number | null
           opf_mix_pct?: number | null
+          opf_volume_t?: number | null
           opt_enabled?: boolean | null
           opt_mix_kg?: number | null
           opt_mix_pct?: number | null
+          opt_volume_t?: number | null
           pke_enabled?: boolean | null
           pke_mix_kg?: number | null
           pke_mix_pct?: number | null
+          pke_volume_t?: number | null
+          pmf_enabled?: boolean | null
+          pmf_volume_t?: number | null
           pome_enabled?: boolean | null
+          pome_volume_t?: number | null
           pos_enabled?: boolean | null
           pos_mix_kg?: number | null
           pos_mix_pct?: number | null
+          pos_volume_t?: number | null
           product_value_index?: number | null
           province?: string | null
           scenario_name?: string | null
