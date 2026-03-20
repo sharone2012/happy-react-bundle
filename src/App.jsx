@@ -1402,6 +1402,7 @@ export default function CFI() {
     return () => subscription.unsubscribe();
   }, []);
   const [stage, setStage] = useState(0);
+  const [showMoreStreams, setShowMoreStreams] = useState(false);
   const [tabsSeen, setTabsSeen]         = useState(new Set([0]));
   const [searchesUsed, setSearchesUsed] = useState(0);
   const [showGate, setShowGate]         = useState(false);
@@ -3062,16 +3063,29 @@ export default function CFI() {
               })()}
 
               {/* ── BATCH 2 — BOTTOM STRIP ── */}
-              <div style={{display:"flex",gap:8,flexWrap:"wrap",marginTop:16,padding:"10px 0"}}>
-                <span style={{fontFamily:"'DM Mono', monospace",fontSize:11,fontWeight:600,padding:"4px 12px",borderRadius:12,
-                  background:"rgba(64,215,197,0.08)",border:"1px solid rgba(64,215,197,0.25)",color:"#A8BDD0"}}>
-                  POS · — t/m
-                </span>
-                <span style={{fontFamily:"'DM Mono', monospace",fontSize:11,fontWeight:600,padding:"4px 12px",borderRadius:12,
-                  background:"rgba(64,215,197,0.08)",border:"1px solid rgba(64,215,197,0.25)",color:"#A8BDD0"}}>
-                  PMF · — t/m
-                </span>
-              </div>
+              {(()=>{
+                const pillStyle = {fontFamily:"'DM Mono', monospace",fontSize:11,fontWeight:700,padding:"4px 12px",borderRadius:12,
+                  background:"rgba(64,215,197,0.08)",border:"1px solid rgba(64,215,197,0.25)",color:"#A8BDD0"};
+                return (
+                  <div style={{background:"#0A1628",border:"1.5px solid rgba(64,215,197,0.20)",borderRadius:10,padding:"14px 16px",marginTop:16}}>
+                    <div style={{display:"flex",gap:10,flexWrap:"wrap",alignItems:"center",marginBottom:showMoreStreams?12:0}}>
+                      <span style={pillStyle}>EFB · — t/m</span>
+                      <span style={pillStyle}>OPDC · — t/m</span>
+                      <button onClick={()=>setShowMoreStreams(!showMoreStreams)}
+                        style={{background:"transparent",border:"1px solid rgba(168,189,208,0.25)",borderRadius:12,
+                          padding:"2px 10px",fontFamily:"'DM Sans', sans-serif",fontSize:11,color:"#A8BDD0",cursor:"pointer"}}>
+                        {showMoreStreams ? "Show less \u25B4" : "More streams \u25BE"}
+                      </button>
+                    </div>
+                    {showMoreStreams && (
+                      <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+                        <span style={pillStyle}>POS · — t/m</span>
+                        <span style={pillStyle}>PMF · — t/m</span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
 
             </div>
           </div>
