@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import SectionAB from "../components/CFI_S0_SectionAB";
 import SectionC from "@/components/CFI_S0_SectionC";
+import SectionCMill from "@/components/CFI_S0_SectionC_MillResults";
 import SectionD from "@/components/CFI_S0_SectionD";
 
 // ── DESIGN TOKENS ──────────────────────────────────────────
@@ -258,8 +259,9 @@ export default function SiteSetup() {
       <div style={{ padding:'16px 22px 80px', minWidth:1400 }}>
 
         {/* ════ ROW 1: A (1fr) + B (2fr) ════ */}
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 2fr', gap:16, marginBottom:16 }}>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 2fr 1fr', gap:16, marginBottom:16 }}>
           <SectionAB onSiteConfirmed={handleSiteData} siteId={siteId} setSiteId={setSiteId} />
+          <SectionCMill siteId={siteId} millData={{ ffb: mill.ffb, util: mill.util, hrs: mill.hrs, days: mill.days }} capacityConfirmed={bConfirmed} />
         </div>
 
         {/* ════ ROW 2: C (1fr) + D (1fr) ════ */}
