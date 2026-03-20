@@ -1402,6 +1402,7 @@ export default function CFI() {
     return () => subscription.unsubscribe();
   }, []);
   const [stage, setStage] = useState(0);
+  const [showMoreStreams, setShowMoreStreams] = useState(false);
   const [tabsSeen, setTabsSeen]         = useState(new Set([0]));
   const [searchesUsed, setSearchesUsed] = useState(0);
   const [showGate, setShowGate]         = useState(false);
