@@ -2452,7 +2452,7 @@ export default function CFI() {
                     <div style={{background:C.navyCard||"#111E33",border:"1.5px solid rgba(64,215,197,0.13)",borderRadius:11,overflow:"hidden"}}>
                       {/* Section Title */}
                       <div style={{fontFamily:"'Syne', sans-serif",fontWeight:700,fontSize:15,color:"#FFFFFF",padding:"12px 16px 10px",borderBottom:"1px solid rgba(64,215,197,0.12)"}}>
-                        A — Enter Details
+                        A — Enter your site details below
                       </div>
                       {/* Subtitle */}
                       <div style={{fontFamily:"'DM Sans', sans-serif",fontSize:11,color:"rgba(168,189,208,0.55)",padding:"6px 16px 8px"}}>
