@@ -1,5 +1,6 @@
 import { useState, useMemo, useCallback } from 'react';
 import SectionAB from "../components/CFI_S0_SectionAB";
+import SectionC from "@/components/CFI_S0_SectionC";
 
 // ── DESIGN TOKENS ──────────────────────────────────────────
 const C = {
@@ -64,10 +65,11 @@ const ESTATE_STREAMS = ['pke','opf','opt'];
 export default function SiteSetup() {
   // ── SectionAB state
   const [siteId, setSiteId] = useState(null);
+  const [siteData, setSiteData] = useState(null);
+  const [soilData, setSoilData] = useState(null);
   const handleSiteData = useCallback((data) => {
-    // Receive confirmed site data from SectionAB
+    setSiteData(data);
     if (data.monthlyFFB) {
-      // Update mill-derived values when SectionAB confirms
       setMill(m => ({ ...m, ffb: data.ffb_capacity_tph || m.ffb, util: data.utilisation_pct || m.util, hrs: data.operating_hrs_day || m.hrs, days: data.operating_days_month || m.days }));
       setBConfirmed(true);
     }
@@ -258,6 +260,11 @@ export default function SiteSetup() {
 
           {/* ── A+B: SITE DETAILS + MILL PROCESSING (Supabase-connected) ── */}
           <SectionAB onSiteConfirmed={handleSiteData} siteId={siteId} setSiteId={setSiteId} />
+          <SectionC
+            siteId={siteId}
+            gpsSoilSuggestion={siteData?.soilSuggestion || null}
+            onSoilConfirmed={(data) => setSoilData(data)}
+          />
 
           {/* ── C: MILL MONTHLY RESULTS ── */}
           <div style={card}>
