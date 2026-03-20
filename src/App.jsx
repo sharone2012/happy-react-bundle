@@ -2295,7 +2295,7 @@ export default function CFI() {
     if(document.getElementById(id)) return;
     var link = document.createElement("link");
     link.id = id; link.rel = "stylesheet";
-    link.href = "https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;600;700&family=DM+Mono:wght@500;700&display=swap";
+    link.href = "https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=EB+Garamond:wght@700;800&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500;700;800&display=swap";
     document.head.appendChild(link);
   }, []);
 
