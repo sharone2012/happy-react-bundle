@@ -65,6 +65,8 @@ const ESTATE_STREAMS = ['pke','opf','opt'];
 export default function SiteSetup() {
   // ── SectionAB state
   const [siteId, setSiteId] = useState(null);
+  const [siteData, setSiteData] = useState(null);
+  const [soilData, setSoilData] = useState(null);
   const handleSiteData = useCallback((data) => {
     // Receive confirmed site data from SectionAB
     if (data.monthlyFFB) {
