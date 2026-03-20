@@ -2302,7 +2302,8 @@ export default function CFI() {
     document.head.appendChild(link);
   }, []);
 
-  if (!session) return <LoginPage onLoginSuccess={() => {}} />;
+  // Auth guard disabled for preview
+  // if (!session) return <LoginPage onLoginSuccess={() => {}} />;
 
   return (
     <div style={{background:"#060C14", minHeight:"100vh", fontFamily:"'DM Sans', sans-serif",
