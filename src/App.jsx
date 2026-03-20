@@ -2433,7 +2433,7 @@ export default function CFI() {
                 {/* ── A: SITE IDENTITY ── */}
                 {(() => {
                   const aFieldLabel = {fontFamily:"'DM Mono', monospace",fontWeight:700,fontSize:11,color:C.grey,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:4};
-                  const aFieldInput = {background:C.navyField||"#142030",border:"1px solid rgba(139,160,180,0.22)",borderRadius:7,padding:"9px 13px",color:C.amber,fontFamily:"'DM Mono', monospace",fontWeight:700,fontSize:13,width:"100%",outline:"none",boxSizing:"border-box"};
+                  const aFieldInput = {background:"#1A3A5C",border:"1px solid #1E6B8C",borderRadius:6,padding:"8px 12px",color:"#FFFFFF",fontSize:13,fontFamily:"'DM Sans', sans-serif",width:"100%",outline:"none",boxSizing:"border-box"};
                   const aFieldInputFocus = {borderColor:C.tealBdr||"rgba(64,215,197,0.60)"};
                   const AField = ({label, value, field, placeholder}) => (
                     <div style={{marginBottom:10}}>
