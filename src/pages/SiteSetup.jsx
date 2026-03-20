@@ -62,7 +62,18 @@ const ESTATE_STREAMS = ['pke','opf','opt'];
 
 // ── MAIN COMPONENT ─────────────────────────────────────────
 export default function SiteSetup() {
-  // ── Section A state
+  // ── SectionAB state
+  const [siteId, setSiteId] = useState(null);
+  const handleSiteData = useCallback((data) => {
+    // Receive confirmed site data from SectionAB
+    if (data.monthlyFFB) {
+      // Update mill-derived values when SectionAB confirms
+      setMill(m => ({ ...m, ffb: data.ffb_capacity_tph || m.ffb, util: data.utilisation_pct || m.util, hrs: data.operating_hrs_day || m.hrs, days: data.operating_days_month || m.days }));
+      setBConfirmed(true);
+    }
+  }, []);
+
+  // ── Section A state (kept for other sections that reference site)
   const [site, setSite] = useState({ company:'', estate:'', millName:'', gpsLat:'', gpsLon:'', province:'', district:'', country:'Indonesia' });
   const upSite = (k,v) => setSite(s => ({...s,[k]:v}));
 
