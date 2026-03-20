@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import SectionAB from "../components/CFI_S0_SectionAB";
 import SectionC from "@/components/CFI_S0_SectionC";
+import SectionCMill from "@/components/CFI_S0_SectionC_MillResults";
 import SectionD from "@/components/CFI_S0_SectionD";
 
 // ── DESIGN TOKENS ──────────────────────────────────────────
