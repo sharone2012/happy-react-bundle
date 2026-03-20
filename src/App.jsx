@@ -3084,6 +3084,68 @@ export default function CFI() {
                         <span style={pillStyle}>POME · — t/m</span>
                       </div>
                     )}
+
+                    {/* ── 5-PANEL GRID ── */}
+                    <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:10,marginTop:14}}>
+                      {(()=>{
+                        const panelTitle = {fontFamily:"'DM Sans', sans-serif",fontSize:10,fontWeight:700,color:"#A8BDD0",letterSpacing:"0.08em",marginBottom:8,textTransform:"uppercase"};
+                        const panelBody = {fontFamily:"'DM Mono', monospace",fontSize:11,color:"#8BA0B4",lineHeight:1.7};
+                        const statusStyle = (color) => ({fontFamily:"'DM Mono', monospace",fontSize:13,fontWeight:800,color,marginBottom:6});
+
+                        const processReady = blendCP !== null && blendCP >= 8;
+                        const processColor = blendCP === null ? "#F5A623" : processReady ? "#3DCB7A" : "#E84040";
+                        const processText = blendCP === null ? "NOT READY" : processReady ? "READY" : `LOW PROTEIN — ${blendCP.toFixed(1)}%`;
+
+                        const bsfReady = blendCN !== null && blendCN >= 16 && blendCN <= 25;
+                        const bsfColor = blendCN === null ? "#F5A623" : bsfReady ? "#3DCB7A" : "#F5A623";
+                        const bsfText = blendCN === null ? "NOT READY" : bsfReady ? `READY · C:N ${blendCN}` : `C:N ${blendCN} — TARGET 16–25`;
+
+                        return (<>
+                          {/* Panel 1 — SOIL VALUE */}
+                          <div>
+                            <div style={panelTitle}>SOIL VALUE</div>
+                            <div style={panelBody}>
+                              N · P · K per tonne<br/>
+                              C:N ratio<br/>
+                              Organic Matter %<br/>
+                              Ca + Mg
+                            </div>
+                          </div>
+                          {/* Panel 2 — PROCESS READINESS */}
+                          <div>
+                            <div style={panelTitle}>PROCESS READINESS</div>
+                            <div style={statusStyle(processColor)}>{processText}</div>
+                            <div style={panelBody}>
+                              Lignin % blend<br/>
+                              Protein % vs 8% floor<br/>
+                              Moisture % pre-process
+                            </div>
+                          </div>
+                          {/* Panel 3 — BSF READINESS */}
+                          <div>
+                            <div style={panelTitle}>BSF READINESS</div>
+                            <div style={statusStyle(bsfColor)}>{bsfText}</div>
+                            <div style={panelBody}>
+                              C:N ratio gate<br/>
+                              Blend C:N 16–25 target<br/>
+                              MC gate
+                            </div>
+                          </div>
+                          {/* Panel 4 — EMISSIONS SIGNAL */}
+                          <div>
+                            <div style={panelTitle}>EMISSIONS SIGNAL</div>
+                            <div style={statusStyle("#F5A623")}>— RESTRICTED</div>
+                          </div>
+                          {/* Panel 5 — COMMERCIAL SIGNAL */}
+                          <div>
+                            <div style={panelTitle}>COMMERCIAL SIGNAL</div>
+                            <div style={panelBody}>
+                              × weather × agronomy
+                            </div>
+                          </div>
+                        </>);
+                      })()}
+                    </div>
                   </div>
                 );
               })()}
