@@ -2520,6 +2520,13 @@ export default function CFI() {
                             ))}
                           </div>
                         </div>
+                        {/* Status row */}
+                        <div style={{marginTop:12,padding:"8px 12px",borderRadius:6,background:"rgba(0,0,0,0.15)",textAlign:"center"}}>
+                          {s0.plantName && s0.millName && s0.district
+                            ? <span style={{fontFamily:"'DM Sans', sans-serif",fontSize:12,fontWeight:600,color:"#3DCB7A"}}>Site data complete</span>
+                            : <span style={{fontFamily:"'DM Sans', sans-serif",fontSize:12,fontWeight:600,color:"#F5A623"}}>Complete required fields to proceed</span>
+                          }
+                        </div>
                       </div>
                     </div>
                   );
