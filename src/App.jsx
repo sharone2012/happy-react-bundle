@@ -1452,7 +1452,9 @@ export default function CFI() {
   const [s0, setS0] = useState({
     plantName: "", millName: "", district: "", province: "", contact: "", rspo: "none",
     idCode: "", contactName: "", contactEmail: "",
-    estateName: "", estateArea: "", gpsLat: "", gpsLon: "",
+    estateName: "", estateArea: "", gpsLat: "", gpsLon: "", gpsCoords: "",
+    monthlyTemp: [27,27,27,28,28,27,27,27,27,27,27,27],
+    monthlyRain: [250,220,260,280,260,180,160,150,180,260,300,280],
     ffbCapacity: 60, utilisation: 85, hrsDay: 24, daysMonth: 30,
     efbEnabled: false, opdcEnabled: false,
     posEnabled: false, opfEnabled: false, optEnabled: false,
