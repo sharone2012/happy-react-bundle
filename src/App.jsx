@@ -2460,18 +2460,40 @@ export default function CFI() {
                       </div>
                       {/* Fields */}
                       <div style={{padding:"4px 16px 16px"}}>
-                        <AField label="PLANTATION / COMPANY" value={s0.plantName} field="plantName" placeholder="Enter plantation or company name"/>
-                        <AField label="ESTATE NAME" value={s0.estateName} field="estateName" placeholder="Enter estate name"/>
-                        <AField label="MILL NAME / UNIT" value={s0.millName} field="millName" placeholder="Enter mill name or unit"/>
-                        <AField label="DISTRICT" value={s0.district} field="district" placeholder="District / Kabupaten"/>
-                        <AField label="PROVINCE" value={s0.province} field="province" placeholder="Province"/>
-                        <div style={{marginBottom:10}}>
-                          <div style={{...aFieldLabel,display:"flex",alignItems:"baseline",gap:6}}>
-                            GPS COORDINATES <span style={{fontFamily:"'DM Sans', sans-serif",fontWeight:400,fontSize:10,color:"rgba(168,189,208,0.55)",fontStyle:"italic",textTransform:"none",letterSpacing:0}}>(optional)</span>
+                        {/* Row 1 */}
+                        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:10}}>
+                          <AField label="PLANTATION / COMPANY" value={s0.plantName} field="plantName" placeholder="I will enter manually"/>
+                          <AField label="ESTATE NAME" value={s0.estateName} field="estateName" placeholder="I will enter manually"/>
+                        </div>
+                        {/* Row 2 */}
+                        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:10}}>
+                          <AField label="MILL NAME / UNIT" value={s0.millName} field="millName" placeholder="I will enter manually"/>
+                          <AField label="DISTRICT / KABUPATEN" value={s0.district} field="district" placeholder="I will enter manually"/>
+                        </div>
+                        {/* Row 3 */}
+                        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:10}}>
+                          <AField label="PROVINCE" value={s0.province} field="province" placeholder="I will enter manually"/>
+                          <div style={{marginBottom:0}}>
+                            <div style={aFieldLabel}>TOTAL ESTATE AREA</div>
+                            <div style={{position:"relative"}}>
+                              <input
+                                type="number"
+                                style={{...aFieldInput,paddingRight:36}}
+                                value={s0.estateArea||""}
+                                onChange={e=>upS0("estateArea",e.target.value)}
+                                placeholder="0"
+                                onFocus={e=>{e.target.style.borderColor=aFieldInputFocus.borderColor}}
+                                onBlur={e=>{e.target.style.borderColor="rgba(139,160,180,0.22)"}}
+                              />
+                              <span style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",fontFamily:"'DM Mono', monospace",fontWeight:700,fontSize:11,color:C.grey,pointerEvents:"none"}}>ha</span>
+                            </div>
                           </div>
-                          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-                            <input style={aFieldInput} value={s0.gpsLat||""} onChange={e=>upS0("gpsLat",e.target.value)} placeholder="Latitude"/>
-                            <input style={aFieldInput} value={s0.gpsLon||""} onChange={e=>upS0("gpsLon",e.target.value)} placeholder="Longitude"/>
+                        </div>
+                        {/* Row 4 — half-width left */}
+                        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+                          <div>
+                            <AField label="GPS COORDINATES" value={s0.gpsCoords||""} field="gpsCoords" placeholder="e.g. -2.95, 104.75"/>
+                            <div style={{fontFamily:"'DM Sans', sans-serif",fontSize:10,color:"rgba(168,189,208,0.55)",fontStyle:"italic",marginTop:-6}}>(Optional — improves soil and weather precision)</div>
                           </div>
                         </div>
                       </div>
