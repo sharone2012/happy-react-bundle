@@ -2372,7 +2372,7 @@ export default function CFI() {
       </div>
 
       {/* ── CONTENT ── */}
-      <div style={{padding:"16px 22px 60px", maxWidth:1200, margin:"0 auto"}}>
+      <div style={{padding:"16px 22px 60px", minWidth:1400, margin:"0 auto"}}>
 
         {/* ════════════════════ S T A G E  0 ════════════════════ */}
         {stage===0 && (
