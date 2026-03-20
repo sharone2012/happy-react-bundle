@@ -165,7 +165,7 @@ export default function SiteSetup() {
     return b;
   },[streamT, grandTotal]);
 
-  const soilData = SOILS.find(s=>s.id===selectedSoil)||SOILS[1];
+  const soilDisplay = SOILS.find(s=>s.id===selectedSoil)||SOILS[1];
 
   // ── Add custom residue
   const addResidue = () => {
