@@ -1451,7 +1451,7 @@ export default function CFI() {
 
   // ── S0 STATE ──
   const [s0, setS0] = useState({
-    plantName: "", millName: "", district: "", province: "", contact: "", rspo: "none",
+    plantName: "", millName: "", district: "", province: "", contact: "", rspo: "none", country: "Indonesia",
     idCode: "", contactName: "", contactEmail: "",
     estateName: "", estateArea: "", gpsLat: "", gpsLon: "", gpsCoords: "",
     monthlyTemp: [27,27,27,28,28,27,27,27,27,27,27,27],
@@ -2454,81 +2454,53 @@ export default function CFI() {
                     <div style={{background:C.navyCard||"#111E33",border:"1.5px solid #1E6B8C",borderRadius:11,overflow:"hidden"}}>
                       {/* Section Title */}
                       <div style={{fontFamily:"'Syne', sans-serif",fontWeight:700,fontSize:18,color:"#00C9B1",padding:"12px 16px 10px",borderBottom:"1px solid rgba(64,215,197,0.12)"}}>
-                        A — Enter your site details below
+                        A — Enter Your Details
                       </div>
                       {/* Subtitle */}
                       <div style={{fontFamily:"'DM Sans', sans-serif",fontSize:11,color:"rgba(168,189,208,0.55)",padding:"6px 16px 8px"}}>
-                        Mill identity · Auto-saves on page exit
+                        Mill identity · Location · GPS coordinates
                       </div>
                       {/* Fields */}
                       <div style={{padding:"4px 16px 16px"}}>
-                        {/* Row 1 */}
+                        {/* Row 1: Company Name */}
+                        <AField label="COMPANY NAME" value={s0.plantName} field="plantName" placeholder="Company Name"/>
+                        {/* Row 2: Estate / Plantation Name + Mill Name # */}
                         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:10}}>
-                          <AField label="PLANTATION / COMPANY" value={s0.plantName} field="plantName" placeholder="Plantation / Company"/>
-                          <AField label="ESTATE NAME" value={s0.estateName} field="estateName" placeholder="Estate Name"/>
+                          <AField label="ESTATE / PLANTATION NAME" value={s0.estateName} field="estateName" placeholder="Estate / Plantation Name"/>
+                          <AField label="MILL NAME #" value={s0.millName} field="millName" placeholder="Mill Name #"/>
                         </div>
-                        {/* Row 2 */}
-                        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:10}}>
-                          <AField label="MILL NAME / UNIT" value={s0.millName} field="millName" placeholder="Mill Name / Unit"/>
-                          <AField label="DISTRICT / KABUPATEN" value={s0.district} field="district" placeholder="District / Kabupaten"/>
-                        </div>
-                        {/* Row 3 */}
+                        {/* Row 3: Province + GPS Latitude */}
                         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:10}}>
                           <AField label="PROVINCE" value={s0.province} field="province" placeholder="Province"/>
-                          <div style={{marginBottom:0}}>
-                            <div style={aFieldLabel}>TOTAL ESTATE AREA</div>
-                            <div style={{position:"relative"}}>
-                              <input
-                                type="number"
-                                style={{...aFieldInput,paddingRight:36}}
-                                value={s0.estateArea||""}
-                                onChange={e=>upS0("estateArea",e.target.value)}
-                                placeholder="Total Estate Area"
-                                onFocus={e=>{e.target.style.borderColor="#1E6B8C"}}
-                                onBlur={e=>{e.target.style.borderColor="#1E6B8C"}}
-                              />
-                              <span style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",fontFamily:"'DM Mono', monospace",fontWeight:700,fontSize:11,color:C.grey,pointerEvents:"none"}}>ha</span>
-                            </div>
+                          <div style={{marginBottom:10}}>
+                            <div style={aFieldLabel}>GPS LATITUDE</div>
+                            <input
+                              style={aFieldInput}
+                              value={s0.gpsLat||""}
+                              onChange={e=>upS0("gpsLat",e.target.value)}
+                              placeholder="Optional"
+                              onFocus={e=>{e.target.style.borderColor=aFieldInputFocus.borderColor}}
+                              onBlur={e=>{e.target.style.borderColor="rgba(139,160,180,0.22)"}}
+                            />
                           </div>
                         </div>
-                        {/* Row 4 — half-width left */}
-                        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-                          <div>
-                            <AField label="GPS COORDINATES" value={s0.gpsCoords||""} field="gpsCoords" placeholder="GPS Coordinates"/>
-                            <div style={{fontFamily:"'DM Sans', sans-serif",fontSize:10,color:"rgba(168,189,208,0.55)",fontStyle:"italic",marginTop:-6}}>(Optional — improves soil and weather precision)</div>
+                        {/* Row 4: District / Kabupaten + GPS Longitude */}
+                        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:10}}>
+                          <AField label="DISTRICT / KABUPATEN" value={s0.district} field="district" placeholder="District / Kabupaten"/>
+                          <div style={{marginBottom:10}}>
+                            <div style={aFieldLabel}>GPS LONGITUDE</div>
+                            <input
+                              style={aFieldInput}
+                              value={s0.gpsLon||""}
+                              onChange={e=>upS0("gpsLon",e.target.value)}
+                              placeholder="Optional"
+                              onFocus={e=>{e.target.style.borderColor=aFieldInputFocus.borderColor}}
+                              onBlur={e=>{e.target.style.borderColor="rgba(139,160,180,0.22)"}}
+                            />
                           </div>
                         </div>
-                        {/* Auto-fetch: Monthly Temperature */}
-                        <div style={{marginTop:14}}>
-                          <div style={{fontFamily:"'DM Sans', sans-serif",fontWeight:600,fontSize:11,color:C.grey,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:6}}>Monthly Temperature — Auto-fetched From Location</div>
-                          <div style={{display:"grid",gridTemplateColumns:"repeat(12, 1fr)",gap:4}}>
-                            {["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map((m,i)=>(
-                              <div key={m} style={{background:"#1A3A5C",border:"1px solid #1E6B8C",borderRadius:4,padding:"6px 2px",textAlign:"center"}}>
-                                <div style={{fontFamily:"'DM Sans', sans-serif",fontSize:8,color:C.grey,marginBottom:2}}>{m}</div>
-                                <div style={{fontFamily:"'DM Mono', monospace",fontWeight:700,fontSize:11,color:s0.gpsCoords?C.amber:C.grey}}>{s0.monthlyTemp[i]?s0.monthlyTemp[i]+"°C":"—°C"}</div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                        {/* Auto-fetch: Monthly Rainfall */}
-                        <div style={{marginTop:10}}>
-                          <div style={{fontFamily:"'DM Sans', sans-serif",fontWeight:600,fontSize:11,color:C.grey,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:6}}>Monthly Rainfall — Auto-fetched From Location</div>
-                          <div style={{display:"grid",gridTemplateColumns:"repeat(12, 1fr)",gap:4}}>
-                            {["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map((m,i)=>(
-                              <div key={m} style={{background:"#1A3A5C",border:"1px solid #1E6B8C",borderRadius:4,padding:"6px 2px",textAlign:"center"}}>
-                                <div style={{fontFamily:"'DM Sans', sans-serif",fontSize:8,color:C.grey,marginBottom:2}}>{m}</div>
-                                <div style={{fontFamily:"'DM Mono', monospace",fontWeight:700,fontSize:11,color:s0.gpsCoords?C.amber:C.grey}}>{s0.monthlyRain[i]?s0.monthlyRain[i]+"mm":"—mm"}</div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                        {/* Status row */}
-                        <div style={{marginTop:12,padding:"8px 12px",borderRadius:6,background:"rgba(0,0,0,0.15)",textAlign:"center"}}>
-                          {s0.plantName && s0.millName && s0.district
-                            ? <span style={{fontFamily:"'DM Sans', sans-serif",fontSize:12,fontWeight:600,color:"#3DCB7A"}}>Site data complete</span>
-                            : <span style={{fontFamily:"'DM Sans', sans-serif",fontSize:12,fontWeight:600,color:"#F5A623"}}>Complete required fields to proceed</span>
-                          }
-                        </div>
+                        {/* Row 5: Country */}
+                        <AField label="COUNTRY" value={s0.country||"Indonesia"} field="country" placeholder="Country"/>
                       </div>
                     </div>
                   );
