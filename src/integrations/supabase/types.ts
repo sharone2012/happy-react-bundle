@@ -1662,38 +1662,101 @@ export type Database = {
       }
       cfi_scenarios: {
         Row: {
+          agronomy_tier: string | null
           created_at: string | null
+          efb_enabled: boolean | null
+          efb_mix_pct: number | null
           ffb_capacity_tph: number | null
           id: number
+          is_active: boolean | null
+          mix_input_mode: string | null
           notes: string | null
+          opdc_enabled: boolean | null
+          opdc_mix_pct: number | null
           operating_days_month: number | null
           operating_hrs_day: number | null
+          opf_enabled: boolean | null
+          opf_mix_pct: number | null
+          opt_enabled: boolean | null
+          opt_mix_pct: number | null
+          pke_enabled: boolean | null
+          pke_mix_pct: number | null
+          pos_enabled: boolean | null
+          pos_mix_pct: number | null
+          projected_npk_uplift_pct: number | null
           scenario_name: string
+          scenario_type: string | null
           site_id: number | null
+          soil_type: string | null
+          suggestion_reason: string | null
+          suggestion_title: string | null
+          updated_at: string | null
           user_id: string | null
           utilisation_pct: number | null
         }
         Insert: {
+          agronomy_tier?: string | null
           created_at?: string | null
+          efb_enabled?: boolean | null
+          efb_mix_pct?: number | null
           ffb_capacity_tph?: number | null
           id?: number
+          is_active?: boolean | null
+          mix_input_mode?: string | null
           notes?: string | null
+          opdc_enabled?: boolean | null
+          opdc_mix_pct?: number | null
           operating_days_month?: number | null
           operating_hrs_day?: number | null
+          opf_enabled?: boolean | null
+          opf_mix_pct?: number | null
+          opt_enabled?: boolean | null
+          opt_mix_pct?: number | null
+          pke_enabled?: boolean | null
+          pke_mix_pct?: number | null
+          pos_enabled?: boolean | null
+          pos_mix_pct?: number | null
+          projected_npk_uplift_pct?: number | null
           scenario_name: string
+          scenario_type?: string | null
           site_id?: number | null
+          soil_type?: string | null
+          suggestion_reason?: string | null
+          suggestion_title?: string | null
+          updated_at?: string | null
           user_id?: string | null
           utilisation_pct?: number | null
         }
         Update: {
+          agronomy_tier?: string | null
           created_at?: string | null
+          efb_enabled?: boolean | null
+          efb_mix_pct?: number | null
           ffb_capacity_tph?: number | null
           id?: number
+          is_active?: boolean | null
+          mix_input_mode?: string | null
           notes?: string | null
+          opdc_enabled?: boolean | null
+          opdc_mix_pct?: number | null
           operating_days_month?: number | null
           operating_hrs_day?: number | null
+          opf_enabled?: boolean | null
+          opf_mix_pct?: number | null
+          opt_enabled?: boolean | null
+          opt_mix_pct?: number | null
+          pke_enabled?: boolean | null
+          pke_mix_pct?: number | null
+          pos_enabled?: boolean | null
+          pos_mix_pct?: number | null
+          projected_npk_uplift_pct?: number | null
           scenario_name?: string
+          scenario_type?: string | null
           site_id?: number | null
+          soil_type?: string | null
+          suggestion_reason?: string | null
+          suggestion_title?: string | null
+          updated_at?: string | null
           user_id?: string | null
           utilisation_pct?: number | null
         }
