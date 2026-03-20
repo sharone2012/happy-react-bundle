@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
+import SectionAB from "../components/CFI_S0_SectionAB";
 
 // ── DESIGN TOKENS ──────────────────────────────────────────
 const C = {
