@@ -671,14 +671,15 @@ export default function SectionAB({ onSiteConfirmed, siteId, setSiteId }) {
           {/* CONFIRM MILL CAPACITY gate — saves to cfi_sites on click */}
           <button disabled={!bValid || confirmed || saving} onClick={handleConfirm}
             style={{
-              marginTop: 16,
-              background: bValid && !confirmed ? C.teal : "#2A4A6A",
-              color: bValid && !confirmed ? C.black : C.grey,
-              fontFamily: T.syne, fontWeight: 700, fontSize: 14,
-              border: "none", borderRadius: 6, padding: "10px 28px",
+              background: bValid && !confirmed ? "#00A249" : "#2A4A6A",
+              color: bValid && !confirmed ? "#000000" : C.grey,
+              fontFamily: "'EB Garamond', serif", fontWeight: 700, fontSize: 15,
+              letterSpacing: "0.04em",
+              border: "none", borderRadius: 8, padding: "0 28px",
+              height: 51, minWidth: 260, display: "block", margin: "12px auto 0",
               cursor: bValid && !confirmed ? "pointer" : "not-allowed",
             }}>
-            {saving ? "Saving..." : confirmed ? "Confirmed" : "Confirm Mill Capacity"}
+            {saving ? "Saving..." : confirmed ? "✓ Confirmed — Click To Edit" : "Confirm Mill Capacity"}
           </button>
         </div>
 
