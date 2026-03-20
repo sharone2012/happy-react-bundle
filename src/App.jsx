@@ -2433,7 +2433,7 @@ export default function CFI() {
                 {/* ── A: SITE IDENTITY ── */}
                 {(() => {
                   const aFieldLabel = {fontFamily:"'DM Mono', monospace",fontWeight:700,fontSize:11,color:C.grey,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:4};
-                  const aFieldInput = {background:C.navyField||"#142030",border:"1px solid rgba(139,160,180,0.22)",borderRadius:7,padding:"9px 13px",color:C.amber,fontFamily:"'DM Mono', monospace",fontWeight:700,fontSize:13,width:"100%",outline:"none",boxSizing:"border-box"};
+                  const aFieldInput = {background:"#1A3A5C",border:"1px solid #1E6B8C",borderRadius:6,padding:"8px 12px",color:"#FFFFFF",fontSize:13,fontFamily:"'DM Sans', sans-serif",width:"100%",outline:"none",boxSizing:"border-box"};
                   const aFieldInputFocus = {borderColor:C.tealBdr||"rgba(64,215,197,0.60)"};
                   const AField = ({label, value, field, placeholder}) => (
                     <div style={{marginBottom:10}}>
@@ -2462,17 +2462,17 @@ export default function CFI() {
                       <div style={{padding:"4px 16px 16px"}}>
                         {/* Row 1 */}
                         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:10}}>
-                          <AField label="PLANTATION / COMPANY" value={s0.plantName} field="plantName" placeholder="I will enter manually"/>
-                          <AField label="ESTATE NAME" value={s0.estateName} field="estateName" placeholder="I will enter manually"/>
+                          <AField label="PLANTATION / COMPANY" value={s0.plantName} field="plantName" placeholder="Plantation / Company"/>
+                          <AField label="ESTATE NAME" value={s0.estateName} field="estateName" placeholder="Estate Name"/>
                         </div>
                         {/* Row 2 */}
                         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:10}}>
-                          <AField label="MILL NAME / UNIT" value={s0.millName} field="millName" placeholder="I will enter manually"/>
-                          <AField label="DISTRICT / KABUPATEN" value={s0.district} field="district" placeholder="I will enter manually"/>
+                          <AField label="MILL NAME / UNIT" value={s0.millName} field="millName" placeholder="Mill Name / Unit"/>
+                          <AField label="DISTRICT / KABUPATEN" value={s0.district} field="district" placeholder="District / Kabupaten"/>
                         </div>
                         {/* Row 3 */}
                         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:10}}>
-                          <AField label="PROVINCE" value={s0.province} field="province" placeholder="I will enter manually"/>
+                          <AField label="PROVINCE" value={s0.province} field="province" placeholder="Province"/>
                           <div style={{marginBottom:0}}>
                             <div style={aFieldLabel}>TOTAL ESTATE AREA</div>
                             <div style={{position:"relative"}}>
@@ -2481,9 +2481,9 @@ export default function CFI() {
                                 style={{...aFieldInput,paddingRight:36}}
                                 value={s0.estateArea||""}
                                 onChange={e=>upS0("estateArea",e.target.value)}
-                                placeholder="0"
-                                onFocus={e=>{e.target.style.borderColor=aFieldInputFocus.borderColor}}
-                                onBlur={e=>{e.target.style.borderColor="rgba(139,160,180,0.22)"}}
+                                placeholder="Total Estate Area"
+                                onFocus={e=>{e.target.style.borderColor="#1E6B8C"}}
+                                onBlur={e=>{e.target.style.borderColor="#1E6B8C"}}
                               />
                               <span style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",fontFamily:"'DM Mono', monospace",fontWeight:700,fontSize:11,color:C.grey,pointerEvents:"none"}}>ha</span>
                             </div>
@@ -2492,7 +2492,7 @@ export default function CFI() {
                         {/* Row 4 — half-width left */}
                         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
                           <div>
-                            <AField label="GPS COORDINATES" value={s0.gpsCoords||""} field="gpsCoords" placeholder="e.g. -2.95, 104.75"/>
+                            <AField label="GPS COORDINATES" value={s0.gpsCoords||""} field="gpsCoords" placeholder="GPS Coordinates"/>
                             <div style={{fontFamily:"'DM Sans', sans-serif",fontSize:10,color:"rgba(168,189,208,0.55)",fontStyle:"italic",marginTop:-6}}>(Optional — improves soil and weather precision)</div>
                           </div>
                         </div>
