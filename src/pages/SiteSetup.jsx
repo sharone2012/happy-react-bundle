@@ -235,7 +235,7 @@ export default function SiteSetup() {
           <div style={{ display:'flex', gap:12, alignItems:'center' }}>
             <span style={{ fontSize:10, fontFamily:Fnt.mono, color:C.green, fontWeight:700 }}>✓ Valid</span>
             <span style={{ fontSize:10, fontFamily:Fnt.mono, color:C.green, fontWeight:700 }}>✓ Blend Valid</span>
-            <span style={{ fontSize:10, fontFamily:Fnt.mono, color:C.teal, fontWeight:700 }}>Soil: {soilData.name}</span>
+            <span style={{ fontSize:10, fontFamily:Fnt.mono, color:C.teal, fontWeight:700 }}>Soil: {soilDisplay.name}</span>
           </div>
         </div>
 
