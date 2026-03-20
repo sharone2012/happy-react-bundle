@@ -645,17 +645,25 @@ export default function SectionAB({ onSiteConfirmed, siteId, setSiteId }) {
         <div style={S.zone}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 16 }}>
             {[
-              { label: "FFB Processing",      val: ffb,  set: setFfb,  unit: "Tons Per Hour",  ph: "60"  },
-              { label: "Capacity Utilisation", val: util, set: setUtil, unit: "% Utilisation",  ph: "85"  },
-              { label: "Operating Hours",      val: hrs,  set: setHrs,  unit: "Hours / Day",    ph: "24"  },
-              { label: "Operating Days",       val: days, set: setDays, unit: "Days / Month",   ph: "30"  },
+              { label: "FFB Processing",      val: ffb,  set: setFfb,  unit: "T / hr",  ph: "60"  },
+              { label: "Capacity Utilisation", val: util, set: setUtil, unit: "%",        ph: "85"  },
+              { label: "Operating Hours",      val: hrs,  set: setHrs,  unit: "hr / day", ph: "24"  },
+              { label: "Operating Days",       val: days, set: setDays, unit: "days",     ph: "30"  },
             ].map(f => (
               <div key={f.label}>
                 <label style={S.label}>{f.label}</label>
-                <input style={S.input} type="number" value={f.val}
-                  placeholder={f.ph} disabled={confirmed}
-                  onChange={e => { f.set(e.target.value); setConfirmed(false); }} />
-                <span style={S.sub}>{f.unit}</span>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#142030", border: "1px solid rgba(168,189,208,0.12)", borderRadius: 8, padding: "10px 14px", gap: 12, minHeight: 48, marginBottom: 6 }}>
+                  <input style={{
+                    background: "#000000", border: "1.5px solid rgba(64,215,197,0.75)",
+                    borderRadius: 7, color: "#F5A623", fontFamily: "'DM Mono', monospace",
+                    fontSize: 14, fontWeight: 800, padding: "8px 10px",
+                    width: 76, height: 38, textAlign: "center", outline: "none",
+                    MozAppearance: "textfield",
+                  }} type="number" value={f.val}
+                    placeholder={f.ph} disabled={confirmed}
+                    onChange={e => { f.set(e.target.value); setConfirmed(false); }} />
+                  <span style={{ fontSize: 11, fontFamily: "'DM Mono', monospace", color: "rgba(168,189,208,0.75)", whiteSpace: "nowrap", width: 42, textAlign: "left" }}>{f.unit}</span>
+                </div>
               </div>
             ))}
           </div>
