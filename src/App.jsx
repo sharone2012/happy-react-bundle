@@ -2506,11 +2506,18 @@ export default function CFI() {
                   );
                 })()}
 
-                {/* ── B: MILL CAPACITY ── */}
+              </div>
+
+              {/* ════ COL 2: B ════ */}
+              <div style={{display:"flex", flexDirection:"column", gap:16}}>
+                {/* ── B: CPO MILL PROCESSING ── */}
                 <Card>
-                  <SectionHdr icon="" title="B — Oil Palm Mill Fresh Fruit Bunch Processing Capacity" color={C.teal}/>
+                  <SectionHdr icon="" title="B — CPO Mill Processing" color={C.teal}/>
+                  <div style={{fontFamily:"'DM Sans', sans-serif",fontSize:11,color:"rgba(168,189,208,0.55)",padding:"0 14px 8px",marginTop:-4}}>
+                    Auto-detected · Override available
+                  </div>
                   <div style={{display:"flex", justifyContent:"center"}}>
-                    <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"24px 48px", maxWidth:520}}>
+                    <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"16px 24px", maxWidth:520}}>
                       {/* Row 1: FFB Processing | Capacity Utilisation */}
                       <div style={{display:"flex", flexDirection:"column", alignItems:"flex-end", gap:6}}>
                         <div style={{textAlign:"right"}}>
