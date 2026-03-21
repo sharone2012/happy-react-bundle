@@ -1467,9 +1467,18 @@ export default function SiteSetup() {
                   { key:'opf',  name:'Oil Palm Fronds',        sub:'OPF · Seasonal · Zero Cost' },
                   { key:'opt',  name:'Oil Palm Trunks',        sub:'OPT · Replanting Only · Zero Cost' },
                   { key:'pks',  name:'Palm Kernel Shell',      sub:'PKS · Zero Cost' },
+                  { key:'pka',  name:'Palm Kernel Ash',        sub:'PKA · Used Internally · S2 Pre-Treatment', infoOnly:true },
                   ...customStreams.map(c=>({ key:c.key, name:c.name, sub:'Custom · Zero Cost' })),
                 ].map(st=>{
                   const active = activeStreams[st.key];
+                  if (st.infoOnly) {
+                    return (
+                      <div key={st.key} style={{ background:C.navyDeep, border:'1px dashed #1E6B8C', borderRadius:8, padding:'10px 13px', minHeight:52, opacity:0.55, cursor:'not-allowed' }}>
+                        <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:'#B0BEC5' }}>{st.name}</div>
+                        <div style={{ fontSize:12, fontFamily:Fnt.dm, color:'#888888', marginTop:3 }}>{st.sub}</div>
+                      </div>
+                    );
+                  }
                   return (
                     <div key={st.key} onClick={()=>toggleStream(st.key)} style={toggleCard(active, false)}>
                       <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:active?C.amber:'#B0BEC5' }}>{st.name}</div>
