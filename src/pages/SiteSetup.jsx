@@ -844,9 +844,8 @@ export default function SiteSetup() {
                       value={site.millName}
                       onFocus={async () => {
                         if (millConfirmed) {
+                          setSite(s => ({...s, millName:'', gpsLat:'', gpsLon:''}));
                           setMillConfirmed(false);
-                          upSite('millName','');
-                          upSite('gpsLat',''); upSite('gpsLon','');
                           setGpsSoilSuggestion('');
                           setMill(prev => ({...prev, ffb:60}));
                         }
@@ -859,8 +858,10 @@ export default function SiteSetup() {
                       }}
                       onChange={async e => {
                         const val = e.target.value;
-                        upSite('millName', val);
+                        setSite(s => ({...s, millName:val, gpsLat:'', gpsLon:''}));
                         setMillConfirmed(false);
+                        setGpsSoilSuggestion('');
+                        setMill(prev => ({...prev, ffb:60}));
                         setActiveDropdown('mill');
                         const { data } = val.length === 0
                           ? await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105)
