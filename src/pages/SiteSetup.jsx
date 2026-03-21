@@ -1510,9 +1510,21 @@ export default function SiteSetup() {
                 <div style={{ marginTop:6 }}>
                   <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>Add New</div>
                   <div style={{ display:'flex', gap:8 }}>
-                    <input value={newRes1} onChange={e=>setNewRes1(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addResidue()} placeholder="Residue Name" style={{ background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'10px 13px', outline:'none', fontFamily:Fnt.dm, fontSize:14, fontWeight:500, color:C.white, width:'calc(50% - 4px)', minHeight:42, boxSizing:'border-box' }} />
+                    <input value={newRes1} onChange={e=>setNewRes1(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addResidue(newRes1, newResVol)} placeholder="Residue Name" style={{ background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'10px 13px', outline:'none', fontFamily:Fnt.dm, fontSize:14, fontWeight:500, color:C.white, width:'calc(50% - 4px)', minHeight:42, boxSizing:'border-box' }} />
                     <div style={{ width:'calc(50% - 4px)', background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'6px 10px', display:'flex', alignItems:'center', gap:4, minHeight:42, boxSizing:'border-box' }}>
-                      <input type="number" placeholder="0" style={{ background:'transparent', border:'none', outline:'none', fontFamily:Fnt.mono, fontSize:14, fontWeight:800, color:C.amber, width:'100%', textAlign:'right' }} />
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="0"
+                        value={newResVol ? Number(String(newResVol).replace(/,/g,'')).toLocaleString() : ''}
+                        onChange={e => {
+                          const raw = e.target.value.replace(/,/g,'').replace(/[^0-9]/g,'');
+                          setNewResVol(raw);
+                        }}
+                        onBlur={() => { if (newRes1.trim() && newResVol) addResidue(newRes1, newResVol); }}
+                        onKeyDown={e => e.key==='Enter' && addResidue(newRes1, newResVol)}
+                        style={{ background:'transparent', border:'none', outline:'none', fontFamily:Fnt.mono, fontSize:14, fontWeight:800, color:C.amber, width:'100%', textAlign:'right' }}
+                      />
                       <span style={{ fontSize:11, fontFamily:Fnt.mono, color:'#888888', whiteSpace:'nowrap', flexShrink:0 }}>t/m</span>
                     </div>
                   </div>
