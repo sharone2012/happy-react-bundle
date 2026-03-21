@@ -306,6 +306,47 @@ export default function SiteSetup() {
     return () => document.removeEventListener('mousedown', close);
   }, []);
 
+  // ── All-teal trigger: when company+estate+mill all confirmed → load soil + climate (point 7)
+  useEffect(() => {
+    if (!companyConfirmed || !estateConfirmed || !millConfirmed) {
+      setSiteDataMessage('');
+      setClimateData(null);
+      setClimateOriginal(null);
+      setClimateOverrides({});
+      return;
+    }
+    async function loadSiteData() {
+      if (site.province) {
+        const { data: soilLookup } = await supabase
+          .from('cfi_province_soil_lookup')
+          .select('*')
+          .ilike('province', `%${site.province}%`)
+          .limit(1)
+          .maybeSingle();
+        if (soilLookup) {
+          // Auto-select soil type from province lookup
+          const wrb = soilLookup.dominant_soil_wrb?.toLowerCase().replace(/\s/g, '') || '';
+          if (wrb) {
+            setSelectedSoil(wrb);
+            if (siteId) supabase.from('cfi_sites').update({ soil_type: wrb }).eq('id', siteId);
+          }
+          const cd = {
+            rainfall_min: soilLookup.rainfall_mm_yr_min,
+            rainfall_max: soilLookup.rainfall_mm_yr_max,
+            temp_min: soilLookup.temp_c_avg_min,
+            temp_max: soilLookup.temp_c_avg_max,
+            ph_min: soilLookup.ph_min,
+            ph_max: soilLookup.ph_max,
+          };
+          setClimateData(cd);
+          setClimateOriginal(cd);
+        }
+      }
+      setSiteDataMessage('Site data loaded — soil profile and climate data updated');
+    }
+    loadSiteData();
+  }, [companyConfirmed, estateConfirmed, millConfirmed]);
+
   function buildSoilPills(p) {
     const pills = [];
     if (p.ph_degraded_low) pills.push({ cls:'amber', txt:`pH ${p.ph_degraded_low} · CEC ${p.cec_degraded_cmol_low||'—'}` });
