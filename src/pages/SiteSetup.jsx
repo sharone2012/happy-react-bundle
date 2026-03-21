@@ -1303,7 +1303,7 @@ export default function SiteSetup() {
               )}
 
               {/* Point 10: Histosol AMBER warning */}
-              {selectedSoil === 'histosols' && (
+              {selectedSoil === 'histosol' && (
                 <div style={{ background:C.amberDim, border:`1px solid ${C.amber}`, borderRadius:6, padding:'7px 12px', fontSize:11, color:C.amber, fontFamily:Fnt.dm, marginBottom:6 }}>
                   Peat soil detected — N and P application rates adjusted automatically.
                 </div>
