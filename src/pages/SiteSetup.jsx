@@ -812,17 +812,19 @@ export default function SiteSetup() {
                       }}
                       onChange={async e => {
                         const val = e.target.value;
-                        // Atomic reset of downstream + value update
                         setSite(s => ({...s, company:val, estate:'', millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
                         setCompanyConfirmed(false);
                         setEstateConfirmed(false);
                         setMillConfirmed(false);
                         setGpsSoilSuggestion('');
                         setMill(prev => ({...prev, ffb:60}));
+                        if (val.length < 3) {
+                          setCompanySuggestions([]);
+                          setActiveDropdown(null);
+                          return;
+                        }
                         setActiveDropdown('company');
-                        const { data } = val.length === 0
-                          ? await supabase.from('cfi_mill_owners').select('id, company').order('company').limit(42)
-                          : await supabase.from('cfi_mill_owners').select('id, company').ilike('company',`%${val}%`).limit(8);
+                        const { data } = await supabase.from('cfi_mill_owners').select('id, company').ilike('company',`%${val}%`).limit(8);
                         setCompanySuggestions(data || []);
                       }}
                     />
