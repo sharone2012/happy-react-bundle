@@ -796,41 +796,40 @@ export default function SiteSetup() {
                   {/* Mill Name — autocomplete from cfi_mills_60tph */}
                   <div style={{ position:'relative' }} onClick={e => e.stopPropagation()}>
                     <input
-                      style={fInput}
+                      style={millConfirmed ? fInputConfirmed : fInput}
                       placeholder="Mill Name / #"
                       value={site.millName}
+                      readOnly={millConfirmed}
+                      onClick={async () => {
+                        if (millConfirmed) {
+                          setMillConfirmed(false);
+                          upSite('millName', '');
+                          upSite('gpsLat',   '');
+                          upSite('gpsLon',   '');
+                          setGpsSoilSuggestion('');
+                          setMill(prev => ({ ...prev, ffb: 60 }));
+                          const { data } = await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105);
+                          setMillSuggestions(data || []);
+                        }
+                      }}
                       onChange={async e => {
                         const val = e.target.value;
                         upSite('millName', val);
-                        // Clear GPS and soil when mill changes
                         upSite('gpsLat', '');
                         upSite('gpsLon', '');
                         setGpsSoilSuggestion('');
                         setMill(prev => ({ ...prev, ffb: 60 }));
-                        // Show all mills if empty, filtered if typing
                         if (val.length === 0) {
-                          const { data } = await supabase
-                            .from('cfi_mills_60tph')
-                            .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
-                            .order('mill_name')
-                            .limit(105);
+                          const { data } = await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105);
                           setMillSuggestions(data || []);
                         } else {
-                          const { data } = await supabase
-                            .from('cfi_mills_60tph')
-                            .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
-                            .ilike('mill_name', `%${val}%`)
-                            .limit(10);
+                          const { data } = await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').ilike('mill_name', `%${val}%`).limit(10);
                           setMillSuggestions(data || []);
                         }
                       }}
                       onFocus={async () => {
-                        if (!site.millName) {
-                          const { data } = await supabase
-                            .from('cfi_mills_60tph')
-                            .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
-                            .order('mill_name')
-                            .limit(105);
+                        if (!millConfirmed && !site.millName) {
+                          const { data } = await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105);
                           setMillSuggestions(data || []);
                         }
                       }}
@@ -847,6 +846,7 @@ export default function SiteSetup() {
                               if (m.latitude)  upSite('gpsLat', String(m.latitude));
                               if (m.longitude) upSite('gpsLon', String(m.longitude));
                               if (m.capacity_tph) setMill(prev => ({ ...prev, ffb: m.capacity_tph }));
+                              setMillConfirmed(true);
                               setMillSuggestions([]);
                               if (m.latitude && m.longitude) {
                                 const { data: soilResult } = await supabase
