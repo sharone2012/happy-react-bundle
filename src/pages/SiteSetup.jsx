@@ -54,6 +54,8 @@ const C = {
   amber:     '#F5A623',
   amberDim:  'rgba(245,166,35,0.14)',
   green:     '#00A249',
+  greenLt:   '#33B56D',   // 20% lighter — F & G sections only
+  greenLt30: '#4DBF82',   // 30% lighter — all other greens outside F & G
   greenDim:  'rgba(0,162,73,0.13)',
   red:       '#E84040',
   redDim:    'rgba(232,64,64,0.13)',
@@ -1005,6 +1007,32 @@ export default function SiteSetup() {
                               setSelectedMillRecord(m);
                               setMillSuggestions([]);
                               setActiveDropdown(null);
+                              // Soil auto-select — fires immediately on mill selection
+                              if (m.province_soil_id) {
+                                const { data: provData } = await supabase
+                                  .from('cfi_province_soil_lookup')
+                                  .select('dominant_soil_wrb,rainfall_mm_yr_min,rainfall_mm_yr_max,temp_c_avg_min,temp_c_avg_max,secondary_soil_wrb')
+                                  .eq('id', m.province_soil_id)
+                                  .maybeSingle();
+                                if (provData) {
+                                  const soilKey = parseSoilClass(provData.dominant_soil_wrb);
+                                  if (soilKey) {
+                                    setSelectedSoil(soilKey);
+                                    setSoilAutoSelected(true);
+                                    if (siteId) supabase.from('cfi_sites').update({ soil_type: soilKey }).eq('id', siteId);
+                                  }
+                                  if (provData.secondary_soil_wrb) setSecondarySoilWrb(provData.secondary_soil_wrb);
+                                  // Weather from province
+                                  const rainfallMid = provData.rainfall_mm_yr_min && provData.rainfall_mm_yr_max
+                                    ? Math.round((provData.rainfall_mm_yr_min + provData.rainfall_mm_yr_max) / 2) : null;
+                                  const tempMid = provData.temp_c_avg_min && provData.temp_c_avg_max
+                                    ? ((provData.temp_c_avg_min + provData.temp_c_avg_max) / 2).toFixed(1) : null;
+                                  const wd = { rainfall: rainfallMid, temp: tempMid ? parseFloat(tempMid) : null };
+                                  setWeatherData(wd);
+                                  setWeatherOriginal(wd);
+                                  setWeatherSource('province');
+                                }
+                              }
                               if (m.latitude && m.longitude) {
                                 const { data: soilResult } = await supabase.rpc('get_soil_acidity_class', {
                                   p_lat: m.latitude, p_lon: m.longitude, p_max_distance_km: 25
@@ -1209,7 +1237,7 @@ export default function SiteSetup() {
                 {bConfirmed ? 'Click To Edit' : 'Confirm'}
               </button>
               <div style={{ fontSize:11, color:C.greyLt, textAlign:'center', marginTop:5 }}>
-                {bConfirmed ? 'C And E Updated · Click To Unlock' : 'Lock Values And Cascade To C And E'}
+                {bConfirmed ? 'C and E updated · click to unlock' : 'Lock values and cascade to C and E'}
               </div>
             </div>
           </div>
@@ -1227,8 +1255,8 @@ export default function SiteSetup() {
                 {/* FFB Processed — green box, black text */}
                 <div style={{ background:C.green, border:`1.5px solid ${C.green}`, borderRadius:9, padding:'12px 17px', textAlign:'center', width:'100%' }}>
                   <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:17, color:'#000', marginBottom:4 }}>FFB Processed</div>
-                  <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:19, color:'#000' }}>
-                    {fmtT(ffbMonth)} <span style={{ fontSize:16, color:'#000' }}>t / month</span>
+                  <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:17, color:'#000' }}>
+                    {fmtT(ffbMonth)} <span style={{ fontSize:16, fontWeight:700, color:'#000' }}>t / month</span>
                   </div>
                 </div>
                 <div style={{ fontSize:24, color:C.grey, opacity:0.85, fontWeight:900, lineHeight:1 }}>↓</div>
@@ -1317,19 +1345,19 @@ export default function SiteSetup() {
                   };
                   return (
                     <div key={s.id} onClick={() => { selectSoil(s.id); setSoilAutoSelected(false); }} style={{
-                      background: isSel ? '#00C9B1' : '#0B1828',
+                      background: '#0B1828',
                       border: `1.5px solid ${isSel ? '#00C9B1' : '#1E6B8C'}`,
                       borderRadius:7, padding:'8px 9px', cursor:'pointer', transition:'all 0.12s',
                       display:'flex', flexDirection:'column', justifyContent:'center',
                       minWidth:0, overflow:'hidden',
                     }}>
-                      <div style={{ fontSize:13, fontWeight:600, fontFamily:Fnt.dm, color: '#ffffff', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                      <div style={{ fontSize:13, fontWeight:600, fontFamily:Fnt.dm, color: isSel ? '#ffffff' : '#B0BEC5', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.name}
                       </div>
-                      <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.dm, color: isSel ? 'rgba(255,255,255,0.85)' : '#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                      <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.dm, color: isSel ? 'rgba(255,255,255,0.75)' : '#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.sub || ''}
                       </div>
-                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color: isSel ? 'rgba(255,255,255,0.75)' : '#888888', marginTop:1, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color: isSel ? 'rgba(255,255,255,0.65)' : '#888888', marginTop:1, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.line4 || ''}
                       </div>
                       {meta.tag1 && meta.tag2 && (
@@ -1439,9 +1467,18 @@ export default function SiteSetup() {
                   { key:'opf',  name:'Oil Palm Fronds',        sub:'OPF · Seasonal · Zero Cost' },
                   { key:'opt',  name:'Oil Palm Trunks',        sub:'OPT · Replanting Only · Zero Cost' },
                   { key:'pks',  name:'Palm Kernel Shell',      sub:'PKS · Zero Cost' },
+                  { key:'pka',  name:'Palm Kernel Ash',        sub:'PKA · Used Internally · S2 Pre-Treatment', infoOnly:true },
                   ...customStreams.map(c=>({ key:c.key, name:c.name, sub:'Custom · Zero Cost' })),
                 ].map(st=>{
                   const active = activeStreams[st.key];
+                  if (st.infoOnly) {
+                    return (
+                      <div key={st.key} style={{ background:C.navyDeep, border:'1px dashed #1E6B8C', borderRadius:8, padding:'10px 13px', minHeight:52, opacity:0.55, cursor:'not-allowed' }}>
+                        <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:'#B0BEC5' }}>{st.name}</div>
+                        <div style={{ fontSize:12, fontFamily:Fnt.dm, color:'#888888', marginTop:3 }}>{st.sub}</div>
+                      </div>
+                    );
+                  }
                   return (
                     <div key={st.key} onClick={()=>toggleStream(st.key)} style={toggleCard(active, false)}>
                       <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:active?C.amber:'#B0BEC5' }}>{st.name}</div>
@@ -1501,7 +1538,7 @@ export default function SiteSetup() {
                     <input type="range" min={0} max={mx||8000} value={val} step={1}
                       onChange={e=>setSlider(key, e.target.value)}
                       className="cfi-slider"
-                      style={{ width:'100%', height:4.5, outline:'none', cursor:'pointer', margin:'4px 0', display:'block',
+                      style={{ width:'100%', height:3.8, outline:'none', cursor:'pointer', margin:'4px 0', display:'block',
                         background:`linear-gradient(to right, #00C9B1 0%, #00C9B1 ${pct}%, rgba(168,189,208,0.18) ${pct}%, rgba(168,189,208,0.18) 100%)`,
                         borderRadius:3, WebkitAppearance:'none', appearance:'none' }} />
                     <div style={{ display:'flex', justifyContent:'space-between', fontSize:13, fontFamily:Fnt.mono, color:'rgba(168,189,208,0.55)' }}>
@@ -1521,8 +1558,8 @@ export default function SiteSetup() {
               <div style={{ background:'linear-gradient(135deg,rgba(0,162,73,0.16) 0%,rgba(6,12,20,1) 65%)', border:`1.5px solid rgba(0,162,73,0.45)`, borderRadius:11, padding:'22px 16px', marginBottom:12, textAlign:'center' }}>
                 <div style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:18, color:'#FFF', letterSpacing:'0.1em', marginBottom:8 }}>VALORIZING</div>
                 <div style={{ display:'flex', alignItems:'baseline', justifyContent:'center', gap:8 }}>
-                  <span style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:40, color:C.green, lineHeight:1 }}>{fHeroPct}</span>
-                  <span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:18, color:C.green }}>% OF MILL RESIDUES</span>
+                  <span style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:40, color:C.greenLt, lineHeight:1 }}>{fHeroPct}</span>
+                  <span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:18, color:C.greenLt }}>% OF MILL RESIDUES</span>
                 </div>
               </div>
               <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:8, padding:'0 13px 5px' }}>
@@ -1560,11 +1597,11 @@ export default function SiteSetup() {
               <div style={{ background:'linear-gradient(160deg,rgba(0,162,73,0.22) 0%,rgba(6,12,20,1) 55%)', border:`1.5px solid rgba(0,162,73,0.50)`, borderRadius:11, padding:'22px 16px', textAlign:'center', marginBottom:12 }}>
                 <div style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:18, color:'#FFF', letterSpacing:'0.1em', marginBottom:8 }}>TOTAL PROCESSING VOLUME</div>
                 <div style={{ display:'flex', alignItems:'baseline', justifyContent:'center', gap:4 }}>
-                  <span style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:40, color:C.green, lineHeight:1 }}>{grandTotal>0?fmtT(grandTotal):'—'}</span>
-                  {grandTotal>0&&<span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:18, color:C.green }}>t/month</span>}
+                  <span style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:40, color:C.greenLt30, lineHeight:1 }}>{grandTotal>0?fmtT(grandTotal):'—'}</span>
+                  {grandTotal>0&&<span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:18, color:C.greenLt30 }}>t/month</span>}
                 </div>
               </div>
-              <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:'rgba(0,162,73,0.70)', letterSpacing:'0.08em', marginBottom:7 }}>ACTIVE STREAMS</div>
+              <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:'rgba(77,191,130,0.70)', letterSpacing:'0.08em', marginBottom:7 }}>ACTIVE STREAMS</div>
               {grandTotal===0 ? (
                 <div style={{ fontSize:12, fontFamily:Fnt.mono, color:'rgba(168,189,208,0.40)', textAlign:'center', padding:'10px 0' }}>No Streams Selected — Activate In Section D</div>
               ) : (
@@ -1572,9 +1609,9 @@ export default function SiteSetup() {
                   const nm  = STREAM_NAMES[key] || customStreams.find(c=>c.key===key)?.name || key.toUpperCase();
                   const pct = grandTotal>0?(t/grandTotal*100).toFixed(1)+' %':'—';
                   return (
-                    <div key={key} style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr', gap:8, alignItems:'center', background:'rgba(0,162,73,0.06)', borderLeft:`3px solid ${C.green}`, borderRadius:'0 6px 6px 0', padding:'9px 12px', marginBottom:4 }}>
+                    <div key={key} style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr', gap:8, alignItems:'center', background:'rgba(0,162,73,0.06)', borderLeft:`3px solid ${C.greenLt30}`, borderRadius:'0 6px 6px 0', padding:'9px 12px', marginBottom:4 }}>
                       <span style={{ fontSize:13, fontWeight:700, fontFamily:Fnt.dm, color:'#FFF' }}>{nm}</span>
-                      <span style={{ fontSize:14, fontWeight:800, fontFamily:Fnt.mono, color:C.green, textAlign:'right' }}>{fmtT(t)} t/m</span>
+                      <span style={{ fontSize:14, fontWeight:800, fontFamily:Fnt.mono, color:C.greenLt30, textAlign:'right' }}>{fmtT(t)} t/m</span>
                       <span style={{ fontSize:13, fontWeight:800, fontFamily:Fnt.mono, color:'#FFF', textAlign:'right' }}>{pct}</span>
                     </div>
                   );
@@ -1800,7 +1837,7 @@ export default function SiteSetup() {
               {[
                 ['Lignin % Blend', blend?.Lignin?.toFixed(1)||'—'],
                 ['ADL %', '—'],
-                ['Protein % vs 8% Floor', blend?<span style={{ color:blend.CP>=8?C.green:C.red }}>{blend.CP.toFixed(1)}% {blend.CP>=8?'READY':'LOW'}</span>:'—'],
+                ['Protein % vs 8% Floor', blend?<span style={{ color:blend.CP>=8?C.greenLt30:C.red }}>{blend.CP.toFixed(1)}% {blend.CP>=8?'READY':'LOW'}</span>:'—'],
                 ['Moisture % Pre-Process', blend?.MC?.toFixed(1)||'—'],
               ].map(([lbl,val])=>(
                 <div key={lbl} style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:5 }}>

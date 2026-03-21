@@ -104,25 +104,25 @@ All colors MUST be HSL.
   }
 }
 
-/* CFI Slider — teal track, proper thumb */
+/* CFI Slider — amber thumb, teal border, centered on track */
 .cfi-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  background: #00C9B1;
-  border: 2px solid #0C1E33;
+  background: #F5A623;
+  border: 2px solid #00C9B1;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-  margin-top: -10px;
+  margin-top: -9px;
 }
 .cfi-slider::-moz-range-thumb {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  background: #00C9B1;
-  border: 2px solid #0C1E33;
+  background: #F5A623;
+  border: 2px solid #00C9B1;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
