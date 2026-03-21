@@ -189,7 +189,7 @@ export default function SiteSetup() {
   const [sliders, setSliders] = useState({});
 
   // ── Section G state (soil) ───────────────────────────
-  const [selectedSoil, setSelectedSoil] = useState('ultisol');
+  const [selectedSoil, setSelectedSoil] = useState('inceptisol');
   const [soils, setSoils] = useState(SOILS_FALLBACK);
   const [soilAutoSelected, setSoilAutoSelected] = useState(false);
   const [secondarySoilWrb, setSecondarySoilWrb] = useState('');
