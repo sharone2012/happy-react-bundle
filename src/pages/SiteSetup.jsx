@@ -565,21 +565,26 @@ export default function SiteSetup() {
   }
 
   // ── Custom residues
-  const addResidue = async () => {
-    const names = [newRes1, newRes2].filter(n => n.trim());
-    if (!names.length) return;
-    const added = names.map((name, i) => ({ key: `custom_${i+1}`, name, active: true }));
-    setCustomStreams(cs => [...cs, ...added]);
-    setActiveStreams(s => { const n={...s}; added.forEach(a => { n[a.key]=true; }); return n; });
-    if (siteId && added[0]) {
-      await supabase.from('cfi_sites').update({
-        custom_stream_1_label:   added[0]?.name || null,
-        custom_stream_1_enabled: true,
-        custom_stream_2_label:   added[1]?.name || null,
-        custom_stream_2_enabled: !!added[1],
-      }).eq('id', siteId);
+  const [newResVol, setNewResVol] = useState('');
+  const addResidue = async (name, vol) => {
+    if (!name || !name.trim()) return;
+    const nextIdx = customStreams.length + 1;
+    const key = `custom_${nextIdx}`;
+    const volume = parseFloat(String(vol).replace(/,/g,'')) || 0;
+    const added = { key, name: name.trim(), active: true, volume };
+    setCustomStreams(cs => [...cs, added]);
+    setActiveStreams(s => ({ ...s, [key]: true }));
+    // Set slider to volume
+    if (volume > 0) {
+      setSliders(prev => ({ ...prev, [key]: volume }));
     }
-    setNewRes1(''); setNewRes2(''); setShowNewFields(false);
+    if (siteId) {
+      const updates = {};
+      if (nextIdx === 1) { updates.custom_stream_1_label = name.trim(); updates.custom_stream_1_enabled = true; }
+      if (nextIdx === 2) { updates.custom_stream_2_label = name.trim(); updates.custom_stream_2_enabled = true; }
+      if (Object.keys(updates).length) await supabase.from('cfi_sites').update(updates).eq('id', siteId);
+    }
+    setNewRes1(''); setNewResVol(''); setShowNewFields(false);
   };
 
   // ═══════════════════════════════════════════════════════
