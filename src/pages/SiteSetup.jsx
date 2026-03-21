@@ -852,7 +852,6 @@ export default function SiteSetup() {
                       value={site.company}
                       onFocus={async () => {
                         if (companyConfirmed) {
-                          // Atomic reset — clear value, confirmed states, all downstream
                           setSite(s => ({...s, company:'', estate:'', millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
                           setCompanyConfirmed(false);
                           setEstateConfirmed(false);
@@ -860,10 +859,13 @@ export default function SiteSetup() {
                           setGpsSoilSuggestion('');
                           setMill(prev => ({...prev, ffb:60}));
                           setEstateSuggestions([]); setMillSuggestions([]);
+                          setCompanySuggestions([]);
+                          setActiveDropdown(null);
+                          return;
                         }
                         if (site.company.length >= 3) {
                           setActiveDropdown('company');
-                          const { data } = await supabase.from('cfi_mill_owners').select('id, company').ilike('company',`%${site.company}%`).limit(42);
+                          const { data } = await supabase.from('cfi_mill_owners').select('id, company').ilike('company',`%${site.company}%`).limit(20);
                           setCompanySuggestions(data || []);
                         }
                       }}
