@@ -1352,13 +1352,13 @@ export default function SiteSetup() {
                       display:'flex', flexDirection:'column', justifyContent:'center',
                       minWidth:0, overflow:'hidden',
                     }}>
-                      <div style={{ fontSize:13, fontWeight:600, fontFamily:Fnt.dm, color: isSel ? '#ffffff' : '#B0BEC5', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                      <div style={{ fontSize:13, fontWeight:600, fontFamily:Fnt.dm, color: isSel ? '#F5A623' : '#B0BEC5', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.name}
                       </div>
-                      <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.dm, color: isSel ? 'rgba(255,255,255,0.75)' : '#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                      <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.75)' : '#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.sub || ''}
                       </div>
-                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color: isSel ? 'rgba(255,255,255,0.65)' : '#888888', marginTop:1, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.65)' : '#888888', marginTop:1, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.line4 || ''}
                       </div>
                       {meta.tag1 && meta.tag2 && (
