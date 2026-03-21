@@ -1400,16 +1400,13 @@ export default function SiteSetup() {
             <div style={secSub}>Click Any Card To Activate Or De-Activate</div>
             <div style={cbody}>
               <div style={grid2}>
+                {/* Default visible streams: EFB, OPDC, POS, POME, PMF */}
                 {[
                   { key:'efb',  name:'Empty Fruit Bunches', sub:'EFB · Zero Cost' },
                   { key:'opdc', name:'Decanter Cake',        sub:'OPDC · Zero Cost', needsEfb:true },
                   { key:'pos',  name:'Palm Oil Sludge',       sub:'POS · Zero Cost' },
-                  { key:'pmf',  name:'Palm Mesocarp Fiber',   sub:'PMF · Zero Cost' },
-                  { key:'pke',  name:'Palm Kernel Expeller',  sub:'PKE · $160/t — Purchased', purchased:true },
                   { key:'pome', name:'POME (Liquid)',          sub:'Emissions Avoidance Only', liquid:true },
-                  { key:'opf',  name:'Oil Palm Fronds',        sub:'OPF · Seasonal · Zero Cost' },
-                  { key:'opt',  name:'Oil Palm Trunks',        sub:'OPT · Replanting Only · Zero Cost' },
-                  ...customStreams.map(c=>({ key:c.key, name:c.name, sub:'Custom · Zero Cost' })),
+                  { key:'pmf',  name:'Palm Mesocarp Fiber',   sub:'PMF · Zero Cost' },
                 ].map(st=>{
                   const active   = activeStreams[st.key];
                   const disabled = st.needsEfb && !activeStreams.efb;
@@ -1419,28 +1416,46 @@ export default function SiteSetup() {
                       <div style={{ fontSize:12, fontFamily:Fnt.dm, color:(active&&!disabled)?'rgba(245,166,35,0.65)':C.greyLt, marginTop:3 }}>
                         {disabled ? 'Requires EFB' : st.sub}
                       </div>
-                      {st.purchased && active && <div style={{ fontSize:10, fontFamily:Fnt.mono, color:C.amber, marginTop:3 }}>Purchased — Not Mill Waste</div>}
                       {st.liquid && active && <div style={{ fontSize:10, fontFamily:Fnt.mono, color:C.teal, marginTop:3 }}>Liquid — Excluded From Solid Mix</div>}
                     </div>
                   );
                 })}
-                {showNewFields && (
-                  <div style={{ gridColumn:'1/-1' }}>
-                    <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:7, marginTop:2 }}>
-                      {[{val:newRes1,set:setNewRes1},{val:newRes2,set:setNewRes2}].map((f,i)=>(
-                        <div key={i} style={{ background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'10px 13px', display:'flex', alignItems:'center', minHeight:52 }}>
-                          <input value={f.val} onChange={e=>f.set(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addResidue()} placeholder="Enter New Residue" style={{ background:'transparent', border:'none', outline:'none', fontFamily:Fnt.dm, fontSize:14, fontWeight:500, color:C.white, width:'100%' }} />
-                        </div>
-                      ))}
+                {/* Hidden streams revealed by More */}
+                {showMoreStreams && [
+                  { key:'pke',  name:'Palm Kernel Expeller',  sub:'PKE · $160/t — Purchased', purchased:true },
+                  { key:'opf',  name:'Oil Palm Fronds',        sub:'OPF · Seasonal · Zero Cost' },
+                  { key:'opt',  name:'Oil Palm Trunks',        sub:'OPT · Replanting Only · Zero Cost' },
+                  ...customStreams.map(c=>({ key:c.key, name:c.name, sub:'Custom · Zero Cost' })),
+                ].map(st=>{
+                  const active = activeStreams[st.key];
+                  return (
+                    <div key={st.key} onClick={()=>toggleStream(st.key)} style={toggleCard(active, false)}>
+                      <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:active?C.amber:C.grey }}>{st.name}</div>
+                      <div style={{ fontSize:12, fontFamily:Fnt.dm, color:active?'rgba(245,166,35,0.65)':C.greyLt, marginTop:3 }}>{st.sub}</div>
+                      {st.purchased && active && <div style={{ fontSize:10, fontFamily:Fnt.mono, color:C.amber, marginTop:3 }}>Purchased — Not Mill Waste</div>}
                     </div>
-                    <div style={{ display:'flex', justifyContent:'center', marginTop:6 }}>
-                      <button onClick={addResidue} style={confirmBtn}>Confirm New Residue</button>
+                  );
+                })}
+              </div>
+
+              {/* Custom residue fields — always visible */}
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:7, marginTop:6 }}>
+                {[
+                  { num:1, val:newRes1, set:setNewRes1, label:'Custom Residue 1' },
+                  { num:2, val:newRes2, set:setNewRes2, label:'Custom Residue 2' },
+                ].map(f=>(
+                  <div key={f.num}>
+                    <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:3 }}>{f.label}</div>
+                    <div style={{ background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'10px 13px', display:'flex', alignItems:'center', minHeight:52, gap:8 }}>
+                      <input value={f.val} onChange={e=>f.set(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addResidue()} placeholder="Residue name" style={{ background:'transparent', border:'none', outline:'none', fontFamily:Fnt.dm, fontSize:14, fontWeight:500, color:C.white, flex:1, minWidth:0 }} />
+                      <input type="number" placeholder="t/m" style={{ background:'transparent', border:`1px solid ${C.tealBdr}`, borderRadius:4, outline:'none', fontFamily:Fnt.mono, fontSize:13, fontWeight:800, color:C.amber, width:60, textAlign:'center', padding:'4px 6px' }} />
                     </div>
                   </div>
-                )}
+                ))}
               </div>
+
               <div style={{ display:'flex', justifyContent:'flex-end', marginTop:8 }}>
-                <button onClick={()=>setShowNewFields(v=>!v)} style={{ background:'transparent', border:`1px solid rgba(64,215,197,0.48)`, borderRadius:6, color:C.teal, fontFamily:Fnt.dm, fontSize:11, fontWeight:700, padding:'5px 12px', cursor:'pointer', whiteSpace:'nowrap' }}>Add Residue</button>
+                <button onClick={()=>setShowMoreStreams(v=>!v)} style={{ background:'transparent', border:`1px solid rgba(64,215,197,0.48)`, borderRadius:6, color:C.teal, fontFamily:Fnt.dm, fontSize:11, fontWeight:700, padding:'5px 12px', cursor:'pointer', whiteSpace:'nowrap' }}>{showMoreStreams ? 'Less' : 'More'}</button>
               </div>
             </div>
           </div>
