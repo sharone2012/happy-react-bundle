@@ -212,7 +212,7 @@ export default function SiteSetup() {
   const [estateConfirmed,  setEstateConfirmed]  = useState(false);
   const [millConfirmed,    setMillConfirmed]    = useState(false);
   const [activeDropdown,   setActiveDropdown]   = useState(null);
-  const [selectedMillRecord, setSelectedMillRecord] = useState(null); // full mill row
+  const [selectedMill, setSelectedMill] = useState(null); // full mill row
 
   // ── Site data cascade ──────────────────────────────
   const [siteDataMessage, setSiteDataMessage] = useState('');
@@ -356,41 +356,83 @@ export default function SiteSetup() {
     return () => document.removeEventListener('mousedown', close);
   }, []);
 
-  // ── Soil auto-select: fires when selectedMillRecord changes
+  // ── Soil auto-select: fires when selectedMill changes
   useEffect(() => {
-    if (!selectedMillRecord?.province_soil_id) return;
+    if (!selectedMill) return;
 
-    const fetchSoil = async () => {
+    const fetchSoilForMill = async (selectedMill) => {
+      console.log('MILL SELECTED:', selectedMill);
+      console.log('PROVINCE SOIL ID:', selectedMill?.province_soil_id);
+
+      let psl = null;
+
       // Step 1: get province soil lookup row
-      const { data: psl } = await supabase
-        .from('cfi_province_soil_lookup')
-        .select('dominant_soil_wrb')
-        .eq('id', selectedMillRecord.province_soil_id)
-        .maybeSingle();
+      if (selectedMill?.province_soil_id) {
+        const { data } = await supabase
+          .from('cfi_province_soil_lookup')
+          .select('id, province, dominant_soil_wrb')
+          .eq('id', selectedMill.province_soil_id)
+          .maybeSingle();
+        psl = data;
+      } else if (selectedMill?.province) {
+        // Fallback: lookup by province name when province_soil_id is missing
+        const { data } = await supabase
+          .from('cfi_province_soil_lookup')
+          .select('id, province, dominant_soil_wrb')
+          .ilike('province', selectedMill.province)
+          .limit(1);
+        psl = data?.[0] || null;
+      }
 
-      if (!psl) return;
+      // Step 2: check lookup result
+      console.log('PSL RESULT:', psl);
+      console.log('DOMINANT SOIL WRB:', psl?.dominant_soil_wrb);
 
-      // Step 2: map dominant_soil_wrb to soil_key
-      const soilKey = parseSoilClass(psl.dominant_soil_wrb);
+      if (!psl?.dominant_soil_wrb) {
+        const { data: allPslRows } = await supabase
+          .from('cfi_province_soil_lookup')
+          .select('*')
+          .limit(20);
+        console.log('PSL ALL ROWS (dominant_soil_wrb missing):', allPslRows);
+        return;
+      }
 
-      if (!soilKey) return;
+      // Step 3: map dominant_soil_wrb to soil_key
+      const wrb = psl.dominant_soil_wrb?.toLowerCase() || '';
+      let soilKey = 'ultisol';
+      if (wrb.includes('histosol') || wrb.includes('peat') || wrb.includes('gambut')) soilKey = 'histosol';
+      else if (wrb.includes('inceptisol')) soilKey = 'inceptisol';
+      else if (wrb.includes('oxisol') || wrb.includes('ferralsol') || wrb.includes('latosol')) soilKey = 'oxisol';
+      else if (wrb.includes('andosol') || wrb.includes('andisol')) soilKey = 'andisol';
+      else if (wrb.includes('spodosol') || wrb.includes('podzol') || wrb.includes('sandy')) soilKey = 'spodosol';
+      else if (wrb.includes('ultisol') || wrb.includes('acrisol')) soilKey = 'ultisol';
 
-      // Step 3: query cfi_soil_profiles — NEVER use confirmed_soil_type
+      // Step 4: query cfi_soil_profiles — NEVER use confirmed_soil_type
       const { data: profile } = await supabase
         .from('cfi_soil_profiles')
         .select('*')
         .eq('soil_key', soilKey)
         .maybeSingle();
 
-      if (profile) {
-        setSelectedSoil(soilKey);
-        setSoilAutoSelected(true);
-        if (siteId) supabase.from('cfi_sites').update({ soil_type: soilKey }).eq('id', siteId);
+      console.log('SOIL KEY MAPPED:', soilKey);
+      console.log('SOIL PROFILE:', profile);
+
+      if (!profile) {
+        const { data: allProfiles } = await supabase
+          .from('cfi_soil_profiles')
+          .select('*')
+          .limit(20);
+        console.log('ALL SOIL PROFILES (profile not found):', allProfiles);
+        return;
       }
+
+      setSelectedSoil(profile.soil_key || soilKey);
+      setSoilAutoSelected(true);
+      if (siteId) supabase.from('cfi_sites').update({ soil_type: profile.soil_key || soilKey }).eq('id', siteId);
     };
 
-    fetchSoil();
-  }, [selectedMillRecord]);
+    fetchSoilForMill(selectedMill);
+  }, [selectedMill]);
 
   // ── Weather + secondary soil trigger
   useEffect(() => {
@@ -404,7 +446,7 @@ export default function SiteSetup() {
       return;
     }
     async function loadSiteData() {
-      const mr = selectedMillRecord;
+      const mr = selectedMill;
       if (!mr) return;
 
       if (mr.province_soil_id) {
@@ -454,7 +496,7 @@ export default function SiteSetup() {
       }
     }
     loadSiteData();
-  }, [companyConfirmed, estateConfirmed, millConfirmed, selectedMillRecord]);
+  }, [companyConfirmed, estateConfirmed, millConfirmed, selectedMill]);
 
   function buildSoilPills(p) {
     const pills = [];
@@ -973,7 +1015,7 @@ export default function SiteSetup() {
                         if (millConfirmed) {
                           setSite(s => ({...s, millName:'', gpsLat:'', gpsLon:''}));
                           setMillConfirmed(false);
-                          setSelectedMillRecord(null);
+                          setSelectedMill(null);
                           setGpsSoilSuggestion('');
                           setMill(prev => ({...prev, ffb:60}));
                         }
@@ -989,7 +1031,7 @@ export default function SiteSetup() {
                         const val = e.target.value;
                         setSite(s => ({...s, millName:val, gpsLat:'', gpsLon:''}));
                         setMillConfirmed(false);
-                        setSelectedMillRecord(null);
+                        setSelectedMill(null);
                         setGpsSoilSuggestion('');
                         setMill(prev => ({...prev, ffb:60}));
                         if (val.length < 3) {
@@ -1017,35 +1059,11 @@ export default function SiteSetup() {
                               if (m.longitude) upSite('gpsLon', String(m.longitude));
                               if (m.capacity_tph) setMill(prev => ({...prev, ffb: m.capacity_tph}));
                               setMillConfirmed(true);
-                              setSelectedMillRecord(m);
+                              setSelectedMill(m);
+                              console.log('MILL SELECTED:', m);
+                              console.log('PROVINCE SOIL ID:', m?.province_soil_id);
                               setMillSuggestions([]);
                               setActiveDropdown(null);
-                              // Soil auto-select — fires immediately on mill selection
-                              if (m.province_soil_id) {
-                                const { data: provData } = await supabase
-                                  .from('cfi_province_soil_lookup')
-                                  .select('dominant_soil_wrb,rainfall_mm_yr_min,rainfall_mm_yr_max,temp_c_avg_min,temp_c_avg_max,secondary_soil_wrb')
-                                  .eq('id', m.province_soil_id)
-                                  .maybeSingle();
-                                if (provData) {
-                                  const soilKey = parseSoilClass(provData.dominant_soil_wrb);
-                                  if (soilKey) {
-                                    setSelectedSoil(soilKey);
-                                    setSoilAutoSelected(true);
-                                    if (siteId) supabase.from('cfi_sites').update({ soil_type: soilKey }).eq('id', siteId);
-                                  }
-                                  if (provData.secondary_soil_wrb) setSecondarySoilWrb(provData.secondary_soil_wrb);
-                                  // Weather from province
-                                  const rainfallMid = provData.rainfall_mm_yr_min && provData.rainfall_mm_yr_max
-                                    ? Math.round((provData.rainfall_mm_yr_min + provData.rainfall_mm_yr_max) / 2) : null;
-                                  const tempMid = provData.temp_c_avg_min && provData.temp_c_avg_max
-                                    ? ((provData.temp_c_avg_min + provData.temp_c_avg_max) / 2).toFixed(1) : null;
-                                  const wd = { rainfall: rainfallMid, temp: tempMid ? parseFloat(tempMid) : null };
-                                  setWeatherData(wd);
-                                  setWeatherOriginal(wd);
-                                  setWeatherSource('province');
-                                }
-                              }
                               if (m.latitude && m.longitude) {
                                 const { data: soilResult } = await supabase.rpc('get_soil_acidity_class', {
                                   p_lat: m.latitude, p_lon: m.longitude, p_max_distance_km: 25
