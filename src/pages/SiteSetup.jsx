@@ -289,6 +289,17 @@ export default function SiteSetup() {
       });
   }, []);
 
+  // Close cascade dropdowns on outside click
+  useEffect(() => {
+    const close = () => {
+      setCompanySuggestions([]);
+      setEstateSuggestions([]);
+      setMillSuggestions([]);
+    };
+    document.addEventListener('click', close);
+    return () => document.removeEventListener('click', close);
+  }, []);
+
   function buildSoilPills(p) {
     const pills = [];
     if (p.ph_degraded_low) pills.push({ cls:'amber', txt:`pH ${p.ph_degraded_low} · CEC ${p.cec_degraded_cmol_low||'—'}` });
