@@ -947,10 +947,13 @@ export default function SiteSetup() {
                           setGpsSoilSuggestion('');
                           setMill(prev => ({...prev, ffb:60}));
                           setMillSuggestions([]);
+                          setEstateSuggestions([]);
+                          setActiveDropdown(null);
+                          return;
                         }
                         if (site.estate.length >= 3) {
                           setActiveDropdown('estate');
-                          const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').ilike('estate_name',`%${site.estate}%`).limit(100);
+                          const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').ilike('estate_name',`%${site.estate}%`).limit(20);
                           setEstateSuggestions(data || []);
                         }
                       }}
