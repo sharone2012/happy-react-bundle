@@ -174,11 +174,11 @@ export default function SiteSetup() {
   // ── Section D state ──────────────────────────────────
   // Point 6: No stream pre-selected on load
   const [activeStreams, setActiveStreams] = useState({
-    efb:false, opdc:false, pos:false, pmf:false, pke:false,
+    efb:false, opdc:true, pos:false, pmf:false, pke:false,
     pome:false, opf:false, opt:false
   });
+  const [showMoreStreams, setShowMoreStreams] = useState(false);
   const [customStreams, setCustomStreams] = useState([]);
-  const [showNewFields, setShowNewFields] = useState(false);
   const [newRes1, setNewRes1] = useState('');
   const [newRes2, setNewRes2] = useState('');
 
@@ -308,9 +308,9 @@ export default function SiteSetup() {
   const SOIL_META = {
     inceptisol: { sub:'Alluvial',              line3:'pH 4.0–5.0 · CEC 10–18 cmol/kg', line4:'39% IDN palm', tag1:{label:'Mod N Leach',level:'mod'},   tag2:{label:'Low P Fix',level:'low'} },
     ultisol:    { sub:'Acidic Tropical Clays',  line3:'pH 4.2–5.0 · CEC 4–8 cmol/kg',   line4:'24% IDN palm', tag1:{label:'High N Leach',level:'high'}, tag2:{label:'High P Fix',level:'high'} },
-    oxisol:     { sub:'Weathered Clays',        line3:'pH 4.0–4.8 · CEC 3–6 cmol/kg',   line4:'8% IDN palm',  tag1:{label:'High N Leach',level:'high'}, tag2:{label:'V.High P Fix',level:'high'} },
+    oxisol:     { sub:'Weathered Clays',        line3:'pH 4.0–4.8 · CEC 3–6 cmol/kg',   line4:'8% IDN palm',  tag1:{label:'High N Leach',level:'high'}, tag2:{label:'V.High P Fix',level:'vhigh'} },
     histosol:   { sub:'Peat',                   line3:'pH 3.5–4.5 · CEC 25–60 cmol/kg', line4:'7% IDN palm',  tag1:{label:'Low N Leach',level:'low'},   tag2:{label:'Low P Fix',level:'low'} },
-    spodosol:   { sub:'Coastal Sands',          line3:'pH 3.5–4.5 · CEC 2–5 cmol/kg',   line4:'5% IDN palm',  tag1:{label:'V.High N Leach',level:'high'},tag2:{label:'Low P Fix',level:'low'} },
+    spodosol:   { sub:'Coastal Sands',          line3:'pH 3.5–4.5 · CEC 2–5 cmol/kg',   line4:'5% IDN palm',  tag1:{label:'V.High N Leach',level:'vhigh'},tag2:{label:'Low P Fix',level:'low'} },
     andisol:    { sub:'Volcanic Ash',           line3:'pH 5.0–6.0 · CEC 15–30 cmol/kg', line4:'3% IDN palm',  tag1:{label:'Mod N Leach',level:'mod'},   tag2:{label:'High P Fix',level:'high'} },
   };
   const SOIL_NAMES = {
@@ -1295,19 +1295,23 @@ export default function SiteSetup() {
               {/* Thick divider between ag management and soil cards */}
               <div style={{ height:2, background:'#1E6B8C', marginBottom:12 }} />
 
+              {/* G1: SOIL TYPE label */}
+              <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:'#888888', letterSpacing:'0.06em', marginBottom:6 }}>SOIL TYPE</div>
+
               {/* Soil type cards (point 17: auto-selected shows 2px teal border) */}
               <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:6, marginBottom:9 }}>
                 {soils.map(s => {
                   const isSel = selectedSoil === s.id;
                   const meta = SOIL_META[s.id] || {};
                   const tagStyle = (level) => {
+                    const isVHigh = level === 'vhigh';
                     const isHigh = level === 'high';
                     const isMod = level === 'mod';
                     return {
-                      fontSize:9, fontWeight:700, padding:'2px 6px', borderRadius:3, whiteSpace:'nowrap', display:'inline-block',
-                      color: isHigh ? '#F5A623' : isMod ? '#00C9B1' : '#3DCB7A',
-                      background: isHigh ? 'rgba(245,166,35,0.2)' : isMod ? 'rgba(0,201,177,0.15)' : 'rgba(61,203,122,0.15)',
-                      border: `1px solid ${isHigh ? '#F5A623' : isMod ? '#00C9B1' : '#3DCB7A'}`,
+                      fontSize:9, fontWeight:700, padding:'2px 6px', borderRadius:3, whiteSpace:'nowrap', display:'block',
+                      color: isVHigh ? '#DC3535' : isHigh ? '#F5A623' : isMod ? '#00C9B1' : '#3DCB7A',
+                      background: isVHigh ? 'rgba(220,53,53,0.15)' : isHigh ? 'rgba(245,166,35,0.15)' : isMod ? 'rgba(0,201,177,0.15)' : 'rgba(61,203,122,0.15)',
+                      border: `1px solid ${isVHigh ? '#DC3535' : isHigh ? '#F5A623' : isMod ? '#00C9B1' : '#3DCB7A'}`,
                     };
                   };
                   return (
@@ -1324,14 +1328,11 @@ export default function SiteSetup() {
                       <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.75)' : '#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.sub || ''}
                       </div>
-                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.75)' : '#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
-                        {s.line3 || ''}
-                      </div>
                       <div style={{ fontSize:10, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.75)' : '#888888', marginTop:1, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.line4 || ''}
                       </div>
                       {meta.tag1 && meta.tag2 && (
-                        <div style={{ display:'flex', gap:4, marginTop:4 }}>
+                        <div style={{ display:'flex', flexDirection:'column', gap:3, marginTop:4 }}>
                           <span style={tagStyle(meta.tag1.level)}>{meta.tag1.label}</span>
                           <span style={tagStyle(meta.tag2.level)}>{meta.tag2.label}</span>
                         </div>
@@ -1398,16 +1399,13 @@ export default function SiteSetup() {
             <div style={secSub}>Click Any Card To Activate Or De-Activate</div>
             <div style={cbody}>
               <div style={grid2}>
+                {/* Default visible streams: EFB, OPDC, POS, POME, PMF */}
                 {[
                   { key:'efb',  name:'Empty Fruit Bunches', sub:'EFB · Zero Cost' },
                   { key:'opdc', name:'Decanter Cake',        sub:'OPDC · Zero Cost', needsEfb:true },
                   { key:'pos',  name:'Palm Oil Sludge',       sub:'POS · Zero Cost' },
-                  { key:'pmf',  name:'Palm Mesocarp Fiber',   sub:'PMF · Zero Cost' },
-                  { key:'pke',  name:'Palm Kernel Expeller',  sub:'PKE · $160/t — Purchased', purchased:true },
                   { key:'pome', name:'POME (Liquid)',          sub:'Emissions Avoidance Only', liquid:true },
-                  { key:'opf',  name:'Oil Palm Fronds',        sub:'OPF · Seasonal · Zero Cost' },
-                  { key:'opt',  name:'Oil Palm Trunks',        sub:'OPT · Replanting Only · Zero Cost' },
-                  ...customStreams.map(c=>({ key:c.key, name:c.name, sub:'Custom · Zero Cost' })),
+                  { key:'pmf',  name:'Palm Mesocarp Fiber',   sub:'PMF · Zero Cost' },
                 ].map(st=>{
                   const active   = activeStreams[st.key];
                   const disabled = st.needsEfb && !activeStreams.efb;
@@ -1417,28 +1415,46 @@ export default function SiteSetup() {
                       <div style={{ fontSize:12, fontFamily:Fnt.dm, color:(active&&!disabled)?'rgba(245,166,35,0.65)':C.greyLt, marginTop:3 }}>
                         {disabled ? 'Requires EFB' : st.sub}
                       </div>
-                      {st.purchased && active && <div style={{ fontSize:10, fontFamily:Fnt.mono, color:C.amber, marginTop:3 }}>Purchased — Not Mill Waste</div>}
                       {st.liquid && active && <div style={{ fontSize:10, fontFamily:Fnt.mono, color:C.teal, marginTop:3 }}>Liquid — Excluded From Solid Mix</div>}
                     </div>
                   );
                 })}
-                {showNewFields && (
-                  <div style={{ gridColumn:'1/-1' }}>
-                    <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:7, marginTop:2 }}>
-                      {[{val:newRes1,set:setNewRes1},{val:newRes2,set:setNewRes2}].map((f,i)=>(
-                        <div key={i} style={{ background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'10px 13px', display:'flex', alignItems:'center', minHeight:52 }}>
-                          <input value={f.val} onChange={e=>f.set(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addResidue()} placeholder="Enter New Residue" style={{ background:'transparent', border:'none', outline:'none', fontFamily:Fnt.dm, fontSize:14, fontWeight:500, color:C.white, width:'100%' }} />
-                        </div>
-                      ))}
+                {/* Hidden streams revealed by More */}
+                {showMoreStreams && [
+                  { key:'pke',  name:'Palm Kernel Expeller',  sub:'PKE · $160/t — Purchased', purchased:true },
+                  { key:'opf',  name:'Oil Palm Fronds',        sub:'OPF · Seasonal · Zero Cost' },
+                  { key:'opt',  name:'Oil Palm Trunks',        sub:'OPT · Replanting Only · Zero Cost' },
+                  ...customStreams.map(c=>({ key:c.key, name:c.name, sub:'Custom · Zero Cost' })),
+                ].map(st=>{
+                  const active = activeStreams[st.key];
+                  return (
+                    <div key={st.key} onClick={()=>toggleStream(st.key)} style={toggleCard(active, false)}>
+                      <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:active?C.amber:C.grey }}>{st.name}</div>
+                      <div style={{ fontSize:12, fontFamily:Fnt.dm, color:active?'rgba(245,166,35,0.65)':C.greyLt, marginTop:3 }}>{st.sub}</div>
+                      {st.purchased && active && <div style={{ fontSize:10, fontFamily:Fnt.mono, color:C.amber, marginTop:3 }}>Purchased — Not Mill Waste</div>}
                     </div>
-                    <div style={{ display:'flex', justifyContent:'center', marginTop:6 }}>
-                      <button onClick={addResidue} style={confirmBtn}>Confirm New Residue</button>
+                  );
+                })}
+              </div>
+
+              {/* Custom residue fields — always visible */}
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:7, marginTop:6 }}>
+                {[
+                  { num:1, val:newRes1, set:setNewRes1, label:'Custom Residue 1' },
+                  { num:2, val:newRes2, set:setNewRes2, label:'Custom Residue 2' },
+                ].map(f=>(
+                  <div key={f.num}>
+                    <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:3 }}>{f.label}</div>
+                    <div style={{ background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'10px 13px', display:'flex', alignItems:'center', minHeight:52, gap:8 }}>
+                      <input value={f.val} onChange={e=>f.set(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addResidue()} placeholder="Residue name" style={{ background:'transparent', border:'none', outline:'none', fontFamily:Fnt.dm, fontSize:14, fontWeight:500, color:C.white, flex:1, minWidth:0 }} />
+                      <input type="number" placeholder="t/m" style={{ background:'transparent', border:`1px solid ${C.tealBdr}`, borderRadius:4, outline:'none', fontFamily:Fnt.mono, fontSize:13, fontWeight:800, color:C.amber, width:60, textAlign:'center', padding:'4px 6px' }} />
                     </div>
                   </div>
-                )}
+                ))}
               </div>
+
               <div style={{ display:'flex', justifyContent:'flex-end', marginTop:8 }}>
-                <button onClick={()=>setShowNewFields(v=>!v)} style={{ background:'transparent', border:`1px solid rgba(64,215,197,0.48)`, borderRadius:6, color:C.teal, fontFamily:Fnt.dm, fontSize:11, fontWeight:700, padding:'5px 12px', cursor:'pointer', whiteSpace:'nowrap' }}>Add Residue</button>
+                <button onClick={()=>setShowMoreStreams(v=>!v)} style={{ background:'transparent', border:`1px solid rgba(64,215,197,0.48)`, borderRadius:6, color:C.teal, fontFamily:Fnt.dm, fontSize:11, fontWeight:700, padding:'5px 12px', cursor:'pointer', whiteSpace:'nowrap' }}>{showMoreStreams ? 'Less' : 'More'}</button>
               </div>
             </div>
           </div>
@@ -1467,7 +1483,7 @@ export default function SiteSetup() {
                     <input type="range" min={0} max={mx||8000} value={val} step={1}
                       onChange={e=>setSlider(key, e.target.value)}
                       className="cfi-slider"
-                      style={{ width:'100%', height:6, outline:'none', cursor:'pointer', margin:'4px 0', display:'block',
+                      style={{ width:'100%', height:5, outline:'none', cursor:'pointer', margin:'4px 0', display:'block',
                         background:`linear-gradient(to right, #00C9B1 0%, #00C9B1 ${pct}%, rgba(168,189,208,0.18) ${pct}%, rgba(168,189,208,0.18) 100%)`,
                         borderRadius:3, WebkitAppearance:'none', appearance:'none' }} />
                     <div style={{ display:'flex', justifyContent:'space-between', fontSize:13, fontFamily:Fnt.mono, color:'rgba(168,189,208,0.55)' }}>
