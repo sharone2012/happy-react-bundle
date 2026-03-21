@@ -1277,16 +1277,19 @@ export default function SiteSetup() {
                       background: isSel ? C.tealDim : C.navyDeep,
                       border: `${isAuto ? '2px' : '1.5px'} solid ${isSel ? '#00C9B1' : C.bdrCalc}`,
                       borderRadius:7, padding:'10px 14px', cursor:'pointer', transition:'all 0.12s',
-                      height:82, display:'flex', flexDirection:'column', justifyContent:'center',
+                      height:100, display:'flex', flexDirection:'column', justifyContent:'center',
                     }}>
-                      <div style={{ fontSize:13, fontWeight:400, fontFamily:Fnt.dm, color: isSel ? C.amber : C.white }}>
+                      <div style={{ fontSize:14, fontWeight:600, fontFamily:Fnt.dm, color: isSel ? C.amber : C.white }}>
                         {s.name}
                       </div>
-                      <div style={{ fontSize:11, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
+                      <div style={{ fontSize:12, fontWeight:400, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
                         {s.sub || ''}
                       </div>
-                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
+                      <div style={{ fontSize:11, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
                         {s.line3 || ''}
+                      </div>
+                      <div style={{ fontSize:11, fontFamily:Fnt.dm, color:'#888888', marginTop:1 }}>
+                        {s.line4 || ''}
                       </div>
                     </div>
                   );
