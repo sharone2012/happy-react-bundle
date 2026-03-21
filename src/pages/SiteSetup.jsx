@@ -167,6 +167,12 @@ export default function SiteSetup() {
   // ── Bottom strip ─────────────────────────────────────
   const [stripExpanded, setStripExpanded] = useState(false);
 
+  // ── Section A cascade suggestions ───────────────────
+  const [companySuggestions, setCompanySuggestions] = useState([]);
+  const [estateSuggestions,  setEstateSuggestions]  = useState([]);
+  const [millSuggestions,    setMillSuggestions]    = useState([]);
+  const [gpsSoilSuggestion,  setGpsSoilSuggestion]  = useState('');
+
   // ═══════════════════════════════════════════════════════
   // SUPABASE INIT — create or load cfi_sites record
   // ═══════════════════════════════════════════════════════
