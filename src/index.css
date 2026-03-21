@@ -103,3 +103,26 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/* CFI Slider — teal track, proper thumb */
+.cfi-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #00C9B1;
+  border: 2px solid #0C1E33;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  margin-top: -6px;
+}
+.cfi-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #00C9B1;
+  border: 2px solid #0C1E33;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
