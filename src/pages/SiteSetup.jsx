@@ -129,9 +129,9 @@ function parseSoilClass(wrb) {
 
 // AG Management options
 const AG_MGMT_OPTIONS = [
-  { id:'conventional', label:'Conventional' },
-  { id:'gap',          label:'Good Agricultural Practice (GAP)' },
-  { id:'vgam',         label:'Very Good Agricultural Management (VGAM)' },
+  { id:'vgam',         label:'Very Good' },
+  { id:'gap',          label:'Good' },
+  { id:'conventional', label:'Poor' },
   { id:'organic',      label:'Organic' },
 ];
 
