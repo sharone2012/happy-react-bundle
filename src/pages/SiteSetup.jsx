@@ -179,7 +179,6 @@ export default function SiteSetup() {
   });
   const [showMoreStreams, setShowMoreStreams] = useState(false);
   const [customStreams, setCustomStreams] = useState([]);
-  const [showNewFields, setShowNewFields] = useState(false);
   const [newRes1, setNewRes1] = useState('');
   const [newRes2, setNewRes2] = useState('');
 
