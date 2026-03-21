@@ -1310,13 +1310,13 @@ export default function SiteSetup() {
                       <div style={{ fontSize:14, fontWeight:600, fontFamily:Fnt.dm, color: isSel ? C.amber : C.white }}>
                         {s.name}
                       </div>
-                      <div style={{ fontSize:12, fontWeight:400, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
+                      <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
                         {s.sub || ''}
                       </div>
-                      <div style={{ fontSize:11, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
+                      <div style={{ fontSize:9, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
                         {s.line3 || ''}
                       </div>
-                      <div style={{ fontSize:11, fontFamily:Fnt.dm, color:'#888888', marginTop:1 }}>
+                      <div style={{ fontSize:9, fontFamily:Fnt.dm, color:'#888888', marginTop:1 }}>
                         {s.line4 || ''}
                       </div>
                     </div>
