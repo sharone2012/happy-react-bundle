@@ -261,25 +261,17 @@ export default function SiteSetup() {
   }, []);
 
   // Hydrate local state from loaded Supabase record
+  // Point 1: Section A always starts blank — do NOT hydrate company/estate/mill/province/district/GPS
   function hydrateSiteState(data) {
     if (!data) return;
-    setSite({
-      company:  data.company_name  || '',
-      estate:   data.estate_name   || '',
-      millName: data.mill_name     || '',
-      gpsLat:   data.gps_lat       != null ? String(data.gps_lat) : '',
-      gpsLon:   data.gps_lng       != null ? String(data.gps_lng) : '',
-      province: data.province      || '',
-      district: data.district      || '',
-      country:  'Indonesia',
-    });
+    // Section A deliberately NOT hydrated — user fills from scratch each visit
     setMill({
       ffb:  parseFloat(data.ffb_capacity_tph)    || 60,
       util: parseFloat(data.utilisation_pct)     || 85,
       hrs:  parseFloat(data.operating_hrs_day)   || 20,
       days: parseFloat(data.operating_days_month)|| 30,
     });
-    setBConfirmed(!!data.capacity_confirmed);
+    // Section B starts unlocked — do NOT restore bConfirmed
     setActiveStreams({
       efb:  !!data.efb_enabled,
       opdc: !!data.opdc_enabled,
