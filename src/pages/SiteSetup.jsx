@@ -722,13 +722,29 @@ export default function SiteSetup() {
                   {/* Estate Name — autocomplete from cfi_estates */}
                   <div style={{ position:'relative' }} onClick={e => e.stopPropagation()}>
                     <input
-                      style={fInput}
+                      style={estateConfirmed ? fInputConfirmed : fInput}
                       placeholder="Estate / Plantation Name"
                       value={site.estate}
+                      readOnly={estateConfirmed}
+                      onClick={async () => {
+                        if (estateConfirmed) {
+                          setEstateConfirmed(false);
+                          setMillConfirmed(false);
+                          upSite('estate',   '');
+                          upSite('millName', '');
+                          upSite('province', '');
+                          upSite('district', '');
+                          upSite('gpsLat',   '');
+                          upSite('gpsLon',   '');
+                          setGpsSoilSuggestion('');
+                          setMill(prev => ({ ...prev, ffb: 60 }));
+                          const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').order('estate_name').limit(100);
+                          setEstateSuggestions(data || []);
+                        }
+                      }}
                       onChange={async e => {
                         const val = e.target.value;
                         upSite('estate', val);
-                        // Clear downstream fields
                         upSite('millName', '');
                         upSite('province', '');
                         upSite('district', '');
@@ -736,37 +752,19 @@ export default function SiteSetup() {
                         upSite('gpsLon', '');
                         setGpsSoilSuggestion('');
                         setMill(prev => ({ ...prev, ffb: 60 }));
-                        // Show all estates if empty, filtered if typing
                         if (val.length === 0) {
-                          const { data } = await supabase
-                            .from('cfi_estates')
-                            .select('id, estate_name, province, district_kabupaten, area_ha')
-                            .order('estate_name')
-                            .limit(100);
+                          const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten, area_ha').order('estate_name').limit(100);
                           setEstateSuggestions(data || []);
                         } else {
-                          const { data } = await supabase
-                            .from('cfi_estates')
-                            .select('id, estate_name, province, district_kabupaten, area_ha')
-                            .ilike('estate_name', `%${val}%`)
-                            .limit(10);
+                          const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten, area_ha').ilike('estate_name', `%${val}%`).limit(10);
                           setEstateSuggestions(data || []);
                         }
-                        // Always reload all mills when estate changes
-                        const { data: allMills } = await supabase
-                          .from('cfi_mills_60tph')
-                          .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
-                          .order('mill_name')
-                          .limit(105);
+                        const { data: allMills } = await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105);
                         setMillSuggestions(allMills || []);
                       }}
                       onFocus={async () => {
-                        if (!site.estate) {
-                          const { data } = await supabase
-                            .from('cfi_estates')
-                            .select('id, estate_name, province, district_kabupaten, area_ha')
-                            .order('estate_name')
-                            .limit(100);
+                        if (!estateConfirmed && !site.estate) {
+                          const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten, area_ha').order('estate_name').limit(100);
                           setEstateSuggestions(data || []);
                         }
                       }}
@@ -780,6 +778,7 @@ export default function SiteSetup() {
                               upSite('estate', est.estate_name);
                               if (est.province) upSite('province', est.province);
                               if (est.district_kabupaten) upSite('district', est.district_kabupaten);
+                              setEstateConfirmed(true);
                               setEstateSuggestions([]);
                             }}
                             style={{ padding:'9px 13px', cursor:'pointer', fontSize:13, fontFamily:Fnt.dm, color:C.grey, borderBottom:'1px solid rgba(255,255,255,0.05)' }}
