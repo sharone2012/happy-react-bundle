@@ -1208,12 +1208,12 @@ export default function SiteSetup() {
                 </div>
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, width:'100%', marginTop:8, alignItems:'stretch' }}>
                   {[
-                    { lbl:'Decanter Cake',     val:maxT.opdc, grey:false },
-                    { lbl:'Palm Oil Sludge',   val:maxT.pos,  grey:false },
-                    { lbl:'POME Liquid',       val:maxT.pome, grey:false },
-                    { lbl:'Palm Mesocarp Fiber',val:maxT.pmf,  grey:true  },
+                    { lbl:'Decanter Cake',     val:maxT.opdc },
+                    { lbl:'Palm Oil Sludge',   val:maxT.pos  },
+                    { lbl:'POME Liquid',       val:maxT.pome },
+                    { lbl:'Palm Mesocarp Fiber',val:maxT.pmf  },
                   ].map(r=>(
-                    <div key={r.lbl} style={{ background:r.grey?'rgba(168,189,208,0.07)':C.tealDim, border:`1.5px solid ${r.grey?'rgba(168,189,208,0.22)':C.tealBdr}`, borderRadius:7, padding:'13px 9px', textAlign:'center' }}>
+                    <div key={r.lbl} style={{ background:C.tealDim, border:`1.5px solid ${C.tealBdr}`, borderRadius:7, padding:'13px 9px', textAlign:'center' }}>
                       <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:17, color:C.amber, marginBottom:4, lineHeight:1.2 }}>{r.lbl}</div>
                       <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:19, color:C.amber }}>
                         {fmtT(r.val)} <span style={{ fontSize:16, color:C.amber }}>t / month</span>
