@@ -92,18 +92,24 @@ const FEEDSTOCK = {
 // ── SOIL DATA (loaded from Supabase cfi_soil_profiles) ──
 // Fallback hardcoded for initial render before DB load
 const SOILS_FALLBACK = [
-  { id:'ultisols',    name:'Ultisols',    sub:'Acidic Tropical Clays', ph:'4.5', cec:'8.2',  cov:'24% Indonesian Palm',
-    pills:[{cls:'amber',txt:'pH 4.5 · CEC 8.2'},{cls:'teal',txt:'N Adj −35%'}] },
-  { id:'inceptisols', name:'Inceptisols', sub:'Alluvial',              ph:'4.1', cec:'15.4', cov:'39% Indonesian Palm',
+  { id:'inceptisols', name:'Inceptisol', sub:'Alluvial',              line3:'pH 4.0–5.0 · CEC 10–18 cmol · 39% IDN palm',
+    ph:'4.1', cec:'15.4', cov:'39% Indonesian Palm',
     pills:[{cls:'green',txt:'Best Soil'},{cls:'green',txt:'pH 4.1 · CEC 15.4'},{cls:'teal',txt:'N Adj Standard'}] },
-  { id:'oxisols',     name:'Oxisols',     sub:'Highly Weathered',      ph:'4.4', cec:'6.1',  cov:'8% Indonesian Palm',
+  { id:'ultisols',    name:'Ultisol',    sub:'Acidic Clays',          line3:'pH 4.2–5.0 · CEC 4–8 cmol · 24% IDN palm',
+    ph:'4.5', cec:'8.2',  cov:'24% Indonesian Palm',
+    pills:[{cls:'amber',txt:'pH 4.5 · CEC 8.2'},{cls:'teal',txt:'N Adj −35%'}] },
+  { id:'oxisols',     name:'Oxisol',     sub:'Highly Weathered Clays', line3:'pH 4.0–4.8 · CEC 3–6 cmol · 8% IDN palm',
+    ph:'4.4', cec:'6.1',  cov:'8% Indonesian Palm',
     pills:[{cls:'amber',txt:'pH 4.4 · CEC 6.1'},{cls:'red',txt:'P Fixation: Very High'},{cls:'teal',txt:'Split P Doses'}] },
-  { id:'spodosols',   name:'Spodosols',   sub:'Coastal Sands',         ph:'4.77',cec:'2.0',  cov:'Sandy · Lowest Fertility',
-    pills:[{cls:'amber',txt:'pH 4.77 · CEC 2.0'},{cls:'red',txt:'N Leaching: Very High'},{cls:'teal',txt:'31% Yield Gap'}] },
-  { id:'andisols',    name:'Andisols',    sub:'Volcanic Ash',          ph:'5.1', cec:'22.0', cov:'Volcanic · High P Fix',
-    pills:[{cls:'amber',txt:'pH 5.1 · CEC 22.0'},{cls:'red',txt:'P Fixation: High'},{cls:'teal',txt:'P Rate +30–50%'}] },
-  { id:'histosols',   name:'Histosols',   sub:'Peat',                  ph:'3.8', cec:'28.0', cov:'7% · Special Rules',
+  { id:'histosols',   name:'Peat/Histosol', sub:'Peat',               line3:'pH 3.5–4.5 · CEC 25–60 cmol · 7% IDN palm',
+    ph:'3.8', cec:'28.0', cov:'7% · Special Rules',
     pills:[{cls:'red',txt:'pH 3.8 · Very Acid'},{cls:'red',txt:'N −80% P −70%'},{cls:'red',txt:'Drainage Critical'}], peat:true },
+  { id:'spodosols',   name:'Entisol/Spodosol', sub:'Coastal Sands',   line3:'pH 3.5–4.5 · CEC 2–5 cmol · 5% IDN palm',
+    ph:'4.77',cec:'2.0',  cov:'Sandy · Lowest Fertility',
+    pills:[{cls:'amber',txt:'pH 4.77 · CEC 2.0'},{cls:'red',txt:'N Leaching: Very High'},{cls:'teal',txt:'31% Yield Gap'}] },
+  { id:'andisols',    name:'Andisol',    sub:'Volcanic Ash',          line3:'pH 5.0–6.0 · CEC 15–30 cmol · 3% IDN palm',
+    ph:'5.1', cec:'22.0', cov:'Volcanic · High P Fix',
+    pills:[{cls:'amber',txt:'pH 5.1 · CEC 22.0'},{cls:'red',txt:'P Fixation: High'},{cls:'teal',txt:'P Rate +30–50%'}] },
 ];
 
 const MILL_STREAMS  = ['efb','opdc','pos','pmf','pome'];
@@ -1268,12 +1274,16 @@ export default function SiteSetup() {
                       background: isSel ? C.tealDim : C.navyDeep,
                       border: `${isAuto ? '2px' : '1.5px'} solid ${isSel ? '#00C9B1' : C.bdrCalc}`,
                       borderRadius:7, padding:'10px 14px', cursor:'pointer', transition:'all 0.12s',
+                      height:82, display:'flex', flexDirection:'column', justifyContent:'center',
                     }}>
-                      <div style={{ fontSize:13, fontWeight:700, fontFamily:Fnt.dm, color: isSel ? C.amber : C.white }}>
+                      <div style={{ fontSize:13, fontWeight:400, fontFamily:Fnt.dm, color: isSel ? C.amber : C.white }}>
                         {s.name}
                       </div>
-                      <div style={{ fontSize:11, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.65)' : '#888888', marginTop:2 }}>
+                      <div style={{ fontSize:11, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
                         {s.sub || ''}
+                      </div>
+                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
+                        {s.line3 || ''}
                       </div>
                     </div>
                   );
