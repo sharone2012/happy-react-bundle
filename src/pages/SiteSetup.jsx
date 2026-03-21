@@ -1259,7 +1259,7 @@ export default function SiteSetup() {
               <div style={{ height:2, background:'#1E6B8C', marginBottom:12 }} />
 
               {/* Soil type cards (point 17: auto-selected shows 2px teal border) */}
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:14, marginBottom:9 }}>
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8, marginBottom:9 }}>
                 {soils.map(s => {
                   const isSel = selectedSoil === s.id;
                   const isAuto = soilAutoSelected && isSel;
@@ -1267,13 +1267,14 @@ export default function SiteSetup() {
                     <div key={s.id} onClick={() => { selectSoil(s.id); setSoilAutoSelected(false); }} style={{
                       background: isSel ? C.tealDim : C.navyDeep,
                       border: `${isAuto ? '2px' : '1.5px'} solid ${isSel ? '#00C9B1' : C.bdrCalc}`,
-                      borderRadius:8, padding:'20px 24px', cursor:'pointer', transition:'all 0.12s',
+                      borderRadius:7, padding:'10px 14px', cursor:'pointer', transition:'all 0.12s',
                     }}>
-                      <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color: isSel ? C.amber : C.grey }}>
-                        {s.name}{s.peat ? <span style={{ color:C.amber, fontSize:11 }}> (Peat)</span> : null}
+                      <div style={{ fontSize:13, fontWeight:700, fontFamily:Fnt.dm, color: isSel ? C.amber : C.white }}>
+                        {s.name}
                       </div>
-                      <div style={{ fontSize:12, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.75)' : C.greyLt, marginTop:6 }}>pH {s.ph} · CEC {s.cec}</div>
-                      <div style={{ fontSize:12, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.6)' : C.greyLt, marginTop:4 }}>{s.cov}</div>
+                      <div style={{ fontSize:11, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.65)' : '#888888', marginTop:2 }}>
+                        {s.sub || ''}
+                      </div>
                     </div>
                   );
                 })}
