@@ -1203,7 +1203,7 @@ export default function SiteSetup() {
               <button onClick={handleBConfirm} style={{
                 ...confirmBtn,
                 fontWeight:700,
-                ...(bConfirmed ? { background:C.teal, color:C.amber } : { background:C.green, color:'#000' }),
+                ...(bConfirmed ? { background:'rgba(0,201,177,0.25)', color:'#00C9B1', border:'1px solid #00C9B1' } : { background:C.green, color:'#000' }),
               }}>
                 {bConfirmed ? 'Click To Edit' : 'Confirm'}
               </button>
