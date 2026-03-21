@@ -1255,8 +1255,8 @@ export default function SiteSetup() {
                 {/* FFB Processed — green box, black text */}
                 <div style={{ background:C.green, border:`1.5px solid ${C.green}`, borderRadius:9, padding:'12px 17px', textAlign:'center', width:'100%' }}>
                   <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:17, color:'#000', marginBottom:4 }}>FFB Processed</div>
-                  <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:19, color:'#000' }}>
-                    {fmtT(ffbMonth)} <span style={{ fontSize:16, color:'#000' }}>t / month</span>
+                  <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:17, color:'#000' }}>
+                    {fmtT(ffbMonth)} <span style={{ fontSize:16, fontWeight:700, color:'#000' }}>t / month</span>
                   </div>
                 </div>
                 <div style={{ fontSize:24, color:C.grey, opacity:0.85, fontWeight:900, lineHeight:1 }}>↓</div>
