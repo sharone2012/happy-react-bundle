@@ -1484,7 +1484,7 @@ export default function SiteSetup() {
                     <input type="range" min={0} max={mx||8000} value={val} step={1}
                       onChange={e=>setSlider(key, e.target.value)}
                       className="cfi-slider"
-                      style={{ width:'100%', height:6, outline:'none', cursor:'pointer', margin:'4px 0', display:'block',
+                      style={{ width:'100%', height:5, outline:'none', cursor:'pointer', margin:'4px 0', display:'block',
                         background:`linear-gradient(to right, #00C9B1 0%, #00C9B1 ${pct}%, rgba(168,189,208,0.18) ${pct}%, rgba(168,189,208,0.18) 100%)`,
                         borderRadius:3, WebkitAppearance:'none', appearance:'none' }} />
                     <div style={{ display:'flex', justifyContent:'space-between', fontSize:13, fontFamily:Fnt.mono, color:'rgba(168,189,208,0.55)' }}>
