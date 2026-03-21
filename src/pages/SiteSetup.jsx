@@ -773,11 +773,9 @@ export default function SiteSetup() {
                       value={site.estate}
                       onFocus={async () => {
                         if (estateConfirmed) {
+                          setSite(s => ({...s, estate:'', millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
                           setEstateConfirmed(false);
                           setMillConfirmed(false);
-                          upSite('estate',''); upSite('millName','');
-                          upSite('province',''); upSite('district','');
-                          upSite('gpsLat',''); upSite('gpsLon','');
                           setGpsSoilSuggestion('');
                           setMill(prev => ({...prev, ffb:60}));
                           setMillSuggestions([]);
@@ -790,8 +788,11 @@ export default function SiteSetup() {
                       }}
                       onChange={async e => {
                         const val = e.target.value;
-                        upSite('estate', val);
+                        setSite(s => ({...s, estate:val, millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
                         setEstateConfirmed(false);
+                        setMillConfirmed(false);
+                        setGpsSoilSuggestion('');
+                        setMill(prev => ({...prev, ffb:60}));
                         setActiveDropdown('estate');
                         const { data } = val.length === 0
                           ? await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').order('estate_name').limit(100)
