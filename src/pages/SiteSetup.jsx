@@ -902,10 +902,13 @@ export default function SiteSetup() {
                         setMillConfirmed(false);
                         setGpsSoilSuggestion('');
                         setMill(prev => ({...prev, ffb:60}));
+                        if (val.length < 3) {
+                          setEstateSuggestions([]);
+                          setActiveDropdown(null);
+                          return;
+                        }
                         setActiveDropdown('estate');
-                        const { data } = val.length === 0
-                          ? await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').order('estate_name').limit(100)
-                          : await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').ilike('estate_name',`%${val}%`).limit(10);
+                        const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').ilike('estate_name',`%${val}%`).limit(10);
                         setEstateSuggestions(data || []);
                       }}
                     />
