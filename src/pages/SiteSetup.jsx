@@ -807,12 +807,12 @@ export default function SiteSetup() {
                           setMill(prev => ({...prev, ffb:60}));
                           setEstateSuggestions([]); setMillSuggestions([]);
                         }
-                        setActiveDropdown('company');
-                        // Always show full list immediately
-                        const { data } = await supabase
-                          .from('cfi_mill_owners').select('id, company').order('company').limit(42);
-                        setCompanySuggestions(data || []);
-                      }}
+                        if (site.company.length >= 3) {
+                          setActiveDropdown('company');
+                          const { data } = await supabase.from('cfi_mill_owners').select('id, company').ilike('company',`%${site.company}%`).limit(42);
+                          setCompanySuggestions(data || []);
+                        }
+                      }
                       onChange={async e => {
                         const val = e.target.value;
                         setSite(s => ({...s, company:val, estate:'', millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
