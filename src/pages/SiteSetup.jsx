@@ -1837,7 +1837,7 @@ export default function SiteSetup() {
               {[
                 ['Lignin % Blend', blend?.Lignin?.toFixed(1)||'—'],
                 ['ADL %', '—'],
-                ['Protein % vs 8% Floor', blend?<span style={{ color:blend.CP>=8?C.green:C.red }}>{blend.CP.toFixed(1)}% {blend.CP>=8?'READY':'LOW'}</span>:'—'],
+                ['Protein % vs 8% Floor', blend?<span style={{ color:blend.CP>=8?C.greenLt30:C.red }}>{blend.CP.toFixed(1)}% {blend.CP>=8?'READY':'LOW'}</span>:'—'],
                 ['Moisture % Pre-Process', blend?.MC?.toFixed(1)||'—'],
               ].map(([lbl,val])=>(
                 <div key={lbl} style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:5 }}>
