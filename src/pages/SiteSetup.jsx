@@ -169,7 +169,7 @@ export default function SiteSetup() {
   // ── Section B state ──────────────────────────────────
   const [mill, setMill] = useState({ ffb:60, util:85, hrs:20, days:30 });
   const [bConfirmed, setBConfirmed] = useState(false);
-  const upMill = (k,v) => { if(bConfirmed) return; setMill(m=>({...m,[k]:+v||0})); };
+  const upMill = (k,v) => setMill(m=>({...m,[k]:+v||0}));
 
   // ── Section D state ──────────────────────────────────
   const [activeStreams, setActiveStreams] = useState({
