@@ -309,9 +309,9 @@ export default function SiteSetup() {
   const SOIL_META = {
     inceptisol: { sub:'Alluvial',              line3:'pH 4.0–5.0 · CEC 10–18 cmol/kg', line4:'39% IDN palm', tag1:{label:'Mod N Leach',level:'mod'},   tag2:{label:'Low P Fix',level:'low'} },
     ultisol:    { sub:'Acidic Tropical Clays',  line3:'pH 4.2–5.0 · CEC 4–8 cmol/kg',   line4:'24% IDN palm', tag1:{label:'High N Leach',level:'high'}, tag2:{label:'High P Fix',level:'high'} },
-    oxisol:     { sub:'Weathered Clays',        line3:'pH 4.0–4.8 · CEC 3–6 cmol/kg',   line4:'8% IDN palm',  tag1:{label:'High N Leach',level:'high'}, tag2:{label:'V.High P Fix',level:'high'} },
+    oxisol:     { sub:'Weathered Clays',        line3:'pH 4.0–4.8 · CEC 3–6 cmol/kg',   line4:'8% IDN palm',  tag1:{label:'High N Leach',level:'high'}, tag2:{label:'V.High P Fix',level:'vhigh'} },
     histosol:   { sub:'Peat',                   line3:'pH 3.5–4.5 · CEC 25–60 cmol/kg', line4:'7% IDN palm',  tag1:{label:'Low N Leach',level:'low'},   tag2:{label:'Low P Fix',level:'low'} },
-    spodosol:   { sub:'Coastal Sands',          line3:'pH 3.5–4.5 · CEC 2–5 cmol/kg',   line4:'5% IDN palm',  tag1:{label:'V.High N Leach',level:'high'},tag2:{label:'Low P Fix',level:'low'} },
+    spodosol:   { sub:'Coastal Sands',          line3:'pH 3.5–4.5 · CEC 2–5 cmol/kg',   line4:'5% IDN palm',  tag1:{label:'V.High N Leach',level:'vhigh'},tag2:{label:'Low P Fix',level:'low'} },
     andisol:    { sub:'Volcanic Ash',           line3:'pH 5.0–6.0 · CEC 15–30 cmol/kg', line4:'3% IDN palm',  tag1:{label:'Mod N Leach',level:'mod'},   tag2:{label:'High P Fix',level:'high'} },
   };
   const SOIL_NAMES = {
