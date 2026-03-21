@@ -1329,14 +1329,11 @@ export default function SiteSetup() {
                       <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.75)' : '#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.sub || ''}
                       </div>
-                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.75)' : '#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
-                        {s.line3 || ''}
-                      </div>
                       <div style={{ fontSize:10, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.75)' : '#888888', marginTop:1, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.line4 || ''}
                       </div>
                       {meta.tag1 && meta.tag2 && (
-                        <div style={{ display:'flex', gap:4, marginTop:4 }}>
+                        <div style={{ display:'flex', flexDirection:'column', gap:3, marginTop:4 }}>
                           <span style={tagStyle(meta.tag1.level)}>{meta.tag1.label}</span>
                           <span style={tagStyle(meta.tag2.level)}>{meta.tag2.label}</span>
                         </div>
