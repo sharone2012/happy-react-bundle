@@ -1030,7 +1030,7 @@ export default function SiteSetup() {
                 {/* ── FIELD 5: GPS Coordinates ── */}
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
                   <div>
-                    <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>GPS LATITUDE</div>
+                    <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>GPS (Optional)</div>
                     <input
                       style={{
                         ...fInput,
