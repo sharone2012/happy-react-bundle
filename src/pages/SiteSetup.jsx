@@ -169,11 +169,12 @@ export default function SiteSetup() {
   // ── Section B state ──────────────────────────────────
   const [mill, setMill] = useState({ ffb:60, util:85, hrs:20, days:30 });
   const [bConfirmed, setBConfirmed] = useState(false);
-  const upMill = (k,v) => { if(bConfirmed) return; setMill(m=>({...m,[k]:+v||0})); };
+  const upMill = (k,v) => setMill(m=>({...m,[k]:+v||0}));
 
   // ── Section D state ──────────────────────────────────
+  // Point 6: No stream pre-selected on load
   const [activeStreams, setActiveStreams] = useState({
-    efb:true, opdc:true, pos:false, pmf:false, pke:false,
+    efb:false, opdc:false, pos:false, pmf:false, pke:false,
     pome:false, opf:false, opt:false
   });
   const [customStreams, setCustomStreams] = useState([]);
@@ -261,25 +262,17 @@ export default function SiteSetup() {
   }, []);
 
   // Hydrate local state from loaded Supabase record
+  // Point 1: Section A always starts blank — do NOT hydrate company/estate/mill/province/district/GPS
   function hydrateSiteState(data) {
     if (!data) return;
-    setSite({
-      company:  data.company_name  || '',
-      estate:   data.estate_name   || '',
-      millName: data.mill_name     || '',
-      gpsLat:   data.gps_lat       != null ? String(data.gps_lat) : '',
-      gpsLon:   data.gps_lng       != null ? String(data.gps_lng) : '',
-      province: data.province      || '',
-      district: data.district      || '',
-      country:  'Indonesia',
-    });
+    // Section A deliberately NOT hydrated — user fills from scratch each visit
     setMill({
       ffb:  parseFloat(data.ffb_capacity_tph)    || 60,
       util: parseFloat(data.utilisation_pct)     || 85,
       hrs:  parseFloat(data.operating_hrs_day)   || 20,
       days: parseFloat(data.operating_days_month)|| 30,
     });
-    setBConfirmed(!!data.capacity_confirmed);
+    // Section B starts unlocked — do NOT restore bConfirmed
     setActiveStreams({
       efb:  !!data.efb_enabled,
       opdc: !!data.opdc_enabled,
@@ -1156,15 +1149,15 @@ export default function SiteSetup() {
                   { lbl:'Operating Hours',  key:'hrs',  unit:'hr / day', max:2 },
                   { lbl:'Days / Month',     key:'days', unit:'days',     max:2 },
                 ].map(row=>(
-                  <div key={row.key} style={{ display:'flex', alignItems:'center', justifyContent:'space-between', background:C.navyField, border:`1px solid rgba(168,189,208,0.12)`, borderRadius:8, padding:'10px 14px', gap:12, minHeight:48 }}>
+                <div key={row.key} style={{ display:'flex', alignItems:'center', justifyContent:'space-between', background:C.navyField, border:`1px solid rgba(168,189,208,0.12)`, borderRadius:8, padding:'10px 14px', gap:12, minHeight:48 }}>
                     <span style={{ flex:1, fontSize:14, fontWeight:700, color:C.grey, whiteSpace:'nowrap' }}>{row.lbl}</span>
                     <div style={{ display:'flex', alignItems:'center', gap:8, flexShrink:0 }}>
                       <input
                         type="number"
                         value={mill[row.key]}
                         onChange={e=>upMill(row.key, e.target.value)}
-                        readOnly={bConfirmed}
-                        style={{ ...bInput, cursor:bConfirmed?'not-allowed':'text' }}
+                        readOnly={false}
+                        style={bInput}
                       />
                       <span style={{ fontSize:11, fontFamily:Fnt.mono, color:C.greyLt, whiteSpace:'nowrap', width:42 }}>{row.unit}</span>
                     </div>
@@ -1173,8 +1166,11 @@ export default function SiteSetup() {
               </div>
             </div>
             <div style={{ padding:'8px 13px 13px' }}>
-              <button onClick={handleBConfirm} style={confirmBtn}>
-                {bConfirmed ? 'Confirmed — Click To Edit' : 'Confirm Mill Processing'}
+              <button onClick={handleBConfirm} style={{
+                ...confirmBtn,
+                ...(bConfirmed ? { background:C.teal, color:C.amber } : { background:C.green, color:'#000' }),
+              }}>
+                {bConfirmed ? 'Click To Edit' : 'Confirm'}
               </button>
               <div style={{ fontSize:11, color:C.greyLt, textAlign:'center', marginTop:5 }}>
                 {bConfirmed ? 'C And E Updated · Click To Unlock' : 'Lock Values And Cascade To C And E'}
@@ -1212,12 +1208,12 @@ export default function SiteSetup() {
                 </div>
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, width:'100%', marginTop:8, alignItems:'stretch' }}>
                   {[
-                    { lbl:'Decanter Cake',     val:maxT.opdc, grey:false },
-                    { lbl:'Palm Oil Sludge',   val:maxT.pos,  grey:false },
-                    { lbl:'POME Liquid',       val:maxT.pome, grey:false },
-                    { lbl:'Palm Mesocarp Fiber',val:maxT.pmf,  grey:true  },
+                    { lbl:'Decanter Cake',     val:maxT.opdc },
+                    { lbl:'Palm Oil Sludge',   val:maxT.pos  },
+                    { lbl:'POME Liquid',       val:maxT.pome },
+                    { lbl:'Palm Mesocarp Fiber',val:maxT.pmf  },
                   ].map(r=>(
-                    <div key={r.lbl} style={{ background:r.grey?'rgba(168,189,208,0.07)':C.tealDim, border:`1.5px solid ${r.grey?'rgba(168,189,208,0.22)':C.tealBdr}`, borderRadius:7, padding:'13px 9px', textAlign:'center' }}>
+                    <div key={r.lbl} style={{ background:C.tealDim, border:`1.5px solid ${C.tealBdr}`, borderRadius:7, padding:'13px 9px', textAlign:'center' }}>
                       <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:17, color:C.amber, marginBottom:4, lineHeight:1.2 }}>{r.lbl}</div>
                       <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:19, color:C.amber }}>
                         {fmtT(r.val)} <span style={{ fontSize:16, color:C.amber }}>t / month</span>
@@ -1407,9 +1403,10 @@ export default function SiteSetup() {
                     </div>
                     <input type="range" min={0} max={mx||8000} value={val} step={1}
                       onChange={e=>setSlider(key, e.target.value)}
-                      style={{ width:'100%', height:16, outline:'none', cursor:'pointer', margin:'4px 0', display:'block',
-                        background:`linear-gradient(to right, ${C.amber} 0%, ${C.amber} ${pct}%, rgba(64,215,197,0.52) ${pct}%, rgba(64,215,197,0.52) 100%)`,
-                        borderRadius:2, WebkitAppearance:'none', appearance:'none' }} />
+                      className="cfi-slider"
+                      style={{ width:'100%', height:6, outline:'none', cursor:'pointer', margin:'4px 0', display:'block',
+                        background:`linear-gradient(to right, #00C9B1 0%, #00C9B1 ${pct}%, rgba(168,189,208,0.18) ${pct}%, rgba(168,189,208,0.18) 100%)`,
+                        borderRadius:3, WebkitAppearance:'none', appearance:'none' }} />
                     <div style={{ display:'flex', justifyContent:'space-between', fontSize:13, fontFamily:Fnt.mono, color:'rgba(168,189,208,0.55)' }}>
                       <span>0 t</span><span>100%</span>
                     </div>
