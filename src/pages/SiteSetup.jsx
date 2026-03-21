@@ -772,7 +772,7 @@ export default function SiteSetup() {
                         borderColor: companyConfirmed ? C.tealBdr : 'rgba(168,189,208,0.20)',
                         color:       companyConfirmed ? C.amber   : C.white,
                       }}
-                      placeholder="I Will Enter Manually — Or Type Company Name"
+                      placeholder="Enter Company Name"
                       value={site.company}
                       onFocus={async () => {
                         if (companyConfirmed) {
