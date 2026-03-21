@@ -830,7 +830,7 @@ export default function SiteSetup() {
                                 .select(millCols)
                                 .ilike('owner_company', `%${c.company}%`)
                                 .order('mill_name').limit(105);
-                              setMillSuggestions(mills?.length ? mills : (await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105)).data || []);
+                              setMillSuggestions(mills?.length ? mills : (await supabase.from('cfi_mills_60tph').select(millCols).order('mill_name').limit(105)).data || []);
                             }}
                             style={{ padding:'10px 14px', cursor:'pointer', fontSize:13, fontFamily:Fnt.dm, color:C.grey, borderBottom:'1px solid rgba(255,255,255,0.05)' }}
                             onMouseEnter={ev => ev.currentTarget.style.background='rgba(64,215,197,0.08)'}
