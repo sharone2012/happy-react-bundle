@@ -511,14 +511,21 @@ export default function SiteSetup() {
   // ═══════════════════════════════════════════════════════
   const ffbMonth = mill.ffb * (mill.util/100) * mill.hrs * mill.days;
 
-  const maxT = useMemo(() => ({
-    efb:  Math.round(ffbMonth * 0.225),  // 22.5% FFB
-    opdc: Math.round(ffbMonth * 0.225 * 0.152), // 15.2% EFB FW — LOCKED
-    pos:  Math.round(ffbMonth * 0.015),
-    pmf:  Math.round(ffbMonth * 0.145),
-    pome: Math.round(ffbMonth * 0.30),
-    pke: 0, opf: 0, opt: 0,
-  }), [ffbMonth]);
+  const maxT = useMemo(() => {
+    const base = {
+      efb:  Math.round(ffbMonth * 0.225),  // 22.5% FFB
+      opdc: Math.round(ffbMonth * 0.225 * 0.152), // 15.2% EFB FW — LOCKED
+      pos:  Math.round(ffbMonth * 0.015),
+      pmf:  Math.round(ffbMonth * 0.145),
+      pome: Math.round(ffbMonth * 0.30),
+      pke: 0, opf: 0, opt: 0,
+    };
+    // Custom streams use their entered volume as max
+    customStreams.forEach(c => {
+      if (c.volume) base[c.key] = c.volume;
+    });
+    return base;
+  }, [ffbMonth, customStreams]);
 
   async function saveSectionC(millState) {
     if (!siteId) return;
