@@ -172,8 +172,9 @@ export default function SiteSetup() {
   const upMill = (k,v) => setMill(m=>({...m,[k]:+v||0}));
 
   // ── Section D state ──────────────────────────────────
+  // Point 6: No stream pre-selected on load
   const [activeStreams, setActiveStreams] = useState({
-    efb:true, opdc:true, pos:false, pmf:false, pke:false,
+    efb:false, opdc:false, pos:false, pmf:false, pke:false,
     pome:false, opf:false, opt:false
   });
   const [customStreams, setCustomStreams] = useState([]);
