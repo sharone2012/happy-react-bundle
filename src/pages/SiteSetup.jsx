@@ -114,6 +114,27 @@ const STREAM_NAMES = {
   opf:'Oil Palm Fronds', opt:'Oil Palm Trunks'
 };
 
+// Soil class parser for dominant_soil_wrb
+function parseSoilClass(wrb) {
+  if (!wrb) return null;
+  const w = wrb.toLowerCase();
+  if (w.includes('histosol') || w.includes('peat') || w.includes('gambut')) return 'histosols';
+  if (w.includes('ultisol') || w.includes('acrisol')) return 'ultisols';
+  if (w.includes('inceptisol')) return 'inceptisols';
+  if (w.includes('oxisol') || w.includes('ferralsol') || w.includes('latosol')) return 'oxisols';
+  if (w.includes('andosol') || w.includes('andisol')) return 'andisols';
+  if (w.includes('spodosol') || w.includes('podzol') || w.includes('sandy')) return 'spodosols';
+  return null;
+}
+
+// AG Management options
+const AG_MGMT_OPTIONS = [
+  { id:'conventional', label:'Conventional' },
+  { id:'gap',          label:'Good Agricultural Practice (GAP)' },
+  { id:'vgam',         label:'Very Good Agricultural Management (VGAM)' },
+  { id:'organic',      label:'Organic' },
+];
+
 // ── DEBOUNCE HOOK ───────────────────────────────────────
 function useDebounce(fn, delay) {
   const timer = useRef(null);
@@ -160,6 +181,11 @@ export default function SiteSetup() {
   // ── Section G state (soil) ───────────────────────────
   const [selectedSoil, setSelectedSoil] = useState('ultisols');
   const [soils, setSoils] = useState(SOILS_FALLBACK);
+  const [soilAutoSelected, setSoilAutoSelected] = useState(false);
+  const [secondarySoilWrb, setSecondarySoilWrb] = useState('');
+
+  // ── Agricultural Management ──────────────────────────
+  const [agMgmt, setAgMgmt] = useState('vgam');
 
   // ── Section F / G-Total confirm ──────────────────────
   const [fConfirmed, setFConfirmed] = useState(false);
@@ -175,13 +201,15 @@ export default function SiteSetup() {
   const [companyConfirmed, setCompanyConfirmed] = useState(false);
   const [estateConfirmed,  setEstateConfirmed]  = useState(false);
   const [millConfirmed,    setMillConfirmed]    = useState(false);
-  const [activeDropdown,   setActiveDropdown]   = useState(null); // 'company' | 'estate' | 'mill' | null
+  const [activeDropdown,   setActiveDropdown]   = useState(null);
+  const [selectedMillRecord, setSelectedMillRecord] = useState(null); // full mill row
 
-  // ── Site data cascade (points 6-11) ────────────────
+  // ── Site data cascade ──────────────────────────────
   const [siteDataMessage, setSiteDataMessage] = useState('');
-  const [climateData, setClimateData] = useState(null);
-  const [climateOverrides, setClimateOverrides] = useState({});
-  const [climateOriginal, setClimateOriginal] = useState(null);
+  const [weatherData, setWeatherData] = useState(null); // { rainfall, temp }
+  const [weatherOriginal, setWeatherOriginal] = useState(null);
+  const [weatherOverrides, setWeatherOverrides] = useState({});
+  const [weatherSource, setWeatherSource] = useState(null); // 'live' | 'province'
 
   // ═══════════════════════════════════════════════════════
   // SUPABASE INIT — create or load cfi_sites record
