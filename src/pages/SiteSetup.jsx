@@ -1007,6 +1007,32 @@ export default function SiteSetup() {
                               setSelectedMillRecord(m);
                               setMillSuggestions([]);
                               setActiveDropdown(null);
+                              // Soil auto-select — fires immediately on mill selection
+                              if (m.province_soil_id) {
+                                const { data: provData } = await supabase
+                                  .from('cfi_province_soil_lookup')
+                                  .select('dominant_soil_wrb,rainfall_mm_yr_min,rainfall_mm_yr_max,temp_c_avg_min,temp_c_avg_max,secondary_soil_wrb')
+                                  .eq('id', m.province_soil_id)
+                                  .maybeSingle();
+                                if (provData) {
+                                  const soilKey = parseSoilClass(provData.dominant_soil_wrb);
+                                  if (soilKey) {
+                                    setSelectedSoil(soilKey);
+                                    setSoilAutoSelected(true);
+                                    if (siteId) supabase.from('cfi_sites').update({ soil_type: soilKey }).eq('id', siteId);
+                                  }
+                                  if (provData.secondary_soil_wrb) setSecondarySoilWrb(provData.secondary_soil_wrb);
+                                  // Weather from province
+                                  const rainfallMid = provData.rainfall_mm_yr_min && provData.rainfall_mm_yr_max
+                                    ? Math.round((provData.rainfall_mm_yr_min + provData.rainfall_mm_yr_max) / 2) : null;
+                                  const tempMid = provData.temp_c_avg_min && provData.temp_c_avg_max
+                                    ? ((provData.temp_c_avg_min + provData.temp_c_avg_max) / 2).toFixed(1) : null;
+                                  const wd = { rainfall: rainfallMid, temp: tempMid ? parseFloat(tempMid) : null };
+                                  setWeatherData(wd);
+                                  setWeatherOriginal(wd);
+                                  setWeatherSource('province');
+                                }
+                              }
                               if (m.latitude && m.longitude) {
                                 const { data: soilResult } = await supabase.rpc('get_soil_acidity_class', {
                                   p_lat: m.latitude, p_lon: m.longitude, p_max_distance_km: 25
