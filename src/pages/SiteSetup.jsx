@@ -92,22 +92,22 @@ const FEEDSTOCK = {
 // ── SOIL DATA (loaded from Supabase cfi_soil_profiles) ──
 // Fallback hardcoded for initial render before DB load
 const SOILS_FALLBACK = [
-  { id:'inceptisols', name:'Inceptisol', sub:'Alluvial',              line3:'pH 4.0–5.0 · CEC 10–18 cmol · 39% IDN palm',
+  { id:'inceptisol', name:'Inceptisol', sub:'Alluvial',              line3:'pH 4.0–5.0 · CEC 10–18 cmol/kg', line4:'39% of Indonesian palm land',
     ph:'4.1', cec:'15.4', cov:'39% Indonesian Palm',
     pills:[{cls:'green',txt:'Best Soil'},{cls:'green',txt:'pH 4.1 · CEC 15.4'},{cls:'teal',txt:'N Adj Standard'}] },
-  { id:'ultisols',    name:'Ultisol',    sub:'Acidic Clays',          line3:'pH 4.2–5.0 · CEC 4–8 cmol · 24% IDN palm',
+  { id:'ultisol',    name:'Ultisol',    sub:'Acidic Tropical Clays',  line3:'pH 4.2–5.0 · CEC 4–8 cmol/kg', line4:'24% of Indonesian palm land',
     ph:'4.5', cec:'8.2',  cov:'24% Indonesian Palm',
     pills:[{cls:'amber',txt:'pH 4.5 · CEC 8.2'},{cls:'teal',txt:'N Adj −35%'}] },
-  { id:'oxisols',     name:'Oxisol',     sub:'Highly Weathered Clays', line3:'pH 4.0–4.8 · CEC 3–6 cmol · 8% IDN palm',
+  { id:'oxisol',     name:'Oxisol',     sub:'Highly Weathered Clays', line3:'pH 4.0–4.8 · CEC 3–6 cmol/kg', line4:'8% of Indonesian palm land',
     ph:'4.4', cec:'6.1',  cov:'8% Indonesian Palm',
     pills:[{cls:'amber',txt:'pH 4.4 · CEC 6.1'},{cls:'red',txt:'P Fixation: Very High'},{cls:'teal',txt:'Split P Doses'}] },
-  { id:'histosols',   name:'Peat/Histosol', sub:'Peat',               line3:'pH 3.5–4.5 · CEC 25–60 cmol · 7% IDN palm',
+  { id:'histosol',   name:'Peat/Histosol', sub:'Peat',               line3:'pH 3.5–4.5 · CEC 25–60 cmol/kg', line4:'7% of Indonesian palm land',
     ph:'3.8', cec:'28.0', cov:'7% · Special Rules',
     pills:[{cls:'red',txt:'pH 3.8 · Very Acid'},{cls:'red',txt:'N −80% P −70%'},{cls:'red',txt:'Drainage Critical'}], peat:true },
-  { id:'spodosols',   name:'Entisol/Spodosol', sub:'Coastal Sands',   line3:'pH 3.5–4.5 · CEC 2–5 cmol · 5% IDN palm',
+  { id:'spodosol',   name:'Entisol/Spodosol', sub:'Coastal Sands',   line3:'pH 3.5–4.5 · CEC 2–5 cmol/kg', line4:'5% of Indonesian palm land',
     ph:'4.77',cec:'2.0',  cov:'Sandy · Lowest Fertility',
     pills:[{cls:'amber',txt:'pH 4.77 · CEC 2.0'},{cls:'red',txt:'N Leaching: Very High'},{cls:'teal',txt:'31% Yield Gap'}] },
-  { id:'andisols',    name:'Andisol',    sub:'Volcanic Ash',          line3:'pH 5.0–6.0 · CEC 15–30 cmol · 3% IDN palm',
+  { id:'andisol',    name:'Andisol',    sub:'Volcanic Ash',          line3:'pH 5.0–6.0 · CEC 15–30 cmol/kg', line4:'3% of Indonesian palm land',
     ph:'5.1', cec:'22.0', cov:'Volcanic · High P Fix',
     pills:[{cls:'amber',txt:'pH 5.1 · CEC 22.0'},{cls:'red',txt:'P Fixation: High'},{cls:'teal',txt:'P Rate +30–50%'}] },
 ];
