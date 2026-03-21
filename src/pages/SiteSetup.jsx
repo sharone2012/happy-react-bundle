@@ -904,7 +904,7 @@ export default function SiteSetup() {
                                 .ilike('owner_company', `%${c.company}%`)
                                 .order('estate_name').limit(100);
                               setEstateSuggestions(estates?.length ? estates : (await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').order('estate_name').limit(100)).data || []);
-                              const millCols = 'id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id';
+                              const millCols = 'id, mill_name, owner_company, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id';
                               const { data: mills } = await supabase
                                 .from('cfi_mills_60tph')
                                 .select(millCols)
