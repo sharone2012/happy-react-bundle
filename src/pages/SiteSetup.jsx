@@ -511,14 +511,21 @@ export default function SiteSetup() {
   // ═══════════════════════════════════════════════════════
   const ffbMonth = mill.ffb * (mill.util/100) * mill.hrs * mill.days;
 
-  const maxT = useMemo(() => ({
-    efb:  Math.round(ffbMonth * 0.225),  // 22.5% FFB
-    opdc: Math.round(ffbMonth * 0.225 * 0.152), // 15.2% EFB FW — LOCKED
-    pos:  Math.round(ffbMonth * 0.015),
-    pmf:  Math.round(ffbMonth * 0.145),
-    pome: Math.round(ffbMonth * 0.30),
-    pke: 0, opf: 0, opt: 0,
-  }), [ffbMonth]);
+  const maxT = useMemo(() => {
+    const base = {
+      efb:  Math.round(ffbMonth * 0.225),  // 22.5% FFB
+      opdc: Math.round(ffbMonth * 0.225 * 0.152), // 15.2% EFB FW — LOCKED
+      pos:  Math.round(ffbMonth * 0.015),
+      pmf:  Math.round(ffbMonth * 0.145),
+      pome: Math.round(ffbMonth * 0.30),
+      pke: 0, opf: 0, opt: 0,
+    };
+    // Custom streams use their entered volume as max
+    customStreams.forEach(c => {
+      if (c.volume) base[c.key] = c.volume;
+    });
+    return base;
+  }, [ffbMonth, customStreams]);
 
   async function saveSectionC(millState) {
     if (!siteId) return;
@@ -565,21 +572,26 @@ export default function SiteSetup() {
   }
 
   // ── Custom residues
-  const addResidue = async () => {
-    const names = [newRes1, newRes2].filter(n => n.trim());
-    if (!names.length) return;
-    const added = names.map((name, i) => ({ key: `custom_${i+1}`, name, active: true }));
-    setCustomStreams(cs => [...cs, ...added]);
-    setActiveStreams(s => { const n={...s}; added.forEach(a => { n[a.key]=true; }); return n; });
-    if (siteId && added[0]) {
-      await supabase.from('cfi_sites').update({
-        custom_stream_1_label:   added[0]?.name || null,
-        custom_stream_1_enabled: true,
-        custom_stream_2_label:   added[1]?.name || null,
-        custom_stream_2_enabled: !!added[1],
-      }).eq('id', siteId);
+  const [newResVol, setNewResVol] = useState('');
+  const addResidue = async (name, vol) => {
+    if (!name || !name.trim()) return;
+    const nextIdx = customStreams.length + 1;
+    const key = `custom_${nextIdx}`;
+    const volume = parseFloat(String(vol).replace(/,/g,'')) || 0;
+    const added = { key, name: name.trim(), active: true, volume };
+    setCustomStreams(cs => [...cs, added]);
+    setActiveStreams(s => ({ ...s, [key]: true }));
+    // Set slider to volume
+    if (volume > 0) {
+      setSliders(prev => ({ ...prev, [key]: volume }));
     }
-    setNewRes1(''); setNewRes2(''); setShowNewFields(false);
+    if (siteId) {
+      const updates = {};
+      if (nextIdx === 1) { updates.custom_stream_1_label = name.trim(); updates.custom_stream_1_enabled = true; }
+      if (nextIdx === 2) { updates.custom_stream_2_label = name.trim(); updates.custom_stream_2_enabled = true; }
+      if (Object.keys(updates).length) await supabase.from('cfi_sites').update(updates).eq('id', siteId);
+    }
+    setNewRes1(''); setNewResVol(''); setShowNewFields(false);
   };
 
   // ═══════════════════════════════════════════════════════
@@ -716,8 +728,8 @@ export default function SiteSetup() {
   const confirmBtn = { background:C.green, color:'#000', fontFamily:Fnt.brand, fontWeight:700, fontSize:15, letterSpacing:'0.04em', border:'none', borderRadius:8, padding:'0 28px', height:51, minWidth:260, display:'block', margin:'0 auto', cursor:'pointer' };
   const slItem     = { background:C.navyDeep, border:`1.5px solid ${C.bdrCalc}`, borderRadius:8, padding:'10px 26px 10px 13px', minHeight:52, marginBottom:6 };
   const toggleCard = (active, disabled=false) => ({
-    background: active ? C.tealDim : C.navyDeep,
-    border: `1.5px solid ${active ? C.tealBdr : C.bdrCalc}`,
+    background: active ? C.tealDim : '#0B1828',
+    border: `1.5px solid ${active ? C.tealBdr : '#1E6B8C'}`,
     borderRadius:8, padding:'10px 13px', cursor: disabled?'not-allowed':'pointer',
     transition:'all 0.12s', minHeight:52, opacity: disabled ? 0.45 : 1,
   });
@@ -897,7 +909,7 @@ export default function SiteSetup() {
                           const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').ilike('estate_name',`%${site.estate}%`).limit(100);
                           setEstateSuggestions(data || []);
                         }
-                      }
+                      }}
                       onChange={async e => {
                         const val = e.target.value;
                         setSite(s => ({...s, estate:val, millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
@@ -972,7 +984,7 @@ export default function SiteSetup() {
                             .ilike('mill_name',`%${site.millName}%`).limit(105);
                           setMillSuggestions(data || []);
                         }
-                      }
+                      }}
                       onChange={async e => {
                         const val = e.target.value;
                         setSite(s => ({...s, millName:val, gpsLat:'', gpsLon:''}));
@@ -1505,9 +1517,21 @@ export default function SiteSetup() {
                 <div style={{ marginTop:6 }}>
                   <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>Add New</div>
                   <div style={{ display:'flex', gap:8 }}>
-                    <input value={newRes1} onChange={e=>setNewRes1(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addResidue()} placeholder="Residue Name" style={{ background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'10px 13px', outline:'none', fontFamily:Fnt.dm, fontSize:14, fontWeight:500, color:C.white, width:'calc(50% - 4px)', minHeight:42, boxSizing:'border-box' }} />
+                    <input value={newRes1} onChange={e=>setNewRes1(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addResidue(newRes1, newResVol)} placeholder="Residue Name" style={{ background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'10px 13px', outline:'none', fontFamily:Fnt.dm, fontSize:14, fontWeight:500, color:C.white, width:'calc(50% - 4px)', minHeight:42, boxSizing:'border-box' }} />
                     <div style={{ width:'calc(50% - 4px)', background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'6px 10px', display:'flex', alignItems:'center', gap:4, minHeight:42, boxSizing:'border-box' }}>
-                      <input type="number" placeholder="0" style={{ background:'transparent', border:'none', outline:'none', fontFamily:Fnt.mono, fontSize:14, fontWeight:800, color:C.amber, width:'100%', textAlign:'right' }} />
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="0"
+                        value={newResVol ? Number(String(newResVol).replace(/,/g,'')).toLocaleString() : ''}
+                        onChange={e => {
+                          const raw = e.target.value.replace(/,/g,'').replace(/[^0-9]/g,'');
+                          setNewResVol(raw);
+                        }}
+                        onBlur={() => { if (newRes1.trim() && newResVol) addResidue(newRes1, newResVol); }}
+                        onKeyDown={e => e.key==='Enter' && addResidue(newRes1, newResVol)}
+                        style={{ background:'transparent', border:'none', outline:'none', fontFamily:Fnt.mono, fontSize:14, fontWeight:800, color:C.amber, width:'100%', textAlign:'right' }}
+                      />
                       <span style={{ fontSize:11, fontFamily:Fnt.mono, color:'#888888', whiteSpace:'nowrap', flexShrink:0 }}>t/m</span>
                     </div>
                   </div>
@@ -1611,9 +1635,9 @@ export default function SiteSetup() {
                   const pct = grandTotal>0?(t/grandTotal*100).toFixed(1)+' %':'—';
                   return (
                     <div key={key} style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr', gap:8, alignItems:'center', background:'rgba(0,162,73,0.06)', borderLeft:`3px solid ${C.greenLt30}`, borderRadius:'0 6px 6px 0', padding:'9px 12px', marginBottom:4 }}>
-                      <span style={{ fontSize:13, fontWeight:700, fontFamily:Fnt.dm, color:'#FFF' }}>{nm}</span>
-                      <span style={{ fontSize:14, fontWeight:800, fontFamily:Fnt.mono, color:C.greenLt30, textAlign:'right' }}>{fmtT(t)} t/m</span>
-                      <span style={{ fontSize:13, fontWeight:800, fontFamily:Fnt.mono, color:'#FFF', textAlign:'right' }}>{pct}</span>
+                      <span style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.dm, color:'#FFF' }}>{nm}</span>
+                      <span style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.mono, color:C.greenLt30, textAlign:'right' }}>{fmtT(t)} t/m</span>
+                      <span style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.mono, color:'#FFF', textAlign:'right' }}>{pct}</span>
                     </div>
                   );
                 })
