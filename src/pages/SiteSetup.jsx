@@ -1269,7 +1269,7 @@ export default function SiteSetup() {
 
               {/* ── Point 14: Agricultural Management row ── */}
               <div style={{ marginBottom:10 }}>
-                <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:6 }}>AGRICULTURAL MANAGEMENT</div>
+                <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:'#888888', letterSpacing:'0.06em', marginBottom:6 }}>AGRICULTURAL MANAGEMENT</div>
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr 1fr', gap:6 }}>
                   {AG_MGMT_OPTIONS.map(opt => {
                     const sel = agMgmt === opt.id;
