@@ -1166,8 +1166,11 @@ export default function SiteSetup() {
               </div>
             </div>
             <div style={{ padding:'8px 13px 13px' }}>
-              <button onClick={handleBConfirm} style={confirmBtn}>
-                {bConfirmed ? 'Confirmed — Click To Edit' : 'Confirm Mill Processing'}
+              <button onClick={handleBConfirm} style={{
+                ...confirmBtn,
+                ...(bConfirmed ? { background:C.teal, color:C.amber } : { background:C.green, color:'#000' }),
+              }}>
+                {bConfirmed ? 'Click To Edit' : 'Confirm'}
               </button>
               <div style={{ fontSize:11, color:C.greyLt, textAlign:'center', marginTop:5 }}>
                 {bConfirmed ? 'C And E Updated · Click To Unlock' : 'Lock Values And Cascade To C And E'}
