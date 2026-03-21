@@ -1149,15 +1149,15 @@ export default function SiteSetup() {
                   { lbl:'Operating Hours',  key:'hrs',  unit:'hr / day', max:2 },
                   { lbl:'Days / Month',     key:'days', unit:'days',     max:2 },
                 ].map(row=>(
-                  <div key={row.key} style={{ display:'flex', alignItems:'center', justifyContent:'space-between', background:C.navyField, border:`1px solid rgba(168,189,208,0.12)`, borderRadius:8, padding:'10px 14px', gap:12, minHeight:48 }}>
+                <div key={row.key} style={{ display:'flex', alignItems:'center', justifyContent:'space-between', background:C.navyField, border:`1px solid rgba(168,189,208,0.12)`, borderRadius:8, padding:'10px 14px', gap:12, minHeight:48 }}>
                     <span style={{ flex:1, fontSize:14, fontWeight:700, color:C.grey, whiteSpace:'nowrap' }}>{row.lbl}</span>
                     <div style={{ display:'flex', alignItems:'center', gap:8, flexShrink:0 }}>
                       <input
                         type="number"
                         value={mill[row.key]}
                         onChange={e=>upMill(row.key, e.target.value)}
-                        readOnly={bConfirmed}
-                        style={{ ...bInput, cursor:bConfirmed?'not-allowed':'text' }}
+                        readOnly={false}
+                        style={bInput}
                       />
                       <span style={{ fontSize:11, fontFamily:Fnt.mono, color:C.greyLt, whiteSpace:'nowrap', width:42 }}>{row.unit}</span>
                     </div>
