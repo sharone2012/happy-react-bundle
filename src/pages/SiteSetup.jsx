@@ -1063,6 +1063,69 @@ export default function SiteSetup() {
                   <input style={{...fInput, color:C.teal, borderColor:C.tealBdr, background:C.tealDim}} placeholder="Country" value={site.country} onChange={e=>upSite('country',e.target.value)} />
                 </div>
 
+                {/* ── FIELD 7: Weather (point 11, 16) — Rainfall + Temp side by side ── */}
+                {weatherData && (
+                  <div>
+                    <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>WEATHER</div>
+                    <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
+                      {[
+                        { key:'rainfall', label:'Rainfall (mm/yr)', val: weatherOverrides.rainfall != null ? weatherOverrides.rainfall : weatherData.rainfall },
+                        { key:'temp',     label:'Avg temp (°C)',    val: weatherOverrides.temp != null ? weatherOverrides.temp : weatherData.temp },
+                      ].map(field => {
+                        const isOverridden = weatherOverrides[field.key] != null;
+                        return (
+                          <div key={field.key}>
+                            <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:3 }}>
+                              <span style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em' }}>{field.label}</span>
+                              {!isOverridden && weatherSource === 'live' && <span style={{ fontSize:9, fontWeight:700, color:C.teal }}>Live</span>}
+                              {!isOverridden && weatherSource === 'province' && <span style={{ fontSize:9, fontWeight:700, color:'#888888' }}>Province average</span>}
+                            </div>
+                            <div style={{ position:'relative' }}>
+                              <input
+                                style={{
+                                  ...fInput,
+                                  fontSize:13,
+                                  padding:'8px 30px 8px 10px',
+                                  background: isOverridden ? '#000' : C.tealDim,
+                                  borderColor: isOverridden ? 'rgba(255,255,255,0.25)' : C.tealBdr,
+                                  color: isOverridden ? C.white : C.amber,
+                                }}
+                                value={field.val != null ? String(field.val) : '—'}
+                                onChange={e => {
+                                  setWeatherOverrides(prev => ({...prev, [field.key]: e.target.value}));
+                                  // Point 18: save override
+                                  if (siteId) {
+                                    const col = field.key === 'rainfall' ? 'rainfall_mm_yr' : 'temp_avg_c';
+                                    const num = parseFloat(e.target.value);
+                                    if (!isNaN(num)) supabase.from('cfi_sites').update({ [col]: num }).eq('id', siteId);
+                                  }
+                                }}
+                              />
+                              {isOverridden && (
+                                <button
+                                  onClick={() => {
+                                    setWeatherOverrides(prev => { const n={...prev}; delete n[field.key]; return n; });
+                                    // Restore original to DB
+                                    if (siteId && weatherOriginal) {
+                                      const col = field.key === 'rainfall' ? 'rainfall_mm_yr' : 'temp_avg_c';
+                                      supabase.from('cfi_sites').update({ [col]: weatherOriginal[field.key] }).eq('id', siteId);
+                                    }
+                                  }}
+                                  style={{ position:'absolute', right:6, top:'50%', transform:'translateY(-50%)', background:'none', border:'none', color:C.teal, cursor:'pointer', fontSize:14, fontFamily:Fnt.mono, padding:2 }}
+                                  title="Reset to original value"
+                                >↺</button>
+                              )}
+                            </div>
+                            {isOverridden && (
+                              <div style={{ fontSize:11, color:'#888888', fontFamily:Fnt.dm, marginTop:2 }}>Manual override</div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
                 {/* ── Site data loaded message (point 7) ── */}
                 {siteDataMessage && (
                   <div style={{ fontSize:11, color:C.teal, fontFamily:Fnt.dm, marginTop:4 }}>
