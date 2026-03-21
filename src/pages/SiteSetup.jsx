@@ -172,6 +172,9 @@ export default function SiteSetup() {
   const [estateSuggestions,  setEstateSuggestions]  = useState([]);
   const [millSuggestions,    setMillSuggestions]    = useState([]);
   const [gpsSoilSuggestion,  setGpsSoilSuggestion]  = useState('');
+  const [companyConfirmed, setCompanyConfirmed] = useState(false);
+  const [estateConfirmed,  setEstateConfirmed]  = useState(false);
+  const [millConfirmed,    setMillConfirmed]    = useState(false);
 
   // ═══════════════════════════════════════════════════════
   // SUPABASE INIT — create or load cfi_sites record
