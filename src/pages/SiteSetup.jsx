@@ -124,12 +124,12 @@ const STREAM_NAMES = {
 function parseSoilClass(wrb) {
   if (!wrb) return null;
   const w = wrb.toLowerCase();
-  if (w.includes('histosol') || w.includes('peat') || w.includes('gambut')) return 'histosols';
-  if (w.includes('ultisol') || w.includes('acrisol')) return 'ultisols';
-  if (w.includes('inceptisol')) return 'inceptisols';
-  if (w.includes('oxisol') || w.includes('ferralsol') || w.includes('latosol')) return 'oxisols';
-  if (w.includes('andosol') || w.includes('andisol')) return 'andisols';
-  if (w.includes('spodosol') || w.includes('podzol') || w.includes('sandy')) return 'spodosols';
+  if (w.includes('histosol') || w.includes('peat') || w.includes('gambut')) return 'histosol';
+  if (w.includes('ultisol') || w.includes('acrisol')) return 'ultisol';
+  if (w.includes('inceptisol')) return 'inceptisol';
+  if (w.includes('oxisol') || w.includes('ferralsol') || w.includes('latosol')) return 'oxisol';
+  if (w.includes('andosol') || w.includes('andisol')) return 'andisol';
+  if (w.includes('spodosol') || w.includes('podzol') || w.includes('sandy')) return 'spodosol';
   return null;
 }
 
