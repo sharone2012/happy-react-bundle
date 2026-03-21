@@ -356,16 +356,50 @@ export default function SiteSetup() {
     return () => document.removeEventListener('mousedown', close);
   }, []);
 
-  // ── All-teal trigger: when company+estate+mill all confirmed → load soil + weather (points 7,12,13)
+  // ── Soil auto-select: fires when selectedMillRecord changes
+  useEffect(() => {
+    if (!selectedMillRecord?.province_soil_id) return;
+
+    const fetchSoil = async () => {
+      // Step 1: get province soil lookup row
+      const { data: psl } = await supabase
+        .from('cfi_province_soil_lookup')
+        .select('dominant_soil_wrb')
+        .eq('id', selectedMillRecord.province_soil_id)
+        .maybeSingle();
+
+      if (!psl) return;
+
+      // Step 2: map dominant_soil_wrb to soil_key
+      const soilKey = parseSoilClass(psl.dominant_soil_wrb);
+
+      if (!soilKey) return;
+
+      // Step 3: query cfi_soil_profiles — NEVER use confirmed_soil_type
+      const { data: profile } = await supabase
+        .from('cfi_soil_profiles')
+        .select('*')
+        .eq('soil_key', soilKey)
+        .maybeSingle();
+
+      if (profile) {
+        setSelectedSoil(soilKey);
+        setSoilAutoSelected(true);
+        if (siteId) supabase.from('cfi_sites').update({ soil_type: soilKey }).eq('id', siteId);
+      }
+    };
+
+    fetchSoil();
+  }, [selectedMillRecord]);
+
+  // ── Weather + secondary soil trigger
   useEffect(() => {
     if (!companyConfirmed || !estateConfirmed || !millConfirmed) {
-      // Point 8: any change clears stored soil/weather
       setSiteDataMessage('');
       setWeatherData(null);
       setWeatherOriginal(null);
       setWeatherOverrides({});
       setWeatherSource(null);
-      setSoilAutoSelected(false);
       setSecondarySoilWrb('');
       return;
     }
@@ -373,84 +407,50 @@ export default function SiteSetup() {
       const mr = selectedMillRecord;
       if (!mr) return;
 
-      // ── STEP 1: Get province_soil_id from mill record
-      const provinceSoilId = mr.province_soil_id;
-      let provinceRow = null;
-
-      if (provinceSoilId) {
-        // ── STEP 2: Query cfi_province_soil_lookup by id
-        const { data } = await supabase
+      if (mr.province_soil_id) {
+        const { data: provinceRow } = await supabase
           .from('cfi_province_soil_lookup')
           .select('*')
-          .eq('id', provinceSoilId)
+          .eq('id', mr.province_soil_id)
           .maybeSingle();
-        provinceRow = data;
-      }
 
-      if (provinceRow) {
-        // Load rainfall + temp as midpoints (point 16)
-        const rainfallMid = provinceRow.rainfall_mm_yr_min && provinceRow.rainfall_mm_yr_max
-          ? Math.round((provinceRow.rainfall_mm_yr_min + provinceRow.rainfall_mm_yr_max) / 2) : null;
-        const tempMid = provinceRow.temp_c_avg_min && provinceRow.temp_c_avg_max
-          ? ((provinceRow.temp_c_avg_min + provinceRow.temp_c_avg_max) / 2).toFixed(1) : null;
+        if (provinceRow) {
+          const rainfallMid = provinceRow.rainfall_mm_yr_min && provinceRow.rainfall_mm_yr_max
+            ? Math.round((provinceRow.rainfall_mm_yr_min + provinceRow.rainfall_mm_yr_max) / 2) : null;
+          const tempMid = provinceRow.temp_c_avg_min && provinceRow.temp_c_avg_max
+            ? ((provinceRow.temp_c_avg_min + provinceRow.temp_c_avg_max) / 2).toFixed(1) : null;
 
-        const wd = { rainfall: rainfallMid, temp: tempMid ? parseFloat(tempMid) : null };
-        setWeatherData(wd);
-        setWeatherOriginal(wd);
-        setWeatherSource('province');
+          const wd = { rainfall: rainfallMid, temp: tempMid ? parseFloat(tempMid) : null };
+          setWeatherData(wd);
+          setWeatherOriginal(wd);
+          setWeatherSource('province');
 
-        // ── STEP 3: Parse dominant_soil_wrb to extract soil class
-        const soilKey = parseSoilClass(provinceRow.dominant_soil_wrb);
-        if (soilKey) {
-          setSelectedSoil(soilKey);
-          setSoilAutoSelected(true);
-          if (siteId) supabase.from('cfi_sites').update({ soil_type: soilKey }).eq('id', siteId);
+          setSecondarySoilWrb(provinceRow.secondary_soil_wrb || '');
+          setAgMgmt('vgam');
         }
-
-        // Secondary soil (point 19)
-        setSecondarySoilWrb(provinceRow.secondary_soil_wrb || '');
-
-        // Auto-select VGAM (point 14)
-        setAgMgmt('vgam');
       }
 
-      // ── Point 13: Try Open-Meteo for live weather using GPS
+      // Point 13: Try Open-Meteo for live weather using GPS
       if (mr.latitude && mr.longitude) {
         try {
           const meteoUrl = `https://api.open-meteo.com/v1/forecast?latitude=${mr.latitude}&longitude=${mr.longitude}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto&past_days=365&forecast_days=0`;
           const resp = await fetch(meteoUrl);
           if (resp.ok) {
             const json = await resp.json();
-            const daily = json?.daily;
-            if (daily?.precipitation_sum?.length) {
-              const totalRain = daily.precipitation_sum.reduce((a,b) => a + (b||0), 0);
-              const avgTemp = daily.temperature_2m_max && daily.temperature_2m_min
-                ? ((daily.temperature_2m_max.reduce((a,b)=>a+b,0) + daily.temperature_2m_min.reduce((a,b)=>a+b,0)) / (daily.temperature_2m_max.length * 2)).toFixed(1)
-                : null;
-              const liveData = {
-                rainfall: Math.round(totalRain),
-                temp: avgTemp ? parseFloat(avgTemp) : null
-              };
-              setWeatherData(liveData);
-              setWeatherOriginal(liveData);
-              setWeatherSource('live');
+            if (json.daily) {
+              const temps = [...(json.daily.temperature_2m_max||[]), ...(json.daily.temperature_2m_min||[])].filter(Boolean);
+              const precip = (json.daily.precipitation_sum||[]).filter(Boolean);
+              const avgT = temps.length ? parseFloat((temps.reduce((a,b)=>a+b,0)/temps.length).toFixed(1)) : null;
+              const totalR = precip.length ? Math.round(precip.reduce((a,b)=>a+b,0)) : null;
+              if (avgT || totalR) {
+                const wd = { rainfall: totalR, temp: avgT };
+                setWeatherData(wd);
+                setWeatherOriginal(wd);
+                setWeatherSource('open-meteo');
+              }
             }
           }
-        } catch (e) {
-          // Keep province values, already set
-        }
-      }
-
-      setSiteDataMessage('Site data loaded — soil profile and climate data updated');
-
-      // Point 18: Save to cfi_sites
-      if (siteId) {
-        const wd = weatherData || {};
-        supabase.from('cfi_sites').update({
-          rainfall_mm_yr: wd.rainfall || null,
-          temp_avg_c: wd.temp || null,
-          agronomy_tier: 'vgam',
-        }).eq('id', siteId);
+        } catch(e) { /* fallback to province data */ }
       }
     }
     loadSiteData();
@@ -812,7 +812,7 @@ export default function SiteSetup() {
                           const { data } = await supabase.from('cfi_mill_owners').select('id, company').ilike('company',`%${site.company}%`).limit(42);
                           setCompanySuggestions(data || []);
                         }
-                      }
+                      }}
                       onChange={async e => {
                         const val = e.target.value;
                         setSite(s => ({...s, company:val, estate:'', millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
@@ -1352,13 +1352,13 @@ export default function SiteSetup() {
                       display:'flex', flexDirection:'column', justifyContent:'center',
                       minWidth:0, overflow:'hidden',
                     }}>
-                      <div style={{ fontSize:13, fontWeight:600, fontFamily:Fnt.dm, color: isSel ? '#ffffff' : '#B0BEC5', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                      <div style={{ fontSize:13, fontWeight:600, fontFamily:Fnt.dm, color: isSel ? '#F5A623' : '#B0BEC5', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.name}
                       </div>
-                      <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.dm, color: isSel ? 'rgba(255,255,255,0.75)' : '#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                      <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.75)' : '#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.sub || ''}
                       </div>
-                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color: isSel ? 'rgba(255,255,255,0.65)' : '#888888', marginTop:1, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.65)' : '#888888', marginTop:1, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.line4 || ''}
                       </div>
                       {meta.tag1 && meta.tag2 && (
