@@ -1439,9 +1439,6 @@ export default function SiteSetup() {
                   { key:'opf',  name:'Oil Palm Fronds',        sub:'OPF · Seasonal · Zero Cost' },
                   { key:'opt',  name:'Oil Palm Trunks',        sub:'OPT · Replanting Only · Zero Cost' },
                   { key:'pks',  name:'Palm Kernel Shell',      sub:'PKS · Zero Cost' },
-                  { key:'cpos', name:'CPO Sludge',             sub:'CPO Sludge · Zero Cost' },
-                  { key:'epk',  name:'Empty Palm Kernel',      sub:'EPK · Zero Cost' },
-                  { key:'ds',   name:'Decanter Solid',         sub:'DS · Zero Cost' },
                   ...customStreams.map(c=>({ key:c.key, name:c.name, sub:'Custom · Zero Cost' })),
                 ].map(st=>{
                   const active = activeStreams[st.key];
