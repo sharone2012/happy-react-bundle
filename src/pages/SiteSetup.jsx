@@ -556,6 +556,7 @@ export default function SiteSetup() {
   };
   // Input field: full width, black bg, grey border, white text, 42px min
   const fInput = { background:'#000', border:`1px solid rgba(168,189,208,0.2)`, borderRadius:7, padding:'10px 13px', fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:C.white, width:'100%', outline:'none', minHeight:42, boxSizing:'border-box' };
+  const fInputConfirmed = { ...fInput, background:'rgba(64,215,197,0.12)', border:`1.5px solid rgba(64,215,197,0.60)`, color:'#40D7C5' };
   // Number input: BLACK bg, TEAL border, AMBER text — always amber, never changes
   const bInput = { background:'#000', border:`1.5px solid ${C.tealBdr}`, borderRadius:7, color:C.amber, fontFamily:Fnt.mono, fontSize:14, fontWeight:800, padding:'8px 10px', width:76, height:38, textAlign:'center', outline:'none', MozAppearance:'textfield' };
   // Confirm button: EB Garamond, green bg, black text, 51px tall
