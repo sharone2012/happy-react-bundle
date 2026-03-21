@@ -1315,7 +1315,7 @@ export default function SiteSetup() {
               )}
               {(selectedSoil === 'oxisol' || selectedSoil === 'spodosol') && (
                 <div style={{ background:C.amberDim, border:`1px solid rgba(245,166,35,0.45)`, borderRadius:6, padding:'7px 12px', fontSize:11, color:C.amber, fontFamily:Fnt.dm, marginBottom:6 }}>
-                  {selectedSoil === 'oxisols' ? 'High Fe/Al Oxide Content. CFI Chelated P Significantly Outperforms TSP.' : 'Sandy — Lowest Fertility. CFI Humate Provides Critical CEC Improvement. 31% Yield Gap.'}
+                  {selectedSoil === 'oxisol' ? 'High Fe/Al Oxide Content. CFI Chelated P Significantly Outperforms TSP.' : 'Sandy — Lowest Fertility. CFI Humate Provides Critical CEC Improvement. 31% Yield Gap.'}
                 </div>
               )}
               <div style={{ display:'flex', gap:7, flexWrap:'wrap', marginTop:4 }}>
