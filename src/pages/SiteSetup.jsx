@@ -812,17 +812,19 @@ export default function SiteSetup() {
                       }}
                       onChange={async e => {
                         const val = e.target.value;
-                        // Atomic reset of downstream + value update
                         setSite(s => ({...s, company:val, estate:'', millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
                         setCompanyConfirmed(false);
                         setEstateConfirmed(false);
                         setMillConfirmed(false);
                         setGpsSoilSuggestion('');
                         setMill(prev => ({...prev, ffb:60}));
+                        if (val.length < 3) {
+                          setCompanySuggestions([]);
+                          setActiveDropdown(null);
+                          return;
+                        }
                         setActiveDropdown('company');
-                        const { data } = val.length === 0
-                          ? await supabase.from('cfi_mill_owners').select('id, company').order('company').limit(42)
-                          : await supabase.from('cfi_mill_owners').select('id, company').ilike('company',`%${val}%`).limit(8);
+                        const { data } = await supabase.from('cfi_mill_owners').select('id, company').ilike('company',`%${val}%`).limit(8);
                         setCompanySuggestions(data || []);
                       }}
                     />
@@ -900,10 +902,13 @@ export default function SiteSetup() {
                         setMillConfirmed(false);
                         setGpsSoilSuggestion('');
                         setMill(prev => ({...prev, ffb:60}));
+                        if (val.length < 3) {
+                          setEstateSuggestions([]);
+                          setActiveDropdown(null);
+                          return;
+                        }
                         setActiveDropdown('estate');
-                        const { data } = val.length === 0
-                          ? await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').order('estate_name').limit(100)
-                          : await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').ilike('estate_name',`%${val}%`).limit(10);
+                        const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').ilike('estate_name',`%${val}%`).limit(10);
                         setEstateSuggestions(data || []);
                       }}
                     />
@@ -971,11 +976,14 @@ export default function SiteSetup() {
                         setSelectedMillRecord(null);
                         setGpsSoilSuggestion('');
                         setMill(prev => ({...prev, ffb:60}));
+                        if (val.length < 3) {
+                          setMillSuggestions([]);
+                          setActiveDropdown(null);
+                          return;
+                        }
                         setActiveDropdown('mill');
                         const cols = 'id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id';
-                        const { data } = val.length === 0
-                          ? await supabase.from('cfi_mills_60tph').select(cols).order('mill_name').limit(105)
-                          : await supabase.from('cfi_mills_60tph').select(cols).ilike('mill_name',`%${val}%`).limit(10);
+                        const { data } = await supabase.from('cfi_mills_60tph').select(cols).ilike('mill_name',`%${val}%`).limit(10);
                         setMillSuggestions(data || []);
                       }}
                     />
@@ -1195,7 +1203,7 @@ export default function SiteSetup() {
               <button onClick={handleBConfirm} style={{
                 ...confirmBtn,
                 fontWeight:700,
-                ...(bConfirmed ? { background:C.teal, color:C.amber } : { background:C.green, color:'#000' }),
+                ...(bConfirmed ? { background:'rgba(0,201,177,0.25)', color:'#00C9B1', border:'1px solid #00C9B1' } : { background:C.green, color:'#000' }),
               }}>
                 {bConfirmed ? 'Click To Edit' : 'Confirm'}
               </button>
@@ -1302,13 +1310,13 @@ export default function SiteSetup() {
                       <div style={{ fontSize:14, fontWeight:600, fontFamily:Fnt.dm, color: isSel ? C.amber : C.white }}>
                         {s.name}
                       </div>
-                      <div style={{ fontSize:12, fontWeight:400, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
+                      <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
                         {s.sub || ''}
                       </div>
-                      <div style={{ fontSize:11, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
+                      <div style={{ fontSize:9, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
                         {s.line3 || ''}
                       </div>
-                      <div style={{ fontSize:11, fontFamily:Fnt.dm, color:'#888888', marginTop:1 }}>
+                      <div style={{ fontSize:9, fontFamily:Fnt.dm, color:'#888888', marginTop:1 }}>
                         {s.line4 || ''}
                       </div>
                     </div>
