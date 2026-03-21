@@ -1227,25 +1227,73 @@ export default function SiteSetup() {
             <div style={secTitle}>G — Soil Origin</div>
             <div style={secSub}>Auto-Detected · Override Available</div>
             <div style={cbody}>
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:14, marginBottom:9 }}>
-                {soils.map(s=>(
-                  <div key={s.id} onClick={()=>selectSoil(s.id)} style={{ background:selectedSoil===s.id?C.tealDim:C.navyDeep, border:`1.5px solid ${selectedSoil===s.id?C.tealBdr:C.bdrCalc}`, borderRadius:8, padding:'20px 24px', cursor:'pointer', transition:'all 0.12s' }}>
-                    <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:selectedSoil===s.id?C.amber:C.grey }}>
-                      {s.name}{s.peat?<span style={{ color:C.amber, fontSize:11 }}> (Peat)</span>:null}
-                    </div>
-                    <div style={{ fontSize:12, fontFamily:Fnt.dm, color:selectedSoil===s.id?'rgba(245,166,35,0.75)':C.greyLt, marginTop:6 }}>pH {s.ph} · CEC {s.cec}</div>
-                    <div style={{ fontSize:12, fontFamily:Fnt.dm, color:selectedSoil===s.id?'rgba(245,166,35,0.6)':C.greyLt, marginTop:4 }}>{s.cov}</div>
-                  </div>
-                ))}
+
+              {/* ── Point 14: Agricultural Management row ── */}
+              <div style={{ marginBottom:10 }}>
+                <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:6 }}>AGRICULTURAL MANAGEMENT</div>
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr 1fr', gap:6 }}>
+                  {AG_MGMT_OPTIONS.map(opt => {
+                    const sel = agMgmt === opt.id;
+                    return (
+                      <div
+                        key={opt.id}
+                        onClick={() => {
+                          setAgMgmt(opt.id);
+                          if (siteId) supabase.from('cfi_sites').update({ agronomy_tier: opt.id }).eq('id', siteId);
+                        }}
+                        style={{
+                          background: sel ? C.tealDim : C.navyDeep,
+                          border: `1.5px solid ${sel ? C.tealBdr : C.bdrCalc}`,
+                          borderRadius:7, padding:'10px 8px', cursor:'pointer', textAlign:'center', transition:'all 0.12s',
+                        }}
+                      >
+                        <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.dm, color: sel ? C.amber : C.grey, lineHeight:1.3 }}>{opt.label}</div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
+
+              {/* Thick divider between ag management and soil cards */}
+              <div style={{ height:2, background:'#1E6B8C', marginBottom:12 }} />
+
+              {/* Soil type cards (point 17: auto-selected shows 2px teal border) */}
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:14, marginBottom:9 }}>
+                {soils.map(s => {
+                  const isSel = selectedSoil === s.id;
+                  const isAuto = soilAutoSelected && isSel;
+                  return (
+                    <div key={s.id} onClick={() => { selectSoil(s.id); setSoilAutoSelected(false); }} style={{
+                      background: isSel ? C.tealDim : C.navyDeep,
+                      border: `${isAuto ? '2px' : '1.5px'} solid ${isSel ? '#00C9B1' : C.bdrCalc}`,
+                      borderRadius:8, padding:'20px 24px', cursor:'pointer', transition:'all 0.12s',
+                    }}>
+                      <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color: isSel ? C.amber : C.grey }}>
+                        {s.name}{s.peat ? <span style={{ color:C.amber, fontSize:11 }}> (Peat)</span> : null}
+                      </div>
+                      <div style={{ fontSize:12, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.75)' : C.greyLt, marginTop:6 }}>pH {s.ph} · CEC {s.cec}</div>
+                      <div style={{ fontSize:12, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.6)' : C.greyLt, marginTop:4 }}>{s.cov}</div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Point 19: Secondary soil display */}
+              {secondarySoilWrb && (
+                <div style={{ fontSize:12, color:'#888888', fontFamily:Fnt.dm, fontStyle:'italic', marginBottom:8 }}>
+                  Secondary soil: {secondarySoilWrb}
+                </div>
+              )}
+
               {gpsSoilSuggestion && (
                 <div style={{ background:'rgba(64,215,197,0.10)', border:'1px solid rgba(64,215,197,0.40)', borderRadius:6, padding:'7px 12px', marginBottom:8, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
                   <span style={{ fontSize:12, color:C.teal, fontFamily:Fnt.dm }}>
                     GPS Signal: {gpsSoilSuggestion} Found Near This Mill. Is This Correct?
                   </span>
-                  <button onClick={()=>setGpsSoilSuggestion('')} style={{ background:'none', border:'none', color:C.greyLt, cursor:'pointer', fontSize:16 }}>×</button>
+                  <button onClick={() => setGpsSoilSuggestion('')} style={{ background:'none', border:'none', color:C.greyLt, cursor:'pointer', fontSize:16 }}>×</button>
                 </div>
               )}
+
               {/* Point 10: Histosol AMBER warning */}
               {selectedSoil === 'histosols' && (
                 <div style={{ background:C.amberDim, border:`1px solid ${C.amber}`, borderRadius:6, padding:'7px 12px', fontSize:11, color:C.amber, fontFamily:Fnt.dm, marginBottom:6 }}>
@@ -1264,53 +1312,8 @@ export default function SiteSetup() {
               )}
               <div style={{ display:'flex', gap:7, flexWrap:'wrap', marginTop:4 }}>
                 <div style={{ fontSize:15, fontWeight:700, fontFamily:Fnt.mono, padding:'4px 12px', borderRadius:12, border:`1.5px solid ${C.green}`, background:C.green, color:'#000', whiteSpace:'nowrap', display:'inline-block' }}>{soilData.name}</div>
-                {soilData.pills?.map((p,i)=>(<div key={i} style={{...chips[p.cls], fontSize:13}}>{p.txt}</div>))}
+                {soilData.pills?.map((p,i) => (<div key={i} style={{...chips[p.cls], fontSize:13}}>{p.txt}</div>))}
               </div>
-
-              {/* Point 11: Climate/Rainfall editable fields with override */}
-              {climateData && (
-                <div style={{ marginTop:12, borderTop:`1px solid rgba(64,215,197,0.15)`, paddingTop:10 }}>
-                  <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.teal, letterSpacing:'0.06em', marginBottom:8 }}>CLIMATE DATA</div>
-                  <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
-                    {[
-                      { key:'rainfall', label:'Rainfall (mm/yr)', origVal: climateOriginal ? `${climateOriginal.rainfall_min||'—'}–${climateOriginal.rainfall_max||'—'}` : '—', displayVal: climateOverrides.rainfall != null ? climateOverrides.rainfall : (climateData.rainfall_min && climateData.rainfall_max ? `${climateData.rainfall_min}–${climateData.rainfall_max}` : '—') },
-                      { key:'temp', label:'Temp (°C avg)', origVal: climateOriginal ? `${climateOriginal.temp_min||'—'}–${climateOriginal.temp_max||'—'}` : '—', displayVal: climateOverrides.temp != null ? climateOverrides.temp : (climateData.temp_min && climateData.temp_max ? `${climateData.temp_min}–${climateData.temp_max}` : '—') },
-                      { key:'ph', label:'Soil pH Range', origVal: climateOriginal ? `${climateOriginal.ph_min||'—'}–${climateOriginal.ph_max||'—'}` : '—', displayVal: climateOverrides.ph != null ? climateOverrides.ph : (climateData.ph_min && climateData.ph_max ? `${climateData.ph_min}–${climateData.ph_max}` : '—') },
-                    ].map(field => {
-                      const isOverridden = climateOverrides[field.key] != null;
-                      return (
-                        <div key={field.key}>
-                          <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:3 }}>{field.label}</div>
-                          <div style={{ position:'relative' }}>
-                            <input
-                              style={{
-                                ...fInput,
-                                fontSize:13,
-                                padding:'8px 30px 8px 10px',
-                                background: isOverridden ? '#000' : C.tealDim,
-                                borderColor: isOverridden ? 'rgba(255,255,255,0.25)' : C.tealBdr,
-                                color: isOverridden ? C.white : C.amber,
-                              }}
-                              value={String(field.displayVal)}
-                              onChange={e => setClimateOverrides(prev => ({...prev, [field.key]: e.target.value}))}
-                            />
-                            {isOverridden && (
-                              <button
-                                onClick={() => setClimateOverrides(prev => { const n={...prev}; delete n[field.key]; return n; })}
-                                style={{ position:'absolute', right:6, top:'50%', transform:'translateY(-50%)', background:'none', border:'none', color:C.teal, cursor:'pointer', fontSize:14, fontFamily:Fnt.mono, padding:2 }}
-                                title="Reset to API value"
-                              >↺</button>
-                            )}
-                          </div>
-                          {isOverridden && (
-                            <div style={{ fontSize:11, color:'#888888', fontFamily:Fnt.dm, marginTop:2 }}>Manual override</div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
