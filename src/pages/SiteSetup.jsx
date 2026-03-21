@@ -1308,7 +1308,7 @@ export default function SiteSetup() {
                   Peat soil detected — N and P application rates adjusted automatically.
                 </div>
               )}
-              {selectedSoil === 'histosols' && (
+              {selectedSoil === 'histosol' && (
                 <div style={{ background:C.redDim, border:`1px solid ${C.red}`, borderRadius:6, padding:'7px 12px', fontSize:11, color:C.red, fontFamily:Fnt.dm, marginBottom:6 }}>
                   Peat Soil. 80% Less N And 70% Less P Needed. N Over-Application Locked Out.
                 </div>
