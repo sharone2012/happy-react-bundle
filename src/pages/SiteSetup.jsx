@@ -802,18 +802,35 @@ export default function SiteSetup() {
                       onChange={async e => {
                         const val = e.target.value;
                         upSite('millName', val);
-                        if (val === '') {
-                          upSite('gpsLat', '');
-                          upSite('gpsLon', '');
-                          setMillSuggestions([]);
-                          setGpsSoilSuggestion('');
-                          setMill(prev => ({ ...prev, ffb: 60 }));
-                        } else if (val.length >= 2) {
+                        // Clear GPS and soil when mill changes
+                        upSite('gpsLat', '');
+                        upSite('gpsLon', '');
+                        setGpsSoilSuggestion('');
+                        setMill(prev => ({ ...prev, ffb: 60 }));
+                        // Show all mills if empty, filtered if typing
+                        if (val.length === 0) {
+                          const { data } = await supabase
+                            .from('cfi_mills_60tph')
+                            .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
+                            .order('mill_name')
+                            .limit(105);
+                          setMillSuggestions(data || []);
+                        } else {
                           const { data } = await supabase
                             .from('cfi_mills_60tph')
                             .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
                             .ilike('mill_name', `%${val}%`)
-                            .limit(8);
+                            .limit(10);
+                          setMillSuggestions(data || []);
+                        }
+                      }}
+                      onFocus={async () => {
+                        if (!site.millName) {
+                          const { data } = await supabase
+                            .from('cfi_mills_60tph')
+                            .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
+                            .order('mill_name')
+                            .limit(105);
                           setMillSuggestions(data || []);
                         }
                       }}
