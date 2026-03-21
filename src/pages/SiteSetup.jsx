@@ -633,24 +633,52 @@ export default function SiteSetup() {
                     onChange={async e => {
                       const val = e.target.value;
                       upSite('company', val);
-                      if (val === '' || val.length < 2) {
-                        upSite('estate',   '');
-                        upSite('millName', '');
-                        upSite('province', '');
-                        upSite('district', '');
-                        upSite('gpsLat',   '');
-                        upSite('gpsLon',   '');
-                        setCompanySuggestions([]);
-                        setEstateSuggestions([]);
-                        setMillSuggestions([]);
-                        setGpsSoilSuggestion('');
-                        setMill(prev => ({ ...prev, ffb: 60 }));
+                      // Clear downstream fields
+                      upSite('estate', '');
+                      upSite('millName', '');
+                      upSite('province', '');
+                      upSite('district', '');
+                      upSite('gpsLat', '');
+                      upSite('gpsLon', '');
+                      setGpsSoilSuggestion('');
+                      setMill(prev => ({ ...prev, ffb: 60 }));
+                      // Show suggestions: filtered if typing, ALL companies if empty
+                      if (val.length === 0) {
+                        const { data } = await supabase
+                          .from('cfi_mill_owners')
+                          .select('id, company')
+                          .order('company')
+                          .limit(42);
+                        setCompanySuggestions(data || []);
                       } else {
                         const { data } = await supabase
                           .from('cfi_mill_owners')
                           .select('id, company')
                           .ilike('company', `%${val}%`)
                           .limit(8);
+                        setCompanySuggestions(data || []);
+                      }
+                      // Always reload all estates and all mills when company changes
+                      const { data: allEstates } = await supabase
+                        .from('cfi_estates')
+                        .select('id, estate_name, province, district_kabupaten, area_ha')
+                        .order('estate_name')
+                        .limit(100);
+                      setEstateSuggestions(allEstates || []);
+                      const { data: allMills } = await supabase
+                        .from('cfi_mills_60tph')
+                        .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
+                        .order('mill_name')
+                        .limit(105);
+                      setMillSuggestions(allMills || []);
+                    }}
+                    onFocus={async () => {
+                      if (!site.company) {
+                        const { data } = await supabase
+                          .from('cfi_mill_owners')
+                          .select('id, company')
+                          .order('company')
+                          .limit(42);
                         setCompanySuggestions(data || []);
                       }
                     }}
