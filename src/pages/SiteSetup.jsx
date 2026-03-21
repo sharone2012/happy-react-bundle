@@ -1601,7 +1601,7 @@ export default function SiteSetup() {
                   {grandTotal>0&&<span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:18, color:C.greenLt30 }}>t/month</span>}
                 </div>
               </div>
-              <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:'rgba(0,162,73,0.70)', letterSpacing:'0.08em', marginBottom:7 }}>ACTIVE STREAMS</div>
+              <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:'rgba(77,191,130,0.70)', letterSpacing:'0.08em', marginBottom:7 }}>ACTIVE STREAMS</div>
               {grandTotal===0 ? (
                 <div style={{ fontSize:12, fontFamily:Fnt.mono, color:'rgba(168,189,208,0.40)', textAlign:'center', padding:'10px 0' }}>No Streams Selected — Activate In Section D</div>
               ) : (
@@ -1609,9 +1609,9 @@ export default function SiteSetup() {
                   const nm  = STREAM_NAMES[key] || customStreams.find(c=>c.key===key)?.name || key.toUpperCase();
                   const pct = grandTotal>0?(t/grandTotal*100).toFixed(1)+' %':'—';
                   return (
-                    <div key={key} style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr', gap:8, alignItems:'center', background:'rgba(0,162,73,0.06)', borderLeft:`3px solid ${C.green}`, borderRadius:'0 6px 6px 0', padding:'9px 12px', marginBottom:4 }}>
+                    <div key={key} style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr', gap:8, alignItems:'center', background:'rgba(0,162,73,0.06)', borderLeft:`3px solid ${C.greenLt30}`, borderRadius:'0 6px 6px 0', padding:'9px 12px', marginBottom:4 }}>
                       <span style={{ fontSize:13, fontWeight:700, fontFamily:Fnt.dm, color:'#FFF' }}>{nm}</span>
-                      <span style={{ fontSize:14, fontWeight:800, fontFamily:Fnt.mono, color:C.green, textAlign:'right' }}>{fmtT(t)} t/m</span>
+                      <span style={{ fontSize:14, fontWeight:800, fontFamily:Fnt.mono, color:C.greenLt30, textAlign:'right' }}>{fmtT(t)} t/m</span>
                       <span style={{ fontSize:13, fontWeight:800, fontFamily:Fnt.mono, color:'#FFF', textAlign:'right' }}>{pct}</span>
                     </div>
                   );
