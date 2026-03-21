@@ -177,6 +177,12 @@ export default function SiteSetup() {
   const [millConfirmed,    setMillConfirmed]    = useState(false);
   const [activeDropdown,   setActiveDropdown]   = useState(null); // 'company' | 'estate' | 'mill' | null
 
+  // ── Site data cascade (points 6-11) ────────────────
+  const [siteDataMessage, setSiteDataMessage] = useState('');
+  const [climateData, setClimateData] = useState(null);
+  const [climateOverrides, setClimateOverrides] = useState({});
+  const [climateOriginal, setClimateOriginal] = useState(null);
+
   // ═══════════════════════════════════════════════════════
   // SUPABASE INIT — create or load cfi_sites record
   // ═══════════════════════════════════════════════════════
@@ -299,6 +305,47 @@ export default function SiteSetup() {
     document.addEventListener('mousedown', close);
     return () => document.removeEventListener('mousedown', close);
   }, []);
+
+  // ── All-teal trigger: when company+estate+mill all confirmed → load soil + climate (point 7)
+  useEffect(() => {
+    if (!companyConfirmed || !estateConfirmed || !millConfirmed) {
+      setSiteDataMessage('');
+      setClimateData(null);
+      setClimateOriginal(null);
+      setClimateOverrides({});
+      return;
+    }
+    async function loadSiteData() {
+      if (site.province) {
+        const { data: soilLookup } = await supabase
+          .from('cfi_province_soil_lookup')
+          .select('*')
+          .ilike('province', `%${site.province}%`)
+          .limit(1)
+          .maybeSingle();
+        if (soilLookup) {
+          // Auto-select soil type from province lookup
+          const wrb = soilLookup.dominant_soil_wrb?.toLowerCase().replace(/\s/g, '') || '';
+          if (wrb) {
+            setSelectedSoil(wrb);
+            if (siteId) supabase.from('cfi_sites').update({ soil_type: wrb }).eq('id', siteId);
+          }
+          const cd = {
+            rainfall_min: soilLookup.rainfall_mm_yr_min,
+            rainfall_max: soilLookup.rainfall_mm_yr_max,
+            temp_min: soilLookup.temp_c_avg_min,
+            temp_max: soilLookup.temp_c_avg_max,
+            ph_min: soilLookup.ph_min,
+            ph_max: soilLookup.ph_max,
+          };
+          setClimateData(cd);
+          setClimateOriginal(cd);
+        }
+      }
+      setSiteDataMessage('Site data loaded — soil profile and climate data updated');
+    }
+    loadSiteData();
+  }, [companyConfirmed, estateConfirmed, millConfirmed]);
 
   function buildSoilPills(p) {
     const pills = [];
@@ -642,25 +689,30 @@ export default function SiteSetup() {
                       value={site.company}
                       onFocus={async () => {
                         if (companyConfirmed) {
+                          // Atomic reset — clear value, confirmed states, all downstream
+                          setSite(s => ({...s, company:'', estate:'', millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
                           setCompanyConfirmed(false);
                           setEstateConfirmed(false);
                           setMillConfirmed(false);
-                          upSite('company',''); upSite('estate',''); upSite('millName','');
-                          upSite('province',''); upSite('district','');
-                          upSite('gpsLat',''); upSite('gpsLon','');
                           setGpsSoilSuggestion('');
                           setMill(prev => ({...prev, ffb:60}));
                           setEstateSuggestions([]); setMillSuggestions([]);
                         }
                         setActiveDropdown('company');
+                        // Always show full list immediately
                         const { data } = await supabase
                           .from('cfi_mill_owners').select('id, company').order('company').limit(42);
                         setCompanySuggestions(data || []);
                       }}
                       onChange={async e => {
                         const val = e.target.value;
-                        upSite('company', val);
+                        // Atomic reset of downstream + value update
+                        setSite(s => ({...s, company:val, estate:'', millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
                         setCompanyConfirmed(false);
+                        setEstateConfirmed(false);
+                        setMillConfirmed(false);
+                        setGpsSoilSuggestion('');
+                        setMill(prev => ({...prev, ffb:60}));
                         setActiveDropdown('company');
                         const { data } = val.length === 0
                           ? await supabase.from('cfi_mill_owners').select('id, company').order('company').limit(42)
@@ -721,11 +773,9 @@ export default function SiteSetup() {
                       value={site.estate}
                       onFocus={async () => {
                         if (estateConfirmed) {
+                          setSite(s => ({...s, estate:'', millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
                           setEstateConfirmed(false);
                           setMillConfirmed(false);
-                          upSite('estate',''); upSite('millName','');
-                          upSite('province',''); upSite('district','');
-                          upSite('gpsLat',''); upSite('gpsLon','');
                           setGpsSoilSuggestion('');
                           setMill(prev => ({...prev, ffb:60}));
                           setMillSuggestions([]);
@@ -738,8 +788,11 @@ export default function SiteSetup() {
                       }}
                       onChange={async e => {
                         const val = e.target.value;
-                        upSite('estate', val);
+                        setSite(s => ({...s, estate:val, millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
                         setEstateConfirmed(false);
+                        setMillConfirmed(false);
+                        setGpsSoilSuggestion('');
+                        setMill(prev => ({...prev, ffb:60}));
                         setActiveDropdown('estate');
                         const { data } = val.length === 0
                           ? await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').order('estate_name').limit(100)
@@ -791,9 +844,8 @@ export default function SiteSetup() {
                       value={site.millName}
                       onFocus={async () => {
                         if (millConfirmed) {
+                          setSite(s => ({...s, millName:'', gpsLat:'', gpsLon:''}));
                           setMillConfirmed(false);
-                          upSite('millName','');
-                          upSite('gpsLat',''); upSite('gpsLon','');
                           setGpsSoilSuggestion('');
                           setMill(prev => ({...prev, ffb:60}));
                         }
@@ -806,8 +858,10 @@ export default function SiteSetup() {
                       }}
                       onChange={async e => {
                         const val = e.target.value;
-                        upSite('millName', val);
+                        setSite(s => ({...s, millName:val, gpsLat:'', gpsLon:''}));
                         setMillConfirmed(false);
+                        setGpsSoilSuggestion('');
+                        setMill(prev => ({...prev, ffb:60}));
                         setActiveDropdown('mill');
                         const { data } = val.length === 0
                           ? await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105)
@@ -856,15 +910,33 @@ export default function SiteSetup() {
                   </div>
                 </div>
 
-                {/* ── FIELD 4: Province + District ── */}
+                {/* ── FIELD 4: Province + District (point 6: teal+amber when auto-filled) ── */}
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
                   <div>
                     <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>PROVINCE</div>
-                    <input style={fInput} placeholder="Province" value={site.province} onChange={e=>upSite('province',e.target.value)} />
+                    <input
+                      style={{
+                        ...fInput,
+                        ...(millConfirmed && site.province ? { background:C.tealDim, borderColor:C.tealBdr, color:C.amber } : {}),
+                      }}
+                      placeholder="Province"
+                      value={site.province}
+                      readOnly={!!(millConfirmed && site.province)}
+                      onChange={e=>upSite('province',e.target.value)}
+                    />
                   </div>
                   <div>
                     <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>DISTRICT / KABUPATEN</div>
-                    <input style={fInput} placeholder="District / Kabupaten" value={site.district} onChange={e=>upSite('district',e.target.value)} />
+                    <input
+                      style={{
+                        ...fInput,
+                        ...(millConfirmed && site.district ? { background:C.tealDim, borderColor:C.tealBdr, color:C.amber } : {}),
+                      }}
+                      placeholder="District / Kabupaten"
+                      value={site.district}
+                      readOnly={!!(millConfirmed && site.district)}
+                      onChange={e=>upSite('district',e.target.value)}
+                    />
                   </div>
                 </div>
 
@@ -872,11 +944,29 @@ export default function SiteSetup() {
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
                   <div>
                     <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>GPS LATITUDE</div>
-                    <input style={{...fInput, color:C.greyLt}} placeholder="Optional — Auto-Fills From Mill" value={site.gpsLat} onChange={e=>upSite('gpsLat',e.target.value)} />
+                    <input
+                      style={{
+                        ...fInput,
+                        ...(millConfirmed && site.gpsLat ? { background:C.tealDim, borderColor:C.tealBdr, color:C.amber } : { color:C.greyLt }),
+                      }}
+                      placeholder="Optional — Auto-Fills From Mill"
+                      value={site.gpsLat}
+                      readOnly={!!(millConfirmed && site.gpsLat)}
+                      onChange={e=>upSite('gpsLat',e.target.value)}
+                    />
                   </div>
                   <div>
                     <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>GPS LONGITUDE</div>
-                    <input style={{...fInput, color:C.greyLt}} placeholder="Optional — Auto-Fills From Mill" value={site.gpsLon} onChange={e=>upSite('gpsLon',e.target.value)} />
+                    <input
+                      style={{
+                        ...fInput,
+                        ...(millConfirmed && site.gpsLon ? { background:C.tealDim, borderColor:C.tealBdr, color:C.amber } : { color:C.greyLt }),
+                      }}
+                      placeholder="Optional — Auto-Fills From Mill"
+                      value={site.gpsLon}
+                      readOnly={!!(millConfirmed && site.gpsLon)}
+                      onChange={e=>upSite('gpsLon',e.target.value)}
+                    />
                   </div>
                 </div>
 
@@ -885,6 +975,13 @@ export default function SiteSetup() {
                   <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>COUNTRY</div>
                   <input style={{...fInput, color:C.teal, borderColor:C.tealBdr, background:C.tealDim}} placeholder="Country" value={site.country} onChange={e=>upSite('country',e.target.value)} />
                 </div>
+
+                {/* ── Site data loaded message (point 7) ── */}
+                {siteDataMessage && (
+                  <div style={{ fontSize:11, color:C.teal, fontFamily:Fnt.dm, marginTop:4 }}>
+                    {siteDataMessage}
+                  </div>
+                )}
 
               </div>
             </div>
@@ -999,6 +1096,12 @@ export default function SiteSetup() {
                   <button onClick={()=>setGpsSoilSuggestion('')} style={{ background:'none', border:'none', color:C.greyLt, cursor:'pointer', fontSize:16 }}>×</button>
                 </div>
               )}
+              {/* Point 10: Histosol AMBER warning */}
+              {selectedSoil === 'histosols' && (
+                <div style={{ background:C.amberDim, border:`1px solid ${C.amber}`, borderRadius:6, padding:'7px 12px', fontSize:11, color:C.amber, fontFamily:Fnt.dm, marginBottom:6 }}>
+                  Peat soil detected — N and P application rates adjusted automatically.
+                </div>
+              )}
               {selectedSoil === 'histosols' && (
                 <div style={{ background:C.redDim, border:`1px solid ${C.red}`, borderRadius:6, padding:'7px 12px', fontSize:11, color:C.red, fontFamily:Fnt.dm, marginBottom:6 }}>
                   Peat Soil. 80% Less N And 70% Less P Needed. N Over-Application Locked Out.
@@ -1013,6 +1116,51 @@ export default function SiteSetup() {
                 <div style={{ fontSize:15, fontWeight:700, fontFamily:Fnt.mono, padding:'4px 12px', borderRadius:12, border:`1.5px solid ${C.green}`, background:C.green, color:'#000', whiteSpace:'nowrap', display:'inline-block' }}>{soilData.name}</div>
                 {soilData.pills?.map((p,i)=>(<div key={i} style={{...chips[p.cls], fontSize:13}}>{p.txt}</div>))}
               </div>
+
+              {/* Point 11: Climate/Rainfall editable fields with override */}
+              {climateData && (
+                <div style={{ marginTop:12, borderTop:`1px solid rgba(64,215,197,0.15)`, paddingTop:10 }}>
+                  <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.teal, letterSpacing:'0.06em', marginBottom:8 }}>CLIMATE DATA</div>
+                  <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
+                    {[
+                      { key:'rainfall', label:'Rainfall (mm/yr)', origVal: climateOriginal ? `${climateOriginal.rainfall_min||'—'}–${climateOriginal.rainfall_max||'—'}` : '—', displayVal: climateOverrides.rainfall != null ? climateOverrides.rainfall : (climateData.rainfall_min && climateData.rainfall_max ? `${climateData.rainfall_min}–${climateData.rainfall_max}` : '—') },
+                      { key:'temp', label:'Temp (°C avg)', origVal: climateOriginal ? `${climateOriginal.temp_min||'—'}–${climateOriginal.temp_max||'—'}` : '—', displayVal: climateOverrides.temp != null ? climateOverrides.temp : (climateData.temp_min && climateData.temp_max ? `${climateData.temp_min}–${climateData.temp_max}` : '—') },
+                      { key:'ph', label:'Soil pH Range', origVal: climateOriginal ? `${climateOriginal.ph_min||'—'}–${climateOriginal.ph_max||'—'}` : '—', displayVal: climateOverrides.ph != null ? climateOverrides.ph : (climateData.ph_min && climateData.ph_max ? `${climateData.ph_min}–${climateData.ph_max}` : '—') },
+                    ].map(field => {
+                      const isOverridden = climateOverrides[field.key] != null;
+                      return (
+                        <div key={field.key}>
+                          <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:3 }}>{field.label}</div>
+                          <div style={{ position:'relative' }}>
+                            <input
+                              style={{
+                                ...fInput,
+                                fontSize:13,
+                                padding:'8px 30px 8px 10px',
+                                background: isOverridden ? '#000' : C.tealDim,
+                                borderColor: isOverridden ? 'rgba(255,255,255,0.25)' : C.tealBdr,
+                                color: isOverridden ? C.white : C.amber,
+                              }}
+                              value={String(field.displayVal)}
+                              onChange={e => setClimateOverrides(prev => ({...prev, [field.key]: e.target.value}))}
+                            />
+                            {isOverridden && (
+                              <button
+                                onClick={() => setClimateOverrides(prev => { const n={...prev}; delete n[field.key]; return n; })}
+                                style={{ position:'absolute', right:6, top:'50%', transform:'translateY(-50%)', background:'none', border:'none', color:C.teal, cursor:'pointer', fontSize:14, fontFamily:Fnt.mono, padding:2 }}
+                                title="Reset to API value"
+                              >↺</button>
+                            )}
+                          </div>
+                          {isOverridden && (
+                            <div style={{ fontSize:11, color:'#888888', fontFamily:Fnt.dm, marginTop:2 }}>Manual override</div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
