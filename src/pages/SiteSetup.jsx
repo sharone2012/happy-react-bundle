@@ -178,6 +178,7 @@ export default function SiteSetup() {
     pome:false, opf:false, opt:false
   });
   const [showMoreStreams, setShowMoreStreams] = useState(false);
+  const [showNewFields, setShowNewFields] = useState(false);
   const [customStreams, setCustomStreams] = useState([]);
   const [newRes1, setNewRes1] = useState('');
   const [newRes2, setNewRes2] = useState('');
