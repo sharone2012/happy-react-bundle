@@ -54,6 +54,8 @@ const C = {
   amber:     '#F5A623',
   amberDim:  'rgba(245,166,35,0.14)',
   green:     '#00A249',
+  greenLt:   '#33B56D',   // 20% lighter — F & G sections only
+  greenLt30: '#4DBF82',   // 30% lighter — all other greens outside F & G
   greenDim:  'rgba(0,162,73,0.13)',
   red:       '#E84040',
   redDim:    'rgba(232,64,64,0.13)',
