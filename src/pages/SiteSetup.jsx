@@ -1065,20 +1065,17 @@ export default function SiteSetup() {
                 {/* ── FIELD 7: Weather (point 11, 16) — Rainfall + Temp side by side ── */}
                 {weatherData && (
                   <div>
-                    <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>WEATHER</div>
+                    <div style={{ fontSize:15, fontWeight:700, fontFamily:Fnt.syne, color:C.teal, letterSpacing:'0.02em', marginBottom:6 }}>Weather</div>
                     <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
                       {[
-                        { key:'rainfall', label:'Rainfall (mm/yr)', val: weatherOverrides.rainfall != null ? weatherOverrides.rainfall : weatherData.rainfall },
-                        { key:'temp',     label:'Avg temp (°C)',    val: weatherOverrides.temp != null ? weatherOverrides.temp : weatherData.temp },
+                        { key:'rainfall', label:'Rainfall', unit:'mm/yr', val: weatherOverrides.rainfall != null ? weatherOverrides.rainfall : weatherData.rainfall, format: v => v != null ? Number(v).toLocaleString() : '—' },
+                        { key:'temp',     label:'Avg Temp', unit:'°C',    val: weatherOverrides.temp != null ? weatherOverrides.temp : weatherData.temp, format: v => v != null ? String(v) : '—' },
                       ].map(field => {
                         const isOverridden = weatherOverrides[field.key] != null;
+                        const sourceLabel = !isOverridden && weatherSource === 'live' ? 'Live' : (!isOverridden && weatherSource === 'province' ? 'Province avg' : null);
                         return (
                           <div key={field.key}>
-                            <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:3 }}>
-                              <span style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em' }}>{field.label}</span>
-                              {!isOverridden && weatherSource === 'live' && <span style={{ fontSize:9, fontWeight:700, color:C.teal }}>Live</span>}
-                              {!isOverridden && weatherSource === 'province' && <span style={{ fontSize:9, fontWeight:700, color:'#888888' }}>Province average</span>}
-                            </div>
+                            <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:3 }}>{field.label}</div>
                             <div style={{ position:'relative' }}>
                               <input
                                 style={{
@@ -1090,22 +1087,31 @@ export default function SiteSetup() {
                                   borderColor: isOverridden ? 'rgba(255,255,255,0.25)' : C.tealBdr,
                                   color: isOverridden ? C.white : C.amber,
                                 }}
-                                value={field.val != null ? String(field.val) : '—'}
-                                onChange={e => {
-                                  setWeatherOverrides(prev => ({...prev, [field.key]: e.target.value}));
-                                  // Point 18: save override
-                                  if (siteId) {
-                                    const col = field.key === 'rainfall' ? 'rainfall_mm_yr' : 'temp_avg_c';
-                                    const num = parseFloat(e.target.value);
-                                    if (!isNaN(num)) supabase.from('cfi_sites').update({ [col]: num }).eq('id', siteId);
+                                value={field.val != null ? `${field.format(field.val)} ${field.unit}${sourceLabel ? '  ' + sourceLabel : ''}` : '—'}
+                                onFocus={e => {
+                                  // On focus, show raw number for editing
+                                  e.target.value = field.val != null ? String(field.val) : '';
+                                  e.target.style.textAlign = 'center';
+                                }}
+                                onBlur={e => {
+                                  // On blur, if value changed, store override
+                                  const raw = e.target.value.trim();
+                                  if (raw === '' || raw === String(field.val)) return;
+                                  const num = parseFloat(raw);
+                                  if (!isNaN(num)) {
+                                    setWeatherOverrides(prev => ({...prev, [field.key]: num}));
+                                    if (siteId) {
+                                      const col = field.key === 'rainfall' ? 'rainfall_mm_yr' : 'temp_avg_c';
+                                      supabase.from('cfi_sites').update({ [col]: num }).eq('id', siteId);
+                                    }
                                   }
                                 }}
+                                onChange={() => {}} // controlled via focus/blur
                               />
                               {isOverridden && (
                                 <button
                                   onClick={() => {
                                     setWeatherOverrides(prev => { const n={...prev}; delete n[field.key]; return n; });
-                                    // Restore original to DB
                                     if (siteId && weatherOriginal) {
                                       const col = field.key === 'rainfall' ? 'rainfall_mm_yr' : 'temp_avg_c';
                                       supabase.from('cfi_sites').update({ [col]: weatherOriginal[field.key] }).eq('id', siteId);
