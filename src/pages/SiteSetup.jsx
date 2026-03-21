@@ -1085,6 +1085,7 @@ export default function SiteSetup() {
                                 style={{
                                   ...fInput,
                                   fontSize:13,
+                                  textAlign:'center',
                                   padding:'8px 30px 8px 10px',
                                   background: isOverridden ? '#000' : C.tealDim,
                                   borderColor: isOverridden ? 'rgba(255,255,255,0.25)' : C.tealBdr,
