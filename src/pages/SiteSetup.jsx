@@ -699,7 +699,16 @@ export default function SiteSetup() {
                       onChange={async e => {
                         const val = e.target.value;
                         upSite('estate', val);
-                        if (val.length >= 2) {
+                        if (val === '') {
+                          upSite('millName', '');
+                          upSite('province', '');
+                          upSite('district', '');
+                          upSite('gpsLat',   '');
+                          upSite('gpsLon',   '');
+                          setMillSuggestions([]);
+                          setGpsSoilSuggestion('');
+                          setMill(prev => ({ ...prev, ffb: 60 }));
+                        } else if (val.length >= 2) {
                           const { data } = await supabase
                             .from('cfi_estates')
                             .select('id, estate_name, province, district_kabupaten, area_ha')
