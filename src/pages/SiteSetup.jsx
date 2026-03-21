@@ -430,8 +430,28 @@ export default function SiteSetup() {
         }
       }
 
-      // ── Point 13: Try Open-Meteo for live weather using GPS
-...
+      // Point 13: Try Open-Meteo for live weather using GPS
+      if (mr.latitude && mr.longitude) {
+        try {
+          const meteoUrl = `https://api.open-meteo.com/v1/forecast?latitude=${mr.latitude}&longitude=${mr.longitude}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto&past_days=365&forecast_days=0`;
+          const resp = await fetch(meteoUrl);
+          if (resp.ok) {
+            const json = await resp.json();
+            if (json.daily) {
+              const temps = [...(json.daily.temperature_2m_max||[]), ...(json.daily.temperature_2m_min||[])].filter(Boolean);
+              const precip = (json.daily.precipitation_sum||[]).filter(Boolean);
+              const avgT = temps.length ? parseFloat((temps.reduce((a,b)=>a+b,0)/temps.length).toFixed(1)) : null;
+              const totalR = precip.length ? Math.round(precip.reduce((a,b)=>a+b,0)) : null;
+              if (avgT || totalR) {
+                const wd = { rainfall: totalR, temp: avgT };
+                setWeatherData(wd);
+                setWeatherOriginal(wd);
+                setWeatherSource('open-meteo');
+              }
+            }
+          }
+        } catch(e) { /* fallback to province data */ }
+      }
     }
     loadSiteData();
   }, [companyConfirmed, estateConfirmed, millConfirmed, selectedMillRecord]);
