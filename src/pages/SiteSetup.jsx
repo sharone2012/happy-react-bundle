@@ -172,6 +172,9 @@ export default function SiteSetup() {
   const [estateSuggestions,  setEstateSuggestions]  = useState([]);
   const [millSuggestions,    setMillSuggestions]    = useState([]);
   const [gpsSoilSuggestion,  setGpsSoilSuggestion]  = useState('');
+  const [companyConfirmed, setCompanyConfirmed] = useState(false);
+  const [estateConfirmed,  setEstateConfirmed]  = useState(false);
+  const [millConfirmed,    setMillConfirmed]    = useState(false);
 
   // ═══════════════════════════════════════════════════════
   // SUPABASE INIT — create or load cfi_sites record
@@ -553,6 +556,7 @@ export default function SiteSetup() {
   };
   // Input field: full width, black bg, grey border, white text, 42px min
   const fInput = { background:'#000', border:`1px solid rgba(168,189,208,0.2)`, borderRadius:7, padding:'10px 13px', fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:C.white, width:'100%', outline:'none', minHeight:42, boxSizing:'border-box' };
+  const fInputConfirmed = { ...fInput, background:'rgba(64,215,197,0.12)', border:`1.5px solid rgba(64,215,197,0.60)`, color:'#40D7C5' };
   // Number input: BLACK bg, TEAL border, AMBER text — always amber, never changes
   const bInput = { background:'#000', border:`1.5px solid ${C.tealBdr}`, borderRadius:7, color:C.amber, fontFamily:Fnt.mono, fontSize:14, fontWeight:800, padding:'8px 10px', width:76, height:38, textAlign:'center', outline:'none', MozAppearance:'textfield' };
   // Confirm button: EB Garamond, green bg, black text, 51px tall
@@ -627,13 +631,31 @@ export default function SiteSetup() {
                 {/* Company Name — autocomplete from cfi_mill_owners */}
                 <div style={{ position:'relative' }} onClick={e => e.stopPropagation()}>
                   <input
-                    style={fInput}
+                    style={companyConfirmed ? fInputConfirmed : fInput}
                     placeholder="I Will Enter Manually — Or Type Company Name"
                     value={site.company}
+                    readOnly={companyConfirmed}
+                    onClick={async () => {
+                      if (companyConfirmed) {
+                        setCompanyConfirmed(false);
+                        setEstateConfirmed(false);
+                        setMillConfirmed(false);
+                        upSite('company',  '');
+                        upSite('estate',   '');
+                        upSite('millName', '');
+                        upSite('province', '');
+                        upSite('district', '');
+                        upSite('gpsLat',   '');
+                        upSite('gpsLon',   '');
+                        setGpsSoilSuggestion('');
+                        setMill(prev => ({ ...prev, ffb: 60 }));
+                        const { data } = await supabase.from('cfi_mill_owners').select('id, company').order('company').limit(42);
+                        setCompanySuggestions(data || []);
+                      }
+                    }}
                     onChange={async e => {
                       const val = e.target.value;
                       upSite('company', val);
-                      // Clear downstream fields
                       upSite('estate', '');
                       upSite('millName', '');
                       upSite('province', '');
@@ -642,43 +664,21 @@ export default function SiteSetup() {
                       upSite('gpsLon', '');
                       setGpsSoilSuggestion('');
                       setMill(prev => ({ ...prev, ffb: 60 }));
-                      // Show suggestions: filtered if typing, ALL companies if empty
                       if (val.length === 0) {
-                        const { data } = await supabase
-                          .from('cfi_mill_owners')
-                          .select('id, company')
-                          .order('company')
-                          .limit(42);
+                        const { data } = await supabase.from('cfi_mill_owners').select('id, company').order('company').limit(42);
                         setCompanySuggestions(data || []);
                       } else {
-                        const { data } = await supabase
-                          .from('cfi_mill_owners')
-                          .select('id, company')
-                          .ilike('company', `%${val}%`)
-                          .limit(8);
+                        const { data } = await supabase.from('cfi_mill_owners').select('id, company').ilike('company', `%${val}%`).limit(8);
                         setCompanySuggestions(data || []);
                       }
-                      // Always reload all estates and all mills when company changes
-                      const { data: allEstates } = await supabase
-                        .from('cfi_estates')
-                        .select('id, estate_name, province, district_kabupaten, area_ha')
-                        .order('estate_name')
-                        .limit(100);
+                      const { data: allEstates } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten, area_ha').order('estate_name').limit(100);
                       setEstateSuggestions(allEstates || []);
-                      const { data: allMills } = await supabase
-                        .from('cfi_mills_60tph')
-                        .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
-                        .order('mill_name')
-                        .limit(105);
+                      const { data: allMills } = await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105);
                       setMillSuggestions(allMills || []);
                     }}
                     onFocus={async () => {
-                      if (!site.company) {
-                        const { data } = await supabase
-                          .from('cfi_mill_owners')
-                          .select('id, company')
-                          .order('company')
-                          .limit(42);
+                      if (!companyConfirmed && !site.company) {
+                        const { data } = await supabase.from('cfi_mill_owners').select('id, company').order('company').limit(42);
                         setCompanySuggestions(data || []);
                       }
                     }}
@@ -690,6 +690,7 @@ export default function SiteSetup() {
                           key={c.id}
                           onClick={async () => {
                             upSite('company', c.company);
+                            setCompanyConfirmed(true);
                             setCompanySuggestions([]);
                             const { data: estates } = await supabase
                               .from('cfi_estates')
@@ -721,13 +722,29 @@ export default function SiteSetup() {
                   {/* Estate Name — autocomplete from cfi_estates */}
                   <div style={{ position:'relative' }} onClick={e => e.stopPropagation()}>
                     <input
-                      style={fInput}
+                      style={estateConfirmed ? fInputConfirmed : fInput}
                       placeholder="Estate / Plantation Name"
                       value={site.estate}
+                      readOnly={estateConfirmed}
+                      onClick={async () => {
+                        if (estateConfirmed) {
+                          setEstateConfirmed(false);
+                          setMillConfirmed(false);
+                          upSite('estate',   '');
+                          upSite('millName', '');
+                          upSite('province', '');
+                          upSite('district', '');
+                          upSite('gpsLat',   '');
+                          upSite('gpsLon',   '');
+                          setGpsSoilSuggestion('');
+                          setMill(prev => ({ ...prev, ffb: 60 }));
+                          const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').order('estate_name').limit(100);
+                          setEstateSuggestions(data || []);
+                        }
+                      }}
                       onChange={async e => {
                         const val = e.target.value;
                         upSite('estate', val);
-                        // Clear downstream fields
                         upSite('millName', '');
                         upSite('province', '');
                         upSite('district', '');
@@ -735,37 +752,19 @@ export default function SiteSetup() {
                         upSite('gpsLon', '');
                         setGpsSoilSuggestion('');
                         setMill(prev => ({ ...prev, ffb: 60 }));
-                        // Show all estates if empty, filtered if typing
                         if (val.length === 0) {
-                          const { data } = await supabase
-                            .from('cfi_estates')
-                            .select('id, estate_name, province, district_kabupaten, area_ha')
-                            .order('estate_name')
-                            .limit(100);
+                          const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten, area_ha').order('estate_name').limit(100);
                           setEstateSuggestions(data || []);
                         } else {
-                          const { data } = await supabase
-                            .from('cfi_estates')
-                            .select('id, estate_name, province, district_kabupaten, area_ha')
-                            .ilike('estate_name', `%${val}%`)
-                            .limit(10);
+                          const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten, area_ha').ilike('estate_name', `%${val}%`).limit(10);
                           setEstateSuggestions(data || []);
                         }
-                        // Always reload all mills when estate changes
-                        const { data: allMills } = await supabase
-                          .from('cfi_mills_60tph')
-                          .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
-                          .order('mill_name')
-                          .limit(105);
+                        const { data: allMills } = await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105);
                         setMillSuggestions(allMills || []);
                       }}
                       onFocus={async () => {
-                        if (!site.estate) {
-                          const { data } = await supabase
-                            .from('cfi_estates')
-                            .select('id, estate_name, province, district_kabupaten, area_ha')
-                            .order('estate_name')
-                            .limit(100);
+                        if (!estateConfirmed && !site.estate) {
+                          const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten, area_ha').order('estate_name').limit(100);
                           setEstateSuggestions(data || []);
                         }
                       }}
@@ -779,6 +778,7 @@ export default function SiteSetup() {
                               upSite('estate', est.estate_name);
                               if (est.province) upSite('province', est.province);
                               if (est.district_kabupaten) upSite('district', est.district_kabupaten);
+                              setEstateConfirmed(true);
                               setEstateSuggestions([]);
                             }}
                             style={{ padding:'9px 13px', cursor:'pointer', fontSize:13, fontFamily:Fnt.dm, color:C.grey, borderBottom:'1px solid rgba(255,255,255,0.05)' }}
@@ -796,41 +796,40 @@ export default function SiteSetup() {
                   {/* Mill Name — autocomplete from cfi_mills_60tph */}
                   <div style={{ position:'relative' }} onClick={e => e.stopPropagation()}>
                     <input
-                      style={fInput}
+                      style={millConfirmed ? fInputConfirmed : fInput}
                       placeholder="Mill Name / #"
                       value={site.millName}
+                      readOnly={millConfirmed}
+                      onClick={async () => {
+                        if (millConfirmed) {
+                          setMillConfirmed(false);
+                          upSite('millName', '');
+                          upSite('gpsLat',   '');
+                          upSite('gpsLon',   '');
+                          setGpsSoilSuggestion('');
+                          setMill(prev => ({ ...prev, ffb: 60 }));
+                          const { data } = await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105);
+                          setMillSuggestions(data || []);
+                        }
+                      }}
                       onChange={async e => {
                         const val = e.target.value;
                         upSite('millName', val);
-                        // Clear GPS and soil when mill changes
                         upSite('gpsLat', '');
                         upSite('gpsLon', '');
                         setGpsSoilSuggestion('');
                         setMill(prev => ({ ...prev, ffb: 60 }));
-                        // Show all mills if empty, filtered if typing
                         if (val.length === 0) {
-                          const { data } = await supabase
-                            .from('cfi_mills_60tph')
-                            .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
-                            .order('mill_name')
-                            .limit(105);
+                          const { data } = await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105);
                           setMillSuggestions(data || []);
                         } else {
-                          const { data } = await supabase
-                            .from('cfi_mills_60tph')
-                            .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
-                            .ilike('mill_name', `%${val}%`)
-                            .limit(10);
+                          const { data } = await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').ilike('mill_name', `%${val}%`).limit(10);
                           setMillSuggestions(data || []);
                         }
                       }}
                       onFocus={async () => {
-                        if (!site.millName) {
-                          const { data } = await supabase
-                            .from('cfi_mills_60tph')
-                            .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
-                            .order('mill_name')
-                            .limit(105);
+                        if (!millConfirmed && !site.millName) {
+                          const { data } = await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105);
                           setMillSuggestions(data || []);
                         }
                       }}
@@ -847,6 +846,7 @@ export default function SiteSetup() {
                               if (m.latitude)  upSite('gpsLat', String(m.latitude));
                               if (m.longitude) upSite('gpsLon', String(m.longitude));
                               if (m.capacity_tph) setMill(prev => ({ ...prev, ffb: m.capacity_tph }));
+                              setMillConfirmed(true);
                               setMillSuggestions([]);
                               if (m.latitude && m.longitude) {
                                 const { data: soilResult } = await supabase
