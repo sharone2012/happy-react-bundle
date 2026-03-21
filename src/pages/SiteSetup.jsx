@@ -892,12 +892,12 @@ export default function SiteSetup() {
                           setMill(prev => ({...prev, ffb:60}));
                           setMillSuggestions([]);
                         }
-                        setActiveDropdown('estate');
-                        const { data } = await supabase
-                          .from('cfi_estates').select('id, estate_name, province, district_kabupaten')
-                          .order('estate_name').limit(100);
-                        setEstateSuggestions(data || []);
-                      }}
+                        if (site.estate.length >= 3) {
+                          setActiveDropdown('estate');
+                          const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').ilike('estate_name',`%${site.estate}%`).limit(100);
+                          setEstateSuggestions(data || []);
+                        }
+                      }
                       onChange={async e => {
                         const val = e.target.value;
                         setSite(s => ({...s, estate:val, millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
