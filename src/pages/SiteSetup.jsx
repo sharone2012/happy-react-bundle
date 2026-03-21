@@ -178,6 +178,7 @@ export default function SiteSetup() {
     pome:false, opf:false, opt:false
   });
   const [showMoreStreams, setShowMoreStreams] = useState(false);
+  const [showNewFields, setShowNewFields] = useState(false);
   const [customStreams, setCustomStreams] = useState([]);
   const [newRes1, setNewRes1] = useState('');
   const [newRes2, setNewRes2] = useState('');
@@ -1374,17 +1375,27 @@ export default function SiteSetup() {
                   {selectedSoil === 'oxisol' ? 'High Fe/Al Oxide Content. CFI Chelated P Significantly Outperforms TSP.' : 'Sandy — Lowest Fertility. CFI Humate Provides Critical CEC Improvement. 31% Yield Gap.'}
                 </div>
               )}
+              {/* Fertility pill — 3 states based on soil */}
               <div style={{ display:'flex', flexDirection:'row', gap:6, alignItems:'center', flexWrap:'nowrap', width:'100%', marginTop:4 }}>
-                <div style={{ fontSize:13, fontWeight:700, fontFamily:'EB Garamond, serif', padding:'5px 10px', borderRadius:12, border:'1.5px solid #F5A623', background:'rgba(245,166,35,0.08)', color:'#F5A623', whiteSpace:'nowrap', display:'inline-block' }}>{soilData.name}</div>
+                <div style={{ fontSize:13, fontWeight:400, fontFamily:'EB Garamond, serif', padding:'5px 10px', borderRadius:12, border:'1.5px solid #F5A623', background:'rgba(245,166,35,0.08)', color:'#F5A623', whiteSpace:'nowrap', display:'inline-block' }}>{soilData.name}</div>
                 {soilData.pills?.filter(p=>p.cls==='amber').map((p,i) => (
-                  <div key={i} style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, padding:'5px 10px', borderRadius:12, background:'#F5A623', color:'#0B1F35', whiteSpace:'nowrap', display:'inline-block' }}>{p.txt}</div>
+                  <div key={i} style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.mono, padding:'5px 10px', borderRadius:12, background:'#F5A623', color:'#0B1F35', whiteSpace:'nowrap', display:'inline-block' }}>{p.txt}</div>
                 ))}
-                {soilData.pills?.filter(p=>p.cls==='green').map((p,i) => (
-                  <div key={i} style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, padding:'5px 10px', borderRadius:12, border:'1.5px solid #00A249', background:'transparent', color:'#ffffff', whiteSpace:'nowrap', display:'inline-block' }}>{p.txt}</div>
-                ))}
-                {soilData.pills?.filter(p=>p.cls==='red').map((p,i) => (
-                  <div key={i} style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, padding:'5px 10px', borderRadius:12, border:'1.5px solid #E84040', background:'rgba(232,64,64,0.15)', color:'#E84040', whiteSpace:'nowrap', display:'inline-block' }}>{p.txt}</div>
-                ))}
+                {(() => {
+                  const sid = selectedSoil;
+                  const isBest = sid === 'inceptisol' || sid === 'andisol';
+                  const isMod = sid === 'ultisol' || sid === 'oxisol' || sid === 'histosol';
+                  const isLow = sid === 'spodosol';
+                  const fertLabel = isBest ? 'Best Baseline Fertility' : isMod ? 'Moderate Baseline Fertility' : 'Low Baseline Fertility';
+                  const fertStyle = isBest
+                    ? { background:'#00A249', border:'none', color:'#ffffff' }
+                    : isMod
+                    ? { background:'transparent', border:'1.5px solid #00C9B1', color:'#ffffff' }
+                    : { background:'#C0392B', border:'none', color:'#ffffff' };
+                  return (
+                    <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.mono, padding:'5px 10px', borderRadius:12, whiteSpace:'nowrap', display:'inline-block', ...fertStyle }}>{fertLabel}</div>
+                  );
+                })()}
               </div>
             </div>
           </div>
@@ -1419,7 +1430,7 @@ export default function SiteSetup() {
                     </div>
                   );
                 })}
-                {/* Hidden streams revealed by More */}
+                {/* Hidden streams revealed by Add Palm Residue */}
                 {showMoreStreams && [
                   { key:'pke',  name:'Palm Kernel Expeller',  sub:'PKE · $160/t — Purchased', purchased:true },
                   { key:'opf',  name:'Oil Palm Fronds',        sub:'OPF · Seasonal · Zero Cost' },
@@ -1437,25 +1448,29 @@ export default function SiteSetup() {
                 })}
               </div>
 
-              {/* Custom residue fields — always visible */}
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:7, marginTop:6 }}>
-                {[
-                  { num:1, val:newRes1, set:setNewRes1, label:'Custom Residue 1' },
-                  { num:2, val:newRes2, set:setNewRes2, label:'Custom Residue 2' },
-                ].map(f=>(
-                  <div key={f.num}>
-                    <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:3 }}>{f.label}</div>
-                    <div style={{ background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'10px 13px', display:'flex', alignItems:'center', minHeight:52, gap:8 }}>
-                      <input value={f.val} onChange={e=>f.set(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addResidue()} placeholder="Residue name" style={{ background:'transparent', border:'none', outline:'none', fontFamily:Fnt.dm, fontSize:14, fontWeight:500, color:C.white, flex:1, minWidth:0 }} />
-                      <input type="number" placeholder="t/m" style={{ background:'transparent', border:`1px solid ${C.tealBdr}`, borderRadius:4, outline:'none', fontFamily:Fnt.mono, fontSize:13, fontWeight:800, color:C.amber, width:60, textAlign:'center', padding:'4px 6px' }} />
-                    </div>
-                  </div>
-                ))}
+              {/* Add Palm Residue button */}
+              <div style={{ display:'flex', gap:8, marginTop:8 }}>
+                <button onClick={()=>setShowMoreStreams(v=>!v)} style={{ background:'transparent', border:'1.5px solid #00C9B1', borderRadius:6, color:'#00C9B1', fontFamily:Fnt.dm, fontSize:11, fontWeight:700, padding:'5px 12px', cursor:'pointer', whiteSpace:'nowrap' }}>
+                  {showMoreStreams ? 'Hide Palm Residues' : 'Add Palm Residue'}
+                </button>
+                <button onClick={()=>setShowNewFields(v=>!v)} style={{ background:'transparent', border:'1.5px solid #00C9B1', borderRadius:6, color:'#00C9B1', fontFamily:Fnt.dm, fontSize:11, fontWeight:700, padding:'5px 12px', cursor:'pointer', whiteSpace:'nowrap' }}>
+                  {showNewFields ? 'Cancel' : 'New Residue'}
+                </button>
               </div>
 
-              <div style={{ display:'flex', justifyContent:'flex-end', marginTop:8 }}>
-                <button onClick={()=>setShowMoreStreams(v=>!v)} style={{ background:'transparent', border:`1px solid rgba(64,215,197,0.48)`, borderRadius:6, color:C.teal, fontFamily:Fnt.dm, fontSize:11, fontWeight:700, padding:'5px 12px', cursor:'pointer', whiteSpace:'nowrap' }}>{showMoreStreams ? 'Less' : 'More'}</button>
-              </div>
+              {/* New Residue fields — revealed by New Residue button */}
+              {showNewFields && (
+                <div style={{ marginTop:6 }}>
+                  <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>Add New</div>
+                  <div style={{ display:'flex', gap:8 }}>
+                    <input value={newRes1} onChange={e=>setNewRes1(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addResidue()} placeholder="Residue Name" style={{ background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'10px 13px', outline:'none', fontFamily:Fnt.dm, fontSize:14, fontWeight:500, color:C.white, width:'calc(50% - 4px)', minHeight:42, boxSizing:'border-box' }} />
+                    <div style={{ width:'calc(50% - 4px)', background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'6px 10px', display:'flex', alignItems:'center', gap:4, minHeight:42, boxSizing:'border-box' }}>
+                      <input type="number" placeholder="0" style={{ background:'transparent', border:'none', outline:'none', fontFamily:Fnt.mono, fontSize:14, fontWeight:800, color:C.amber, width:'100%', textAlign:'right' }} />
+                      <span style={{ fontSize:11, fontFamily:Fnt.mono, color:'#888888', whiteSpace:'nowrap', flexShrink:0 }}>t/m</span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -1475,19 +1490,18 @@ export default function SiteSetup() {
                     <div style={{ display:'grid', gridTemplateColumns:'auto 1fr auto', alignItems:'baseline', gap:6, marginBottom:10 }}>
                       <span style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:C.teal }}>{name}</span>
                       <span style={{ display:'inline-flex', alignItems:'baseline', justifyContent:'center', gap:3 }}>
-                        <span style={{ fontSize:14, fontWeight:800, fontFamily:Fnt.mono, color:C.amber }}>{fmtT(val)}</span>
-                        <span style={{ fontSize:12, fontFamily:Fnt.mono, color:C.amber, opacity:0.75 }}>t/m</span>
+                        <span style={{ fontSize:14, fontWeight:800, fontFamily:Fnt.mono, color:C.amber }}>{fmtT(val)} t/month</span>
                       </span>
                       <span style={{ fontSize:14, fontWeight:800, fontFamily:Fnt.mono, color:C.greyLt }}>{fmtT(mx)}</span>
                     </div>
                     <input type="range" min={0} max={mx||8000} value={val} step={1}
                       onChange={e=>setSlider(key, e.target.value)}
                       className="cfi-slider"
-                      style={{ width:'100%', height:5, outline:'none', cursor:'pointer', margin:'4px 0', display:'block',
+                      style={{ width:'100%', height:4.5, outline:'none', cursor:'pointer', margin:'4px 0', display:'block',
                         background:`linear-gradient(to right, #00C9B1 0%, #00C9B1 ${pct}%, rgba(168,189,208,0.18) ${pct}%, rgba(168,189,208,0.18) 100%)`,
                         borderRadius:3, WebkitAppearance:'none', appearance:'none' }} />
                     <div style={{ display:'flex', justifyContent:'space-between', fontSize:13, fontFamily:Fnt.mono, color:'rgba(168,189,208,0.55)' }}>
-                      <span>0 t</span><span>100%</span>
+                      <span>0</span><span>100%</span>
                     </div>
                   </div>
                 );
