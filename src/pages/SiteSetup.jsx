@@ -1305,13 +1305,14 @@ export default function SiteSetup() {
                   const isSel = selectedSoil === s.id;
                   const meta = SOIL_META[s.id] || {};
                   const tagStyle = (level) => {
+                    const isVHigh = level === 'vhigh';
                     const isHigh = level === 'high';
                     const isMod = level === 'mod';
                     return {
-                      fontSize:9, fontWeight:700, padding:'2px 6px', borderRadius:3, whiteSpace:'nowrap', display:'inline-block',
-                      color: isHigh ? '#F5A623' : isMod ? '#00C9B1' : '#3DCB7A',
-                      background: isHigh ? 'rgba(245,166,35,0.2)' : isMod ? 'rgba(0,201,177,0.15)' : 'rgba(61,203,122,0.15)',
-                      border: `1px solid ${isHigh ? '#F5A623' : isMod ? '#00C9B1' : '#3DCB7A'}`,
+                      fontSize:9, fontWeight:700, padding:'2px 6px', borderRadius:3, whiteSpace:'nowrap', display:'block',
+                      color: isVHigh ? '#DC3535' : isHigh ? '#F5A623' : isMod ? '#00C9B1' : '#3DCB7A',
+                      background: isVHigh ? 'rgba(220,53,53,0.15)' : isHigh ? 'rgba(245,166,35,0.15)' : isMod ? 'rgba(0,201,177,0.15)' : 'rgba(61,203,122,0.15)',
+                      border: `1px solid ${isVHigh ? '#DC3535' : isHigh ? '#F5A623' : isMod ? '#00C9B1' : '#3DCB7A'}`,
                     };
                   };
                   return (
