@@ -304,6 +304,20 @@ export default function SiteSetup() {
   }
 
   // Load soil profiles from Supabase
+  // Subtitle and line3/line4 lookup for soil cards
+  const SOIL_META = {
+    inceptisol: { sub:'Alluvial',              line3:'pH 4.0–5.0 · CEC 10–18 cmol/kg', line4:'39% of Indonesian palm land' },
+    ultisol:    { sub:'Acidic Tropical Clays',  line3:'pH 4.2–5.0 · CEC 4–8 cmol/kg',   line4:'24% of Indonesian palm land' },
+    oxisol:     { sub:'Highly Weathered Clays', line3:'pH 4.0–4.8 · CEC 3–6 cmol/kg',   line4:'8% of Indonesian palm land' },
+    histosol:   { sub:'Peat',                   line3:'pH 3.5–4.5 · CEC 25–60 cmol/kg', line4:'7% of Indonesian palm land' },
+    spodosol:   { sub:'Coastal Sands',          line3:'pH 3.5–4.5 · CEC 2–5 cmol/kg',   line4:'5% of Indonesian palm land' },
+    andisol:    { sub:'Volcanic Ash',           line3:'pH 5.0–6.0 · CEC 15–30 cmol/kg', line4:'3% of Indonesian palm land' },
+  };
+  const SOIL_NAMES = {
+    inceptisol:'Inceptisol', ultisol:'Ultisol', oxisol:'Oxisol',
+    histosol:'Peat/Histosol', spodosol:'Entisol/Spodosol', andisol:'Andisol',
+  };
+
   useEffect(() => {
     supabase
       .from('cfi_soil_profiles')
@@ -312,15 +326,21 @@ export default function SiteSetup() {
       .order('coverage_pct_indonesia', { ascending: false })
       .then(({ data }) => {
         if (data && data.length > 0) {
-          const mapped = data.map(p => ({
-            id: p.soil_key,
-            name: p.soil_group_name,
-            ph: p.ph_degraded_low ? `${p.ph_degraded_low}${p.ph_degraded_high ? '–'+p.ph_degraded_high : ''}` : '—',
-            cec: p.cec_degraded_cmol_low ? String(p.cec_degraded_cmol_low) : '—',
-            cov: `${p.coverage_pct_indonesia || '—'}% Indonesian Palm`,
-            peat: !!p.is_peat,
-            pills: buildSoilPills(p),
-          }));
+          const mapped = data.map(p => {
+            const meta = SOIL_META[p.soil_key] || {};
+            return {
+              id: p.soil_key,
+              name: SOIL_NAMES[p.soil_key] || p.soil_group_name,
+              sub: meta.sub || '',
+              line3: meta.line3 || `pH ${p.ph_degraded_low||'—'}–${p.ph_degraded_high||'—'} · CEC ${p.cec_degraded_cmol_low||'—'} cmol/kg`,
+              line4: meta.line4 || `${p.coverage_pct_indonesia || '—'}% of Indonesian palm land`,
+              ph: p.ph_degraded_low ? `${p.ph_degraded_low}${p.ph_degraded_high ? '–'+p.ph_degraded_high : ''}` : '—',
+              cec: p.cec_degraded_cmol_low ? String(p.cec_degraded_cmol_low) : '—',
+              cov: `${p.coverage_pct_indonesia || '—'}% Indonesian Palm`,
+              peat: !!p.is_peat,
+              pills: buildSoilPills(p),
+            };
+          });
           setSoils(mapped);
         }
       });
