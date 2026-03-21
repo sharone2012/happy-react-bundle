@@ -1490,19 +1490,18 @@ export default function SiteSetup() {
                     <div style={{ display:'grid', gridTemplateColumns:'auto 1fr auto', alignItems:'baseline', gap:6, marginBottom:10 }}>
                       <span style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:C.teal }}>{name}</span>
                       <span style={{ display:'inline-flex', alignItems:'baseline', justifyContent:'center', gap:3 }}>
-                        <span style={{ fontSize:14, fontWeight:800, fontFamily:Fnt.mono, color:C.amber }}>{fmtT(val)}</span>
-                        <span style={{ fontSize:12, fontFamily:Fnt.mono, color:C.amber, opacity:0.75 }}>t/m</span>
+                        <span style={{ fontSize:14, fontWeight:800, fontFamily:Fnt.mono, color:C.amber }}>{fmtT(val)} t/month</span>
                       </span>
                       <span style={{ fontSize:14, fontWeight:800, fontFamily:Fnt.mono, color:C.greyLt }}>{fmtT(mx)}</span>
                     </div>
                     <input type="range" min={0} max={mx||8000} value={val} step={1}
                       onChange={e=>setSlider(key, e.target.value)}
                       className="cfi-slider"
-                      style={{ width:'100%', height:5, outline:'none', cursor:'pointer', margin:'4px 0', display:'block',
+                      style={{ width:'100%', height:4.5, outline:'none', cursor:'pointer', margin:'4px 0', display:'block',
                         background:`linear-gradient(to right, #00C9B1 0%, #00C9B1 ${pct}%, rgba(168,189,208,0.18) ${pct}%, rgba(168,189,208,0.18) 100%)`,
                         borderRadius:3, WebkitAppearance:'none', appearance:'none' }} />
                     <div style={{ display:'flex', justifyContent:'space-between', fontSize:13, fontFamily:Fnt.mono, color:'rgba(168,189,208,0.55)' }}>
-                      <span>0 t</span><span>100%</span>
+                      <span>0</span><span>100%</span>
                     </div>
                   </div>
                 );
