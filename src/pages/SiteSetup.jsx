@@ -1237,7 +1237,7 @@ export default function SiteSetup() {
                 {bConfirmed ? 'Click To Edit' : 'Confirm'}
               </button>
               <div style={{ fontSize:11, color:C.greyLt, textAlign:'center', marginTop:5 }}>
-                {bConfirmed ? 'C And E Updated · Click To Unlock' : 'Lock Values And Cascade To C And E'}
+                {bConfirmed ? 'C and E updated · click to unlock' : 'Lock values and cascade to C and E'}
               </div>
             </div>
           </div>
