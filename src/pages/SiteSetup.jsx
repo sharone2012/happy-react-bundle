@@ -212,7 +212,7 @@ export default function SiteSetup() {
   const [estateConfirmed,  setEstateConfirmed]  = useState(false);
   const [millConfirmed,    setMillConfirmed]    = useState(false);
   const [activeDropdown,   setActiveDropdown]   = useState(null);
-  const [selectedMillRecord, setSelectedMillRecord] = useState(null); // full mill row
+  const [selectedMill, setSelectedMill] = useState(null); // full mill row
 
   // ── Site data cascade ──────────────────────────────
   const [siteDataMessage, setSiteDataMessage] = useState('');
@@ -356,16 +356,16 @@ export default function SiteSetup() {
     return () => document.removeEventListener('mousedown', close);
   }, []);
 
-  // ── Soil auto-select: fires when selectedMillRecord changes
+  // ── Soil auto-select: fires when selectedMill changes
   useEffect(() => {
-    if (!selectedMillRecord?.province_soil_id) return;
+    if (!selectedMill?.province_soil_id) return;
 
     const fetchSoil = async () => {
       // Step 1: get province soil lookup row
       const { data: psl } = await supabase
         .from('cfi_province_soil_lookup')
         .select('dominant_soil_wrb')
-        .eq('id', selectedMillRecord.province_soil_id)
+        .eq('id', selectedMill.province_soil_id)
         .maybeSingle();
 
       if (!psl) return;
@@ -390,7 +390,7 @@ export default function SiteSetup() {
     };
 
     fetchSoil();
-  }, [selectedMillRecord]);
+  }, [selectedMill]);
 
   // ── Weather + secondary soil trigger
   useEffect(() => {
@@ -404,7 +404,7 @@ export default function SiteSetup() {
       return;
     }
     async function loadSiteData() {
-      const mr = selectedMillRecord;
+      const mr = selectedMill;
       if (!mr) return;
 
       if (mr.province_soil_id) {
@@ -454,7 +454,7 @@ export default function SiteSetup() {
       }
     }
     loadSiteData();
-  }, [companyConfirmed, estateConfirmed, millConfirmed, selectedMillRecord]);
+  }, [companyConfirmed, estateConfirmed, millConfirmed, selectedMill]);
 
   function buildSoilPills(p) {
     const pills = [];
@@ -973,7 +973,7 @@ export default function SiteSetup() {
                         if (millConfirmed) {
                           setSite(s => ({...s, millName:'', gpsLat:'', gpsLon:''}));
                           setMillConfirmed(false);
-                          setSelectedMillRecord(null);
+                          setSelectedMill(null);
                           setGpsSoilSuggestion('');
                           setMill(prev => ({...prev, ffb:60}));
                         }
@@ -989,7 +989,7 @@ export default function SiteSetup() {
                         const val = e.target.value;
                         setSite(s => ({...s, millName:val, gpsLat:'', gpsLon:''}));
                         setMillConfirmed(false);
-                        setSelectedMillRecord(null);
+                        setSelectedMill(null);
                         setGpsSoilSuggestion('');
                         setMill(prev => ({...prev, ffb:60}));
                         if (val.length < 3) {
@@ -1017,7 +1017,7 @@ export default function SiteSetup() {
                               if (m.longitude) upSite('gpsLon', String(m.longitude));
                               if (m.capacity_tph) setMill(prev => ({...prev, ffb: m.capacity_tph}));
                               setMillConfirmed(true);
-                              setSelectedMillRecord(m);
+                              setSelectedMill(m);
                               setMillSuggestions([]);
                               setActiveDropdown(null);
                               // Soil auto-select — fires immediately on mill selection
