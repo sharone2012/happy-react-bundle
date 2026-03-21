@@ -1096,6 +1096,12 @@ export default function SiteSetup() {
                   <button onClick={()=>setGpsSoilSuggestion('')} style={{ background:'none', border:'none', color:C.greyLt, cursor:'pointer', fontSize:16 }}>×</button>
                 </div>
               )}
+              {/* Point 10: Histosol AMBER warning */}
+              {selectedSoil === 'histosols' && (
+                <div style={{ background:C.amberDim, border:`1px solid ${C.amber}`, borderRadius:6, padding:'7px 12px', fontSize:11, color:C.amber, fontFamily:Fnt.dm, marginBottom:6 }}>
+                  Peat soil detected — N and P application rates adjusted automatically.
+                </div>
+              )}
               {selectedSoil === 'histosols' && (
                 <div style={{ background:C.redDim, border:`1px solid ${C.red}`, borderRadius:6, padding:'7px 12px', fontSize:11, color:C.red, fontFamily:Fnt.dm, marginBottom:6 }}>
                   Peat Soil. 80% Less N And 70% Less P Needed. N Over-Application Locked Out.
@@ -1110,6 +1116,51 @@ export default function SiteSetup() {
                 <div style={{ fontSize:15, fontWeight:700, fontFamily:Fnt.mono, padding:'4px 12px', borderRadius:12, border:`1.5px solid ${C.green}`, background:C.green, color:'#000', whiteSpace:'nowrap', display:'inline-block' }}>{soilData.name}</div>
                 {soilData.pills?.map((p,i)=>(<div key={i} style={{...chips[p.cls], fontSize:13}}>{p.txt}</div>))}
               </div>
+
+              {/* Point 11: Climate/Rainfall editable fields with override */}
+              {climateData && (
+                <div style={{ marginTop:12, borderTop:`1px solid rgba(64,215,197,0.15)`, paddingTop:10 }}>
+                  <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.teal, letterSpacing:'0.06em', marginBottom:8 }}>CLIMATE DATA</div>
+                  <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
+                    {[
+                      { key:'rainfall', label:'Rainfall (mm/yr)', origVal: climateOriginal ? `${climateOriginal.rainfall_min||'—'}–${climateOriginal.rainfall_max||'—'}` : '—', displayVal: climateOverrides.rainfall != null ? climateOverrides.rainfall : (climateData.rainfall_min && climateData.rainfall_max ? `${climateData.rainfall_min}–${climateData.rainfall_max}` : '—') },
+                      { key:'temp', label:'Temp (°C avg)', origVal: climateOriginal ? `${climateOriginal.temp_min||'—'}–${climateOriginal.temp_max||'—'}` : '—', displayVal: climateOverrides.temp != null ? climateOverrides.temp : (climateData.temp_min && climateData.temp_max ? `${climateData.temp_min}–${climateData.temp_max}` : '—') },
+                      { key:'ph', label:'Soil pH Range', origVal: climateOriginal ? `${climateOriginal.ph_min||'—'}–${climateOriginal.ph_max||'—'}` : '—', displayVal: climateOverrides.ph != null ? climateOverrides.ph : (climateData.ph_min && climateData.ph_max ? `${climateData.ph_min}–${climateData.ph_max}` : '—') },
+                    ].map(field => {
+                      const isOverridden = climateOverrides[field.key] != null;
+                      return (
+                        <div key={field.key}>
+                          <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:3 }}>{field.label}</div>
+                          <div style={{ position:'relative' }}>
+                            <input
+                              style={{
+                                ...fInput,
+                                fontSize:13,
+                                padding:'8px 30px 8px 10px',
+                                background: isOverridden ? '#000' : C.tealDim,
+                                borderColor: isOverridden ? 'rgba(255,255,255,0.25)' : C.tealBdr,
+                                color: isOverridden ? C.white : C.amber,
+                              }}
+                              value={String(field.displayVal)}
+                              onChange={e => setClimateOverrides(prev => ({...prev, [field.key]: e.target.value}))}
+                            />
+                            {isOverridden && (
+                              <button
+                                onClick={() => setClimateOverrides(prev => { const n={...prev}; delete n[field.key]; return n; })}
+                                style={{ position:'absolute', right:6, top:'50%', transform:'translateY(-50%)', background:'none', border:'none', color:C.teal, cursor:'pointer', fontSize:14, fontFamily:Fnt.mono, padding:2 }}
+                                title="Reset to API value"
+                              >↺</button>
+                            )}
+                          </div>
+                          {isOverridden && (
+                            <div style={{ fontSize:11, color:'#888888', fontFamily:Fnt.dm, marginTop:2 }}>Manual override</div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
