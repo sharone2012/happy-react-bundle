@@ -177,6 +177,12 @@ export default function SiteSetup() {
   const [millConfirmed,    setMillConfirmed]    = useState(false);
   const [activeDropdown,   setActiveDropdown]   = useState(null); // 'company' | 'estate' | 'mill' | null
 
+  // ── Site data cascade (points 6-11) ────────────────
+  const [siteDataMessage, setSiteDataMessage] = useState('');
+  const [climateData, setClimateData] = useState(null);
+  const [climateOverrides, setClimateOverrides] = useState({});
+  const [climateOriginal, setClimateOriginal] = useState(null);
+
   // ═══════════════════════════════════════════════════════
   // SUPABASE INIT — create or load cfi_sites record
   // ═══════════════════════════════════════════════════════
