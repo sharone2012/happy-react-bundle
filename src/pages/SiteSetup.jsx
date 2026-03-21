@@ -623,277 +623,268 @@ export default function SiteSetup() {
             <div style={secTitle}>A — Enter Your Details</div>
             <div style={secSub}>Mill Identity · Location · GPS Coordinates</div>
             <div style={cbody}>
-              <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
+              <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
 
-                {/* Company Name — autocomplete from cfi_mill_owners */}
-                <div style={{ position:'relative' }} onClick={e => e.stopPropagation()}>
-                  <input
-                    style={companyConfirmed ? fInputConfirmed : fInput}
-                    placeholder="I Will Enter Manually — Or Type Company Name"
-                    value={site.company}
-                    readOnly={companyConfirmed}
-                    onClick={async () => {
-                      if (companyConfirmed) {
+                {/* ── FIELD 1: Plantation Owner / Company Name ── */}
+                <div>
+                  <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>
+                    PLANTATION OWNER / COMPANY NAME
+                  </div>
+                  <div style={{ position:'relative' }} onMouseDown={e => e.stopPropagation()}>
+                    <input
+                      style={{
+                        ...fInput,
+                        background:  companyConfirmed ? C.tealDim : '#000',
+                        borderColor: companyConfirmed ? C.tealBdr : 'rgba(168,189,208,0.20)',
+                        color:       companyConfirmed ? C.amber   : C.white,
+                      }}
+                      placeholder="I Will Enter Manually — Or Type Company Name"
+                      value={site.company}
+                      onFocus={async () => {
+                        if (companyConfirmed) {
+                          setCompanyConfirmed(false);
+                          setEstateConfirmed(false);
+                          setMillConfirmed(false);
+                          upSite('company',''); upSite('estate',''); upSite('millName','');
+                          upSite('province',''); upSite('district','');
+                          upSite('gpsLat',''); upSite('gpsLon','');
+                          setGpsSoilSuggestion('');
+                          setMill(prev => ({...prev, ffb:60}));
+                          setEstateSuggestions([]); setMillSuggestions([]);
+                        }
+                        setActiveDropdown('company');
+                        const { data } = await supabase
+                          .from('cfi_mill_owners').select('id, company').order('company').limit(42);
+                        setCompanySuggestions(data || []);
+                      }}
+                      onChange={async e => {
+                        const val = e.target.value;
+                        upSite('company', val);
                         setCompanyConfirmed(false);
-                        setEstateConfirmed(false);
-                        setMillConfirmed(false);
-                        upSite('company',  '');
-                        upSite('estate',   '');
-                        upSite('millName', '');
-                        upSite('province', '');
-                        upSite('district', '');
-                        upSite('gpsLat',   '');
-                        upSite('gpsLon',   '');
-                        setGpsSoilSuggestion('');
-                        setMill(prev => ({ ...prev, ffb: 60 }));
-                        const { data } = await supabase.from('cfi_mill_owners').select('id, company').order('company').limit(42);
+                        setActiveDropdown('company');
+                        const { data } = val.length === 0
+                          ? await supabase.from('cfi_mill_owners').select('id, company').order('company').limit(42)
+                          : await supabase.from('cfi_mill_owners').select('id, company').ilike('company',`%${val}%`).limit(8);
                         setCompanySuggestions(data || []);
-                      }
-                    }}
-                    onChange={async e => {
-                      const val = e.target.value;
-                      upSite('company', val);
-                      upSite('estate', '');
-                      upSite('millName', '');
-                      upSite('province', '');
-                      upSite('district', '');
-                      upSite('gpsLat', '');
-                      upSite('gpsLon', '');
-                      setGpsSoilSuggestion('');
-                      setMill(prev => ({ ...prev, ffb: 60 }));
-                      if (val.length === 0) {
-                        const { data } = await supabase.from('cfi_mill_owners').select('id, company').order('company').limit(42);
-                        setCompanySuggestions(data || []);
-                      } else {
-                        const { data } = await supabase.from('cfi_mill_owners').select('id, company').ilike('company', `%${val}%`).limit(8);
-                        setCompanySuggestions(data || []);
-                      }
-                      const { data: allEstates } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten, area_ha').order('estate_name').limit(100);
-                      setEstateSuggestions(allEstates || []);
-                      const { data: allMills } = await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105);
-                      setMillSuggestions(allMills || []);
-                    }}
-                    onFocus={async () => {
-                      if (!companyConfirmed && !site.company) {
-                        const { data } = await supabase.from('cfi_mill_owners').select('id, company').order('company').limit(42);
-                        setCompanySuggestions(data || []);
-                      }
-                    }}
-                  />
-                  {companySuggestions.length > 0 && (
-                    <div style={{ position:'absolute', top:'100%', left:0, right:0, background:'#0C1E33', border:'1px solid rgba(64,215,197,0.40)', borderRadius:7, zIndex:100, maxHeight:200, overflowY:'auto' }}>
-                      {companySuggestions.map(c => (
-                        <div
-                          key={c.id}
-                          onClick={async () => {
-                            upSite('company', c.company);
-                            setCompanyConfirmed(true);
-                            setCompanySuggestions([]);
-                            const { data: estates } = await supabase
-                              .from('cfi_estates')
-                              .select('id, estate_name, province, district_kabupaten, area_ha')
-                              .ilike('owner_company', `%${c.company}%`)
-                              .limit(50);
-                            setEstateSuggestions(estates || []);
-                            const { data: mills } = await supabase
-                              .from('cfi_mills_60tph')
-                              .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
-                              .ilike('owner_company', `%${c.company}%`)
-                              .limit(50);
-                            setMillSuggestions(mills || []);
-                          }}
-                          style={{ padding:'9px 13px', cursor:'pointer', fontSize:13, fontFamily:Fnt.dm, color:C.grey, borderBottom:'1px solid rgba(255,255,255,0.05)' }}
-                          onMouseEnter={e => e.target.style.background = 'rgba(64,215,197,0.08)'}
-                          onMouseLeave={e => e.target.style.background = 'transparent'}
-                        >
-                          {c.company}
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                      }}
+                    />
+                    {activeDropdown === 'company' && companySuggestions.length > 0 && (
+                      <div style={{ position:'absolute', top:'100%', left:0, right:0, background:'#0C1E33', border:'1px solid rgba(64,215,197,0.40)', borderRadius:7, zIndex:200, maxHeight:220, overflowY:'auto', boxShadow:'0 8px 24px rgba(0,0,0,0.40)' }}>
+                        {companySuggestions.map(c => (
+                          <div
+                            key={c.id}
+                            onMouseDown={async ev => {
+                              ev.preventDefault();
+                              upSite('company', c.company);
+                              setCompanyConfirmed(true);
+                              setCompanySuggestions([]);
+                              setActiveDropdown(null);
+                              const { data: estates } = await supabase
+                                .from('cfi_estates')
+                                .select('id, estate_name, province, district_kabupaten')
+                                .ilike('owner_company', `%${c.company}%`)
+                                .order('estate_name').limit(100);
+                              setEstateSuggestions(estates?.length ? estates : (await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').order('estate_name').limit(100)).data || []);
+                              const { data: mills } = await supabase
+                                .from('cfi_mills_60tph')
+                                .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
+                                .ilike('owner_company', `%${c.company}%`)
+                                .order('mill_name').limit(105);
+                              setMillSuggestions(mills?.length ? mills : (await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105)).data || []);
+                            }}
+                            style={{ padding:'10px 14px', cursor:'pointer', fontSize:13, fontFamily:Fnt.dm, color:C.grey, borderBottom:'1px solid rgba(255,255,255,0.05)' }}
+                            onMouseEnter={ev => ev.currentTarget.style.background='rgba(64,215,197,0.08)'}
+                            onMouseLeave={ev => ev.currentTarget.style.background='transparent'}
+                          >
+                            {c.company}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
-                {/* Estate + Mill row */}
-                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:6 }}>
-
-                  {/* Estate Name — autocomplete from cfi_estates */}
-                  <div style={{ position:'relative' }} onClick={e => e.stopPropagation()}>
+                {/* ── FIELD 2: Plantation / Estate Name — full width ── */}
+                <div>
+                  <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>
+                    PLANTATION / ESTATE NAME
+                  </div>
+                  <div style={{ position:'relative' }} onMouseDown={e => e.stopPropagation()}>
                     <input
-                      style={estateConfirmed ? fInputConfirmed : fInput}
+                      style={{
+                        ...fInput,
+                        background:  estateConfirmed ? C.tealDim : '#000',
+                        borderColor: estateConfirmed ? C.tealBdr : 'rgba(168,189,208,0.20)',
+                        color:       estateConfirmed ? C.amber   : C.white,
+                      }}
                       placeholder="Estate / Plantation Name"
                       value={site.estate}
-                      readOnly={estateConfirmed}
-                      onClick={async () => {
+                      onFocus={async () => {
                         if (estateConfirmed) {
                           setEstateConfirmed(false);
                           setMillConfirmed(false);
-                          upSite('estate',   '');
-                          upSite('millName', '');
-                          upSite('province', '');
-                          upSite('district', '');
-                          upSite('gpsLat',   '');
-                          upSite('gpsLon',   '');
+                          upSite('estate',''); upSite('millName','');
+                          upSite('province',''); upSite('district','');
+                          upSite('gpsLat',''); upSite('gpsLon','');
                           setGpsSoilSuggestion('');
-                          setMill(prev => ({ ...prev, ffb: 60 }));
-                          const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').order('estate_name').limit(100);
-                          setEstateSuggestions(data || []);
+                          setMill(prev => ({...prev, ffb:60}));
+                          setMillSuggestions([]);
                         }
+                        setActiveDropdown('estate');
+                        const { data } = await supabase
+                          .from('cfi_estates').select('id, estate_name, province, district_kabupaten')
+                          .order('estate_name').limit(100);
+                        setEstateSuggestions(data || []);
                       }}
                       onChange={async e => {
                         const val = e.target.value;
                         upSite('estate', val);
-                        upSite('millName', '');
-                        upSite('province', '');
-                        upSite('district', '');
-                        upSite('gpsLat', '');
-                        upSite('gpsLon', '');
-                        setGpsSoilSuggestion('');
-                        setMill(prev => ({ ...prev, ffb: 60 }));
-                        if (val.length === 0) {
-                          const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten, area_ha').order('estate_name').limit(100);
-                          setEstateSuggestions(data || []);
-                        } else {
-                          const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten, area_ha').ilike('estate_name', `%${val}%`).limit(10);
-                          setEstateSuggestions(data || []);
-                        }
-                        const { data: allMills } = await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105);
-                        setMillSuggestions(allMills || []);
-                      }}
-                      onFocus={async () => {
-                        if (!estateConfirmed && !site.estate) {
-                          const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten, area_ha').order('estate_name').limit(100);
-                          setEstateSuggestions(data || []);
-                        }
+                        setEstateConfirmed(false);
+                        setActiveDropdown('estate');
+                        const { data } = val.length === 0
+                          ? await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').order('estate_name').limit(100)
+                          : await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').ilike('estate_name',`%${val}%`).limit(10);
+                        setEstateSuggestions(data || []);
                       }}
                     />
-                    {estateSuggestions.length > 0 && (
-                      <div style={{ position:'absolute', top:'100%', left:0, right:0, background:'#0C1E33', border:'1px solid rgba(64,215,197,0.40)', borderRadius:7, zIndex:100, maxHeight:200, overflowY:'auto' }}>
+                    {activeDropdown === 'estate' && estateSuggestions.length > 0 && (
+                      <div style={{ position:'absolute', top:'100%', left:0, right:0, background:'#0C1E33', border:'1px solid rgba(64,215,197,0.40)', borderRadius:7, zIndex:200, maxHeight:220, overflowY:'auto', boxShadow:'0 8px 24px rgba(0,0,0,0.40)' }}>
                         {estateSuggestions.map(est => (
                           <div
                             key={est.id}
-                            onClick={() => {
+                            onMouseDown={ev => {
+                              ev.preventDefault();
                               upSite('estate', est.estate_name);
                               if (est.province) upSite('province', est.province);
                               if (est.district_kabupaten) upSite('district', est.district_kabupaten);
                               setEstateConfirmed(true);
                               setEstateSuggestions([]);
+                              setActiveDropdown(null);
                             }}
-                            style={{ padding:'9px 13px', cursor:'pointer', fontSize:13, fontFamily:Fnt.dm, color:C.grey, borderBottom:'1px solid rgba(255,255,255,0.05)' }}
-                            onMouseEnter={ev => ev.target.style.background = 'rgba(64,215,197,0.08)'}
-                            onMouseLeave={ev => ev.target.style.background = 'transparent'}
+                            style={{ padding:'10px 14px', cursor:'pointer', fontSize:13, fontFamily:Fnt.dm, color:C.grey, borderBottom:'1px solid rgba(255,255,255,0.05)' }}
+                            onMouseEnter={ev => ev.currentTarget.style.background='rgba(64,215,197,0.08)'}
+                            onMouseLeave={ev => ev.currentTarget.style.background='transparent'}
                           >
                             {est.estate_name}
-                            {est.province ? <span style={{ fontSize:11, color:'rgba(168,189,208,0.55)', marginLeft:6 }}>{est.province}</span> : null}
+                            {est.province && <span style={{ fontSize:11, color:'rgba(168,189,208,0.50)', marginLeft:8 }}>{est.province}</span>}
                           </div>
                         ))}
                       </div>
                     )}
                   </div>
+                </div>
 
-                  {/* Mill Name — autocomplete from cfi_mills_60tph */}
-                  <div style={{ position:'relative' }} onClick={e => e.stopPropagation()}>
+                {/* ── FIELD 3: Mill Name — full width ── */}
+                <div>
+                  <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>
+                    MILL NAME / UNIT
+                  </div>
+                  <div style={{ position:'relative' }} onMouseDown={e => e.stopPropagation()}>
                     <input
-                      style={millConfirmed ? fInputConfirmed : fInput}
+                      style={{
+                        ...fInput,
+                        background:  millConfirmed ? C.tealDim : '#000',
+                        borderColor: millConfirmed ? C.tealBdr : 'rgba(168,189,208,0.20)',
+                        color:       millConfirmed ? C.amber   : C.white,
+                      }}
                       placeholder="Mill Name / #"
                       value={site.millName}
-                      readOnly={millConfirmed}
-                      onClick={async () => {
+                      onFocus={async () => {
                         if (millConfirmed) {
                           setMillConfirmed(false);
-                          upSite('millName', '');
-                          upSite('gpsLat',   '');
-                          upSite('gpsLon',   '');
+                          upSite('millName','');
+                          upSite('gpsLat',''); upSite('gpsLon','');
                           setGpsSoilSuggestion('');
-                          setMill(prev => ({ ...prev, ffb: 60 }));
-                          const { data } = await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105);
-                          setMillSuggestions(data || []);
+                          setMill(prev => ({...prev, ffb:60}));
                         }
+                        setActiveDropdown('mill');
+                        const { data } = await supabase
+                          .from('cfi_mills_60tph')
+                          .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
+                          .order('mill_name').limit(105);
+                        setMillSuggestions(data || []);
                       }}
                       onChange={async e => {
                         const val = e.target.value;
                         upSite('millName', val);
-                        upSite('gpsLat', '');
-                        upSite('gpsLon', '');
-                        setGpsSoilSuggestion('');
-                        setMill(prev => ({ ...prev, ffb: 60 }));
-                        if (val.length === 0) {
-                          const { data } = await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105);
-                          setMillSuggestions(data || []);
-                        } else {
-                          const { data } = await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').ilike('mill_name', `%${val}%`).limit(10);
-                          setMillSuggestions(data || []);
-                        }
-                      }}
-                      onFocus={async () => {
-                        if (!millConfirmed && !site.millName) {
-                          const { data } = await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105);
-                          setMillSuggestions(data || []);
-                        }
+                        setMillConfirmed(false);
+                        setActiveDropdown('mill');
+                        const { data } = val.length === 0
+                          ? await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105)
+                          : await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').ilike('mill_name',`%${val}%`).limit(10);
+                        setMillSuggestions(data || []);
                       }}
                     />
-                    {millSuggestions.length > 0 && (
-                      <div style={{ position:'absolute', top:'100%', left:0, right:0, background:'#0C1E33', border:'1px solid rgba(64,215,197,0.40)', borderRadius:7, zIndex:100, maxHeight:200, overflowY:'auto' }}>
+                    {activeDropdown === 'mill' && millSuggestions.length > 0 && (
+                      <div style={{ position:'absolute', top:'100%', left:0, right:0, background:'#0C1E33', border:'1px solid rgba(64,215,197,0.40)', borderRadius:7, zIndex:200, maxHeight:220, overflowY:'auto', boxShadow:'0 8px 24px rgba(0,0,0,0.40)' }}>
                         {millSuggestions.map(m => (
                           <div
                             key={m.id}
-                            onClick={async () => {
+                            onMouseDown={async ev => {
+                              ev.preventDefault();
                               upSite('millName', m.mill_name);
                               if (m.province) upSite('province', m.province);
                               if (m.district_kabupaten) upSite('district', m.district_kabupaten);
                               if (m.latitude)  upSite('gpsLat', String(m.latitude));
                               if (m.longitude) upSite('gpsLon', String(m.longitude));
-                              if (m.capacity_tph) setMill(prev => ({ ...prev, ffb: m.capacity_tph }));
+                              if (m.capacity_tph) setMill(prev => ({...prev, ffb: m.capacity_tph}));
                               setMillConfirmed(true);
                               setMillSuggestions([]);
+                              setActiveDropdown(null);
                               if (m.latitude && m.longitude) {
-                                const { data: soilResult } = await supabase
-                                  .rpc('get_soil_acidity_class', {
-                                    p_lat: m.latitude,
-                                    p_lon: m.longitude,
-                                    p_max_distance_km: 25,
-                                  });
-                                if (soilResult && soilResult.length > 0) {
-                                  setGpsSoilSuggestion(soilResult[0].class_name || '');
-                                }
+                                const { data: soilResult } = await supabase.rpc('get_soil_acidity_class', {
+                                  p_lat: m.latitude, p_lon: m.longitude, p_max_distance_km: 25
+                                });
+                                if (soilResult?.[0]) setGpsSoilSuggestion(soilResult[0].class_name || '');
                               }
                               if (m.confirmed_soil_type) {
-                                setSelectedSoil(m.confirmed_soil_type.toLowerCase().replace(' ',''));
-                                if (siteId) {
-                                  supabase.from('cfi_sites').update({ soil_type: m.confirmed_soil_type.toLowerCase().replace(' ','') }).eq('id', siteId);
-                                }
+                                const sk = m.confirmed_soil_type.toLowerCase().replace(/\s/g,'');
+                                setSelectedSoil(sk);
+                                if (siteId) supabase.from('cfi_sites').update({ soil_type: sk }).eq('id', siteId);
                               }
                             }}
-                            style={{ padding:'9px 13px', cursor:'pointer', fontSize:13, fontFamily:Fnt.dm, color:C.grey, borderBottom:'1px solid rgba(255,255,255,0.05)' }}
-                            onMouseEnter={ev => ev.target.style.background = 'rgba(64,215,197,0.08)'}
-                            onMouseLeave={ev => ev.target.style.background = 'transparent'}
+                            style={{ padding:'10px 14px', cursor:'pointer', fontSize:13, fontFamily:Fnt.dm, color:C.grey, borderBottom:'1px solid rgba(255,255,255,0.05)' }}
+                            onMouseEnter={ev => ev.currentTarget.style.background='rgba(64,215,197,0.08)'}
+                            onMouseLeave={ev => ev.currentTarget.style.background='transparent'}
                           >
                             {m.mill_name}
-                            {m.province ? <span style={{ fontSize:11, color:'rgba(168,189,208,0.55)', marginLeft:6 }}>{m.province}</span> : null}
+                            {m.province && <span style={{ fontSize:11, color:'rgba(168,189,208,0.50)', marginLeft:8 }}>{m.province}</span>}
                           </div>
                         ))}
                       </div>
                     )}
                   </div>
-
                 </div>
 
-                {/* Province + GPS row */}
-                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:6 }}>
-                  <input style={fInput} placeholder="Province" value={site.province} onChange={e=>upSite('province',e.target.value)} />
-                  <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
-                    <div>
-                      <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:3 }}>GPS LATITUDE</div>
-                      <input style={{...fInput, color:C.greyLt}} placeholder="Optional — Auto-Fills From Mill" value={site.gpsLat} onChange={e=>upSite('gpsLat',e.target.value)} />
-                    </div>
-                    <div>
-                      <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:3 }}>GPS LONGITUDE</div>
-                      <input style={{...fInput, color:C.greyLt}} placeholder="Optional — Auto-Fills From Mill" value={site.gpsLon} onChange={e=>upSite('gpsLon',e.target.value)} />
-                    </div>
+                {/* ── FIELD 4: Province + District ── */}
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
+                  <div>
+                    <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>PROVINCE</div>
+                    <input style={fInput} placeholder="Province" value={site.province} onChange={e=>upSite('province',e.target.value)} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>DISTRICT / KABUPATEN</div>
+                    <input style={fInput} placeholder="District / Kabupaten" value={site.district} onChange={e=>upSite('district',e.target.value)} />
                   </div>
                 </div>
 
-                <input style={fInput} placeholder="District / Kabupaten" value={site.district} onChange={e=>upSite('district',e.target.value)} />
-                <input style={{...fInput, color:C.teal, borderColor:C.tealBdr, background:C.tealDim}} placeholder="Country" value={site.country} onChange={e=>upSite('country',e.target.value)} />
+                {/* ── FIELD 5: GPS Coordinates ── */}
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
+                  <div>
+                    <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>GPS LATITUDE</div>
+                    <input style={{...fInput, color:C.greyLt}} placeholder="Optional — Auto-Fills From Mill" value={site.gpsLat} onChange={e=>upSite('gpsLat',e.target.value)} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>GPS LONGITUDE</div>
+                    <input style={{...fInput, color:C.greyLt}} placeholder="Optional — Auto-Fills From Mill" value={site.gpsLon} onChange={e=>upSite('gpsLon',e.target.value)} />
+                  </div>
+                </div>
+
+                {/* ── FIELD 6: Country ── */}
+                <div>
+                  <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>COUNTRY</div>
+                  <input style={{...fInput, color:C.teal, borderColor:C.tealBdr, background:C.tealDim}} placeholder="Country" value={site.country} onChange={e=>upSite('country',e.target.value)} />
+                </div>
 
               </div>
             </div>
