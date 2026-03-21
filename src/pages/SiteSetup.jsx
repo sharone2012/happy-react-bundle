@@ -129,9 +129,9 @@ function parseSoilClass(wrb) {
 
 // AG Management options
 const AG_MGMT_OPTIONS = [
-  { id:'conventional', label:'Conventional' },
-  { id:'gap',          label:'Good Agricultural Practice (GAP)' },
-  { id:'vgam',         label:'Very Good Agricultural Management (VGAM)' },
+  { id:'vgam',         label:'Very Good' },
+  { id:'gap',          label:'Good' },
+  { id:'conventional', label:'Poor' },
   { id:'organic',      label:'Organic' },
 ];
 
@@ -772,7 +772,7 @@ export default function SiteSetup() {
                         borderColor: companyConfirmed ? C.tealBdr : 'rgba(168,189,208,0.20)',
                         color:       companyConfirmed ? C.amber   : C.white,
                       }}
-                      placeholder="I Will Enter Manually — Or Type Company Name"
+                      placeholder="Enter Company Name"
                       value={site.company}
                       onFocus={async () => {
                         if (companyConfirmed) {
@@ -1030,13 +1030,13 @@ export default function SiteSetup() {
                 {/* ── FIELD 5: GPS Coordinates ── */}
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
                   <div>
-                    <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>GPS LATITUDE</div>
+                    <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>GPS (Optional)</div>
                     <input
                       style={{
                         ...fInput,
                         ...(millConfirmed && site.gpsLat ? { background:C.tealDim, borderColor:C.tealBdr, color:C.amber } : { color:C.greyLt }),
                       }}
-                      placeholder="Optional — Auto-Fills From Mill"
+                      placeholder="Latitude"
                       value={site.gpsLat}
                       readOnly={!!(millConfirmed && site.gpsLat)}
                       onChange={e=>upSite('gpsLat',e.target.value)}
@@ -1049,7 +1049,7 @@ export default function SiteSetup() {
                         ...fInput,
                         ...(millConfirmed && site.gpsLon ? { background:C.tealDim, borderColor:C.tealBdr, color:C.amber } : { color:C.greyLt }),
                       }}
-                      placeholder="Optional — Auto-Fills From Mill"
+                      placeholder="Longitude"
                       value={site.gpsLon}
                       readOnly={!!(millConfirmed && site.gpsLon)}
                       onChange={e=>upSite('gpsLon',e.target.value)}
@@ -1085,6 +1085,7 @@ export default function SiteSetup() {
                                 style={{
                                   ...fInput,
                                   fontSize:13,
+                                  textAlign:'center',
                                   padding:'8px 30px 8px 10px',
                                   background: isOverridden ? '#000' : C.tealDim,
                                   borderColor: isOverridden ? 'rgba(255,255,255,0.25)' : C.tealBdr,
@@ -1224,7 +1225,7 @@ export default function SiteSetup() {
 
           {/* ── G: SOIL ORIGIN ── */}
           <div style={card}>
-            <div style={secTitle}>G — Soil Origin</div>
+            <div style={secTitle}>G — Agricultural Management & Soil Type</div>
             <div style={secSub}>Auto-Detected · Override Available</div>
             <div style={cbody}>
 
