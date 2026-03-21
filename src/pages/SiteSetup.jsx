@@ -933,13 +933,14 @@ export default function SiteSetup() {
                         if (millConfirmed) {
                           setSite(s => ({...s, millName:'', gpsLat:'', gpsLon:''}));
                           setMillConfirmed(false);
+                          setSelectedMillRecord(null);
                           setGpsSoilSuggestion('');
                           setMill(prev => ({...prev, ffb:60}));
                         }
                         setActiveDropdown('mill');
                         const { data } = await supabase
                           .from('cfi_mills_60tph')
-                          .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
+                          .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id')
                           .order('mill_name').limit(105);
                         setMillSuggestions(data || []);
                       }}
@@ -947,12 +948,14 @@ export default function SiteSetup() {
                         const val = e.target.value;
                         setSite(s => ({...s, millName:val, gpsLat:'', gpsLon:''}));
                         setMillConfirmed(false);
+                        setSelectedMillRecord(null);
                         setGpsSoilSuggestion('');
                         setMill(prev => ({...prev, ffb:60}));
                         setActiveDropdown('mill');
+                        const cols = 'id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id';
                         const { data } = val.length === 0
-                          ? await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105)
-                          : await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').ilike('mill_name',`%${val}%`).limit(10);
+                          ? await supabase.from('cfi_mills_60tph').select(cols).order('mill_name').limit(105)
+                          : await supabase.from('cfi_mills_60tph').select(cols).ilike('mill_name',`%${val}%`).limit(10);
                         setMillSuggestions(data || []);
                       }}
                     />
@@ -970,6 +973,7 @@ export default function SiteSetup() {
                               if (m.longitude) upSite('gpsLon', String(m.longitude));
                               if (m.capacity_tph) setMill(prev => ({...prev, ffb: m.capacity_tph}));
                               setMillConfirmed(true);
+                              setSelectedMillRecord(m);
                               setMillSuggestions([]);
                               setActiveDropdown(null);
                               if (m.latitude && m.longitude) {
@@ -977,11 +981,6 @@ export default function SiteSetup() {
                                   p_lat: m.latitude, p_lon: m.longitude, p_max_distance_km: 25
                                 });
                                 if (soilResult?.[0]) setGpsSoilSuggestion(soilResult[0].class_name || '');
-                              }
-                              if (m.confirmed_soil_type) {
-                                const sk = m.confirmed_soil_type.toLowerCase().replace(/\s/g,'');
-                                setSelectedSoil(sk);
-                                if (siteId) supabase.from('cfi_sites').update({ soil_type: sk }).eq('id', siteId);
                               }
                             }}
                             style={{ padding:'10px 14px', cursor:'pointer', fontSize:13, fontFamily:Fnt.dm, color:C.grey, borderBottom:'1px solid rgba(255,255,255,0.05)' }}
