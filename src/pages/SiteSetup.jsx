@@ -909,7 +909,7 @@ export default function SiteSetup() {
                           const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').ilike('estate_name',`%${site.estate}%`).limit(100);
                           setEstateSuggestions(data || []);
                         }
-                      }
+                      }}
                       onChange={async e => {
                         const val = e.target.value;
                         setSite(s => ({...s, estate:val, millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
@@ -984,7 +984,7 @@ export default function SiteSetup() {
                             .ilike('mill_name',`%${site.millName}%`).limit(105);
                           setMillSuggestions(data || []);
                         }
-                      }
+                      }}
                       onChange={async e => {
                         const val = e.target.value;
                         setSite(s => ({...s, millName:val, gpsLat:'', gpsLon:''}));
