@@ -92,18 +92,18 @@ const FEEDSTOCK = {
 // ── SOIL DATA (loaded from Supabase cfi_soil_profiles) ──
 // Fallback hardcoded for initial render before DB load
 const SOILS_FALLBACK = [
-  { id:'inceptisols', name:'Inceptisols', ph:'4.1', cec:'15.4', cov:'39% Indonesian Palm',
-    pills:[{cls:'green',txt:'Best Soil'},{cls:'green',txt:'pH 4.1 · CEC 15.4'},{cls:'teal',txt:'N Adj Standard'}] },
-  { id:'ultisols',    name:'Ultisols',    ph:'4.5', cec:'8.2',  cov:'24% Indonesian Palm',
+  { id:'ultisols',    name:'Ultisols',    sub:'Acidic Tropical Clays', ph:'4.5', cec:'8.2',  cov:'24% Indonesian Palm',
     pills:[{cls:'amber',txt:'pH 4.5 · CEC 8.2'},{cls:'teal',txt:'N Adj −35%'}] },
-  { id:'oxisols',     name:'Oxisols',     ph:'4.4', cec:'6.1',  cov:'8% Indonesian Palm',
+  { id:'inceptisols', name:'Inceptisols', sub:'Alluvial',              ph:'4.1', cec:'15.4', cov:'39% Indonesian Palm',
+    pills:[{cls:'green',txt:'Best Soil'},{cls:'green',txt:'pH 4.1 · CEC 15.4'},{cls:'teal',txt:'N Adj Standard'}] },
+  { id:'oxisols',     name:'Oxisols',     sub:'Highly Weathered',      ph:'4.4', cec:'6.1',  cov:'8% Indonesian Palm',
     pills:[{cls:'amber',txt:'pH 4.4 · CEC 6.1'},{cls:'red',txt:'P Fixation: Very High'},{cls:'teal',txt:'Split P Doses'}] },
-  { id:'histosols',   name:'Histosols',   ph:'3.8', cec:'28.0', cov:'7% · Special Rules',
-    pills:[{cls:'red',txt:'pH 3.8 · Very Acid'},{cls:'red',txt:'N −80% P −70%'},{cls:'red',txt:'Drainage Critical'}], peat:true },
-  { id:'spodosols',   name:'Spodosols',   ph:'4.77',cec:'2.0',  cov:'Sandy · Lowest Fertility',
+  { id:'spodosols',   name:'Spodosols',   sub:'Coastal Sands',         ph:'4.77',cec:'2.0',  cov:'Sandy · Lowest Fertility',
     pills:[{cls:'amber',txt:'pH 4.77 · CEC 2.0'},{cls:'red',txt:'N Leaching: Very High'},{cls:'teal',txt:'31% Yield Gap'}] },
-  { id:'andisols',    name:'Andisols',    ph:'5.1', cec:'22.0', cov:'Volcanic · High P Fix',
+  { id:'andisols',    name:'Andisols',    sub:'Volcanic Ash',          ph:'5.1', cec:'22.0', cov:'Volcanic · High P Fix',
     pills:[{cls:'amber',txt:'pH 5.1 · CEC 22.0'},{cls:'red',txt:'P Fixation: High'},{cls:'teal',txt:'P Rate +30–50%'}] },
+  { id:'histosols',   name:'Histosols',   sub:'Peat',                  ph:'3.8', cec:'28.0', cov:'7% · Special Rules',
+    pills:[{cls:'red',txt:'pH 3.8 · Very Acid'},{cls:'red',txt:'N −80% P −70%'},{cls:'red',txt:'Drainage Critical'}], peat:true },
 ];
 
 const MILL_STREAMS  = ['efb','opdc','pos','pmf','pome'];
@@ -1259,7 +1259,7 @@ export default function SiteSetup() {
               <div style={{ height:2, background:'#1E6B8C', marginBottom:12 }} />
 
               {/* Soil type cards (point 17: auto-selected shows 2px teal border) */}
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:14, marginBottom:9 }}>
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8, marginBottom:9 }}>
                 {soils.map(s => {
                   const isSel = selectedSoil === s.id;
                   const isAuto = soilAutoSelected && isSel;
@@ -1267,13 +1267,14 @@ export default function SiteSetup() {
                     <div key={s.id} onClick={() => { selectSoil(s.id); setSoilAutoSelected(false); }} style={{
                       background: isSel ? C.tealDim : C.navyDeep,
                       border: `${isAuto ? '2px' : '1.5px'} solid ${isSel ? '#00C9B1' : C.bdrCalc}`,
-                      borderRadius:8, padding:'20px 24px', cursor:'pointer', transition:'all 0.12s',
+                      borderRadius:7, padding:'10px 14px', cursor:'pointer', transition:'all 0.12s',
                     }}>
-                      <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color: isSel ? C.amber : C.grey }}>
-                        {s.name}{s.peat ? <span style={{ color:C.amber, fontSize:11 }}> (Peat)</span> : null}
+                      <div style={{ fontSize:13, fontWeight:700, fontFamily:Fnt.dm, color: isSel ? C.amber : C.white }}>
+                        {s.name}
                       </div>
-                      <div style={{ fontSize:12, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.75)' : C.greyLt, marginTop:6 }}>pH {s.ph} · CEC {s.cec}</div>
-                      <div style={{ fontSize:12, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.6)' : C.greyLt, marginTop:4 }}>{s.cov}</div>
+                      <div style={{ fontSize:11, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.65)' : '#888888', marginTop:2 }}>
+                        {s.sub || ''}
+                      </div>
                     </div>
                   );
                 })}
