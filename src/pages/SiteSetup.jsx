@@ -1611,9 +1611,9 @@ export default function SiteSetup() {
                   const pct = grandTotal>0?(t/grandTotal*100).toFixed(1)+' %':'—';
                   return (
                     <div key={key} style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr', gap:8, alignItems:'center', background:'rgba(0,162,73,0.06)', borderLeft:`3px solid ${C.greenLt30}`, borderRadius:'0 6px 6px 0', padding:'9px 12px', marginBottom:4 }}>
-                      <span style={{ fontSize:13, fontWeight:700, fontFamily:Fnt.dm, color:'#FFF' }}>{nm}</span>
-                      <span style={{ fontSize:14, fontWeight:800, fontFamily:Fnt.mono, color:C.greenLt30, textAlign:'right' }}>{fmtT(t)} t/m</span>
-                      <span style={{ fontSize:13, fontWeight:800, fontFamily:Fnt.mono, color:'#FFF', textAlign:'right' }}>{pct}</span>
+                      <span style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.dm, color:'#FFF' }}>{nm}</span>
+                      <span style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.mono, color:C.greenLt30, textAlign:'right' }}>{fmtT(t)} t/m</span>
+                      <span style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.mono, color:'#FFF', textAlign:'right' }}>{pct}</span>
                     </div>
                   );
                 })
