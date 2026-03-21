@@ -1036,7 +1036,7 @@ export default function SiteSetup() {
                         ...fInput,
                         ...(millConfirmed && site.gpsLat ? { background:C.tealDim, borderColor:C.tealBdr, color:C.amber } : { color:C.greyLt }),
                       }}
-                      placeholder="Optional — Auto-Fills From Mill"
+                      placeholder="Latitude"
                       value={site.gpsLat}
                       readOnly={!!(millConfirmed && site.gpsLat)}
                       onChange={e=>upSite('gpsLat',e.target.value)}
