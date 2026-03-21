@@ -1060,12 +1060,15 @@ export default function SiteSetup() {
                             key={m.id}
                             onMouseDown={async ev => {
                               ev.preventDefault();
+                              // Populate ALL fields from mill row
+                              if (m.owner_company) { upSite('company', m.owner_company); setCompanyConfirmed(true); }
                               upSite('millName', m.mill_name);
                               if (m.province) upSite('province', m.province);
                               if (m.district_kabupaten) upSite('district', m.district_kabupaten);
                               if (m.latitude)  upSite('gpsLat', String(m.latitude));
                               if (m.longitude) upSite('gpsLon', String(m.longitude));
                               if (m.capacity_tph) setMill(prev => ({...prev, ffb: m.capacity_tph}));
+                              setEstateConfirmed(true);
                               setMillConfirmed(true);
                               setSelectedMill(m);
                               console.log('MILL SELECTED:', m);
@@ -1077,6 +1080,44 @@ export default function SiteSetup() {
                                   p_lat: m.latitude, p_lon: m.longitude, p_max_distance_km: 25
                                 });
                                 if (soilResult?.[0]) setGpsSoilSuggestion(soilResult[0].class_name || '');
+                              }
+                              // Soil auto-select — inline on mill selection
+                              if (m.province_soil_id) {
+                                const { data: psl } = await supabase
+                                  .from('cfi_province_soil_lookup')
+                                  .select('dominant_soil_wrb')
+                                  .eq('id', m.province_soil_id)
+                                  .single();
+                                if (psl?.dominant_soil_wrb) {
+                                  const wrb = psl.dominant_soil_wrb.toLowerCase();
+                                  let soilKey = 'ultisol';
+                                  if (wrb.includes('histosol') || wrb.includes('peat') || wrb.includes('gambut')) soilKey = 'histosol';
+                                  else if (wrb.includes('inceptisol')) soilKey = 'inceptisol';
+                                  else if (wrb.includes('oxisol') || wrb.includes('ferralsol') || wrb.includes('latosol')) soilKey = 'oxisol';
+                                  else if (wrb.includes('andosol') || wrb.includes('andisol')) soilKey = 'andisol';
+                                  else if (wrb.includes('spodosol') || wrb.includes('podzol') || wrb.includes('sandy')) soilKey = 'spodosol';
+                                  console.log('SOIL KEY MAPPED:', soilKey);
+                                  setSelectedSoil(soilKey);
+                                  setSoilAutoSelected(true);
+                                }
+                              } else if (m.province) {
+                                const { data: psl } = await supabase
+                                  .from('cfi_province_soil_lookup')
+                                  .select('dominant_soil_wrb')
+                                  .ilike('province', m.province)
+                                  .maybeSingle();
+                                if (psl?.dominant_soil_wrb) {
+                                  const wrb = psl.dominant_soil_wrb.toLowerCase();
+                                  let soilKey = 'ultisol';
+                                  if (wrb.includes('histosol') || wrb.includes('peat') || wrb.includes('gambut')) soilKey = 'histosol';
+                                  else if (wrb.includes('inceptisol')) soilKey = 'inceptisol';
+                                  else if (wrb.includes('oxisol') || wrb.includes('ferralsol') || wrb.includes('latosol')) soilKey = 'oxisol';
+                                  else if (wrb.includes('andosol') || wrb.includes('andisol')) soilKey = 'andisol';
+                                  else if (wrb.includes('spodosol') || wrb.includes('podzol') || wrb.includes('sandy')) soilKey = 'spodosol';
+                                  console.log('SOIL KEY MAPPED (province fallback):', soilKey);
+                                  setSelectedSoil(soilKey);
+                                  setSoilAutoSelected(true);
+                                }
                               }
                             }}
                             style={{ padding:'10px 14px', cursor:'pointer', fontSize:13, fontFamily:Fnt.dm, color:C.grey, borderBottom:'1px solid rgba(255,255,255,0.05)' }}
