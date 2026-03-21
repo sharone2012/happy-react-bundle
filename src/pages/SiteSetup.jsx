@@ -910,15 +910,33 @@ export default function SiteSetup() {
                   </div>
                 </div>
 
-                {/* ── FIELD 4: Province + District ── */}
+                {/* ── FIELD 4: Province + District (point 6: teal+amber when auto-filled) ── */}
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
                   <div>
                     <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>PROVINCE</div>
-                    <input style={fInput} placeholder="Province" value={site.province} onChange={e=>upSite('province',e.target.value)} />
+                    <input
+                      style={{
+                        ...fInput,
+                        ...(millConfirmed && site.province ? { background:C.tealDim, borderColor:C.tealBdr, color:C.amber } : {}),
+                      }}
+                      placeholder="Province"
+                      value={site.province}
+                      readOnly={!!(millConfirmed && site.province)}
+                      onChange={e=>upSite('province',e.target.value)}
+                    />
                   </div>
                   <div>
                     <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>DISTRICT / KABUPATEN</div>
-                    <input style={fInput} placeholder="District / Kabupaten" value={site.district} onChange={e=>upSite('district',e.target.value)} />
+                    <input
+                      style={{
+                        ...fInput,
+                        ...(millConfirmed && site.district ? { background:C.tealDim, borderColor:C.tealBdr, color:C.amber } : {}),
+                      }}
+                      placeholder="District / Kabupaten"
+                      value={site.district}
+                      readOnly={!!(millConfirmed && site.district)}
+                      onChange={e=>upSite('district',e.target.value)}
+                    />
                   </div>
                 </div>
 
@@ -926,11 +944,29 @@ export default function SiteSetup() {
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
                   <div>
                     <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>GPS LATITUDE</div>
-                    <input style={{...fInput, color:C.greyLt}} placeholder="Optional — Auto-Fills From Mill" value={site.gpsLat} onChange={e=>upSite('gpsLat',e.target.value)} />
+                    <input
+                      style={{
+                        ...fInput,
+                        ...(millConfirmed && site.gpsLat ? { background:C.tealDim, borderColor:C.tealBdr, color:C.amber } : { color:C.greyLt }),
+                      }}
+                      placeholder="Optional — Auto-Fills From Mill"
+                      value={site.gpsLat}
+                      readOnly={!!(millConfirmed && site.gpsLat)}
+                      onChange={e=>upSite('gpsLat',e.target.value)}
+                    />
                   </div>
                   <div>
                     <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>GPS LONGITUDE</div>
-                    <input style={{...fInput, color:C.greyLt}} placeholder="Optional — Auto-Fills From Mill" value={site.gpsLon} onChange={e=>upSite('gpsLon',e.target.value)} />
+                    <input
+                      style={{
+                        ...fInput,
+                        ...(millConfirmed && site.gpsLon ? { background:C.tealDim, borderColor:C.tealBdr, color:C.amber } : { color:C.greyLt }),
+                      }}
+                      placeholder="Optional — Auto-Fills From Mill"
+                      value={site.gpsLon}
+                      readOnly={!!(millConfirmed && site.gpsLon)}
+                      onChange={e=>upSite('gpsLon',e.target.value)}
+                    />
                   </div>
                 </div>
 
@@ -939,6 +975,13 @@ export default function SiteSetup() {
                   <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>COUNTRY</div>
                   <input style={{...fInput, color:C.teal, borderColor:C.tealBdr, background:C.tealDim}} placeholder="Country" value={site.country} onChange={e=>upSite('country',e.target.value)} />
                 </div>
+
+                {/* ── Site data loaded message (point 7) ── */}
+                {siteDataMessage && (
+                  <div style={{ fontSize:11, color:C.teal, fontFamily:Fnt.dm, marginTop:4 }}>
+                    {siteDataMessage}
+                  </div>
+                )}
 
               </div>
             </div>
