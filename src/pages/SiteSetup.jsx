@@ -114,6 +114,27 @@ const STREAM_NAMES = {
   opf:'Oil Palm Fronds', opt:'Oil Palm Trunks'
 };
 
+// Soil class parser for dominant_soil_wrb
+function parseSoilClass(wrb) {
+  if (!wrb) return null;
+  const w = wrb.toLowerCase();
+  if (w.includes('histosol') || w.includes('peat') || w.includes('gambut')) return 'histosols';
+  if (w.includes('ultisol') || w.includes('acrisol')) return 'ultisols';
+  if (w.includes('inceptisol')) return 'inceptisols';
+  if (w.includes('oxisol') || w.includes('ferralsol') || w.includes('latosol')) return 'oxisols';
+  if (w.includes('andosol') || w.includes('andisol')) return 'andisols';
+  if (w.includes('spodosol') || w.includes('podzol') || w.includes('sandy')) return 'spodosols';
+  return null;
+}
+
+// AG Management options
+const AG_MGMT_OPTIONS = [
+  { id:'conventional', label:'Conventional' },
+  { id:'gap',          label:'Good Agricultural Practice (GAP)' },
+  { id:'vgam',         label:'Very Good Agricultural Management (VGAM)' },
+  { id:'organic',      label:'Organic' },
+];
+
 // ── DEBOUNCE HOOK ───────────────────────────────────────
 function useDebounce(fn, delay) {
   const timer = useRef(null);
@@ -160,6 +181,11 @@ export default function SiteSetup() {
   // ── Section G state (soil) ───────────────────────────
   const [selectedSoil, setSelectedSoil] = useState('ultisols');
   const [soils, setSoils] = useState(SOILS_FALLBACK);
+  const [soilAutoSelected, setSoilAutoSelected] = useState(false);
+  const [secondarySoilWrb, setSecondarySoilWrb] = useState('');
+
+  // ── Agricultural Management ──────────────────────────
+  const [agMgmt, setAgMgmt] = useState('vgam');
 
   // ── Section F / G-Total confirm ──────────────────────
   const [fConfirmed, setFConfirmed] = useState(false);
@@ -175,13 +201,15 @@ export default function SiteSetup() {
   const [companyConfirmed, setCompanyConfirmed] = useState(false);
   const [estateConfirmed,  setEstateConfirmed]  = useState(false);
   const [millConfirmed,    setMillConfirmed]    = useState(false);
-  const [activeDropdown,   setActiveDropdown]   = useState(null); // 'company' | 'estate' | 'mill' | null
+  const [activeDropdown,   setActiveDropdown]   = useState(null);
+  const [selectedMillRecord, setSelectedMillRecord] = useState(null); // full mill row
 
-  // ── Site data cascade (points 6-11) ────────────────
+  // ── Site data cascade ──────────────────────────────
   const [siteDataMessage, setSiteDataMessage] = useState('');
-  const [climateData, setClimateData] = useState(null);
-  const [climateOverrides, setClimateOverrides] = useState({});
-  const [climateOriginal, setClimateOriginal] = useState(null);
+  const [weatherData, setWeatherData] = useState(null); // { rainfall, temp }
+  const [weatherOriginal, setWeatherOriginal] = useState(null);
+  const [weatherOverrides, setWeatherOverrides] = useState({});
+  const [weatherSource, setWeatherSource] = useState(null); // 'live' | 'province'
 
   // ═══════════════════════════════════════════════════════
   // SUPABASE INIT — create or load cfi_sites record
@@ -306,43 +334,102 @@ export default function SiteSetup() {
     return () => document.removeEventListener('mousedown', close);
   }, []);
 
-  // ── All-teal trigger: when company+estate+mill all confirmed → load soil + climate (point 7)
+  // ── All-teal trigger: when company+estate+mill all confirmed → load soil + weather (points 7,12,13)
   useEffect(() => {
     if (!companyConfirmed || !estateConfirmed || !millConfirmed) {
+      // Point 8: any change clears stored soil/weather
       setSiteDataMessage('');
-      setClimateData(null);
-      setClimateOriginal(null);
-      setClimateOverrides({});
+      setWeatherData(null);
+      setWeatherOriginal(null);
+      setWeatherOverrides({});
+      setWeatherSource(null);
+      setSoilAutoSelected(false);
+      setSecondarySoilWrb('');
       return;
     }
     async function loadSiteData() {
-      if (site.province) {
-        const { data: soilLookup } = await supabase
+      const mr = selectedMillRecord;
+      if (!mr) return;
+
+      // ── STEP 1: Get province_soil_id from mill record
+      const provinceSoilId = mr.province_soil_id;
+      let provinceRow = null;
+
+      if (provinceSoilId) {
+        // ── STEP 2: Query cfi_province_soil_lookup by id
+        const { data } = await supabase
           .from('cfi_province_soil_lookup')
           .select('*')
-          .ilike('province', `%${site.province}%`)
-          .limit(1)
+          .eq('id', provinceSoilId)
           .maybeSingle();
-        if (soilLookup) {
-          // Auto-select soil type from province lookup
-          const wrb = soilLookup.dominant_soil_wrb?.toLowerCase().replace(/\s/g, '') || '';
-          if (wrb) {
-            setSelectedSoil(wrb);
-            if (siteId) supabase.from('cfi_sites').update({ soil_type: wrb }).eq('id', siteId);
+        provinceRow = data;
+      }
+
+      if (provinceRow) {
+        // Load rainfall + temp as midpoints (point 16)
+        const rainfallMid = provinceRow.rainfall_mm_yr_min && provinceRow.rainfall_mm_yr_max
+          ? Math.round((provinceRow.rainfall_mm_yr_min + provinceRow.rainfall_mm_yr_max) / 2) : null;
+        const tempMid = provinceRow.temp_c_avg_min && provinceRow.temp_c_avg_max
+          ? ((provinceRow.temp_c_avg_min + provinceRow.temp_c_avg_max) / 2).toFixed(1) : null;
+
+        const wd = { rainfall: rainfallMid, temp: tempMid ? parseFloat(tempMid) : null };
+        setWeatherData(wd);
+        setWeatherOriginal(wd);
+        setWeatherSource('province');
+
+        // ── STEP 3: Parse dominant_soil_wrb to extract soil class
+        const soilKey = parseSoilClass(provinceRow.dominant_soil_wrb);
+        if (soilKey) {
+          setSelectedSoil(soilKey);
+          setSoilAutoSelected(true);
+          if (siteId) supabase.from('cfi_sites').update({ soil_type: soilKey }).eq('id', siteId);
+        }
+
+        // Secondary soil (point 19)
+        setSecondarySoilWrb(provinceRow.secondary_soil_wrb || '');
+
+        // Auto-select VGAM (point 14)
+        setAgMgmt('vgam');
+      }
+
+      // ── Point 13: Try Open-Meteo for live weather using GPS
+      if (mr.latitude && mr.longitude) {
+        try {
+          const meteoUrl = `https://api.open-meteo.com/v1/forecast?latitude=${mr.latitude}&longitude=${mr.longitude}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto&past_days=365&forecast_days=0`;
+          const resp = await fetch(meteoUrl);
+          if (resp.ok) {
+            const json = await resp.json();
+            const daily = json?.daily;
+            if (daily?.precipitation_sum?.length) {
+              const totalRain = daily.precipitation_sum.reduce((a,b) => a + (b||0), 0);
+              const avgTemp = daily.temperature_2m_max && daily.temperature_2m_min
+                ? ((daily.temperature_2m_max.reduce((a,b)=>a+b,0) + daily.temperature_2m_min.reduce((a,b)=>a+b,0)) / (daily.temperature_2m_max.length * 2)).toFixed(1)
+                : null;
+              const liveData = {
+                rainfall: Math.round(totalRain),
+                temp: avgTemp ? parseFloat(avgTemp) : null
+              };
+              setWeatherData(liveData);
+              setWeatherOriginal(liveData);
+              setWeatherSource('live');
+            }
           }
-          const cd = {
-            rainfall_min: soilLookup.rainfall_mm_yr_min,
-            rainfall_max: soilLookup.rainfall_mm_yr_max,
-            temp_min: soilLookup.temp_c_avg_min,
-            temp_max: soilLookup.temp_c_avg_max,
-            ph_min: soilLookup.ph_min,
-            ph_max: soilLookup.ph_max,
-          };
-          setClimateData(cd);
-          setClimateOriginal(cd);
+        } catch (e) {
+          // Keep province values, already set
         }
       }
+
       setSiteDataMessage('Site data loaded — soil profile and climate data updated');
+
+      // Point 18: Save to cfi_sites
+      if (siteId) {
+        const wd = weatherData || {};
+        supabase.from('cfi_sites').update({
+          rainfall_mm_yr: wd.rainfall || null,
+          temp_avg_c: wd.temp || null,
+          agronomy_tier: 'vgam',
+        }).eq('id', siteId);
+      }
     }
     loadSiteData();
   }, [companyConfirmed, estateConfirmed, millConfirmed]);
@@ -737,12 +824,13 @@ export default function SiteSetup() {
                                 .ilike('owner_company', `%${c.company}%`)
                                 .order('estate_name').limit(100);
                               setEstateSuggestions(estates?.length ? estates : (await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').order('estate_name').limit(100)).data || []);
+                              const millCols = 'id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id';
                               const { data: mills } = await supabase
                                 .from('cfi_mills_60tph')
-                                .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
+                                .select(millCols)
                                 .ilike('owner_company', `%${c.company}%`)
                                 .order('mill_name').limit(105);
-                              setMillSuggestions(mills?.length ? mills : (await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105)).data || []);
+                              setMillSuggestions(mills?.length ? mills : (await supabase.from('cfi_mills_60tph').select(millCols).order('mill_name').limit(105)).data || []);
                             }}
                             style={{ padding:'10px 14px', cursor:'pointer', fontSize:13, fontFamily:Fnt.dm, color:C.grey, borderBottom:'1px solid rgba(255,255,255,0.05)' }}
                             onMouseEnter={ev => ev.currentTarget.style.background='rgba(64,215,197,0.08)'}
@@ -846,13 +934,14 @@ export default function SiteSetup() {
                         if (millConfirmed) {
                           setSite(s => ({...s, millName:'', gpsLat:'', gpsLon:''}));
                           setMillConfirmed(false);
+                          setSelectedMillRecord(null);
                           setGpsSoilSuggestion('');
                           setMill(prev => ({...prev, ffb:60}));
                         }
                         setActiveDropdown('mill');
                         const { data } = await supabase
                           .from('cfi_mills_60tph')
-                          .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph')
+                          .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id')
                           .order('mill_name').limit(105);
                         setMillSuggestions(data || []);
                       }}
@@ -860,12 +949,14 @@ export default function SiteSetup() {
                         const val = e.target.value;
                         setSite(s => ({...s, millName:val, gpsLat:'', gpsLon:''}));
                         setMillConfirmed(false);
+                        setSelectedMillRecord(null);
                         setGpsSoilSuggestion('');
                         setMill(prev => ({...prev, ffb:60}));
                         setActiveDropdown('mill');
+                        const cols = 'id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id';
                         const { data } = val.length === 0
-                          ? await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').order('mill_name').limit(105)
-                          : await supabase.from('cfi_mills_60tph').select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph').ilike('mill_name',`%${val}%`).limit(10);
+                          ? await supabase.from('cfi_mills_60tph').select(cols).order('mill_name').limit(105)
+                          : await supabase.from('cfi_mills_60tph').select(cols).ilike('mill_name',`%${val}%`).limit(10);
                         setMillSuggestions(data || []);
                       }}
                     />
@@ -883,6 +974,7 @@ export default function SiteSetup() {
                               if (m.longitude) upSite('gpsLon', String(m.longitude));
                               if (m.capacity_tph) setMill(prev => ({...prev, ffb: m.capacity_tph}));
                               setMillConfirmed(true);
+                              setSelectedMillRecord(m);
                               setMillSuggestions([]);
                               setActiveDropdown(null);
                               if (m.latitude && m.longitude) {
@@ -890,11 +982,6 @@ export default function SiteSetup() {
                                   p_lat: m.latitude, p_lon: m.longitude, p_max_distance_km: 25
                                 });
                                 if (soilResult?.[0]) setGpsSoilSuggestion(soilResult[0].class_name || '');
-                              }
-                              if (m.confirmed_soil_type) {
-                                const sk = m.confirmed_soil_type.toLowerCase().replace(/\s/g,'');
-                                setSelectedSoil(sk);
-                                if (siteId) supabase.from('cfi_sites').update({ soil_type: sk }).eq('id', siteId);
                               }
                             }}
                             style={{ padding:'10px 14px', cursor:'pointer', fontSize:13, fontFamily:Fnt.dm, color:C.grey, borderBottom:'1px solid rgba(255,255,255,0.05)' }}
@@ -975,6 +1062,69 @@ export default function SiteSetup() {
                   <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>COUNTRY</div>
                   <input style={{...fInput, color:C.teal, borderColor:C.tealBdr, background:C.tealDim}} placeholder="Country" value={site.country} onChange={e=>upSite('country',e.target.value)} />
                 </div>
+
+                {/* ── FIELD 7: Weather (point 11, 16) — Rainfall + Temp side by side ── */}
+                {weatherData && (
+                  <div>
+                    <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>WEATHER</div>
+                    <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
+                      {[
+                        { key:'rainfall', label:'Rainfall (mm/yr)', val: weatherOverrides.rainfall != null ? weatherOverrides.rainfall : weatherData.rainfall },
+                        { key:'temp',     label:'Avg temp (°C)',    val: weatherOverrides.temp != null ? weatherOverrides.temp : weatherData.temp },
+                      ].map(field => {
+                        const isOverridden = weatherOverrides[field.key] != null;
+                        return (
+                          <div key={field.key}>
+                            <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:3 }}>
+                              <span style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em' }}>{field.label}</span>
+                              {!isOverridden && weatherSource === 'live' && <span style={{ fontSize:9, fontWeight:700, color:C.teal }}>Live</span>}
+                              {!isOverridden && weatherSource === 'province' && <span style={{ fontSize:9, fontWeight:700, color:'#888888' }}>Province average</span>}
+                            </div>
+                            <div style={{ position:'relative' }}>
+                              <input
+                                style={{
+                                  ...fInput,
+                                  fontSize:13,
+                                  padding:'8px 30px 8px 10px',
+                                  background: isOverridden ? '#000' : C.tealDim,
+                                  borderColor: isOverridden ? 'rgba(255,255,255,0.25)' : C.tealBdr,
+                                  color: isOverridden ? C.white : C.amber,
+                                }}
+                                value={field.val != null ? String(field.val) : '—'}
+                                onChange={e => {
+                                  setWeatherOverrides(prev => ({...prev, [field.key]: e.target.value}));
+                                  // Point 18: save override
+                                  if (siteId) {
+                                    const col = field.key === 'rainfall' ? 'rainfall_mm_yr' : 'temp_avg_c';
+                                    const num = parseFloat(e.target.value);
+                                    if (!isNaN(num)) supabase.from('cfi_sites').update({ [col]: num }).eq('id', siteId);
+                                  }
+                                }}
+                              />
+                              {isOverridden && (
+                                <button
+                                  onClick={() => {
+                                    setWeatherOverrides(prev => { const n={...prev}; delete n[field.key]; return n; });
+                                    // Restore original to DB
+                                    if (siteId && weatherOriginal) {
+                                      const col = field.key === 'rainfall' ? 'rainfall_mm_yr' : 'temp_avg_c';
+                                      supabase.from('cfi_sites').update({ [col]: weatherOriginal[field.key] }).eq('id', siteId);
+                                    }
+                                  }}
+                                  style={{ position:'absolute', right:6, top:'50%', transform:'translateY(-50%)', background:'none', border:'none', color:C.teal, cursor:'pointer', fontSize:14, fontFamily:Fnt.mono, padding:2 }}
+                                  title="Reset to original value"
+                                >↺</button>
+                              )}
+                            </div>
+                            {isOverridden && (
+                              <div style={{ fontSize:11, color:'#888888', fontFamily:Fnt.dm, marginTop:2 }}>Manual override</div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
 
                 {/* ── Site data loaded message (point 7) ── */}
                 {siteDataMessage && (
@@ -1077,25 +1227,73 @@ export default function SiteSetup() {
             <div style={secTitle}>G — Soil Origin</div>
             <div style={secSub}>Auto-Detected · Override Available</div>
             <div style={cbody}>
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:14, marginBottom:9 }}>
-                {soils.map(s=>(
-                  <div key={s.id} onClick={()=>selectSoil(s.id)} style={{ background:selectedSoil===s.id?C.tealDim:C.navyDeep, border:`1.5px solid ${selectedSoil===s.id?C.tealBdr:C.bdrCalc}`, borderRadius:8, padding:'20px 24px', cursor:'pointer', transition:'all 0.12s' }}>
-                    <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:selectedSoil===s.id?C.amber:C.grey }}>
-                      {s.name}{s.peat?<span style={{ color:C.amber, fontSize:11 }}> (Peat)</span>:null}
-                    </div>
-                    <div style={{ fontSize:12, fontFamily:Fnt.dm, color:selectedSoil===s.id?'rgba(245,166,35,0.75)':C.greyLt, marginTop:6 }}>pH {s.ph} · CEC {s.cec}</div>
-                    <div style={{ fontSize:12, fontFamily:Fnt.dm, color:selectedSoil===s.id?'rgba(245,166,35,0.6)':C.greyLt, marginTop:4 }}>{s.cov}</div>
-                  </div>
-                ))}
+
+              {/* ── Point 14: Agricultural Management row ── */}
+              <div style={{ marginBottom:10 }}>
+                <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:6 }}>AGRICULTURAL MANAGEMENT</div>
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr 1fr', gap:6 }}>
+                  {AG_MGMT_OPTIONS.map(opt => {
+                    const sel = agMgmt === opt.id;
+                    return (
+                      <div
+                        key={opt.id}
+                        onClick={() => {
+                          setAgMgmt(opt.id);
+                          if (siteId) supabase.from('cfi_sites').update({ agronomy_tier: opt.id }).eq('id', siteId);
+                        }}
+                        style={{
+                          background: sel ? C.tealDim : C.navyDeep,
+                          border: `1.5px solid ${sel ? C.tealBdr : C.bdrCalc}`,
+                          borderRadius:7, padding:'10px 8px', cursor:'pointer', textAlign:'center', transition:'all 0.12s',
+                        }}
+                      >
+                        <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.dm, color: sel ? C.amber : C.grey, lineHeight:1.3 }}>{opt.label}</div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
+
+              {/* Thick divider between ag management and soil cards */}
+              <div style={{ height:2, background:'#1E6B8C', marginBottom:12 }} />
+
+              {/* Soil type cards (point 17: auto-selected shows 2px teal border) */}
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:14, marginBottom:9 }}>
+                {soils.map(s => {
+                  const isSel = selectedSoil === s.id;
+                  const isAuto = soilAutoSelected && isSel;
+                  return (
+                    <div key={s.id} onClick={() => { selectSoil(s.id); setSoilAutoSelected(false); }} style={{
+                      background: isSel ? C.tealDim : C.navyDeep,
+                      border: `${isAuto ? '2px' : '1.5px'} solid ${isSel ? '#00C9B1' : C.bdrCalc}`,
+                      borderRadius:8, padding:'20px 24px', cursor:'pointer', transition:'all 0.12s',
+                    }}>
+                      <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color: isSel ? C.amber : C.grey }}>
+                        {s.name}{s.peat ? <span style={{ color:C.amber, fontSize:11 }}> (Peat)</span> : null}
+                      </div>
+                      <div style={{ fontSize:12, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.75)' : C.greyLt, marginTop:6 }}>pH {s.ph} · CEC {s.cec}</div>
+                      <div style={{ fontSize:12, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.6)' : C.greyLt, marginTop:4 }}>{s.cov}</div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Point 19: Secondary soil display */}
+              {secondarySoilWrb && (
+                <div style={{ fontSize:12, color:'#888888', fontFamily:Fnt.dm, fontStyle:'italic', marginBottom:8 }}>
+                  Secondary soil: {secondarySoilWrb}
+                </div>
+              )}
+
               {gpsSoilSuggestion && (
                 <div style={{ background:'rgba(64,215,197,0.10)', border:'1px solid rgba(64,215,197,0.40)', borderRadius:6, padding:'7px 12px', marginBottom:8, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
                   <span style={{ fontSize:12, color:C.teal, fontFamily:Fnt.dm }}>
                     GPS Signal: {gpsSoilSuggestion} Found Near This Mill. Is This Correct?
                   </span>
-                  <button onClick={()=>setGpsSoilSuggestion('')} style={{ background:'none', border:'none', color:C.greyLt, cursor:'pointer', fontSize:16 }}>×</button>
+                  <button onClick={() => setGpsSoilSuggestion('')} style={{ background:'none', border:'none', color:C.greyLt, cursor:'pointer', fontSize:16 }}>×</button>
                 </div>
               )}
+
               {/* Point 10: Histosol AMBER warning */}
               {selectedSoil === 'histosols' && (
                 <div style={{ background:C.amberDim, border:`1px solid ${C.amber}`, borderRadius:6, padding:'7px 12px', fontSize:11, color:C.amber, fontFamily:Fnt.dm, marginBottom:6 }}>
@@ -1114,53 +1312,8 @@ export default function SiteSetup() {
               )}
               <div style={{ display:'flex', gap:7, flexWrap:'wrap', marginTop:4 }}>
                 <div style={{ fontSize:15, fontWeight:700, fontFamily:Fnt.mono, padding:'4px 12px', borderRadius:12, border:`1.5px solid ${C.green}`, background:C.green, color:'#000', whiteSpace:'nowrap', display:'inline-block' }}>{soilData.name}</div>
-                {soilData.pills?.map((p,i)=>(<div key={i} style={{...chips[p.cls], fontSize:13}}>{p.txt}</div>))}
+                {soilData.pills?.map((p,i) => (<div key={i} style={{...chips[p.cls], fontSize:13}}>{p.txt}</div>))}
               </div>
-
-              {/* Point 11: Climate/Rainfall editable fields with override */}
-              {climateData && (
-                <div style={{ marginTop:12, borderTop:`1px solid rgba(64,215,197,0.15)`, paddingTop:10 }}>
-                  <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.teal, letterSpacing:'0.06em', marginBottom:8 }}>CLIMATE DATA</div>
-                  <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
-                    {[
-                      { key:'rainfall', label:'Rainfall (mm/yr)', origVal: climateOriginal ? `${climateOriginal.rainfall_min||'—'}–${climateOriginal.rainfall_max||'—'}` : '—', displayVal: climateOverrides.rainfall != null ? climateOverrides.rainfall : (climateData.rainfall_min && climateData.rainfall_max ? `${climateData.rainfall_min}–${climateData.rainfall_max}` : '—') },
-                      { key:'temp', label:'Temp (°C avg)', origVal: climateOriginal ? `${climateOriginal.temp_min||'—'}–${climateOriginal.temp_max||'—'}` : '—', displayVal: climateOverrides.temp != null ? climateOverrides.temp : (climateData.temp_min && climateData.temp_max ? `${climateData.temp_min}–${climateData.temp_max}` : '—') },
-                      { key:'ph', label:'Soil pH Range', origVal: climateOriginal ? `${climateOriginal.ph_min||'—'}–${climateOriginal.ph_max||'—'}` : '—', displayVal: climateOverrides.ph != null ? climateOverrides.ph : (climateData.ph_min && climateData.ph_max ? `${climateData.ph_min}–${climateData.ph_max}` : '—') },
-                    ].map(field => {
-                      const isOverridden = climateOverrides[field.key] != null;
-                      return (
-                        <div key={field.key}>
-                          <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:3 }}>{field.label}</div>
-                          <div style={{ position:'relative' }}>
-                            <input
-                              style={{
-                                ...fInput,
-                                fontSize:13,
-                                padding:'8px 30px 8px 10px',
-                                background: isOverridden ? '#000' : C.tealDim,
-                                borderColor: isOverridden ? 'rgba(255,255,255,0.25)' : C.tealBdr,
-                                color: isOverridden ? C.white : C.amber,
-                              }}
-                              value={String(field.displayVal)}
-                              onChange={e => setClimateOverrides(prev => ({...prev, [field.key]: e.target.value}))}
-                            />
-                            {isOverridden && (
-                              <button
-                                onClick={() => setClimateOverrides(prev => { const n={...prev}; delete n[field.key]; return n; })}
-                                style={{ position:'absolute', right:6, top:'50%', transform:'translateY(-50%)', background:'none', border:'none', color:C.teal, cursor:'pointer', fontSize:14, fontFamily:Fnt.mono, padding:2 }}
-                                title="Reset to API value"
-                              >↺</button>
-                            )}
-                          </div>
-                          {isOverridden && (
-                            <div style={{ fontSize:11, color:'#888888', fontFamily:Fnt.dm, marginTop:2 }}>Manual override</div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
