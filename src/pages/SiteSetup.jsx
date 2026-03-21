@@ -633,15 +633,25 @@ export default function SiteSetup() {
                     onChange={async e => {
                       const val = e.target.value;
                       upSite('company', val);
-                      if (val.length >= 2) {
+                      if (val === '' || val.length < 2) {
+                        upSite('estate',   '');
+                        upSite('millName', '');
+                        upSite('province', '');
+                        upSite('district', '');
+                        upSite('gpsLat',   '');
+                        upSite('gpsLon',   '');
+                        setCompanySuggestions([]);
+                        setEstateSuggestions([]);
+                        setMillSuggestions([]);
+                        setGpsSoilSuggestion('');
+                        setMill(prev => ({ ...prev, ffb: 60 }));
+                      } else {
                         const { data } = await supabase
                           .from('cfi_mill_owners')
                           .select('id, company')
                           .ilike('company', `%${val}%`)
                           .limit(8);
                         setCompanySuggestions(data || []);
-                      } else {
-                        setCompanySuggestions([]);
                       }
                     }}
                   />
