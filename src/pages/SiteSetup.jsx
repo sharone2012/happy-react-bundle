@@ -1375,17 +1375,27 @@ export default function SiteSetup() {
                   {selectedSoil === 'oxisol' ? 'High Fe/Al Oxide Content. CFI Chelated P Significantly Outperforms TSP.' : 'Sandy — Lowest Fertility. CFI Humate Provides Critical CEC Improvement. 31% Yield Gap.'}
                 </div>
               )}
+              {/* Fertility pill — 3 states based on soil */}
               <div style={{ display:'flex', flexDirection:'row', gap:6, alignItems:'center', flexWrap:'nowrap', width:'100%', marginTop:4 }}>
-                <div style={{ fontSize:13, fontWeight:700, fontFamily:'EB Garamond, serif', padding:'5px 10px', borderRadius:12, border:'1.5px solid #F5A623', background:'rgba(245,166,35,0.08)', color:'#F5A623', whiteSpace:'nowrap', display:'inline-block' }}>{soilData.name}</div>
+                <div style={{ fontSize:13, fontWeight:400, fontFamily:'EB Garamond, serif', padding:'5px 10px', borderRadius:12, border:'1.5px solid #F5A623', background:'rgba(245,166,35,0.08)', color:'#F5A623', whiteSpace:'nowrap', display:'inline-block' }}>{soilData.name}</div>
                 {soilData.pills?.filter(p=>p.cls==='amber').map((p,i) => (
-                  <div key={i} style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, padding:'5px 10px', borderRadius:12, background:'#F5A623', color:'#0B1F35', whiteSpace:'nowrap', display:'inline-block' }}>{p.txt}</div>
+                  <div key={i} style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.mono, padding:'5px 10px', borderRadius:12, background:'#F5A623', color:'#0B1F35', whiteSpace:'nowrap', display:'inline-block' }}>{p.txt}</div>
                 ))}
-                {soilData.pills?.filter(p=>p.cls==='green').map((p,i) => (
-                  <div key={i} style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, padding:'5px 10px', borderRadius:12, border:'1.5px solid #00A249', background:'transparent', color:'#ffffff', whiteSpace:'nowrap', display:'inline-block' }}>{p.txt}</div>
-                ))}
-                {soilData.pills?.filter(p=>p.cls==='red').map((p,i) => (
-                  <div key={i} style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, padding:'5px 10px', borderRadius:12, border:'1.5px solid #E84040', background:'rgba(232,64,64,0.15)', color:'#E84040', whiteSpace:'nowrap', display:'inline-block' }}>{p.txt}</div>
-                ))}
+                {(() => {
+                  const sid = selectedSoil;
+                  const isBest = sid === 'inceptisol' || sid === 'andisol';
+                  const isMod = sid === 'ultisol' || sid === 'oxisol' || sid === 'histosol';
+                  const isLow = sid === 'spodosol';
+                  const fertLabel = isBest ? 'Best Baseline Fertility' : isMod ? 'Moderate Baseline Fertility' : 'Low Baseline Fertility';
+                  const fertStyle = isBest
+                    ? { background:'#00A249', border:'none', color:'#ffffff' }
+                    : isMod
+                    ? { background:'transparent', border:'1.5px solid #00C9B1', color:'#ffffff' }
+                    : { background:'#C0392B', border:'none', color:'#ffffff' };
+                  return (
+                    <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.mono, padding:'5px 10px', borderRadius:12, whiteSpace:'nowrap', display:'inline-block', ...fertStyle }}>{fertLabel}</div>
+                  );
+                })()}
               </div>
             </div>
           </div>
