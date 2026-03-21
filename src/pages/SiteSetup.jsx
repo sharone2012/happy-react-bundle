@@ -965,13 +965,14 @@ export default function SiteSetup() {
                           setGpsSoilSuggestion('');
                           setMill(prev => ({...prev, ffb:60}));
                         }
-                        setActiveDropdown('mill');
-                        const { data } = await supabase
-                          .from('cfi_mills_60tph')
-                          .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id')
-                          .order('mill_name').limit(105);
-                        setMillSuggestions(data || []);
-                      }}
+                        if (site.millName.length >= 3) {
+                          setActiveDropdown('mill');
+                          const { data } = await supabase.from('cfi_mills_60tph')
+                            .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id')
+                            .ilike('mill_name',`%${site.millName}%`).limit(105);
+                          setMillSuggestions(data || []);
+                        }
+                      }
                       onChange={async e => {
                         const val = e.target.value;
                         setSite(s => ({...s, millName:val, gpsLat:'', gpsLon:''}));
