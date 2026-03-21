@@ -358,38 +358,80 @@ export default function SiteSetup() {
 
   // ── Soil auto-select: fires when selectedMill changes
   useEffect(() => {
-    if (!selectedMill?.province_soil_id) return;
+    if (!selectedMill) return;
 
-    const fetchSoil = async () => {
+    const fetchSoilForMill = async (selectedMill) => {
+      console.log('MILL SELECTED:', selectedMill);
+      console.log('PROVINCE SOIL ID:', selectedMill?.province_soil_id);
+
+      let psl = null;
+
       // Step 1: get province soil lookup row
-      const { data: psl } = await supabase
-        .from('cfi_province_soil_lookup')
-        .select('dominant_soil_wrb')
-        .eq('id', selectedMill.province_soil_id)
-        .maybeSingle();
+      if (selectedMill?.province_soil_id) {
+        const { data } = await supabase
+          .from('cfi_province_soil_lookup')
+          .select('id, province, dominant_soil_wrb')
+          .eq('id', selectedMill.province_soil_id)
+          .maybeSingle();
+        psl = data;
+      } else if (selectedMill?.province) {
+        // Fallback: lookup by province name when province_soil_id is missing
+        const { data } = await supabase
+          .from('cfi_province_soil_lookup')
+          .select('id, province, dominant_soil_wrb')
+          .ilike('province', selectedMill.province)
+          .limit(1);
+        psl = data?.[0] || null;
+      }
 
-      if (!psl) return;
+      // Step 2: check lookup result
+      console.log('PSL RESULT:', psl);
+      console.log('DOMINANT SOIL WRB:', psl?.dominant_soil_wrb);
 
-      // Step 2: map dominant_soil_wrb to soil_key
-      const soilKey = parseSoilClass(psl.dominant_soil_wrb);
+      if (!psl?.dominant_soil_wrb) {
+        const { data: allPslRows } = await supabase
+          .from('cfi_province_soil_lookup')
+          .select('*')
+          .limit(20);
+        console.log('PSL ALL ROWS (dominant_soil_wrb missing):', allPslRows);
+        return;
+      }
 
-      if (!soilKey) return;
+      // Step 3: map dominant_soil_wrb to soil_key
+      const wrb = psl.dominant_soil_wrb?.toLowerCase() || '';
+      let soilKey = 'ultisol';
+      if (wrb.includes('histosol') || wrb.includes('peat') || wrb.includes('gambut')) soilKey = 'histosol';
+      else if (wrb.includes('inceptisol')) soilKey = 'inceptisol';
+      else if (wrb.includes('oxisol') || wrb.includes('ferralsol') || wrb.includes('latosol')) soilKey = 'oxisol';
+      else if (wrb.includes('andosol') || wrb.includes('andisol')) soilKey = 'andisol';
+      else if (wrb.includes('spodosol') || wrb.includes('podzol') || wrb.includes('sandy')) soilKey = 'spodosol';
+      else if (wrb.includes('ultisol') || wrb.includes('acrisol')) soilKey = 'ultisol';
 
-      // Step 3: query cfi_soil_profiles — NEVER use confirmed_soil_type
+      // Step 4: query cfi_soil_profiles — NEVER use confirmed_soil_type
       const { data: profile } = await supabase
         .from('cfi_soil_profiles')
         .select('*')
         .eq('soil_key', soilKey)
         .maybeSingle();
 
-      if (profile) {
-        setSelectedSoil(soilKey);
-        setSoilAutoSelected(true);
-        if (siteId) supabase.from('cfi_sites').update({ soil_type: soilKey }).eq('id', siteId);
+      console.log('SOIL KEY MAPPED:', soilKey);
+      console.log('SOIL PROFILE:', profile);
+
+      if (!profile) {
+        const { data: allProfiles } = await supabase
+          .from('cfi_soil_profiles')
+          .select('*')
+          .limit(20);
+        console.log('ALL SOIL PROFILES (profile not found):', allProfiles);
+        return;
       }
+
+      setSelectedSoil(profile.soil_key || soilKey);
+      setSoilAutoSelected(true);
+      if (siteId) supabase.from('cfi_sites').update({ soil_type: profile.soil_key || soilKey }).eq('id', siteId);
     };
 
-    fetchSoil();
+    fetchSoilForMill(selectedMill);
   }, [selectedMill]);
 
   // ── Weather + secondary soil trigger
