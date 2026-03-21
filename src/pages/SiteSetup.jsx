@@ -1299,26 +1299,42 @@ export default function SiteSetup() {
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8, marginBottom:9 }}>
                 {soils.map(s => {
                   const isSel = selectedSoil === s.id;
-                  const isAuto = soilAutoSelected && isSel;
+                  const meta = SOIL_META[s.id] || {};
+                  const tagStyle = (level) => {
+                    const isHigh = level === 'high';
+                    const isMod = level === 'mod';
+                    return {
+                      fontSize:9, fontWeight:700, padding:'2px 6px', borderRadius:3, whiteSpace:'nowrap', display:'inline-block',
+                      color: isHigh ? '#F5A623' : isMod ? '#00C9B1' : '#3DCB7A',
+                      background: isHigh ? 'rgba(245,166,35,0.2)' : isMod ? 'rgba(0,201,177,0.15)' : 'rgba(61,203,122,0.15)',
+                      border: `1px solid ${isHigh ? '#F5A623' : isMod ? '#00C9B1' : '#3DCB7A'}`,
+                    };
+                  };
                   return (
                     <div key={s.id} onClick={() => { selectSoil(s.id); setSoilAutoSelected(false); }} style={{
-                      background: isSel ? C.tealDim : C.navyDeep,
-                      border: `${isAuto ? '2px' : '1.5px'} solid ${isSel ? '#00C9B1' : C.bdrCalc}`,
-                      borderRadius:7, padding:'10px 14px', cursor:'pointer', transition:'all 0.12s',
-                      height:100, display:'flex', flexDirection:'column', justifyContent:'center',
+                      background: isSel ? '#0D3040' : '#0B1828',
+                      border: `1.5px solid ${isSel ? '#00C9B1' : '#1E6B8C'}`,
+                      borderRadius:7, padding:'8px 12px', cursor:'pointer', transition:'all 0.12s',
+                      display:'flex', flexDirection:'column', justifyContent:'center',
                     }}>
-                      <div style={{ fontSize:14, fontWeight:600, fontFamily:Fnt.dm, color: isSel ? C.amber : C.white }}>
+                      <div style={{ fontSize:13, fontWeight:600, fontFamily:Fnt.dm, color:'#ffffff', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.name}
                       </div>
-                      <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
+                      <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.dm, color:'#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.sub || ''}
                       </div>
-                      <div style={{ fontSize:9, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
+                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color:'#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.line3 || ''}
                       </div>
-                      <div style={{ fontSize:9, fontFamily:Fnt.dm, color:'#888888', marginTop:1 }}>
+                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color:'#888888', marginTop:1, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.line4 || ''}
                       </div>
+                      {meta.tag1 && meta.tag2 && (
+                        <div style={{ display:'flex', gap:4, marginTop:4 }}>
+                          <span style={tagStyle(meta.tag1.level)}>{meta.tag1.label}</span>
+                          <span style={tagStyle(meta.tag2.level)}>{meta.tag2.label}</span>
+                        </div>
+                      )}
                     </div>
                   );
                 })}
