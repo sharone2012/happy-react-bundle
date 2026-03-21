@@ -1343,6 +1343,9 @@ export default function SiteSetup() {
                 })}
               </div>
 
+              {/* G4: Divider between soil cards and bottom pill row */}
+              <div style={{ height:1, background:'#2A3A4A', marginBottom:8, marginTop:4 }} />
+
               {/* Point 19: Secondary soil display */}
               {secondarySoilWrb && (
                 <div style={{ fontSize:12, color:'#888888', fontFamily:Fnt.dm, fontStyle:'italic', marginBottom:8 }}>
