@@ -295,13 +295,9 @@ export default function SiteSetup() {
 
   // Close cascade dropdowns on outside click
   useEffect(() => {
-    const close = () => {
-      setCompanySuggestions([]);
-      setEstateSuggestions([]);
-      setMillSuggestions([]);
-    };
-    document.addEventListener('click', close);
-    return () => document.removeEventListener('click', close);
+    const close = () => setActiveDropdown(null);
+    document.addEventListener('mousedown', close);
+    return () => document.removeEventListener('mousedown', close);
   }, []);
 
   function buildSoilPills(p) {
