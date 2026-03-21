@@ -1023,12 +1023,15 @@ export default function SiteSetup() {
                           setSelectedMill(null);
                           setGpsSoilSuggestion('');
                           setMill(prev => ({...prev, ffb:60}));
+                          setMillSuggestions([]);
+                          setActiveDropdown(null);
+                          return;
                         }
                         if (site.millName.length >= 3) {
                           setActiveDropdown('mill');
                           const { data } = await supabase.from('cfi_mills_60tph')
                             .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id')
-                            .ilike('mill_name',`%${site.millName}%`).limit(105);
+                            .ilike('mill_name',`%${site.millName}%`).limit(20);
                           setMillSuggestions(data || []);
                         }
                       }}
