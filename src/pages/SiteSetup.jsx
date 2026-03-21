@@ -431,7 +431,7 @@ export default function SiteSetup() {
       }
     }
     loadSiteData();
-  }, [companyConfirmed, estateConfirmed, millConfirmed]);
+  }, [companyConfirmed, estateConfirmed, millConfirmed, selectedMillRecord]);
 
   function buildSoilPills(p) {
     const pills = [];
