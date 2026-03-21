@@ -176,7 +176,7 @@ export default function SiteSetup() {
   // ── Section D state ──────────────────────────────────
   // Point 6: No stream pre-selected on load
   const [activeStreams, setActiveStreams] = useState({
-    efb:false, opdc:true, pos:false, pmf:false, pke:false,
+    efb:false, opdc:false, pos:false, pmf:false, pke:false,
     pome:false, opf:false, opt:false
   });
   const [showMoreStreams, setShowMoreStreams] = useState(false);
@@ -807,12 +807,12 @@ export default function SiteSetup() {
                           setMill(prev => ({...prev, ffb:60}));
                           setEstateSuggestions([]); setMillSuggestions([]);
                         }
-                        setActiveDropdown('company');
-                        // Always show full list immediately
-                        const { data } = await supabase
-                          .from('cfi_mill_owners').select('id, company').order('company').limit(42);
-                        setCompanySuggestions(data || []);
-                      }}
+                        if (site.company.length >= 3) {
+                          setActiveDropdown('company');
+                          const { data } = await supabase.from('cfi_mill_owners').select('id, company').ilike('company',`%${site.company}%`).limit(42);
+                          setCompanySuggestions(data || []);
+                        }
+                      }
                       onChange={async e => {
                         const val = e.target.value;
                         setSite(s => ({...s, company:val, estate:'', millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
@@ -892,12 +892,12 @@ export default function SiteSetup() {
                           setMill(prev => ({...prev, ffb:60}));
                           setMillSuggestions([]);
                         }
-                        setActiveDropdown('estate');
-                        const { data } = await supabase
-                          .from('cfi_estates').select('id, estate_name, province, district_kabupaten')
-                          .order('estate_name').limit(100);
-                        setEstateSuggestions(data || []);
-                      }}
+                        if (site.estate.length >= 3) {
+                          setActiveDropdown('estate');
+                          const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').ilike('estate_name',`%${site.estate}%`).limit(100);
+                          setEstateSuggestions(data || []);
+                        }
+                      }
                       onChange={async e => {
                         const val = e.target.value;
                         setSite(s => ({...s, estate:val, millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
@@ -965,13 +965,14 @@ export default function SiteSetup() {
                           setGpsSoilSuggestion('');
                           setMill(prev => ({...prev, ffb:60}));
                         }
-                        setActiveDropdown('mill');
-                        const { data } = await supabase
-                          .from('cfi_mills_60tph')
-                          .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id')
-                          .order('mill_name').limit(105);
-                        setMillSuggestions(data || []);
-                      }}
+                        if (site.millName.length >= 3) {
+                          setActiveDropdown('mill');
+                          const { data } = await supabase.from('cfi_mills_60tph')
+                            .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id')
+                            .ilike('mill_name',`%${site.millName}%`).limit(105);
+                          setMillSuggestions(data || []);
+                        }
+                      }
                       onChange={async e => {
                         const val = e.target.value;
                         setSite(s => ({...s, millName:val, gpsLat:'', gpsLon:''}));
