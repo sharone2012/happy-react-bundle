@@ -689,25 +689,30 @@ export default function SiteSetup() {
                       value={site.company}
                       onFocus={async () => {
                         if (companyConfirmed) {
+                          // Atomic reset — clear value, confirmed states, all downstream
+                          setSite(s => ({...s, company:'', estate:'', millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
                           setCompanyConfirmed(false);
                           setEstateConfirmed(false);
                           setMillConfirmed(false);
-                          upSite('company',''); upSite('estate',''); upSite('millName','');
-                          upSite('province',''); upSite('district','');
-                          upSite('gpsLat',''); upSite('gpsLon','');
                           setGpsSoilSuggestion('');
                           setMill(prev => ({...prev, ffb:60}));
                           setEstateSuggestions([]); setMillSuggestions([]);
                         }
                         setActiveDropdown('company');
+                        // Always show full list immediately
                         const { data } = await supabase
                           .from('cfi_mill_owners').select('id, company').order('company').limit(42);
                         setCompanySuggestions(data || []);
                       }}
                       onChange={async e => {
                         const val = e.target.value;
-                        upSite('company', val);
+                        // Atomic reset of downstream + value update
+                        setSite(s => ({...s, company:val, estate:'', millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
                         setCompanyConfirmed(false);
+                        setEstateConfirmed(false);
+                        setMillConfirmed(false);
+                        setGpsSoilSuggestion('');
+                        setMill(prev => ({...prev, ffb:60}));
                         setActiveDropdown('company');
                         const { data } = val.length === 0
                           ? await supabase.from('cfi_mill_owners').select('id, company').order('company').limit(42)
