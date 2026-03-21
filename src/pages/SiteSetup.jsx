@@ -716,8 +716,8 @@ export default function SiteSetup() {
   const confirmBtn = { background:C.green, color:'#000', fontFamily:Fnt.brand, fontWeight:700, fontSize:15, letterSpacing:'0.04em', border:'none', borderRadius:8, padding:'0 28px', height:51, minWidth:260, display:'block', margin:'0 auto', cursor:'pointer' };
   const slItem     = { background:C.navyDeep, border:`1.5px solid ${C.bdrCalc}`, borderRadius:8, padding:'10px 26px 10px 13px', minHeight:52, marginBottom:6 };
   const toggleCard = (active, disabled=false) => ({
-    background: active ? C.tealDim : C.navyDeep,
-    border: `1.5px solid ${active ? C.tealBdr : C.bdrCalc}`,
+    background: active ? C.tealDim : '#0B1828',
+    border: `1.5px solid ${active ? C.tealBdr : '#1E6B8C'}`,
     borderRadius:8, padding:'10px 13px', cursor: disabled?'not-allowed':'pointer',
     transition:'all 0.12s', minHeight:52, opacity: disabled ? 0.45 : 1,
   });
