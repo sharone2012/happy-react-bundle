@@ -1269,7 +1269,7 @@ export default function SiteSetup() {
 
               {/* ── Point 14: Agricultural Management row ── */}
               <div style={{ marginBottom:10 }}>
-                <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:6 }}>AGRICULTURAL MANAGEMENT</div>
+                <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:'#888888', letterSpacing:'0.06em', marginBottom:6 }}>AGRICULTURAL MANAGEMENT</div>
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr 1fr', gap:6 }}>
                   {AG_MGMT_OPTIONS.map(opt => {
                     const sel = agMgmt === opt.id;
@@ -1293,11 +1293,11 @@ export default function SiteSetup() {
                 </div>
               </div>
 
-              {/* Thick divider between ag management and soil cards */}
-              <div style={{ height:2, background:'#1E6B8C', marginBottom:12 }} />
+              {/* G3: Divider between ag management and auto-detected */}
+              <div style={{ height:1, background:'#2A3A4A', marginBottom:8 }} />
 
-              {/* G1: SOIL TYPE label */}
-              <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:'#888888', letterSpacing:'0.06em', marginBottom:6 }}>SOIL TYPE</div>
+              {/* G2: AGRICULTURAL MANAGEMENT matching SOIL TYPE label */}
+              <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:'#888888', letterSpacing:'0.06em', marginBottom:6, opacity:1 }}>SOIL TYPE</div>
 
               {/* Soil type cards (point 17: auto-selected shows 2px teal border) */}
               <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:6, marginBottom:9 }}>
@@ -1317,19 +1317,19 @@ export default function SiteSetup() {
                   };
                   return (
                     <div key={s.id} onClick={() => { selectSoil(s.id); setSoilAutoSelected(false); }} style={{
-                      background: isSel ? 'rgba(245,166,35,0.08)' : '#0B1828',
-                      border: `1.5px solid ${isSel ? '#F5A623' : '#1E6B8C'}`,
+                      background: isSel ? '#00C9B1' : '#0B1828',
+                      border: `1.5px solid ${isSel ? '#00C9B1' : '#1E6B8C'}`,
                       borderRadius:7, padding:'8px 9px', cursor:'pointer', transition:'all 0.12s',
                       display:'flex', flexDirection:'column', justifyContent:'center',
                       minWidth:0, overflow:'hidden',
                     }}>
-                      <div style={{ fontSize:13, fontWeight:600, fontFamily:Fnt.dm, color: isSel ? '#F5A623' : '#ffffff', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                      <div style={{ fontSize:13, fontWeight:600, fontFamily:Fnt.dm, color: '#ffffff', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.name}
                       </div>
-                      <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.75)' : '#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                      <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.dm, color: isSel ? 'rgba(255,255,255,0.85)' : '#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.sub || ''}
                       </div>
-                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.75)' : '#888888', marginTop:1, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color: isSel ? 'rgba(255,255,255,0.75)' : '#888888', marginTop:1, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.line4 || ''}
                       </div>
                       {meta.tag1 && meta.tag2 && (
@@ -1342,6 +1342,9 @@ export default function SiteSetup() {
                   );
                 })}
               </div>
+
+              {/* G4: Divider between soil cards and bottom pill row */}
+              <div style={{ height:1, background:'#2A3A4A', marginBottom:8, marginTop:4 }} />
 
               {/* Point 19: Secondary soil display */}
               {secondarySoilWrb && (
@@ -1422,8 +1425,8 @@ export default function SiteSetup() {
                   const disabled = st.needsEfb && !activeStreams.efb;
                   return (
                     <div key={st.key} onClick={()=>!disabled && toggleStream(st.key)} style={toggleCard(active && !disabled, disabled)}>
-                      <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:(active&&!disabled)?C.amber:C.grey }}>{st.name}</div>
-                      <div style={{ fontSize:12, fontFamily:Fnt.dm, color:(active&&!disabled)?'rgba(245,166,35,0.65)':C.greyLt, marginTop:3 }}>
+                      <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:(active&&!disabled)?C.amber:'#ffffff' }}>{st.name}</div>
+                      <div style={{ fontSize:12, fontFamily:Fnt.dm, color:(active&&!disabled)?'rgba(245,166,35,0.65)':'#888888', marginTop:3 }}>
                         {disabled ? 'Requires EFB' : st.sub}
                       </div>
                       {st.liquid && active && <div style={{ fontSize:10, fontFamily:Fnt.mono, color:C.teal, marginTop:3 }}>Liquid — Excluded From Solid Mix</div>}
@@ -1435,26 +1438,30 @@ export default function SiteSetup() {
                   { key:'pke',  name:'Palm Kernel Expeller',  sub:'PKE · $160/t — Purchased', purchased:true },
                   { key:'opf',  name:'Oil Palm Fronds',        sub:'OPF · Seasonal · Zero Cost' },
                   { key:'opt',  name:'Oil Palm Trunks',        sub:'OPT · Replanting Only · Zero Cost' },
+                  { key:'pks',  name:'Palm Kernel Shell',      sub:'PKS · Zero Cost' },
+                  { key:'cpos', name:'CPO Sludge',             sub:'CPO Sludge · Zero Cost' },
+                  { key:'epk',  name:'Empty Palm Kernel',      sub:'EPK · Zero Cost' },
+                  { key:'ds',   name:'Decanter Solid',         sub:'DS · Zero Cost' },
                   ...customStreams.map(c=>({ key:c.key, name:c.name, sub:'Custom · Zero Cost' })),
                 ].map(st=>{
                   const active = activeStreams[st.key];
                   return (
                     <div key={st.key} onClick={()=>toggleStream(st.key)} style={toggleCard(active, false)}>
-                      <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:active?C.amber:C.grey }}>{st.name}</div>
-                      <div style={{ fontSize:12, fontFamily:Fnt.dm, color:active?'rgba(245,166,35,0.65)':C.greyLt, marginTop:3 }}>{st.sub}</div>
+                      <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:active?C.amber:'#ffffff' }}>{st.name}</div>
+                      <div style={{ fontSize:12, fontFamily:Fnt.dm, color:active?'rgba(245,166,35,0.65)':'#888888', marginTop:3 }}>{st.sub}</div>
                       {st.purchased && active && <div style={{ fontSize:10, fontFamily:Fnt.mono, color:C.amber, marginTop:3 }}>Purchased — Not Mill Waste</div>}
                     </div>
                   );
                 })}
               </div>
 
-              {/* Add Palm Residue button */}
-              <div style={{ display:'flex', gap:8, marginTop:8 }}>
+              {/* D3: Buttons — Add Palm Residue left, Add New Residue right */}
+              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginTop:8, paddingRight:16 }}>
                 <button onClick={()=>setShowMoreStreams(v=>!v)} style={{ background:'transparent', border:'1.5px solid #00C9B1', borderRadius:6, color:'#00C9B1', fontFamily:Fnt.dm, fontSize:11, fontWeight:700, padding:'5px 12px', cursor:'pointer', whiteSpace:'nowrap' }}>
                   {showMoreStreams ? 'Hide Palm Residues' : 'Add Palm Residue'}
                 </button>
                 <button onClick={()=>setShowNewFields(v=>!v)} style={{ background:'transparent', border:'1.5px solid #00C9B1', borderRadius:6, color:'#00C9B1', fontFamily:Fnt.dm, fontSize:11, fontWeight:700, padding:'5px 12px', cursor:'pointer', whiteSpace:'nowrap' }}>
-                  {showNewFields ? 'Cancel' : 'New Residue'}
+                  {showNewFields ? 'Cancel' : 'Add New Residue'}
                 </button>
               </div>
 
