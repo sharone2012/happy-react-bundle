@@ -1425,7 +1425,7 @@ export default function SiteSetup() {
                   const disabled = st.needsEfb && !activeStreams.efb;
                   return (
                     <div key={st.key} onClick={()=>!disabled && toggleStream(st.key)} style={toggleCard(active && !disabled, disabled)}>
-                      <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:(active&&!disabled)?C.amber:'#ffffff' }}>{st.name}</div>
+                      <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:(active&&!disabled)?C.amber:'#B0BEC5' }}>{st.name}</div>
                       <div style={{ fontSize:12, fontFamily:Fnt.dm, color:(active&&!disabled)?'rgba(245,166,35,0.65)':'#888888', marginTop:3 }}>
                         {disabled ? 'Requires EFB' : st.sub}
                       </div>
