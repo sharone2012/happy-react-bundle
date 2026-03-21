@@ -1296,6 +1296,9 @@ export default function SiteSetup() {
               {/* Thick divider between ag management and soil cards */}
               <div style={{ height:2, background:'#1E6B8C', marginBottom:12 }} />
 
+              {/* G1: SOIL TYPE label */}
+              <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:'#888888', letterSpacing:'0.06em', marginBottom:6 }}>SOIL TYPE</div>
+
               {/* Soil type cards (point 17: auto-selected shows 2px teal border) */}
               <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:6, marginBottom:9 }}>
                 {soils.map(s => {
