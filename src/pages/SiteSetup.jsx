@@ -1430,7 +1430,7 @@ export default function SiteSetup() {
                     </div>
                   );
                 })}
-                {/* Hidden streams revealed by More */}
+                {/* Hidden streams revealed by Add Palm Residue */}
                 {showMoreStreams && [
                   { key:'pke',  name:'Palm Kernel Expeller',  sub:'PKE · $160/t — Purchased', purchased:true },
                   { key:'opf',  name:'Oil Palm Fronds',        sub:'OPF · Seasonal · Zero Cost' },
@@ -1448,25 +1448,29 @@ export default function SiteSetup() {
                 })}
               </div>
 
-              {/* Custom residue fields — always visible */}
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:7, marginTop:6 }}>
-                {[
-                  { num:1, val:newRes1, set:setNewRes1, label:'Custom Residue 1' },
-                  { num:2, val:newRes2, set:setNewRes2, label:'Custom Residue 2' },
-                ].map(f=>(
-                  <div key={f.num}>
-                    <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:3 }}>{f.label}</div>
-                    <div style={{ background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'10px 13px', display:'flex', alignItems:'center', minHeight:52, gap:8 }}>
-                      <input value={f.val} onChange={e=>f.set(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addResidue()} placeholder="Residue name" style={{ background:'transparent', border:'none', outline:'none', fontFamily:Fnt.dm, fontSize:14, fontWeight:500, color:C.white, flex:1, minWidth:0 }} />
-                      <input type="number" placeholder="t/m" style={{ background:'transparent', border:`1px solid ${C.tealBdr}`, borderRadius:4, outline:'none', fontFamily:Fnt.mono, fontSize:13, fontWeight:800, color:C.amber, width:60, textAlign:'center', padding:'4px 6px' }} />
-                    </div>
-                  </div>
-                ))}
+              {/* Add Palm Residue button */}
+              <div style={{ display:'flex', gap:8, marginTop:8 }}>
+                <button onClick={()=>setShowMoreStreams(v=>!v)} style={{ background:'transparent', border:'1.5px solid #00C9B1', borderRadius:6, color:'#00C9B1', fontFamily:Fnt.dm, fontSize:11, fontWeight:700, padding:'5px 12px', cursor:'pointer', whiteSpace:'nowrap' }}>
+                  {showMoreStreams ? 'Hide Palm Residues' : 'Add Palm Residue'}
+                </button>
+                <button onClick={()=>setShowNewFields(v=>!v)} style={{ background:'transparent', border:'1.5px solid #00C9B1', borderRadius:6, color:'#00C9B1', fontFamily:Fnt.dm, fontSize:11, fontWeight:700, padding:'5px 12px', cursor:'pointer', whiteSpace:'nowrap' }}>
+                  {showNewFields ? 'Cancel' : 'New Residue'}
+                </button>
               </div>
 
-              <div style={{ display:'flex', justifyContent:'flex-end', marginTop:8 }}>
-                <button onClick={()=>setShowMoreStreams(v=>!v)} style={{ background:'transparent', border:`1px solid rgba(64,215,197,0.48)`, borderRadius:6, color:C.teal, fontFamily:Fnt.dm, fontSize:11, fontWeight:700, padding:'5px 12px', cursor:'pointer', whiteSpace:'nowrap' }}>{showMoreStreams ? 'Less' : 'More'}</button>
-              </div>
+              {/* New Residue fields — revealed by New Residue button */}
+              {showNewFields && (
+                <div style={{ marginTop:6 }}>
+                  <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>Add New</div>
+                  <div style={{ display:'flex', gap:8 }}>
+                    <input value={newRes1} onChange={e=>setNewRes1(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addResidue()} placeholder="Residue Name" style={{ background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'10px 13px', outline:'none', fontFamily:Fnt.dm, fontSize:14, fontWeight:500, color:C.white, width:'calc(50% - 4px)', minHeight:42, boxSizing:'border-box' }} />
+                    <div style={{ width:'calc(50% - 4px)', background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'6px 10px', display:'flex', alignItems:'center', gap:4, minHeight:42, boxSizing:'border-box' }}>
+                      <input type="number" placeholder="0" style={{ background:'transparent', border:'none', outline:'none', fontFamily:Fnt.mono, fontSize:14, fontWeight:800, color:C.amber, width:'100%', textAlign:'right' }} />
+                      <span style={{ fontSize:11, fontFamily:Fnt.mono, color:'#888888', whiteSpace:'nowrap', flexShrink:0 }}>t/m</span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
