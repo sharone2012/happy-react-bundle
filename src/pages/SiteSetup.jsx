@@ -812,7 +812,7 @@ export default function SiteSetup() {
                           const { data } = await supabase.from('cfi_mill_owners').select('id, company').ilike('company',`%${site.company}%`).limit(42);
                           setCompanySuggestions(data || []);
                         }
-                      }
+                      }}
                       onChange={async e => {
                         const val = e.target.value;
                         setSite(s => ({...s, company:val, estate:'', millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
