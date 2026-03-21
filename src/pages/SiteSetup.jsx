@@ -1425,7 +1425,7 @@ export default function SiteSetup() {
                   const disabled = st.needsEfb && !activeStreams.efb;
                   return (
                     <div key={st.key} onClick={()=>!disabled && toggleStream(st.key)} style={toggleCard(active && !disabled, disabled)}>
-                      <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:(active&&!disabled)?C.amber:'#ffffff' }}>{st.name}</div>
+                      <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:(active&&!disabled)?C.amber:'#B0BEC5' }}>{st.name}</div>
                       <div style={{ fontSize:12, fontFamily:Fnt.dm, color:(active&&!disabled)?'rgba(245,166,35,0.65)':'#888888', marginTop:3 }}>
                         {disabled ? 'Requires EFB' : st.sub}
                       </div>
@@ -1439,15 +1439,12 @@ export default function SiteSetup() {
                   { key:'opf',  name:'Oil Palm Fronds',        sub:'OPF · Seasonal · Zero Cost' },
                   { key:'opt',  name:'Oil Palm Trunks',        sub:'OPT · Replanting Only · Zero Cost' },
                   { key:'pks',  name:'Palm Kernel Shell',      sub:'PKS · Zero Cost' },
-                  { key:'cpos', name:'CPO Sludge',             sub:'CPO Sludge · Zero Cost' },
-                  { key:'epk',  name:'Empty Palm Kernel',      sub:'EPK · Zero Cost' },
-                  { key:'ds',   name:'Decanter Solid',         sub:'DS · Zero Cost' },
                   ...customStreams.map(c=>({ key:c.key, name:c.name, sub:'Custom · Zero Cost' })),
                 ].map(st=>{
                   const active = activeStreams[st.key];
                   return (
                     <div key={st.key} onClick={()=>toggleStream(st.key)} style={toggleCard(active, false)}>
-                      <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:active?C.amber:'#ffffff' }}>{st.name}</div>
+                      <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:active?C.amber:'#B0BEC5' }}>{st.name}</div>
                       <div style={{ fontSize:12, fontFamily:Fnt.dm, color:active?'rgba(245,166,35,0.65)':'#888888', marginTop:3 }}>{st.sub}</div>
                       {st.purchased && active && <div style={{ fontSize:10, fontFamily:Fnt.mono, color:C.amber, marginTop:3 }}>Purchased — Not Mill Waste</div>}
                     </div>
