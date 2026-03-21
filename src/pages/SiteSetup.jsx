@@ -1558,8 +1558,8 @@ export default function SiteSetup() {
               <div style={{ background:'linear-gradient(135deg,rgba(0,162,73,0.16) 0%,rgba(6,12,20,1) 65%)', border:`1.5px solid rgba(0,162,73,0.45)`, borderRadius:11, padding:'22px 16px', marginBottom:12, textAlign:'center' }}>
                 <div style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:18, color:'#FFF', letterSpacing:'0.1em', marginBottom:8 }}>VALORIZING</div>
                 <div style={{ display:'flex', alignItems:'baseline', justifyContent:'center', gap:8 }}>
-                  <span style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:40, color:C.green, lineHeight:1 }}>{fHeroPct}</span>
-                  <span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:18, color:C.green }}>% OF MILL RESIDUES</span>
+                  <span style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:40, color:C.greenLt, lineHeight:1 }}>{fHeroPct}</span>
+                  <span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:18, color:C.greenLt }}>% OF MILL RESIDUES</span>
                 </div>
               </div>
               <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:8, padding:'0 13px 5px' }}>
