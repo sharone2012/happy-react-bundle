@@ -1048,7 +1048,7 @@ export default function SiteSetup() {
                           return;
                         }
                         setActiveDropdown('mill');
-                        const cols = 'id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id';
+                        const cols = 'id, mill_name, owner_company, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id';
                         const { data } = await supabase.from('cfi_mills_60tph').select(cols).ilike('mill_name',`%${val}%`).limit(10);
                         setMillSuggestions(data || []);
                       }}
