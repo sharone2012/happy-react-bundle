@@ -1373,9 +1373,17 @@ export default function SiteSetup() {
                   {selectedSoil === 'oxisol' ? 'High Fe/Al Oxide Content. CFI Chelated P Significantly Outperforms TSP.' : 'Sandy — Lowest Fertility. CFI Humate Provides Critical CEC Improvement. 31% Yield Gap.'}
                 </div>
               )}
-              <div style={{ display:'flex', gap:7, flexWrap:'wrap', marginTop:4 }}>
-                <div style={{ fontSize:15, fontWeight:700, fontFamily:Fnt.mono, padding:'4px 12px', borderRadius:12, border:`1.5px solid ${C.green}`, background:C.green, color:'#000', whiteSpace:'nowrap', display:'inline-block' }}>{soilData.name}</div>
-                {soilData.pills?.map((p,i) => (<div key={i} style={{...chips[p.cls], fontSize:13}}>{p.txt}</div>))}
+              <div style={{ display:'flex', flexDirection:'row', gap:6, alignItems:'center', flexWrap:'nowrap', width:'100%', marginTop:4 }}>
+                <div style={{ fontSize:13, fontWeight:700, fontFamily:'EB Garamond, serif', padding:'5px 10px', borderRadius:12, border:'1.5px solid #F5A623', background:'rgba(245,166,35,0.08)', color:'#F5A623', whiteSpace:'nowrap', display:'inline-block' }}>{soilData.name}</div>
+                {soilData.pills?.filter(p=>p.cls==='amber').map((p,i) => (
+                  <div key={i} style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, padding:'5px 10px', borderRadius:12, background:'#F5A623', color:'#0B1F35', whiteSpace:'nowrap', display:'inline-block' }}>{p.txt}</div>
+                ))}
+                {soilData.pills?.filter(p=>p.cls==='green').map((p,i) => (
+                  <div key={i} style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, padding:'5px 10px', borderRadius:12, border:'1.5px solid #00A249', background:'transparent', color:'#ffffff', whiteSpace:'nowrap', display:'inline-block' }}>{p.txt}</div>
+                ))}
+                {soilData.pills?.filter(p=>p.cls==='red').map((p,i) => (
+                  <div key={i} style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, padding:'5px 10px', borderRadius:12, border:'1.5px solid #E84040', background:'rgba(232,64,64,0.15)', color:'#E84040', whiteSpace:'nowrap', display:'inline-block' }}>{p.txt}</div>
+                ))}
               </div>
             </div>
           </div>
