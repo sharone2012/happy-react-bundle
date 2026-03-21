@@ -175,6 +175,7 @@ export default function SiteSetup() {
   const [companyConfirmed, setCompanyConfirmed] = useState(false);
   const [estateConfirmed,  setEstateConfirmed]  = useState(false);
   const [millConfirmed,    setMillConfirmed]    = useState(false);
+  const [activeDropdown,   setActiveDropdown]   = useState(null); // 'company' | 'estate' | 'mill' | null
 
   // ═══════════════════════════════════════════════════════
   // SUPABASE INIT — create or load cfi_sites record
