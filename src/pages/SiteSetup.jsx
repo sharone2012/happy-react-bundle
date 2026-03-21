@@ -92,22 +92,22 @@ const FEEDSTOCK = {
 // ── SOIL DATA (loaded from Supabase cfi_soil_profiles) ──
 // Fallback hardcoded for initial render before DB load
 const SOILS_FALLBACK = [
-  { id:'inceptisols', name:'Inceptisol', sub:'Alluvial',              line3:'pH 4.0–5.0 · CEC 10–18 cmol · 39% IDN palm',
+  { id:'inceptisol', name:'Inceptisol', sub:'Alluvial',              line3:'pH 4.0–5.0 · CEC 10–18 cmol/kg', line4:'39% of Indonesian palm land',
     ph:'4.1', cec:'15.4', cov:'39% Indonesian Palm',
     pills:[{cls:'green',txt:'Best Soil'},{cls:'green',txt:'pH 4.1 · CEC 15.4'},{cls:'teal',txt:'N Adj Standard'}] },
-  { id:'ultisols',    name:'Ultisol',    sub:'Acidic Clays',          line3:'pH 4.2–5.0 · CEC 4–8 cmol · 24% IDN palm',
+  { id:'ultisol',    name:'Ultisol',    sub:'Acidic Tropical Clays',  line3:'pH 4.2–5.0 · CEC 4–8 cmol/kg', line4:'24% of Indonesian palm land',
     ph:'4.5', cec:'8.2',  cov:'24% Indonesian Palm',
     pills:[{cls:'amber',txt:'pH 4.5 · CEC 8.2'},{cls:'teal',txt:'N Adj −35%'}] },
-  { id:'oxisols',     name:'Oxisol',     sub:'Highly Weathered Clays', line3:'pH 4.0–4.8 · CEC 3–6 cmol · 8% IDN palm',
+  { id:'oxisol',     name:'Oxisol',     sub:'Highly Weathered Clays', line3:'pH 4.0–4.8 · CEC 3–6 cmol/kg', line4:'8% of Indonesian palm land',
     ph:'4.4', cec:'6.1',  cov:'8% Indonesian Palm',
     pills:[{cls:'amber',txt:'pH 4.4 · CEC 6.1'},{cls:'red',txt:'P Fixation: Very High'},{cls:'teal',txt:'Split P Doses'}] },
-  { id:'histosols',   name:'Peat/Histosol', sub:'Peat',               line3:'pH 3.5–4.5 · CEC 25–60 cmol · 7% IDN palm',
+  { id:'histosol',   name:'Peat/Histosol', sub:'Peat',               line3:'pH 3.5–4.5 · CEC 25–60 cmol/kg', line4:'7% of Indonesian palm land',
     ph:'3.8', cec:'28.0', cov:'7% · Special Rules',
     pills:[{cls:'red',txt:'pH 3.8 · Very Acid'},{cls:'red',txt:'N −80% P −70%'},{cls:'red',txt:'Drainage Critical'}], peat:true },
-  { id:'spodosols',   name:'Entisol/Spodosol', sub:'Coastal Sands',   line3:'pH 3.5–4.5 · CEC 2–5 cmol · 5% IDN palm',
+  { id:'spodosol',   name:'Entisol/Spodosol', sub:'Coastal Sands',   line3:'pH 3.5–4.5 · CEC 2–5 cmol/kg', line4:'5% of Indonesian palm land',
     ph:'4.77',cec:'2.0',  cov:'Sandy · Lowest Fertility',
     pills:[{cls:'amber',txt:'pH 4.77 · CEC 2.0'},{cls:'red',txt:'N Leaching: Very High'},{cls:'teal',txt:'31% Yield Gap'}] },
-  { id:'andisols',    name:'Andisol',    sub:'Volcanic Ash',          line3:'pH 5.0–6.0 · CEC 15–30 cmol · 3% IDN palm',
+  { id:'andisol',    name:'Andisol',    sub:'Volcanic Ash',          line3:'pH 5.0–6.0 · CEC 15–30 cmol/kg', line4:'3% of Indonesian palm land',
     ph:'5.1', cec:'22.0', cov:'Volcanic · High P Fix',
     pills:[{cls:'amber',txt:'pH 5.1 · CEC 22.0'},{cls:'red',txt:'P Fixation: High'},{cls:'teal',txt:'P Rate +30–50%'}] },
 ];
@@ -124,12 +124,12 @@ const STREAM_NAMES = {
 function parseSoilClass(wrb) {
   if (!wrb) return null;
   const w = wrb.toLowerCase();
-  if (w.includes('histosol') || w.includes('peat') || w.includes('gambut')) return 'histosols';
-  if (w.includes('ultisol') || w.includes('acrisol')) return 'ultisols';
-  if (w.includes('inceptisol')) return 'inceptisols';
-  if (w.includes('oxisol') || w.includes('ferralsol') || w.includes('latosol')) return 'oxisols';
-  if (w.includes('andosol') || w.includes('andisol')) return 'andisols';
-  if (w.includes('spodosol') || w.includes('podzol') || w.includes('sandy')) return 'spodosols';
+  if (w.includes('histosol') || w.includes('peat') || w.includes('gambut')) return 'histosol';
+  if (w.includes('ultisol') || w.includes('acrisol')) return 'ultisol';
+  if (w.includes('inceptisol')) return 'inceptisol';
+  if (w.includes('oxisol') || w.includes('ferralsol') || w.includes('latosol')) return 'oxisol';
+  if (w.includes('andosol') || w.includes('andisol')) return 'andisol';
+  if (w.includes('spodosol') || w.includes('podzol') || w.includes('sandy')) return 'spodosol';
   return null;
 }
 
@@ -186,7 +186,7 @@ export default function SiteSetup() {
   const [sliders, setSliders] = useState({});
 
   // ── Section G state (soil) ───────────────────────────
-  const [selectedSoil, setSelectedSoil] = useState('ultisols');
+  const [selectedSoil, setSelectedSoil] = useState('ultisol');
   const [soils, setSoils] = useState(SOILS_FALLBACK);
   const [soilAutoSelected, setSoilAutoSelected] = useState(false);
   const [secondarySoilWrb, setSecondarySoilWrb] = useState('');
@@ -304,6 +304,20 @@ export default function SiteSetup() {
   }
 
   // Load soil profiles from Supabase
+  // Subtitle and line3/line4 lookup for soil cards
+  const SOIL_META = {
+    inceptisol: { sub:'Alluvial',              line3:'pH 4.0–5.0 · CEC 10–18 cmol/kg', line4:'39% of Indonesian palm land' },
+    ultisol:    { sub:'Acidic Tropical Clays',  line3:'pH 4.2–5.0 · CEC 4–8 cmol/kg',   line4:'24% of Indonesian palm land' },
+    oxisol:     { sub:'Highly Weathered Clays', line3:'pH 4.0–4.8 · CEC 3–6 cmol/kg',   line4:'8% of Indonesian palm land' },
+    histosol:   { sub:'Peat',                   line3:'pH 3.5–4.5 · CEC 25–60 cmol/kg', line4:'7% of Indonesian palm land' },
+    spodosol:   { sub:'Coastal Sands',          line3:'pH 3.5–4.5 · CEC 2–5 cmol/kg',   line4:'5% of Indonesian palm land' },
+    andisol:    { sub:'Volcanic Ash',           line3:'pH 5.0–6.0 · CEC 15–30 cmol/kg', line4:'3% of Indonesian palm land' },
+  };
+  const SOIL_NAMES = {
+    inceptisol:'Inceptisol', ultisol:'Ultisol', oxisol:'Oxisol',
+    histosol:'Peat/Histosol', spodosol:'Entisol/Spodosol', andisol:'Andisol',
+  };
+
   useEffect(() => {
     supabase
       .from('cfi_soil_profiles')
@@ -312,15 +326,21 @@ export default function SiteSetup() {
       .order('coverage_pct_indonesia', { ascending: false })
       .then(({ data }) => {
         if (data && data.length > 0) {
-          const mapped = data.map(p => ({
-            id: p.soil_key,
-            name: p.soil_group_name,
-            ph: p.ph_degraded_low ? `${p.ph_degraded_low}${p.ph_degraded_high ? '–'+p.ph_degraded_high : ''}` : '—',
-            cec: p.cec_degraded_cmol_low ? String(p.cec_degraded_cmol_low) : '—',
-            cov: `${p.coverage_pct_indonesia || '—'}% Indonesian Palm`,
-            peat: !!p.is_peat,
-            pills: buildSoilPills(p),
-          }));
+          const mapped = data.map(p => {
+            const meta = SOIL_META[p.soil_key] || {};
+            return {
+              id: p.soil_key,
+              name: SOIL_NAMES[p.soil_key] || p.soil_group_name,
+              sub: meta.sub || '',
+              line3: meta.line3 || `pH ${p.ph_degraded_low||'—'}–${p.ph_degraded_high||'—'} · CEC ${p.cec_degraded_cmol_low||'—'} cmol/kg`,
+              line4: meta.line4 || `${p.coverage_pct_indonesia || '—'}% of Indonesian palm land`,
+              ph: p.ph_degraded_low ? `${p.ph_degraded_low}${p.ph_degraded_high ? '–'+p.ph_degraded_high : ''}` : '—',
+              cec: p.cec_degraded_cmol_low ? String(p.cec_degraded_cmol_low) : '—',
+              cov: `${p.coverage_pct_indonesia || '—'}% Indonesian Palm`,
+              peat: !!p.is_peat,
+              pills: buildSoilPills(p),
+            };
+          });
           setSoils(mapped);
         }
       });
@@ -431,7 +451,7 @@ export default function SiteSetup() {
       }
     }
     loadSiteData();
-  }, [companyConfirmed, estateConfirmed, millConfirmed]);
+  }, [companyConfirmed, estateConfirmed, millConfirmed, selectedMillRecord]);
 
   function buildSoilPills(p) {
     const pills = [];
@@ -1065,20 +1085,17 @@ export default function SiteSetup() {
                 {/* ── FIELD 7: Weather (point 11, 16) — Rainfall + Temp side by side ── */}
                 {weatherData && (
                   <div>
-                    <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>WEATHER</div>
+                    <div style={{ fontSize:15, fontWeight:700, fontFamily:Fnt.syne, color:C.teal, letterSpacing:'0.02em', marginBottom:6 }}>Weather</div>
                     <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
                       {[
-                        { key:'rainfall', label:'Rainfall (mm/yr)', val: weatherOverrides.rainfall != null ? weatherOverrides.rainfall : weatherData.rainfall },
-                        { key:'temp',     label:'Avg temp (°C)',    val: weatherOverrides.temp != null ? weatherOverrides.temp : weatherData.temp },
+                        { key:'rainfall', label:'Rainfall', unit:'mm/yr', val: weatherOverrides.rainfall != null ? weatherOverrides.rainfall : weatherData.rainfall, format: v => v != null ? Number(v).toLocaleString() : '—' },
+                        { key:'temp',     label:'Avg Temp', unit:'°C',    val: weatherOverrides.temp != null ? weatherOverrides.temp : weatherData.temp, format: v => v != null ? String(v) : '—' },
                       ].map(field => {
                         const isOverridden = weatherOverrides[field.key] != null;
+                        const sourceLabel = !isOverridden && weatherSource === 'live' ? 'Live' : (!isOverridden && weatherSource === 'province' ? 'Province avg' : null);
                         return (
                           <div key={field.key}>
-                            <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:3 }}>
-                              <span style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em' }}>{field.label}</span>
-                              {!isOverridden && weatherSource === 'live' && <span style={{ fontSize:9, fontWeight:700, color:C.teal }}>Live</span>}
-                              {!isOverridden && weatherSource === 'province' && <span style={{ fontSize:9, fontWeight:700, color:'#888888' }}>Province average</span>}
-                            </div>
+                            <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:3 }}>{field.label}</div>
                             <div style={{ position:'relative' }}>
                               <input
                                 style={{
@@ -1090,22 +1107,31 @@ export default function SiteSetup() {
                                   borderColor: isOverridden ? 'rgba(255,255,255,0.25)' : C.tealBdr,
                                   color: isOverridden ? C.white : C.amber,
                                 }}
-                                value={field.val != null ? String(field.val) : '—'}
-                                onChange={e => {
-                                  setWeatherOverrides(prev => ({...prev, [field.key]: e.target.value}));
-                                  // Point 18: save override
-                                  if (siteId) {
-                                    const col = field.key === 'rainfall' ? 'rainfall_mm_yr' : 'temp_avg_c';
-                                    const num = parseFloat(e.target.value);
-                                    if (!isNaN(num)) supabase.from('cfi_sites').update({ [col]: num }).eq('id', siteId);
+                                value={field.val != null ? `${field.format(field.val)} ${field.unit}${sourceLabel ? '  ' + sourceLabel : ''}` : '—'}
+                                onFocus={e => {
+                                  // On focus, show raw number for editing
+                                  e.target.value = field.val != null ? String(field.val) : '';
+                                  e.target.style.textAlign = 'center';
+                                }}
+                                onBlur={e => {
+                                  // On blur, if value changed, store override
+                                  const raw = e.target.value.trim();
+                                  if (raw === '' || raw === String(field.val)) return;
+                                  const num = parseFloat(raw);
+                                  if (!isNaN(num)) {
+                                    setWeatherOverrides(prev => ({...prev, [field.key]: num}));
+                                    if (siteId) {
+                                      const col = field.key === 'rainfall' ? 'rainfall_mm_yr' : 'temp_avg_c';
+                                      supabase.from('cfi_sites').update({ [col]: num }).eq('id', siteId);
+                                    }
                                   }
                                 }}
+                                onChange={() => {}} // controlled via focus/blur
                               />
                               {isOverridden && (
                                 <button
                                   onClick={() => {
                                     setWeatherOverrides(prev => { const n={...prev}; delete n[field.key]; return n; });
-                                    // Restore original to DB
                                     if (siteId && weatherOriginal) {
                                       const col = field.key === 'rainfall' ? 'rainfall_mm_yr' : 'temp_avg_c';
                                       supabase.from('cfi_sites').update({ [col]: weatherOriginal[field.key] }).eq('id', siteId);
@@ -1168,6 +1194,7 @@ export default function SiteSetup() {
             <div style={{ padding:'8px 13px 13px' }}>
               <button onClick={handleBConfirm} style={{
                 ...confirmBtn,
+                fontWeight:700,
                 ...(bConfirmed ? { background:C.teal, color:C.amber } : { background:C.green, color:'#000' }),
               }}>
                 {bConfirmed ? 'Click To Edit' : 'Confirm'}
@@ -1270,16 +1297,19 @@ export default function SiteSetup() {
                       background: isSel ? C.tealDim : C.navyDeep,
                       border: `${isAuto ? '2px' : '1.5px'} solid ${isSel ? '#00C9B1' : C.bdrCalc}`,
                       borderRadius:7, padding:'10px 14px', cursor:'pointer', transition:'all 0.12s',
-                      height:82, display:'flex', flexDirection:'column', justifyContent:'center',
+                      height:100, display:'flex', flexDirection:'column', justifyContent:'center',
                     }}>
-                      <div style={{ fontSize:13, fontWeight:400, fontFamily:Fnt.dm, color: isSel ? C.amber : C.white }}>
+                      <div style={{ fontSize:14, fontWeight:600, fontFamily:Fnt.dm, color: isSel ? C.amber : C.white }}>
                         {s.name}
                       </div>
-                      <div style={{ fontSize:11, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
+                      <div style={{ fontSize:12, fontWeight:400, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
                         {s.sub || ''}
                       </div>
-                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
+                      <div style={{ fontSize:11, fontFamily:Fnt.dm, color:'#888888', marginTop:2 }}>
                         {s.line3 || ''}
+                      </div>
+                      <div style={{ fontSize:11, fontFamily:Fnt.dm, color:'#888888', marginTop:1 }}>
+                        {s.line4 || ''}
                       </div>
                     </div>
                   );
@@ -1303,19 +1333,19 @@ export default function SiteSetup() {
               )}
 
               {/* Point 10: Histosol AMBER warning */}
-              {selectedSoil === 'histosols' && (
+              {selectedSoil === 'histosol' && (
                 <div style={{ background:C.amberDim, border:`1px solid ${C.amber}`, borderRadius:6, padding:'7px 12px', fontSize:11, color:C.amber, fontFamily:Fnt.dm, marginBottom:6 }}>
                   Peat soil detected — N and P application rates adjusted automatically.
                 </div>
               )}
-              {selectedSoil === 'histosols' && (
+              {selectedSoil === 'histosol' && (
                 <div style={{ background:C.redDim, border:`1px solid ${C.red}`, borderRadius:6, padding:'7px 12px', fontSize:11, color:C.red, fontFamily:Fnt.dm, marginBottom:6 }}>
                   Peat Soil. 80% Less N And 70% Less P Needed. N Over-Application Locked Out.
                 </div>
               )}
-              {(selectedSoil === 'oxisols' || selectedSoil === 'spodosols') && (
+              {(selectedSoil === 'oxisol' || selectedSoil === 'spodosol') && (
                 <div style={{ background:C.amberDim, border:`1px solid rgba(245,166,35,0.45)`, borderRadius:6, padding:'7px 12px', fontSize:11, color:C.amber, fontFamily:Fnt.dm, marginBottom:6 }}>
-                  {selectedSoil === 'oxisols' ? 'High Fe/Al Oxide Content. CFI Chelated P Significantly Outperforms TSP.' : 'Sandy — Lowest Fertility. CFI Humate Provides Critical CEC Improvement. 31% Yield Gap.'}
+                  {selectedSoil === 'oxisol' ? 'High Fe/Al Oxide Content. CFI Chelated P Significantly Outperforms TSP.' : 'Sandy — Lowest Fertility. CFI Humate Provides Critical CEC Improvement. 31% Yield Gap.'}
                 </div>
               )}
               <div style={{ display:'flex', gap:7, flexWrap:'wrap', marginTop:4 }}>
