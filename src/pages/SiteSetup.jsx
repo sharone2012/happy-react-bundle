@@ -1174,6 +1174,7 @@ export default function SiteSetup() {
             <div style={{ padding:'8px 13px 13px' }}>
               <button onClick={handleBConfirm} style={{
                 ...confirmBtn,
+                fontWeight:700,
                 ...(bConfirmed ? { background:C.teal, color:C.amber } : { background:C.green, color:'#000' }),
               }}>
                 {bConfirmed ? 'Click To Edit' : 'Confirm'}
