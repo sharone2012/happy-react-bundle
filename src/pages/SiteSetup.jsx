@@ -976,11 +976,14 @@ export default function SiteSetup() {
                         setSelectedMillRecord(null);
                         setGpsSoilSuggestion('');
                         setMill(prev => ({...prev, ffb:60}));
+                        if (val.length < 3) {
+                          setMillSuggestions([]);
+                          setActiveDropdown(null);
+                          return;
+                        }
                         setActiveDropdown('mill');
                         const cols = 'id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id';
-                        const { data } = val.length === 0
-                          ? await supabase.from('cfi_mills_60tph').select(cols).order('mill_name').limit(105)
-                          : await supabase.from('cfi_mills_60tph').select(cols).ilike('mill_name',`%${val}%`).limit(10);
+                        const { data } = await supabase.from('cfi_mills_60tph').select(cols).ilike('mill_name',`%${val}%`).limit(10);
                         setMillSuggestions(data || []);
                       }}
                     />
