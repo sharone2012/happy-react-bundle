@@ -1049,7 +1049,7 @@ export default function SiteSetup() {
                         ...fInput,
                         ...(millConfirmed && site.gpsLon ? { background:C.tealDim, borderColor:C.tealBdr, color:C.amber } : { color:C.greyLt }),
                       }}
-                      placeholder="Optional — Auto-Fills From Mill"
+                      placeholder="Longitude"
                       value={site.gpsLon}
                       readOnly={!!(millConfirmed && site.gpsLon)}
                       onChange={e=>upSite('gpsLon',e.target.value)}
