@@ -334,43 +334,102 @@ export default function SiteSetup() {
     return () => document.removeEventListener('mousedown', close);
   }, []);
 
-  // ── All-teal trigger: when company+estate+mill all confirmed → load soil + climate (point 7)
+  // ── All-teal trigger: when company+estate+mill all confirmed → load soil + weather (points 7,12,13)
   useEffect(() => {
     if (!companyConfirmed || !estateConfirmed || !millConfirmed) {
+      // Point 8: any change clears stored soil/weather
       setSiteDataMessage('');
-      setClimateData(null);
-      setClimateOriginal(null);
-      setClimateOverrides({});
+      setWeatherData(null);
+      setWeatherOriginal(null);
+      setWeatherOverrides({});
+      setWeatherSource(null);
+      setSoilAutoSelected(false);
+      setSecondarySoilWrb('');
       return;
     }
     async function loadSiteData() {
-      if (site.province) {
-        const { data: soilLookup } = await supabase
+      const mr = selectedMillRecord;
+      if (!mr) return;
+
+      // ── STEP 1: Get province_soil_id from mill record
+      const provinceSoilId = mr.province_soil_id;
+      let provinceRow = null;
+
+      if (provinceSoilId) {
+        // ── STEP 2: Query cfi_province_soil_lookup by id
+        const { data } = await supabase
           .from('cfi_province_soil_lookup')
           .select('*')
-          .ilike('province', `%${site.province}%`)
-          .limit(1)
+          .eq('id', provinceSoilId)
           .maybeSingle();
-        if (soilLookup) {
-          // Auto-select soil type from province lookup
-          const wrb = soilLookup.dominant_soil_wrb?.toLowerCase().replace(/\s/g, '') || '';
-          if (wrb) {
-            setSelectedSoil(wrb);
-            if (siteId) supabase.from('cfi_sites').update({ soil_type: wrb }).eq('id', siteId);
+        provinceRow = data;
+      }
+
+      if (provinceRow) {
+        // Load rainfall + temp as midpoints (point 16)
+        const rainfallMid = provinceRow.rainfall_mm_yr_min && provinceRow.rainfall_mm_yr_max
+          ? Math.round((provinceRow.rainfall_mm_yr_min + provinceRow.rainfall_mm_yr_max) / 2) : null;
+        const tempMid = provinceRow.temp_c_avg_min && provinceRow.temp_c_avg_max
+          ? ((provinceRow.temp_c_avg_min + provinceRow.temp_c_avg_max) / 2).toFixed(1) : null;
+
+        const wd = { rainfall: rainfallMid, temp: tempMid ? parseFloat(tempMid) : null };
+        setWeatherData(wd);
+        setWeatherOriginal(wd);
+        setWeatherSource('province');
+
+        // ── STEP 3: Parse dominant_soil_wrb to extract soil class
+        const soilKey = parseSoilClass(provinceRow.dominant_soil_wrb);
+        if (soilKey) {
+          setSelectedSoil(soilKey);
+          setSoilAutoSelected(true);
+          if (siteId) supabase.from('cfi_sites').update({ soil_type: soilKey }).eq('id', siteId);
+        }
+
+        // Secondary soil (point 19)
+        setSecondarySoilWrb(provinceRow.secondary_soil_wrb || '');
+
+        // Auto-select VGAM (point 14)
+        setAgMgmt('vgam');
+      }
+
+      // ── Point 13: Try Open-Meteo for live weather using GPS
+      if (mr.latitude && mr.longitude) {
+        try {
+          const meteoUrl = `https://api.open-meteo.com/v1/forecast?latitude=${mr.latitude}&longitude=${mr.longitude}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto&past_days=365&forecast_days=0`;
+          const resp = await fetch(meteoUrl);
+          if (resp.ok) {
+            const json = await resp.json();
+            const daily = json?.daily;
+            if (daily?.precipitation_sum?.length) {
+              const totalRain = daily.precipitation_sum.reduce((a,b) => a + (b||0), 0);
+              const avgTemp = daily.temperature_2m_max && daily.temperature_2m_min
+                ? ((daily.temperature_2m_max.reduce((a,b)=>a+b,0) + daily.temperature_2m_min.reduce((a,b)=>a+b,0)) / (daily.temperature_2m_max.length * 2)).toFixed(1)
+                : null;
+              const liveData = {
+                rainfall: Math.round(totalRain),
+                temp: avgTemp ? parseFloat(avgTemp) : null
+              };
+              setWeatherData(liveData);
+              setWeatherOriginal(liveData);
+              setWeatherSource('live');
+            }
           }
-          const cd = {
-            rainfall_min: soilLookup.rainfall_mm_yr_min,
-            rainfall_max: soilLookup.rainfall_mm_yr_max,
-            temp_min: soilLookup.temp_c_avg_min,
-            temp_max: soilLookup.temp_c_avg_max,
-            ph_min: soilLookup.ph_min,
-            ph_max: soilLookup.ph_max,
-          };
-          setClimateData(cd);
-          setClimateOriginal(cd);
+        } catch (e) {
+          // Keep province values, already set
         }
       }
+
       setSiteDataMessage('Site data loaded — soil profile and climate data updated');
+
+      // Point 18: Save to cfi_sites
+      if (siteId) {
+        const wd = weatherData || {};
+        supabase.from('cfi_sites').update({
+          rainfall_mm_yr: wd.rainfall || null,
+          temp_avg_c: wd.temp || null,
+          agronomy_tier: 'vgam',
+        }).eq('id', siteId);
+      }
     }
     loadSiteData();
   }, [companyConfirmed, estateConfirmed, millConfirmed]);
