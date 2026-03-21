@@ -898,7 +898,14 @@ export default function SiteSetup() {
                   </div>
                 ))}
               </div>
-              {/* Soil pills */}
+              {gpsSoilSuggestion && (
+                <div style={{ background:'rgba(64,215,197,0.10)', border:'1px solid rgba(64,215,197,0.40)', borderRadius:6, padding:'7px 12px', marginBottom:8, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                  <span style={{ fontSize:12, color:C.teal, fontFamily:Fnt.dm }}>
+                    GPS Signal: {gpsSoilSuggestion} Found Near This Mill. Is This Correct?
+                  </span>
+                  <button onClick={()=>setGpsSoilSuggestion('')} style={{ background:'none', border:'none', color:C.greyLt, cursor:'pointer', fontSize:16 }}>×</button>
+                </div>
+              )}
               {selectedSoil === 'histosols' && (
                 <div style={{ background:C.redDim, border:`1px solid ${C.red}`, borderRadius:6, padding:'7px 12px', fontSize:11, color:C.red, fontFamily:Fnt.dm, marginBottom:6 }}>
                   Peat Soil. 80% Less N And 70% Less P Needed. N Over-Application Locked Out.
