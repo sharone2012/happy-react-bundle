@@ -1831,12 +1831,14 @@ export type Database = {
           pos_volume_t: number | null
           product_value_index: number | null
           province: string | null
+          rainfall_mm_yr: number | null
           scenario_name: string | null
           session_count: number | null
           session_date: string | null
           site_uuid: string | null
           soil_type: string | null
           streams_confirmed: boolean | null
+          temp_avg_c: number | null
           updated_at: string | null
           user_email: string | null
           user_id: string | null
@@ -1903,12 +1905,14 @@ export type Database = {
           pos_volume_t?: number | null
           product_value_index?: number | null
           province?: string | null
+          rainfall_mm_yr?: number | null
           scenario_name?: string | null
           session_count?: number | null
           session_date?: string | null
           site_uuid?: string | null
           soil_type?: string | null
           streams_confirmed?: boolean | null
+          temp_avg_c?: number | null
           updated_at?: string | null
           user_email?: string | null
           user_id?: string | null
@@ -1975,12 +1979,14 @@ export type Database = {
           pos_volume_t?: number | null
           product_value_index?: number | null
           province?: string | null
+          rainfall_mm_yr?: number | null
           scenario_name?: string | null
           session_count?: number | null
           session_date?: string | null
           site_uuid?: string | null
           soil_type?: string | null
           streams_confirmed?: boolean | null
+          temp_avg_c?: number | null
           updated_at?: string | null
           user_email?: string | null
           user_id?: string | null
