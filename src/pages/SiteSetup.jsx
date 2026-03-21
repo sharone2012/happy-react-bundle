@@ -1296,7 +1296,7 @@ export default function SiteSetup() {
               <div style={{ height:2, background:'#1E6B8C', marginBottom:12 }} />
 
               {/* Soil type cards (point 17: auto-selected shows 2px teal border) */}
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8, marginBottom:9 }}>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:6, marginBottom:9 }}>
                 {soils.map(s => {
                   const isSel = selectedSoil === s.id;
                   const meta = SOIL_META[s.id] || {};
@@ -1312,21 +1312,22 @@ export default function SiteSetup() {
                   };
                   return (
                     <div key={s.id} onClick={() => { selectSoil(s.id); setSoilAutoSelected(false); }} style={{
-                      background: isSel ? '#0D3040' : '#0B1828',
-                      border: `1.5px solid ${isSel ? '#00C9B1' : '#1E6B8C'}`,
-                      borderRadius:7, padding:'8px 12px', cursor:'pointer', transition:'all 0.12s',
+                      background: isSel ? 'rgba(245,166,35,0.08)' : '#0B1828',
+                      border: `1.5px solid ${isSel ? '#F5A623' : '#1E6B8C'}`,
+                      borderRadius:7, padding:'8px 9px', cursor:'pointer', transition:'all 0.12s',
                       display:'flex', flexDirection:'column', justifyContent:'center',
+                      minWidth:0, overflow:'hidden',
                     }}>
-                      <div style={{ fontSize:13, fontWeight:600, fontFamily:Fnt.dm, color:'#ffffff', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                      <div style={{ fontSize:13, fontWeight:600, fontFamily:Fnt.dm, color: isSel ? '#F5A623' : '#ffffff', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.name}
                       </div>
-                      <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.dm, color:'#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                      <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.75)' : '#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.sub || ''}
                       </div>
-                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color:'#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.75)' : '#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.line3 || ''}
                       </div>
-                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color:'#888888', marginTop:1, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.75)' : '#888888', marginTop:1, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.line4 || ''}
                       </div>
                       {meta.tag1 && meta.tag2 && (
