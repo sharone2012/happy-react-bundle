@@ -205,14 +205,15 @@ export default function SiteSetup() {
 
   // ── Section A cascade suggestions ───────────────────
   const [companySuggestions, setCompanySuggestions] = useState([]);
-  const [estateSuggestions,  setEstateSuggestions]  = useState([]);
-  const [millSuggestions,    setMillSuggestions]    = useState([]);
+  const [estateSuggestions,  setEstateSuggestions]  = useState([]); // mill rows for selected company
+  const [millSuggestions,    setMillSuggestions]    = useState([]); // mill rows for selected estate
   const [gpsSoilSuggestion,  setGpsSoilSuggestion]  = useState('');
   const [companyConfirmed, setCompanyConfirmed] = useState(false);
   const [estateConfirmed,  setEstateConfirmed]  = useState(false);
   const [millConfirmed,    setMillConfirmed]    = useState(false);
   const [activeDropdown,   setActiveDropdown]   = useState(null);
   const [selectedMill, setSelectedMill] = useState(null); // full mill row
+  const [companyMills, setCompanyMills] = useState([]); // all mill rows for selected company
 
   // ── Site data cascade ──────────────────────────────
   const [siteDataMessage, setSiteDataMessage] = useState('');
@@ -356,83 +357,7 @@ export default function SiteSetup() {
     return () => document.removeEventListener('mousedown', close);
   }, []);
 
-  // ── Soil auto-select: fires when selectedMill changes
-  useEffect(() => {
-    if (!selectedMill) return;
-
-    const fetchSoilForMill = async (selectedMill) => {
-      console.log('MILL SELECTED:', selectedMill);
-      console.log('PROVINCE SOIL ID:', selectedMill?.province_soil_id);
-
-      let psl = null;
-
-      // Step 1: get province soil lookup row
-      if (selectedMill?.province_soil_id) {
-        const { data } = await supabase
-          .from('cfi_province_soil_lookup')
-          .select('id, province, dominant_soil_wrb')
-          .eq('id', selectedMill.province_soil_id)
-          .maybeSingle();
-        psl = data;
-      } else if (selectedMill?.province) {
-        // Fallback: lookup by province name when province_soil_id is missing
-        const { data } = await supabase
-          .from('cfi_province_soil_lookup')
-          .select('id, province, dominant_soil_wrb')
-          .ilike('province', selectedMill.province)
-          .limit(1);
-        psl = data?.[0] || null;
-      }
-
-      // Step 2: check lookup result
-      console.log('PSL RESULT:', psl);
-      console.log('DOMINANT SOIL WRB:', psl?.dominant_soil_wrb);
-
-      if (!psl?.dominant_soil_wrb) {
-        const { data: allPslRows } = await supabase
-          .from('cfi_province_soil_lookup')
-          .select('*')
-          .limit(20);
-        console.log('PSL ALL ROWS (dominant_soil_wrb missing):', allPslRows);
-        return;
-      }
-
-      // Step 3: map dominant_soil_wrb to soil_key
-      const wrb = psl.dominant_soil_wrb?.toLowerCase() || '';
-      let soilKey = 'ultisol';
-      if (wrb.includes('histosol') || wrb.includes('peat') || wrb.includes('gambut')) soilKey = 'histosol';
-      else if (wrb.includes('inceptisol')) soilKey = 'inceptisol';
-      else if (wrb.includes('oxisol') || wrb.includes('ferralsol') || wrb.includes('latosol')) soilKey = 'oxisol';
-      else if (wrb.includes('andosol') || wrb.includes('andisol')) soilKey = 'andisol';
-      else if (wrb.includes('spodosol') || wrb.includes('podzol') || wrb.includes('sandy')) soilKey = 'spodosol';
-      else if (wrb.includes('ultisol') || wrb.includes('acrisol')) soilKey = 'ultisol';
-
-      // Step 4: query cfi_soil_profiles — NEVER use confirmed_soil_type
-      const { data: profile } = await supabase
-        .from('cfi_soil_profiles')
-        .select('*')
-        .eq('soil_key', soilKey)
-        .maybeSingle();
-
-      console.log('SOIL KEY MAPPED:', soilKey);
-      console.log('SOIL PROFILE:', profile);
-
-      if (!profile) {
-        const { data: allProfiles } = await supabase
-          .from('cfi_soil_profiles')
-          .select('*')
-          .limit(20);
-        console.log('ALL SOIL PROFILES (profile not found):', allProfiles);
-        return;
-      }
-
-      setSelectedSoil(profile.soil_key || soilKey);
-      setSoilAutoSelected(true);
-      if (siteId) supabase.from('cfi_sites').update({ soil_type: profile.soil_key || soilKey }).eq('id', siteId);
-    };
-
-    fetchSoilForMill(selectedMill);
-  }, [selectedMill]);
+  // Soil auto-select is now handled directly in runSoilLookup() called from estate selection
 
   // ── Weather + secondary soil trigger
   useEffect(() => {
@@ -737,6 +662,42 @@ export default function SiteSetup() {
     }).eq('id', siteId);
   }
 
+  // ── Soil lookup helper (called on mill/estate selection) ──
+  async function runSoilLookup(m) {
+    if (!m) return;
+    // GPS acidity lookup
+    if (m.latitude && m.longitude) {
+      const { data: soilResult } = await supabase.rpc('get_soil_acidity_class', {
+        p_lat: m.latitude, p_lon: m.longitude, p_max_distance_km: 25
+      });
+      if (soilResult?.[0]) setGpsSoilSuggestion(soilResult[0].class_name || '');
+    }
+    // Province soil lookup
+    let pslData = null;
+    if (m.province_soil_id) {
+      const { data } = await supabase.from('cfi_province_soil_lookup')
+        .select('dominant_soil_wrb').eq('id', m.province_soil_id).single();
+      pslData = data;
+    } else if (m.province) {
+      const { data } = await supabase.from('cfi_province_soil_lookup')
+        .select('dominant_soil_wrb').ilike('province', m.province).maybeSingle();
+      pslData = data;
+    }
+    if (pslData?.dominant_soil_wrb) {
+      const wrb = pslData.dominant_soil_wrb.toLowerCase();
+      let soilKey = 'ultisol';
+      if (wrb.includes('histosol') || wrb.includes('peat') || wrb.includes('gambut')) soilKey = 'histosol';
+      else if (wrb.includes('inceptisol')) soilKey = 'inceptisol';
+      else if (wrb.includes('oxisol') || wrb.includes('ferralsol') || wrb.includes('latosol')) soilKey = 'oxisol';
+      else if (wrb.includes('andosol') || wrb.includes('andisol')) soilKey = 'andisol';
+      else if (wrb.includes('spodosol') || wrb.includes('podzol') || wrb.includes('sandy')) soilKey = 'spodosol';
+      console.log('SOIL KEY MAPPED:', soilKey);
+      setSelectedSoil(soilKey);
+      setSoilAutoSelected(true);
+      if (siteId) supabase.from('cfi_sites').update({ soil_type: soilKey }).eq('id', siteId);
+    }
+  }
+
   // Current soil data
   const soilData = soils.find(s=>s.id===selectedSoil) || soils[0] || SOILS_FALLBACK[1];
 
@@ -850,73 +811,64 @@ export default function SiteSetup() {
                       }}
                       placeholder="Enter Company Name"
                       value={site.company}
-                      onFocus={async () => {
+                      onFocus={() => {
                         if (companyConfirmed) {
                           setSite(s => ({...s, company:'', estate:'', millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
-                          setCompanyConfirmed(false);
-                          setEstateConfirmed(false);
-                          setMillConfirmed(false);
-                          setGpsSoilSuggestion('');
+                          setCompanyConfirmed(false); setEstateConfirmed(false); setMillConfirmed(false);
+                          setSelectedMill(null); setCompanyMills([]); setGpsSoilSuggestion('');
                           setMill(prev => ({...prev, ffb:60}));
-                          setEstateSuggestions([]); setMillSuggestions([]);
-                          setCompanySuggestions([]);
+                          setCompanySuggestions([]); setEstateSuggestions([]); setMillSuggestions([]);
                           setActiveDropdown(null);
                           return;
-                        }
-                        if (site.company.length >= 3) {
-                          setActiveDropdown('company');
-                          const { data } = await supabase.from('cfi_mill_owners').select('id, company').ilike('company',`%${site.company}%`).limit(20);
-                          setCompanySuggestions(data || []);
                         }
                       }}
                       onChange={async e => {
                         const val = e.target.value;
                         setSite(s => ({...s, company:val, estate:'', millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
-                        setCompanyConfirmed(false);
-                        setEstateConfirmed(false);
-                        setMillConfirmed(false);
-                        setGpsSoilSuggestion('');
+                        setCompanyConfirmed(false); setEstateConfirmed(false); setMillConfirmed(false);
+                        setSelectedMill(null); setCompanyMills([]); setGpsSoilSuggestion('');
                         setMill(prev => ({...prev, ffb:60}));
-                        if (val.length < 3) {
-                          setCompanySuggestions([]);
-                          setActiveDropdown(null);
-                          return;
-                        }
+                        if (val.length < 3) { setCompanySuggestions([]); setActiveDropdown(null); return; }
                         setActiveDropdown('company');
-                        const { data } = await supabase.from('cfi_mill_owners').select('id, company').ilike('company',`%${val}%`).limit(8);
-                        setCompanySuggestions(data || []);
+                        // Query distinct company names from cfi_mills_60tph
+                        const { data } = await supabase.from('cfi_mills_60tph')
+                          .select('owner_company')
+                          .ilike('owner_company', `%${val}%`)
+                          .order('owner_company')
+                          .limit(50);
+                        // Deduplicate
+                        const unique = [...new Set((data||[]).map(d=>d.owner_company).filter(Boolean))];
+                        setCompanySuggestions(unique);
                       }}
                     />
                     {activeDropdown === 'company' && companySuggestions.length > 0 && (
                       <div style={{ position:'absolute', top:'100%', left:0, right:0, background:'#0C1E33', border:'1px solid rgba(64,215,197,0.40)', borderRadius:7, zIndex:200, maxHeight:220, overflowY:'auto', boxShadow:'0 8px 24px rgba(0,0,0,0.40)' }}>
-                        {companySuggestions.map(c => (
+                        {companySuggestions.map(name => (
                           <div
-                            key={c.id}
+                            key={name}
                             onMouseDown={async ev => {
                               ev.preventDefault();
-                              upSite('company', c.company);
+                              upSite('company', name);
                               setCompanyConfirmed(true);
                               setCompanySuggestions([]);
-                              setActiveDropdown(null);
-                              const { data: estates } = await supabase
-                                .from('cfi_estates')
-                                .select('id, estate_name, province, district_kabupaten')
-                                .ilike('owner_company', `%${c.company}%`)
-                                .order('estate_name').limit(100);
-                              setEstateSuggestions(estates?.length ? estates : (await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').order('estate_name').limit(100)).data || []);
-                              const millCols = 'id, mill_name, owner_company, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id';
-                              const { data: mills } = await supabase
-                                .from('cfi_mills_60tph')
-                                .select(millCols)
-                                .ilike('owner_company', `%${c.company}%`)
-                                .order('mill_name').limit(105);
-                              setMillSuggestions(mills?.length ? mills : (await supabase.from('cfi_mills_60tph').select(millCols).order('mill_name').limit(105)).data || []);
+                              // STEP 1 complete: fetch all mills for this company
+                              const cols = 'id, mill_name, owner_company, province, district_kabupaten, latitude, longitude, capacity_tph, province_soil_id';
+                              const { data: mills } = await supabase.from('cfi_mills_60tph')
+                                .select(cols)
+                                .ilike('owner_company', name)
+                                .order('mill_name')
+                                .limit(200);
+                              const millRows = mills || [];
+                              setCompanyMills(millRows);
+                              // Auto-open estate dropdown with all mills for this company
+                              setEstateSuggestions(millRows);
+                              setActiveDropdown('estate');
                             }}
                             style={{ padding:'10px 14px', cursor:'pointer', fontSize:13, fontFamily:Fnt.dm, color:C.grey, borderBottom:'1px solid rgba(255,255,255,0.05)' }}
                             onMouseEnter={ev => ev.currentTarget.style.background='rgba(64,215,197,0.08)'}
                             onMouseLeave={ev => ev.currentTarget.style.background='transparent'}
                           >
-                            {c.company}
+                            {name}
                           </div>
                         ))}
                       </div>
@@ -924,7 +876,7 @@ export default function SiteSetup() {
                   </div>
                 </div>
 
-                {/* ── FIELD 2: Plantation / Estate Name — full width ── */}
+                {/* ── FIELD 2: Plantation / Estate Name — shows all mills for company ── */}
                 <div>
                   <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>
                     PLANTATION / ESTATE NAME
@@ -937,63 +889,71 @@ export default function SiteSetup() {
                         borderColor: estateConfirmed ? C.tealBdr : 'rgba(168,189,208,0.20)',
                         color:       estateConfirmed ? C.amber   : C.white,
                       }}
-                      placeholder="Estate / Plantation Name"
+                      placeholder={companyConfirmed ? "Select estate ▾" : "Select company first"}
                       value={site.estate}
-                      onFocus={async () => {
+                      readOnly={!companyConfirmed}
+                      onFocus={() => {
                         if (estateConfirmed) {
                           setSite(s => ({...s, estate:'', millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
-                          setEstateConfirmed(false);
-                          setMillConfirmed(false);
-                          setGpsSoilSuggestion('');
+                          setEstateConfirmed(false); setMillConfirmed(false);
+                          setSelectedMill(null); setGpsSoilSuggestion('');
                           setMill(prev => ({...prev, ffb:60}));
                           setMillSuggestions([]);
-                          setEstateSuggestions([]);
                           setActiveDropdown(null);
                           return;
                         }
-                        if (site.estate.length >= 3) {
+                        if (companyConfirmed && companyMills.length > 0) {
+                          setEstateSuggestions(companyMills);
                           setActiveDropdown('estate');
-                          const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').ilike('estate_name',`%${site.estate}%`).limit(20);
-                          setEstateSuggestions(data || []);
                         }
                       }}
-                      onChange={async e => {
+                      onChange={e => {
                         const val = e.target.value;
                         setSite(s => ({...s, estate:val, millName:'', province:'', district:'', gpsLat:'', gpsLon:''}));
-                        setEstateConfirmed(false);
-                        setMillConfirmed(false);
-                        setGpsSoilSuggestion('');
-                        setMill(prev => ({...prev, ffb:60}));
-                        if (val.length < 3) {
-                          setEstateSuggestions([]);
-                          setActiveDropdown(null);
-                          return;
+                        setEstateConfirmed(false); setMillConfirmed(false);
+                        setSelectedMill(null); setGpsSoilSuggestion('');
+                        // Filter company mills by typed text
+                        if (companyConfirmed && companyMills.length > 0) {
+                          const filtered = val.length >= 1
+                            ? companyMills.filter(m => m.mill_name.toLowerCase().includes(val.toLowerCase()))
+                            : companyMills;
+                          setEstateSuggestions(filtered);
+                          setActiveDropdown('estate');
                         }
-                        setActiveDropdown('estate');
-                        const { data } = await supabase.from('cfi_estates').select('id, estate_name, province, district_kabupaten').ilike('estate_name',`%${val}%`).limit(10);
-                        setEstateSuggestions(data || []);
                       }}
                     />
                     {activeDropdown === 'estate' && estateSuggestions.length > 0 && (
                       <div style={{ position:'absolute', top:'100%', left:0, right:0, background:'#0C1E33', border:'1px solid rgba(64,215,197,0.40)', borderRadius:7, zIndex:200, maxHeight:220, overflowY:'auto', boxShadow:'0 8px 24px rgba(0,0,0,0.40)' }}>
-                        {estateSuggestions.map(est => (
+                        {estateSuggestions.map(m => (
                           <div
-                            key={est.id}
+                            key={m.id}
                             onMouseDown={ev => {
                               ev.preventDefault();
-                              upSite('estate', est.estate_name);
-                              if (est.province) upSite('province', est.province);
-                              if (est.district_kabupaten) upSite('district', est.district_kabupaten);
+                              upSite('estate', m.mill_name);
                               setEstateConfirmed(true);
                               setEstateSuggestions([]);
+                              // Auto-populate mill dropdown (may be just this one)
+                              setMillSuggestions([m]);
+                              // Auto-fill mill immediately since it's 1:1
+                              upSite('millName', m.mill_name);
+                              if (m.province) upSite('province', m.province);
+                              if (m.district_kabupaten) upSite('district', m.district_kabupaten);
+                              if (m.latitude) upSite('gpsLat', String(m.latitude));
+                              if (m.longitude) upSite('gpsLon', String(m.longitude));
+                              if (m.capacity_tph) setMill(prev => ({...prev, ffb: m.capacity_tph}));
+                              setMillConfirmed(true);
+                              setSelectedMill(m);
                               setActiveDropdown(null);
+                              // Soil auto-select
+                              runSoilLookup(m);
                             }}
                             style={{ padding:'10px 14px', cursor:'pointer', fontSize:13, fontFamily:Fnt.dm, color:C.grey, borderBottom:'1px solid rgba(255,255,255,0.05)' }}
                             onMouseEnter={ev => ev.currentTarget.style.background='rgba(64,215,197,0.08)'}
                             onMouseLeave={ev => ev.currentTarget.style.background='transparent'}
                           >
-                            {est.estate_name}
-                            {est.province && <span style={{ fontSize:11, color:'rgba(168,189,208,0.50)', marginLeft:8 }}>{est.province}</span>}
+                            {m.mill_name}
+                            {m.province && <span style={{ fontSize:11, color:'rgba(168,189,208,0.50)', marginLeft:8 }}>{m.province}</span>}
+                            {m.capacity_tph && <span style={{ fontSize:11, color:'rgba(245,166,35,0.50)', marginLeft:8 }}>{m.capacity_tph} tph</span>}
                           </div>
                         ))}
                       </div>
@@ -1001,7 +961,7 @@ export default function SiteSetup() {
                   </div>
                 </div>
 
-                {/* ── FIELD 3: Mill Name — full width ── */}
+                {/* ── FIELD 3: Mill Name — auto-filled from estate selection ── */}
                 <div>
                   <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>
                     MILL NAME / UNIT
@@ -1014,122 +974,20 @@ export default function SiteSetup() {
                         borderColor: millConfirmed ? C.tealBdr : 'rgba(168,189,208,0.20)',
                         color:       millConfirmed ? C.amber   : C.white,
                       }}
-                      placeholder="Mill Name / #"
+                      placeholder={estateConfirmed ? "Mill auto-filled" : "Select estate first"}
                       value={site.millName}
-                      onFocus={async () => {
+                      readOnly={!estateConfirmed}
+                      onFocus={() => {
                         if (millConfirmed) {
                           setSite(s => ({...s, millName:'', gpsLat:'', gpsLon:''}));
-                          setMillConfirmed(false);
-                          setSelectedMill(null);
-                          setGpsSoilSuggestion('');
+                          setMillConfirmed(false); setSelectedMill(null); setGpsSoilSuggestion('');
                           setMill(prev => ({...prev, ffb:60}));
                           setMillSuggestions([]);
                           setActiveDropdown(null);
                           return;
                         }
-                        if (site.millName.length >= 3) {
-                          setActiveDropdown('mill');
-                          const { data } = await supabase.from('cfi_mills_60tph')
-                            .select('id, mill_name, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id')
-                            .ilike('mill_name',`%${site.millName}%`).limit(20);
-                          setMillSuggestions(data || []);
-                        }
-                      }}
-                      onChange={async e => {
-                        const val = e.target.value;
-                        setSite(s => ({...s, millName:val, gpsLat:'', gpsLon:''}));
-                        setMillConfirmed(false);
-                        setSelectedMill(null);
-                        setGpsSoilSuggestion('');
-                        setMill(prev => ({...prev, ffb:60}));
-                        if (val.length < 3) {
-                          setMillSuggestions([]);
-                          setActiveDropdown(null);
-                          return;
-                        }
-                        setActiveDropdown('mill');
-                        const cols = 'id, mill_name, owner_company, province, district_kabupaten, latitude, longitude, confirmed_soil_type, capacity_tph, province_soil_id';
-                        const { data } = await supabase.from('cfi_mills_60tph').select(cols).ilike('mill_name',`%${val}%`).limit(10);
-                        setMillSuggestions(data || []);
                       }}
                     />
-                    {activeDropdown === 'mill' && millSuggestions.length > 0 && (
-                      <div style={{ position:'absolute', top:'100%', left:0, right:0, background:'#0C1E33', border:'1px solid rgba(64,215,197,0.40)', borderRadius:7, zIndex:200, maxHeight:220, overflowY:'auto', boxShadow:'0 8px 24px rgba(0,0,0,0.40)' }}>
-                        {millSuggestions.map(m => (
-                          <div
-                            key={m.id}
-                            onMouseDown={async ev => {
-                              ev.preventDefault();
-                              // Populate ALL fields from mill row
-                              if (m.owner_company) { upSite('company', m.owner_company); setCompanyConfirmed(true); }
-                              upSite('millName', m.mill_name);
-                              if (m.province) upSite('province', m.province);
-                              if (m.district_kabupaten) upSite('district', m.district_kabupaten);
-                              if (m.latitude)  upSite('gpsLat', String(m.latitude));
-                              if (m.longitude) upSite('gpsLon', String(m.longitude));
-                              if (m.capacity_tph) setMill(prev => ({...prev, ffb: m.capacity_tph}));
-                              setEstateConfirmed(true);
-                              setMillConfirmed(true);
-                              setSelectedMill(m);
-                              console.log('MILL SELECTED:', m);
-                              console.log('PROVINCE SOIL ID:', m?.province_soil_id);
-                              setMillSuggestions([]);
-                              setActiveDropdown(null);
-                              if (m.latitude && m.longitude) {
-                                const { data: soilResult } = await supabase.rpc('get_soil_acidity_class', {
-                                  p_lat: m.latitude, p_lon: m.longitude, p_max_distance_km: 25
-                                });
-                                if (soilResult?.[0]) setGpsSoilSuggestion(soilResult[0].class_name || '');
-                              }
-                              // Soil auto-select — inline on mill selection
-                              if (m.province_soil_id) {
-                                const { data: psl } = await supabase
-                                  .from('cfi_province_soil_lookup')
-                                  .select('dominant_soil_wrb')
-                                  .eq('id', m.province_soil_id)
-                                  .single();
-                                if (psl?.dominant_soil_wrb) {
-                                  const wrb = psl.dominant_soil_wrb.toLowerCase();
-                                  let soilKey = 'ultisol';
-                                  if (wrb.includes('histosol') || wrb.includes('peat') || wrb.includes('gambut')) soilKey = 'histosol';
-                                  else if (wrb.includes('inceptisol')) soilKey = 'inceptisol';
-                                  else if (wrb.includes('oxisol') || wrb.includes('ferralsol') || wrb.includes('latosol')) soilKey = 'oxisol';
-                                  else if (wrb.includes('andosol') || wrb.includes('andisol')) soilKey = 'andisol';
-                                  else if (wrb.includes('spodosol') || wrb.includes('podzol') || wrb.includes('sandy')) soilKey = 'spodosol';
-                                  console.log('SOIL KEY MAPPED:', soilKey);
-                                  setSelectedSoil(soilKey);
-                                  setSoilAutoSelected(true);
-                                }
-                              } else if (m.province) {
-                                const { data: psl } = await supabase
-                                  .from('cfi_province_soil_lookup')
-                                  .select('dominant_soil_wrb')
-                                  .ilike('province', m.province)
-                                  .maybeSingle();
-                                if (psl?.dominant_soil_wrb) {
-                                  const wrb = psl.dominant_soil_wrb.toLowerCase();
-                                  let soilKey = 'ultisol';
-                                  if (wrb.includes('histosol') || wrb.includes('peat') || wrb.includes('gambut')) soilKey = 'histosol';
-                                  else if (wrb.includes('inceptisol')) soilKey = 'inceptisol';
-                                  else if (wrb.includes('oxisol') || wrb.includes('ferralsol') || wrb.includes('latosol')) soilKey = 'oxisol';
-                                  else if (wrb.includes('andosol') || wrb.includes('andisol')) soilKey = 'andisol';
-                                  else if (wrb.includes('spodosol') || wrb.includes('podzol') || wrb.includes('sandy')) soilKey = 'spodosol';
-                                  console.log('SOIL KEY MAPPED (province fallback):', soilKey);
-                                  setSelectedSoil(soilKey);
-                                  setSoilAutoSelected(true);
-                                }
-                              }
-                            }}
-                            style={{ padding:'10px 14px', cursor:'pointer', fontSize:13, fontFamily:Fnt.dm, color:C.grey, borderBottom:'1px solid rgba(255,255,255,0.05)' }}
-                            onMouseEnter={ev => ev.currentTarget.style.background='rgba(64,215,197,0.08)'}
-                            onMouseLeave={ev => ev.currentTarget.style.background='transparent'}
-                          >
-                            {m.mill_name}
-                            {m.province && <span style={{ fontSize:11, color:'rgba(168,189,208,0.50)', marginLeft:8 }}>{m.province}</span>}
-                          </div>
-                        ))}
-                      </div>
-                    )}
                   </div>
                 </div>
 
