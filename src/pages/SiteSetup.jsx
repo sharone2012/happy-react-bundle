@@ -1346,7 +1346,7 @@ export default function SiteSetup() {
               )}
               {/* Fertility pill — 3 states based on soil */}
               <div style={{ display:'flex', flexDirection:'row', gap:6, alignItems:'center', flexWrap:'nowrap', width:'100%', marginTop:4 }}>
-                <div style={{ fontSize:13, fontWeight:400, fontFamily:'EB Garamond, serif', padding:'5px 10px', borderRadius:12, border:'1.5px solid #F5A623', background:'rgba(245,166,35,0.08)', color:'#F5A623', whiteSpace:'nowrap', display:'inline-block' }}>{soilData.name}</div>
+                <div style={{ fontSize:13, fontWeight:700, fontFamily:'EB Garamond, serif', padding:'5px 10px', borderRadius:12, border:'1.5px solid #00C9B1', background:C.tealDim, color:'#F5A623', whiteSpace:'nowrap', display:'inline-block' }}>{soilData.name}</div>
                 {soilData.pills?.filter(p=>p.cls==='amber').map((p,i) => (
                   <div key={i} style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.mono, padding:'5px 10px', borderRadius:12, background:'#F5A623', color:'#0B1F35', whiteSpace:'nowrap', display:'inline-block' }}>{p.txt}</div>
                 ))}
