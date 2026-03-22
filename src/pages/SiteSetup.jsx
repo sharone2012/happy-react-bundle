@@ -39,6 +39,7 @@
  */
 
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import { ChevronUp, ChevronDown } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 // ── DESIGN TOKENS (locked) ──────────────────────────────
