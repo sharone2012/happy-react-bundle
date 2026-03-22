@@ -1540,7 +1540,7 @@ export default function SiteSetup() {
                 <div style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:16, color:'#FFF', letterSpacing:'0.1em', marginBottom:8 }}>VALORIZING</div>
                 <div style={{ display:'flex', alignItems:'baseline', justifyContent:'center', gap:8 }}>
                   <span style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:40, color:C.greenLt, lineHeight:1 }}>{fHeroPct}</span>
-                  <span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:18, color:C.greenLt }}>% OF MILL RESIDUES</span>
+                  <span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:16, color:C.greenLt }}>% of Mill Residues</span>
                 </div>
               </div>
               <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:8, padding:'0 13px 5px' }}>
