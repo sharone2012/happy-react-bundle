@@ -1459,11 +1459,8 @@ export default function SiteSetup() {
                 })}
               </div>
 
-              {/* D3: Buttons — Add Palm Residue left, Add New Residue right */}
-              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginTop:8, paddingRight:16 }}>
-                <button onClick={()=>setShowMoreStreams(v=>!v)} style={{ background:'transparent', border:'1.5px solid #00C9B1', borderRadius:6, color:'#00C9B1', fontFamily:Fnt.dm, fontSize:11, fontWeight:700, padding:'5px 12px', cursor:'pointer', whiteSpace:'nowrap' }}>
-                  {showMoreStreams ? 'Hide Palm Residues' : 'Add Palm Residue'}
-                </button>
+              {/* D3: Add Residue button */}
+              <div style={{ display:'flex', alignItems:'center', marginTop:8 }}>
                 <button onClick={()=>setShowNewFields(v=>!v)} style={{ background:'transparent', border:'1.5px solid #00C9B1', borderRadius:6, color:'#00C9B1', fontFamily:Fnt.dm, fontSize:11, fontWeight:700, padding:'5px 12px', cursor:'pointer', whiteSpace:'nowrap' }}>
                   {showNewFields ? 'Cancel' : 'Add New Residue'}
                 </button>
