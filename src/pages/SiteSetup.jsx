@@ -799,12 +799,12 @@ export default function SiteSetup() {
           {/* Taglines block */}
           <div style={{ display:'flex', flexDirection:'column', height:38, gap:0.86, justifyContent:'center', flexShrink:0 }}>
             <div style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.dm, lineHeight:1.3, whiteSpace:'nowrap' }}>
-              <span style={{ color:'#FFFFFF', whiteSpace:'pre' }}>{'Precision Engineering '}</span>
-              <span style={{ color:'#33D4BC' }}>Circular Nutrient Recovery in Agricultural Systems</span>
+              <span style={{ color:'#FFFFFF' }}>Precision Engineering</span>
+              <span style={{ color:'#33D4BC', marginLeft:6 }}>Circular Nutrient Recovery in Agricultural Systems</span>
             </div>
-            <div style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.dm, lineHeight:1.3, whiteSpace:'nowrap' }}>
-              <span style={{ color:'#FFFFFF', whiteSpace:'pre' }}>{'Applied Biology '}</span>
-              <span style={{ color:'#33D4BC' }}>Rebalancing Soil's Microbiome & Reducing Synthetic Fertiliser Use</span>
+            <div style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.dm, lineHeight:1.3, whiteSpace:'nowrap', position:'relative' }}>
+              <span style={{ color:'#FFFFFF' }}>Applied Biology</span>
+              <span style={{ color:'#33D4BC', position:'absolute', left:134 }}>Rebalancing Soil's Microbiome & Reducing Synthetic Fertiliser Use</span>
             </div>
           </div>
           {/* Short tabs — far right */}
