@@ -1609,7 +1609,7 @@ export default function SiteSetup() {
           </div>
 
           {/* ── F: % OF MILL RESIDUES CAPTURED ── */}
-          <div style={{ ...card, background:'#060C14', border:`1.5px solid rgba(64,215,197,0.55)` }}>
+          <div id="sec-f" style={{ ...card, background:'#060C14', border:`1.5px solid rgba(64,215,197,0.55)`, scrollMarginTop:180 }}>
             <div style={{ ...secTitle, color:C.teal }}>F — Mill Residues Captured</div>
             <div style={secSub}>% Of Mill Discharge Updates Live</div>
             <div style={cbody}>
