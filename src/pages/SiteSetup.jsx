@@ -1507,7 +1507,7 @@ export default function SiteSetup() {
                 const pct  = mx > 0 ? (val/mx*100) : 50;
                 return (
                   <div key={key} style={slItem}>
-                    <div style={{ display:'grid', gridTemplateColumns:'auto 1fr auto', alignItems:'baseline', gap:6, marginBottom:10 }}>
+                    <div style={{ display:'grid', gridTemplateColumns:'auto 1fr auto', alignItems:'baseline', gap:6, marginBottom:16 }}>
                       <span style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:C.teal }}>{name}</span>
                       <span style={{ display:'inline-flex', alignItems:'baseline', justifyContent:'center', gap:3 }}>
                         <span style={{ fontSize:14, fontWeight:800, fontFamily:Fnt.mono, color:C.amber }}>{fmtT(val)} t/month</span>
