@@ -1538,13 +1538,13 @@ export default function SiteSetup() {
             <div style={secSub}>% Of Mill Discharge Updates Live</div>
             <div style={cbody}>
               <div style={{ background:'linear-gradient(135deg,rgba(0,162,73,0.16) 0%,rgba(6,12,20,1) 65%)', border:`1.5px solid rgba(0,162,73,0.45)`, borderRadius:11, padding:'22px 16px', marginBottom:12, textAlign:'center', minHeight:140 }}>
-                <div style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:14, color:C.greenLt30, letterSpacing:'0.1em', marginBottom:8 }}>Utilizing</div>
+                <div style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:18, color:C.greenLt30, letterSpacing:'0.1em', marginBottom:8 }}>Utilizing</div>
                 <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:2 }}>
                   <div style={{ display:'flex', alignItems:'baseline', justifyContent:'center', gap:4 }}>
                     <span style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:40, color:C.greenLt30, lineHeight:1 }}>{fHeroPct}</span>
                     <span style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:40, color:C.greenLt30, lineHeight:1 }}>%</span>
                   </div>
-                  <span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:18, color:C.greenLt30, display:'block', textAlign:'center' }}>of Mill Residues</span>
+                  <span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:14, color:C.greenLt30, display:'block', textAlign:'center' }}>of Mill Residues</span>
                 </div>
               </div>
               <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:8, padding:'0 13px 5px' }}>
@@ -1581,10 +1581,10 @@ export default function SiteSetup() {
             <div style={secSub}>Drives All S1–S6 Calculations</div>
             <div style={cbody}>
               <div style={{ background:'linear-gradient(160deg,rgba(0,162,73,0.22) 0%,rgba(6,12,20,1) 55%)', border:`1.5px solid rgba(0,162,73,0.50)`, borderRadius:11, padding:'22px 16px', textAlign:'center', marginBottom:12, minHeight:140 }}>
-                <div style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:14, color:C.greenLt30, letterSpacing:'0.1em', marginBottom:8, whiteSpace:'nowrap' }}>Total Processing Volume</div>
+                <div style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:18, color:C.greenLt30, letterSpacing:'0.1em', marginBottom:8, whiteSpace:'nowrap' }}>Total Processing Volume</div>
                 <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:2 }}>
                   <span style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:40, color:C.greenLt30, lineHeight:1 }}>{grandTotal>0?fmtT(grandTotal):'—'}</span>
-                  {grandTotal>0&&<span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:18, color:C.greenLt30, display:'block', textAlign:'center' }}>t/month</span>}
+                  {grandTotal>0&&<span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:14, color:C.greenLt30, display:'block', textAlign:'center' }}>t/month</span>}
                 </div>
               </div>
               <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:'rgba(77,191,130,0.70)', letterSpacing:'0.08em', marginBottom:7 }}>ACTIVE STREAMS</div>
