@@ -1544,7 +1544,7 @@ export default function SiteSetup() {
                     <span style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:40, color:C.greenLt30, lineHeight:1 }}>{fHeroPct}</span>
                     <span style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:40, color:C.greenLt30, lineHeight:1 }}>%</span>
                   </div>
-                  <span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:18, color:C.greenLt30, display:'block', textAlign:'center' }}>of Mill Residues</span>
+                  <span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:14, color:C.greenLt30, display:'block', textAlign:'center' }}>of Mill Residues</span>
                 </div>
               </div>
               <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:8, padding:'0 13px 5px' }}>
