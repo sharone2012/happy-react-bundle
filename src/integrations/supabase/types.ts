@@ -612,6 +612,62 @@ export type Database = {
           },
         ]
       }
+      cfi_gps_submissions: {
+        Row: {
+          created_at: string | null
+          id: string
+          mill_id: string | null
+          mill_name: string
+          notes: string | null
+          submission_source: string | null
+          submitted_by_user: string | null
+          submitted_district: string | null
+          submitted_latitude: number
+          submitted_longitude: number
+          verified: boolean | null
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          mill_id?: string | null
+          mill_name: string
+          notes?: string | null
+          submission_source?: string | null
+          submitted_by_user?: string | null
+          submitted_district?: string | null
+          submitted_latitude: number
+          submitted_longitude: number
+          verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          mill_id?: string | null
+          mill_name?: string
+          notes?: string | null
+          submission_source?: string | null
+          submitted_by_user?: string | null
+          submitted_district?: string | null
+          submitted_latitude?: number
+          submitted_longitude?: number
+          verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_gps_submissions_mill_id_fkey"
+            columns: ["mill_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_mills_60tph"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cfi_industries: {
         Row: {
           agent_data_seeded: boolean | null
