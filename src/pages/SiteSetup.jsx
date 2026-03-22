@@ -208,7 +208,7 @@ export default function SiteSetup() {
    const SECTIONS = [
      { id:'sec-a', label:'A' }, { id:'sec-b', label:'B' }, { id:'sec-c', label:'C' },
      { id:'sec-g', label:'D' }, { id:'sec-d', label:'E' }, { id:'sec-e', label:'F' },
-     { id:'sec-f', label:'G' }, { id:'sec-gtotal', label:'H' },
+     { id:'sec-f', label:'G' }, { id:'sec-htotal', label:'H' },
    ];
   const [activeSection, setActiveSection] = useState('sec-a');
 
