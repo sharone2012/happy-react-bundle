@@ -707,7 +707,7 @@ export default function SiteSetup() {
   // STYLES
   // ═══════════════════════════════════════════════════════
   const card       = { background:C.navyCard, border:`1.5px solid rgba(0,201,177,0.13)`, borderRadius:11, overflow:'hidden', minWidth:0 };
-  const secTitle   = { padding:'11px 16px 10px', fontFamily:Fnt.syne, fontWeight:700, fontSize:15, color:C.teal, borderBottom:`1px solid rgba(64,215,197,0.12)`, display:'flex', alignItems:'center', justifyContent:'space-between', whiteSpace:'nowrap' };
+  const secTitle   = { padding:'11px 16px 13px', fontFamily:Fnt.syne, fontWeight:700, fontSize:15, color:C.teal, borderBottom:`1px solid rgba(64,215,197,0.12)`, display:'flex', alignItems:'center', justifyContent:'space-between', whiteSpace:'nowrap', lineHeight:1.3 };
   const secSub     = { fontSize:13, color:C.greyLt, padding:'5px 16px 7px' };
   const cbody      = { padding:'11px 13px', display:'flex', flexDirection:'column', gap:6 };
   const grid2      = { display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 };
