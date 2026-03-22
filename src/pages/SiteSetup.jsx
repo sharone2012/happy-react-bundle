@@ -1470,9 +1470,9 @@ export default function SiteSetup() {
               {showNewFields && (
                 <div style={{ marginTop:6 }}>
                   <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>Add New</div>
-                  <div style={{ display:'flex', gap:8 }}>
-                    <input value={newRes1} onChange={e=>setNewRes1(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addResidue(newRes1, newResVol)} placeholder="Residue Name" style={{ background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'10px 13px', outline:'none', fontFamily:Fnt.dm, fontSize:14, fontWeight:500, color:C.white, width:'calc(50% - 4px)', minHeight:42, boxSizing:'border-box' }} />
-                    <div style={{ width:'calc(50% - 4px)', background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'6px 10px', display:'flex', alignItems:'center', gap:4, minHeight:42, boxSizing:'border-box' }}>
+                  <div style={{ display:'flex', gap:8, alignItems:'center' }}>
+                    <input value={newRes1} onChange={e=>setNewRes1(e.target.value)} placeholder="Residue Name" style={{ background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'10px 13px', outline:'none', fontFamily:Fnt.dm, fontSize:14, fontWeight:500, color:C.white, width:'calc(40% - 4px)', minHeight:42, boxSizing:'border-box' }} />
+                    <div style={{ width:'calc(35% - 4px)', background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'6px 10px', display:'flex', flexDirection:'column', justifyContent:'center', gap:1, minHeight:42, boxSizing:'border-box' }}>
                       <input
                         type="text"
                         inputMode="numeric"
@@ -1482,12 +1482,28 @@ export default function SiteSetup() {
                           const raw = e.target.value.replace(/,/g,'').replace(/[^0-9]/g,'');
                           setNewResVol(raw);
                         }}
-                        onBlur={() => { if (newRes1.trim() && newResVol) addResidue(newRes1, newResVol); }}
-                        onKeyDown={e => e.key==='Enter' && addResidue(newRes1, newResVol)}
                         style={{ background:'transparent', border:'none', outline:'none', fontFamily:Fnt.mono, fontSize:14, fontWeight:800, color:C.amber, width:'100%', textAlign:'right' }}
                       />
-                      <span style={{ fontSize:11, fontFamily:Fnt.mono, color:'#888888', whiteSpace:'nowrap', flexShrink:0 }}>t/m</span>
+                      <span style={{ fontSize:8, fontFamily:Fnt.mono, color:'#888888', textAlign:'right', lineHeight:1.1 }}>Enter high value. Use slider for exact volume.</span>
+                      <span style={{ fontSize:11, fontFamily:Fnt.mono, color:'#888888', whiteSpace:'nowrap', textAlign:'right' }}>t/m</span>
                     </div>
+                    <button
+                      onClick={() => addResidue(newRes1, newResVol)}
+                      disabled={!newRes1.trim() || !newResVol}
+                      style={{
+                        background: (!newRes1.trim() || !newResVol) ? 'rgba(0,200,100,0.3)' : '#00C864',
+                        border: 'none',
+                        borderRadius: 6,
+                        color: '#fff',
+                        fontFamily: Fnt.dm,
+                        fontSize: 12,
+                        fontWeight: 700,
+                        padding: '10px 16px',
+                        cursor: (!newRes1.trim() || !newResVol) ? 'not-allowed' : 'pointer',
+                        whiteSpace: 'nowrap',
+                        minHeight: 42,
+                      }}
+                    >Add</button>
                   </div>
                 </div>
               )}
