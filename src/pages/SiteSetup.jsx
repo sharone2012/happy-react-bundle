@@ -1690,7 +1690,7 @@ export default function SiteSetup() {
           </div>
 
           {/* ── G-TOTAL: TOTAL MONTHLY PROCESSING ── */}
-          <div style={{ ...card, background:'#060C14', border:`1.5px solid rgba(0,162,73,0.55)` }}>
+          <div id="sec-htotal" style={{ ...card, background:'#060C14', border:`1.5px solid rgba(0,162,73,0.55)` }}>
             <div style={{ ...secTitle, color:C.teal, borderBottomColor:'rgba(0,162,73,0.20)' }}>H — Total</div>
             <div style={secSub}>Drives All S1–S6 Calculations</div>
             <div style={cbody}>
