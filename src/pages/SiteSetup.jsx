@@ -1514,7 +1514,7 @@ export default function SiteSetup() {
 
           {/* ── D: SELECT MILL RESIDUES ── */}
           <div id="sec-d" style={{...card, scrollMarginTop:180}}>
-            <div style={secTitle}>D — Select Mill Residues</div>
+            <div style={secTitle}>E — Select Mill Residues</div>
             <div style={secSub}>Click Any Card To Activate Or De-Activate</div>
             <div style={cbody}>
               <div style={grid2}>
