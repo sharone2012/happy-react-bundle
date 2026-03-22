@@ -785,67 +785,57 @@ export default function SiteSetup() {
   return (
     <div style={{ background:C.navy, color:C.white, fontFamily:Fnt.dm, fontSize:14, minWidth:1400 }}>
 
-      {/* ── TOP NAV ── */}
-      <div style={{ background:C.navyMid, display:'flex', alignItems:'center', padding:'0 28px', height:80, gap:18, position:'sticky', top:0, zIndex:100 }}>
-        <div style={{ display:'flex', alignItems:'center', flexShrink:0, maxWidth:340 }}>
-          <div>
-            <div style={{ display:'flex', alignItems:'baseline' }}>
-              <span style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:26, color:'#FFF', letterSpacing:'0.02em', whiteSpace:'nowrap' }}>CFI</span>
-              <span style={{ fontFamily:Fnt.brand, fontSize:22, color:'rgba(255,255,255,0.25)', margin:'0 8px' }}>·</span>
-              <span style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:20, color:C.teal, letterSpacing:'0.10em', whiteSpace:'nowrap' }}>DEEP TECH</span>
+      {/* ── STICKY HEADER (nav + tabs + subtab) ── */}
+      <div style={{ position:'sticky', top:0, zIndex:100 }}>
+        {/* ── TOP NAV ── */}
+        <div style={{ background:C.navyMid, display:'flex', alignItems:'center', padding:'0 28px', height:80, gap:18 }}>
+          <div style={{ display:'flex', alignItems:'center', flexShrink:0, maxWidth:340 }}>
+            <div>
+              <div style={{ display:'flex', alignItems:'baseline' }}>
+                <span style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:26, color:'#FFF', letterSpacing:'0.02em', whiteSpace:'nowrap' }}>CFI</span>
+                <span style={{ fontFamily:Fnt.brand, fontSize:22, color:'rgba(255,255,255,0.25)', margin:'0 8px' }}>·</span>
+                <span style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:20, color:C.teal, letterSpacing:'0.10em', whiteSpace:'nowrap' }}>DEEP TECH</span>
+              </div>
+              <div style={{ fontSize:11, color:C.teal, marginTop:4, fontFamily:Fnt.dm, whiteSpace:'nowrap' }}>Soil Microbiome Engineering &amp; Biofertiliser Production for Closed&#8209;Loop Nutrient Recycling</div>
             </div>
-            <div style={{ fontSize:11, color:C.teal, marginTop:4, fontFamily:Fnt.dm, whiteSpace:'nowrap' }}>Soil Microbiome Engineering &amp; Biofertiliser Production for Closed&#8209;Loop Nutrient Recycling</div>
+          </div>
+          <div style={{ display:'flex', gap:4, marginLeft:'auto', alignItems:'center', flexShrink:0 }}>
+            {['S0','S1','S2','S3','S4','S5','S6','CAPEX','Σ'].map((s,i)=>(
+              <div key={s} style={{ background:i===0?C.teal:'rgba(168,189,208,0.09)', border:`1px solid ${i===0?C.teal:'rgba(168,189,208,0.18)'}`, borderRadius:4, padding:'3px 9px', fontFamily:Fnt.mono, fontSize:11, fontWeight:700, color:i===0?C.navy:C.grey, cursor:'pointer', whiteSpace:'nowrap' }}>{s}</div>
+            ))}
+          </div>
+          <div style={{ display:'flex', gap:7, alignItems:'center', marginLeft:16, flexShrink:0 }}>
+            <div style={chips.green}>Valid</div>
+            <div style={chips.teal}>Blend Valid</div>
+            <div style={chips.amber}>Soil: {soilData.name}</div>
+            {blend?.CN > 0 && <div style={{...chips[cnStatus(blend.CN)?.color === C.green ? 'green' : cnStatus(blend.CN)?.color === C.amber ? 'amber' : 'red'], fontSize:10}}>C:N {blend.CN.toFixed(1)}</div>}
           </div>
         </div>
-        <div style={{ display:'flex', gap:4, marginLeft:'auto', alignItems:'center', flexShrink:0 }}>
-          {['S0','S1','S2','S3','S4','S5','S6','CAPEX','Σ'].map((s,i)=>(
-            <div key={s} style={{ background:i===0?C.teal:'rgba(168,189,208,0.09)', border:`1px solid ${i===0?C.teal:'rgba(168,189,208,0.18)'}`, borderRadius:4, padding:'3px 9px', fontFamily:Fnt.mono, fontSize:11, fontWeight:700, color:i===0?C.navy:C.grey, cursor:'pointer', whiteSpace:'nowrap' }}>{s}</div>
+
+        {/* ── FULL-NAME TAB BAR ── */}
+        <div style={{ background:'#0A1628', borderBottom:`2px solid rgba(64,215,197,0.20)`, display:'flex', justifyContent:'center', alignItems:'flex-end', gap:2, padding:'12px 24px 0' }}>
+          {['Site Setup','Pre-Processing','Pre-Treatment','Biologicals','BSF','Biofertiliser / Other','Emissions','Financials','Summary'].map((t,i)=>(
+            <div key={t} style={{ padding:'8px 18px', cursor:'pointer', borderRadius:'6px 6px 0 0', background:i===0?C.teal:'transparent', color:i===0?C.navy:C.teal, fontSize:12, fontWeight:700, fontFamily:Fnt.mono, border:`1px solid ${i===0?C.teal:'transparent'}`, borderBottom:'none', whiteSpace:'nowrap' }}>{t}</div>
           ))}
         </div>
-        <div style={{ display:'flex', gap:7, alignItems:'center', marginLeft:16, flexShrink:0 }}>
-          <div style={chips.green}>Valid</div>
-          <div style={chips.teal}>Blend Valid</div>
-          <div style={chips.amber}>Soil: {soilData.name}</div>
-          {blend?.CN > 0 && <div style={{...chips[cnStatus(blend.CN)?.color === C.green ? 'green' : cnStatus(blend.CN)?.color === C.amber ? 'amber' : 'red'], fontSize:10}}>C:N {blend.CN.toFixed(1)}</div>}
+
+        {/* ── SUBTAB BAR ── */}
+        <div style={{ background:C.navyMid, borderBottom:`1px solid rgba(255,255,255,0.04)`, padding:'0 28px', display:'flex', alignItems:'center', gap:12, height:44 }}>
+          <div style={{ background:C.teal, borderRadius:5, width:22, height:22, display:'flex', alignItems:'center', justifyContent:'center', fontFamily:Fnt.syne, fontWeight:800, fontSize:11, color:C.navy }}>S0</div>
+          <span style={{ fontSize:11, color:C.greyLt }}>Site Identity · Mill Capacity · Residue Streams · Soil Profile</span>
+          {siteLoading && <span style={{ fontSize:10, color:C.greyLt, marginLeft:'auto', fontFamily:Fnt.mono }}>Loading…</span>}
+          {siteId && !siteLoading && <span style={{ fontSize:10, color:'rgba(64,215,197,0.40)', marginLeft:'auto', fontFamily:Fnt.mono }}>Site #{siteId}</span>}
         </div>
       </div>
 
-      {/* ── FULL-NAME TAB BAR ── */}
-      <div style={{ background:'#0A1628', borderBottom:`2px solid rgba(64,215,197,0.20)`, display:'flex', justifyContent:'center', alignItems:'flex-end', gap:2, padding:'12px 24px 0' }}>
-        {['Site Setup','Pre-Processing','Pre-Treatment','Biologicals','BSF','Biofertiliser / Other','Emissions','Financials','Summary'].map((t,i)=>(
-          <div key={t} style={{ padding:'8px 18px', cursor:'pointer', borderRadius:'6px 6px 0 0', background:i===0?C.teal:'transparent', color:i===0?C.navy:C.teal, fontSize:12, fontWeight:700, fontFamily:Fnt.mono, border:`1px solid ${i===0?C.teal:'transparent'}`, borderBottom:'none', whiteSpace:'nowrap' }}>{t}</div>
-        ))}
+      {/* ── FLOATING PREV/NEXT ARROWS (both sides, 33% from bottom) ── */}
+      <div style={{ position:'fixed', left:18, bottom:'33%', display:'flex', flexDirection:'column', gap:8, zIndex:300 }}>
+        <div onClick={scrollPrev} style={{ width:44, height:44, borderRadius:10, background:C.teal, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity: activeSection==='sec-a'?0.4:1, boxShadow:'0 6px 18px rgba(0,0,0,0.35)', transition:'opacity 0.15s' }}><ChevronUp size={20} color={C.navy} /></div>
+        <div onClick={scrollNext} style={{ width:44, height:44, borderRadius:10, background:C.teal, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity: activeSection==='sec-g'?0.4:1, boxShadow:'0 6px 18px rgba(0,0,0,0.35)', transition:'opacity 0.15s' }}><ChevronDown size={20} color={C.navy} /></div>
       </div>
-
-      {/* ── SUBTAB BAR ── */}
-      <div style={{ background:C.navyMid, borderBottom:`1px solid rgba(255,255,255,0.04)`, padding:'0 28px', display:'flex', alignItems:'center', gap:12, height:44 }}>
-        <div style={{ background:C.teal, borderRadius:5, width:22, height:22, display:'flex', alignItems:'center', justifyContent:'center', fontFamily:Fnt.syne, fontWeight:800, fontSize:11, color:C.navy }}>S0</div>
-        <span style={{ fontSize:11, color:C.greyLt }}>Site Identity · Mill Capacity · Residue Streams · Soil Profile</span>
-        {siteLoading && <span style={{ fontSize:10, color:C.greyLt, marginLeft:'auto', fontFamily:Fnt.mono }}>Loading…</span>}
-        {siteId && !siteLoading && <span style={{ fontSize:10, color:'rgba(64,215,197,0.40)', marginLeft:'auto', fontFamily:Fnt.mono }}>Site #{siteId}</span>}
-      </div>
-
-      {/* ── FLOATING PREV/NEXT ARROWS (both sides, moved higher) ── */}
-      <div style={{ position:'fixed', left:18, top:'42%', transform:'translateY(-50%)', display:'flex', flexDirection:'column', gap:8, zIndex:300 }}>
-        <div
-          onClick={scrollPrev}
-          style={{ width:44, height:44, borderRadius:10, background:C.teal, border:`1px solid ${C.tealBdr}`, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity: activeSection==='sec-a'?0.4:1, boxShadow:'0 6px 18px rgba(0,0,0,0.35)', transition:'opacity 0.15s' }}
-        ><ChevronUp size={20} color={C.navy} /></div>
-        <div
-          onClick={scrollNext}
-          style={{ width:44, height:44, borderRadius:10, background:C.teal, border:`1px solid ${C.tealBdr}`, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity: activeSection==='sec-g'?0.4:1, boxShadow:'0 6px 18px rgba(0,0,0,0.35)', transition:'opacity 0.15s' }}
-        ><ChevronDown size={20} color={C.navy} /></div>
-      </div>
-
-      <div style={{ position:'fixed', right:18, top:'42%', transform:'translateY(-50%)', display:'flex', flexDirection:'column', gap:8, zIndex:300 }}>
-        <div
-          onClick={scrollPrev}
-          style={{ width:44, height:44, borderRadius:10, background:C.teal, border:`1px solid ${C.tealBdr}`, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity: activeSection==='sec-a'?0.4:1, boxShadow:'0 6px 18px rgba(0,0,0,0.35)', transition:'opacity 0.15s' }}
-        ><ChevronUp size={20} color={C.navy} /></div>
-        <div
-          onClick={scrollNext}
-          style={{ width:44, height:44, borderRadius:10, background:C.teal, border:`1px solid ${C.tealBdr}`, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity: activeSection==='sec-g'?0.4:1, boxShadow:'0 6px 18px rgba(0,0,0,0.35)', transition:'opacity 0.15s' }}
-        ><ChevronDown size={20} color={C.navy} /></div>
+      <div style={{ position:'fixed', right:18, bottom:'33%', display:'flex', flexDirection:'column', gap:8, zIndex:300 }}>
+        <div onClick={scrollPrev} style={{ width:44, height:44, borderRadius:10, background:C.teal, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity: activeSection==='sec-a'?0.4:1, boxShadow:'0 6px 18px rgba(0,0,0,0.35)', transition:'opacity 0.15s' }}><ChevronUp size={20} color={C.navy} /></div>
+        <div onClick={scrollNext} style={{ width:44, height:44, borderRadius:10, background:C.teal, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity: activeSection==='sec-g'?0.4:1, boxShadow:'0 6px 18px rgba(0,0,0,0.35)', transition:'opacity 0.15s' }}><ChevronDown size={20} color={C.navy} /></div>
       </div>
 
       {/* ── PAGE CONTENT ── */}
