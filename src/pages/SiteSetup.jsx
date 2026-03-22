@@ -1368,7 +1368,7 @@ export default function SiteSetup() {
 
           {/* ── G: SOIL ORIGIN ── */}
           <div id="sec-g" style={{...card, scrollMarginTop:180}}>
-            <div style={secTitle}>G — Ag Mngmt & Soil Type</div>
+            <div style={secTitle}>D — Ag Mngmt & Soil Type</div>
             <div style={secSub}>Auto-Detected · Override Available</div>
             <div style={cbody}>
 
