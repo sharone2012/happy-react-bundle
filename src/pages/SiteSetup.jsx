@@ -738,6 +738,42 @@ export default function SiteSetup() {
     }).eq('id', siteId);
   }
 
+  // ── Soil lookup helper (called on mill/estate selection) ──
+  async function runSoilLookup(m) {
+    if (!m) return;
+    // GPS acidity lookup
+    if (m.latitude && m.longitude) {
+      const { data: soilResult } = await supabase.rpc('get_soil_acidity_class', {
+        p_lat: m.latitude, p_lon: m.longitude, p_max_distance_km: 25
+      });
+      if (soilResult?.[0]) setGpsSoilSuggestion(soilResult[0].class_name || '');
+    }
+    // Province soil lookup
+    let pslData = null;
+    if (m.province_soil_id) {
+      const { data } = await supabase.from('cfi_province_soil_lookup')
+        .select('dominant_soil_wrb').eq('id', m.province_soil_id).single();
+      pslData = data;
+    } else if (m.province) {
+      const { data } = await supabase.from('cfi_province_soil_lookup')
+        .select('dominant_soil_wrb').ilike('province', m.province).maybeSingle();
+      pslData = data;
+    }
+    if (pslData?.dominant_soil_wrb) {
+      const wrb = pslData.dominant_soil_wrb.toLowerCase();
+      let soilKey = 'ultisol';
+      if (wrb.includes('histosol') || wrb.includes('peat') || wrb.includes('gambut')) soilKey = 'histosol';
+      else if (wrb.includes('inceptisol')) soilKey = 'inceptisol';
+      else if (wrb.includes('oxisol') || wrb.includes('ferralsol') || wrb.includes('latosol')) soilKey = 'oxisol';
+      else if (wrb.includes('andosol') || wrb.includes('andisol')) soilKey = 'andisol';
+      else if (wrb.includes('spodosol') || wrb.includes('podzol') || wrb.includes('sandy')) soilKey = 'spodosol';
+      console.log('SOIL KEY MAPPED:', soilKey);
+      setSelectedSoil(soilKey);
+      setSoilAutoSelected(true);
+      if (siteId) supabase.from('cfi_sites').update({ soil_type: soilKey }).eq('id', siteId);
+    }
+  }
+
   // Current soil data
   const soilData = soils.find(s=>s.id===selectedSoil) || soils[0] || SOILS_FALLBACK[1];
 
