@@ -179,7 +179,7 @@ export default function SiteSetup() {
     efb:false, opdc:false, pos:false, pmf:false, pke:false,
     pome:false, opf:false, opt:false
   });
-  const [showMoreStreams, setShowMoreStreams] = useState(false);
+  
   const [showNewFields, setShowNewFields] = useState(false);
   const [customStreams, setCustomStreams] = useState([]);
   const [newRes1, setNewRes1] = useState('');
@@ -1431,8 +1431,8 @@ export default function SiteSetup() {
                     </div>
                   );
                 })}
-                {/* Hidden streams revealed by Add Palm Residue */}
-                {showMoreStreams && [
+                {/* Additional palm streams — always visible */}
+                {[
                   { key:'pke',  name:'Palm Kernel Expeller',  sub:'PKE · $160/t — Purchased', purchased:true },
                   { key:'opf',  name:'Oil Palm Fronds',        sub:'OPF · Seasonal · Zero Cost' },
                   { key:'opt',  name:'Oil Palm Trunks',        sub:'OPT · Replanting Only · Zero Cost' },
@@ -1459,11 +1459,8 @@ export default function SiteSetup() {
                 })}
               </div>
 
-              {/* D3: Buttons — Add Palm Residue left, Add New Residue right */}
-              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginTop:8, paddingRight:16 }}>
-                <button onClick={()=>setShowMoreStreams(v=>!v)} style={{ background:'transparent', border:'1.5px solid #00C9B1', borderRadius:6, color:'#00C9B1', fontFamily:Fnt.dm, fontSize:11, fontWeight:700, padding:'5px 12px', cursor:'pointer', whiteSpace:'nowrap' }}>
-                  {showMoreStreams ? 'Hide Palm Residues' : 'Add Palm Residue'}
-                </button>
+              {/* D3: Add Residue button */}
+              <div style={{ display:'flex', alignItems:'center', marginTop:8 }}>
                 <button onClick={()=>setShowNewFields(v=>!v)} style={{ background:'transparent', border:'1.5px solid #00C9B1', borderRadius:6, color:'#00C9B1', fontFamily:Fnt.dm, fontSize:11, fontWeight:700, padding:'5px 12px', cursor:'pointer', whiteSpace:'nowrap' }}>
                   {showNewFields ? 'Cancel' : 'Add New Residue'}
                 </button>
