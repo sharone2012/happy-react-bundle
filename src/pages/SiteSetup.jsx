@@ -1613,7 +1613,7 @@ export default function SiteSetup() {
 
           {/* ── E: CHOOSE MONTHLY VOLUME ── */}
           <div id="sec-e" style={{...card, scrollMarginTop:180}}>
-            <div style={secTitle}>E — Choose Monthly Volume</div>
+            <div style={secTitle}>F — Choose Monthly Volume</div>
             <div style={cbody}>
               <div style={{ fontSize:11, color:C.greyLt, fontFamily:Fnt.mono, letterSpacing:'0.06em', marginBottom:6 }}>TONNES — AVAILABLE AT CPO MILL</div>
               {[...MILL_STREAMS, ...ESTATE_STREAMS, ...customStreams.map(c=>c.key)].map(key=>{
