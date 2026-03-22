@@ -39,6 +39,7 @@
  */
 
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import { ChevronUp, ChevronDown } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 // ── DESIGN TOKENS (locked) ──────────────────────────────
@@ -202,6 +203,45 @@ export default function SiteSetup() {
 
   // ── Bottom strip ─────────────────────────────────────
   const [stripExpanded, setStripExpanded] = useState(false);
+
+  // ── Section navigation ──────────────────────────────
+  const SECTIONS = [
+    { id:'sec-a', label:'A' }, { id:'sec-b', label:'B' }, { id:'sec-c', label:'C' },
+    { id:'sec-d', label:'D' }, { id:'sec-e', label:'E' }, { id:'sec-f', label:'F' },
+    { id:'sec-g', label:'G' },
+  ];
+  const [activeSection, setActiveSection] = useState('sec-a');
+
+  // IntersectionObserver to track which section is visible
+  useEffect(() => {
+    const observers = [];
+    const handleIntersect = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.15) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+    const obs = new IntersectionObserver(handleIntersect, { rootMargin: '-180px 0px -50% 0px', threshold: 0.15 });
+    SECTIONS.forEach(s => {
+      const el = document.getElementById(s.id);
+      if (el) { obs.observe(el); observers.push(el); }
+    });
+    return () => obs.disconnect();
+  }, []);
+
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+  };
+  const scrollPrev = () => {
+    const idx = SECTIONS.findIndex(s => s.id === activeSection);
+    if (idx > 0) scrollToSection(SECTIONS[idx-1].id);
+  };
+  const scrollNext = () => {
+    const idx = SECTIONS.findIndex(s => s.id === activeSection);
+    if (idx < SECTIONS.length-1) scrollToSection(SECTIONS[idx+1].id);
+  };
 
   // ── Section A cascade suggestions ───────────────────
   const [companySuggestions, setCompanySuggestions] = useState([]);
@@ -785,6 +825,35 @@ export default function SiteSetup() {
         {siteId && !siteLoading && <span style={{ fontSize:10, color:'rgba(64,215,197,0.40)', marginLeft:'auto', fontFamily:Fnt.mono }}>Site #{siteId}</span>}
       </div>
 
+      {/* ── STICKY SECTION NAV BAR ── */}
+      <div style={{ position:'sticky', top:80, zIndex:90, background:'rgba(6,12,20,0.92)', backdropFilter:'blur(8px)', borderBottom:`1px solid rgba(64,215,197,0.15)`, display:'flex', justifyContent:'center', alignItems:'center', gap:6, padding:'8px 28px' }}>
+        {SECTIONS.map(s => (
+          <div
+            key={s.id}
+            onClick={() => scrollToSection(s.id)}
+            style={{
+              padding:'5px 16px', borderRadius:6, cursor:'pointer', fontFamily:Fnt.mono, fontSize:12, fontWeight:700, letterSpacing:'0.06em',
+              background: activeSection===s.id ? C.teal : 'rgba(168,189,208,0.08)',
+              color: activeSection===s.id ? C.navy : C.grey,
+              border: `1px solid ${activeSection===s.id ? C.teal : 'rgba(168,189,208,0.12)'}`,
+              transition: 'all 0.15s',
+            }}
+          >{s.label}</div>
+        ))}
+      </div>
+
+      {/* ── FLOATING PREV/NEXT ARROWS ── */}
+      <div style={{ position:'fixed', right:28, bottom:28, display:'flex', flexDirection:'column', gap:6, zIndex:200 }}>
+        <div
+          onClick={scrollPrev}
+          style={{ width:38, height:38, borderRadius:8, background:'rgba(64,215,197,0.15)', border:`1px solid ${C.tealBdr}`, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity: activeSection==='sec-a'?0.3:1, transition:'opacity 0.15s' }}
+        ><ChevronUp size={18} color={C.teal} /></div>
+        <div
+          onClick={scrollNext}
+          style={{ width:38, height:38, borderRadius:8, background:'rgba(64,215,197,0.15)', border:`1px solid ${C.tealBdr}`, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity: activeSection==='sec-g'?0.3:1, transition:'opacity 0.15s' }}
+        ><ChevronDown size={18} color={C.teal} /></div>
+      </div>
+
       {/* ── PAGE CONTENT ── */}
       <div style={{ padding:'16px 22px 60px', display:'flex', flexDirection:'column', gap:14 }}>
 
@@ -792,7 +861,7 @@ export default function SiteSetup() {
         <div style={row4}>
 
           {/* ── A: SITE DETAILS WITH CASCADE ── */}
-          <div style={card}>
+          <div id="sec-a" style={{...card, scrollMarginTop:180}}>
             <div style={secTitle}>A — Enter Your Details</div>
             <div style={secSub}>Mill Identity · Location · GPS Coordinates</div>
             <div style={cbody}>
@@ -1171,7 +1240,7 @@ export default function SiteSetup() {
           </div>
 
           {/* ── B: CPO MILL PROCESSING ── */}
-          <div style={card}>
+          <div id="sec-b" style={{...card, scrollMarginTop:180}}>
             <div style={secTitle}>B — CPO Mill Processing</div>
             <div style={secSub}>Auto-Detected · Override Available</div>
             <div style={cbody}>
@@ -1213,7 +1282,7 @@ export default function SiteSetup() {
           </div>
 
           {/* ── C: MILL MONTHLY RESULTS ── */}
-          <div style={card}>
+          <div id="sec-c" style={{...card, scrollMarginTop:180}}>
             <div style={secTitle}>C — Mill Monthly Results</div>
             <div style={secSub}>Calculated From Mill Capacity Inputs</div>
             {!bConfirmed ? (
@@ -1260,7 +1329,7 @@ export default function SiteSetup() {
           </div>
 
           {/* ── G: SOIL ORIGIN ── */}
-          <div style={card}>
+          <div id="sec-g" style={{...card, scrollMarginTop:180}}>
             <div style={secTitle}>G — Ag Mngmt & Soil Type</div>
             <div style={secSub}>Auto-Detected · Override Available</div>
             <div style={cbody}>
@@ -1406,7 +1475,7 @@ export default function SiteSetup() {
         <div style={row4}>
 
           {/* ── D: SELECT MILL RESIDUES ── */}
-          <div style={card}>
+          <div id="sec-d" style={{...card, scrollMarginTop:180}}>
             <div style={secTitle}>D — Select Mill Residues</div>
             <div style={secSub}>Click Any Card To Activate Or De-Activate</div>
             <div style={cbody}>
@@ -1505,7 +1574,7 @@ export default function SiteSetup() {
           </div>
 
           {/* ── E: CHOOSE MONTHLY VOLUME ── */}
-          <div style={card}>
+          <div id="sec-e" style={{...card, scrollMarginTop:180}}>
             <div style={secTitle}>E — Choose Monthly Volume</div>
             <div style={cbody}>
               <div style={{ fontSize:11, color:C.greyLt, fontFamily:Fnt.mono, letterSpacing:'0.06em', marginBottom:6 }}>TONNES — AVAILABLE AT CPO MILL</div>
@@ -1540,7 +1609,7 @@ export default function SiteSetup() {
           </div>
 
           {/* ── F: % OF MILL RESIDUES CAPTURED ── */}
-          <div style={{ ...card, background:'#060C14', border:`1.5px solid rgba(64,215,197,0.55)` }}>
+          <div id="sec-f" style={{ ...card, background:'#060C14', border:`1.5px solid rgba(64,215,197,0.55)`, scrollMarginTop:180 }}>
             <div style={{ ...secTitle, color:C.teal }}>F — Mill Residues Captured</div>
             <div style={secSub}>% Of Mill Discharge Updates Live</div>
             <div style={cbody}>
