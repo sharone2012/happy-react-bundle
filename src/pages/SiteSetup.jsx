@@ -1538,7 +1538,7 @@ export default function SiteSetup() {
             <div style={secSub}>% Of Mill Discharge Updates Live</div>
             <div style={cbody}>
               <div style={{ background:'linear-gradient(135deg,rgba(0,162,73,0.16) 0%,rgba(6,12,20,1) 65%)', border:`1.5px solid rgba(0,162,73,0.45)`, borderRadius:11, padding:'22px 16px', marginBottom:12, textAlign:'center', minHeight:140 }}>
-                <div style={{ fontFamily:Fnt.mono, fontWeight:400, fontSize:16, color:C.greenLt30, letterSpacing:'0.1em', marginBottom:8 }}>Utilizing</div>
+                <div style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:16, color:C.greenLt30, letterSpacing:'0.1em', marginBottom:8 }}>Utilizing</div>
                 <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:2 }}>
                   <div style={{ display:'flex', alignItems:'baseline', justifyContent:'center', gap:4 }}>
                     <span style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:40, color:C.greenLt30, lineHeight:1 }}>{fHeroPct}</span>
