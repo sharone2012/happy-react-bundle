@@ -828,7 +828,7 @@ export default function SiteSetup() {
                         setCompanyConfirmed(false); setEstateConfirmed(false); setMillConfirmed(false);
                         setSelectedMill(null); setCompanyMills([]); setGpsSoilSuggestion('');
                         setMill(prev => ({...prev, ffb:60}));
-                        if (val.length < 3) { setCompanySuggestions([]); setActiveDropdown(null); return; }
+                        if (val.length < 1) { setCompanySuggestions([]); setActiveDropdown(null); return; }
                         setActiveDropdown('company');
                         // Query distinct company names from cfi_mills_60tph
                         const { data } = await supabase.from('cfi_mills_60tph')
