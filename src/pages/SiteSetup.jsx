@@ -1240,7 +1240,7 @@ export default function SiteSetup() {
           </div>
 
           {/* ── B: CPO MILL PROCESSING ── */}
-          <div style={card}>
+          <div id="sec-b" style={{...card, scrollMarginTop:180}}>
             <div style={secTitle}>B — CPO Mill Processing</div>
             <div style={secSub}>Auto-Detected · Override Available</div>
             <div style={cbody}>
