@@ -205,11 +205,11 @@ export default function SiteSetup() {
   const [stripExpanded, setStripExpanded] = useState(false);
 
   // ── Section navigation ──────────────────────────────
-  const SECTIONS = [
-    { id:'sec-a', label:'A' }, { id:'sec-b', label:'B' }, { id:'sec-c', label:'C' },
-    { id:'sec-d', label:'D' }, { id:'sec-e', label:'E' }, { id:'sec-f', label:'F' },
-    { id:'sec-g', label:'G' },
-  ];
+   const SECTIONS = [
+     { id:'sec-a', label:'A' }, { id:'sec-b', label:'B' }, { id:'sec-c', label:'C' },
+     { id:'sec-g', label:'D' }, { id:'sec-d', label:'E' }, { id:'sec-e', label:'F' },
+     { id:'sec-f', label:'G' }, { id:'sec-htotal', label:'H' },
+   ];
   const [activeSection, setActiveSection] = useState('sec-a');
 
   // IntersectionObserver to track which section is visible
@@ -1368,7 +1368,7 @@ export default function SiteSetup() {
 
           {/* ── G: SOIL ORIGIN ── */}
           <div id="sec-g" style={{...card, scrollMarginTop:180}}>
-            <div style={secTitle}>G — Ag Mngmt & Soil Type</div>
+            <div style={secTitle}>D — Ag Mngmt & Soil Type</div>
             <div style={secSub}>Auto-Detected · Override Available</div>
             <div style={cbody}>
 
@@ -1514,7 +1514,7 @@ export default function SiteSetup() {
 
           {/* ── D: SELECT MILL RESIDUES ── */}
           <div id="sec-d" style={{...card, scrollMarginTop:180}}>
-            <div style={secTitle}>D — Select Mill Residues</div>
+            <div style={secTitle}>E — Select Mill Residues</div>
             <div style={secSub}>Click Any Card To Activate Or De-Activate</div>
             <div style={cbody}>
               <div style={grid2}>
@@ -1613,7 +1613,7 @@ export default function SiteSetup() {
 
           {/* ── E: CHOOSE MONTHLY VOLUME ── */}
           <div id="sec-e" style={{...card, scrollMarginTop:180}}>
-            <div style={secTitle}>E — Choose Monthly Volume</div>
+            <div style={secTitle}>F — Choose Monthly Volume</div>
             <div style={cbody}>
               <div style={{ fontSize:11, color:C.greyLt, fontFamily:Fnt.mono, letterSpacing:'0.06em', marginBottom:6 }}>TONNES — AVAILABLE AT CPO MILL</div>
               {[...MILL_STREAMS, ...ESTATE_STREAMS, ...customStreams.map(c=>c.key)].map(key=>{
@@ -1648,7 +1648,7 @@ export default function SiteSetup() {
 
           {/* ── F: % OF MILL RESIDUES CAPTURED ── */}
           <div id="sec-f" style={{ ...card, background:'#060C14', border:`1.5px solid rgba(64,215,197,0.55)`, scrollMarginTop:180 }}>
-            <div style={{ ...secTitle, color:C.teal }}>F — Mill Residues Captured</div>
+            <div style={{ ...secTitle, color:C.teal }}>G — Mill Residues Captured</div>
             <div style={secSub}>% Of Mill Discharge Updates Live</div>
             <div style={cbody}>
               <div style={{ background:'linear-gradient(135deg,rgba(0,162,73,0.16) 0%,rgba(6,12,20,1) 65%)', border:`1.5px solid rgba(0,162,73,0.45)`, borderRadius:11, padding:'22px 16px', marginBottom:12, textAlign:'center', minHeight:140 }}>
@@ -1690,8 +1690,8 @@ export default function SiteSetup() {
           </div>
 
           {/* ── G-TOTAL: TOTAL MONTHLY PROCESSING ── */}
-          <div style={{ ...card, background:'#060C14', border:`1.5px solid rgba(0,162,73,0.55)` }}>
-            <div style={{ ...secTitle, color:C.teal, borderBottomColor:'rgba(0,162,73,0.20)' }}>G — Total</div>
+          <div id="sec-htotal" style={{ ...card, background:'#060C14', border:`1.5px solid rgba(0,162,73,0.55)` }}>
+            <div style={{ ...secTitle, color:C.teal, borderBottomColor:'rgba(0,162,73,0.20)' }}>H — Total</div>
             <div style={secSub}>Drives All S1–S6 Calculations</div>
             <div style={cbody}>
               <div style={{ background:'linear-gradient(160deg,rgba(0,162,73,0.22) 0%,rgba(6,12,20,1) 55%)', border:`1.5px solid rgba(0,162,73,0.50)`, borderRadius:11, padding:'22px 16px', textAlign:'center', marginBottom:12, minHeight:140 }}>
@@ -1703,7 +1703,7 @@ export default function SiteSetup() {
               </div>
               <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:'rgba(77,191,130,0.70)', letterSpacing:'0.08em', marginBottom:7 }}>ACTIVE STREAMS</div>
               {grandTotal===0 ? (
-                <div style={{ fontSize:12, fontFamily:Fnt.mono, color:'rgba(168,189,208,0.40)', textAlign:'center', padding:'10px 0' }}>No Streams Selected — Activate In Section D</div>
+                <div style={{ fontSize:12, fontFamily:Fnt.mono, color:'rgba(168,189,208,0.40)', textAlign:'center', padding:'10px 0' }}>No Streams Selected — Activate In Section E</div>
               ) : (
                 Object.entries(streamT).map(([key,t])=>{
                   const nm  = STREAM_NAMES[key] || customStreams.find(c=>c.key===key)?.name || key.toUpperCase();
