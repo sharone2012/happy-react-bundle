@@ -1703,7 +1703,7 @@ export default function SiteSetup() {
               </div>
               <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:'rgba(77,191,130,0.70)', letterSpacing:'0.08em', marginBottom:7 }}>ACTIVE STREAMS</div>
               {grandTotal===0 ? (
-                <div style={{ fontSize:12, fontFamily:Fnt.mono, color:'rgba(168,189,208,0.40)', textAlign:'center', padding:'10px 0' }}>No Streams Selected — Activate In Section D</div>
+                <div style={{ fontSize:12, fontFamily:Fnt.mono, color:'rgba(168,189,208,0.40)', textAlign:'center', padding:'10px 0' }}>No Streams Selected — Activate In Section E</div>
               ) : (
                 Object.entries(streamT).map(([key,t])=>{
                   const nm  = STREAM_NAMES[key] || customStreams.find(c=>c.key===key)?.name || key.toUpperCase();
