@@ -1487,11 +1487,12 @@ export default function SiteSetup() {
                           background: (!newRes1.trim() || !newResVol) ? 'rgba(0,200,100,0.3)' : '#00C864',
                           border: 'none',
                           borderRadius: 8,
-                          color: '#fff',
+                          color: '#000',
                           fontFamily: Fnt.dm,
                           fontSize: 13,
                           fontWeight: 700,
                           padding: '0 16px',
+                          height: 52,
                           cursor: (!newRes1.trim() || !newResVol) ? 'not-allowed' : 'pointer',
                           whiteSpace: 'nowrap',
                         }}
