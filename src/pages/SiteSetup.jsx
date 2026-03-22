@@ -1535,10 +1535,10 @@ export default function SiteSetup() {
           {/* ── F: % OF MILL RESIDUES CAPTURED ── */}
           <div style={{ ...card, background:'#060C14', border:`1.5px solid rgba(64,215,197,0.55)` }}>
             <div style={{ ...secTitle, fontSize:17, color:'#FFF' }}>F — % Of Mill Residues Captured</div>
+            <div style={{ fontFamily:Fnt.mono, fontWeight:600, fontSize:9, color:'rgba(168,189,208,0.50)', letterSpacing:'0.04em', marginTop:-4, marginBottom:6, paddingLeft:16 }}>% Of Mill Discharge Updates Live</div>
             <div style={cbody}>
               <div style={{ background:'linear-gradient(135deg,rgba(0,162,73,0.16) 0%,rgba(6,12,20,1) 65%)', border:`1.5px solid rgba(0,162,73,0.45)`, borderRadius:11, padding:'22px 16px', marginBottom:12, textAlign:'center', minHeight:140 }}>
-                <div style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:14, color:'#FFF', letterSpacing:'0.1em', marginBottom:2 }}>VALORIZING</div>
-                <div style={{ fontFamily:Fnt.mono, fontWeight:600, fontSize:9, color:'rgba(168,189,208,0.50)', letterSpacing:'0.04em', marginBottom:8 }}>% Of Mill Discharge Updates Live</div>
+                <div style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:14, color:'#FFF', letterSpacing:'0.1em', marginBottom:8 }}>VALORIZING</div>
                 <div style={{ display:'flex', flexDirection:'row', alignItems:'baseline', justifyContent:'center', gap:6, flexWrap:'nowrap' }}>
                   <span style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:40, color:C.greenLt, lineHeight:1 }}>{fHeroPct}</span>
                   <span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:18, color:C.greenLt }}>%</span>
