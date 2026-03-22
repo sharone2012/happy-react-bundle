@@ -1283,7 +1283,7 @@ export default function SiteSetup() {
                   };
                   return (
                     <div key={s.id} onClick={() => { selectSoil(s.id); setSoilAutoSelected(false); }} style={{
-                      background: '#0B1828',
+                      background: isSel ? '#060C14' : '#0B1828',
                       border: `1.5px solid ${isSel ? '#00C9B1' : '#1E6B8C'}`,
                       borderRadius:7, padding:'8px 9px', cursor:'pointer', transition:'all 0.12s',
                       display:'flex', flexDirection:'column', justifyContent:'center',
