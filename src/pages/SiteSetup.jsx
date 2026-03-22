@@ -783,48 +783,54 @@ export default function SiteSetup() {
   // RENDER
   // ═══════════════════════════════════════════════════════
   return (
-    <div style={{ background:C.navy, color:C.white, fontFamily:Fnt.dm, fontSize:14, minWidth:1400 }}>
+    <div style={{ background:C.navy, color:C.white, fontFamily:Fnt.dm, fontSize:14, minWidth:1400, paddingTop:16 }}>
 
-      {/* ── STICKY HEADER (nav + tabs + subtab) ── */}
+      {/* ── STICKY HEADER (nav + tabs + context) ── */}
       <div style={{ position:'sticky', top:0, zIndex:100 }}>
-        {/* ── TOP NAV ── */}
-        <div style={{ background:C.navyMid, display:'flex', alignItems:'center', padding:'0 28px', height:80, gap:18 }}>
-          <div style={{ display:'flex', alignItems:'center', flexShrink:0, maxWidth:340 }}>
-            <div>
-              <div style={{ display:'flex', alignItems:'baseline' }}>
-                <span style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:26, color:'#FFF', letterSpacing:'0.02em', whiteSpace:'nowrap' }}>CFI</span>
-                <span style={{ fontFamily:Fnt.brand, fontSize:22, color:'rgba(255,255,255,0.25)', margin:'0 8px' }}>·</span>
-                <span style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:20, color:C.teal, letterSpacing:'0.10em', whiteSpace:'nowrap' }}>DEEP TECH</span>
-              </div>
-              <div style={{ fontSize:11, color:C.teal, marginTop:4, fontFamily:Fnt.dm, whiteSpace:'nowrap' }}>Soil Microbiome Engineering &amp; Biofertiliser Production for Closed&#8209;Loop Nutrient Recycling</div>
+        {/* ── PLATFORM HEADER ── */}
+        <div style={{ background:C.navyMid, display:'flex', alignItems:'center', padding:'0 28px', minHeight:64 }}>
+          {/* Brand line */}
+          <div style={{ display:'flex', alignItems:'center', flexShrink:0 }}>
+            <span style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:26, color:'#FFF', whiteSpace:'nowrap' }}>CFI</span>
+            <span style={{ width:10, display:'inline-block' }} />
+            <span style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:26, color:'#33D4BC', whiteSpace:'nowrap' }}>Deep Tech</span>
+          </div>
+          {/* Vertical divider */}
+          <div style={{ width:3, height:38, background:'#33D4BC', margin:'0 12px', flexShrink:0 }} />
+          {/* Descriptor lines */}
+          <div style={{ display:'flex', flexDirection:'column', gap:2, flexShrink:0 }}>
+            <div style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.dm, whiteSpace:'nowrap' }}>
+              <span style={{ color:'#FFF' }}>Precision Engineering</span>
+              <span style={{ color:'#FFF' }}>{' — '}</span>
+              <span style={{ color:'#33D4BC' }}>Circular Nutrient Recovery in Agricultural Systems</span>
             </div>
-          </div>
-          <div style={{ display:'flex', gap:4, marginLeft:'auto', alignItems:'center', flexShrink:0 }}>
-            {['S0','S1','S2','S3','S4','S5','S6','CAPEX','Σ'].map((s,i)=>(
-              <div key={s} style={{ background:i===0?C.teal:'rgba(168,189,208,0.09)', border:`1px solid ${i===0?C.teal:'rgba(168,189,208,0.18)'}`, borderRadius:4, padding:'3px 9px', fontFamily:Fnt.mono, fontSize:11, fontWeight:700, color:i===0?C.navy:C.grey, cursor:'pointer', whiteSpace:'nowrap' }}>{s}</div>
-            ))}
-          </div>
-          <div style={{ display:'flex', gap:7, alignItems:'center', marginLeft:16, flexShrink:0 }}>
-            <div style={chips.green}>Valid</div>
-            <div style={chips.teal}>Blend Valid</div>
-            <div style={chips.amber}>Soil: {soilData.name}</div>
-            {blend?.CN > 0 && <div style={{...chips[cnStatus(blend.CN)?.color === C.green ? 'green' : cnStatus(blend.CN)?.color === C.amber ? 'amber' : 'red'], fontSize:10}}>C:N {blend.CN.toFixed(1)}</div>}
+            <div style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.dm, whiteSpace:'nowrap' }}>
+              <span style={{ color:'#FFF' }}>Applied Biology</span>
+              <span style={{ color:'#FFF' }}>{' — '}</span>
+              <span style={{ color:'#33D4BC' }}>Rebalancing Soil's Microbiome & Reducing Synthetic Fertiliser Use</span>
+            </div>
           </div>
         </div>
 
         {/* ── FULL-NAME TAB BAR ── */}
-        <div style={{ background:'#0A1628', borderBottom:`2px solid rgba(64,215,197,0.20)`, display:'flex', justifyContent:'center', alignItems:'flex-end', gap:2, padding:'12px 24px 0' }}>
+        <div style={{ background:'#0A1628', display:'flex', justifyContent:'center', alignItems:'flex-end', gap:2, padding:'10px 24px 0' }}>
           {['Site Setup','Pre-Processing','Pre-Treatment','Biologicals','BSF','Biofertiliser / Other','Emissions','Financials','Summary'].map((t,i)=>(
-            <div key={t} style={{ padding:'8px 18px', cursor:'pointer', borderRadius:'6px 6px 0 0', background:i===0?C.teal:'transparent', color:i===0?C.navy:C.teal, fontSize:12, fontWeight:700, fontFamily:Fnt.mono, border:`1px solid ${i===0?C.teal:'transparent'}`, borderBottom:'none', whiteSpace:'nowrap' }}>{t}</div>
+            <div key={t} style={{ padding:'8px 18px', cursor:'pointer', fontSize:12, fontWeight:700, fontFamily:Fnt.dm, color:i===0?'#33D4BC':'#A8BDD0', borderBottom:i===0?'2px solid #33D4BC':'2px solid transparent', whiteSpace:'nowrap' }}>{t}</div>
           ))}
         </div>
 
-        {/* ── SUBTAB BAR ── */}
-        <div style={{ background:C.navyMid, borderBottom:`1px solid rgba(255,255,255,0.04)`, padding:'0 28px', display:'flex', alignItems:'center', gap:12, height:44 }}>
-          <div style={{ background:C.teal, borderRadius:5, width:22, height:22, display:'flex', alignItems:'center', justifyContent:'center', fontFamily:Fnt.syne, fontWeight:800, fontSize:11, color:C.navy }}>S0</div>
-          <span style={{ fontSize:11, color:C.greyLt }}>Site Identity · Mill Capacity · Residue Streams · Soil Profile</span>
-          {siteLoading && <span style={{ fontSize:10, color:C.greyLt, marginLeft:'auto', fontFamily:Fnt.mono }}>Loading…</span>}
-          {siteId && !siteLoading && <span style={{ fontSize:10, color:'rgba(64,215,197,0.40)', marginLeft:'auto', fontFamily:Fnt.mono }}>Site #{siteId}</span>}
+        {/* ── SHORT TAB ROW ── */}
+        <div style={{ background:'#0A1628', display:'flex', justifyContent:'center', alignItems:'center', gap:12, padding:'6px 24px' }}>
+          {['S0','S1','S2','S3','S4','S5','S6'].map((s,i)=>(
+            <span key={s} style={{ fontFamily:Fnt.mono, fontSize:11, fontWeight:700, color:i===0?'#33D4BC':'#A8BDD0', cursor:'pointer' }}>{s}</span>
+          ))}
+        </div>
+
+        {/* ── CONTEXT BAR ── */}
+        <div style={{ background:'#0A1628', borderBottom:'1px solid rgba(51,212,188,0.08)', display:'flex', alignItems:'center', justifyContent:'center', gap:8, padding:'5px 24px' }}>
+          {['Company','Estate','Mill','FFB','Soil','Streams'].map(p=>(
+            <span key={p} style={{ background:'rgba(51,212,188,0.08)', border:'1px solid rgba(51,212,188,0.15)', color:'#5A7A8A', fontFamily:Fnt.mono, fontSize:10, borderRadius:20, padding:'3px 10px', whiteSpace:'nowrap' }}>{p}</span>
+          ))}
         </div>
       </div>
 
