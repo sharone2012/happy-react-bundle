@@ -1584,7 +1584,7 @@ export default function SiteSetup() {
                 <div style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:18, color:C.greenLt30, letterSpacing:'0.1em', marginBottom:8, whiteSpace:'nowrap' }}>Total Processing Volume</div>
                 <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:2 }}>
                   <span style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:40, color:C.greenLt30, lineHeight:1 }}>{grandTotal>0?fmtT(grandTotal):'—'}</span>
-                  {grandTotal>0&&<span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:18, color:C.greenLt30, display:'block', textAlign:'center' }}>t/month</span>}
+                  {grandTotal>0&&<span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:14, color:C.greenLt30, display:'block', textAlign:'center' }}>t/month</span>}
                 </div>
               </div>
               <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:'rgba(77,191,130,0.70)', letterSpacing:'0.08em', marginBottom:7 }}>ACTIVE STREAMS</div>
