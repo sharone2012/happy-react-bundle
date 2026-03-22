@@ -4352,6 +4352,8 @@ export type Database = {
           ph_range: string
         }[]
       }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
     }
     Enums: {
       agronomic_fate:
