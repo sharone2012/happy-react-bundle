@@ -204,6 +204,45 @@ export default function SiteSetup() {
   // ── Bottom strip ─────────────────────────────────────
   const [stripExpanded, setStripExpanded] = useState(false);
 
+  // ── Section navigation ──────────────────────────────
+  const SECTIONS = [
+    { id:'sec-a', label:'A' }, { id:'sec-b', label:'B' }, { id:'sec-c', label:'C' },
+    { id:'sec-d', label:'D' }, { id:'sec-e', label:'E' }, { id:'sec-f', label:'F' },
+    { id:'sec-g', label:'G' },
+  ];
+  const [activeSection, setActiveSection] = useState('sec-a');
+
+  // IntersectionObserver to track which section is visible
+  useEffect(() => {
+    const observers = [];
+    const handleIntersect = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.15) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+    const obs = new IntersectionObserver(handleIntersect, { rootMargin: '-180px 0px -50% 0px', threshold: 0.15 });
+    SECTIONS.forEach(s => {
+      const el = document.getElementById(s.id);
+      if (el) { obs.observe(el); observers.push(el); }
+    });
+    return () => obs.disconnect();
+  }, []);
+
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+  };
+  const scrollPrev = () => {
+    const idx = SECTIONS.findIndex(s => s.id === activeSection);
+    if (idx > 0) scrollToSection(SECTIONS[idx-1].id);
+  };
+  const scrollNext = () => {
+    const idx = SECTIONS.findIndex(s => s.id === activeSection);
+    if (idx < SECTIONS.length-1) scrollToSection(SECTIONS[idx+1].id);
+  };
+
   // ── Section A cascade suggestions ───────────────────
   const [companySuggestions, setCompanySuggestions] = useState([]);
   const [estateSuggestions,  setEstateSuggestions]  = useState([]); // mill rows for selected company
