@@ -1063,8 +1063,8 @@ export default function SiteSetup() {
                     <div style={{ fontSize:15, fontWeight:700, fontFamily:Fnt.syne, color:C.teal, letterSpacing:'0.02em', marginBottom:6 }}>Weather</div>
                     <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
                       {[
-                        { key:'rainfall', label:'Rainfall', unit:'mm/yr', val: weatherOverrides.rainfall != null ? weatherOverrides.rainfall : weatherData.rainfall, format: v => v != null ? Number(v).toLocaleString() : '—' },
-                        { key:'temp',     label:'Avg Temp', unit:'°C',    val: weatherOverrides.temp != null ? weatherOverrides.temp : weatherData.temp, format: v => v != null ? String(v) : '—' },
+                        { key:'rainfall', label: weatherSource === 'province' ? 'Rainfall · Province Avg' : 'Rainfall', unit:'mm/yr', val: weatherOverrides.rainfall != null ? weatherOverrides.rainfall : weatherData.rainfall, format: v => v != null ? Number(v).toLocaleString() : '—' },
+                        { key:'temp',     label: weatherSource === 'province' ? 'Temperature · Province Avg' : 'Temperature', unit:'°C',    val: weatherOverrides.temp != null ? weatherOverrides.temp : weatherData.temp, format: v => v != null ? String(v) : '—' },
                       ].map(field => {
                         const isOverridden = weatherOverrides[field.key] != null;
                         const sourceLabel = !isOverridden && weatherSource === 'live' ? 'Live' : (!isOverridden && weatherSource === 'province' ? 'Province avg' : null);
@@ -1082,7 +1082,7 @@ export default function SiteSetup() {
                                   borderColor: isOverridden ? 'rgba(255,255,255,0.25)' : C.tealBdr,
                                   color: isOverridden ? C.white : C.amber,
                                 }}
-                                value={field.val != null ? `${field.format(field.val)} ${field.unit}${sourceLabel ? '  ' + sourceLabel : ''}` : '—'}
+                                value={field.val != null ? `${field.format(field.val)} ${field.unit}` : '—'}
                                 onFocus={e => {
                                   // On focus, show raw number for editing
                                   e.target.value = field.val != null ? String(field.val) : '';
