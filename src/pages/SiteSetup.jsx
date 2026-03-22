@@ -1581,7 +1581,7 @@ export default function SiteSetup() {
             <div style={secSub}>Drives All S1–S6 Calculations</div>
             <div style={cbody}>
               <div style={{ background:'linear-gradient(160deg,rgba(0,162,73,0.22) 0%,rgba(6,12,20,1) 55%)', border:`1.5px solid rgba(0,162,73,0.50)`, borderRadius:11, padding:'22px 16px', textAlign:'center', marginBottom:12, minHeight:140 }}>
-                <div style={{ fontFamily:Fnt.mono, fontWeight:400, fontSize:16, color:C.greenLt30, letterSpacing:'0.1em', marginBottom:8, whiteSpace:'nowrap' }}>Total Processing Volume</div>
+                <div style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:16, color:C.greenLt30, letterSpacing:'0.1em', marginBottom:8, whiteSpace:'nowrap' }}>Total Processing Volume</div>
                 <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:2 }}>
                   <span style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:40, color:C.greenLt30, lineHeight:1 }}>{grandTotal>0?fmtT(grandTotal):'—'}</span>
                   {grandTotal>0&&<span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:14, color:C.greenLt30, display:'block', textAlign:'center' }}>t/month</span>}
