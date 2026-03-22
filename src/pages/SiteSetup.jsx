@@ -1541,7 +1541,7 @@ export default function SiteSetup() {
 
           {/* ── F: % OF MILL RESIDUES CAPTURED ── */}
           <div style={{ ...card, background:'#060C14', border:`1.5px solid rgba(64,215,197,0.55)` }}>
-            <div style={{ ...secTitle, fontSize:17, color:C.teal }}>F — Mill Residues Captured</div>
+            <div style={{ ...secTitle, color:C.teal }}>F — Mill Residues Captured</div>
             <div style={secSub}>% Of Mill Discharge Updates Live</div>
             <div style={cbody}>
               <div style={{ background:'linear-gradient(135deg,rgba(0,162,73,0.16) 0%,rgba(6,12,20,1) 65%)', border:`1.5px solid rgba(0,162,73,0.45)`, borderRadius:11, padding:'22px 16px', marginBottom:12, textAlign:'center', minHeight:140 }}>
@@ -1584,7 +1584,7 @@ export default function SiteSetup() {
 
           {/* ── G-TOTAL: TOTAL MONTHLY PROCESSING ── */}
           <div style={{ ...card, background:'#060C14', border:`1.5px solid rgba(0,162,73,0.55)` }}>
-            <div style={{ ...secTitle, fontSize:17, color:C.teal, borderBottomColor:'rgba(0,162,73,0.20)' }}>G — Total</div>
+            <div style={{ ...secTitle, color:C.teal, borderBottomColor:'rgba(0,162,73,0.20)' }}>G — Total</div>
             <div style={secSub}>Drives All S1–S6 Calculations</div>
             <div style={cbody}>
               <div style={{ background:'linear-gradient(160deg,rgba(0,162,73,0.22) 0%,rgba(6,12,20,1) 55%)', border:`1.5px solid rgba(0,162,73,0.50)`, borderRadius:11, padding:'22px 16px', textAlign:'center', marginBottom:12, minHeight:140 }}>
