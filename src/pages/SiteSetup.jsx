@@ -205,14 +205,15 @@ export default function SiteSetup() {
 
   // ── Section A cascade suggestions ───────────────────
   const [companySuggestions, setCompanySuggestions] = useState([]);
-  const [estateSuggestions,  setEstateSuggestions]  = useState([]);
-  const [millSuggestions,    setMillSuggestions]    = useState([]);
+  const [estateSuggestions,  setEstateSuggestions]  = useState([]); // mill rows for selected company
+  const [millSuggestions,    setMillSuggestions]    = useState([]); // mill rows for selected estate
   const [gpsSoilSuggestion,  setGpsSoilSuggestion]  = useState('');
   const [companyConfirmed, setCompanyConfirmed] = useState(false);
   const [estateConfirmed,  setEstateConfirmed]  = useState(false);
   const [millConfirmed,    setMillConfirmed]    = useState(false);
   const [activeDropdown,   setActiveDropdown]   = useState(null);
   const [selectedMill, setSelectedMill] = useState(null); // full mill row
+  const [companyMills, setCompanyMills] = useState([]); // all mill rows for selected company
 
   // ── Site data cascade ──────────────────────────────
   const [siteDataMessage, setSiteDataMessage] = useState('');
