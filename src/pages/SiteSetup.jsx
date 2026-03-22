@@ -842,17 +842,19 @@ export default function SiteSetup() {
         ))}
       </div>
 
-      {/* ── FLOATING PREV/NEXT ARROWS ── */}
-      <div style={{ position:'fixed', right:28, bottom:28, display:'flex', flexDirection:'column', gap:6, zIndex:200 }}>
-        <div
-          onClick={scrollPrev}
-          style={{ width:38, height:38, borderRadius:8, background:'rgba(64,215,197,0.15)', border:`1px solid ${C.tealBdr}`, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity: activeSection==='sec-a'?0.3:1, transition:'opacity 0.15s' }}
-        ><ChevronUp size={18} color={C.teal} /></div>
-        <div
-          onClick={scrollNext}
-          style={{ width:38, height:38, borderRadius:8, background:'rgba(64,215,197,0.15)', border:`1px solid ${C.tealBdr}`, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity: activeSection==='sec-g'?0.3:1, transition:'opacity 0.15s' }}
-        ><ChevronDown size={18} color={C.teal} /></div>
-      </div>
+      {/* ── FLOATING PREV/NEXT ARROWS (both sides, 35% from bottom) ── */}
+      {[{ side:'left', left:16 },{ side:'right', right:16 }].map(pos => (
+        <div key={pos.side} style={{ position:'fixed', ...pos.side==='left'?{left:16}:{right:16}, bottom:'35%', display:'flex', flexDirection:'column', gap:6, zIndex:200 }}>
+          <div
+            onClick={scrollPrev}
+            style={{ width:36, height:36, borderRadius:8, background:'rgba(64,215,197,0.13)', border:`1px solid ${C.tealBdr}`, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity: activeSection==='sec-a'?0.3:1, transition:'opacity 0.15s' }}
+          ><ChevronUp size={18} color={C.teal} /></div>
+          <div
+            onClick={scrollNext}
+            style={{ width:36, height:36, borderRadius:8, background:'rgba(64,215,197,0.13)', border:`1px solid ${C.tealBdr}`, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity: activeSection==='sec-g'?0.3:1, transition:'opacity 0.15s' }}
+          ><ChevronDown size={18} color={C.teal} /></div>
+        </div>
+      ))}
 
       {/* ── PAGE CONTENT ── */}
       <div style={{ padding:'16px 22px 60px', display:'flex', flexDirection:'column', gap:14 }}>
