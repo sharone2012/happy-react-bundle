@@ -608,7 +608,7 @@ export default function SiteSetup() {
     const t = {};
     const allKeys = [...MILL_STREAMS, ...ESTATE_STREAMS, ...customStreams.map(c=>c.key)];
     allKeys.forEach(k => {
-      if (activeStreams[k] || customStreams.find(c=>c.key===k && c.active)) {
+      if (activeStreams[k]) {
         t[k] = getSlider(k);
       }
     });
