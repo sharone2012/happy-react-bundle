@@ -1082,7 +1082,7 @@ export default function SiteSetup() {
                                   borderColor: isOverridden ? 'rgba(255,255,255,0.25)' : C.tealBdr,
                                   color: isOverridden ? C.white : C.amber,
                                 }}
-                                value={field.val != null ? `${field.format(field.val)} ${field.unit}${sourceLabel ? '  ' + sourceLabel : ''}` : '—'}
+                                value={field.val != null ? `${field.format(field.val)} ${field.unit}` : '—'}
                                 onFocus={e => {
                                   // On focus, show raw number for editing
                                   e.target.value = field.val != null ? String(field.val) : '';
