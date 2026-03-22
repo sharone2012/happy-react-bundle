@@ -1029,12 +1029,13 @@ export default function SiteSetup() {
                     <input
                       style={{
                         ...fInput,
-                        ...(millConfirmed && site.gpsLat ? { background:C.tealDim, borderColor:C.tealBdr, color:C.amber } : { color:C.greyLt }),
+                        ...(millConfirmed && site.gpsLat && !gpsManualDirty ? { background:C.tealDim, borderColor:C.tealBdr, color:C.amber } : { color:C.greyLt }),
                       }}
                       placeholder="Latitude"
                       value={site.gpsLat}
-                      readOnly={!!(millConfirmed && site.gpsLat)}
-                      onChange={e=>upSite('gpsLat',e.target.value)}
+                      readOnly={!!(millConfirmed && site.gpsLat && !gpsManualDirty)}
+                      onChange={e=>{upSite('gpsLat',e.target.value); if(!gpsManualDirty) setGpsManualDirty(true);}}
+                      onBlur={() => { if(gpsManualDirty && site.gpsLat && site.gpsLon) { /* trigger handled by gpsManualDirty state */ } }}
                     />
                   </div>
                   <div>
@@ -1042,15 +1043,44 @@ export default function SiteSetup() {
                     <input
                       style={{
                         ...fInput,
-                        ...(millConfirmed && site.gpsLon ? { background:C.tealDim, borderColor:C.tealBdr, color:C.amber } : { color:C.greyLt }),
+                        ...(millConfirmed && site.gpsLon && !gpsManualDirty ? { background:C.tealDim, borderColor:C.tealBdr, color:C.amber } : { color:C.greyLt }),
                       }}
                       placeholder="Longitude"
                       value={site.gpsLon}
-                      readOnly={!!(millConfirmed && site.gpsLon)}
-                      onChange={e=>upSite('gpsLon',e.target.value)}
+                      readOnly={!!(millConfirmed && site.gpsLon && !gpsManualDirty)}
+                      onChange={e=>{upSite('gpsLon',e.target.value); if(!gpsManualDirty) setGpsManualDirty(true);}}
+                      onBlur={() => { if(gpsManualDirty && site.gpsLat && site.gpsLon) { /* trigger handled by gpsManualDirty state */ } }}
                     />
                   </div>
                 </div>
+                {/* ── GPS Save Confirmation Row ── */}
+                {gpsManualDirty && site.gpsLat && site.gpsLon && (
+                  <div style={{ display:'flex', alignItems:'center', gap:10, padding:'6px 0' }}>
+                    <span style={{ fontSize:12, fontFamily:Fnt.mono, color:C.greyLt }}>
+                      Save <span style={{color:'#fff'}}>{site.gpsLat}, {site.gpsLon}</span> for <span style={{color:C.amber}}>{site.millName || site.estate || 'this mill'}</span>?
+                    </span>
+                    <button
+                      style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, padding:'4px 12px', borderRadius:4, border:'none', background:'#00A249', color:'#fff', cursor:'pointer' }}
+                      onClick={async () => {
+                        if (selectedMill?.id) {
+                          await supabase.from('cfi_mills_60tph').update({
+                            latitude: parseFloat(site.gpsLat),
+                            longitude: parseFloat(site.gpsLon),
+                          }).eq('id', selectedMill.id);
+                        }
+                        setGpsManualDirty(false);
+                      }}
+                    >Confirm</button>
+                    <button
+                      style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, padding:'4px 12px', borderRadius:4, border:'1px solid #555', background:'transparent', color:C.greyLt, cursor:'pointer' }}
+                      onClick={() => {
+                        upSite('gpsLat','');
+                        upSite('gpsLon','');
+                        setGpsManualDirty(false);
+                      }}
+                    >Clear</button>
+                  </div>
+                )}
 
                 {/* ── FIELD 6: Country ── */}
                 <div>
