@@ -1295,7 +1295,7 @@ export default function SiteSetup() {
                       <div style={{ fontSize:11, fontWeight:400, fontFamily:Fnt.dm, color: isSel ? '#ffffff' : '#888888', marginTop:2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.sub || ''}
                       </div>
-                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color: isSel ? 'rgba(245,166,35,0.65)' : '#888888', marginTop:1, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                      <div style={{ fontSize:10, fontFamily:Fnt.dm, color: isSel ? '#ffffff' : '#888888', marginTop:1, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                         {s.line4 || ''}
                       </div>
                       {meta.tag1 && meta.tag2 && (
