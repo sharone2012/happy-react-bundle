@@ -108,21 +108,21 @@ All colors MUST be HSL.
 .cfi-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: #F5A623;
-  border: 2px solid #00C9B1;
+  border: none;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-  margin-top: -9px;
+  margin-top: -8px;
 }
 .cfi-slider::-moz-range-thumb {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: #F5A623;
-  border: 2px solid #00C9B1;
+  border: none;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
