@@ -214,6 +214,7 @@ export default function SiteSetup() {
   const [activeDropdown,   setActiveDropdown]   = useState(null);
   const [selectedMill, setSelectedMill] = useState(null); // full mill row
   const [companyMills, setCompanyMills] = useState([]); // all mill rows for selected company
+  const [gpsManualDirty, setGpsManualDirty] = useState(false); // true when user manually edits GPS
 
   // ── Site data cascade ──────────────────────────────
   const [siteDataMessage, setSiteDataMessage] = useState('');
