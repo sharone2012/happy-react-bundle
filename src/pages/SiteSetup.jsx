@@ -1574,7 +1574,7 @@ export default function SiteSetup() {
           </div>
 
           {/* ── E: CHOOSE MONTHLY VOLUME ── */}
-          <div style={card}>
+          <div id="sec-e" style={{...card, scrollMarginTop:180}}>
             <div style={secTitle}>E — Choose Monthly Volume</div>
             <div style={cbody}>
               <div style={{ fontSize:11, color:C.greyLt, fontFamily:Fnt.mono, letterSpacing:'0.06em', marginBottom:6 }}>TONNES — AVAILABLE AT CPO MILL</div>
