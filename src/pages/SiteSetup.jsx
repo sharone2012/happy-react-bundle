@@ -618,7 +618,8 @@ export default function SiteSetup() {
   const grandTotal = Object.values(streamT).reduce((a,b)=>a+(b||0),0);
   const millStreamTotal = MILL_STREAMS.filter(k=>streamT[k]).reduce((a,k)=>a+(streamT[k]||0),0);
   const millMaxTotal    = MILL_STREAMS.reduce((a,k)=>a+(maxT[k]||0),0);
-  const fHeroPct        = millMaxTotal > 0 ? (millStreamTotal/millMaxTotal*100).toFixed(1) : '—';
+  const fHeroPctRaw     = millMaxTotal > 0 ? Math.min(100, millStreamTotal/millMaxTotal*100) : 0;
+  const fHeroPct        = millMaxTotal > 0 ? (fHeroPctRaw >= 100 ? '100' : fHeroPctRaw.toFixed(1)) : '—';
 
   const blend = useMemo(() => {
     const b = { N:0, P:0, K:0, CP:0, EE:0, Ash:0, MC:0, DM:0, CN_N:0, CN_C:0, Lignin:0, Ca:0, Mg:0 };
@@ -1534,13 +1535,13 @@ export default function SiteSetup() {
           {/* ── F: % OF MILL RESIDUES CAPTURED ── */}
           <div style={{ ...card, background:'#060C14', border:`1.5px solid rgba(64,215,197,0.55)` }}>
             <div style={{ ...secTitle, fontSize:17, color:'#FFF' }}>F — % Of Mill Residues Captured</div>
-            <div style={secSub}>Volumes Set In E · % Of Mill Discharge Updates Live</div>
             <div style={cbody}>
-              <div style={{ background:'linear-gradient(135deg,rgba(0,162,73,0.16) 0%,rgba(6,12,20,1) 65%)', border:`1.5px solid rgba(0,162,73,0.45)`, borderRadius:11, padding:'22px 16px', marginBottom:12, textAlign:'center' }}>
-                <div style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:16, color:'#FFF', letterSpacing:'0.1em', marginBottom:8 }}>VALORIZING</div>
-                <div style={{ display:'flex', flexDirection:'row', alignItems:'baseline', justifyContent:'center', gap:6 }}>
+              <div style={{ background:'linear-gradient(135deg,rgba(0,162,73,0.16) 0%,rgba(6,12,20,1) 65%)', border:`1.5px solid rgba(0,162,73,0.45)`, borderRadius:11, padding:'22px 16px', marginBottom:12, textAlign:'center', minHeight:140 }}>
+                <div style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:14, color:'#FFF', letterSpacing:'0.1em', marginBottom:8 }}>VALORIZING</div>
+                <div style={{ display:'flex', flexDirection:'row', alignItems:'baseline', justifyContent:'center', gap:6, flexWrap:'nowrap' }}>
                   <span style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:40, color:C.greenLt, lineHeight:1 }}>{fHeroPct}</span>
-                  <span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:13, color:C.greenLt, whiteSpace:'nowrap' }}>% of Mill Residues</span>
+                  <span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:18, color:C.greenLt }}>%</span>
+                  <span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:11, color:C.greenLt, whiteSpace:'nowrap' }}>of Mill Residues</span>
                 </div>
               </div>
               <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:8, padding:'0 13px 5px' }}>
@@ -1553,7 +1554,8 @@ export default function SiteSetup() {
                   const active = activeStreams[key];
                   const cur    = streamT[key]||0;
                   const mx     = maxT[key]||0;
-                  const pct    = mx>0 ? (cur/mx*100).toFixed(1) : '0.0';
+                  const pctRaw = mx>0 ? Math.min(100, cur/mx*100) : 0;
+                  const pct    = pctRaw >= 100 ? '100' : pctRaw.toFixed(1);
                   return (
                     <div key={key} style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:8, alignItems:'center', background:i%2===1?'rgba(64,215,197,0.03)':'transparent', padding:'10px 13px', minHeight:42, borderBottom:i<4?`1px solid rgba(255,255,255,0.05)`:'none' }}>
                       <div style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.dm, color:C.grey }}>{STREAM_NAMES[key]}</div>
@@ -1575,8 +1577,8 @@ export default function SiteSetup() {
             <div style={{ ...secTitle, fontSize:17, color:'#FFF', borderBottomColor:'rgba(0,162,73,0.20)' }}>G — Total</div>
             <div style={secSub}>Drives All S1–S6 Calculations</div>
             <div style={cbody}>
-              <div style={{ background:'linear-gradient(160deg,rgba(0,162,73,0.22) 0%,rgba(6,12,20,1) 55%)', border:`1.5px solid rgba(0,162,73,0.50)`, borderRadius:11, padding:'22px 16px', textAlign:'center', marginBottom:12 }}>
-                <div style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:16, color:'#FFF', letterSpacing:'0.1em', marginBottom:8, whiteSpace:'nowrap' }}>TOTAL PROCESSING VOLUME</div>
+              <div style={{ background:'linear-gradient(160deg,rgba(0,162,73,0.22) 0%,rgba(6,12,20,1) 55%)', border:`1.5px solid rgba(0,162,73,0.50)`, borderRadius:11, padding:'22px 16px', textAlign:'center', marginBottom:12, minHeight:140 }}>
+                <div style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:14, color:'#FFF', letterSpacing:'0.1em', marginBottom:8, whiteSpace:'nowrap' }}>TOTAL PROCESSING VOLUME</div>
                 <div style={{ display:'flex', alignItems:'baseline', justifyContent:'center', gap:4 }}>
                   <span style={{ fontFamily:Fnt.mono, fontWeight:800, fontSize:40, color:C.greenLt30, lineHeight:1 }}>{grandTotal>0?fmtT(grandTotal):'—'}</span>
                   {grandTotal>0&&<span style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:18, color:C.greenLt30 }}>t/month</span>}
