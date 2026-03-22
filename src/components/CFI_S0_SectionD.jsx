@@ -176,7 +176,7 @@ export default function SectionD({ siteId, onStreamsChanged }) {
                   cursor:       blocked ? "not-allowed" : "pointer",
                   transition:   "all 0.12s",
                   minHeight:    52,
-                  opacity:      blocked ? 0.45 : 1,
+                  opacity:      1,
                 }}
               >
                 <div style={{ fontSize: 14, fontWeight: 700, fontFamily: F.dm, color: isActive ? T.amber : T.grey }}>
