@@ -115,7 +115,7 @@ All colors MUST be HSL.
   border: none;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-  margin-top: -8px;
+  margin-top: calc((3.8px - 20px) / 2);
 }
 .cfi-slider::-moz-range-thumb {
   width: 20px;
