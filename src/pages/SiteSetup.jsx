@@ -830,12 +830,12 @@ export default function SiteSetup() {
 
       {/* ── FLOATING PREV/NEXT ARROWS (both sides, 15% from bottom) ── */}
       <div style={{ position:'fixed', left:14, bottom:'15%', display:'flex', flexDirection:'column', gap:5, zIndex:300 }}>
-        <div onClick={scrollPrev} style={{ width:30, height:30, borderRadius:7, background:'rgba(255,152,0,0.22)', border:'1px solid rgba(255,152,0,0.35)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity:0.65, transition:'opacity 0.15s' }}><ChevronUp size={16} color="#FF9800" /></div>
-        <div onClick={scrollNext} style={{ width:30, height:30, borderRadius:7, background:'rgba(255,152,0,0.22)', border:'1px solid rgba(255,152,0,0.35)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity:0.65, transition:'opacity 0.15s' }}><ChevronDown size={16} color="#FF9800" /></div>
+        <div onClick={scrollPrev} style={{ width:30, height:30, borderRadius:7, background:'rgba(255,152,0,0.22)', border:'1px solid rgba(255,152,0,0.35)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity:0.85, transition:'opacity 0.15s' }}><ChevronUp size={16} color="#FF9800" /></div>
+        <div onClick={scrollNext} style={{ width:30, height:30, borderRadius:7, background:'rgba(255,152,0,0.22)', border:'1px solid rgba(255,152,0,0.35)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity:0.85, transition:'opacity 0.15s' }}><ChevronDown size={16} color="#FF9800" /></div>
       </div>
       <div style={{ position:'fixed', right:14, bottom:'15%', display:'flex', flexDirection:'column', gap:5, zIndex:300 }}>
-        <div onClick={scrollPrev} style={{ width:30, height:30, borderRadius:7, background:'rgba(64,215,197,0.22)', border:'1px solid rgba(64,215,197,0.35)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity:0.65, transition:'opacity 0.15s' }}><ChevronUp size={16} color="#FF9800" /></div>
-        <div onClick={scrollNext} style={{ width:30, height:30, borderRadius:7, background:'rgba(64,215,197,0.22)', border:'1px solid rgba(64,215,197,0.35)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity:0.65, transition:'opacity 0.15s' }}><ChevronDown size={16} color="#FF9800" /></div>
+        <div onClick={scrollPrev} style={{ width:30, height:30, borderRadius:7, background:'rgba(255,152,0,0.22)', border:'1px solid rgba(255,152,0,0.35)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity:0.85, transition:'opacity 0.15s' }}><ChevronUp size={16} color="#FF9800" /></div>
+        <div onClick={scrollNext} style={{ width:30, height:30, borderRadius:7, background:'rgba(255,152,0,0.22)', border:'1px solid rgba(255,152,0,0.35)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity:0.85, transition:'opacity 0.15s' }}><ChevronDown size={16} color="#FF9800" /></div>
       </div>
 
       {/* ── PAGE CONTENT ── */}
