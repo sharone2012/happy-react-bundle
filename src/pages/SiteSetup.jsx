@@ -179,7 +179,7 @@ export default function SiteSetup() {
     efb:false, opdc:false, pos:false, pmf:false, pke:false,
     pome:false, opf:false, opt:false
   });
-  const [showMoreStreams, setShowMoreStreams] = useState(false);
+  
   const [showNewFields, setShowNewFields] = useState(false);
   const [customStreams, setCustomStreams] = useState([]);
   const [newRes1, setNewRes1] = useState('');
