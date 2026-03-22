@@ -1298,7 +1298,7 @@ export default function SiteSetup() {
               <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:'#888888', letterSpacing:'0.06em', marginBottom:6, opacity:1 }}>SOIL TYPE</div>
 
               {/* Soil type cards (point 17: auto-selected shows 2px teal border) */}
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:6, marginBottom:9 }}>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:12, marginBottom:9 }}>
                 {soils.map(s => {
                   const isSel = selectedSoil === s.id;
                   const meta = SOIL_META[s.id] || {};
