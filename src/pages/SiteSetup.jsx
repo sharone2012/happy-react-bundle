@@ -787,50 +787,98 @@ export default function SiteSetup() {
 
       {/* ── STICKY HEADER (nav + tabs + context) ── */}
       <div style={{ position:'sticky', top:0, zIndex:100 }}>
-        {/* ── PLATFORM HEADER ── */}
-        <div style={{ background:C.navyMid, display:'flex', alignItems:'center', padding:'0 28px', minHeight:64 }}>
-          {/* Brand line */}
-          <div style={{ display:'flex', alignItems:'center', flexShrink:0 }}>
-            <span style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:26, color:'#FFF', whiteSpace:'nowrap' }}>CFI</span>
-            <span style={{ width:10, display:'inline-block' }} />
-            <span style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:26, color:'#33D4BC', whiteSpace:'nowrap' }}>Deep Tech</span>
+        {/* ── PLATFORM HEADER (72px bar) ── */}
+        <div style={{ background:'#0A1628', height:72, display:'flex', alignItems:'center', padding:'0 24px', borderBottom:'1px solid rgba(51,212,188,0.15)' }}>
+          {/* Brand block */}
+          <div style={{ display:'flex', alignItems:'baseline', gap:10, flexShrink:0 }}>
+            <span style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:26, color:'#FFFFFF', letterSpacing:'0.06em', whiteSpace:'nowrap' }}>CFI</span>
+            <span style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:26, color:'#33D4BC', letterSpacing:'0.06em', whiteSpace:'nowrap' }}>Deep Tech</span>
           </div>
           {/* Vertical divider */}
-          <div style={{ width:3, height:38, background:'#33D4BC', margin:'0 12px', flexShrink:0 }} />
-          {/* Descriptor lines */}
-          <div style={{ display:'flex', flexDirection:'column', gap:2, flexShrink:0 }}>
-            <div style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.dm, whiteSpace:'nowrap' }}>
-              <span style={{ color:'#FFF' }}>Precision Engineering</span>
-              <span style={{ color:'#FFF' }}>{' — '}</span>
+          <div style={{ width:3, height:38, background:'#33D4BC', margin:'0 12px 0 14px', flexShrink:0 }} />
+          {/* Taglines block */}
+          <div style={{ display:'flex', flexDirection:'column', height:38, gap:0.86, justifyContent:'center', flexShrink:0 }}>
+            <div style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.dm, lineHeight:1.3, whiteSpace:'nowrap' }}>
+              <span style={{ color:'#FFFFFF', whiteSpace:'pre' }}>{'Precision Engineering '}</span>
               <span style={{ color:'#33D4BC' }}>Circular Nutrient Recovery in Agricultural Systems</span>
             </div>
-            <div style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.dm, whiteSpace:'nowrap' }}>
-              <span style={{ color:'#FFF' }}>Applied Biology</span>
-              <span style={{ color:'#FFF' }}>{' — '}</span>
+            <div style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.dm, lineHeight:1.3, whiteSpace:'nowrap' }}>
+              <span style={{ color:'#FFFFFF', whiteSpace:'pre' }}>{'Applied Biology '}</span>
               <span style={{ color:'#33D4BC' }}>Rebalancing Soil's Microbiome & Reducing Synthetic Fertiliser Use</span>
             </div>
           </div>
+          {/* Short tabs — far right */}
+          <div style={{ marginLeft:'auto', display:'flex', alignItems:'center', gap:4, flexShrink:0 }}>
+            {['S0','S1','S2','S3','S4','S5','S6'].map((s,i)=>(
+              <span key={s} style={{
+                fontFamily:Fnt.mono, fontSize:10, fontWeight:700, borderRadius:4, padding:'3px 9px', cursor:'pointer', whiteSpace:'nowrap',
+                background: i===0 ? '#33D4BC' : 'rgba(168,189,208,0.09)',
+                color:      i===0 ? '#060C14' : '#A8BDD0',
+                border:     i===0 ? '1px solid #33D4BC' : '1px solid rgba(168,189,208,0.18)',
+              }}>{s}</span>
+            ))}
+          </div>
         </div>
 
-        {/* ── FULL-NAME TAB BAR ── */}
-        <div style={{ background:'#0A1628', display:'flex', justifyContent:'center', alignItems:'flex-end', gap:2, padding:'10px 24px 0' }}>
+        {/* ── NAV TAB ROW ── */}
+        <div style={{ background:'#0A1628', borderBottom:'2px solid rgba(51,212,188,0.18)', display:'flex', alignItems:'flex-end', gap:4, padding:'10px 24px 0 76px' }}>
           {['Site Setup','Pre-Processing','Pre-Treatment','Biologicals','BSF','Biofertiliser / Other','Emissions','Financials','Summary'].map((t,i)=>(
-            <div key={t} style={{ padding:'8px 18px', cursor:'pointer', fontSize:12, fontWeight:700, fontFamily:Fnt.dm, color:i===0?'#33D4BC':'#A8BDD0', borderBottom:i===0?'2px solid #33D4BC':'2px solid transparent', whiteSpace:'nowrap' }}>{t}</div>
-          ))}
-        </div>
-
-        {/* ── SHORT TAB ROW ── */}
-        <div style={{ background:'#0A1628', display:'flex', justifyContent:'center', alignItems:'center', gap:12, padding:'6px 24px' }}>
-          {['S0','S1','S2','S3','S4','S5','S6'].map((s,i)=>(
-            <span key={s} style={{ fontFamily:Fnt.mono, fontSize:11, fontWeight:700, color:i===0?'#33D4BC':'#A8BDD0', cursor:'pointer' }}>{s}</span>
+            <div key={t} style={{
+              fontFamily:Fnt.mono, fontSize:11, fontWeight:700, borderRadius:'7px 7px 0 0',
+              borderTop:    i===0 ? '1.5px solid rgba(51,212,188,0.60)' : '1.5px solid rgba(139,160,180,0.18)',
+              borderLeft:   i===0 ? '1.5px solid rgba(51,212,188,0.60)' : '1.5px solid rgba(139,160,180,0.18)',
+              borderRight:  i===0 ? '1.5px solid rgba(51,212,188,0.60)' : '1.5px solid rgba(139,160,180,0.18)',
+              borderBottom: 'none',
+              background:   i===0 ? 'rgba(51,212,188,0.12)' : '#0C1E33',
+              color:        i===0 ? '#F5A623' : '#A8BDD0',
+              padding:'8px 16px 10px', marginBottom:-2, cursor:'pointer', whiteSpace:'nowrap',
+            }}>{t}</div>
           ))}
         </div>
 
         {/* ── CONTEXT BAR ── */}
-        <div style={{ background:'#0A1628', borderBottom:'1px solid rgba(51,212,188,0.08)', display:'flex', alignItems:'center', justifyContent:'center', gap:8, padding:'5px 24px' }}>
-          {['Company','Estate','Mill','FFB','Soil','Streams'].map(p=>(
-            <span key={p} style={{ background:'rgba(51,212,188,0.08)', border:'1px solid rgba(51,212,188,0.15)', color:'#5A7A8A', fontFamily:Fnt.mono, fontSize:10, borderRadius:20, padding:'3px 10px', whiteSpace:'nowrap' }}>{p}</span>
-          ))}
+        <div style={{ background:'#0A1628', height:36, display:'flex', alignItems:'center', padding:'0 24px', borderBottom:'1px solid rgba(255,255,255,0.04)', gap:0 }}>
+          {/* Company value (no label) */}
+          <span style={{ fontFamily:Fnt.mono, fontSize:11, color: site.company ? '#ffffff' : 'rgba(168,189,208,0.25)', whiteSpace:'nowrap' }}>
+            {site.company || '—'}
+          </span>
+          {/* Divider */}
+          <div style={{ width:0.5, height:13, background:'rgba(139,160,180,0.18)', margin:'0 11px', flexShrink:0 }} />
+          {/* Estate */}
+          <span style={{ fontFamily:Fnt.mono, fontSize:11, color:'rgba(168,189,208,0.33)', whiteSpace:'nowrap', marginRight:4 }}>Estate</span>
+          <span style={{ fontFamily:Fnt.mono, fontSize:11, color: site.estate ? 'rgba(196,212,227,0.48)' : 'rgba(168,189,208,0.25)', whiteSpace:'nowrap' }}>
+            {site.estate || '—'}
+          </span>
+          <div style={{ width:0.5, height:13, background:'rgba(139,160,180,0.18)', margin:'0 11px', flexShrink:0 }} />
+          {/* Mill */}
+          <span style={{ fontFamily:Fnt.mono, fontSize:11, color:'rgba(168,189,208,0.33)', whiteSpace:'nowrap', marginRight:4 }}>Mill</span>
+          <span style={{ fontFamily:Fnt.mono, fontSize:11, color: site.millName ? 'rgba(196,212,227,0.48)' : 'rgba(168,189,208,0.25)', whiteSpace:'nowrap' }}>
+            {site.millName || '—'}
+          </span>
+          <div style={{ width:0.5, height:13, background:'rgba(139,160,180,0.18)', margin:'0 11px', flexShrink:0 }} />
+          {/* FFB */}
+          <span style={{ fontFamily:Fnt.mono, fontSize:11, color:'rgba(168,189,208,0.33)', whiteSpace:'nowrap', marginRight:4 }}>FFB</span>
+          <span style={{ fontFamily:Fnt.mono, fontSize:11, color: mill.ffb ? 'rgba(196,212,227,0.48)' : 'rgba(168,189,208,0.25)', whiteSpace:'nowrap' }}>
+            {mill.ffb ? `${mill.ffb} TPH` : '—'}
+          </span>
+          <div style={{ width:0.5, height:13, background:'rgba(139,160,180,0.18)', margin:'0 11px', flexShrink:0 }} />
+          {/* Soil */}
+          <span style={{ fontFamily:Fnt.mono, fontSize:11, color:'rgba(168,189,208,0.33)', whiteSpace:'nowrap', marginRight:4 }}>Soil</span>
+          <span style={{ fontFamily:Fnt.mono, fontSize:11, color: gpsSoilSuggestion ? 'rgba(196,212,227,0.48)' : 'rgba(168,189,208,0.25)', whiteSpace:'nowrap' }}>
+            {gpsSoilSuggestion || '—'}
+          </span>
+          {/* Streams — only show if any stream is active */}
+          {Object.entries(activeStreams).some(([,v])=>v) && (
+            <>
+              <div style={{ width:0.5, height:13, background:'rgba(139,160,180,0.18)', margin:'0 11px', flexShrink:0 }} />
+              <span style={{ fontFamily:Fnt.mono, fontSize:11, color:'rgba(168,189,208,0.33)', whiteSpace:'nowrap', marginRight:4 }}>Streams</span>
+              {Object.entries(activeStreams).filter(([,v])=>v).map(([k])=>(
+                <span key={k} style={{ fontFamily:Fnt.mono, fontWeight:700, fontSize:10, color:'#33D4BC', background:'rgba(51,212,188,0.10)', border:'1px solid rgba(51,212,188,0.30)', borderRadius:3, padding:'1px 6px', marginLeft:4, whiteSpace:'nowrap' }}>
+                  {k.toUpperCase()}
+                </span>
+              ))}
+            </>
+          )}
         </div>
       </div>
 
