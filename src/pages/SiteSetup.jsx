@@ -1503,7 +1503,7 @@ export default function SiteSetup() {
             <div style={cbody}>
               <div style={{ fontSize:11, color:C.greyLt, fontFamily:Fnt.mono, letterSpacing:'0.06em', marginBottom:6 }}>TONNES — AVAILABLE AT CPO MILL</div>
               {[...MILL_STREAMS, ...ESTATE_STREAMS, ...customStreams.map(c=>c.key)].map(key=>{
-                if (!activeStreams[key] && !customStreams.find(c=>c.key===key && c.active)) return null;
+                if (!activeStreams[key]) return null;
                 const name = STREAM_NAMES[key] || customStreams.find(c=>c.key===key)?.name || key.toUpperCase();
                 const mx   = maxT[key] || 8000;
                 const val  = getSlider(key);
