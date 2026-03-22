@@ -861,7 +861,7 @@ export default function SiteSetup() {
         <div style={row4}>
 
           {/* ── A: SITE DETAILS WITH CASCADE ── */}
-          <div style={card}>
+          <div id="sec-a" style={{...card, scrollMarginTop:180}}>
             <div style={secTitle}>A — Enter Your Details</div>
             <div style={secSub}>Mill Identity · Location · GPS Coordinates</div>
             <div style={cbody}>
