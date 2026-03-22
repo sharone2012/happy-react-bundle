@@ -1554,7 +1554,8 @@ export default function SiteSetup() {
                   const active = activeStreams[key];
                   const cur    = streamT[key]||0;
                   const mx     = maxT[key]||0;
-                  const pct    = mx>0 ? (cur/mx*100).toFixed(1) : '0.0';
+                  const pctRaw = mx>0 ? Math.min(100, cur/mx*100) : 0;
+                  const pct    = pctRaw >= 100 ? '100' : pctRaw.toFixed(1);
                   return (
                     <div key={key} style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:8, alignItems:'center', background:i%2===1?'rgba(64,215,197,0.03)':'transparent', padding:'10px 13px', minHeight:42, borderBottom:i<4?`1px solid rgba(255,255,255,0.05)`:'none' }}>
                       <div style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.dm, color:C.grey }}>{STREAM_NAMES[key]}</div>
