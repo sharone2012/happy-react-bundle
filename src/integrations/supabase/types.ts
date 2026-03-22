@@ -1038,6 +1038,7 @@ export type Database = {
           est_ffb_processed_t_yr: number | null
           est_opdc_t_yr: number | null
           est_pkm_t_yr: number | null
+          gps_confidence: string | null
           id: string
           industry_id: number | null
           latitude: number | null
@@ -1069,6 +1070,7 @@ export type Database = {
           est_ffb_processed_t_yr?: number | null
           est_opdc_t_yr?: number | null
           est_pkm_t_yr?: number | null
+          gps_confidence?: string | null
           id?: string
           industry_id?: number | null
           latitude?: number | null
@@ -1100,6 +1102,7 @@ export type Database = {
           est_ffb_processed_t_yr?: number | null
           est_opdc_t_yr?: number | null
           est_pkm_t_yr?: number | null
+          gps_confidence?: string | null
           id?: string
           industry_id?: number | null
           latitude?: number | null
