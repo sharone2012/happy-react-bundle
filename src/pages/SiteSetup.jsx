@@ -1431,8 +1431,8 @@ export default function SiteSetup() {
                     </div>
                   );
                 })}
-                {/* Hidden streams revealed by Add Palm Residue */}
-                {showMoreStreams && [
+                {/* Additional palm streams — always visible */}
+                {[
                   { key:'pke',  name:'Palm Kernel Expeller',  sub:'PKE · $160/t — Purchased', purchased:true },
                   { key:'opf',  name:'Oil Palm Fronds',        sub:'OPF · Seasonal · Zero Cost' },
                   { key:'opt',  name:'Oil Palm Trunks',        sub:'OPT · Replanting Only · Zero Cost' },
