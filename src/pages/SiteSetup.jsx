@@ -618,7 +618,8 @@ export default function SiteSetup() {
   const grandTotal = Object.values(streamT).reduce((a,b)=>a+(b||0),0);
   const millStreamTotal = MILL_STREAMS.filter(k=>streamT[k]).reduce((a,k)=>a+(streamT[k]||0),0);
   const millMaxTotal    = MILL_STREAMS.reduce((a,k)=>a+(maxT[k]||0),0);
-  const fHeroPct        = millMaxTotal > 0 ? (millStreamTotal/millMaxTotal*100).toFixed(1) : '—';
+  const fHeroPctRaw     = millMaxTotal > 0 ? Math.min(100, millStreamTotal/millMaxTotal*100) : 0;
+  const fHeroPct        = millMaxTotal > 0 ? (fHeroPctRaw >= 100 ? '100' : fHeroPctRaw.toFixed(1)) : '—';
 
   const blend = useMemo(() => {
     const b = { N:0, P:0, K:0, CP:0, EE:0, Ash:0, MC:0, DM:0, CN_N:0, CN_C:0, Lignin:0, Ca:0, Mg:0 };
