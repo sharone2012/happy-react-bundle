@@ -1424,10 +1424,6 @@ export default function SiteSetup() {
                   return (
                     <div key={st.key} onClick={()=>!disabled && toggleStream(st.key)} style={toggleCard(active && !disabled, disabled)}>
                       <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:(active&&!disabled)?C.amber:'#B0BEC5' }}>{st.name}</div>
-                      <div style={{ fontSize:12, fontFamily:Fnt.dm, color:(active&&!disabled)?'rgba(245,166,35,0.65)':'#888888', marginTop:3 }}>
-                        {disabled ? 'Requires EFB' : st.sub}
-                      </div>
-                      {st.liquid && active && <div style={{ fontSize:10, fontFamily:Fnt.mono, color:C.teal, marginTop:3 }}>Liquid — Excluded From Solid Mix</div>}
                     </div>
                   );
                 })}
