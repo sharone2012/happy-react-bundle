@@ -1424,10 +1424,6 @@ export default function SiteSetup() {
                   return (
                     <div key={st.key} onClick={()=>!disabled && toggleStream(st.key)} style={toggleCard(active && !disabled, disabled)}>
                       <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:(active&&!disabled)?C.amber:'#B0BEC5' }}>{st.name}</div>
-                      <div style={{ fontSize:12, fontFamily:Fnt.dm, color:(active&&!disabled)?'rgba(245,166,35,0.65)':'#888888', marginTop:3 }}>
-                        {disabled ? 'Requires EFB' : st.sub}
-                      </div>
-                      {st.liquid && active && <div style={{ fontSize:10, fontFamily:Fnt.mono, color:C.teal, marginTop:3 }}>Liquid — Excluded From Solid Mix</div>}
                     </div>
                   );
                 })}
@@ -1445,15 +1441,12 @@ export default function SiteSetup() {
                     return (
                       <div key={st.key} style={{ background:C.navyDeep, border:'1px dashed #1E6B8C', borderRadius:8, padding:'10px 13px', minHeight:52, opacity:0.55, cursor:'not-allowed' }}>
                         <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:'#B0BEC5' }}>{st.name}</div>
-                        <div style={{ fontSize:12, fontFamily:Fnt.dm, color:'#888888', marginTop:3 }}>{st.sub}</div>
                       </div>
                     );
                   }
                   return (
                     <div key={st.key} onClick={()=>toggleStream(st.key)} style={toggleCard(active, false)}>
                       <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:active?C.amber:'#B0BEC5' }}>{st.name}</div>
-                      <div style={{ fontSize:12, fontFamily:Fnt.dm, color:active?'rgba(245,166,35,0.65)':'#888888', marginTop:3 }}>{st.sub}</div>
-                      {st.purchased && active && <div style={{ fontSize:10, fontFamily:Fnt.mono, color:C.amber, marginTop:3 }}>Purchased — Not Mill Waste</div>}
                     </div>
                   );
                 })}
