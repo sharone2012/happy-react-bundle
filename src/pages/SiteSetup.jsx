@@ -1282,7 +1282,7 @@ export default function SiteSetup() {
           </div>
 
           {/* ── C: MILL MONTHLY RESULTS ── */}
-          <div style={card}>
+          <div id="sec-c" style={{...card, scrollMarginTop:180}}>
             <div style={secTitle}>C — Mill Monthly Results</div>
             <div style={secSub}>Calculated From Mill Capacity Inputs</div>
             {!bConfirmed ? (
