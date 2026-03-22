@@ -205,11 +205,11 @@ export default function SiteSetup() {
   const [stripExpanded, setStripExpanded] = useState(false);
 
   // ── Section navigation ──────────────────────────────
-  const SECTIONS = [
-    { id:'sec-a', label:'A' }, { id:'sec-b', label:'B' }, { id:'sec-c', label:'C' },
-    { id:'sec-d', label:'D' }, { id:'sec-e', label:'E' }, { id:'sec-f', label:'F' },
-    { id:'sec-g', label:'G' },
-  ];
+   const SECTIONS = [
+     { id:'sec-a', label:'A' }, { id:'sec-b', label:'B' }, { id:'sec-c', label:'C' },
+     { id:'sec-g', label:'D' }, { id:'sec-d', label:'E' }, { id:'sec-e', label:'F' },
+     { id:'sec-f', label:'G' }, { id:'sec-gtotal', label:'H' },
+   ];
   const [activeSection, setActiveSection] = useState('sec-a');
 
   // IntersectionObserver to track which section is visible
