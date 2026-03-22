@@ -1472,11 +1472,11 @@ export default function SiteSetup() {
                   <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, letterSpacing:'0.06em', marginBottom:4 }}>Add New</div>
                   <div style={{ display:'flex', gap:8, alignItems:'center' }}>
                     <input value={newRes1} onChange={e=>setNewRes1(e.target.value)} placeholder="Residue Name" style={{ background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'10px 13px', outline:'none', fontFamily:Fnt.dm, fontSize:14, fontWeight:500, color:C.white, width:'calc(40% - 4px)', minHeight:42, boxSizing:'border-box' }} />
-                    <div style={{ width:'calc(35% - 4px)', background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'6px 10px', display:'flex', flexDirection:'column', justifyContent:'center', gap:1, minHeight:42, boxSizing:'border-box' }}>
+                    <div style={{ width:'calc(30% - 4px)', background:C.navyDeep, border:`1.5px dashed rgba(139,160,180,0.28)`, borderRadius:8, padding:'6px 10px', display:'flex', alignItems:'center', gap:4, minHeight:42, boxSizing:'border-box' }}>
                       <input
                         type="text"
                         inputMode="numeric"
-                        placeholder="0"
+                        placeholder="Enter #"
                         value={newResVol ? Number(String(newResVol).replace(/,/g,'')).toLocaleString() : ''}
                         onChange={e => {
                           const raw = e.target.value.replace(/,/g,'').replace(/[^0-9]/g,'');
@@ -1484,8 +1484,7 @@ export default function SiteSetup() {
                         }}
                         style={{ background:'transparent', border:'none', outline:'none', fontFamily:Fnt.mono, fontSize:14, fontWeight:800, color:C.amber, width:'100%', textAlign:'right' }}
                       />
-                      <span style={{ fontSize:8, fontFamily:Fnt.mono, color:'#888888', textAlign:'right', lineHeight:1.1 }}>Enter high value. Use slider for exact volume.</span>
-                      <span style={{ fontSize:11, fontFamily:Fnt.mono, color:'#888888', whiteSpace:'nowrap', textAlign:'right' }}>t/m</span>
+                      <span style={{ fontSize:11, fontFamily:Fnt.mono, color:'#888888', whiteSpace:'nowrap' }}>t/m</span>
                     </div>
                     <button
                       onClick={() => addResidue(newRes1, newResVol)}
@@ -1498,10 +1497,10 @@ export default function SiteSetup() {
                         fontFamily: Fnt.dm,
                         fontSize: 12,
                         fontWeight: 700,
-                        padding: '10px 16px',
+                        padding: '6px 12px',
                         cursor: (!newRes1.trim() || !newResVol) ? 'not-allowed' : 'pointer',
                         whiteSpace: 'nowrap',
-                        minHeight: 42,
+                        minHeight: 34,
                       }}
                     >Add</button>
                   </div>
