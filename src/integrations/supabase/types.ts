@@ -455,6 +455,30 @@ export type Database = {
         }
         Relationships: []
       }
+      cfi_company_config: {
+        Row: {
+          config_key: string
+          config_value: string
+          description: string | null
+          last_updated: string | null
+          locked: boolean | null
+        }
+        Insert: {
+          config_key: string
+          config_value: string
+          description?: string | null
+          last_updated?: string | null
+          locked?: boolean | null
+        }
+        Update: {
+          config_key?: string
+          config_value?: string
+          description?: string | null
+          last_updated?: string | null
+          locked?: boolean | null
+        }
+        Relationships: []
+      }
       cfi_estates: {
         Row: {
           area_ha: number | null
@@ -841,6 +865,9 @@ export type Database = {
           priority_order: number
           prompt_code: string
           prompt_name: string
+          prompt_part2: string | null
+          prompt_part3: string | null
+          prompt_part4: string | null
           version: string | null
         }
         Insert: {
@@ -854,6 +881,9 @@ export type Database = {
           priority_order: number
           prompt_code: string
           prompt_name: string
+          prompt_part2?: string | null
+          prompt_part3?: string | null
+          prompt_part4?: string | null
           version?: string | null
         }
         Update: {
@@ -867,6 +897,9 @@ export type Database = {
           priority_order?: number
           prompt_code?: string
           prompt_name?: string
+          prompt_part2?: string | null
+          prompt_part3?: string | null
+          prompt_part4?: string | null
           version?: string | null
         }
         Relationships: []
