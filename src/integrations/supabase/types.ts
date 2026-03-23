@@ -437,6 +437,99 @@ export type Database = {
           },
         ]
       }
+      cfi_agro_residues: {
+        Row: {
+          annual_waste_mt_m: number | null
+          bsf_eligible: boolean | null
+          bsf_score: number | null
+          bsf_score_notes: string | null
+          carbon_credit_pathway: string | null
+          cfi_target_priority: string | null
+          created_at: string | null
+          crop_name: string
+          industry_id: number | null
+          key_companies: string | null
+          key_producing_countries: string | null
+          methane_risk: string | null
+          moisture_pct_wb: number | null
+          notes: string | null
+          pretreatment_required: string | null
+          primary_disposal: string | null
+          primary_nutrients: string | null
+          residue_abbr: string | null
+          residue_category: string | null
+          residue_id: number
+          residue_name: string
+          source_ref: string | null
+          waste_pct_of_crop: number | null
+        }
+        Insert: {
+          annual_waste_mt_m?: number | null
+          bsf_eligible?: boolean | null
+          bsf_score?: number | null
+          bsf_score_notes?: string | null
+          carbon_credit_pathway?: string | null
+          cfi_target_priority?: string | null
+          created_at?: string | null
+          crop_name: string
+          industry_id?: number | null
+          key_companies?: string | null
+          key_producing_countries?: string | null
+          methane_risk?: string | null
+          moisture_pct_wb?: number | null
+          notes?: string | null
+          pretreatment_required?: string | null
+          primary_disposal?: string | null
+          primary_nutrients?: string | null
+          residue_abbr?: string | null
+          residue_category?: string | null
+          residue_id?: number
+          residue_name: string
+          source_ref?: string | null
+          waste_pct_of_crop?: number | null
+        }
+        Update: {
+          annual_waste_mt_m?: number | null
+          bsf_eligible?: boolean | null
+          bsf_score?: number | null
+          bsf_score_notes?: string | null
+          carbon_credit_pathway?: string | null
+          cfi_target_priority?: string | null
+          created_at?: string | null
+          crop_name?: string
+          industry_id?: number | null
+          key_companies?: string | null
+          key_producing_countries?: string | null
+          methane_risk?: string | null
+          moisture_pct_wb?: number | null
+          notes?: string | null
+          pretreatment_required?: string | null
+          primary_disposal?: string | null
+          primary_nutrients?: string | null
+          residue_abbr?: string | null
+          residue_category?: string | null
+          residue_id?: number
+          residue_name?: string
+          source_ref?: string | null
+          waste_pct_of_crop?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_agro_residues_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
+          {
+            foreignKeyName: "cfi_agro_residues_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "v_industry_switcher"
+            referencedColumns: ["industry_id"]
+          },
+        ]
+      }
       cfi_build_deploy: {
         Row: {
           content: string | null
@@ -478,6 +571,117 @@ export type Database = {
           locked?: boolean | null
         }
         Relationships: []
+      }
+      cfi_consumer_brands: {
+        Row: {
+          annual_waste_t: number | null
+          brand_id: number
+          bsf_substrate_eligible: boolean | null
+          cfi_target_priority: string | null
+          co2eq_t_yr: number | null
+          company_name: string
+          created_at: string | null
+          key_locations: string | null
+          methane_t_yr: number | null
+          notes: string | null
+          source_ref: string | null
+          sustainability_budget_m_usd: string | null
+          waste_type: string | null
+        }
+        Insert: {
+          annual_waste_t?: number | null
+          brand_id?: number
+          bsf_substrate_eligible?: boolean | null
+          cfi_target_priority?: string | null
+          co2eq_t_yr?: number | null
+          company_name: string
+          created_at?: string | null
+          key_locations?: string | null
+          methane_t_yr?: number | null
+          notes?: string | null
+          source_ref?: string | null
+          sustainability_budget_m_usd?: string | null
+          waste_type?: string | null
+        }
+        Update: {
+          annual_waste_t?: number | null
+          brand_id?: number
+          bsf_substrate_eligible?: boolean | null
+          cfi_target_priority?: string | null
+          co2eq_t_yr?: number | null
+          company_name?: string
+          created_at?: string | null
+          key_locations?: string | null
+          methane_t_yr?: number | null
+          notes?: string | null
+          source_ref?: string | null
+          sustainability_budget_m_usd?: string | null
+          waste_type?: string | null
+        }
+        Relationships: []
+      }
+      cfi_crop_intelligence: {
+        Row: {
+          ag_inputs_vol_m3_m: number | null
+          annual_methane_t_m: number | null
+          annual_production_mt_m: number | null
+          annual_waste_mt_m: number | null
+          co2eq_t_m: number | null
+          created_at: string | null
+          crop_id: number
+          crop_name: string
+          industry_id: number | null
+          notes: string | null
+          source_ref: string | null
+          waste_pct: number | null
+          waste_type: string | null
+        }
+        Insert: {
+          ag_inputs_vol_m3_m?: number | null
+          annual_methane_t_m?: number | null
+          annual_production_mt_m?: number | null
+          annual_waste_mt_m?: number | null
+          co2eq_t_m?: number | null
+          created_at?: string | null
+          crop_id?: number
+          crop_name: string
+          industry_id?: number | null
+          notes?: string | null
+          source_ref?: string | null
+          waste_pct?: number | null
+          waste_type?: string | null
+        }
+        Update: {
+          ag_inputs_vol_m3_m?: number | null
+          annual_methane_t_m?: number | null
+          annual_production_mt_m?: number | null
+          annual_waste_mt_m?: number | null
+          co2eq_t_m?: number | null
+          created_at?: string | null
+          crop_id?: number
+          crop_name?: string
+          industry_id?: number | null
+          notes?: string | null
+          source_ref?: string | null
+          waste_pct?: number | null
+          waste_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_crop_intelligence_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
+          {
+            foreignKeyName: "cfi_crop_intelligence_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "v_industry_switcher"
+            referencedColumns: ["industry_id"]
+          },
+        ]
       }
       cfi_estates: {
         Row: {
@@ -560,6 +764,219 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      cfi_fb_companies: {
+        Row: {
+          annual_ag_waste_t: number | null
+          annual_methane_t: number | null
+          annual_revenue_b_usd: number | null
+          cfi_opportunity: string | null
+          cfi_tier: string | null
+          co2eq_t_yr: number | null
+          company_id: number
+          company_name: string
+          company_type: string | null
+          created_at: string | null
+          csrd_obligated: boolean | null
+          eudr_obligated: boolean | null
+          hq_country: string | null
+          key_locations: string | null
+          palm_volume_t_yr: number | null
+          primary_waste_types: string | null
+          sbti_committed: boolean | null
+          sector: string | null
+          source_ref: string | null
+          sustainability_budget_m_usd: number | null
+          sustainability_fund_name: string | null
+        }
+        Insert: {
+          annual_ag_waste_t?: number | null
+          annual_methane_t?: number | null
+          annual_revenue_b_usd?: number | null
+          cfi_opportunity?: string | null
+          cfi_tier?: string | null
+          co2eq_t_yr?: number | null
+          company_id?: number
+          company_name: string
+          company_type?: string | null
+          created_at?: string | null
+          csrd_obligated?: boolean | null
+          eudr_obligated?: boolean | null
+          hq_country?: string | null
+          key_locations?: string | null
+          palm_volume_t_yr?: number | null
+          primary_waste_types?: string | null
+          sbti_committed?: boolean | null
+          sector?: string | null
+          source_ref?: string | null
+          sustainability_budget_m_usd?: number | null
+          sustainability_fund_name?: string | null
+        }
+        Update: {
+          annual_ag_waste_t?: number | null
+          annual_methane_t?: number | null
+          annual_revenue_b_usd?: number | null
+          cfi_opportunity?: string | null
+          cfi_tier?: string | null
+          co2eq_t_yr?: number | null
+          company_id?: number
+          company_name?: string
+          company_type?: string | null
+          created_at?: string | null
+          csrd_obligated?: boolean | null
+          eudr_obligated?: boolean | null
+          hq_country?: string | null
+          key_locations?: string | null
+          palm_volume_t_yr?: number | null
+          primary_waste_types?: string | null
+          sbti_committed?: boolean | null
+          sector?: string | null
+          source_ref?: string | null
+          sustainability_budget_m_usd?: number | null
+          sustainability_fund_name?: string | null
+        }
+        Relationships: []
+      }
+      cfi_fb_company_crops: {
+        Row: {
+          annual_crop_volume_t: number | null
+          annual_waste_t: number | null
+          cfi_contact_angle: string | null
+          cfi_insetting_potential: string | null
+          company_name: string
+          company_type: string | null
+          created_at: string | null
+          crop_input: string
+          eudr_relevant: boolean | null
+          hq_country: string | null
+          id: number
+          industry_id: number | null
+          key_locations: string | null
+          notes: string | null
+          sbti_flag_committed: boolean | null
+          scope3_cat1_tco2e_yr: number | null
+          source_ref: string | null
+          sustainability_budget_m_usd: number | null
+          sustainability_programme: string | null
+          waste_stream_codes: string | null
+        }
+        Insert: {
+          annual_crop_volume_t?: number | null
+          annual_waste_t?: number | null
+          cfi_contact_angle?: string | null
+          cfi_insetting_potential?: string | null
+          company_name: string
+          company_type?: string | null
+          created_at?: string | null
+          crop_input: string
+          eudr_relevant?: boolean | null
+          hq_country?: string | null
+          id?: number
+          industry_id?: number | null
+          key_locations?: string | null
+          notes?: string | null
+          sbti_flag_committed?: boolean | null
+          scope3_cat1_tco2e_yr?: number | null
+          source_ref?: string | null
+          sustainability_budget_m_usd?: number | null
+          sustainability_programme?: string | null
+          waste_stream_codes?: string | null
+        }
+        Update: {
+          annual_crop_volume_t?: number | null
+          annual_waste_t?: number | null
+          cfi_contact_angle?: string | null
+          cfi_insetting_potential?: string | null
+          company_name?: string
+          company_type?: string | null
+          created_at?: string | null
+          crop_input?: string
+          eudr_relevant?: boolean | null
+          hq_country?: string | null
+          id?: number
+          industry_id?: number | null
+          key_locations?: string | null
+          notes?: string | null
+          sbti_flag_committed?: boolean | null
+          scope3_cat1_tco2e_yr?: number | null
+          source_ref?: string | null
+          sustainability_budget_m_usd?: number | null
+          sustainability_programme?: string | null
+          waste_stream_codes?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_fb_company_crops_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
+          {
+            foreignKeyName: "cfi_fb_company_crops_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "v_industry_switcher"
+            referencedColumns: ["industry_id"]
+          },
+        ]
+      }
+      cfi_feedstock_values: {
+        Row: {
+          basis: string | null
+          confidence: string | null
+          created_at: string | null
+          guardrail_note: string | null
+          id: number
+          is_ai_generated: boolean | null
+          is_approved: boolean | null
+          is_canonical: boolean | null
+          key: string
+          last_updated: string | null
+          source_ref: string | null
+          stage_code: string
+          stream: string
+          unit: string | null
+          value_numeric: number | null
+          value_text: string | null
+        }
+        Insert: {
+          basis?: string | null
+          confidence?: string | null
+          created_at?: string | null
+          guardrail_note?: string | null
+          id?: number
+          is_ai_generated?: boolean | null
+          is_approved?: boolean | null
+          is_canonical?: boolean | null
+          key: string
+          last_updated?: string | null
+          source_ref?: string | null
+          stage_code?: string
+          stream: string
+          unit?: string | null
+          value_numeric?: number | null
+          value_text?: string | null
+        }
+        Update: {
+          basis?: string | null
+          confidence?: string | null
+          created_at?: string | null
+          guardrail_note?: string | null
+          id?: number
+          is_ai_generated?: boolean | null
+          is_approved?: boolean | null
+          is_canonical?: boolean | null
+          key?: string
+          last_updated?: string | null
+          source_ref?: string | null
+          stage_code?: string
+          stream?: string
+          unit?: string | null
+          value_numeric?: number | null
+          value_text?: string | null
+        }
+        Relationships: []
       }
       cfi_feedstreams: {
         Row: {
