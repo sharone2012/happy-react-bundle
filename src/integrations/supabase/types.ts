@@ -115,6 +115,7 @@ export type Database = {
       }
       canonical_lab_data: {
         Row: {
+          authority_score: number | null
           basis: string | null
           confidence_level: string | null
           created_by: string | null
@@ -123,8 +124,13 @@ export type Database = {
           industry_id: number | null
           is_ai_generated: boolean | null
           is_approved: boolean | null
+          is_locked: boolean | null
           lock_class: string | null
+          locked_by: string | null
+          locked_date: string | null
           parameter: string
+          research_intensity: string | null
+          source_count: number | null
           source_ref: string | null
           stream: string
           unit: string | null
@@ -134,6 +140,7 @@ export type Database = {
           verified_date: string | null
         }
         Insert: {
+          authority_score?: number | null
           basis?: string | null
           confidence_level?: string | null
           created_by?: string | null
@@ -142,8 +149,13 @@ export type Database = {
           industry_id?: number | null
           is_ai_generated?: boolean | null
           is_approved?: boolean | null
+          is_locked?: boolean | null
           lock_class?: string | null
+          locked_by?: string | null
+          locked_date?: string | null
           parameter: string
+          research_intensity?: string | null
+          source_count?: number | null
           source_ref?: string | null
           stream: string
           unit?: string | null
@@ -153,6 +165,7 @@ export type Database = {
           verified_date?: string | null
         }
         Update: {
+          authority_score?: number | null
           basis?: string | null
           confidence_level?: string | null
           created_by?: string | null
@@ -161,8 +174,13 @@ export type Database = {
           industry_id?: number | null
           is_ai_generated?: boolean | null
           is_approved?: boolean | null
+          is_locked?: boolean | null
           lock_class?: string | null
+          locked_by?: string | null
+          locked_date?: string | null
           parameter?: string
+          research_intensity?: string | null
+          source_count?: number | null
           source_ref?: string | null
           stream?: string
           unit?: string | null

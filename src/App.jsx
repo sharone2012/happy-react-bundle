@@ -2306,11 +2306,91 @@ export default function CFI() {
   // Auth guard disabled for preview
   // if (!session) return <LoginPage onLoginSuccess={() => {}} />;
 
+  const NAV_TABS = ["Site Setup","Pre-Processing","Pre-Treatment","Biologicals","BSF","Biofertiliser / Other","Emissions","Financials","Summary"];
+  const SHORT_TABS = ["S0","S1","S2","S3","S4","S5","S6"];
+  const _Fnt = { syne:"'Syne', sans-serif", dm:"'DM Sans', sans-serif", mono:"'DM Mono', monospace", brand:"'EB Garamond', serif" };
+
   return (
     <div style={{background:"#060C14", minHeight:"100vh", fontFamily:"'DM Sans', sans-serif",
                  color:"#FFFFFF", padding:"0 0 40px"}}>
 
-      {/* Nav bar and tab bar are rendered inside SiteSetup / stage components */}
+      {/* ── STICKY HEADER (always visible on all stages) ── */}
+      <div style={{ position:'sticky', top:0, zIndex:100 }}>
+        {/* ── PLATFORM HEADER (72px bar) ── */}
+        <div style={{ background:'#0A1628', height:72, display:'flex', alignItems:'center', padding:'0 24px', borderBottom:'1px solid rgba(51,212,188,0.15)' }}>
+          <div style={{ display:'flex', alignItems:'baseline', gap:10, flexShrink:0 }}>
+            <span style={{ fontFamily:_Fnt.brand, fontWeight:700, fontSize:26, color:'#FFFFFF', letterSpacing:'0.06em', whiteSpace:'nowrap' }}>CFI</span>
+            <span style={{ fontFamily:_Fnt.brand, fontWeight:700, fontSize:26, color:'#33D4BC', letterSpacing:'0.06em', whiteSpace:'nowrap' }}>Deep Tech</span>
+          </div>
+          <div style={{ width:3, height:38, background:'#33D4BC', margin:'0 12px 0 14px', flexShrink:0 }} />
+          <div style={{ display:'flex', flexDirection:'column', height:38, gap:0.86, justifyContent:'center', flexShrink:0 }}>
+            <div style={{ fontSize:12, fontWeight:700, fontFamily:_Fnt.dm, lineHeight:1.3, whiteSpace:'nowrap' }}>
+              <span style={{ color:'#FFFFFF' }}>Precision Engineering</span>
+              <span style={{ color:'#33D4BC', marginLeft:6 }}>Circular Nutrient Recovery in Agricultural Systems</span>
+            </div>
+            <div style={{ fontSize:12, fontWeight:700, fontFamily:_Fnt.dm, lineHeight:1.3, whiteSpace:'nowrap', position:'relative' }}>
+              <span style={{ color:'#FFFFFF' }}>Applied Biology</span>
+              <span style={{ color:'#33D4BC', position:'absolute', left:134 }}>Rebalancing Soil's Microbiome & Reducing Synthetic Fertiliser Use</span>
+            </div>
+          </div>
+          {/* Short tabs — far right */}
+          <div style={{ marginLeft:'auto', display:'flex', alignItems:'center', gap:4, flexShrink:0 }}>
+            {SHORT_TABS.map((s,i)=>(
+              <span key={s} onClick={()=>handleTabClick(i)} style={{
+                fontFamily:_Fnt.mono, fontSize:10, fontWeight:700, borderRadius:4, padding:'3px 9px', cursor:'pointer', whiteSpace:'nowrap',
+                background: i===stage ? '#33D4BC' : 'rgba(168,189,208,0.09)',
+                color:      i===stage ? '#060C14' : '#A8BDD0',
+                border:     i===stage ? '1px solid #33D4BC' : '1px solid rgba(168,189,208,0.18)',
+              }}>{s}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* ── NAV TAB ROW ── */}
+        <div style={{ background:'#0A1628', borderBottom:'2px solid rgba(51,212,188,0.18)', display:'flex', alignItems:'flex-end', gap:4, padding:'10px 24px 0 76px' }}>
+          {NAV_TABS.map((t,i)=>(
+            <div key={t} onClick={()=>handleTabClick(i)} style={{
+              fontFamily:_Fnt.mono, fontSize:11, fontWeight:700, borderRadius:'7px 7px 0 0',
+              borderTop:    i===stage ? '1.5px solid rgba(51,212,188,0.60)' : '1.5px solid rgba(139,160,180,0.18)',
+              borderLeft:   i===stage ? '1.5px solid rgba(51,212,188,0.60)' : '1.5px solid rgba(139,160,180,0.18)',
+              borderRight:  i===stage ? '1.5px solid rgba(51,212,188,0.60)' : '1.5px solid rgba(139,160,180,0.18)',
+              borderBottom: 'none',
+              background:   i===stage ? 'rgba(51,212,188,0.12)' : '#0C1E33',
+              color:        i===stage ? '#F5A623' : '#A8BDD0',
+              padding:'8px 16px 10px', marginBottom:-2, cursor:'pointer', whiteSpace:'nowrap',
+            }}>{t}</div>
+          ))}
+        </div>
+
+        {/* ── CONTEXT BAR ── */}
+        <div style={{ background:'#0A1628', height:36, display:'flex', alignItems:'center', padding:'0 24px', borderBottom:'1px solid rgba(255,255,255,0.04)', gap:0 }}>
+          <span style={{ fontFamily:_Fnt.mono, fontSize:11, color: s0.plantName ? '#ffffff' : 'rgba(168,189,208,0.25)', whiteSpace:'nowrap' }}>
+            {s0.plantName || '—'}
+          </span>
+          <div style={{ width:0.5, height:13, background:'rgba(139,160,180,0.18)', margin:'0 11px', flexShrink:0 }} />
+          <span style={{ fontFamily:_Fnt.mono, fontSize:11, color:'rgba(168,189,208,0.33)', whiteSpace:'nowrap', marginRight:4 }}>Estate</span>
+          <span style={{ fontFamily:_Fnt.mono, fontSize:11, color: s0.estateName ? 'rgba(196,212,227,0.48)' : 'rgba(168,189,208,0.25)', whiteSpace:'nowrap' }}>{s0.estateName || '—'}</span>
+          <div style={{ width:0.5, height:13, background:'rgba(139,160,180,0.18)', margin:'0 11px', flexShrink:0 }} />
+          <span style={{ fontFamily:_Fnt.mono, fontSize:11, color:'rgba(168,189,208,0.33)', whiteSpace:'nowrap', marginRight:4 }}>Mill</span>
+          <span style={{ fontFamily:_Fnt.mono, fontSize:11, color: s0.millName ? 'rgba(196,212,227,0.48)' : 'rgba(168,189,208,0.25)', whiteSpace:'nowrap' }}>{s0.millName || '—'}</span>
+          <div style={{ width:0.5, height:13, background:'rgba(139,160,180,0.18)', margin:'0 11px', flexShrink:0 }} />
+          <span style={{ fontFamily:_Fnt.mono, fontSize:11, color:'rgba(168,189,208,0.33)', whiteSpace:'nowrap', marginRight:4 }}>FFB</span>
+          <span style={{ fontFamily:_Fnt.mono, fontSize:11, color: s0.ffbCapacity ? 'rgba(196,212,227,0.48)' : 'rgba(168,189,208,0.25)', whiteSpace:'nowrap' }}>{s0.ffbCapacity ? `${s0.ffbCapacity} TPH` : '—'}</span>
+          <div style={{ width:0.5, height:13, background:'rgba(139,160,180,0.18)', margin:'0 11px', flexShrink:0 }} />
+          <span style={{ fontFamily:_Fnt.mono, fontSize:11, color:'rgba(168,189,208,0.33)', whiteSpace:'nowrap', marginRight:4 }}>Soil</span>
+          <span style={{ fontFamily:_Fnt.mono, fontSize:11, color: s0.soil ? 'rgba(196,212,227,0.48)' : 'rgba(168,189,208,0.25)', whiteSpace:'nowrap' }}>{s0.soil || '—'}</span>
+          {(s0.efbEnabled || s0.opdcEnabled || s0.posEnabled || s0.pomeEnabled) && (
+            <>
+              <div style={{ width:0.5, height:13, background:'rgba(139,160,180,0.18)', margin:'0 11px', flexShrink:0 }} />
+              <span style={{ fontFamily:_Fnt.mono, fontSize:11, color:'rgba(168,189,208,0.33)', whiteSpace:'nowrap', marginRight:4 }}>Streams</span>
+              {s0.efbEnabled && <span style={{ fontFamily:_Fnt.mono, fontWeight:700, fontSize:10, color:'#33D4BC', background:'rgba(51,212,188,0.10)', border:'1px solid rgba(51,212,188,0.30)', borderRadius:3, padding:'1px 6px', marginLeft:4 }}>EFB</span>}
+              {s0.opdcEnabled && <span style={{ fontFamily:_Fnt.mono, fontWeight:700, fontSize:10, color:'#33D4BC', background:'rgba(51,212,188,0.10)', border:'1px solid rgba(51,212,188,0.30)', borderRadius:3, padding:'1px 6px', marginLeft:4 }}>OPDC</span>}
+              {s0.posEnabled && <span style={{ fontFamily:_Fnt.mono, fontWeight:700, fontSize:10, color:'#33D4BC', background:'rgba(51,212,188,0.10)', border:'1px solid rgba(51,212,188,0.30)', borderRadius:3, padding:'1px 6px', marginLeft:4 }}>POS</span>}
+              {s0.pomeEnabled && <span style={{ fontFamily:_Fnt.mono, fontWeight:700, fontSize:10, color:'#33D4BC', background:'rgba(51,212,188,0.10)', border:'1px solid rgba(51,212,188,0.30)', borderRadius:3, padding:'1px 6px', marginLeft:4 }}>POME</span>}
+            </>
+          )}
+        </div>
+      </div>
 
       {/* ── CONTENT ── */}
       <div style={{padding:"16px 22px 60px", minWidth:1400, margin:"0 auto"}}>
