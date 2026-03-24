@@ -2496,6 +2496,53 @@ export default function CFI() {
                 </div>
                 <Alert type="ok" msg={`${(s1_blendWet + (pomeActive?pomeSludgeInclTPD*s0.daysMonth:0)).toLocaleString()} t FW/month total substrate (EFB+OPDC${pomeActive?" + POME Sludge":""}) ready for Stage 2`}/>
               </div>
+
+              {/* ── PROCESS ENGINEERING — FACILITY LAYOUT & MACHINERY ── */}
+              <div style={{...S.card, gridColumn:"1/-1"}}>
+                <SectionHdr icon="🏭" title="S1 — PROCESS ENGINEERING & FACILITY LAYOUT" color={C.amber}/>
+                <div style={{background:'#0a0f18', border:'1px solid rgba(245,166,35,0.20)', borderRadius:8, padding:'16px 20px', marginBottom:14, fontFamily:"'DM Mono', monospace", fontSize:11, color:'#8ba0b4', lineHeight:1.9, whiteSpace:'pre', overflowX:'auto'}}>
+{`  ╔══════════════════════════════════════════════════════════════════════════╗
+  ║                     CFI S1 — MECHANICAL PRE-PROCESSING                  ║
+  ║                         PROCESS FLOW DIAGRAM                            ║
+  ╠══════════════════════════════════════════════════════════════════════════╣
+  ║                                                                         ║
+  ║  [CPO MILL]                                                             ║
+  ║      │                                                                  ║
+  ║      ├──► EFB DISCHARGE (22.5% FFB) ──► SHREDDER ──► HAMMER MILL       ║
+  ║      │    MC: 62.5% wb                  ${(efbTPH/0.65).toFixed(1)} TPH       2mm target       ║
+  ║      │                                                                  ║
+  ║      ├──► OPDC (15.2% EFB FW) ──► SCREW PRESS ──► DEWATERED OPDC      ║
+  ║      │    MC: 70% wb              MC: 50% target    ${opdcDMreq} t DM/d       ║
+  ║      │                                                                  ║
+  ║      └──► CONVEYOR SYSTEM (${(efbTPH*1.2).toFixed(1)} TPH) ──► MIXING HOPPER        ║
+  ║                                                                         ║
+  ║           ┌─────────────┐     ┌─────────────┐     ┌─────────────┐      ║
+  ║           │  SHREDDED   │     │  PRESSED    │     │   BLENDED   │      ║
+  ║           │    EFB      │ ──► │    OPDC     │ ──► │  SUBSTRATE  │      ║
+  ║           │ ${efbDMpd} t DM/d │     │ ${opdcDMreq} t DM/d│     │  → S2        │      ║
+  ║           └─────────────┘     └─────────────┘     └─────────────┘      ║
+  ║                                                                         ║
+  ╚══════════════════════════════════════════════════════════════════════════╝`}
+                </div>
+
+                <SectionHdr icon="⚙️" title="MACHINERY SPECIFICATIONS" color={C.teal}/>
+                <div style={{display:"flex", flexDirection:"column", gap:6, marginBottom:14}}>
+                  <CalcField label="EFB Shredder (nameplate)" unit="TPH" value={(efbTPH / 0.65).toFixed(1)}/>
+                  <CalcField label="Hammer Mill (30% to 2mm fraction)" unit="TPH" value={(efbTPH * 0.3 / 0.65).toFixed(1)}/>
+                  <CalcField label="Screw Press — OPDC dewatering" unit="TPH" value={(opdcNatTPD * 1.1 / 24 / 0.65).toFixed(2)}/>
+                  <CalcField label="Conveyor System (20% margin)" unit="TPH" value={(efbTPH * 1.2).toFixed(1)}/>
+                  <CalcField label="Asian Derating Factor" unit="×" value="0.65"/>
+                  <CalcField label="Particle Target (BSF substrate)" unit="mm" value="2"/>
+                </div>
+
+                <SectionHdr icon="💰" title="S1 — CAPEX ALLOCATION" color={C.amber}/>
+                <div style={{display:"flex", flexDirection:"column", gap:6}}>
+                  <CalcField label="S1 Pre-Processing CAPEX (shredder, conveyors, OPDC press)" unit="USD" value={`$${capex.s1_capex.toLocaleString()}`}/>
+                  <CalcField label="Operating Hours" unit="hr/day" value={s0.hrsDay}/>
+                  <CalcField label="Operating Days" unit="days/month" value={s0.daysMonth}/>
+                </div>
+              </div>
+
             <NutrLedger stg="S1 · After Shredding (No Nutrient Change)" N={nl_N} P={nl_P} K={nl_K} Ca={nl_Ca} Mg={nl_Mg} OM={nl_OM} cn={nl_CN} wetPD={nl_wetPD} mc={blendMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.tealLt}/>
             </div>
           </div>
