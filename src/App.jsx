@@ -2421,7 +2421,7 @@ export default function CFI() {
             <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:16}}>
               <div style={S.card}>
                 <SectionHdr icon="" title="S1 — EFB PRE-PROCESSING (MECHANICAL)"/>
-                <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8}}>
+                <div style={{display:"flex", flexDirection:"column", gap:6}}>
                   <CalcField label="EFB Nameplate Throughput" unit="TPH (wet)" value={efbTPH}/>
                   <CalcField label="EFB Daily (wet)" unit="t/day" value={efbTPD}/>
                   <CalcField label="EFB Dry Matter @mill" unit="%" value={(efbDMFrac*100).toFixed(1)}/>
