@@ -2443,7 +2443,7 @@ export default function CFI() {
 
               <div style={S.card}>
                 <SectionHdr icon="" title="S1 — OPDC PRE-PROCESSING"/>
-                <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8}}>
+                <div style={{display:"flex", flexDirection:"column", gap:6}}>
                   <CalcField label="Natural OPDC (wet, 15.2%)" unit="t/day" value={opdcNatTPD}/>
                   <CalcField label="Natural OPDC DM" unit="t DM/day" value={opdcNatDM}/>
                   <CalcField label="OPDC DM Required (blend)" unit="t DM/day" value={opdcDMreq}/>
