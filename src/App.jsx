@@ -116,10 +116,12 @@ const S = {
              display:"flex", alignItems:"center", gap:8 },
   label:   { color:C.grey, fontSize:11, fontFamily:"'DM Sans', sans-serif", textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:2 },
   val:     { color:C.white, fontSize:14, fontWeight:600, fontFamily:"'DM Sans', sans-serif" },
-  input:   { background:C.inputBoxBg, border:`1.5px solid ${C.sectionBorder}`, borderRadius:5, color:C.amber,
-             padding:"6px 10px", fontSize:13, width:"100%", outline:"none", fontFamily:"'DM Mono', monospace" },
-  inputAmb:{ background:C.inputBoxBg, border:`1.5px solid ${C.amber}66`, borderRadius:5, color:C.amberLt,
-             padding:"6px 10px", fontSize:13, width:"100%", outline:"none", fontFamily:"'DM Mono', monospace" },
+  input:   { background:'#000', border:'1.5px solid rgba(64,215,197,0.60)', borderRadius:7, color:C.amber,
+             padding:"8px 10px", fontSize:14, fontWeight:800, width:"100%", outline:"none", fontFamily:"'DM Mono', monospace", height:38, textAlign:"center", boxSizing:"border-box" },
+  inputAmb:{ background:'#000', border:'1.5px solid rgba(245,166,35,0.50)', borderRadius:7, color:C.amberLt,
+             padding:"8px 10px", fontSize:14, fontWeight:800, width:"100%", outline:"none", fontFamily:"'DM Mono', monospace", height:38, textAlign:"center", boxSizing:"border-box" },
+  inputBlu:{ background:'#000', border:'1.5px solid rgba(64,215,197,0.60)', borderRadius:7, color:C.amber,
+             padding:"8px 10px", fontSize:14, fontWeight:800, width:"100%", outline:"none", fontFamily:"'DM Mono', monospace", height:38, textAlign:"center", boxSizing:"border-box" },
   badge:   (c) => ({ background:c+"22", border:`1px solid ${c}55`, borderRadius:12, padding:"2px 8px",
                      color:c, fontSize:12, fontWeight:700, display:"inline-block", fontFamily:"'Syne', sans-serif" }),
   row:     { display:"flex", gap:10, marginBottom:8 },
@@ -194,13 +196,16 @@ const BluField = ({label, unit, value, onChange, disabled, note}) => {
   const [local, setLocal] = useState(value);
   useState(() => { setLocal(value); }, [value]);
   return (
-    <div>
-      <Lbl t={label} unit={unit}/>
-      <input style={disabled ? {...S.input, background:C.pageBg, color:C.teal, cursor:"not-allowed"} : S.input}
-        value={local}
-        onChange={e => setLocal(e.target.value)}
-        onBlur={e => { if(onChange) onChange(e.target.value); }}
-        disabled={!!disabled}/>
+    <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', background:'#142030', border:'1px solid rgba(168,189,208,0.12)', borderRadius:8, padding:'10px 14px', gap:12, minHeight:48}}>
+      <span style={{flex:1, fontSize:14, fontWeight:700, color:'#A8BDD0', whiteSpace:'nowrap', fontFamily:"'DM Sans', sans-serif"}}>{label}</span>
+      <div style={{display:'flex', alignItems:'center', gap:8, flexShrink:0}}>
+        <input style={disabled ? {...S.input, background:'#0a0a0a', color:C.teal, cursor:"not-allowed", width:76} : {...S.input, width:76}}
+          value={local}
+          onChange={e => setLocal(e.target.value)}
+          onBlur={e => { if(onChange) onChange(e.target.value); }}
+          disabled={!!disabled}/>
+        {unit && <span style={{fontSize:11, fontFamily:"'DM Mono', monospace", color:'rgba(168,189,208,0.75)', whiteSpace:'nowrap', minWidth:42}}>{unit}</span>}
+      </div>
       {note && <div style={{color:C.grey,fontSize:10,marginTop:2}}>{note}</div>}
     </div>
   );
@@ -210,25 +215,30 @@ const AmbField = ({label, unit, value, onChange, note}) => {
   const [local, setLocal] = useState(value);
   useState(() => { setLocal(value); }, [value]);
   return (
-    <div>
-      <Lbl t={label} unit={unit}/>
-      <input style={S.inputAmb}
-        value={local}
-        onChange={e => setLocal(e.target.value)}
-        onBlur={e => { if(onChange) onChange(e.target.value); }}/>
+    <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', background:'#142030', border:'1px solid rgba(168,189,208,0.12)', borderRadius:8, padding:'10px 14px', gap:12, minHeight:48}}>
+      <span style={{flex:1, fontSize:14, fontWeight:700, color:'#A8BDD0', whiteSpace:'nowrap', fontFamily:"'DM Sans', sans-serif"}}>{label}</span>
+      <div style={{display:'flex', alignItems:'center', gap:8, flexShrink:0}}>
+        <input style={{...S.inputAmb, width:76}}
+          value={local}
+          onChange={e => setLocal(e.target.value)}
+          onBlur={e => { if(onChange) onChange(e.target.value); }}/>
+        {unit && <span style={{fontSize:11, fontFamily:"'DM Mono', monospace", color:'rgba(168,189,208,0.75)', whiteSpace:'nowrap', minWidth:42}}>{unit}</span>}
+      </div>
       {note && <div style={{color:C.amber,fontSize:10,marginTop:2}}> {note}</div>}
     </div>
   );
 };
 
 const CalcField = ({label, unit, value, note}) => (
-  <div>
-    <Lbl t={label} unit={unit}/>
-    <div style={{background:"#0D2818", border:`1px solid ${C.green}44`, borderRadius:5,
-                 padding:"6px 10px", color:C.green, fontSize:13, fontWeight:600}}>
-      {value}
+  <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', background:'#142030', border:'1px solid rgba(168,189,208,0.12)', borderRadius:8, padding:'10px 14px', gap:12, minHeight:48}}>
+    <span style={{flex:1, fontSize:14, fontWeight:700, color:'#A8BDD0', whiteSpace:'nowrap', fontFamily:"'DM Sans', sans-serif"}}>{label}</span>
+    <div style={{display:'flex', alignItems:'center', gap:8, flexShrink:0}}>
+      <div style={{background:'#000', border:'1.5px solid rgba(64,215,197,0.60)', borderRadius:7, color:'#F5A623', fontFamily:"'DM Mono', monospace", fontSize:14, fontWeight:800, padding:'8px 10px', minWidth:76, height:38, textAlign:'center', display:'flex', alignItems:'center', justifyContent:'center'}}>
+        {value}
+      </div>
+      {unit && <span style={{fontSize:11, fontFamily:"'DM Mono', monospace", color:'rgba(168,189,208,0.75)', whiteSpace:'nowrap', minWidth:42}}>{unit}</span>}
     </div>
-    {note && <div style={{color:C.green,fontSize:10,marginTop:2}}>{note}</div>}
+    {note && <div style={{color:'#00A249', fontSize:10, position:'absolute', bottom:2}}>{note}</div>}
   </div>
 );
 
