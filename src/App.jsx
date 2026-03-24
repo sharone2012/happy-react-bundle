@@ -222,13 +222,15 @@ const AmbField = ({label, unit, value, onChange, note}) => {
 };
 
 const CalcField = ({label, unit, value, note}) => (
-  <div>
-    <Lbl t={label} unit={unit}/>
-    <div style={{background:"#0D2818", border:`1px solid ${C.green}44`, borderRadius:5,
-                 padding:"6px 10px", color:C.green, fontSize:13, fontWeight:600}}>
-      {value}
+  <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', background:'#142030', border:'1px solid rgba(168,189,208,0.12)', borderRadius:8, padding:'10px 14px', gap:12, minHeight:48}}>
+    <span style={{flex:1, fontSize:14, fontWeight:700, color:'#A8BDD0', whiteSpace:'nowrap', fontFamily:"'DM Sans', sans-serif"}}>{label}</span>
+    <div style={{display:'flex', alignItems:'center', gap:8, flexShrink:0}}>
+      <div style={{background:'#000', border:'1.5px solid rgba(64,215,197,0.60)', borderRadius:7, color:'#F5A623', fontFamily:"'DM Mono', monospace", fontSize:14, fontWeight:800, padding:'8px 10px', minWidth:76, height:38, textAlign:'center', display:'flex', alignItems:'center', justifyContent:'center'}}>
+        {value}
+      </div>
+      {unit && <span style={{fontSize:11, fontFamily:"'DM Mono', monospace", color:'rgba(168,189,208,0.75)', whiteSpace:'nowrap', minWidth:42}}>{unit}</span>}
     </div>
-    {note && <div style={{color:C.green,fontSize:10,marginTop:2}}>{note}</div>}
+    {note && <div style={{color:'#00A249', fontSize:10, position:'absolute', bottom:2}}>{note}</div>}
   </div>
 );
 
