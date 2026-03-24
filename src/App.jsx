@@ -231,14 +231,13 @@ const AmbField = ({label, unit, value, onChange, note}) => {
 
 const CalcField = ({label, unit, value, note}) => (
   <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', background:'#142030', border:'1px solid rgba(168,189,208,0.12)', borderRadius:8, padding:'10px 14px', gap:12, minHeight:48}}>
-    <span style={{flex:1, fontSize:14, fontWeight:700, color:'#A8BDD0', whiteSpace:'nowrap', fontFamily:"'DM Sans', sans-serif"}}>{label}</span>
-    <div style={{display:'flex', alignItems:'center', gap:8, flexShrink:0}}>
-      <div style={{background:'#000', border:'1.5px solid rgba(64,215,197,0.60)', borderRadius:7, color:'#F5A623', fontFamily:"'DM Mono', monospace", fontSize:14, fontWeight:800, padding:'8px 10px', minWidth:76, height:38, textAlign:'center', display:'flex', alignItems:'center', justifyContent:'center'}}>
+    <span style={{flex:1, fontSize:13, fontWeight:700, color:'#A8BDD0', fontFamily:"'DM Sans', sans-serif"}}>{label}</span>
+    <div style={{display:'flex', alignItems:'center', gap:6, flexShrink:0}}>
+      <span style={{background:'#000', border:'1.5px solid rgba(64,215,197,0.60)', borderRadius:7, color:'#F5A623', fontFamily:"'DM Mono', monospace", fontSize:14, fontWeight:800, padding:'6px 10px', minWidth:60, height:34, display:'inline-flex', alignItems:'center', justifyContent:'center', whiteSpace:'nowrap'}}>
         {value}
-      </div>
-      {unit && <span style={{fontSize:11, fontFamily:"'DM Mono', monospace", color:'rgba(168,189,208,0.75)', whiteSpace:'nowrap', minWidth:42}}>{unit}</span>}
+      </span>
+      {unit && <span style={{fontSize:10, fontFamily:"'DM Mono', monospace", color:'rgba(168,189,208,0.75)', whiteSpace:'nowrap'}}>{unit}</span>}
     </div>
-    {note && <div style={{color:'#00A249', fontSize:10, position:'absolute', bottom:2}}>{note}</div>}
   </div>
 );
 
@@ -2422,7 +2421,7 @@ export default function CFI() {
             <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:16}}>
               <div style={S.card}>
                 <SectionHdr icon="" title="S1 — EFB PRE-PROCESSING (MECHANICAL)"/>
-                <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8}}>
+                <div style={{display:"flex", flexDirection:"column", gap:6}}>
                   <CalcField label="EFB Nameplate Throughput" unit="TPH (wet)" value={efbTPH}/>
                   <CalcField label="EFB Daily (wet)" unit="t/day" value={efbTPD}/>
                   <CalcField label="EFB Dry Matter @mill" unit="%" value={(efbDMFrac*100).toFixed(1)}/>
@@ -2444,7 +2443,7 @@ export default function CFI() {
 
               <div style={S.card}>
                 <SectionHdr icon="" title="S1 — OPDC PRE-PROCESSING"/>
-                <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8}}>
+                <div style={{display:"flex", flexDirection:"column", gap:6}}>
                   <CalcField label="Natural OPDC (wet, 15.2%)" unit="t/day" value={opdcNatTPD}/>
                   <CalcField label="Natural OPDC DM" unit="t DM/day" value={opdcNatDM}/>
                   <CalcField label="OPDC DM Required (blend)" unit="t DM/day" value={opdcDMreq}/>
@@ -2497,6 +2496,53 @@ export default function CFI() {
                 </div>
                 <Alert type="ok" msg={`${(s1_blendWet + (pomeActive?pomeSludgeInclTPD*s0.daysMonth:0)).toLocaleString()} t FW/month total substrate (EFB+OPDC${pomeActive?" + POME Sludge":""}) ready for Stage 2`}/>
               </div>
+
+              {/* ── PROCESS ENGINEERING — FACILITY LAYOUT & MACHINERY ── */}
+              <div style={{...S.card, gridColumn:"1/-1"}}>
+                <SectionHdr icon="🏭" title="S1 — PROCESS ENGINEERING & FACILITY LAYOUT" color={C.amber}/>
+                <div style={{background:'#0a0f18', border:'1px solid rgba(245,166,35,0.20)', borderRadius:8, padding:'16px 20px', marginBottom:14, fontFamily:"'DM Mono', monospace", fontSize:11, color:'#8ba0b4', lineHeight:1.9, whiteSpace:'pre', overflowX:'auto'}}>
+{`  ╔══════════════════════════════════════════════════════════════════════════╗
+  ║                     CFI S1 — MECHANICAL PRE-PROCESSING                  ║
+  ║                         PROCESS FLOW DIAGRAM                            ║
+  ╠══════════════════════════════════════════════════════════════════════════╣
+  ║                                                                         ║
+  ║  [CPO MILL]                                                             ║
+  ║      │                                                                  ║
+  ║      ├──► EFB DISCHARGE (22.5% FFB) ──► SHREDDER ──► HAMMER MILL       ║
+  ║      │    MC: 62.5% wb                  ${(efbTPH/0.65).toFixed(1)} TPH       2mm target       ║
+  ║      │                                                                  ║
+  ║      ├──► OPDC (15.2% EFB FW) ──► SCREW PRESS ──► DEWATERED OPDC      ║
+  ║      │    MC: 70% wb              MC: 50% target    ${opdcDMreq} t DM/d       ║
+  ║      │                                                                  ║
+  ║      └──► CONVEYOR SYSTEM (${(efbTPH*1.2).toFixed(1)} TPH) ──► MIXING HOPPER        ║
+  ║                                                                         ║
+  ║           ┌─────────────┐     ┌─────────────┐     ┌─────────────┐      ║
+  ║           │  SHREDDED   │     │  PRESSED    │     │   BLENDED   │      ║
+  ║           │    EFB      │ ──► │    OPDC     │ ──► │  SUBSTRATE  │      ║
+  ║           │ ${efbDMpd} t DM/d │     │ ${opdcDMreq} t DM/d│     │  → S2        │      ║
+  ║           └─────────────┘     └─────────────┘     └─────────────┘      ║
+  ║                                                                         ║
+  ╚══════════════════════════════════════════════════════════════════════════╝`}
+                </div>
+
+                <SectionHdr icon="⚙️" title="MACHINERY SPECIFICATIONS" color={C.teal}/>
+                <div style={{display:"flex", flexDirection:"column", gap:6, marginBottom:14}}>
+                  <CalcField label="EFB Shredder (nameplate)" unit="TPH" value={(efbTPH / 0.65).toFixed(1)}/>
+                  <CalcField label="Hammer Mill (30% to 2mm fraction)" unit="TPH" value={(efbTPH * 0.3 / 0.65).toFixed(1)}/>
+                  <CalcField label="Screw Press — OPDC dewatering" unit="TPH" value={(opdcNatTPD * 1.1 / 24 / 0.65).toFixed(2)}/>
+                  <CalcField label="Conveyor System (20% margin)" unit="TPH" value={(efbTPH * 1.2).toFixed(1)}/>
+                  <CalcField label="Asian Derating Factor" unit="×" value="0.65"/>
+                  <CalcField label="Particle Target (BSF substrate)" unit="mm" value="2"/>
+                </div>
+
+                <SectionHdr icon="💰" title="S1 — CAPEX ALLOCATION" color={C.amber}/>
+                <div style={{display:"flex", flexDirection:"column", gap:6}}>
+                  <CalcField label="S1 Pre-Processing CAPEX (shredder, conveyors, OPDC press)" unit="USD" value={`$${capex.s1_capex.toLocaleString()}`}/>
+                  <CalcField label="Operating Hours" unit="hr/day" value={s0.hrsDay}/>
+                  <CalcField label="Operating Days" unit="days/month" value={s0.daysMonth}/>
+                </div>
+              </div>
+
             <NutrLedger stg="S1 · After Shredding (No Nutrient Change)" N={nl_N} P={nl_P} K={nl_K} Ca={nl_Ca} Mg={nl_Mg} OM={nl_OM} cn={nl_CN} wetPD={nl_wetPD} mc={blendMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.tealLt}/>
             </div>
           </div>
