@@ -196,13 +196,16 @@ const BluField = ({label, unit, value, onChange, disabled, note}) => {
   const [local, setLocal] = useState(value);
   useState(() => { setLocal(value); }, [value]);
   return (
-    <div>
-      <Lbl t={label} unit={unit}/>
-      <input style={disabled ? {...S.input, background:C.pageBg, color:C.teal, cursor:"not-allowed"} : S.input}
-        value={local}
-        onChange={e => setLocal(e.target.value)}
-        onBlur={e => { if(onChange) onChange(e.target.value); }}
-        disabled={!!disabled}/>
+    <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', background:'#142030', border:'1px solid rgba(168,189,208,0.12)', borderRadius:8, padding:'10px 14px', gap:12, minHeight:48}}>
+      <span style={{flex:1, fontSize:14, fontWeight:700, color:'#A8BDD0', whiteSpace:'nowrap', fontFamily:"'DM Sans', sans-serif"}}>{label}</span>
+      <div style={{display:'flex', alignItems:'center', gap:8, flexShrink:0}}>
+        <input style={disabled ? {...S.input, background:'#0a0a0a', color:C.teal, cursor:"not-allowed", width:76} : {...S.input, width:76}}
+          value={local}
+          onChange={e => setLocal(e.target.value)}
+          onBlur={e => { if(onChange) onChange(e.target.value); }}
+          disabled={!!disabled}/>
+        {unit && <span style={{fontSize:11, fontFamily:"'DM Mono', monospace", color:'rgba(168,189,208,0.75)', whiteSpace:'nowrap', minWidth:42}}>{unit}</span>}
+      </div>
       {note && <div style={{color:C.grey,fontSize:10,marginTop:2}}>{note}</div>}
     </div>
   );
@@ -212,12 +215,15 @@ const AmbField = ({label, unit, value, onChange, note}) => {
   const [local, setLocal] = useState(value);
   useState(() => { setLocal(value); }, [value]);
   return (
-    <div>
-      <Lbl t={label} unit={unit}/>
-      <input style={S.inputAmb}
-        value={local}
-        onChange={e => setLocal(e.target.value)}
-        onBlur={e => { if(onChange) onChange(e.target.value); }}/>
+    <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', background:'#142030', border:'1px solid rgba(168,189,208,0.12)', borderRadius:8, padding:'10px 14px', gap:12, minHeight:48}}>
+      <span style={{flex:1, fontSize:14, fontWeight:700, color:'#A8BDD0', whiteSpace:'nowrap', fontFamily:"'DM Sans', sans-serif"}}>{label}</span>
+      <div style={{display:'flex', alignItems:'center', gap:8, flexShrink:0}}>
+        <input style={{...S.inputAmb, width:76}}
+          value={local}
+          onChange={e => setLocal(e.target.value)}
+          onBlur={e => { if(onChange) onChange(e.target.value); }}/>
+        {unit && <span style={{fontSize:11, fontFamily:"'DM Mono', monospace", color:'rgba(168,189,208,0.75)', whiteSpace:'nowrap', minWidth:42}}>{unit}</span>}
+      </div>
       {note && <div style={{color:C.amber,fontSize:10,marginTop:2}}> {note}</div>}
     </div>
   );
