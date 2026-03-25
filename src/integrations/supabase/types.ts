@@ -128,6 +128,8 @@ export type Database = {
           lock_class: string | null
           locked_by: string | null
           locked_date: string | null
+          method_code: string | null
+          method_standard: string | null
           parameter: string
           research_intensity: string | null
           source_count: number | null
@@ -153,6 +155,8 @@ export type Database = {
           lock_class?: string | null
           locked_by?: string | null
           locked_date?: string | null
+          method_code?: string | null
+          method_standard?: string | null
           parameter: string
           research_intensity?: string | null
           source_count?: number | null
@@ -178,6 +182,8 @@ export type Database = {
           lock_class?: string | null
           locked_by?: string | null
           locked_date?: string | null
+          method_code?: string | null
+          method_standard?: string | null
           parameter?: string
           research_intensity?: string | null
           source_count?: number | null
@@ -566,6 +572,63 @@ export type Database = {
         }
         Relationships: []
       }
+      cfi_building_capex: {
+        Row: {
+          created_at: string | null
+          display_rate: string | null
+          flag: string | null
+          id: number
+          indo_market_note: string | null
+          indo_rate_usd: number | null
+          indo_total_usd: number | null
+          item_description: string
+          pkg: string
+          premium_pct: number | null
+          qty: number | null
+          saving_usd: number | null
+          source_file: string | null
+          unit: string | null
+          western_rate_usd: number | null
+          western_total_usd: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          display_rate?: string | null
+          flag?: string | null
+          id?: number
+          indo_market_note?: string | null
+          indo_rate_usd?: number | null
+          indo_total_usd?: number | null
+          item_description: string
+          pkg: string
+          premium_pct?: number | null
+          qty?: number | null
+          saving_usd?: number | null
+          source_file?: string | null
+          unit?: string | null
+          western_rate_usd?: number | null
+          western_total_usd?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          display_rate?: string | null
+          flag?: string | null
+          id?: number
+          indo_market_note?: string | null
+          indo_rate_usd?: number | null
+          indo_total_usd?: number | null
+          item_description?: string
+          pkg?: string
+          premium_pct?: number | null
+          qty?: number | null
+          saving_usd?: number | null
+          source_file?: string | null
+          unit?: string | null
+          western_rate_usd?: number | null
+          western_total_usd?: number | null
+        }
+        Relationships: []
+      }
       cfi_company_config: {
         Row: {
           config_key: string
@@ -700,6 +763,126 @@ export type Database = {
             referencedColumns: ["industry_id"]
           },
         ]
+      }
+      cfi_electricity_opex: {
+        Row: {
+          cost_idr_per_month: number | null
+          cost_usd_per_month: number | null
+          cost_usd_per_year: number | null
+          created_at: string | null
+          data_status: string | null
+          id: number
+          kwh_per_month: number | null
+          kwh_per_year: number | null
+          notes: string | null
+          operating_days_yr: number | null
+          pln_tariff_idr_kwh: number | null
+          source_file: string | null
+          stage_code: string
+          stage_name: string
+          usd_idr_rate: number | null
+          usd_kwh_rate: number | null
+        }
+        Insert: {
+          cost_idr_per_month?: number | null
+          cost_usd_per_month?: number | null
+          cost_usd_per_year?: number | null
+          created_at?: string | null
+          data_status?: string | null
+          id?: number
+          kwh_per_month?: number | null
+          kwh_per_year?: number | null
+          notes?: string | null
+          operating_days_yr?: number | null
+          pln_tariff_idr_kwh?: number | null
+          source_file?: string | null
+          stage_code: string
+          stage_name: string
+          usd_idr_rate?: number | null
+          usd_kwh_rate?: number | null
+        }
+        Update: {
+          cost_idr_per_month?: number | null
+          cost_usd_per_month?: number | null
+          cost_usd_per_year?: number | null
+          created_at?: string | null
+          data_status?: string | null
+          id?: number
+          kwh_per_month?: number | null
+          kwh_per_year?: number | null
+          notes?: string | null
+          operating_days_yr?: number | null
+          pln_tariff_idr_kwh?: number | null
+          source_file?: string | null
+          stage_code?: string
+          stage_name?: string
+          usd_idr_rate?: number | null
+          usd_kwh_rate?: number | null
+        }
+        Relationships: []
+      }
+      cfi_equipment_capex_epc: {
+        Row: {
+          ai_tag: string | null
+          area: string | null
+          contact: string | null
+          created_at: string | null
+          description: string | null
+          equipment_name: string
+          id: number
+          indonesian_supplier: string | null
+          line: string | null
+          qty: number | null
+          rfq_range_high_usd: number | null
+          rfq_range_low_usd: number | null
+          rfq_required: boolean | null
+          source_file: string | null
+          stage: string | null
+          tag: string
+          total_cost_usd: number | null
+          unit_cost_usd: number | null
+        }
+        Insert: {
+          ai_tag?: string | null
+          area?: string | null
+          contact?: string | null
+          created_at?: string | null
+          description?: string | null
+          equipment_name: string
+          id?: number
+          indonesian_supplier?: string | null
+          line?: string | null
+          qty?: number | null
+          rfq_range_high_usd?: number | null
+          rfq_range_low_usd?: number | null
+          rfq_required?: boolean | null
+          source_file?: string | null
+          stage?: string | null
+          tag: string
+          total_cost_usd?: number | null
+          unit_cost_usd?: number | null
+        }
+        Update: {
+          ai_tag?: string | null
+          area?: string | null
+          contact?: string | null
+          created_at?: string | null
+          description?: string | null
+          equipment_name?: string
+          id?: number
+          indonesian_supplier?: string | null
+          line?: string | null
+          qty?: number | null
+          rfq_range_high_usd?: number | null
+          rfq_range_low_usd?: number | null
+          rfq_required?: boolean | null
+          source_file?: string | null
+          stage?: string | null
+          tag?: string
+          total_cost_usd?: number | null
+          unit_cost_usd?: number | null
+        }
+        Relationships: []
       }
       cfi_estates: {
         Row: {
@@ -1126,6 +1309,105 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      cfi_greenhouse_design: {
+        Row: {
+          brace_spec: string | null
+          cladding_type: string | null
+          created_at: string | null
+          foundation_depth_mm: number | null
+          foundation_type: string | null
+          height_mm: number | null
+          id: number
+          length_mm: number | null
+          main_pole_spec: string | null
+          notes: string | null
+          purlin_spec: string | null
+          quantity: number | null
+          slab_spec: string | null
+          source_slide: number | null
+          structure_code: string
+          structure_name: string
+          width_mm: number | null
+        }
+        Insert: {
+          brace_spec?: string | null
+          cladding_type?: string | null
+          created_at?: string | null
+          foundation_depth_mm?: number | null
+          foundation_type?: string | null
+          height_mm?: number | null
+          id?: number
+          length_mm?: number | null
+          main_pole_spec?: string | null
+          notes?: string | null
+          purlin_spec?: string | null
+          quantity?: number | null
+          slab_spec?: string | null
+          source_slide?: number | null
+          structure_code: string
+          structure_name: string
+          width_mm?: number | null
+        }
+        Update: {
+          brace_spec?: string | null
+          cladding_type?: string | null
+          created_at?: string | null
+          foundation_depth_mm?: number | null
+          foundation_type?: string | null
+          height_mm?: number | null
+          id?: number
+          length_mm?: number | null
+          main_pole_spec?: string | null
+          notes?: string | null
+          purlin_spec?: string | null
+          quantity?: number | null
+          slab_spec?: string | null
+          source_slide?: number | null
+          structure_code?: string
+          structure_name?: string
+          width_mm?: number | null
+        }
+        Relationships: []
+      }
+      cfi_greenhouse_site: {
+        Row: {
+          access_road_width_mm: number | null
+          created_at: string | null
+          gh_layout: string | null
+          gh_spacing_mm: number | null
+          id: number
+          main_access_road: string | null
+          notes: string | null
+          num_greenhouses: number | null
+          site_total_length_mm: number | null
+          site_total_width_mm: number | null
+        }
+        Insert: {
+          access_road_width_mm?: number | null
+          created_at?: string | null
+          gh_layout?: string | null
+          gh_spacing_mm?: number | null
+          id?: number
+          main_access_road?: string | null
+          notes?: string | null
+          num_greenhouses?: number | null
+          site_total_length_mm?: number | null
+          site_total_width_mm?: number | null
+        }
+        Update: {
+          access_road_width_mm?: number | null
+          created_at?: string | null
+          gh_layout?: string | null
+          gh_spacing_mm?: number | null
+          id?: number
+          main_access_road?: string | null
+          notes?: string | null
+          num_greenhouses?: number | null
+          site_total_length_mm?: number | null
+          site_total_width_mm?: number | null
+        }
+        Relationships: []
       }
       cfi_industries: {
         Row: {
@@ -1765,6 +2047,51 @@ export type Database = {
           },
         ]
       }
+      cfi_peat_parameters: {
+        Row: {
+          age_class: string | null
+          confidence_level: string | null
+          created_at: string | null
+          id: number
+          notes: string | null
+          parameter_group: string
+          parameter_key: string
+          parameter_label: string | null
+          source: string | null
+          unit: string | null
+          value_numeric: number | null
+          value_text: string | null
+        }
+        Insert: {
+          age_class?: string | null
+          confidence_level?: string | null
+          created_at?: string | null
+          id?: number
+          notes?: string | null
+          parameter_group: string
+          parameter_key: string
+          parameter_label?: string | null
+          source?: string | null
+          unit?: string | null
+          value_numeric?: number | null
+          value_text?: string | null
+        }
+        Update: {
+          age_class?: string | null
+          confidence_level?: string | null
+          created_at?: string | null
+          id?: number
+          notes?: string | null
+          parameter_group?: string
+          parameter_key?: string
+          parameter_label?: string | null
+          source?: string | null
+          unit?: string | null
+          value_numeric?: number | null
+          value_text?: string | null
+        }
+        Relationships: []
+      }
       cfi_personas: {
         Row: {
           active: boolean | null
@@ -2184,6 +2511,132 @@ export type Database = {
           id?: number
           role_code?: string
           role_name?: string
+        }
+        Relationships: []
+      }
+      cfi_s1_opex_labour: {
+        Row: {
+          created_at: string | null
+          estimated_idr: number | null
+          estimated_usd: number | null
+          headcount: number | null
+          id: number
+          machines_operated: string | null
+          min_wage_idr: number | null
+          notes: string | null
+          role_code: string
+          role_title: string
+          shift_pattern: string | null
+          skill_level: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          estimated_idr?: number | null
+          estimated_usd?: number | null
+          headcount?: number | null
+          id?: number
+          machines_operated?: string | null
+          min_wage_idr?: number | null
+          notes?: string | null
+          role_code: string
+          role_title: string
+          shift_pattern?: string | null
+          skill_level?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          estimated_idr?: number | null
+          estimated_usd?: number | null
+          headcount?: number | null
+          id?: number
+          machines_operated?: string | null
+          min_wage_idr?: number | null
+          notes?: string | null
+          role_code?: string
+          role_title?: string
+          shift_pattern?: string | null
+          skill_level?: string | null
+        }
+        Relationships: []
+      }
+      cfi_s1_opex_maintenance: {
+        Row: {
+          annual_usd_high: number | null
+          annual_usd_low: number | null
+          annual_usd_mid: number | null
+          basis: string | null
+          category: string
+          created_at: string | null
+          description: string
+          frequency: string | null
+          id: number
+          item_code: string
+          notes: string | null
+        }
+        Insert: {
+          annual_usd_high?: number | null
+          annual_usd_low?: number | null
+          annual_usd_mid?: number | null
+          basis?: string | null
+          category: string
+          created_at?: string | null
+          description: string
+          frequency?: string | null
+          id?: number
+          item_code: string
+          notes?: string | null
+        }
+        Update: {
+          annual_usd_high?: number | null
+          annual_usd_low?: number | null
+          annual_usd_mid?: number | null
+          basis?: string | null
+          category?: string
+          created_at?: string | null
+          description?: string
+          frequency?: string | null
+          id?: number
+          item_code?: string
+          notes?: string | null
+        }
+        Relationships: []
+      }
+      cfi_s1_opex_other: {
+        Row: {
+          basis: string | null
+          category: string
+          created_at: string | null
+          description: string
+          id: number
+          is_data_gap: boolean | null
+          item_code: string
+          notes: string | null
+          usd_per_month: number | null
+          usd_per_year: number | null
+        }
+        Insert: {
+          basis?: string | null
+          category: string
+          created_at?: string | null
+          description: string
+          id?: number
+          is_data_gap?: boolean | null
+          item_code: string
+          notes?: string | null
+          usd_per_month?: number | null
+          usd_per_year?: number | null
+        }
+        Update: {
+          basis?: string | null
+          category?: string
+          created_at?: string | null
+          description?: string
+          id?: number
+          is_data_gap?: boolean | null
+          item_code?: string
+          notes?: string | null
+          usd_per_month?: number | null
+          usd_per_year?: number | null
         }
         Relationships: []
       }
@@ -2607,15 +3060,36 @@ export type Database = {
       }
       cfi_soil_coefficients: {
         Row: {
+          acid_phosphatase_mature_baseline: number | null
+          acid_phosphatase_young_baseline: number | null
+          amf_baseline_pct: number | null
+          amf_habitat_alpha_bf: number | null
+          amf_habitat_alpha_bfplus: number | null
+          amf_habitat_alpha_cp: number | null
+          amf_inoculation_bfplus_pct: number | null
+          amf_p_uptake_multiplier: number | null
+          amf_target_pct: number | null
           bd_floor_g_cm3: number | null
           bd_positive_feedback_loop: boolean | null
           bd_response_delta_g_cm3_per_som_pct: number | null
+          beta_glucosidase_baseline: number | null
+          cec_baseline_cmol_kg: number | null
           cec_response_confidence: string | null
           cec_response_per_som_pct: number | null
           created_at: string | null
           decay_factor_annual: number | null
           decay_factor_confidence: string | null
           decay_factor_note: string | null
+          dehydrogenase_response_bf: number | null
+          dehydrogenase_response_bfplus: number | null
+          dehydrogenase_response_cp: number | null
+          effective_cec_nh4_cmol: number | null
+          fb_ratio_alpha_som_bf: number | null
+          fb_ratio_alpha_som_bfplus: number | null
+          fb_ratio_alpha_som_cp: number | null
+          fb_ratio_amf_direct_bfplus: number | null
+          fb_ratio_beta_chitin_bf: number | null
+          fb_ratio_beta_chitin_bfplus: number | null
           humic_cec_factor_cmol_kg: number | null
           humic_cec_factor_confidence: string | null
           humus_formation_confidence: string | null
@@ -2626,8 +3100,16 @@ export type Database = {
           is_active: boolean | null
           k_leach_combined_rf: number | null
           k_leach_confidence: string | null
+          k_leach_rf_bf: number | null
           k_leach_rf_bfplus: number | null
           k_leach_rf_cp: number | null
+          k_n_leaching_amplification: number | null
+          laccase_activity_baseline: number | null
+          mbc_baseline_mg_kg: number | null
+          mbc_increment_bf_mg_kg_per_t: number | null
+          mbc_increment_bfplus_mg_kg_per_t: number | null
+          mbc_increment_cp_mg_kg_per_t: number | null
+          mbc_synergy_factor: number | null
           n_fix_wave2_confidence: string
           n_fix_wave2_kg_n_ha_yr: number
           n_fix_wave2_organisms: string | null
@@ -2640,12 +3122,15 @@ export type Database = {
           n_leach_rf_bfplus: number | null
           n_leach_rf_cp: number | null
           n_leach_rf_vgam: number | null
+          n_volatilisation_pct: number | null
+          n2o_emission_factor_pct: number | null
           om_retention_1yr_fract_bf: number | null
           om_retention_1yr_fract_bfplus: number | null
           om_retention_1yr_fract_cp: number | null
           om_retention_confidence: string | null
           p_casio3_rf_at_2_5_t_ha: number | null
           p_casio3_rf_at_4_5_t_ha: number | null
+          p_fert_correction_factor: number | null
           p_fix_combined_rf: number | null
           p_fix_confidence: string | null
           p_fix_rf_amf: number | null
@@ -2653,9 +3138,14 @@ export type Database = {
           p_fix_rf_bfplus: number | null
           p_fix_rf_cp: number | null
           p_fix_rf_vgam: number | null
+          pawc_baseline_mm: number | null
+          phosphatase_response_bf: number | null
+          phosphatase_response_bfplus: number | null
+          phosphatase_response_cp: number | null
           soil_key: string
           supabase_reference: string
           updated_at: string | null
+          urease_activity_baseline: number | null
           version: string | null
           whc_formula_applies: boolean | null
           whc_formula_note: string | null
@@ -2663,15 +3153,36 @@ export type Database = {
           whc_response_mm_per_som_pct: number | null
         }
         Insert: {
+          acid_phosphatase_mature_baseline?: number | null
+          acid_phosphatase_young_baseline?: number | null
+          amf_baseline_pct?: number | null
+          amf_habitat_alpha_bf?: number | null
+          amf_habitat_alpha_bfplus?: number | null
+          amf_habitat_alpha_cp?: number | null
+          amf_inoculation_bfplus_pct?: number | null
+          amf_p_uptake_multiplier?: number | null
+          amf_target_pct?: number | null
           bd_floor_g_cm3?: number | null
           bd_positive_feedback_loop?: boolean | null
           bd_response_delta_g_cm3_per_som_pct?: number | null
+          beta_glucosidase_baseline?: number | null
+          cec_baseline_cmol_kg?: number | null
           cec_response_confidence?: string | null
           cec_response_per_som_pct?: number | null
           created_at?: string | null
           decay_factor_annual?: number | null
           decay_factor_confidence?: string | null
           decay_factor_note?: string | null
+          dehydrogenase_response_bf?: number | null
+          dehydrogenase_response_bfplus?: number | null
+          dehydrogenase_response_cp?: number | null
+          effective_cec_nh4_cmol?: number | null
+          fb_ratio_alpha_som_bf?: number | null
+          fb_ratio_alpha_som_bfplus?: number | null
+          fb_ratio_alpha_som_cp?: number | null
+          fb_ratio_amf_direct_bfplus?: number | null
+          fb_ratio_beta_chitin_bf?: number | null
+          fb_ratio_beta_chitin_bfplus?: number | null
           humic_cec_factor_cmol_kg?: number | null
           humic_cec_factor_confidence?: string | null
           humus_formation_confidence?: string | null
@@ -2682,8 +3193,16 @@ export type Database = {
           is_active?: boolean | null
           k_leach_combined_rf?: number | null
           k_leach_confidence?: string | null
+          k_leach_rf_bf?: number | null
           k_leach_rf_bfplus?: number | null
           k_leach_rf_cp?: number | null
+          k_n_leaching_amplification?: number | null
+          laccase_activity_baseline?: number | null
+          mbc_baseline_mg_kg?: number | null
+          mbc_increment_bf_mg_kg_per_t?: number | null
+          mbc_increment_bfplus_mg_kg_per_t?: number | null
+          mbc_increment_cp_mg_kg_per_t?: number | null
+          mbc_synergy_factor?: number | null
           n_fix_wave2_confidence?: string
           n_fix_wave2_kg_n_ha_yr?: number
           n_fix_wave2_organisms?: string | null
@@ -2696,12 +3215,15 @@ export type Database = {
           n_leach_rf_bfplus?: number | null
           n_leach_rf_cp?: number | null
           n_leach_rf_vgam?: number | null
+          n_volatilisation_pct?: number | null
+          n2o_emission_factor_pct?: number | null
           om_retention_1yr_fract_bf?: number | null
           om_retention_1yr_fract_bfplus?: number | null
           om_retention_1yr_fract_cp?: number | null
           om_retention_confidence?: string | null
           p_casio3_rf_at_2_5_t_ha?: number | null
           p_casio3_rf_at_4_5_t_ha?: number | null
+          p_fert_correction_factor?: number | null
           p_fix_combined_rf?: number | null
           p_fix_confidence?: string | null
           p_fix_rf_amf?: number | null
@@ -2709,9 +3231,14 @@ export type Database = {
           p_fix_rf_bfplus?: number | null
           p_fix_rf_cp?: number | null
           p_fix_rf_vgam?: number | null
+          pawc_baseline_mm?: number | null
+          phosphatase_response_bf?: number | null
+          phosphatase_response_bfplus?: number | null
+          phosphatase_response_cp?: number | null
           soil_key: string
           supabase_reference: string
           updated_at?: string | null
+          urease_activity_baseline?: number | null
           version?: string | null
           whc_formula_applies?: boolean | null
           whc_formula_note?: string | null
@@ -2719,15 +3246,36 @@ export type Database = {
           whc_response_mm_per_som_pct?: number | null
         }
         Update: {
+          acid_phosphatase_mature_baseline?: number | null
+          acid_phosphatase_young_baseline?: number | null
+          amf_baseline_pct?: number | null
+          amf_habitat_alpha_bf?: number | null
+          amf_habitat_alpha_bfplus?: number | null
+          amf_habitat_alpha_cp?: number | null
+          amf_inoculation_bfplus_pct?: number | null
+          amf_p_uptake_multiplier?: number | null
+          amf_target_pct?: number | null
           bd_floor_g_cm3?: number | null
           bd_positive_feedback_loop?: boolean | null
           bd_response_delta_g_cm3_per_som_pct?: number | null
+          beta_glucosidase_baseline?: number | null
+          cec_baseline_cmol_kg?: number | null
           cec_response_confidence?: string | null
           cec_response_per_som_pct?: number | null
           created_at?: string | null
           decay_factor_annual?: number | null
           decay_factor_confidence?: string | null
           decay_factor_note?: string | null
+          dehydrogenase_response_bf?: number | null
+          dehydrogenase_response_bfplus?: number | null
+          dehydrogenase_response_cp?: number | null
+          effective_cec_nh4_cmol?: number | null
+          fb_ratio_alpha_som_bf?: number | null
+          fb_ratio_alpha_som_bfplus?: number | null
+          fb_ratio_alpha_som_cp?: number | null
+          fb_ratio_amf_direct_bfplus?: number | null
+          fb_ratio_beta_chitin_bf?: number | null
+          fb_ratio_beta_chitin_bfplus?: number | null
           humic_cec_factor_cmol_kg?: number | null
           humic_cec_factor_confidence?: string | null
           humus_formation_confidence?: string | null
@@ -2738,8 +3286,16 @@ export type Database = {
           is_active?: boolean | null
           k_leach_combined_rf?: number | null
           k_leach_confidence?: string | null
+          k_leach_rf_bf?: number | null
           k_leach_rf_bfplus?: number | null
           k_leach_rf_cp?: number | null
+          k_n_leaching_amplification?: number | null
+          laccase_activity_baseline?: number | null
+          mbc_baseline_mg_kg?: number | null
+          mbc_increment_bf_mg_kg_per_t?: number | null
+          mbc_increment_bfplus_mg_kg_per_t?: number | null
+          mbc_increment_cp_mg_kg_per_t?: number | null
+          mbc_synergy_factor?: number | null
           n_fix_wave2_confidence?: string
           n_fix_wave2_kg_n_ha_yr?: number
           n_fix_wave2_organisms?: string | null
@@ -2752,12 +3308,15 @@ export type Database = {
           n_leach_rf_bfplus?: number | null
           n_leach_rf_cp?: number | null
           n_leach_rf_vgam?: number | null
+          n_volatilisation_pct?: number | null
+          n2o_emission_factor_pct?: number | null
           om_retention_1yr_fract_bf?: number | null
           om_retention_1yr_fract_bfplus?: number | null
           om_retention_1yr_fract_cp?: number | null
           om_retention_confidence?: string | null
           p_casio3_rf_at_2_5_t_ha?: number | null
           p_casio3_rf_at_4_5_t_ha?: number | null
+          p_fert_correction_factor?: number | null
           p_fix_combined_rf?: number | null
           p_fix_confidence?: string | null
           p_fix_rf_amf?: number | null
@@ -2765,9 +3324,14 @@ export type Database = {
           p_fix_rf_bfplus?: number | null
           p_fix_rf_cp?: number | null
           p_fix_rf_vgam?: number | null
+          pawc_baseline_mm?: number | null
+          phosphatase_response_bf?: number | null
+          phosphatase_response_bfplus?: number | null
+          phosphatase_response_cp?: number | null
           soil_key?: string
           supabase_reference?: string
           updated_at?: string | null
+          urease_activity_baseline?: number | null
           version?: string | null
           whc_formula_applies?: boolean | null
           whc_formula_note?: string | null
@@ -2793,10 +3357,14 @@ export type Database = {
           amf_colonisation_degraded_pct_low: number | null
           amf_colonisation_target_pct_high: number | null
           amf_colonisation_target_pct_low: number | null
+          avail_b_degraded_mg_kg_high: number | null
+          avail_b_degraded_mg_kg_low: number | null
           avail_p_degraded_mg_kg_high: number | null
           avail_p_degraded_mg_kg_low: number | null
           avail_p_target_mg_kg_high: number | null
           avail_p_target_mg_kg_low: number | null
+          avail_zn_degraded_mg_kg_high: number | null
+          avail_zn_degraded_mg_kg_low: number | null
           base_sat_degraded_pct_high: number | null
           base_sat_degraded_pct_low: number | null
           base_sat_target_pct_high: number | null
@@ -2809,14 +3377,21 @@ export type Database = {
           cec_degraded_cmol_low: number | null
           cec_target_cmol_high: number | null
           cec_target_cmol_low: number | null
+          cn_ratio_peat: number | null
           confidence_level: string | null
           coverage_pct_indonesia: number | null
           created_at: string | null
           data_source: string | null
+          drainage_class: string | null
+          exch_al_degraded_cmol: number | null
+          exch_ca_degraded_cmol_high: number | null
+          exch_ca_degraded_cmol_low: number | null
           exch_k_degraded_cmol_high: number | null
           exch_k_degraded_cmol_low: number | null
           exch_k_target_cmol_high: number | null
           exch_k_target_cmol_low: number | null
+          exch_mg_degraded_cmol_high: number | null
+          exch_mg_degraded_cmol_low: number | null
           fb_ratio_degraded_high: number | null
           fb_ratio_degraded_low: number | null
           fb_ratio_target_high: number | null
@@ -2825,21 +3400,51 @@ export type Database = {
           industry_id: number | null
           is_active: boolean | null
           is_peat: boolean | null
-          k_leach_fract_baseline: number
+          k_leach_pct_baseline: number | null
+          k_leach_pct_normal: number | null
+          k_leach_pct_poor: number | null
+          k_leach_pct_vgam: number | null
+          k_leach_ranges_confidence: string | null
+          k_leach_ranges_source: string | null
+          key_regions: string | null
           local_name: string | null
           mbc_degraded_mg_kg_high: number | null
           mbc_degraded_mg_kg_low: number | null
           mbc_target_mg_kg_high: number | null
           mbc_target_mg_kg_low: number | null
-          n_leach_fract_baseline: number
+          n_leach_pct_baseline: number | null
+          n_leach_pct_normal_high: number | null
+          n_leach_pct_normal_low: number | null
+          n_leach_pct_poor_high: number | null
+          n_leach_pct_poor_low: number | null
+          n_leach_pct_vgam_high: number | null
+          n_leach_pct_vgam_low: number | null
+          n_leach_ranges_confidence: string | null
+          n_leach_ranges_source: string | null
           notes: string | null
-          p_fix_fraction_baseline: number
-          p_leach_fract_baseline: number | null
+          p_fix_mgmt_independent: boolean | null
+          p_fix_pct_baseline: number | null
+          p_fix_pct_normal_high: number | null
+          p_fix_pct_normal_low: number | null
+          p_fix_pct_poor_high: number | null
+          p_fix_pct_poor_low: number | null
+          p_fix_pct_vgam_high: number | null
+          p_fix_pct_vgam_low: number | null
+          p_fix_pct_vgam_target: number | null
+          p_fix_ranges_confidence: string | null
+          p_fix_ranges_source: string | null
+          p_leach_pct_baseline: number | null
+          pawc_baseline_mm: number | null
+          peat_bd_mature_g_cm3: number | null
+          peat_fiber_content_pct: number | null
           peat_ghg_baseline_t_co2e_ha_yr: number | null
+          peat_hydraulic_conductivity_m_day: number | null
           peat_irreversible_dry_risk: boolean | null
           peat_n_mechanism: string | null
           peat_organic_c_pct: number | null
           peat_subsidence_cm_yr: number | null
+          peat_total_organic_c_pct: number | null
+          peat_whc_pct: number | null
           ph_degraded_high: number | null
           ph_degraded_low: number | null
           ph_target_high: number | null
@@ -2853,6 +3458,7 @@ export type Database = {
           supabase_reference: string
           texture_degraded: string | null
           texture_target: string | null
+          total_n_pct: number | null
           updated_at: string | null
         }
         Insert: {
@@ -2863,10 +3469,14 @@ export type Database = {
           amf_colonisation_degraded_pct_low?: number | null
           amf_colonisation_target_pct_high?: number | null
           amf_colonisation_target_pct_low?: number | null
+          avail_b_degraded_mg_kg_high?: number | null
+          avail_b_degraded_mg_kg_low?: number | null
           avail_p_degraded_mg_kg_high?: number | null
           avail_p_degraded_mg_kg_low?: number | null
           avail_p_target_mg_kg_high?: number | null
           avail_p_target_mg_kg_low?: number | null
+          avail_zn_degraded_mg_kg_high?: number | null
+          avail_zn_degraded_mg_kg_low?: number | null
           base_sat_degraded_pct_high?: number | null
           base_sat_degraded_pct_low?: number | null
           base_sat_target_pct_high?: number | null
@@ -2879,14 +3489,21 @@ export type Database = {
           cec_degraded_cmol_low?: number | null
           cec_target_cmol_high?: number | null
           cec_target_cmol_low?: number | null
+          cn_ratio_peat?: number | null
           confidence_level?: string | null
           coverage_pct_indonesia?: number | null
           created_at?: string | null
           data_source?: string | null
+          drainage_class?: string | null
+          exch_al_degraded_cmol?: number | null
+          exch_ca_degraded_cmol_high?: number | null
+          exch_ca_degraded_cmol_low?: number | null
           exch_k_degraded_cmol_high?: number | null
           exch_k_degraded_cmol_low?: number | null
           exch_k_target_cmol_high?: number | null
           exch_k_target_cmol_low?: number | null
+          exch_mg_degraded_cmol_high?: number | null
+          exch_mg_degraded_cmol_low?: number | null
           fb_ratio_degraded_high?: number | null
           fb_ratio_degraded_low?: number | null
           fb_ratio_target_high?: number | null
@@ -2895,21 +3512,51 @@ export type Database = {
           industry_id?: number | null
           is_active?: boolean | null
           is_peat?: boolean | null
-          k_leach_fract_baseline: number
+          k_leach_pct_baseline?: number | null
+          k_leach_pct_normal?: number | null
+          k_leach_pct_poor?: number | null
+          k_leach_pct_vgam?: number | null
+          k_leach_ranges_confidence?: string | null
+          k_leach_ranges_source?: string | null
+          key_regions?: string | null
           local_name?: string | null
           mbc_degraded_mg_kg_high?: number | null
           mbc_degraded_mg_kg_low?: number | null
           mbc_target_mg_kg_high?: number | null
           mbc_target_mg_kg_low?: number | null
-          n_leach_fract_baseline: number
+          n_leach_pct_baseline?: number | null
+          n_leach_pct_normal_high?: number | null
+          n_leach_pct_normal_low?: number | null
+          n_leach_pct_poor_high?: number | null
+          n_leach_pct_poor_low?: number | null
+          n_leach_pct_vgam_high?: number | null
+          n_leach_pct_vgam_low?: number | null
+          n_leach_ranges_confidence?: string | null
+          n_leach_ranges_source?: string | null
           notes?: string | null
-          p_fix_fraction_baseline: number
-          p_leach_fract_baseline?: number | null
+          p_fix_mgmt_independent?: boolean | null
+          p_fix_pct_baseline?: number | null
+          p_fix_pct_normal_high?: number | null
+          p_fix_pct_normal_low?: number | null
+          p_fix_pct_poor_high?: number | null
+          p_fix_pct_poor_low?: number | null
+          p_fix_pct_vgam_high?: number | null
+          p_fix_pct_vgam_low?: number | null
+          p_fix_pct_vgam_target?: number | null
+          p_fix_ranges_confidence?: string | null
+          p_fix_ranges_source?: string | null
+          p_leach_pct_baseline?: number | null
+          pawc_baseline_mm?: number | null
+          peat_bd_mature_g_cm3?: number | null
+          peat_fiber_content_pct?: number | null
           peat_ghg_baseline_t_co2e_ha_yr?: number | null
+          peat_hydraulic_conductivity_m_day?: number | null
           peat_irreversible_dry_risk?: boolean | null
           peat_n_mechanism?: string | null
           peat_organic_c_pct?: number | null
           peat_subsidence_cm_yr?: number | null
+          peat_total_organic_c_pct?: number | null
+          peat_whc_pct?: number | null
           ph_degraded_high?: number | null
           ph_degraded_low?: number | null
           ph_target_high?: number | null
@@ -2923,6 +3570,7 @@ export type Database = {
           supabase_reference: string
           texture_degraded?: string | null
           texture_target?: string | null
+          total_n_pct?: number | null
           updated_at?: string | null
         }
         Update: {
@@ -2933,10 +3581,14 @@ export type Database = {
           amf_colonisation_degraded_pct_low?: number | null
           amf_colonisation_target_pct_high?: number | null
           amf_colonisation_target_pct_low?: number | null
+          avail_b_degraded_mg_kg_high?: number | null
+          avail_b_degraded_mg_kg_low?: number | null
           avail_p_degraded_mg_kg_high?: number | null
           avail_p_degraded_mg_kg_low?: number | null
           avail_p_target_mg_kg_high?: number | null
           avail_p_target_mg_kg_low?: number | null
+          avail_zn_degraded_mg_kg_high?: number | null
+          avail_zn_degraded_mg_kg_low?: number | null
           base_sat_degraded_pct_high?: number | null
           base_sat_degraded_pct_low?: number | null
           base_sat_target_pct_high?: number | null
@@ -2949,14 +3601,21 @@ export type Database = {
           cec_degraded_cmol_low?: number | null
           cec_target_cmol_high?: number | null
           cec_target_cmol_low?: number | null
+          cn_ratio_peat?: number | null
           confidence_level?: string | null
           coverage_pct_indonesia?: number | null
           created_at?: string | null
           data_source?: string | null
+          drainage_class?: string | null
+          exch_al_degraded_cmol?: number | null
+          exch_ca_degraded_cmol_high?: number | null
+          exch_ca_degraded_cmol_low?: number | null
           exch_k_degraded_cmol_high?: number | null
           exch_k_degraded_cmol_low?: number | null
           exch_k_target_cmol_high?: number | null
           exch_k_target_cmol_low?: number | null
+          exch_mg_degraded_cmol_high?: number | null
+          exch_mg_degraded_cmol_low?: number | null
           fb_ratio_degraded_high?: number | null
           fb_ratio_degraded_low?: number | null
           fb_ratio_target_high?: number | null
@@ -2965,21 +3624,51 @@ export type Database = {
           industry_id?: number | null
           is_active?: boolean | null
           is_peat?: boolean | null
-          k_leach_fract_baseline?: number
+          k_leach_pct_baseline?: number | null
+          k_leach_pct_normal?: number | null
+          k_leach_pct_poor?: number | null
+          k_leach_pct_vgam?: number | null
+          k_leach_ranges_confidence?: string | null
+          k_leach_ranges_source?: string | null
+          key_regions?: string | null
           local_name?: string | null
           mbc_degraded_mg_kg_high?: number | null
           mbc_degraded_mg_kg_low?: number | null
           mbc_target_mg_kg_high?: number | null
           mbc_target_mg_kg_low?: number | null
-          n_leach_fract_baseline?: number
+          n_leach_pct_baseline?: number | null
+          n_leach_pct_normal_high?: number | null
+          n_leach_pct_normal_low?: number | null
+          n_leach_pct_poor_high?: number | null
+          n_leach_pct_poor_low?: number | null
+          n_leach_pct_vgam_high?: number | null
+          n_leach_pct_vgam_low?: number | null
+          n_leach_ranges_confidence?: string | null
+          n_leach_ranges_source?: string | null
           notes?: string | null
-          p_fix_fraction_baseline?: number
-          p_leach_fract_baseline?: number | null
+          p_fix_mgmt_independent?: boolean | null
+          p_fix_pct_baseline?: number | null
+          p_fix_pct_normal_high?: number | null
+          p_fix_pct_normal_low?: number | null
+          p_fix_pct_poor_high?: number | null
+          p_fix_pct_poor_low?: number | null
+          p_fix_pct_vgam_high?: number | null
+          p_fix_pct_vgam_low?: number | null
+          p_fix_pct_vgam_target?: number | null
+          p_fix_ranges_confidence?: string | null
+          p_fix_ranges_source?: string | null
+          p_leach_pct_baseline?: number | null
+          pawc_baseline_mm?: number | null
+          peat_bd_mature_g_cm3?: number | null
+          peat_fiber_content_pct?: number | null
           peat_ghg_baseline_t_co2e_ha_yr?: number | null
+          peat_hydraulic_conductivity_m_day?: number | null
           peat_irreversible_dry_risk?: boolean | null
           peat_n_mechanism?: string | null
           peat_organic_c_pct?: number | null
           peat_subsidence_cm_yr?: number | null
+          peat_total_organic_c_pct?: number | null
+          peat_whc_pct?: number | null
           ph_degraded_high?: number | null
           ph_degraded_low?: number | null
           ph_target_high?: number | null
@@ -2993,6 +3682,7 @@ export type Database = {
           supabase_reference?: string
           texture_degraded?: string | null
           texture_target?: string | null
+          total_n_pct?: number | null
           updated_at?: string | null
         }
         Relationships: [
@@ -3093,6 +3783,78 @@ export type Database = {
           uplift_pct?: number | null
           uploaded_at?: string | null
           uploaded_by?: string | null
+        }
+        Relationships: []
+      }
+      cfi_source_registry: {
+        Row: {
+          authors: string
+          confidence_level: string | null
+          created_at: string | null
+          display_order: number | null
+          display_section: string | null
+          doi_url: string | null
+          domain: string[] | null
+          id: number
+          impact_factor: number | null
+          is_grey_literature: boolean | null
+          is_indexed: boolean | null
+          journal_publisher: string | null
+          locked_version: string | null
+          notes: string | null
+          parameters_covered: string | null
+          ref_code: string
+          soils_applicable: string[] | null
+          title: string
+          used_in_tables: string[] | null
+          weight: string | null
+          year: number | null
+        }
+        Insert: {
+          authors: string
+          confidence_level?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          display_section?: string | null
+          doi_url?: string | null
+          domain?: string[] | null
+          id?: number
+          impact_factor?: number | null
+          is_grey_literature?: boolean | null
+          is_indexed?: boolean | null
+          journal_publisher?: string | null
+          locked_version?: string | null
+          notes?: string | null
+          parameters_covered?: string | null
+          ref_code: string
+          soils_applicable?: string[] | null
+          title: string
+          used_in_tables?: string[] | null
+          weight?: string | null
+          year?: number | null
+        }
+        Update: {
+          authors?: string
+          confidence_level?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          display_section?: string | null
+          doi_url?: string | null
+          domain?: string[] | null
+          id?: number
+          impact_factor?: number | null
+          is_grey_literature?: boolean | null
+          is_indexed?: boolean | null
+          journal_publisher?: string | null
+          locked_version?: string | null
+          notes?: string | null
+          parameters_covered?: string | null
+          ref_code?: string
+          soils_applicable?: string[] | null
+          title?: string
+          used_in_tables?: string[] | null
+          weight?: string | null
+          year?: number | null
         }
         Relationships: []
       }
@@ -4698,6 +5460,17 @@ export type Database = {
       }
     }
     Views: {
+      cfi_capex_stage_summary: {
+        Row: {
+          confirmed_cost_usd: number | null
+          equipment_count: number | null
+          rfq_high_usd: number | null
+          rfq_items: number | null
+          rfq_low_usd: number | null
+          stage: string | null
+        }
+        Relationships: []
+      }
       cfi_kcp_map: {
         Row: {
           capacity_t_kernels_day: number | null
