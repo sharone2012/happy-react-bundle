@@ -4171,6 +4171,9 @@ export default function CFI() {
             <NutrLedger stg="S6 · BSF Meal Profile (per tonne meal DM)" N={8.10} P={1.20} K={0.40} Ca={4.50} Mg={0.80} OM={52.0} cn={6} wetPD={+(s6_mealYield/1000/s0.daysMonth).toFixed(2)} mc={8} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.amber}/>
             </div>
           </div>
+          <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ▴':'Value Calculator ▾'}</button></div>
+          {showValCalc && <CFI_ValueCalculator defaultStage="s6"/>}
+          </div>
         )}
 
 
