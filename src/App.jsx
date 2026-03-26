@@ -2,6 +2,7 @@ import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import SiteSetup from "./pages/SiteSetup";
 import LoginPage from "./LoginPage";
 import { supabase } from "@/integrations/supabase/client";
+import CFI_PriceRefreshBadge from "@/components/CFI_PriceRefreshBadge";
 
 
 // ─── SUPABASE LIVE CONNECTION ─────────────────────────────────────────────────
@@ -2342,8 +2343,9 @@ export default function CFI() {
               <span style={{ color:'#33D4BC', position:'absolute', left:134 }}>Rebalancing Soil's Microbiome & Reducing Synthetic Fertiliser Use</span>
             </div>
           </div>
-          {/* Short tabs — far right */}
-          <div style={{ marginLeft:'auto', display:'flex', alignItems:'center', gap:4, flexShrink:0 }}>
+          {/* Price badge + Short tabs — far right */}
+          <div style={{ marginLeft:'auto', display:'flex', alignItems:'center', gap:12, flexShrink:0 }}>
+            <CFI_PriceRefreshBadge />
             {SHORT_TABS.map((s,i)=>(
               <span key={s} onClick={()=>handleTabClick(i)} style={{
                 fontFamily:_Fnt.mono, fontSize:10, fontWeight:700, borderRadius:4, padding:'3px 9px', cursor:'pointer', whiteSpace:'nowrap',
