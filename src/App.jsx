@@ -2552,7 +2552,6 @@ export default function CFI() {
 
             <NutrLedger stg="S1 · After Shredding (No Nutrient Change)" N={nl_N} P={nl_P} K={nl_K} Ca={nl_Ca} Mg={nl_Mg} OM={nl_OM} cn={nl_CN} wetPD={nl_wetPD} mc={blendMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.tealLt}/>
             </div>
-          </div>
           <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ▴':'Value Calculator ▾'}</button></div>
           {showValCalc && <CFI_ValueCalculator defaultStage="s1"/>}
           </div>
@@ -2808,7 +2807,6 @@ export default function CFI() {
               </div>
             <NutrLedger stg="S2 · After PKSA Treatment (K spike · Ca uplift · C:N drop)" N={nl_N} P={nl_P} K={nl_s2K} Ca={nl_s2Ca} Mg={nl_Mg} OM={nl_s2OM} cn={nl_s2CN} wetPD={nl_wetPD} mc={blendMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.amber}/>
             </div>
-          </div>
           <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ▴':'Value Calculator ▾'}</button></div>
           {showValCalc && <CFI_ValueCalculator defaultStage="s2"/>}
           </div>
@@ -3123,7 +3121,6 @@ export default function CFI() {
               </div>{/* end RIGHT */}
             <NutrLedger stg="S3 · After Biological Treatment (N+8% · P+10% PSB · K+5%)" N={nl_s3N} P={nl_s3P} K={nl_s3K} Ca={nl_s3Ca} Mg={nl_Mg} OM={nl_s3OM} cn={nl_s3CN} wetPD={nl_wetPD} mc={blendMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.green}/>
             </div>
-          </div>
           <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ▴':'Value Calculator ▾'}</button></div>
           {showValCalc && <CFI_ValueCalculator defaultStage="s3"/>}
           </div>
@@ -3961,7 +3958,6 @@ export default function CFI() {
               </div> {/* closes right-column flex wrapper */}
             </div> {/* closes 2-col grid */}
             <NutrLedger stg={s4.pathwayS5==="s5a"?"S5A · Biofertiliser (Post-Extraction Frass)":"S5B · Biofertiliser (Terminate-in-Substrate)"} N={s4.pathwayS5==="s5a"?s5a_N_DM:s5b_N_DM} P={s4.pathwayS5==="s5a"?s5a_P_DM:s5b_P_DM} K={s4.pathwayS5==="s5a"?s5a_K_DM:s5b_K_DM} Ca={s4.pathwayS5==="s5a"?s5a_Ca_DM:s5b_Ca_DM} Mg={s4.pathwayS5==="s5a"?s5a_Mg_DM:s5b_Mg_DM} OM={s4.pathwayS5==="s5a"?s5a_OM_DM:s5b_OM_DM} cn={s4.pathwayS5==="s5a"?s5a_CN:s5b_CN} wetPD={s4.pathwayS5==="s5a"?nl_s5aPD:nl_s5bPD} mc={s4_frassMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.green}/>
-          </div>
           <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ▴':'Value Calculator ▾'}</button></div>
           {showValCalc && <CFI_ValueCalculator defaultStage="s5a"/>}
           </div>
@@ -4170,7 +4166,6 @@ export default function CFI() {
               </div>
             <NutrLedger stg="S6 · BSF Meal Profile (per tonne meal DM)" N={8.10} P={1.20} K={0.40} Ca={4.50} Mg={0.80} OM={52.0} cn={6} wetPD={+(s6_mealYield/1000/s0.daysMonth).toFixed(2)} mc={8} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.amber}/>
             </div>
-          </div>
           <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ▴':'Value Calculator ▾'}</button></div>
           {showValCalc && <CFI_ValueCalculator defaultStage="s6"/>}
           </div>
