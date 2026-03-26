@@ -2809,6 +2809,9 @@ export default function CFI() {
             <NutrLedger stg="S2 · After PKSA Treatment (K spike · Ca uplift · C:N drop)" N={nl_N} P={nl_P} K={nl_s2K} Ca={nl_s2Ca} Mg={nl_Mg} OM={nl_s2OM} cn={nl_s2CN} wetPD={nl_wetPD} mc={blendMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.amber}/>
             </div>
           </div>
+          <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ▴':'Value Calculator ▾'}</button></div>
+          {showValCalc && <CFI_ValueCalculator defaultStage="s2"/>}
+          </div>
         )}
 
         {stage===3 && (
