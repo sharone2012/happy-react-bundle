@@ -3958,7 +3958,6 @@ export default function CFI() {
               </div> {/* closes right-column flex wrapper */}
             </div> {/* closes 2-col grid */}
             <NutrLedger stg={s4.pathwayS5==="s5a"?"S5A · Biofertiliser (Post-Extraction Frass)":"S5B · Biofertiliser (Terminate-in-Substrate)"} N={s4.pathwayS5==="s5a"?s5a_N_DM:s5b_N_DM} P={s4.pathwayS5==="s5a"?s5a_P_DM:s5b_P_DM} K={s4.pathwayS5==="s5a"?s5a_K_DM:s5b_K_DM} Ca={s4.pathwayS5==="s5a"?s5a_Ca_DM:s5b_Ca_DM} Mg={s4.pathwayS5==="s5a"?s5a_Mg_DM:s5b_Mg_DM} OM={s4.pathwayS5==="s5a"?s5a_OM_DM:s5b_OM_DM} cn={s4.pathwayS5==="s5a"?s5a_CN:s5b_CN} wetPD={s4.pathwayS5==="s5a"?nl_s5aPD:nl_s5bPD} mc={s4_frassMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.green}/>
-          </div>
           <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ▴':'Value Calculator ▾'}</button></div>
           {showValCalc && <CFI_ValueCalculator defaultStage="s5a"/>}
           </div>
