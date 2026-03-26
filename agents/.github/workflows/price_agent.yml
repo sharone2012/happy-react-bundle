@@ -1,0 +1,59 @@
+name: CFI Price Agent - CIF Indonesia
+
+on:
+  schedule:
+    # Every 15 days at 02:00 UTC (1st and 16th of each month)
+    - cron: '0 2 1,16 * *'
+  
+  workflow_dispatch:
+    # Manual trigger from GitHub UI (also called from Supabase Edge Function
+    # when Lovable "Refresh Prices" button is clicked by user)
+    inputs:
+      reason:
+        description: 'Reason for manual run (e.g. session-start, user-request)'
+        required: false
+        default: 'manual'
+
+jobs:
+  fetch-prices:
+    name: Fetch CIF Indonesia Fertiliser Prices
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm install @anthropic-ai/sdk@latest
+          npm install @supabase/supabase-js@latest
+
+      - name: Run price agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          node agents/price_agent.js
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: price-agent-logs-${{ github.run_number }}
+          path: |
+            *.log
+          retention-days: 30
+          if-no-files-found: ignore
+```
+
+### **STEP 5: Commit message:**
+```
+ci: price agent 15-day schedule + workflow_dispatch
