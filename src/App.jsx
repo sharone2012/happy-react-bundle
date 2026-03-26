@@ -3,6 +3,7 @@ import SiteSetup from "./pages/SiteSetup";
 import LoginPage from "./LoginPage";
 import { supabase } from "@/integrations/supabase/client";
 import CFI_PriceRefreshBadge from "@/components/CFI_PriceRefreshBadge";
+import CFI_ValueCalculator from "@/components/CFI_ValueCalculator";
 
 
 // ─── SUPABASE LIVE CONNECTION ─────────────────────────────────────────────────
