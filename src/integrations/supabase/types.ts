@@ -16,85 +16,148 @@ export type Database = {
     Tables: {
       biological_library: {
         Row: {
+          activity_day_end: number | null
+          activity_day_peak: number | null
+          activity_day_start: number | null
           bsf_introduction_gate: string | null
+          bsf_meal_cp: string | null
           bsf_safe: boolean | null
           category: string | null
           cellulose_degradation: boolean | null
           common_name: string | null
           conflict_with: string[] | null
+          cost_high_usd: number | null
+          cost_low_usd: number | null
+          cp_uplift_pct: string | null
           dose_cfu_per_g: string | null
+          dose_high_pct: number | null
+          dose_low_pct: number | null
+          form: string | null
           guardrail_flag: string | null
           guardrail_note: string | null
+          icbb_code: string | null
           id: number
           industry_id: number | null
           last_updated: string | null
           lignin_degradation: boolean | null
+          lignin_reduction_pct: string | null
           lock_class: string | null
+          n_added_kg_t: string | null
           n_fixation: boolean | null
+          nine_org: boolean | null
+          notes: string | null
+          one_shot: boolean | null
           optimal_ph_high: number | null
           optimal_ph_low: number | null
           optimal_temp_c_high: number | null
           optimal_temp_c_low: number | null
           organism_name: string
+          p_effect: string | null
           p_solubilisation: boolean | null
           price_usd_per_kg: number | null
+          primary_function: string | null
+          recommended: boolean | null
           stage_compatibility: string[] | null
           strain_code: string | null
           supplier_idn: string | null
+          wave: string | null
+          wave_note: string | null
         }
         Insert: {
+          activity_day_end?: number | null
+          activity_day_peak?: number | null
+          activity_day_start?: number | null
           bsf_introduction_gate?: string | null
+          bsf_meal_cp?: string | null
           bsf_safe?: boolean | null
           category?: string | null
           cellulose_degradation?: boolean | null
           common_name?: string | null
           conflict_with?: string[] | null
+          cost_high_usd?: number | null
+          cost_low_usd?: number | null
+          cp_uplift_pct?: string | null
           dose_cfu_per_g?: string | null
+          dose_high_pct?: number | null
+          dose_low_pct?: number | null
+          form?: string | null
           guardrail_flag?: string | null
           guardrail_note?: string | null
+          icbb_code?: string | null
           id?: number
           industry_id?: number | null
           last_updated?: string | null
           lignin_degradation?: boolean | null
+          lignin_reduction_pct?: string | null
           lock_class?: string | null
+          n_added_kg_t?: string | null
           n_fixation?: boolean | null
+          nine_org?: boolean | null
+          notes?: string | null
+          one_shot?: boolean | null
           optimal_ph_high?: number | null
           optimal_ph_low?: number | null
           optimal_temp_c_high?: number | null
           optimal_temp_c_low?: number | null
           organism_name: string
+          p_effect?: string | null
           p_solubilisation?: boolean | null
           price_usd_per_kg?: number | null
+          primary_function?: string | null
+          recommended?: boolean | null
           stage_compatibility?: string[] | null
           strain_code?: string | null
           supplier_idn?: string | null
+          wave?: string | null
+          wave_note?: string | null
         }
         Update: {
+          activity_day_end?: number | null
+          activity_day_peak?: number | null
+          activity_day_start?: number | null
           bsf_introduction_gate?: string | null
+          bsf_meal_cp?: string | null
           bsf_safe?: boolean | null
           category?: string | null
           cellulose_degradation?: boolean | null
           common_name?: string | null
           conflict_with?: string[] | null
+          cost_high_usd?: number | null
+          cost_low_usd?: number | null
+          cp_uplift_pct?: string | null
           dose_cfu_per_g?: string | null
+          dose_high_pct?: number | null
+          dose_low_pct?: number | null
+          form?: string | null
           guardrail_flag?: string | null
           guardrail_note?: string | null
+          icbb_code?: string | null
           id?: number
           industry_id?: number | null
           last_updated?: string | null
           lignin_degradation?: boolean | null
+          lignin_reduction_pct?: string | null
           lock_class?: string | null
+          n_added_kg_t?: string | null
           n_fixation?: boolean | null
+          nine_org?: boolean | null
+          notes?: string | null
+          one_shot?: boolean | null
           optimal_ph_high?: number | null
           optimal_ph_low?: number | null
           optimal_temp_c_high?: number | null
           optimal_temp_c_low?: number | null
           organism_name?: string
+          p_effect?: string | null
           p_solubilisation?: boolean | null
           price_usd_per_kg?: number | null
+          primary_function?: string | null
+          recommended?: boolean | null
           stage_compatibility?: string[] | null
           strain_code?: string | null
           supplier_idn?: string | null
+          wave?: string | null
+          wave_note?: string | null
         }
         Relationships: [
           {
@@ -629,6 +692,135 @@ export type Database = {
         }
         Relationships: []
       }
+      cfi_chemical_treatments: {
+        Row: {
+          best_bsf_rank: number | null
+          best_compost_rank: number | null
+          best_value_rank: number | null
+          bsf_safe: boolean
+          bsf_viability_score: number | null
+          cellulose_access_pct_max: number | null
+          cellulose_access_pct_min: number | null
+          cost_max_usd_per_t: number | null
+          cost_min_usd_per_t: number | null
+          created_at: string | null
+          dose_max_kg_per_t: number | null
+          dose_min_kg_per_t: number | null
+          dose_unit: string | null
+          efb_ph_effect: string | null
+          fatal_risk: boolean | null
+          final_ph_max: number | null
+          final_ph_min: number | null
+          hemicellulose_effect: string | null
+          lignin_reduction_pct_max: number | null
+          lignin_reduction_pct_min: number | null
+          literature_source: string | null
+          mechanism: string | null
+          microbe_safe: boolean
+          microbial_viability_score: number | null
+          neutralisation_agent: string | null
+          neutralisation_cost_max_usd: number | null
+          neutralisation_cost_min_usd: number | null
+          neutralisation_days: number | null
+          neutralisation_required: boolean
+          notes: string | null
+          opdc_ph_effect: string | null
+          overall_rank: number | null
+          pathway_a_compost_score: number | null
+          pathway_b_bsf_score: number | null
+          rspo_concern: string | null
+          rspo_status: string
+          treatment_id: number
+          treatment_name: string
+          type_group: string
+          updated_at: string | null
+        }
+        Insert: {
+          best_bsf_rank?: number | null
+          best_compost_rank?: number | null
+          best_value_rank?: number | null
+          bsf_safe: boolean
+          bsf_viability_score?: number | null
+          cellulose_access_pct_max?: number | null
+          cellulose_access_pct_min?: number | null
+          cost_max_usd_per_t?: number | null
+          cost_min_usd_per_t?: number | null
+          created_at?: string | null
+          dose_max_kg_per_t?: number | null
+          dose_min_kg_per_t?: number | null
+          dose_unit?: string | null
+          efb_ph_effect?: string | null
+          fatal_risk?: boolean | null
+          final_ph_max?: number | null
+          final_ph_min?: number | null
+          hemicellulose_effect?: string | null
+          lignin_reduction_pct_max?: number | null
+          lignin_reduction_pct_min?: number | null
+          literature_source?: string | null
+          mechanism?: string | null
+          microbe_safe: boolean
+          microbial_viability_score?: number | null
+          neutralisation_agent?: string | null
+          neutralisation_cost_max_usd?: number | null
+          neutralisation_cost_min_usd?: number | null
+          neutralisation_days?: number | null
+          neutralisation_required?: boolean
+          notes?: string | null
+          opdc_ph_effect?: string | null
+          overall_rank?: number | null
+          pathway_a_compost_score?: number | null
+          pathway_b_bsf_score?: number | null
+          rspo_concern?: string | null
+          rspo_status: string
+          treatment_id?: number
+          treatment_name: string
+          type_group: string
+          updated_at?: string | null
+        }
+        Update: {
+          best_bsf_rank?: number | null
+          best_compost_rank?: number | null
+          best_value_rank?: number | null
+          bsf_safe?: boolean
+          bsf_viability_score?: number | null
+          cellulose_access_pct_max?: number | null
+          cellulose_access_pct_min?: number | null
+          cost_max_usd_per_t?: number | null
+          cost_min_usd_per_t?: number | null
+          created_at?: string | null
+          dose_max_kg_per_t?: number | null
+          dose_min_kg_per_t?: number | null
+          dose_unit?: string | null
+          efb_ph_effect?: string | null
+          fatal_risk?: boolean | null
+          final_ph_max?: number | null
+          final_ph_min?: number | null
+          hemicellulose_effect?: string | null
+          lignin_reduction_pct_max?: number | null
+          lignin_reduction_pct_min?: number | null
+          literature_source?: string | null
+          mechanism?: string | null
+          microbe_safe?: boolean
+          microbial_viability_score?: number | null
+          neutralisation_agent?: string | null
+          neutralisation_cost_max_usd?: number | null
+          neutralisation_cost_min_usd?: number | null
+          neutralisation_days?: number | null
+          neutralisation_required?: boolean
+          notes?: string | null
+          opdc_ph_effect?: string | null
+          overall_rank?: number | null
+          pathway_a_compost_score?: number | null
+          pathway_b_bsf_score?: number | null
+          rspo_concern?: string | null
+          rspo_status?: string
+          treatment_id?: number
+          treatment_name?: string
+          type_group?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       cfi_company_config: {
         Row: {
           config_key: string
@@ -818,6 +1010,75 @@ export type Database = {
           stage_name?: string
           usd_idr_rate?: number | null
           usd_kwh_rate?: number | null
+        }
+        Relationships: []
+      }
+      cfi_engineering_documents: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          document_code: string
+          document_title: string
+          document_type: string
+          file_format: string | null
+          file_path: string | null
+          file_size_kb: number | null
+          id: number
+          industry_id: number | null
+          is_confidential: boolean | null
+          is_published: boolean | null
+          keywords: string[] | null
+          page_count: number | null
+          published_date: string | null
+          stage: string | null
+          stream: string | null
+          summary: string | null
+          updated_at: string | null
+          version: string
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          document_code: string
+          document_title: string
+          document_type: string
+          file_format?: string | null
+          file_path?: string | null
+          file_size_kb?: number | null
+          id?: number
+          industry_id?: number | null
+          is_confidential?: boolean | null
+          is_published?: boolean | null
+          keywords?: string[] | null
+          page_count?: number | null
+          published_date?: string | null
+          stage?: string | null
+          stream?: string | null
+          summary?: string | null
+          updated_at?: string | null
+          version: string
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          document_code?: string
+          document_title?: string
+          document_type?: string
+          file_format?: string | null
+          file_path?: string | null
+          file_size_kb?: number | null
+          id?: number
+          industry_id?: number | null
+          is_confidential?: boolean | null
+          is_published?: boolean | null
+          keywords?: string[] | null
+          page_count?: number | null
+          published_date?: string | null
+          stage?: string | null
+          stream?: string | null
+          summary?: string | null
+          updated_at?: string | null
+          version?: string
         }
         Relationships: []
       }
@@ -1254,6 +1515,36 @@ export type Database = {
           },
         ]
       }
+      cfi_fertiliser_prices: {
+        Row: {
+          display_name: string
+          notes: string | null
+          nutrient_id: string
+          price_date: string | null
+          price_usd_per_tonne: number
+          source: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          display_name: string
+          notes?: string | null
+          nutrient_id: string
+          price_date?: string | null
+          price_usd_per_tonne: number
+          source?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          display_name?: string
+          notes?: string | null
+          nutrient_id?: string
+          price_date?: string | null
+          price_usd_per_tonne?: number
+          source?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       cfi_gps_submissions: {
         Row: {
           created_at: string | null
@@ -1618,6 +1909,150 @@ export type Database = {
           prompt_part3?: string | null
           prompt_part4?: string | null
           version?: string | null
+        }
+        Relationships: []
+      }
+      cfi_microbe_compatibility: {
+        Row: {
+          compatibility_id: number
+          compatibility_score: number | null
+          notes: string | null
+          source: string | null
+          strain_a: string | null
+          strain_b: string | null
+        }
+        Insert: {
+          compatibility_id?: number
+          compatibility_score?: number | null
+          notes?: string | null
+          source?: string | null
+          strain_a?: string | null
+          strain_b?: string | null
+        }
+        Update: {
+          compatibility_id?: number
+          compatibility_score?: number | null
+          notes?: string | null
+          source?: string | null
+          strain_a?: string | null
+          strain_b?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_microbe_compatibility_strain_a_fkey"
+            columns: ["strain_a"]
+            isOneToOne: false
+            referencedRelation: "cfi_microbial_strains"
+            referencedColumns: ["strain_code"]
+          },
+          {
+            foreignKeyName: "cfi_microbe_compatibility_strain_b_fkey"
+            columns: ["strain_b"]
+            isOneToOne: false
+            referencedRelation: "cfi_microbial_strains"
+            referencedColumns: ["strain_code"]
+          },
+        ]
+      }
+      cfi_microbe_field_trials: {
+        Row: {
+          amf_improvement_pct: number | null
+          created_at: string | null
+          location: string | null
+          mbc_improvement_pct: number | null
+          notes: string | null
+          publication_reference: string | null
+          soil_type: string | null
+          strains_used: string[] | null
+          trial_code: string
+          trial_duration_days: number | null
+          trial_id: number
+          trial_start_date: string | null
+          yield_improvement_pct: number | null
+        }
+        Insert: {
+          amf_improvement_pct?: number | null
+          created_at?: string | null
+          location?: string | null
+          mbc_improvement_pct?: number | null
+          notes?: string | null
+          publication_reference?: string | null
+          soil_type?: string | null
+          strains_used?: string[] | null
+          trial_code: string
+          trial_duration_days?: number | null
+          trial_id?: number
+          trial_start_date?: string | null
+          yield_improvement_pct?: number | null
+        }
+        Update: {
+          amf_improvement_pct?: number | null
+          created_at?: string | null
+          location?: string | null
+          mbc_improvement_pct?: number | null
+          notes?: string | null
+          publication_reference?: string | null
+          soil_type?: string | null
+          strains_used?: string[] | null
+          trial_code?: string
+          trial_duration_days?: number | null
+          trial_id?: number
+          trial_start_date?: string | null
+          yield_improvement_pct?: number | null
+        }
+        Relationships: []
+      }
+      cfi_microbial_strains: {
+        Row: {
+          created_at: string | null
+          genus: string | null
+          icbb_number: string | null
+          notes: string | null
+          optimal_ph_max: number | null
+          optimal_ph_min: number | null
+          salinity_tolerance: string | null
+          source: string | null
+          species: string | null
+          strain_code: string
+          strain_id: number
+          strain_name: string
+          strain_type: string
+          temperature_max_c: number | null
+          temperature_min_c: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          genus?: string | null
+          icbb_number?: string | null
+          notes?: string | null
+          optimal_ph_max?: number | null
+          optimal_ph_min?: number | null
+          salinity_tolerance?: string | null
+          source?: string | null
+          species?: string | null
+          strain_code: string
+          strain_id?: number
+          strain_name: string
+          strain_type: string
+          temperature_max_c?: number | null
+          temperature_min_c?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          genus?: string | null
+          icbb_number?: string | null
+          notes?: string | null
+          optimal_ph_max?: number | null
+          optimal_ph_min?: number | null
+          salinity_tolerance?: string | null
+          source?: string | null
+          species?: string | null
+          strain_code?: string
+          strain_id?: number
+          strain_name?: string
+          strain_type?: string
+          temperature_max_c?: number | null
+          temperature_min_c?: number | null
         }
         Relationships: []
       }
@@ -2514,6 +2949,42 @@ export type Database = {
         }
         Relationships: []
       }
+      cfi_s0_pages: {
+        Row: {
+          created_at: string | null
+          html_content: string | null
+          id: number
+          is_published: boolean | null
+          page_code: string
+          page_title: string
+          page_type: string
+          updated_at: string | null
+          view_order: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          html_content?: string | null
+          id?: number
+          is_published?: boolean | null
+          page_code: string
+          page_title: string
+          page_type: string
+          updated_at?: string | null
+          view_order?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          html_content?: string | null
+          id?: number
+          is_published?: boolean | null
+          page_code?: string
+          page_title?: string
+          page_type?: string
+          updated_at?: string | null
+          view_order?: number | null
+        }
+        Relationships: []
+      }
       cfi_s1_opex_labour: {
         Row: {
           created_at: string | null
@@ -2637,6 +3108,165 @@ export type Database = {
           notes?: string | null
           usd_per_month?: number | null
           usd_per_year?: number | null
+        }
+        Relationships: []
+      }
+      cfi_s1_process_nodes: {
+        Row: {
+          color_code: string | null
+          created_at: string | null
+          elevation_m: number | null
+          equipment_name: string
+          equipment_tag: string
+          gate_code: string | null
+          gate_enforcement: string | null
+          id: number
+          line_code: string
+          mc_in_pct: number | null
+          mc_out_pct: number | null
+          node_number: number
+          power_kw: number | null
+          throughput_th: number | null
+        }
+        Insert: {
+          color_code?: string | null
+          created_at?: string | null
+          elevation_m?: number | null
+          equipment_name: string
+          equipment_tag: string
+          gate_code?: string | null
+          gate_enforcement?: string | null
+          id?: number
+          line_code: string
+          mc_in_pct?: number | null
+          mc_out_pct?: number | null
+          node_number: number
+          power_kw?: number | null
+          throughput_th?: number | null
+        }
+        Update: {
+          color_code?: string | null
+          created_at?: string | null
+          elevation_m?: number | null
+          equipment_name?: string
+          equipment_tag?: string
+          gate_code?: string | null
+          gate_enforcement?: string | null
+          id?: number
+          line_code?: string
+          mc_in_pct?: number | null
+          mc_out_pct?: number | null
+          node_number?: number
+          power_kw?: number | null
+          throughput_th?: number | null
+        }
+        Relationships: []
+      }
+      cfi_s3_component_registry: {
+        Row: {
+          component_name: string
+          component_version: string | null
+          created_at: string | null
+          description: string | null
+          file_reference: string | null
+          id: number
+          lovable_deployed: boolean | null
+          notes: string | null
+          status: string | null
+          supabase_tables: string[] | null
+        }
+        Insert: {
+          component_name: string
+          component_version?: string | null
+          created_at?: string | null
+          description?: string | null
+          file_reference?: string | null
+          id?: number
+          lovable_deployed?: boolean | null
+          notes?: string | null
+          status?: string | null
+          supabase_tables?: string[] | null
+        }
+        Update: {
+          component_name?: string
+          component_version?: string | null
+          created_at?: string | null
+          description?: string | null
+          file_reference?: string | null
+          id?: number
+          lovable_deployed?: boolean | null
+          notes?: string | null
+          status?: string | null
+          supabase_tables?: string[] | null
+        }
+        Relationships: []
+      }
+      cfi_s3_design_sessions: {
+        Row: {
+          created_at: string | null
+          design_decisions: Json | null
+          id: number
+          session_date: string
+          session_label: string
+          status: string | null
+          ux_principles: Json | null
+          widget_description: string | null
+          widget_title: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          design_decisions?: Json | null
+          id?: number
+          session_date?: string
+          session_label: string
+          status?: string | null
+          ux_principles?: Json | null
+          widget_description?: string | null
+          widget_title?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          design_decisions?: Json | null
+          id?: number
+          session_date?: string
+          session_label?: string
+          status?: string | null
+          ux_principles?: Json | null
+          widget_description?: string | null
+          widget_title?: string | null
+        }
+        Relationships: []
+      }
+      cfi_s3_ux_prompts: {
+        Row: {
+          created_at: string | null
+          design_system: string | null
+          id: number
+          is_active: boolean | null
+          prompt_body: string
+          prompt_title: string
+          prompt_version: string
+          target_component: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          design_system?: string | null
+          id?: number
+          is_active?: boolean | null
+          prompt_body: string
+          prompt_title: string
+          prompt_version: string
+          target_component?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          design_system?: string | null
+          id?: number
+          is_active?: boolean | null
+          prompt_body?: string
+          prompt_title?: string
+          prompt_version?: string
+          target_component?: string | null
         }
         Relationships: []
       }
@@ -3347,6 +3977,140 @@ export type Database = {
             referencedColumns: ["soil_key"]
           },
         ]
+      }
+      cfi_soil_microbe_recommendations: {
+        Row: {
+          application_stage: string | null
+          created_at: string | null
+          dosage_cfu_per_g: number | null
+          expected_benefit: string | null
+          field_trial_verified: boolean | null
+          frequency: string | null
+          recommendation_id: number
+          soil_type: string
+          source: string | null
+          strain_code: string | null
+        }
+        Insert: {
+          application_stage?: string | null
+          created_at?: string | null
+          dosage_cfu_per_g?: number | null
+          expected_benefit?: string | null
+          field_trial_verified?: boolean | null
+          frequency?: string | null
+          recommendation_id?: number
+          soil_type: string
+          source?: string | null
+          strain_code?: string | null
+        }
+        Update: {
+          application_stage?: string | null
+          created_at?: string | null
+          dosage_cfu_per_g?: number | null
+          expected_benefit?: string | null
+          field_trial_verified?: boolean | null
+          frequency?: string | null
+          recommendation_id?: number
+          soil_type?: string
+          source?: string | null
+          strain_code?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_soil_microbe_recommendations_strain_code_fkey"
+            columns: ["strain_code"]
+            isOneToOne: false
+            referencedRelation: "cfi_microbial_strains"
+            referencedColumns: ["strain_code"]
+          },
+        ]
+      }
+      cfi_soil_microbiome: {
+        Row: {
+          amf_baseline_degraded: number
+          amf_bf_plus_inoculation: number
+          amf_source: string | null
+          amf_target_natural: number
+          created_at: string | null
+          diversity_source: string | null
+          mbc_baseline_degraded: number
+          mbc_bf_plus_increment: number
+          mbc_source: string | null
+          mbc_target_natural: number
+          microbiome_id: number
+          nitrification_normal: number | null
+          nitrification_poor: number | null
+          nitrification_source: string | null
+          nitrification_vgam: number | null
+          phosphatase_multiplier: number
+          phosphatase_source: string | null
+          respiration_baseline: number | null
+          respiration_bf_plus: number | null
+          respiration_source: string | null
+          shannon_index_baseline: number | null
+          shannon_index_bf_plus: number | null
+          simpson_index_baseline: number | null
+          simpson_index_bf_plus: number | null
+          soil_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          amf_baseline_degraded: number
+          amf_bf_plus_inoculation: number
+          amf_source?: string | null
+          amf_target_natural: number
+          created_at?: string | null
+          diversity_source?: string | null
+          mbc_baseline_degraded: number
+          mbc_bf_plus_increment: number
+          mbc_source?: string | null
+          mbc_target_natural: number
+          microbiome_id?: number
+          nitrification_normal?: number | null
+          nitrification_poor?: number | null
+          nitrification_source?: string | null
+          nitrification_vgam?: number | null
+          phosphatase_multiplier?: number
+          phosphatase_source?: string | null
+          respiration_baseline?: number | null
+          respiration_bf_plus?: number | null
+          respiration_source?: string | null
+          shannon_index_baseline?: number | null
+          shannon_index_bf_plus?: number | null
+          simpson_index_baseline?: number | null
+          simpson_index_bf_plus?: number | null
+          soil_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          amf_baseline_degraded?: number
+          amf_bf_plus_inoculation?: number
+          amf_source?: string | null
+          amf_target_natural?: number
+          created_at?: string | null
+          diversity_source?: string | null
+          mbc_baseline_degraded?: number
+          mbc_bf_plus_increment?: number
+          mbc_source?: string | null
+          mbc_target_natural?: number
+          microbiome_id?: number
+          nitrification_normal?: number | null
+          nitrification_poor?: number | null
+          nitrification_source?: string | null
+          nitrification_vgam?: number | null
+          phosphatase_multiplier?: number
+          phosphatase_source?: string | null
+          respiration_baseline?: number | null
+          respiration_bf_plus?: number | null
+          respiration_source?: string | null
+          shannon_index_baseline?: number | null
+          shannon_index_bf_plus?: number | null
+          simpson_index_baseline?: number | null
+          simpson_index_bf_plus?: number | null
+          soil_type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       cfi_soil_profiles: {
         Row: {
