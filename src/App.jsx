@@ -2552,7 +2552,6 @@ export default function CFI() {
 
             <NutrLedger stg="S1 · After Shredding (No Nutrient Change)" N={nl_N} P={nl_P} K={nl_K} Ca={nl_Ca} Mg={nl_Mg} OM={nl_OM} cn={nl_CN} wetPD={nl_wetPD} mc={blendMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.tealLt}/>
             </div>
-          </div>
           <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ▴':'Value Calculator ▾'}</button></div>
           {showValCalc && <CFI_ValueCalculator defaultStage="s1"/>}
           </div>
