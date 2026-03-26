@@ -2409,7 +2409,10 @@ export default function CFI() {
       <div style={{padding:"16px 22px 60px", minWidth:1400, margin:"0 auto"}}>
 
         {/* ════════════════════ S T A G E  0 ════════════════════ */}
-        {stage===0 && <SiteSetup />}
+        {stage===0 && (<><SiteSetup />
+          <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ▴':'Value Calculator ▾'}</button></div>
+          {showValCalc && <CFI_ValueCalculator defaultStage="s0"/>}
+        </>)}
 
         {/* ════════════════════ S T A G E  1 ════════════════════ */}
         {stage===1 && (
