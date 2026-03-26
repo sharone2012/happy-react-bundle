@@ -3124,6 +3124,9 @@ export default function CFI() {
             <NutrLedger stg="S3 · After Biological Treatment (N+8% · P+10% PSB · K+5%)" N={nl_s3N} P={nl_s3P} K={nl_s3K} Ca={nl_s3Ca} Mg={nl_Mg} OM={nl_s3OM} cn={nl_s3CN} wetPD={nl_wetPD} mc={blendMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.green}/>
             </div>
           </div>
+          <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ▴':'Value Calculator ▾'}</button></div>
+          {showValCalc && <CFI_ValueCalculator defaultStage="s3"/>}
+          </div>
         )}
 
         {/* ════════════════════ S T A G E  4 ════════════════════ */}
