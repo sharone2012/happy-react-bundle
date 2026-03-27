@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import CFI_PriceRefreshBadge from "@/components/CFI_PriceRefreshBadge";
 import CFI_ValueCalculator from "@/components/CFI_ValueCalculator";
 import CFI_SoilAcidity_Lookup from "@/CFI_SoilAcidity_Lookup";
+import CFI_SoilAcidity_ProfileCard from "@/components/CFI_SoilAcidity_ProfileCard";
 
 
 // ─── SUPABASE LIVE CONNECTION ─────────────────────────────────────────────────
@@ -5216,7 +5217,7 @@ export default function CFI() {
         {/* ════════════════════ S U M M A R Y ════════════════════ */}
         {stage===9 && (
            <div>
-            <CFI_SoilAcidity_Lookup />
+            <CFI_SoilAcidity_ProfileCard />
             <div style={S.card}>
               <SectionHdr icon="" title="CFI PROJECT SUMMARY — ALL STAGES" color={C.teal}/>
               <div style={{display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:12, marginBottom:16}}>
