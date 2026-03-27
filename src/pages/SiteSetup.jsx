@@ -22,7 +22,7 @@
  *   PMF         = monthly_ffb × 0.145
  *   POME        = monthly_ffb × 0.30
  *   P2O5        = P × 2.29   (LOCKED)
- *   K2O         = K × 1.205
+ *   K2O         = K × 1.20   (LOCKED)
  *   C:N (blend) = DM-weighted element formula (never wet-weight, never hardcoded)
  *   N factor    = 4.67 (never 6.25 in calculations)
  *
@@ -675,7 +675,7 @@ export default function SiteSetup() {
     });
     b.CN   = b.CN_N > 0 ? b.CN_C/b.CN_N : 0;
     b.P2O5 = isNaN(b.P) ? 0 : b.P * 2.29;
-    b.K2O  = isNaN(b.K) ? 0 : b.K * 1.205;
+    b.K2O  = isNaN(b.K) ? 0 : b.K * 1.20;
     return b;
   }, [streamT, grandTotal]);
 
