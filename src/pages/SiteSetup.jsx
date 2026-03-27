@@ -674,8 +674,8 @@ export default function SiteSetup() {
       b.Lignin+=s.Lignin*w; b.Ca+=s.Ca*w; b.Mg+=s.Mg*w;
     });
     b.CN   = b.CN_N > 0 ? b.CN_C/b.CN_N : 0;
-    b.P2O5 = b.P * 2.291;
-    b.K2O  = b.K * 1.205;
+    b.P2O5 = isNaN(b.P) ? 0 : b.P * 2.291;
+    b.K2O  = isNaN(b.K) ? 0 : b.K * 1.205;
     return b;
   }, [streamT, grandTotal]);
 
@@ -1675,8 +1675,8 @@ export default function SiteSetup() {
                       <div key={c.id} style={mixCell}>
                         <span style={mixLbl}>{c.id}</span>
                         <span style={{ display:'flex', alignItems:'baseline', gap:3 }}>
-                          <span style={{ fontSize:14, fontWeight:800, fontFamily:Fnt.mono, color:c.green?C.green:c.val!=null?C.amber:'rgba(139,160,180,0.45)', whiteSpace:'nowrap' }}>
-                            {c.val!=null?(typeof c.val==='string'?c.val:c.val.toFixed(c.dp||2)):'—'}
+                          <span style={{ fontSize:14, fontWeight:800, fontFamily:Fnt.mono, color:c.green?C.green:(c.val!=null&&!isNaN(c.val))?C.amber:'rgba(139,160,180,0.45)', whiteSpace:'nowrap' }}>
+                            {c.val!=null&&!isNaN(c.val)?(typeof c.val==='string'?c.val:c.val.toFixed(c.dp||2)):'—'}
                           </span>
                           <span style={mixUnit}>{c.unit}</span>
                         </span>
