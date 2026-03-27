@@ -2621,7 +2621,7 @@ export default function CFI() {
                     {k:"dolomite",name:"Dolomite CaMg(CO₃)₂",         rspo:" OK",        cost:"$0.05/t",lig:0, col:C.teal,   note:"Ca²⁺ + Mg²⁺ simultaneously. pH buffer 3–6 week slow release. Ultisol/Oxisol soil correction."},
                   ].map(chem=>(
                     <div key={chem.k} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"8px 10px",
-                      background:s2[chem.k]?chem.col+"14":C.inputSectionBg,borderRadius:6,marginBottom:4,
+                      background:s2[chem.k]?"rgba(64,215,197,0.15)":"#000000",borderRadius:6,marginBottom:4,
                       border:s2[chem.k]?`1px solid ${chem.col}44`:"none"}}>
                       <input type="checkbox" checked={!!s2[chem.k]} onChange={e=>upS2(chem.k,e.target.checked)} style={{accentColor:chem.col,marginTop:2,flexShrink:0}}/>
                       <div style={{flex:1}}>
@@ -2659,7 +2659,7 @@ export default function CFI() {
                     {k:"sulfur", name:"Volcanic Sulfur / Belerang",         rspo:"",cost:"$0.03/t",lig:0, col:C.blue,   note:"Slow-release acidification (7–14 days). Sulfate for BSF Met+Cys amino acid synthesis. Indonesian supply chain."},
                   ].map(chem=>(
                     <div key={chem.k} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"8px 10px",
-                      background:s2[chem.k]?chem.col+"14":C.inputSectionBg,borderRadius:6,marginBottom:4,
+                      background:s2[chem.k]?"rgba(64,215,197,0.15)":"#000000",borderRadius:6,marginBottom:4,
                       border:s2[chem.k]?`1px solid ${chem.col}44`:"none"}}>
                       <input type="checkbox" checked={!!s2[chem.k]} onChange={e=>upS2(chem.k,e.target.checked)} style={{accentColor:chem.col,marginTop:2,flexShrink:0}}/>
                       <div style={{flex:1}}>
@@ -2693,7 +2693,7 @@ export default function CFI() {
                     {k:"tween80",     name:"Tween 80 (Polysorbate 80)",       rspo:"",cost:"$0.18/t",col:C.teal,   note:"Non-ionic surfactant. Prevents cellulase adsorption to lignin. +3–5% indirect lignin effect."},
                   ].map(chem=>(
                     <div key={chem.k} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"8px 10px",
-                      background:s2[chem.k]?chem.col+"14":C.inputSectionBg,borderRadius:6,marginBottom:4,
+                      background:s2[chem.k]?"rgba(64,215,197,0.15)":"#000000",borderRadius:6,marginBottom:4,
                       border:s2[chem.k]?`1px solid ${chem.col}44`:"none"}}>
                       <input type="checkbox" checked={!!s2[chem.k]} onChange={e=>upS2(chem.k,e.target.checked)} style={{accentColor:chem.col,marginTop:2,flexShrink:0}}/>
                       <div style={{flex:1}}>
@@ -2722,7 +2722,7 @@ export default function CFI() {
                     {k:"lip_s2",      name:"LiP — Lignin Peroxidase",   cost:"$0.55/t",lig:20, note:"Highest redox (E°≈1.2V). Non-phenolic lignin cleavage. Requires H₂O₂ co-factor."},
                   ].map(chem=>(
                     <div key={chem.k} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"8px 10px",
-                      background:s2[chem.k]?C.purple+"14":C.inputSectionBg,borderRadius:6,marginBottom:4,
+                      background:s2[chem.k]?"rgba(64,215,197,0.15)":"#000000",borderRadius:6,marginBottom:4,
                       border:s2[chem.k]?`1px solid ${C.purple}44`:"none"}}>
                       <input type="checkbox" checked={!!s2[chem.k]} onChange={e=>upS2(chem.k,e.target.checked)} style={{accentColor:C.purple,marginTop:2,flexShrink:0}}/>
                       <div style={{flex:1}}>
