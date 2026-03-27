@@ -557,9 +557,7 @@ export default function SiteSetup() {
   // ═══════════════════════════════════════════════════════
   async function toggleStream(key) {
     setActiveStreams(prev => {
-      // Toggles are always-on: once selected, cannot be deselected
-      if (prev[key]) return prev;
-      const next = { ...prev, [key]: true };
+      const next = { ...prev, [key]: !prev[key] };
       saveStreamToggles(next);
       return next;
     });
