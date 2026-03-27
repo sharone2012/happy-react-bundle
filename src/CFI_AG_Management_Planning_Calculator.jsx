@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, Legend } from "recharts";
+import CFI_SoilAcidity_Lookup from "@/CFI_SoilAcidity_Lookup";
 
 // ══════════════════════════════════════════════════════════════════════════
 // CFI AG MANAGEMENT PLANNING CALCULATOR BY SOIL TYPE
