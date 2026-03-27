@@ -2370,7 +2370,7 @@ export default function CFI() {
               borderLeft:   i===stage ? '1.5px solid rgba(51,212,188,0.60)' : '1.5px solid rgba(139,160,180,0.18)',
               borderRight:  i===stage ? '1.5px solid rgba(51,212,188,0.60)' : '1.5px solid rgba(139,160,180,0.18)',
               borderBottom: 'none',
-              background:   i===stage ? 'rgba(51,212,188,0.12)' : '#0C1E33',
+              background:   i===stage ? 'rgba(51,212,188,0.12)' : '#000000',
               color:        i===stage ? '#F5A623' : '#A8BDD0',
               padding:'8px 16px 10px', marginBottom:-2, cursor:'pointer', whiteSpace:'nowrap',
             }}>{t}</div>
