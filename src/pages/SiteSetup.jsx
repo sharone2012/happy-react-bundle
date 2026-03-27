@@ -120,7 +120,7 @@ const ESTATE_STREAMS = ['pke','opf','opt'];
 const STREAM_NAMES = {
   efb:'Empty Fruit Bunches', opdc:'Decanter Cake', pos:'Palm Oil Sludge',
   pmf:'Palm Mesocarp Fiber', pome:'POME (Liquid)', pke:'Palm Kernel Expeller',
-  opf:'Oil Palm Fronds', opt:'Oil Palm Trunks'
+  opf:'Oil Palm Fronds', opt:'Oil Palm Trunks', pks:'Palm Kernel Shell', pka:'Palm Kernel Ash'
 };
 
 // Soil class parser for dominant_soil_wrb
