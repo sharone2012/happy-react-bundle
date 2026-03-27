@@ -2365,7 +2365,7 @@ export default function CFI() {
         <div style={{ background:'#0A1628', borderBottom:'2px solid rgba(51,212,188,0.18)', display:'flex', alignItems:'flex-end', gap:4, padding:'10px 24px 0 76px' }}>
           {NAV_TABS.map((t,i)=>(
             <div key={t} onClick={()=>handleTabClick(i)} style={{
-              fontFamily:_Fnt.mono, fontSize:11, fontWeight:700, borderRadius:'7px 7px 0 0',
+              fontFamily:_Fnt.dm, fontSize:11, fontWeight:700, borderRadius:'7px 7px 0 0',
               borderTop:    i===stage ? '1.5px solid rgba(51,212,188,0.60)' : '1.5px solid rgba(139,160,180,0.35)',
               borderLeft:   i===stage ? '1.5px solid rgba(51,212,188,0.60)' : '1.5px solid rgba(139,160,180,0.35)',
               borderRight:  i===stage ? '1.5px solid rgba(51,212,188,0.60)' : '1.5px solid rgba(139,160,180,0.35)',
