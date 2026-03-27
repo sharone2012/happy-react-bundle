@@ -753,7 +753,7 @@ export default function SiteSetup() {
   const grid2      = { display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 };
   const grid3      = { display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:12 };
   const row4       = { display:'grid', gridTemplateColumns:'1fr 1fr 1fr 1fr', gap:14, alignItems:'stretch' };
-  const mixCell    = { background:C.navyDeep, border:`1px solid ${C.bdrCalc}`, borderRadius:6, padding:'7px 9px', display:'flex', alignItems:'center', justifyContent:'space-between', gap:6, minHeight:36, overflow:'hidden' };
+  const mixCell    = { background:C.navyDeep, border:`1px solid ${C.bdrCalc}`, borderRadius:6, padding:'7px 9px', display:'grid', gridTemplateColumns:'1fr auto', alignItems:'center', gap:6, minHeight:36, overflow:'hidden' };
   const mixLbl     = { fontSize:13, fontWeight:700, fontFamily:Fnt.mono, color:C.grey, whiteSpace:'nowrap', flexShrink:0 };
   const mixUnit    = { fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.greyLt, whiteSpace:'nowrap', flexShrink:0, marginLeft:5 };
   const chipBase   = { fontSize:11, fontWeight:700, fontFamily:Fnt.mono, padding:'3px 10px', borderRadius:12, border:'1px solid', whiteSpace:'nowrap' };
@@ -1670,7 +1670,7 @@ export default function SiteSetup() {
               ].map(grp=>(
                 <div key={grp.sec}>
                   <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:C.teal, marginTop:8, marginBottom:4 }}>{grp.sec}</div>
-                  <div style={grp.cells.length===3?grid3:grid2}>
+                  <div style={grid3}>
                     {grp.cells.map(c=>(
                       <div key={c.id} style={mixCell}>
                         <span style={mixLbl}>{c.id}</span>
