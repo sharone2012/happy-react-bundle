@@ -29,13 +29,13 @@ const CLASS_META = {
 
 // CFI frass application modifiers by acidity class
 const CFI_MODIFIERS = {
-  1: { n_mult: 1.6, p_mult: 2.0, k_mult: 1.2, frass_rate: "High (8–12 t/ha/yr)", lime_rec: "3–5 t/ha dolomite" },
-  2: { n_mult: 1.4, p_mult: 1.7, k_mult: 1.1, frass_rate: "High (6–10 t/ha/yr)", lime_rec: "2–4 t/ha dolomite" },
+  1: { n_mult: 1.6, p_mult: 2.0, k_mult: 1.0, frass_rate: "High (8–12 t/ha/yr)", lime_rec: "3–5 t/ha dolomite" },
+  2: { n_mult: 1.4, p_mult: 1.8, k_mult: 1.0, frass_rate: "High (6–10 t/ha/yr)", lime_rec: "2–4 t/ha dolomite" },
   3: { n_mult: 1.2, p_mult: 1.4, k_mult: 1.0, frass_rate: "Medium-High (5–8 t/ha/yr)", lime_rec: "1–2 t/ha dolomite" },
   4: { n_mult: 1.1, p_mult: 1.2, k_mult: 1.0, frass_rate: "Medium (4–6 t/ha/yr)", lime_rec: "Monitor only" },
   5: { n_mult: 1.0, p_mult: 1.0, k_mult: 1.0, frass_rate: "Standard (3–5 t/ha/yr)", lime_rec: "None required" },
-  6: { n_mult: 0.9, p_mult: 0.9, k_mult: 1.0, frass_rate: "Standard (3–4 t/ha/yr)", lime_rec: "None required" },
-  7: { n_mult: 0.9, p_mult: 0.9, k_mult: 1.0, frass_rate: "Standard (3–4 t/ha/yr)", lime_rec: "None required" },
+  6: { n_mult: 1.0, p_mult: 1.0, k_mult: 1.0, frass_rate: "Standard (3–4 t/ha/yr)", lime_rec: "None required" },
+  7: { n_mult: 1.0, p_mult: 0.9, k_mult: 1.0, frass_rate: "Standard (3–4 t/ha/yr)", lime_rec: "None required" },
   8: { n_mult: 0.9, p_mult: 0.8, k_mult: 1.0, frass_rate: "Low (2–3 t/ha/yr)", lime_rec: "Sulphur amendment possible" },
 };
 
