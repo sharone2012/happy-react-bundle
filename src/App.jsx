@@ -2331,20 +2331,25 @@ export default function CFI() {
       {/* ── STICKY HEADER (always visible on all stages) ── */}
       <div style={{ position:'sticky', top:0, zIndex:100 }}>
         {/* ── PLATFORM HEADER (72px bar) ── */}
-        <div style={{ background:'#0A1628', height:72, display:'flex', alignItems:'center', padding:'0 24px', borderBottom:'1px solid rgba(51,212,188,0.15)' }}>
-          <div style={{ display:'flex', alignItems:'baseline', gap:10, flexShrink:0 }}>
-            <span style={{ fontFamily:_Fnt.brand, fontWeight:700, fontSize:26, color:'#FFFFFF', letterSpacing:'0.06em', whiteSpace:'nowrap' }}>CFI</span>
-            <span style={{ fontFamily:_Fnt.brand, fontWeight:700, fontSize:26, color:'#33D4BC', letterSpacing:'0.06em', whiteSpace:'nowrap' }}>Deep Tech</span>
+        <div className="global-header">
+          {/* Brand Block */}
+          <div className="brand-block">
+            <span className="brand-name brand-cfi">CFI</span>
+            <span className="brand-name brand-deeptech">Deep Tech</span>
           </div>
-          <div style={{ width:3, height:38, background:'#33D4BC', margin:'0 12px 0 14px', flexShrink:0 }} />
-          <div style={{ display:'flex', flexDirection:'column', height:38, gap:0.86, justifyContent:'center', flexShrink:0 }}>
-            <div style={{ fontSize:12, fontWeight:700, fontFamily:_Fnt.dm, lineHeight:1.3, whiteSpace:'nowrap' }}>
-              <span style={{ color:'#FFFFFF' }}>Precision Engineering</span>
-              <span style={{ color:'#33D4BC', marginLeft:6 }}>Circular Nutrient Recovery in Agricultural Systems</span>
+          {/* Vertical Divider */}
+          <div className="brand-divider" />
+          {/* Taglines Block */}
+          <div className="taglines-block">
+            {/* Line 1 */}
+            <div className="tagline">
+              <span className="tagline-segment tagline-white">Precision Engineering</span>
+              <span className="tagline-segment tagline-teal">Circular Nutrient Recovery in Agricultural Systems</span>
             </div>
-            <div style={{ fontSize:12, fontWeight:700, fontFamily:_Fnt.dm, lineHeight:1.3, whiteSpace:'nowrap', position:'relative' }}>
-              <span style={{ color:'#FFFFFF' }}>Applied Biology</span>
-              <span style={{ color:'#33D4BC', position:'absolute', left:134 }}>Rebalancing Soil's Microbiome & Reducing Synthetic Fertiliser Use</span>
+            {/* Line 2 */}
+            <div className="tagline">
+              <span className="tagline-segment tagline-white">Applied Biology</span>
+              <span className="tagline-segment tagline-teal">Rebalancing Soil's Microbiome & Reducing Synthetic Fertiliser Use</span>
             </div>
           </div>
           {/* Price badge + Short tabs — far right */}
