@@ -2329,8 +2329,8 @@ export default function CFI() {
                  color:"#FFFFFF", padding:"0 0 40px"}}>
 
       {/* ── STICKY HEADER (always visible on all stages) ── */}
-      <div style={{ position:'sticky', top:0, zIndex:100 }}>
-        {/* ── PLATFORM HEADER (72px bar) ── */}
+      <div style={{ position:'sticky', top:0, zIndex:1000 }}>
+        {/* ── GLOBAL BRAND HEADER ── */}
         <div className="global-header">
           {/* Brand Block */}
           <div className="brand-block">
