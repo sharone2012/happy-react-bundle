@@ -132,7 +132,7 @@ const S = {
   col:     { flex:1 },
   divider: { border:"none", borderTop:`1px solid ${C.sectionBorder}33`, margin:"12px 0" },
   tab:     (active) => ({
-    padding:"8px 18px", cursor:"pointer", borderRadius:"6px 6px 0 0",
+    padding:"6px 14px", cursor:"pointer", borderRadius:"6px 6px 0 0",
     background:active ? C.tealDk : C.inputSectionBg,
     color:active ? C.white : C.grey,
     fontSize:12, fontWeight:700, letterSpacing:"0.04em",
