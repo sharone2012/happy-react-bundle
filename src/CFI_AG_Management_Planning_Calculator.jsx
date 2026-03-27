@@ -387,7 +387,9 @@ export default function CFI_AG_Management_Planning_Calculator() {
 
       <div style={{padding:"16px 16px 0",display:"flex",flexDirection:"column",gap:14}}>
 
-        {/* ══ SECTION 1: PRODUCT SELECTION ══════════════════════════════ */}
+        {/* ══ SOIL ACIDITY LOOKUP (Section A — top) ══════════════════════ */}
+        <CFI_SoilAcidity_Lookup />
+
         <div style={s.card()}>
           <div style={s.hdr(C.teal)}>① Select CFI Product</div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:8}}>
