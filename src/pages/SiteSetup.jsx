@@ -22,7 +22,7 @@
  *   PMF         = monthly_ffb × 0.145
  *   POME        = monthly_ffb × 0.30
  *   P2O5        = P × 2.29   (LOCKED)
- *   K2O         = K × 1.205
+ *   K2O         = K × 1.20   (LOCKED)
  *   C:N (blend) = DM-weighted element formula (never wet-weight, never hardcoded)
  *   N factor    = 4.67 (never 6.25 in calculations)
  *
