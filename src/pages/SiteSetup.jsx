@@ -1578,7 +1578,7 @@ export default function SiteSetup() {
                   const pct    = pctRaw >= 100 ? '100' : pctRaw.toFixed(1);
                   return (
                     <div key={key} style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:8, alignItems:'center', background:i%2===1?'rgba(64,215,197,0.03)':'transparent', padding:'10px 13px', minHeight:42, borderBottom:i<4?`1px solid rgba(255,255,255,0.05)`:'none' }}>
-                      <div style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.dm, color:C.grey }}>{STREAM_NAMES[key]}</div>
+                      <div style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.dm, color:C.grey }}>{STREAM_NAMES[key] || customStreams.find(c=>c.key===key)?.name || key.toUpperCase()}</div>
                       <div style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.mono, color:C.amber, textAlign:'center' }}>{active?fmtT(cur):'—'}</div>
                       <div style={{ fontSize:12, fontWeight:700, fontFamily:Fnt.dm, color:C.grey, textAlign:'center' }}>{fmtT(mx)} t/m</div>
                       <div style={{ textAlign:'center' }}>
