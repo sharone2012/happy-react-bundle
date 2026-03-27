@@ -674,8 +674,8 @@ export default function SiteSetup() {
       b.Lignin+=s.Lignin*w; b.Ca+=s.Ca*w; b.Mg+=s.Mg*w;
     });
     b.CN   = b.CN_N > 0 ? b.CN_C/b.CN_N : 0;
-    b.P2O5 = b.P * 2.291;
-    b.K2O  = b.K * 1.205;
+    b.P2O5 = isNaN(b.P) ? 0 : b.P * 2.291;
+    b.K2O  = isNaN(b.K) ? 0 : b.K * 1.205;
     return b;
   }, [streamT, grandTotal]);
 
