@@ -5517,6 +5517,42 @@ export type Database = {
         }
         Relationships: []
       }
+      cfi_ui_designs: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          design_key: string
+          html_content: string | null
+          id: number
+          locked: boolean | null
+          updated_at: string | null
+          version: string
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          design_key: string
+          html_content?: string | null
+          id?: number
+          locked?: boolean | null
+          updated_at?: string | null
+          version: string
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          design_key?: string
+          html_content?: string | null
+          id?: number
+          locked?: boolean | null
+          updated_at?: string | null
+          version?: string
+        }
+        Relationships: []
+      }
       cfi_users: {
         Row: {
           approved: boolean | null
