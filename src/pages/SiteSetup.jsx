@@ -1670,7 +1670,7 @@ export default function SiteSetup() {
               ].map(grp=>(
                 <div key={grp.sec}>
                   <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:C.teal, marginTop:8, marginBottom:4 }}>{grp.sec}</div>
-                  <div style={grp.cells.length===3?grid3:grid2}>
+                  <div style={grid3}>
                     {grp.cells.map(c=>(
                       <div key={c.id} style={mixCell}>
                         <span style={mixLbl}>{c.id}</span>
