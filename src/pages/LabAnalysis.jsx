@@ -297,6 +297,7 @@ export default function LabAnalysis() {
 
       {/* ─── STREAM BAR ─────────────────────────────────────────────── */}
       <div style={S.streamBar}>
+        <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 700, color: "#F5A623", letterSpacing: "0.10em", textTransform: "uppercase", marginRight: 12, alignSelf: "center" }}>STREAM</span>
         <button
           onClick={() => { setShowAll(true); setActiveStream("ALL"); }}
           style={S.streamBtn(showAll)}
@@ -314,6 +315,16 @@ export default function LabAnalysis() {
         ))}
         <button style={S.newStreamBtn}>+ New Stream</button>
       </div>
+
+      {/* ─── COMBINED BANNER ────────────────────────────────────────── */}
+      {showAll && (
+        <div style={{ background: "rgba(64,215,197,0.06)", borderBottom: "1px solid rgba(64,215,197,0.15)", padding: "5px 20px", fontFamily: "'DM Sans', sans-serif", fontSize: 10, color: "rgba(139,160,180,0.6)" }}>
+          <span style={{ fontWeight: 700, color: "#40D7C5" }}>Combined S0 Analysis</span>
+          <span style={{ margin: "0 6px" }}>·</span>EFB + OPDC + POS
+          <span style={{ margin: "0 6px" }}>·</span>Values are DM-weighted blend averages
+          <span style={{ margin: "0 6px" }}>·</span>60 TPH FFB Mill basis
+        </div>
+      )}
 
       {/* ─── METRICS STRIP ──────────────────────────────────────────── */}
       <div style={S.metricsStrip}>
