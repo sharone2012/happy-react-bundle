@@ -1676,7 +1676,7 @@ export default function SiteSetup() {
                         <span style={mixLbl}>{c.id}</span>
                         <span style={{ display:'flex', alignItems:'baseline', gap:3 }}>
                           <span style={{ fontSize:14, fontWeight:800, fontFamily:Fnt.mono, color:c.green?C.green:c.val!=null?C.amber:'rgba(139,160,180,0.45)', whiteSpace:'nowrap' }}>
-                            {c.val!=null?(typeof c.val==='string'?c.val:c.val.toFixed(c.dp||2)):'—'}
+                            {c.val!=null&&!isNaN(c.val)?(typeof c.val==='string'?c.val:c.val.toFixed(c.dp||2)):'—'}
                           </span>
                           <span style={mixUnit}>{c.unit}</span>
                         </span>
