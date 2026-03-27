@@ -98,19 +98,19 @@ const S = {
   fldLabel:  { fontFamily:"'DM Sans', sans-serif", fontWeight:600, fontSize:13, color:C.grey },
   fldSub:    { fontFamily:"'DM Sans', sans-serif", fontWeight:400, fontSize:11, color:C.grey, marginTop:2 },
   fldInput:  { background:C.inputBoxBg, border:`1.5px solid ${C.inputBoxBorder}`, borderRadius:5,
-               color:C.amber, fontFamily:"'DM Mono', monospace", fontWeight:600, fontSize:14,
+               color:C.amber, fontFamily:"'DM Sans', sans-serif", fontWeight:600, fontSize:14,
                padding:"5px 10px", width:"100%", outline:"none" },
   calcLabel: { fontFamily:"'DM Sans', sans-serif", fontWeight:600, fontSize:16, color:C.grey },
-  calcVal:   { fontFamily:"'DM Mono', monospace", fontWeight:700, fontSize:16, color:C.green },
+  calcVal:   { fontFamily:"'DM Sans', sans-serif", fontWeight:700, fontSize:16, color:C.green },
   // ── Hero numbers ──
-  heroNum:    { fontFamily:"'DM Mono', monospace", fontWeight:700, fontSize:20, color:C.amber },
+  heroNum:    { fontFamily:"'DM Sans', sans-serif", fontWeight:700, fontSize:20, color:C.amber },
   heroUnit:   { fontFamily:"'DM Sans', sans-serif", fontSize:11, color:C.greyMd, marginTop:3 },
   heroFormula:{ fontFamily:"'DM Sans', sans-serif", fontSize:9, color:C.greyMd, marginTop:4 },
   // ── Table styles ──
   tblHeader: { fontFamily:"'DM Sans', sans-serif", fontWeight:700, fontSize:12, color:C.greyMd, textAlign:"center", padding:"5px 6px" },
-  tblStream: { fontFamily:"'DM Mono', monospace", fontWeight:700, fontSize:11, color:C.amber, textAlign:"center", padding:"5px 6px" },
-  tblData:   { fontFamily:"'DM Mono', monospace", fontWeight:400, fontSize:11, color:C.greyMd, textAlign:"center", padding:"5px 6px" },
-  tblTotal:  { fontFamily:"'DM Mono', monospace", fontWeight:700, fontSize:14, color:C.pastelGreen, textAlign:"center", padding:"5px 6px" },
+  tblStream: { fontFamily:"'DM Sans', sans-serif", fontWeight:700, fontSize:11, color:C.amber, textAlign:"center", padding:"5px 6px" },
+  tblData:   { fontFamily:"'DM Sans', sans-serif", fontWeight:400, fontSize:11, color:C.greyMd, textAlign:"center", padding:"5px 6px" },
+  tblTotal:  { fontFamily:"'DM Sans', sans-serif", fontWeight:700, fontSize:14, color:C.pastelGreen, textAlign:"center", padding:"5px 6px" },
   // ── Alert banners ──
   alertBanner:(c) => ({ background:C.alertBannerBg, border:`1.5px solid ${C.sectionBorder}`, borderRadius:6,
                          padding:"9px 13px", marginBottom:7, fontFamily:"'DM Sans', sans-serif", fontSize:13, color:c }),
@@ -121,11 +121,11 @@ const S = {
   label:   { color:C.grey, fontSize:11, fontFamily:"'DM Sans', sans-serif", textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:2 },
   val:     { color:C.white, fontSize:14, fontWeight:600, fontFamily:"'DM Sans', sans-serif" },
   input:   { background:'#000', border:'1.5px solid rgba(64,215,197,0.60)', borderRadius:7, color:C.amber,
-             padding:"8px 10px", fontSize:14, fontWeight:800, width:"100%", outline:"none", fontFamily:"'DM Mono', monospace", height:38, textAlign:"center", boxSizing:"border-box" },
+             padding:"8px 10px", fontSize:14, fontWeight:800, width:"100%", outline:"none", fontFamily:"'DM Sans', sans-serif", height:38, textAlign:"center", boxSizing:"border-box" },
   inputAmb:{ background:'#000', border:'1.5px solid rgba(245,166,35,0.50)', borderRadius:7, color:C.amberLt,
-             padding:"8px 10px", fontSize:14, fontWeight:800, width:"100%", outline:"none", fontFamily:"'DM Mono', monospace", height:38, textAlign:"center", boxSizing:"border-box" },
+             padding:"8px 10px", fontSize:14, fontWeight:800, width:"100%", outline:"none", fontFamily:"'DM Sans', sans-serif", height:38, textAlign:"center", boxSizing:"border-box" },
   inputBlu:{ background:'#000', border:'1.5px solid rgba(64,215,197,0.60)', borderRadius:7, color:C.amber,
-             padding:"8px 10px", fontSize:14, fontWeight:800, width:"100%", outline:"none", fontFamily:"'DM Mono', monospace", height:38, textAlign:"center", boxSizing:"border-box" },
+             padding:"8px 10px", fontSize:14, fontWeight:800, width:"100%", outline:"none", fontFamily:"'DM Sans', sans-serif", height:38, textAlign:"center", boxSizing:"border-box" },
   badge:   (c) => ({ background:c+"22", border:`1px solid ${c}55`, borderRadius:12, padding:"2px 8px",
                      color:c, fontSize:12, fontWeight:700, display:"inline-block", fontFamily:"'Syne', sans-serif" }),
   row:     { display:"flex", gap:10, marginBottom:8 },
@@ -171,7 +171,7 @@ function InfoDot({summary, logic, sources, color}) {
         summary && React.createElement("div", {style:{fontSize:10,color:"#e8f0fa",lineHeight:1.6,marginBottom:6}}, summary),
         logic && React.createElement("div", null,
           React.createElement("div", {style:{fontSize:9,fontWeight:700,color:dotColor,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:3}},"Logic"),
-          React.createElement("div", {style:{fontSize:9,color:"#a0b8d0",fontFamily:"'DM Mono', monospace",lineHeight:1.5,background:C.infoSectionBg,borderRadius:4,padding:"4px 6px"}}, logic)
+          React.createElement("div", {style:{fontSize:9,color:"#a0b8d0",fontFamily:"'DM Sans', sans-serif",lineHeight:1.5,background:C.infoSectionBg,borderRadius:4,padding:"4px 6px"}}, logic)
         ),
         sources && sources.length > 0 && React.createElement("div", {style:{marginTop:6}},
           React.createElement("div", {style:{fontSize:9,fontWeight:700,color:dotColor,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:3}},"Sources"),
@@ -208,7 +208,7 @@ const BluField = ({label, unit, value, onChange, disabled, note}) => {
           onChange={e => setLocal(e.target.value)}
           onBlur={e => { if(onChange) onChange(e.target.value); }}
           disabled={!!disabled}/>
-        {unit && <span style={{fontSize:11, fontFamily:"'DM Mono', monospace", color:'rgba(168,189,208,0.75)', whiteSpace:'nowrap', minWidth:42}}>{unit}</span>}
+        {unit && <span style={{fontSize:11, fontFamily:"'DM Sans', sans-serif", color:'rgba(168,189,208,0.75)', whiteSpace:'nowrap', minWidth:42}}>{unit}</span>}
       </div>
       {note && <div style={{color:C.grey,fontSize:10,marginTop:2}}>{note}</div>}
     </div>
@@ -226,7 +226,7 @@ const AmbField = ({label, unit, value, onChange, note}) => {
           value={local}
           onChange={e => setLocal(e.target.value)}
           onBlur={e => { if(onChange) onChange(e.target.value); }}/>
-        {unit && <span style={{fontSize:11, fontFamily:"'DM Mono', monospace", color:'rgba(168,189,208,0.75)', whiteSpace:'nowrap', minWidth:42}}>{unit}</span>}
+        {unit && <span style={{fontSize:11, fontFamily:"'DM Sans', sans-serif", color:'rgba(168,189,208,0.75)', whiteSpace:'nowrap', minWidth:42}}>{unit}</span>}
       </div>
       {note && <div style={{color:C.amber,fontSize:10,marginTop:2}}> {note}</div>}
     </div>
@@ -237,10 +237,10 @@ const CalcField = ({label, unit, value, note}) => (
   <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', background:'#142030', border:'1px solid rgba(168,189,208,0.12)', borderRadius:8, padding:'10px 14px', gap:12, minHeight:48}}>
     <span style={{flex:1, fontSize:13, fontWeight:700, color:'#A8BDD0', fontFamily:"'DM Sans', sans-serif"}}>{label}</span>
     <div style={{display:'flex', alignItems:'center', gap:6, flexShrink:0}}>
-      <span style={{background:'#000', border:'1.5px solid rgba(64,215,197,0.60)', borderRadius:7, color:'#F5A623', fontFamily:"'DM Mono', monospace", fontSize:14, fontWeight:800, padding:'6px 10px', minWidth:60, height:34, display:'inline-flex', alignItems:'center', justifyContent:'center', whiteSpace:'nowrap'}}>
+      <span style={{background:'#000', border:'1.5px solid rgba(64,215,197,0.60)', borderRadius:7, color:'#F5A623', fontFamily:"'DM Sans', sans-serif", fontSize:14, fontWeight:800, padding:'6px 10px', minWidth:60, height:34, display:'inline-flex', alignItems:'center', justifyContent:'center', whiteSpace:'nowrap'}}>
         {value}
       </span>
-      {unit && <span style={{fontSize:10, fontFamily:"'DM Mono', monospace", color:'rgba(168,189,208,0.75)', whiteSpace:'nowrap'}}>{unit}</span>}
+      {unit && <span style={{fontSize:10, fontFamily:"'DM Sans', sans-serif", color:'rgba(168,189,208,0.75)', whiteSpace:'nowrap'}}>{unit}</span>}
     </div>
   </div>
 );
@@ -2322,7 +2322,7 @@ export default function CFI() {
 
   const NAV_TABS = ["Site Setup","Pre-Processing","Pre-Treatment","Biologicals","BSF","Biofertiliser / Other","Emissions","Financials","Summary"];
   const SHORT_TABS = ["S0","S1","S2","S3","S4","S5","S6"];
-  const _Fnt = { syne:"'Syne', sans-serif", dm:"'DM Sans', sans-serif", mono:"'DM Mono', monospace", brand:"'EB Garamond', serif" };
+  const _Fnt = { syne:"'Syne', sans-serif", dm:"'DM Sans', sans-serif", mono:"'DM Sans', sans-serif", brand:"'EB Garamond', serif" };
 
   return (
     <div style={{background:"#060C14", minHeight:"100vh", fontFamily:"'DM Sans', sans-serif",
@@ -2509,7 +2509,7 @@ export default function CFI() {
               {/* ── PROCESS ENGINEERING — FACILITY LAYOUT & MACHINERY ── */}
               <div style={{...S.card, gridColumn:"1/-1"}}>
                 <SectionHdr icon="🏭" title="S1 — PROCESS ENGINEERING & FACILITY LAYOUT" color={C.amber}/>
-                <div style={{background:'#0a0f18', border:'1px solid rgba(245,166,35,0.20)', borderRadius:8, padding:'16px 20px', marginBottom:14, fontFamily:"'DM Mono', monospace", fontSize:11, color:'#8ba0b4', lineHeight:1.9, whiteSpace:'pre', overflowX:'auto'}}>
+                <div style={{background:'#0a0f18', border:'1px solid rgba(245,166,35,0.20)', borderRadius:8, padding:'16px 20px', marginBottom:14, fontFamily:"'DM Sans', sans-serif", fontSize:11, color:'#8ba0b4', lineHeight:1.9, whiteSpace:'pre', overflowX:'auto'}}>
 {`  ╔══════════════════════════════════════════════════════════════════════════╗
   ║                     CFI S1 — MECHANICAL PRE-PROCESSING                  ║
   ║                         PROCESS FLOW DIAGRAM                            ║
@@ -3422,7 +3422,7 @@ export default function CFI() {
                       ["C:N 15–25","Ideal window — <15 causes N toxicity; >30 C-limited growth"],
                     ].map(([range,note],i)=>(
                       <div key={i} style={{display:"flex", gap:8, padding:"4px 0", borderBottom:`1px solid ${C.inputSectionBg}`}}>
-                        <span style={{color:i===0?C.red:i===3?C.amber:C.green, fontWeight:700, minWidth:90, fontFamily:"'DM Mono', monospace"}}>{range}</span>
+                        <span style={{color:i===0?C.red:i===3?C.amber:C.green, fontWeight:700, minWidth:90, fontFamily:"'DM Sans', sans-serif"}}>{range}</span>
                         <span style={{color:C.grey}}>{note}</span>
                       </div>
                     ))}
@@ -3478,11 +3478,11 @@ export default function CFI() {
                         return (
                           <tr key={i} style={{borderBottom:`1px solid ${C.inputSectionBg}`, background:i%2===0?C.navyLt+"30":"transparent"}}>
                             <td style={{padding:"6px 8px", color:C.grey, fontWeight:600}}>{row.p}</td>
-                            <td style={{padding:"6px 8px", color:C.white, fontFamily:"'DM Mono', monospace"}}>{row.s3}</td>
-                            <td style={{padding:"6px 8px", color:row.up?C.green:C.red, fontFamily:"'DM Mono', monospace", fontWeight:700}}>
+                            <td style={{padding:"6px 8px", color:C.white, fontFamily:"'DM Sans', sans-serif"}}>{row.s3}</td>
+                            <td style={{padding:"6px 8px", color:row.up?C.green:C.red, fontFamily:"'DM Sans', sans-serif", fontWeight:700}}>
                               {row.s4} <span style={{fontSize:14}}>{row.up?"↑":"↓"}</span>
                             </td>
-                            <td style={{padding:"6px 8px", color:row.up?C.green:C.red, fontFamily:"'DM Mono', monospace"}}>
+                            <td style={{padding:"6px 8px", color:row.up?C.green:C.red, fontFamily:"'DM Sans', sans-serif"}}>
                               {row.up?"+":""}{delta}
                             </td>
                             <td style={{padding:"5px 8px", color:C.grey, fontSize:10}}>{row.reason}</td>
@@ -3521,9 +3521,9 @@ export default function CFI() {
                           return (
                             <tr key={i} style={{borderBottom:`1px solid ${C.inputSectionBg}`, background:i%2===0?C.navyLt+"30":"transparent"}}>
                               <td style={{padding:"6px 8px", color:C.grey}}>{row.p}</td>
-                              <td style={{padding:"6px 8px", color:C.green, fontFamily:"'DM Mono', monospace", fontWeight:700}}>{row.a}</td>
-                              <td style={{padding:"6px 8px", color:C.amber, fontFamily:"'DM Mono', monospace", fontWeight:700}}>{row.b}</td>
-                              <td style={{padding:"6px 8px", color:diff>0?C.amber:diff<0?C.green:C.grey, fontFamily:"'DM Mono', monospace"}}>
+                              <td style={{padding:"6px 8px", color:C.green, fontFamily:"'DM Sans', sans-serif", fontWeight:700}}>{row.a}</td>
+                              <td style={{padding:"6px 8px", color:C.amber, fontFamily:"'DM Sans', sans-serif", fontWeight:700}}>{row.b}</td>
+                              <td style={{padding:"6px 8px", color:diff>0?C.amber:diff<0?C.green:C.grey, fontFamily:"'DM Sans', sans-serif"}}>
                                 {diff>=0?"+":""}{diff}
                               </td>
                             </tr>
@@ -3563,7 +3563,7 @@ export default function CFI() {
                               const up = j>0 && parseFloat(v)>parseFloat(prev);
                               const dn = j>0 && parseFloat(v)<parseFloat(prev);
                               return (
-                                <td key={j} style={{padding:"5px 8px", textAlign:"center", fontFamily:"'DM Mono', monospace",
+                                <td key={j} style={{padding:"5px 8px", textAlign:"center", fontFamily:"'DM Sans', sans-serif",
                                   color:j===0?C.white:up?C.green:dn?C.red:C.grey}}>
                                   {v}{j>0&&up?"↑":j>0&&dn?"↓":""}
                                 </td>
@@ -3644,9 +3644,9 @@ export default function CFI() {
                       return (
                         <tr key={i} style={{borderBottom:`1px solid ${C.inputSectionBg}`, background:i%2===0?C.navyLt+"30":"transparent"}}>
                           <td style={{padding:"5px 8px", color:C.grey}}>{r.p}</td>
-                          <td style={{padding:"5px 8px", color:C.green, fontFamily:"'DM Mono', monospace", fontWeight:700}}>{r.fmt(r.a)}</td>
-                          <td style={{padding:"5px 8px", color:C.amber, fontFamily:"'DM Mono', monospace", fontWeight:700}}>{r.fmt(r.b)}</td>
-                          <td style={{padding:"5px 8px", color:diffCol, fontFamily:"'DM Mono', monospace"}}>{diff>=0?"+":""}{diff}</td>
+                          <td style={{padding:"5px 8px", color:C.green, fontFamily:"'DM Sans', sans-serif", fontWeight:700}}>{r.fmt(r.a)}</td>
+                          <td style={{padding:"5px 8px", color:C.amber, fontFamily:"'DM Sans', sans-serif", fontWeight:700}}>{r.fmt(r.b)}</td>
+                          <td style={{padding:"5px 8px", color:diffCol, fontFamily:"'DM Sans', sans-serif"}}>{diff>=0?"+":""}{diff}</td>
                         </tr>
                       );
                     })}
@@ -3698,10 +3698,10 @@ export default function CFI() {
                           <td style={{padding:"6px 8px", color:isActive?C.teal:C.white, fontWeight:isActive?900:400}}>
                             {row.name} {isActive&&"← active"}
                           </td>
-                          <td style={{padding:"6px 8px", color:C.grey, fontFamily:"'DM Mono', monospace"}}>{row.pct}</td>
-                          <td style={{padding:"6px 8px", color:C.grey, fontFamily:"'DM Mono', monospace"}}>{row.ph}</td>
-                          <td style={{padding:"6px 8px", color:C.green, fontFamily:"'DM Mono', monospace", fontWeight:700}}>${row.urea}/t FW</td>
-                          <td style={{padding:"6px 8px", color:C.teal, fontFamily:"'DM Mono', monospace", fontWeight:700}}>${row.sm}/t FW</td>
+                          <td style={{padding:"6px 8px", color:C.grey, fontFamily:"'DM Sans', sans-serif"}}>{row.pct}</td>
+                          <td style={{padding:"6px 8px", color:C.grey, fontFamily:"'DM Sans', sans-serif"}}>{row.ph}</td>
+                          <td style={{padding:"6px 8px", color:C.green, fontFamily:"'DM Sans', sans-serif", fontWeight:700}}>${row.urea}/t FW</td>
+                          <td style={{padding:"6px 8px", color:C.teal, fontFamily:"'DM Sans', sans-serif", fontWeight:700}}>${row.sm}/t FW</td>
                         </tr>
                       );
                     })}
@@ -3744,16 +3744,16 @@ export default function CFI() {
                         return (
                           <tr key={i} style={{borderBottom:"1px solid #1a3025",background:isActive?"#1a3a22":"transparent"}}>
                             <td style={{padding:"5px 6px",color:isActive?"#3dcb7a":C.white,fontWeight:isActive?800:400}}>{soil.name}{isActive?" ←":""}</td>
-                            <td style={{padding:"5px 6px",color:"#7aa890",fontFamily:"'DM Mono', monospace"}}>{soil.pct}</td>
-                            <td style={{padding:"5px 6px",fontFamily:"'DM Mono', monospace",fontWeight:800,
+                            <td style={{padding:"5px 6px",color:"#7aa890",fontFamily:"'DM Sans', sans-serif"}}>{soil.pct}</td>
+                            <td style={{padding:"5px 6px",fontFamily:"'DM Sans', sans-serif",fontWeight:800,
                               color:eff>=0.40?"#3dcb7a":eff>=0.30?"#f0a030":"#8898b0"}}>
                               {Math.round(eff*100)}%
                               {eff>=0.40&&<span style={{fontSize:8,marginLeft:4,color:"#3dcb7a"}}>▲ HIGH</span>}
                               {eff<0.25&&<span style={{fontSize:8,marginLeft:4,color:"#8898b0"}}>▼ LOW</span>}
                             </td>
-                            <td style={{padding:"5px 6px",fontFamily:"'DM Mono', monospace",color:"#f0a030"}}>{baseline.toLocaleString()}</td>
-                            <td style={{padding:"5px 6px",fontFamily:"'DM Mono', monospace",color:"#3dcb7a",fontWeight:700}}>{avoided.toLocaleString()}</td>
-                            <td style={{padding:"5px 6px",fontFamily:"'DM Mono', monospace",color:"#f0a030",fontWeight:800}}>${rev.toLocaleString()}</td>
+                            <td style={{padding:"5px 6px",fontFamily:"'DM Sans', sans-serif",color:"#f0a030"}}>{baseline.toLocaleString()}</td>
+                            <td style={{padding:"5px 6px",fontFamily:"'DM Sans', sans-serif",color:"#3dcb7a",fontWeight:700}}>{avoided.toLocaleString()}</td>
+                            <td style={{padding:"5px 6px",fontFamily:"'DM Sans', sans-serif",color:"#f0a030",fontWeight:800}}>${rev.toLocaleString()}</td>
                             <td style={{padding:"5px 6px",color:"#7aa890",fontSize:8}}>{soil.dmppNote||"—"}</td>
                           </tr>
                         );
@@ -3765,22 +3765,22 @@ export default function CFI() {
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:8}}>
                     <div style={{background:"#0e2818",borderRadius:6,padding:"8px 10px",border:"1px solid #2a5030"}}>
                       <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:3,textTransform:"uppercase"}}>Frass N/Day Applied</div>
-                      <div style={{fontSize:16,fontWeight:900,color:"#8de8b4",fontFamily:"'DM Mono', monospace"}}>{dmpp_N_kgday.toLocaleString()} kg N</div>
+                      <div style={{fontSize:16,fontWeight:900,color:"#8de8b4",fontFamily:"'DM Sans', sans-serif"}}>{dmpp_N_kgday.toLocaleString()} kg N</div>
                       <div style={{fontSize:8,color:"#5a8870"}}>N×4.67 true protein factor active</div>
                     </div>
                     <div style={{background:"#0e2818",borderRadius:6,padding:"8px 10px",border:"1px solid #2a5030"}}>
                       <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:3,textTransform:"uppercase"}}>Uncontrolled N₂O (baseline)</div>
-                      <div style={{fontSize:16,fontWeight:900,color:"#f0a030",fontFamily:"'DM Mono', monospace"}}>{dmpp_co2e_base_ann.toLocaleString()} t CO₂e/yr</div>
+                      <div style={{fontSize:16,fontWeight:900,color:"#f0a030",fontFamily:"'DM Sans', sans-serif"}}>{dmpp_co2e_base_ann.toLocaleString()} t CO₂e/yr</div>
                       <div style={{fontSize:8,color:"#5a8870"}}>Currently uncaptured / unmonetised</div>
                     </div>
                     <div style={{background:s0.dmppEnabled?"#102818":"#0e1a18",borderRadius:6,padding:"8px 10px",border:s0.dmppEnabled?"1px solid #3dcb7a44":"1px solid #1a2820"}}>
                       <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:3,textTransform:"uppercase"}}>DMPP Avoided ({soilObj.name})</div>
-                      <div style={{fontSize:16,fontWeight:900,color:s0.dmppEnabled?"#3dcb7a":"#445050",fontFamily:"'DM Mono', monospace"}}>{dmpp_co2e_avoid_ann.toLocaleString()} t CO₂e/yr</div>
+                      <div style={{fontSize:16,fontWeight:900,color:s0.dmppEnabled?"#3dcb7a":"#445050",fontFamily:"'DM Sans', sans-serif"}}>{dmpp_co2e_avoid_ann.toLocaleString()} t CO₂e/yr</div>
                       <div style={{fontSize:8,color:"#5a8870"}}>{Math.round(dmpp_efficacy*100)}% suppression · {soilObj.dmppNote&&soilObj.dmppNote.substring(0,40)}...</div>
                     </div>
                     <div style={{background:s0.dmppEnabled?"#1a3520":"#0e1a18",borderRadius:6,padding:"8px 10px",border:s0.dmppEnabled?"1px solid #3dcb7a":"1px solid #1a2820"}}>
                       <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:3,textTransform:"uppercase"}}>ROI · Net Annual Gain</div>
-                      <div style={{fontSize:16,fontWeight:900,color:s0.dmppEnabled&&dmpp_roi>=3?"#3dcb7a":s0.dmppEnabled&&dmpp_roi>=2?"#f0a030":"#445050",fontFamily:"'DM Mono', monospace"}}>{s0.dmppEnabled?dmpp_roi+"x":"—"}</div>
+                      <div style={{fontSize:16,fontWeight:900,color:s0.dmppEnabled&&dmpp_roi>=3?"#3dcb7a":s0.dmppEnabled&&dmpp_roi>=2?"#f0a030":"#445050",fontFamily:"'DM Sans', sans-serif"}}>{s0.dmppEnabled?dmpp_roi+"x":"—"}</div>
                       <div style={{fontSize:8,color:"#5a8870"}}>Net: {s0.dmppEnabled?"$"+dmpp_net_annual.toLocaleString()+"/yr":"Enable DMPP to calculate"}</div>
                     </div>
                   </div>
@@ -4308,13 +4308,13 @@ export default function CFI() {
                       return (
                         <tr key={i} style={{borderBottom:`1px solid ${C.inputSectionBg}`, background:isBase?C.navyLt:"transparent"}}>
                           <td style={{padding:"7px 10px", color:r.col, fontWeight:isBase?900:400}}>{r.scen}</td>
-                          <td style={{padding:"7px 10px", color:r.col, fontFamily:"'DM Mono', monospace", fontWeight:isBase?900:400}}>
+                          <td style={{padding:"7px 10px", color:r.col, fontFamily:"'DM Sans', sans-serif", fontWeight:isBase?900:400}}>
                             {r.pb===null||r.pb==="N/A"?"N/A":r.pb+" yrs"}
                           </td>
-                          <td style={{padding:"7px 10px", color:r.npv>0?C.green:C.red, fontFamily:"'DM Mono', monospace", fontWeight:isBase?900:400}}>
+                          <td style={{padding:"7px 10px", color:r.npv>0?C.green:C.red, fontFamily:"'DM Sans', sans-serif", fontWeight:isBase?900:400}}>
                             {r.npv>0?"+":""}{typeof r.npv==="number"?("$"+r.npv.toLocaleString()):"N/A"}
                           </td>
-                          <td style={{padding:"7px 10px", color:isBase?C.grey:r.delta>0?C.green:C.red, fontFamily:"'DM Mono', monospace"}}>
+                          <td style={{padding:"7px 10px", color:isBase?C.grey:r.delta>0?C.green:C.red, fontFamily:"'DM Sans', sans-serif"}}>
                             {isBase?"—":r.delta>0?"+$"+r.delta.toLocaleString():"$"+r.delta.toLocaleString()}
                           </td>
                         </tr>
@@ -4355,7 +4355,7 @@ export default function CFI() {
                             const up = j>0 && parseFloat(v) > parseFloat(prev);
                             const dn = j>0 && parseFloat(v) < parseFloat(prev);
                             return (
-                              <td key={j} style={{padding:"6px 8px", textAlign:"center", fontFamily:"'DM Mono', monospace",
+                              <td key={j} style={{padding:"6px 8px", textAlign:"center", fontFamily:"'DM Sans', sans-serif",
                                 color:j===0?C.white:up?C.green:dn?C.red:C.grey, fontWeight:j===6?900:400}}>
                                 {v}{j>0&&up?"↑":j>0&&dn?"↓":""}
                               </td>
@@ -4489,22 +4489,22 @@ export default function CFI() {
                   {/* Inputs */}
                   <div style={{background:"#0e2818",borderRadius:6,padding:"8px 10px",border:"1px solid #2a5030"}}>
                     <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:4,textTransform:"uppercase"}}>Frass N Applied/Day</div>
-                    <div style={{fontSize:18,fontWeight:900,color:"#8de8b4",fontFamily:"'DM Mono', monospace"}}>{dmpp_N_kgday.toLocaleString()}</div>
+                    <div style={{fontSize:18,fontWeight:900,color:"#8de8b4",fontFamily:"'DM Sans', sans-serif"}}>{dmpp_N_kgday.toLocaleString()}</div>
                     <div style={{fontSize:9,color:"#5a8870"}}>kg N/day to field</div>
                   </div>
                   <div style={{background:"#0e2818",borderRadius:6,padding:"8px 10px",border:"1px solid #2a5030"}}>
                     <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:4,textTransform:"uppercase"}}>Baseline N₂O (no DMPP)</div>
-                    <div style={{fontSize:18,fontWeight:900,color:"#f0a030",fontFamily:"'DM Mono', monospace"}}>{dmpp_co2e_base_ann.toLocaleString()}</div>
+                    <div style={{fontSize:18,fontWeight:900,color:"#f0a030",fontFamily:"'DM Sans', sans-serif"}}>{dmpp_co2e_base_ann.toLocaleString()}</div>
                     <div style={{fontSize:9,color:"#5a8870"}}>t CO₂e/yr emitted uncontrolled</div>
                   </div>
                   <div style={{background:s0.dmppEnabled?"#102a18":"#0e1a18",borderRadius:6,padding:"8px 10px",border:s0.dmppEnabled?"1px solid #3dcb7a44":"1px solid #2a3030"}}>
                     <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:4,textTransform:"uppercase"}}>N₂O Avoided ({soilObjCalc.name})</div>
-                    <div style={{fontSize:18,fontWeight:900,color:s0.dmppEnabled?"#3dcb7a":"#445050",fontFamily:"'DM Mono', monospace"}}>{dmpp_co2e_avoid_ann.toLocaleString()}</div>
+                    <div style={{fontSize:18,fontWeight:900,color:s0.dmppEnabled?"#3dcb7a":"#445050",fontFamily:"'DM Sans', sans-serif"}}>{dmpp_co2e_avoid_ann.toLocaleString()}</div>
                     <div style={{fontSize:9,color:"#5a8870"}}>t CO₂e/yr · {Math.round(dmpp_efficacy*100)}% suppression on {soilObjCalc.name}</div>
                   </div>
                   <div style={{background:s0.dmppEnabled?"#1a3520":"#0e1a18",borderRadius:6,padding:"8px 10px",border:s0.dmppEnabled?"1px solid #3dcb7a":"1px solid #2a3030"}}>
                     <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:4,textTransform:"uppercase"}}>Credit Revenue</div>
-                    <div style={{fontSize:18,fontWeight:900,color:s0.dmppEnabled?"#3dcb7a":"#445050",fontFamily:"'DM Mono', monospace"}}>${s0.dmppEnabled?dmpp_credit_rev_ann.toLocaleString():"—"}</div>
+                    <div style={{fontSize:18,fontWeight:900,color:s0.dmppEnabled?"#3dcb7a":"#445050",fontFamily:"'DM Sans', sans-serif"}}>${s0.dmppEnabled?dmpp_credit_rev_ann.toLocaleString():"—"}</div>
                     <div style={{fontSize:9,color:"#5a8870"}}>$/yr @ ${carbonPriceActive}/t CO₂e</div>
                   </div>
                 </div>
@@ -4526,15 +4526,15 @@ export default function CFI() {
                   <div style={{background:s0.dmppEnabled?"#102818":"#0e1a18",borderRadius:6,padding:"8px 10px",border:s0.dmppEnabled?"1px solid #3dcb7a44":"1px solid #2a3030"}}>
                     <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
                       <span style={{fontSize:8,color:"#7aa890",fontWeight:700,textTransform:"uppercase"}}>Annual Cost</span>
-                      <span style={{fontSize:10,fontWeight:800,color:"#f0a030",fontFamily:"'DM Mono', monospace"}}>${dmpp_cost_annual.toLocaleString()}</span>
+                      <span style={{fontSize:10,fontWeight:800,color:"#f0a030",fontFamily:"'DM Sans', sans-serif"}}>${dmpp_cost_annual.toLocaleString()}</span>
                     </div>
                     <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
                       <span style={{fontSize:8,color:"#7aa890",fontWeight:700,textTransform:"uppercase"}}>Net Gain/yr</span>
-                      <span style={{fontSize:10,fontWeight:800,color:dmpp_net_annual>=0?"#3dcb7a":"#e84040",fontFamily:"'DM Mono', monospace"}}>${s0.dmppEnabled?dmpp_net_annual.toLocaleString():"—"}</span>
+                      <span style={{fontSize:10,fontWeight:800,color:dmpp_net_annual>=0?"#3dcb7a":"#e84040",fontFamily:"'DM Sans', sans-serif"}}>${s0.dmppEnabled?dmpp_net_annual.toLocaleString():"—"}</span>
                     </div>
                     <div style={{display:"flex",justifyContent:"space-between"}}>
                       <span style={{fontSize:8,color:"#7aa890",fontWeight:700,textTransform:"uppercase"}}>ROI</span>
-                      <span style={{fontSize:14,fontWeight:900,color:dmpp_roi>=3?"#3dcb7a":dmpp_roi>=2?"#f0a030":"#e84040",fontFamily:"'DM Mono', monospace"}}>{s0.dmppEnabled?dmpp_roi+"x":"—"}</span>
+                      <span style={{fontSize:14,fontWeight:900,color:dmpp_roi>=3?"#3dcb7a":dmpp_roi>=2?"#f0a030":"#e84040",fontFamily:"'DM Sans', sans-serif"}}>{s0.dmppEnabled?dmpp_roi+"x":"—"}</span>
                     </div>
                   </div>
                 </div>
@@ -4558,10 +4558,10 @@ export default function CFI() {
                       return (
                         <tr key={i} style={{borderBottom:"1px solid #1a3025",background:isActive?"#1a3a20":"transparent"}}>
                           <td style={{padding:"4px 6px",color:isActive?"#3dcb7a":"#c8d8f0",fontWeight:isActive?800:400}}>{soil.name}{isActive?" ← active":""}</td>
-                          <td style={{padding:"4px 6px",color:"#7aa890",fontFamily:"'DM Mono', monospace"}}>{soil.pct}</td>
-                          <td style={{padding:"4px 6px",fontFamily:"'DM Mono', monospace",fontWeight:700,color:eff>=0.40?"#3dcb7a":eff>=0.30?"#f0a030":"#8898b0"}}>{Math.round(eff*100)}%</td>
-                          <td style={{padding:"4px 6px",fontFamily:"'DM Mono', monospace",color:"#3dcb7a",fontWeight:700}}>{avoid.toLocaleString()}</td>
-                          <td style={{padding:"4px 6px",fontFamily:"'DM Mono', monospace",color:"#f0a030",fontWeight:700}}>${rev.toLocaleString()}</td>
+                          <td style={{padding:"4px 6px",color:"#7aa890",fontFamily:"'DM Sans', sans-serif"}}>{soil.pct}</td>
+                          <td style={{padding:"4px 6px",fontFamily:"'DM Sans', sans-serif",fontWeight:700,color:eff>=0.40?"#3dcb7a":eff>=0.30?"#f0a030":"#8898b0"}}>{Math.round(eff*100)}%</td>
+                          <td style={{padding:"4px 6px",fontFamily:"'DM Sans', sans-serif",color:"#3dcb7a",fontWeight:700}}>{avoid.toLocaleString()}</td>
+                          <td style={{padding:"4px 6px",fontFamily:"'DM Sans', sans-serif",color:"#f0a030",fontWeight:700}}>${rev.toLocaleString()}</td>
                           <td style={{padding:"4px 6px",color:"#7aa890",fontSize:8}}>{soil.dmppNote||"—"}</td>
                         </tr>
                       );

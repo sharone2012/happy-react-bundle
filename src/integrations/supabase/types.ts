@@ -2085,6 +2085,51 @@ export type Database = {
           },
         ]
       }
+      cfi_lab_design_config: {
+        Row: {
+          colour_tokens: Json | null
+          created_at: string | null
+          created_by: string | null
+          design_key: string
+          font_tokens: Json | null
+          id: number
+          locked: boolean | null
+          notes: string | null
+          sections: Json | null
+          streams: string[]
+          updated_at: string | null
+          version: string
+        }
+        Insert: {
+          colour_tokens?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          design_key: string
+          font_tokens?: Json | null
+          id?: number
+          locked?: boolean | null
+          notes?: string | null
+          sections?: Json | null
+          streams?: string[]
+          updated_at?: string | null
+          version: string
+        }
+        Update: {
+          colour_tokens?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          design_key?: string
+          font_tokens?: Json | null
+          id?: number
+          locked?: boolean | null
+          notes?: string | null
+          sections?: Json | null
+          streams?: string[]
+          updated_at?: string | null
+          version?: string
+        }
+        Relationships: []
+      }
       cfi_lab_display_mapping: {
         Row: {
           created_at: string | null
