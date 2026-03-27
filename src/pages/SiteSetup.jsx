@@ -1881,6 +1881,9 @@ export default function SiteSetup() {
           </div>
         </div>
 
+        {/* ════ ROW 5: SOIL ACIDITY PROFILE ════ */}
+        <CFI_SoilAcidity_ProfileCard millName={site.millName} />
+
       </div>
     </div>
   );
