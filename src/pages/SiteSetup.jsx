@@ -668,10 +668,10 @@ export default function SiteSetup() {
       const t = streamT[key]||0; if (t<=0) return;
       const s = FEEDSTOCK[key]; if (!s) return;
       const w = t/grandTotal;
-      b.N+=s.N*w; b.P+=s.P*w; b.K+=s.K*w; b.CP+=s.CP*w;
-      b.EE+=s.EE*w; b.Ash+=s.Ash*w; b.MC+=s.MC*w; b.DM+=s.DM*w;
-      b.CN_N+=s.N*w; b.CN_C+=s.N*s.CN*w;
-      b.Lignin+=s.Lignin*w; b.Ca+=s.Ca*w; b.Mg+=s.Mg*w;
+      b.N+=(s.N||0)*w; b.P+=(s.P||0)*w; b.K+=(s.K||0)*w; b.CP+=(s.CP||0)*w;
+      b.EE+=(s.EE||0)*w; b.Ash+=(s.Ash||0)*w; b.MC+=(s.MC||0)*w; b.DM+=(s.DM||0)*w;
+      b.CN_N+=(s.N||0)*w; b.CN_C+=(s.N||0)*(s.CN||0)*w;
+      b.Lignin+=(s.Lignin||0)*w; b.Ca+=(s.Ca||0)*w; b.Mg+=(s.Mg||0)*w;
     });
     b.CN   = b.CN_N > 0 ? b.CN_C/b.CN_N : 0;
     b.P2O5 = isNaN(b.P) ? 0 : b.P * 2.291;
