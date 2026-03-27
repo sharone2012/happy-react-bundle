@@ -557,9 +557,9 @@ export default function SiteSetup() {
   // ═══════════════════════════════════════════════════════
   async function toggleStream(key) {
     setActiveStreams(prev => {
-      const next = { ...prev, [key]: !prev[key] };
-      // GUARDRAIL: EFB off → OPDC must deselect
-      if (key === 'efb' && !next.efb) next.opdc = false;
+      // Toggles are always-on: once selected, cannot be deselected
+      if (prev[key]) return prev;
+      const next = { ...prev, [key]: true };
       saveStreamToggles(next);
       return next;
     });
