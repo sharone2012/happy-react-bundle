@@ -4,6 +4,7 @@ import LoginPage from "./LoginPage";
 import { supabase } from "@/integrations/supabase/client";
 import CFI_PriceRefreshBadge from "@/components/CFI_PriceRefreshBadge";
 import CFI_ValueCalculator from "@/components/CFI_ValueCalculator";
+import CFI_SoilAcidity_Lookup from "@/CFI_SoilAcidity_Lookup";
 
 
 // ─── SUPABASE LIVE CONNECTION ─────────────────────────────────────────────────
