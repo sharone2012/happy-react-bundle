@@ -2366,11 +2366,11 @@ export default function CFI() {
           {NAV_TABS.map((t,i)=>(
             <div key={t} onClick={()=>handleTabClick(i)} style={{
               fontFamily:_Fnt.mono, fontSize:11, fontWeight:700, borderRadius:'7px 7px 0 0',
-              borderTop:    i===stage ? '1.5px solid rgba(51,212,188,0.60)' : '1.5px solid rgba(139,160,180,0.18)',
-              borderLeft:   i===stage ? '1.5px solid rgba(51,212,188,0.60)' : '1.5px solid rgba(139,160,180,0.18)',
-              borderRight:  i===stage ? '1.5px solid rgba(51,212,188,0.60)' : '1.5px solid rgba(139,160,180,0.18)',
+              borderTop:    i===stage ? '1.5px solid rgba(51,212,188,0.60)' : '1.5px solid rgba(139,160,180,0.35)',
+              borderLeft:   i===stage ? '1.5px solid rgba(51,212,188,0.60)' : '1.5px solid rgba(139,160,180,0.35)',
+              borderRight:  i===stage ? '1.5px solid rgba(51,212,188,0.60)' : '1.5px solid rgba(139,160,180,0.35)',
               borderBottom: 'none',
-              background:   i===stage ? 'rgba(51,212,188,0.12)' : '#000000',
+              background:   i===stage ? 'rgba(64, 215, 197, 0.15)' : '#000000',
               color:        i===stage ? '#F5A623' : '#A8BDD0',
               padding:'8px 16px 10px', marginBottom:-2, cursor:'pointer', whiteSpace:'nowrap',
             }}>{t}</div>
