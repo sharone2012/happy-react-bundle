@@ -14,6 +14,92 @@ export type Database = {
   }
   public: {
     Tables: {
+      biological_consortium_validation: {
+        Row: {
+          benefits_detailed: Json | null
+          benefits_summary: string | null
+          bsf_ivdmd_uplift_pct: number | null
+          bsf_safe: boolean | null
+          bsf_safety_notes: string | null
+          confidence_level: string | null
+          conflicts: string | null
+          cp_uplift_pct: number | null
+          created_at: string | null
+          hard_gates: string | null
+          id: number
+          lignin_reduction_pct: number | null
+          must_pair_with: string[] | null
+          n_benefit_kg_per_t_dm: number | null
+          organism_id: number | null
+          organism_name: string
+          p_benefit_pct_uplift: number | null
+          synergies_with: string[] | null
+          timing_rules: string | null
+          updated_at: string | null
+          validated_by: string | null
+          validation_date: string | null
+          wave_assignment: string
+        }
+        Insert: {
+          benefits_detailed?: Json | null
+          benefits_summary?: string | null
+          bsf_ivdmd_uplift_pct?: number | null
+          bsf_safe?: boolean | null
+          bsf_safety_notes?: string | null
+          confidence_level?: string | null
+          conflicts?: string | null
+          cp_uplift_pct?: number | null
+          created_at?: string | null
+          hard_gates?: string | null
+          id?: number
+          lignin_reduction_pct?: number | null
+          must_pair_with?: string[] | null
+          n_benefit_kg_per_t_dm?: number | null
+          organism_id?: number | null
+          organism_name: string
+          p_benefit_pct_uplift?: number | null
+          synergies_with?: string[] | null
+          timing_rules?: string | null
+          updated_at?: string | null
+          validated_by?: string | null
+          validation_date?: string | null
+          wave_assignment: string
+        }
+        Update: {
+          benefits_detailed?: Json | null
+          benefits_summary?: string | null
+          bsf_ivdmd_uplift_pct?: number | null
+          bsf_safe?: boolean | null
+          bsf_safety_notes?: string | null
+          confidence_level?: string | null
+          conflicts?: string | null
+          cp_uplift_pct?: number | null
+          created_at?: string | null
+          hard_gates?: string | null
+          id?: number
+          lignin_reduction_pct?: number | null
+          must_pair_with?: string[] | null
+          n_benefit_kg_per_t_dm?: number | null
+          organism_id?: number | null
+          organism_name?: string
+          p_benefit_pct_uplift?: number | null
+          synergies_with?: string[] | null
+          timing_rules?: string | null
+          updated_at?: string | null
+          validated_by?: string | null
+          validation_date?: string | null
+          wave_assignment?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "biological_consortium_validation_organism_id_fkey"
+            columns: ["organism_id"]
+            isOneToOne: false
+            referencedRelation: "biological_library"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       biological_library: {
         Row: {
           activity_day_end: number | null
@@ -22,46 +108,64 @@ export type Database = {
           bsf_introduction_gate: string | null
           bsf_meal_cp: string | null
           bsf_safe: boolean | null
+          bsf_score: number | null
           category: string | null
           cellulose_degradation: boolean | null
+          cfi_category: string | null
           common_name: string | null
           conflict_with: string[] | null
           cost_high_usd: number | null
           cost_low_usd: number | null
+          cost_per_tonne_fw: number | null
+          cp_score: number | null
           cp_uplift_pct: string | null
           dose_cfu_per_g: string | null
           dose_high_pct: number | null
           dose_low_pct: number | null
+          dose_pct_dm: number | null
           form: string | null
           guardrail_flag: string | null
           guardrail_note: string | null
+          how_it_works: string | null
           icbb_code: string | null
           id: number
           industry_id: number | null
+          is_conditional: boolean | null
           last_updated: string | null
           lignin_degradation: boolean | null
           lignin_reduction_pct: string | null
+          lignin_score: number | null
           lock_class: string | null
           n_added_kg_t: string | null
           n_fixation: boolean | null
+          n_fixer_score: number | null
           nine_org: boolean | null
           notes: string | null
+          one_nine_score: number | null
           one_shot: boolean | null
           optimal_ph_high: number | null
           optimal_ph_low: number | null
           optimal_temp_c_high: number | null
           optimal_temp_c_low: number | null
           organism_name: string
+          outcomes: string | null
           p_effect: string | null
+          p_releaser_score: number | null
           p_solubilisation: boolean | null
           price_usd_per_kg: number | null
           primary_function: string | null
           recommended: boolean | null
+          short_name: string | null
+          source_references: string | null
           stage_compatibility: string[] | null
           strain_code: string | null
           supplier_idn: string | null
+          timing_notes: string | null
+          warnings: string | null
           wave: string | null
+          wave_assignment: string | null
           wave_note: string | null
+          what_it_does: string | null
         }
         Insert: {
           activity_day_end?: number | null
@@ -70,46 +174,64 @@ export type Database = {
           bsf_introduction_gate?: string | null
           bsf_meal_cp?: string | null
           bsf_safe?: boolean | null
+          bsf_score?: number | null
           category?: string | null
           cellulose_degradation?: boolean | null
+          cfi_category?: string | null
           common_name?: string | null
           conflict_with?: string[] | null
           cost_high_usd?: number | null
           cost_low_usd?: number | null
+          cost_per_tonne_fw?: number | null
+          cp_score?: number | null
           cp_uplift_pct?: string | null
           dose_cfu_per_g?: string | null
           dose_high_pct?: number | null
           dose_low_pct?: number | null
+          dose_pct_dm?: number | null
           form?: string | null
           guardrail_flag?: string | null
           guardrail_note?: string | null
+          how_it_works?: string | null
           icbb_code?: string | null
           id?: number
           industry_id?: number | null
+          is_conditional?: boolean | null
           last_updated?: string | null
           lignin_degradation?: boolean | null
           lignin_reduction_pct?: string | null
+          lignin_score?: number | null
           lock_class?: string | null
           n_added_kg_t?: string | null
           n_fixation?: boolean | null
+          n_fixer_score?: number | null
           nine_org?: boolean | null
           notes?: string | null
+          one_nine_score?: number | null
           one_shot?: boolean | null
           optimal_ph_high?: number | null
           optimal_ph_low?: number | null
           optimal_temp_c_high?: number | null
           optimal_temp_c_low?: number | null
           organism_name: string
+          outcomes?: string | null
           p_effect?: string | null
+          p_releaser_score?: number | null
           p_solubilisation?: boolean | null
           price_usd_per_kg?: number | null
           primary_function?: string | null
           recommended?: boolean | null
+          short_name?: string | null
+          source_references?: string | null
           stage_compatibility?: string[] | null
           strain_code?: string | null
           supplier_idn?: string | null
+          timing_notes?: string | null
+          warnings?: string | null
           wave?: string | null
+          wave_assignment?: string | null
           wave_note?: string | null
+          what_it_does?: string | null
         }
         Update: {
           activity_day_end?: number | null
@@ -118,46 +240,64 @@ export type Database = {
           bsf_introduction_gate?: string | null
           bsf_meal_cp?: string | null
           bsf_safe?: boolean | null
+          bsf_score?: number | null
           category?: string | null
           cellulose_degradation?: boolean | null
+          cfi_category?: string | null
           common_name?: string | null
           conflict_with?: string[] | null
           cost_high_usd?: number | null
           cost_low_usd?: number | null
+          cost_per_tonne_fw?: number | null
+          cp_score?: number | null
           cp_uplift_pct?: string | null
           dose_cfu_per_g?: string | null
           dose_high_pct?: number | null
           dose_low_pct?: number | null
+          dose_pct_dm?: number | null
           form?: string | null
           guardrail_flag?: string | null
           guardrail_note?: string | null
+          how_it_works?: string | null
           icbb_code?: string | null
           id?: number
           industry_id?: number | null
+          is_conditional?: boolean | null
           last_updated?: string | null
           lignin_degradation?: boolean | null
           lignin_reduction_pct?: string | null
+          lignin_score?: number | null
           lock_class?: string | null
           n_added_kg_t?: string | null
           n_fixation?: boolean | null
+          n_fixer_score?: number | null
           nine_org?: boolean | null
           notes?: string | null
+          one_nine_score?: number | null
           one_shot?: boolean | null
           optimal_ph_high?: number | null
           optimal_ph_low?: number | null
           optimal_temp_c_high?: number | null
           optimal_temp_c_low?: number | null
           organism_name?: string
+          outcomes?: string | null
           p_effect?: string | null
+          p_releaser_score?: number | null
           p_solubilisation?: boolean | null
           price_usd_per_kg?: number | null
           primary_function?: string | null
           recommended?: boolean | null
+          short_name?: string | null
+          source_references?: string | null
           stage_compatibility?: string[] | null
           strain_code?: string | null
           supplier_idn?: string | null
+          timing_notes?: string | null
+          warnings?: string | null
           wave?: string | null
+          wave_assignment?: string | null
           wave_note?: string | null
+          what_it_does?: string | null
         }
         Relationships: [
           {
@@ -1861,6 +2001,33 @@ export type Database = {
           },
         ]
       }
+      cfi_lab_display_mapping: {
+        Row: {
+          created_at: string | null
+          current_stage: string
+          display_label: string
+          display_stage: string
+          id: number
+          is_final_output: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          current_stage: string
+          display_label: string
+          display_stage: string
+          id?: number
+          is_final_output?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          current_stage?: string
+          display_label?: string
+          display_stage?: string
+          id?: number
+          is_final_output?: boolean | null
+        }
+        Relationships: []
+      }
       cfi_master_prompts: {
         Row: {
           applies_to: string[] | null
@@ -2584,6 +2751,102 @@ export type Database = {
         }
         Relationships: []
       }
+      cfi_product_nutrients: {
+        Row: {
+          b_g_per_t_wet: number | null
+          ca_kg_per_t_wet: number | null
+          confidence: string | null
+          created_at: string | null
+          cu_g_per_t_wet: number | null
+          default_rate_t_ha_yr: number | null
+          dm_fraction: number | null
+          fe_g_per_t_wet: number | null
+          id: number
+          k_kg_per_t_wet: number | null
+          lab_confirmed: boolean | null
+          mg_kg_per_t_wet: number | null
+          mn_g_per_t_wet: number | null
+          moisture_pct_wb: number | null
+          n_kg_per_t_wet: number | null
+          n_leach_reduction_pct: number | null
+          notes: string | null
+          om_kg_per_t_wet: number | null
+          p_availability_multiplier: number | null
+          p_kg_per_t_wet: number | null
+          product_key: string
+          product_name: string
+          s_kg_per_t_wet: number | null
+          source: string | null
+          stage: string
+          updated_at: string | null
+          value_usd_per_t_dm: number | null
+          value_usd_per_t_wet: number | null
+          zn_g_per_t_wet: number | null
+        }
+        Insert: {
+          b_g_per_t_wet?: number | null
+          ca_kg_per_t_wet?: number | null
+          confidence?: string | null
+          created_at?: string | null
+          cu_g_per_t_wet?: number | null
+          default_rate_t_ha_yr?: number | null
+          dm_fraction?: number | null
+          fe_g_per_t_wet?: number | null
+          id?: number
+          k_kg_per_t_wet?: number | null
+          lab_confirmed?: boolean | null
+          mg_kg_per_t_wet?: number | null
+          mn_g_per_t_wet?: number | null
+          moisture_pct_wb?: number | null
+          n_kg_per_t_wet?: number | null
+          n_leach_reduction_pct?: number | null
+          notes?: string | null
+          om_kg_per_t_wet?: number | null
+          p_availability_multiplier?: number | null
+          p_kg_per_t_wet?: number | null
+          product_key: string
+          product_name: string
+          s_kg_per_t_wet?: number | null
+          source?: string | null
+          stage: string
+          updated_at?: string | null
+          value_usd_per_t_dm?: number | null
+          value_usd_per_t_wet?: number | null
+          zn_g_per_t_wet?: number | null
+        }
+        Update: {
+          b_g_per_t_wet?: number | null
+          ca_kg_per_t_wet?: number | null
+          confidence?: string | null
+          created_at?: string | null
+          cu_g_per_t_wet?: number | null
+          default_rate_t_ha_yr?: number | null
+          dm_fraction?: number | null
+          fe_g_per_t_wet?: number | null
+          id?: number
+          k_kg_per_t_wet?: number | null
+          lab_confirmed?: boolean | null
+          mg_kg_per_t_wet?: number | null
+          mn_g_per_t_wet?: number | null
+          moisture_pct_wb?: number | null
+          n_kg_per_t_wet?: number | null
+          n_leach_reduction_pct?: number | null
+          notes?: string | null
+          om_kg_per_t_wet?: number | null
+          p_availability_multiplier?: number | null
+          p_kg_per_t_wet?: number | null
+          product_key?: string
+          product_name?: string
+          s_kg_per_t_wet?: number | null
+          source?: string | null
+          stage?: string
+          updated_at?: string | null
+          value_usd_per_t_dm?: number | null
+          value_usd_per_t_wet?: number | null
+          zn_g_per_t_wet?: number | null
+        }
+        Relationships: []
+      }
       cfi_product_soil_response: {
         Row: {
           amf_confidence: string | null
@@ -2850,6 +3113,45 @@ export type Database = {
           source_2?: string | null
           temp_c_avg_max?: number | null
           temp_c_avg_min?: number | null
+        }
+        Relationships: []
+      }
+      cfi_reports: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          id: number
+          is_published: boolean | null
+          report_content: string
+          report_date: string
+          report_title: string
+          report_type: string
+          updated_at: string | null
+          version: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          id?: number
+          is_published?: boolean | null
+          report_content: string
+          report_date?: string
+          report_title: string
+          report_type: string
+          updated_at?: string | null
+          version?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          id?: number
+          is_published?: boolean | null
+          report_content?: string
+          report_date?: string
+          report_title?: string
+          report_type?: string
+          updated_at?: string | null
+          version?: string | null
         }
         Relationships: []
       }
@@ -3688,6 +3990,84 @@ export type Database = {
           },
         ]
       }
+      cfi_soil_amendments: {
+        Row: {
+          amendment_category: string
+          amendment_key: string
+          applicable_soils: string[] | null
+          application_frequency_yr: number | null
+          application_rate_kg_ha: number | null
+          confidence_tier: string | null
+          cost_usd_per_kg: number | null
+          cost_usd_per_t: number | null
+          created_at: string | null
+          id: number
+          k_availability_pct: number | null
+          mandatory_soils: string[] | null
+          micronutrient_content: Json | null
+          n_leach_reduction_pct: number | null
+          not_recommended_soils: string[] | null
+          notes: string | null
+          p_fix_bypass_pct: number | null
+          product_name: string
+          product_type: string | null
+          regulatory_status: string | null
+          residual_effect_years: number | null
+          source: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          amendment_category: string
+          amendment_key: string
+          applicable_soils?: string[] | null
+          application_frequency_yr?: number | null
+          application_rate_kg_ha?: number | null
+          confidence_tier?: string | null
+          cost_usd_per_kg?: number | null
+          cost_usd_per_t?: number | null
+          created_at?: string | null
+          id?: number
+          k_availability_pct?: number | null
+          mandatory_soils?: string[] | null
+          micronutrient_content?: Json | null
+          n_leach_reduction_pct?: number | null
+          not_recommended_soils?: string[] | null
+          notes?: string | null
+          p_fix_bypass_pct?: number | null
+          product_name: string
+          product_type?: string | null
+          regulatory_status?: string | null
+          residual_effect_years?: number | null
+          source?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          amendment_category?: string
+          amendment_key?: string
+          applicable_soils?: string[] | null
+          application_frequency_yr?: number | null
+          application_rate_kg_ha?: number | null
+          confidence_tier?: string | null
+          cost_usd_per_kg?: number | null
+          cost_usd_per_t?: number | null
+          created_at?: string | null
+          id?: number
+          k_availability_pct?: number | null
+          mandatory_soils?: string[] | null
+          micronutrient_content?: Json | null
+          n_leach_reduction_pct?: number | null
+          not_recommended_soils?: string[] | null
+          notes?: string | null
+          p_fix_bypass_pct?: number | null
+          product_name?: string
+          product_type?: string | null
+          regulatory_status?: string | null
+          residual_effect_years?: number | null
+          source?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       cfi_soil_coefficients: {
         Row: {
           acid_phosphatase_mature_baseline: number | null
@@ -3978,6 +4358,86 @@ export type Database = {
           },
         ]
       }
+      cfi_soil_fertility_by_mgmt: {
+        Row: {
+          confidence: string | null
+          created_at: string | null
+          id: number
+          k_leach_pct_high: number | null
+          k_leach_pct_low: number | null
+          k_recommended_amendments: string[] | null
+          lime_application_cycle_yrs: number | null
+          lime_cost_usd_per_kg: number | null
+          lime_kg_ha: number | null
+          management_level: string
+          n_leach_pct_high: number | null
+          n_leach_pct_low: number | null
+          n_leach_recommended_amendments: string[] | null
+          notes: string | null
+          p_fix_pct_high: number | null
+          p_fix_pct_low: number | null
+          p_fix_recommended_amendments: string[] | null
+          p_industry_overapplication_multiplier: number | null
+          soil_key: string
+          source: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          confidence?: string | null
+          created_at?: string | null
+          id?: number
+          k_leach_pct_high?: number | null
+          k_leach_pct_low?: number | null
+          k_recommended_amendments?: string[] | null
+          lime_application_cycle_yrs?: number | null
+          lime_cost_usd_per_kg?: number | null
+          lime_kg_ha?: number | null
+          management_level: string
+          n_leach_pct_high?: number | null
+          n_leach_pct_low?: number | null
+          n_leach_recommended_amendments?: string[] | null
+          notes?: string | null
+          p_fix_pct_high?: number | null
+          p_fix_pct_low?: number | null
+          p_fix_recommended_amendments?: string[] | null
+          p_industry_overapplication_multiplier?: number | null
+          soil_key: string
+          source?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          confidence?: string | null
+          created_at?: string | null
+          id?: number
+          k_leach_pct_high?: number | null
+          k_leach_pct_low?: number | null
+          k_recommended_amendments?: string[] | null
+          lime_application_cycle_yrs?: number | null
+          lime_cost_usd_per_kg?: number | null
+          lime_kg_ha?: number | null
+          management_level?: string
+          n_leach_pct_high?: number | null
+          n_leach_pct_low?: number | null
+          n_leach_recommended_amendments?: string[] | null
+          notes?: string | null
+          p_fix_pct_high?: number | null
+          p_fix_pct_low?: number | null
+          p_fix_recommended_amendments?: string[] | null
+          p_industry_overapplication_multiplier?: number | null
+          soil_key?: string
+          source?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_soil_fertility_by_mgmt_soil_key_fkey"
+            columns: ["soil_key"]
+            isOneToOne: false
+            referencedRelation: "cfi_soil_profiles"
+            referencedColumns: ["soil_key"]
+          },
+        ]
+      }
       cfi_soil_microbe_recommendations: {
         Row: {
           application_stage: string | null
@@ -4112,6 +4572,147 @@ export type Database = {
         }
         Relationships: []
       }
+      cfi_soil_optimized_stacks: {
+        Row: {
+          confidence_level: string | null
+          covers_bsf_ivdmd: boolean | null
+          covers_cp_uplift: boolean | null
+          covers_lignin: boolean | null
+          covers_n_fixation: boolean | null
+          covers_p_release: boolean | null
+          created_at: string | null
+          created_by: string | null
+          field_trial_verified: boolean | null
+          id: number
+          is_approved: boolean | null
+          is_default: boolean | null
+          organisms: string[]
+          predicted_amf_uplift_pct: number | null
+          predicted_mbc_uplift_pct: number | null
+          predicted_p_availability_pct: number | null
+          rationale: string
+          soil_constraints: string | null
+          soil_type: string
+          stack_name: string
+          total_cost_usd_per_t_fw: number | null
+          total_organisms: number
+        }
+        Insert: {
+          confidence_level?: string | null
+          covers_bsf_ivdmd?: boolean | null
+          covers_cp_uplift?: boolean | null
+          covers_lignin?: boolean | null
+          covers_n_fixation?: boolean | null
+          covers_p_release?: boolean | null
+          created_at?: string | null
+          created_by?: string | null
+          field_trial_verified?: boolean | null
+          id?: number
+          is_approved?: boolean | null
+          is_default?: boolean | null
+          organisms: string[]
+          predicted_amf_uplift_pct?: number | null
+          predicted_mbc_uplift_pct?: number | null
+          predicted_p_availability_pct?: number | null
+          rationale: string
+          soil_constraints?: string | null
+          soil_type: string
+          stack_name: string
+          total_cost_usd_per_t_fw?: number | null
+          total_organisms: number
+        }
+        Update: {
+          confidence_level?: string | null
+          covers_bsf_ivdmd?: boolean | null
+          covers_cp_uplift?: boolean | null
+          covers_lignin?: boolean | null
+          covers_n_fixation?: boolean | null
+          covers_p_release?: boolean | null
+          created_at?: string | null
+          created_by?: string | null
+          field_trial_verified?: boolean | null
+          id?: number
+          is_approved?: boolean | null
+          is_default?: boolean | null
+          organisms?: string[]
+          predicted_amf_uplift_pct?: number | null
+          predicted_mbc_uplift_pct?: number | null
+          predicted_p_availability_pct?: number | null
+          rationale?: string
+          soil_constraints?: string | null
+          soil_type?: string
+          stack_name?: string
+          total_cost_usd_per_t_fw?: number | null
+          total_organisms?: number
+        }
+        Relationships: []
+      }
+      cfi_soil_organism_performance: {
+        Row: {
+          bsf_score_soil: number | null
+          confidence_level: string | null
+          constraint_notes: string | null
+          cp_score_soil: number | null
+          created_at: string | null
+          id: number
+          is_approved: boolean | null
+          lignin_score_soil: number | null
+          literature_source: string
+          mechanism: string
+          n_fixer_score_soil: number | null
+          organism_name: string
+          p_releaser_score_soil: number | null
+          soil_specific_score: number | null
+          soil_type: string
+          source_doi: string | null
+          updated_at: string | null
+          validated_by: string | null
+          validation_date: string | null
+        }
+        Insert: {
+          bsf_score_soil?: number | null
+          confidence_level?: string | null
+          constraint_notes?: string | null
+          cp_score_soil?: number | null
+          created_at?: string | null
+          id?: number
+          is_approved?: boolean | null
+          lignin_score_soil?: number | null
+          literature_source: string
+          mechanism: string
+          n_fixer_score_soil?: number | null
+          organism_name: string
+          p_releaser_score_soil?: number | null
+          soil_specific_score?: number | null
+          soil_type: string
+          source_doi?: string | null
+          updated_at?: string | null
+          validated_by?: string | null
+          validation_date?: string | null
+        }
+        Update: {
+          bsf_score_soil?: number | null
+          confidence_level?: string | null
+          constraint_notes?: string | null
+          cp_score_soil?: number | null
+          created_at?: string | null
+          id?: number
+          is_approved?: boolean | null
+          lignin_score_soil?: number | null
+          literature_source?: string
+          mechanism?: string
+          n_fixer_score_soil?: number | null
+          organism_name?: string
+          p_releaser_score_soil?: number | null
+          soil_specific_score?: number | null
+          soil_type?: string
+          source_doi?: string | null
+          updated_at?: string | null
+          validated_by?: string | null
+          validation_date?: string | null
+        }
+        Relationships: []
+      }
       cfi_soil_profiles: {
         Row: {
           al_sat_degraded_pct_high: number | null
@@ -4123,12 +4724,32 @@ export type Database = {
           amf_colonisation_target_pct_low: number | null
           avail_b_degraded_mg_kg_high: number | null
           avail_b_degraded_mg_kg_low: number | null
+          avail_b_target_mg_kg_high: number | null
+          avail_b_target_mg_kg_low: number | null
+          avail_cu_degraded_mg_kg_high: number | null
+          avail_cu_degraded_mg_kg_low: number | null
+          avail_cu_target_mg_kg_high: number | null
+          avail_cu_target_mg_kg_low: number | null
+          avail_fe_degraded_mg_kg_high: number | null
+          avail_fe_degraded_mg_kg_low: number | null
+          avail_fe_target_mg_kg_high: number | null
+          avail_fe_target_mg_kg_low: number | null
+          avail_mn_degraded_mg_kg_high: number | null
+          avail_mn_degraded_mg_kg_low: number | null
+          avail_mn_target_mg_kg_high: number | null
+          avail_mn_target_mg_kg_low: number | null
           avail_p_degraded_mg_kg_high: number | null
           avail_p_degraded_mg_kg_low: number | null
           avail_p_target_mg_kg_high: number | null
           avail_p_target_mg_kg_low: number | null
           avail_zn_degraded_mg_kg_high: number | null
           avail_zn_degraded_mg_kg_low: number | null
+          avail_zn_target_mg_kg_high: number | null
+          avail_zn_target_mg_kg_low: number | null
+          b_confidence_tier: string | null
+          b_deficiency_threshold_mg_kg: number | null
+          b_notes: string | null
+          b_source: string | null
           base_sat_degraded_pct_high: number | null
           base_sat_degraded_pct_low: number | null
           base_sat_target_pct_high: number | null
@@ -4145,6 +4766,11 @@ export type Database = {
           confidence_level: string | null
           coverage_pct_indonesia: number | null
           created_at: string | null
+          cu_confidence_tier: string | null
+          cu_deficiency_notes: string | null
+          cu_deficiency_threshold_mg_kg: number | null
+          cu_notes: string | null
+          cu_source: string | null
           data_source: string | null
           drainage_class: string | null
           exch_al_degraded_cmol: number | null
@@ -4160,6 +4786,8 @@ export type Database = {
           fb_ratio_degraded_low: number | null
           fb_ratio_target_high: number | null
           fb_ratio_target_low: number | null
+          fe_confidence_tier: string | null
+          fe_source: string | null
           id: number
           industry_id: number | null
           is_active: boolean | null
@@ -4176,6 +4804,9 @@ export type Database = {
           mbc_degraded_mg_kg_low: number | null
           mbc_target_mg_kg_high: number | null
           mbc_target_mg_kg_low: number | null
+          micronutrient_sources: string[] | null
+          mn_confidence_tier: string | null
+          mn_source: string | null
           n_leach_pct_baseline: number | null
           n_leach_pct_normal_high: number | null
           n_leach_pct_normal_low: number | null
@@ -4224,6 +4855,10 @@ export type Database = {
           texture_target: string | null
           total_n_pct: number | null
           updated_at: string | null
+          zn_confidence_tier: string | null
+          zn_deficiency_threshold_mg_kg: number | null
+          zn_notes: string | null
+          zn_source: string | null
         }
         Insert: {
           al_sat_degraded_pct_high?: number | null
@@ -4235,12 +4870,32 @@ export type Database = {
           amf_colonisation_target_pct_low?: number | null
           avail_b_degraded_mg_kg_high?: number | null
           avail_b_degraded_mg_kg_low?: number | null
+          avail_b_target_mg_kg_high?: number | null
+          avail_b_target_mg_kg_low?: number | null
+          avail_cu_degraded_mg_kg_high?: number | null
+          avail_cu_degraded_mg_kg_low?: number | null
+          avail_cu_target_mg_kg_high?: number | null
+          avail_cu_target_mg_kg_low?: number | null
+          avail_fe_degraded_mg_kg_high?: number | null
+          avail_fe_degraded_mg_kg_low?: number | null
+          avail_fe_target_mg_kg_high?: number | null
+          avail_fe_target_mg_kg_low?: number | null
+          avail_mn_degraded_mg_kg_high?: number | null
+          avail_mn_degraded_mg_kg_low?: number | null
+          avail_mn_target_mg_kg_high?: number | null
+          avail_mn_target_mg_kg_low?: number | null
           avail_p_degraded_mg_kg_high?: number | null
           avail_p_degraded_mg_kg_low?: number | null
           avail_p_target_mg_kg_high?: number | null
           avail_p_target_mg_kg_low?: number | null
           avail_zn_degraded_mg_kg_high?: number | null
           avail_zn_degraded_mg_kg_low?: number | null
+          avail_zn_target_mg_kg_high?: number | null
+          avail_zn_target_mg_kg_low?: number | null
+          b_confidence_tier?: string | null
+          b_deficiency_threshold_mg_kg?: number | null
+          b_notes?: string | null
+          b_source?: string | null
           base_sat_degraded_pct_high?: number | null
           base_sat_degraded_pct_low?: number | null
           base_sat_target_pct_high?: number | null
@@ -4257,6 +4912,11 @@ export type Database = {
           confidence_level?: string | null
           coverage_pct_indonesia?: number | null
           created_at?: string | null
+          cu_confidence_tier?: string | null
+          cu_deficiency_notes?: string | null
+          cu_deficiency_threshold_mg_kg?: number | null
+          cu_notes?: string | null
+          cu_source?: string | null
           data_source?: string | null
           drainage_class?: string | null
           exch_al_degraded_cmol?: number | null
@@ -4272,6 +4932,8 @@ export type Database = {
           fb_ratio_degraded_low?: number | null
           fb_ratio_target_high?: number | null
           fb_ratio_target_low?: number | null
+          fe_confidence_tier?: string | null
+          fe_source?: string | null
           id?: number
           industry_id?: number | null
           is_active?: boolean | null
@@ -4288,6 +4950,9 @@ export type Database = {
           mbc_degraded_mg_kg_low?: number | null
           mbc_target_mg_kg_high?: number | null
           mbc_target_mg_kg_low?: number | null
+          micronutrient_sources?: string[] | null
+          mn_confidence_tier?: string | null
+          mn_source?: string | null
           n_leach_pct_baseline?: number | null
           n_leach_pct_normal_high?: number | null
           n_leach_pct_normal_low?: number | null
@@ -4336,6 +5001,10 @@ export type Database = {
           texture_target?: string | null
           total_n_pct?: number | null
           updated_at?: string | null
+          zn_confidence_tier?: string | null
+          zn_deficiency_threshold_mg_kg?: number | null
+          zn_notes?: string | null
+          zn_source?: string | null
         }
         Update: {
           al_sat_degraded_pct_high?: number | null
@@ -4347,12 +5016,32 @@ export type Database = {
           amf_colonisation_target_pct_low?: number | null
           avail_b_degraded_mg_kg_high?: number | null
           avail_b_degraded_mg_kg_low?: number | null
+          avail_b_target_mg_kg_high?: number | null
+          avail_b_target_mg_kg_low?: number | null
+          avail_cu_degraded_mg_kg_high?: number | null
+          avail_cu_degraded_mg_kg_low?: number | null
+          avail_cu_target_mg_kg_high?: number | null
+          avail_cu_target_mg_kg_low?: number | null
+          avail_fe_degraded_mg_kg_high?: number | null
+          avail_fe_degraded_mg_kg_low?: number | null
+          avail_fe_target_mg_kg_high?: number | null
+          avail_fe_target_mg_kg_low?: number | null
+          avail_mn_degraded_mg_kg_high?: number | null
+          avail_mn_degraded_mg_kg_low?: number | null
+          avail_mn_target_mg_kg_high?: number | null
+          avail_mn_target_mg_kg_low?: number | null
           avail_p_degraded_mg_kg_high?: number | null
           avail_p_degraded_mg_kg_low?: number | null
           avail_p_target_mg_kg_high?: number | null
           avail_p_target_mg_kg_low?: number | null
           avail_zn_degraded_mg_kg_high?: number | null
           avail_zn_degraded_mg_kg_low?: number | null
+          avail_zn_target_mg_kg_high?: number | null
+          avail_zn_target_mg_kg_low?: number | null
+          b_confidence_tier?: string | null
+          b_deficiency_threshold_mg_kg?: number | null
+          b_notes?: string | null
+          b_source?: string | null
           base_sat_degraded_pct_high?: number | null
           base_sat_degraded_pct_low?: number | null
           base_sat_target_pct_high?: number | null
@@ -4369,6 +5058,11 @@ export type Database = {
           confidence_level?: string | null
           coverage_pct_indonesia?: number | null
           created_at?: string | null
+          cu_confidence_tier?: string | null
+          cu_deficiency_notes?: string | null
+          cu_deficiency_threshold_mg_kg?: number | null
+          cu_notes?: string | null
+          cu_source?: string | null
           data_source?: string | null
           drainage_class?: string | null
           exch_al_degraded_cmol?: number | null
@@ -4384,6 +5078,8 @@ export type Database = {
           fb_ratio_degraded_low?: number | null
           fb_ratio_target_high?: number | null
           fb_ratio_target_low?: number | null
+          fe_confidence_tier?: string | null
+          fe_source?: string | null
           id?: number
           industry_id?: number | null
           is_active?: boolean | null
@@ -4400,6 +5096,9 @@ export type Database = {
           mbc_degraded_mg_kg_low?: number | null
           mbc_target_mg_kg_high?: number | null
           mbc_target_mg_kg_low?: number | null
+          micronutrient_sources?: string[] | null
+          mn_confidence_tier?: string | null
+          mn_source?: string | null
           n_leach_pct_baseline?: number | null
           n_leach_pct_normal_high?: number | null
           n_leach_pct_normal_low?: number | null
@@ -4448,6 +5147,10 @@ export type Database = {
           texture_target?: string | null
           total_n_pct?: number | null
           updated_at?: string | null
+          zn_confidence_tier?: string | null
+          zn_deficiency_threshold_mg_kg?: number | null
+          zn_notes?: string | null
+          zn_source?: string | null
         }
         Relationships: [
           {
@@ -4937,6 +5640,99 @@ export type Database = {
             referencedColumns: ["industry_id"]
           },
         ]
+      }
+      consortium_master_rules: {
+        Row: {
+          affected_organisms: string[] | null
+          consequences: string | null
+          created_at: string | null
+          expert_panel: string | null
+          id: number
+          rule_description: string | null
+          rule_name: string
+          rule_type: string
+          severity: string | null
+          validation_method: string | null
+        }
+        Insert: {
+          affected_organisms?: string[] | null
+          consequences?: string | null
+          created_at?: string | null
+          expert_panel?: string | null
+          id?: number
+          rule_description?: string | null
+          rule_name: string
+          rule_type: string
+          severity?: string | null
+          validation_method?: string | null
+        }
+        Update: {
+          affected_organisms?: string[] | null
+          consequences?: string | null
+          created_at?: string | null
+          expert_panel?: string | null
+          id?: number
+          rule_description?: string | null
+          rule_name?: string
+          rule_type?: string
+          severity?: string | null
+          validation_method?: string | null
+        }
+        Relationships: []
+      }
+      consortium_validation_summary: {
+        Row: {
+          bsf_safe_count: number | null
+          bsf_toxic_count: number | null
+          conditional_count: number | null
+          confidence_level: string | null
+          critical_conflicts: number | null
+          hard_gates: number | null
+          id: number
+          mandatory_pairings: number | null
+          pre_wave_count: number | null
+          total_organisms: number | null
+          validated_by: string | null
+          validation_date: string | null
+          wave_1a_count: number | null
+          wave_1b_count: number | null
+          wave_2_count: number | null
+        }
+        Insert: {
+          bsf_safe_count?: number | null
+          bsf_toxic_count?: number | null
+          conditional_count?: number | null
+          confidence_level?: string | null
+          critical_conflicts?: number | null
+          hard_gates?: number | null
+          id?: number
+          mandatory_pairings?: number | null
+          pre_wave_count?: number | null
+          total_organisms?: number | null
+          validated_by?: string | null
+          validation_date?: string | null
+          wave_1a_count?: number | null
+          wave_1b_count?: number | null
+          wave_2_count?: number | null
+        }
+        Update: {
+          bsf_safe_count?: number | null
+          bsf_toxic_count?: number | null
+          conditional_count?: number | null
+          confidence_level?: string | null
+          critical_conflicts?: number | null
+          hard_gates?: number | null
+          id?: number
+          mandatory_pairings?: number | null
+          pre_wave_count?: number | null
+          total_organisms?: number | null
+          validated_by?: string | null
+          validation_date?: string | null
+          wave_1a_count?: number | null
+          wave_1b_count?: number | null
+          wave_2_count?: number | null
+        }
+        Relationships: []
       }
       dosage_analyser: {
         Row: {
@@ -6359,6 +7155,27 @@ export type Database = {
         }
         Relationships: []
       }
+      v_lab_display_current: {
+        Row: {
+          "Display as": string | null
+          "Is final product": boolean | null
+          "Show lab data from": string | null
+          "User is on page": string | null
+        }
+        Insert: {
+          "Display as"?: string | null
+          "Is final product"?: boolean | null
+          "Show lab data from"?: string | null
+          "User is on page"?: string | null
+        }
+        Update: {
+          "Display as"?: string | null
+          "Is final product"?: boolean | null
+          "Show lab data from"?: string | null
+          "User is on page"?: string | null
+        }
+        Relationships: []
+      }
       v_pke_nutrient_journey: {
         Row: {
           direction: string | null
@@ -6402,8 +7219,71 @@ export type Database = {
         }
         Relationships: []
       }
+      v_soil_recommendation_summary: {
+        Row: {
+          approved_count: number | null
+          avg_score: number | null
+          data_gap_count: number | null
+          high_confidence_count: number | null
+          low_confidence_count: number | null
+          max_score: number | null
+          medium_confidence_count: number | null
+          soil_type: string | null
+          total_organisms_scored: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
+      generate_1wave_economical: {
+        Args: { p_max_cost?: number; p_soil_type: string }
+        Returns: {
+          benefit_category: string
+          cost_per_tonne_fw: number
+          cumulative_cost: number
+          organism_name: string
+          soil_score: number
+          wave_assignment: string
+        }[]
+      }
+      generate_2wave_economical: {
+        Args: { p_max_cost?: number; p_soil_type: string }
+        Returns: {
+          application_day: number
+          benefit_category: string
+          cost_per_tonne_fw: number
+          cumulative_cost: number
+          organism_name: string
+          wave_assignment: string
+        }[]
+      }
+      generate_3wave_economical: {
+        Args: {
+          p_current_temp?: number
+          p_max_cost?: number
+          p_soil_type: string
+        }
+        Returns: {
+          application_day: number
+          benefit_category: string
+          cost_per_tonne_fw: number
+          cumulative_cost: number
+          organism_name: string
+          temp_gate_status: string
+          wave_assignment: string
+        }[]
+      }
+      generate_soil_optimized_stack: {
+        Args: { p_max_cost?: number; p_soil_type: string }
+        Returns: {
+          benefit_category: string
+          cost_per_tonne_fw: number
+          organism_name: string
+          soil_score: number
+          wave_assignment: string
+        }[]
+      }
+      get_lab_display_stage: { Args: { page_stage: string }; Returns: string }
       get_soil_acidity_class: {
         Args: { p_lat: number; p_lon: number; p_max_distance_km?: number }
         Returns: {
@@ -6414,6 +7294,32 @@ export type Database = {
           distance_km: number
           ph_midpoint: number
           ph_range: string
+        }[]
+      }
+      get_top_organisms_for_soil: {
+        Args: { p_limit?: number; p_min_score?: number; p_soil_type: string }
+        Returns: {
+          confidence_level: string
+          lignin_score: number
+          literature_source: string
+          mechanism: string
+          organism_name: string
+          p_releaser_score: number
+          soil_specific_score: number
+        }[]
+      }
+      rank_organisms_by_objective: {
+        Args: { p_limit?: number; p_objective: string; p_soil_type: string }
+        Returns: {
+          constraint_notes: string
+          cost_per_tonne_fw: number
+          mechanism: string
+          objective_score: number
+          organism_name: string
+          rank: number
+          soil_specific_score: number
+          value_ratio: number
+          wave_assignment: string
         }[]
       }
       show_limit: { Args: never; Returns: number }
