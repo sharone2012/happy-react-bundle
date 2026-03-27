@@ -41,6 +41,7 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import CFI_SoilAcidity_ProfileCard from "@/components/CFI_SoilAcidity_ProfileCard";
 
 // ── DESIGN TOKENS (locked) ──────────────────────────────
 const C = {
