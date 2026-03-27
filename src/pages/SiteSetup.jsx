@@ -1422,16 +1422,15 @@ export default function SiteSetup() {
                 {/* Default visible streams: EFB, OPDC, POS, POME, PMF */}
                 {[
                   { key:'efb',  name:'Empty Fruit Bunches', sub:'EFB · Zero Cost' },
-                  { key:'opdc', name:'Decanter Cake',        sub:'OPDC · Zero Cost', needsEfb:true },
+                  { key:'opdc', name:'Decanter Cake',        sub:'OPDC · Zero Cost' },
                   { key:'pos',  name:'Palm Oil Sludge',       sub:'POS · Zero Cost' },
                   { key:'pome', name:'POME (Liquid)',          sub:'Emissions Avoidance Only', liquid:true },
                   { key:'pmf',  name:'Palm Mesocarp Fiber',   sub:'PMF · Zero Cost' },
                 ].map(st=>{
-                  const active   = activeStreams[st.key];
-                  const disabled = st.needsEfb && !activeStreams.efb;
+                  const active = activeStreams[st.key];
                   return (
-                    <div key={st.key} onClick={()=>!disabled && toggleStream(st.key)} style={toggleCard(active && !disabled, disabled)}>
-                      <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:(active&&!disabled)?C.amber:'#B0BEC5' }}>{st.name}</div>
+                    <div key={st.key} onClick={()=>toggleStream(st.key)} style={toggleCard(active, false)}>
+                      <div style={{ fontSize:14, fontWeight:700, fontFamily:Fnt.dm, color:active?C.amber:'#B0BEC5' }}>{st.name}</div>
                     </div>
                   );
                 })}
