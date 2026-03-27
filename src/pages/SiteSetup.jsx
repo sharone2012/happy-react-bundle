@@ -675,7 +675,7 @@ export default function SiteSetup() {
     });
     b.CN   = b.CN_N > 0 ? b.CN_C/b.CN_N : 0;
     b.P2O5 = isNaN(b.P) ? 0 : b.P * 2.29;
-    b.K2O  = isNaN(b.K) ? 0 : b.K * 1.205;
+    b.K2O  = isNaN(b.K) ? 0 : b.K * 1.20;
     return b;
   }, [streamT, grandTotal]);
 
