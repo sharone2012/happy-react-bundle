@@ -46,7 +46,7 @@ export default function UnitInput({
     border: "none",
     outline: "none",
     color,
-    fontFamily: "'DM Mono', monospace",
+    fontFamily: "'DM Sans', sans-serif",
     fontSize: 13,
     padding: 0,
     margin: 0,

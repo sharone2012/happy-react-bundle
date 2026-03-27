@@ -58,7 +58,7 @@ const T = {
 const F = {
   syne:  "'Syne', sans-serif",
   dm:    "'DM Sans', sans-serif",
-  mono:  "'DM Mono', monospace",
+  mono:  "'DM Sans', sans-serif",
   brand: "'EB Garamond', serif",
 };
 
