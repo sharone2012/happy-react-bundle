@@ -595,6 +595,90 @@ export type Database = {
         }
         Relationships: []
       }
+      cfi_agent8_industry_expansion: {
+        Row: {
+          agent_confidence_level: string | null
+          agent_run_id: string | null
+          competitive_position_score: number | null
+          created_at: string | null
+          created_by: string | null
+          estimated_addressable_market_usd: number | null
+          estimated_gross_margin_pct: number | null
+          estimated_implementation_timeline_months: number | null
+          id: number
+          industry_id: number | null
+          industry_name: string
+          key_technical_challenges: string[] | null
+          last_analyzed_at: string | null
+          market_size_score: number | null
+          overall_score: number | null
+          required_capex_usd: number | null
+          research_notes: string | null
+          research_status: string | null
+          technical_feasibility_score: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          agent_confidence_level?: string | null
+          agent_run_id?: string | null
+          competitive_position_score?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          estimated_addressable_market_usd?: number | null
+          estimated_gross_margin_pct?: number | null
+          estimated_implementation_timeline_months?: number | null
+          id?: number
+          industry_id?: number | null
+          industry_name: string
+          key_technical_challenges?: string[] | null
+          last_analyzed_at?: string | null
+          market_size_score?: number | null
+          overall_score?: number | null
+          required_capex_usd?: number | null
+          research_notes?: string | null
+          research_status?: string | null
+          technical_feasibility_score?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          agent_confidence_level?: string | null
+          agent_run_id?: string | null
+          competitive_position_score?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          estimated_addressable_market_usd?: number | null
+          estimated_gross_margin_pct?: number | null
+          estimated_implementation_timeline_months?: number | null
+          id?: number
+          industry_id?: number | null
+          industry_name?: string
+          key_technical_challenges?: string[] | null
+          last_analyzed_at?: string | null
+          market_size_score?: number | null
+          overall_score?: number | null
+          required_capex_usd?: number | null
+          research_notes?: string | null
+          research_status?: string | null
+          technical_feasibility_score?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_agent8_industry_expansion_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_industries"
+            referencedColumns: ["industry_id"]
+          },
+          {
+            foreignKeyName: "cfi_agent8_industry_expansion_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "v_industry_switcher"
+            referencedColumns: ["industry_id"]
+          },
+        ]
+      }
       cfi_agent8_queue: {
         Row: {
           agent_notes: string | null
