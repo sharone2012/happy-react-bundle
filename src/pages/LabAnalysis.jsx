@@ -184,18 +184,42 @@ export default function LabAnalysis() {
         </span>
         {/* Center — tab buttons */}
         <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+          {/* Lab Analysis — always active amber */}
           <button
-            onClick={() => { setShowAll(true); setActiveStream("ALL"); }}
             style={{
               fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600,
               padding: "5px 14px", borderRadius: 4, cursor: "pointer", border: "none",
-              background: showAll ? "#F5A623" : "transparent",
-              color: showAll ? "#060C14" : "#FFFFFF",
-              ...(showAll ? {} : { border: "1px solid #333" }),
+              background: "#F5A623", color: "#060C14",
             }}
           >
-            Lab Analysis Combined
+            Lab Analysis
           </button>
+          {/* Combined */}
+          <button
+            onClick={() => { setShowAll(true); setActiveStream("ALL"); }}
+            style={{
+              fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: showAll ? 600 : 400,
+              padding: "5px 14px", borderRadius: 4, cursor: "pointer",
+              background: showAll ? "rgba(245,166,35,0.15)" : "transparent",
+              color: showAll ? "#F5A623" : "#FFFFFF",
+              border: showAll ? "1px solid #F5A623" : "1px solid #333",
+            }}
+          >
+            Combined
+          </button>
+          {/* Individual → */}
+          <button
+            style={{
+              fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 400,
+              padding: "5px 14px", borderRadius: 4, cursor: "pointer",
+              background: !showAll ? "rgba(245,166,35,0.15)" : "transparent",
+              color: !showAll ? "#F5A623" : "#FFFFFF",
+              border: !showAll ? "1px solid #F5A623" : "1px solid #333",
+            }}
+          >
+            Individual →
+          </button>
+          {/* Stream buttons */}
           {STREAMS.map(s => {
             const active = !showAll && activeStream === s;
             return (
