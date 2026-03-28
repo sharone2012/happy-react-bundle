@@ -282,6 +282,10 @@ export default function LabAnalysis() {
           { code: "PRX", title: "Proximate Analysis",            meta: "9 parameters · % wb · % DM · MJ/kg DM", rows: PRX_ROWS },
           { code: "FIB", title: "Fiber Analysis",                meta: "6 parameters · % DM",              rows: FIB_ROWS },
           { code: "PHY", title: "Physicochemical Properties",    meta: "8 parameters · various units",      rows: PHY_ROWS },
+          { code: "HMT", title: "Heavy Metals & Trace Elements", meta: "7 parameters · mg/kg DM · % ash",  rows: HMT_ROWS },
+          { code: "BIO", title: "Biological Indicators",         meta: "3 parameters · score · % DM",      rows: BIO_ROWS },
+          { code: "AGV", title: "Agronomic Value",               meta: "5 parameters · USD/t DM · %",      rows: AGV_ROWS },
+          { code: "LAR", title: "Large Molecule Analysis",       meta: "1 parameter · t CO₂e/t DM",        rows: LAR_ROWS },
         ].map(sec => {
           const isOpen = openSections[sec.code];
           return (
