@@ -27,6 +27,7 @@ const ELE_ROWS = [
 function Badge({ type, text }) {
   const styles = {
     "VERIFIED":     { bg: "rgba(114, 223, 166, 0.15)", color: "#72DFA6" },
+    "PASS":         { bg: "rgba(114, 223, 166, 0.15)", color: "#72DFA6" },
     "PENDING":      { bg: "rgba(245, 166, 35, 0.12)",  color: "#F5A623" },
     "LDE-HIGH":     { bg: "rgba(114, 223, 166, 0.10)", color: "#72DFA6" },
     "LDE-MODERATE": { bg: "rgba(245, 166, 35, 0.10)",  color: "#F5A623" },
