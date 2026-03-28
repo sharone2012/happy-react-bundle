@@ -251,98 +251,108 @@ export default function LabAnalysis() {
         background: "#060C14", padding: "0 17px",
       }}>
 
-        {/* ─── ELE SECTION (Chunk 2) ──────────────────────────────────── */}
-        <div>
-          {/* Section Header */}
-          <div
-            onClick={() => setEleOpen(!eleOpen)}
-            style={{
-              background: "rgba(0, 201, 177, 0.048)", padding: "7px 20px",
-              display: "flex", alignItems: "center", gap: 10, cursor: "pointer",
-            }}
-          >
-            <span style={{
-              fontSize: 26, color: eleOpen ? "#F5A623" : "#FFFFFF",
-              transform: eleOpen ? "rotate(90deg)" : "rotate(0deg)",
-              transition: "transform 0.2s ease, color 0.15s ease",
-              display: "inline-block", lineHeight: 1,
-            }}>›</span>
-            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#F5A623" }}>ELE</span>
-            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#40D7C5" }}>Elemental / Nutrient Analysis</span>
-            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: "#666" }}>16 parameters · % DM · mg/kg DM</span>
-            <span style={{ marginLeft: "auto", color: "#666", cursor: "pointer", fontSize: 14 }}
-              onMouseEnter={e => e.currentTarget.style.color = "#FFFFFF"}
-              onMouseLeave={e => e.currentTarget.style.color = "#666"}
-            >🖨</span>
-          </div>
+        {/* ─── ALL SECTIONS ───────────────────────────────────────────── */}
+        {[
+          { code: "ELE", title: "Elemental / Nutrient Analysis", meta: "16 parameters · % DM · mg/kg DM", rows: ELE_ROWS },
+          { code: "PRX", title: "Proximate Analysis",            meta: "9 parameters · % wb · % DM · MJ/kg DM", rows: PRX_ROWS },
+          { code: "FIB", title: "Fiber Analysis",                meta: "6 parameters · % DM",              rows: FIB_ROWS },
+          { code: "PHY", title: "Physicochemical Properties",    meta: "8 parameters · various units",      rows: PHY_ROWS },
+        ].map(sec => {
+          const isOpen = openSections[sec.code];
+          return (
+            <div key={sec.code}>
+              {/* Section Header */}
+              <div
+                onClick={() => toggleSection(sec.code)}
+                style={{
+                  background: "rgba(0, 201, 177, 0.048)", padding: "7px 20px",
+                  display: "flex", alignItems: "center", gap: 10, cursor: "pointer",
+                }}
+              >
+                <span style={{
+                  fontSize: 26, color: isOpen ? "#F5A623" : "#FFFFFF",
+                  transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
+                  transition: "transform 0.2s ease, color 0.15s ease",
+                  display: "inline-block", lineHeight: 1,
+                }}>›</span>
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#F5A623" }}>{sec.code}</span>
+                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#40D7C5" }}>{sec.title}</span>
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: "#666" }}>{sec.meta}</span>
+                <span style={{ marginLeft: "auto", color: "#666", cursor: "pointer", fontSize: 14 }}
+                  onMouseEnter={e => e.currentTarget.style.color = "#FFFFFF"}
+                  onMouseLeave={e => e.currentTarget.style.color = "#666"}
+                  onClick={e => e.stopPropagation()}
+                >🖨</span>
+              </div>
 
-          {/* Table */}
-          {eleOpen && (
-            <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed" }}>
-              <colgroup>
-                {COLS.map(c => <col key={c.key} style={{ width: c.width }} />)}
-              </colgroup>
-              <thead>
-                <tr>
-                  {COLS.map(c => (
-                    <th key={c.key} style={{
-                      fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "#666",
-                      textTransform: "uppercase", textAlign: c.align,
-                      padding: "6px 8px", borderBottom: "1px solid rgba(139,160,180,0.12)",
-                      background: "#0A1220", fontWeight: 400,
-                    }}>{c.label}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {ELE_ROWS.map((row, idx) => {
-                  const isEven = idx % 2 === 1;
-                  const isDataGap = row.result === "DATA GAP";
-                  const isSniBlocker = row.sni === "SNI Blocker";
-                  const isDash = (v) => v === "—";
-                  return (
-                    <tr
-                      key={idx}
-                      style={{ background: isEven ? "rgba(0, 201, 177, 0.02)" : "#0A1220" }}
-                      onMouseEnter={e => e.currentTarget.style.background = "rgba(0, 201, 177, 0.06)"}
-                      onMouseLeave={e => e.currentTarget.style.background = isEven ? "rgba(0, 201, 177, 0.02)" : "#0A1220"}
-                    >
-                      <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: "#FFFFFF" }}>
-                        {row.parameter}
-                      </td>
-                      <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: "#888" }}>
-                        {row.unit}
-                      </td>
-                      <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: isDataGap ? "#FF5C5C" : "#FFFFFF", fontWeight: isDataGap ? 700 : 400 }}>
-                        {row.result}
-                      </td>
-                      <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: isDash(row.range) ? "#444" : "#FFFFFF" }}>
-                        {row.range}
-                      </td>
-                      <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: isSniBlocker ? "#FF5C5C" : isDash(row.sni) ? "#444" : "#FFFFFF" }}>
-                        {row.sni}
-                      </td>
-                      <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)" }}>
-                        <Badge type={row.status} text={row.status} />
-                      </td>
-                      <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)" }}>
-                        <Badge type={row.confidence} text={row.confidence} />
-                      </td>
-                      <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: "#888" }}>
-                        {row.method}
-                      </td>
-                      <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", textAlign: "center" }}>
-                        <span style={{ cursor: "pointer", color: "#666", fontSize: 12 }}>✎</span>
-                      </td>
+              {/* Table */}
+              {isOpen && (
+                <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed" }}>
+                  <colgroup>
+                    {COLS.map(c => <col key={c.key} style={{ width: c.width }} />)}
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      {COLS.map(c => (
+                        <th key={c.key} style={{
+                          fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "#666",
+                          textTransform: "uppercase", textAlign: c.align,
+                          padding: "6px 8px", borderBottom: "1px solid rgba(139,160,180,0.12)",
+                          background: "#0A1220", fontWeight: 400,
+                        }}>{c.label}</th>
+                      ))}
                     </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          )}
-        </div>
-
-        {/* ─── Remaining sections will be added in Chunks 3–4 ───────── */}
+                  </thead>
+                  <tbody>
+                    {sec.rows.map((row, idx) => {
+                      const isEven = idx % 2 === 1;
+                      const isDataGap = row.result === "DATA GAP";
+                      const isSniBlocker = row.sni === "SNI Blocker";
+                      const isDash = (v) => v === "—";
+                      const baseBg = isEven ? "rgba(0, 201, 177, 0.02)" : "#0A1220";
+                      return (
+                        <tr
+                          key={idx}
+                          style={{ background: baseBg }}
+                          onMouseEnter={e => e.currentTarget.style.background = "rgba(0, 201, 177, 0.06)"}
+                          onMouseLeave={e => e.currentTarget.style.background = baseBg}
+                        >
+                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: "#FFFFFF" }}>
+                            {row.parameter}
+                          </td>
+                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: "#888" }}>
+                            {row.unit}
+                          </td>
+                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: isDataGap ? "#FF5C5C" : "#FFFFFF", fontWeight: isDataGap ? 700 : 400 }}>
+                            {row.result}
+                          </td>
+                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: isDash(row.range) ? "#444" : "#FFFFFF" }}>
+                            {row.range}
+                          </td>
+                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: isSniBlocker ? "#FF5C5C" : isDash(row.sni) ? "#444" : "#FFFFFF" }}>
+                            {row.sni}
+                          </td>
+                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)" }}>
+                            <Badge type={row.status} text={row.status} />
+                          </td>
+                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)" }}>
+                            <Badge type={row.confidence} text={row.confidence} />
+                          </td>
+                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: "#888" }}>
+                            {row.method}
+                          </td>
+                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", textAlign: "center" }}>
+                            <span style={{ cursor: "pointer", color: "#666", fontSize: 12 }}>✎</span>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          );
+        })}
 
       </div>
     </div>
