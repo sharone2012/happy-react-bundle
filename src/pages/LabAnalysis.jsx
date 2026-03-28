@@ -71,12 +71,57 @@ const METRICS_HIDDEN = [
   { label: "Xylanase",  value: "1–3 U/g", sub: "" },
 ];
 
+// ─── PRX HARDCODED DATA ──────────────────────────────────────────────────────
+const PRX_ROWS = [
+  { parameter: "Moisture",                   unit: "% wb",     result: "76.70%", range: "70–80%", sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "AOAC 930.15" },
+  { parameter: "Ash",                        unit: "% DM",     result: "28.00%", range: "24–32%", sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "AOAC 942.05" },
+  { parameter: "Organic Matter",             unit: "% DM",     result: "78.00%", range: "—",      sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Derived: 100 − ash%" },
+  { parameter: "Volatile Matter",            unit: "% DM",     result: "64.50%", range: "—",      sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "APHA 2540G" },
+  { parameter: "Fixed Carbon",               unit: "% DM",     result: "11.15%", range: "—",      sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Derived: 100 − VM − ash" },
+  { parameter: "Crude Protein",              unit: "% DM",     result: "14.50%", range: "12–17%", sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "AOAC 984.13 / Kjeldahl" },
+  { parameter: "Ether Extract",              unit: "% DM",     result: "12.50%", range: "—",      sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "AOAC 920.39 / Soxhlet" },
+  { parameter: "HHV (Higher Heating Value)", unit: "MJ/kg DM", result: "17.68",  range: "—",      sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "ASTM E711 / Bomb calorimeter" },
+  { parameter: "LHV (Lower Heating Value)",  unit: "MJ/kg DM", result: "15.96",  range: "—",      sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "ASTM E711 / Bomb calorimeter" },
+];
+
+// ─── FIB HARDCODED DATA ──────────────────────────────────────────────────────
+const FIB_ROWS = [
+  { parameter: "Lignin (ADL)",                  unit: "% DM", result: "10.78%", range: "8–14%", sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "AOAC 973.18 / Van Soest ADL" },
+  { parameter: "ADF (Acid Detergent Fiber)",    unit: "% DM", result: "53.19%", range: "—",     sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "AOAC 973.18 / Van Soest ADF" },
+  { parameter: "NDF (Neutral Detergent Fiber)", unit: "% DM", result: "77.23%", range: "—",     sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "AOAC 2002.04 / Van Soest NDF" },
+  { parameter: "Cellulose",                     unit: "% DM", result: "42.41%", range: "—",     sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Derived: ADF − ADL" },
+  { parameter: "Hemicellulose",                 unit: "% DM", result: "24.04%", range: "—",     sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Derived: NDF − ADF" },
+  { parameter: "ADL (Van Soest)",               unit: "% DM", result: "10.78%", range: "—",     sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "Van Soest et al. 1991" },
+];
+
+// ─── PHY HARDCODED DATA ──────────────────────────────────────────────────────
+const PHY_ROWS = [
+  { parameter: "pH",                            unit: "—",           result: "4.40",   range: "4.0–5.0", sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "AOAC 981.12 / pH electrode" },
+  { parameter: "EC (Electrical Conductivity)",  unit: "mS/cm",       result: "2.96",   range: "—",       sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "ISO 11265 / EC electrode" },
+  { parameter: "CEC (Cation Exchange Capacity)",unit: "cmol/kg DM",  result: "20–35",  range: "—",       sni: "—", status: "PENDING",  confidence: "LDE-LOW",      method: "Standard soil method" },
+  { parameter: "Liming Equivalency",            unit: "kg CaCO₃/t",  result: "29.96",  range: "—",       sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Derived calculation" },
+  { parameter: "P₂O₅ (Phosphorus Pentoxide)",  unit: "% DM",        result: "0.894%", range: "—",       sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "Derived: P × 2.2914" },
+  { parameter: "K₂O (Potassium Oxide)",         unit: "% DM",        result: "1.45%",  range: "—",       sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "Derived: K × 1.2046" },
+  { parameter: "CaO (Calcium Oxide)",           unit: "% DM",        result: "1.68%",  range: "—",       sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "Derived: Ca × 1.3992" },
+  { parameter: "MgO (Magnesium Oxide)",         unit: "% DM",        result: "1.19%",  range: "—",       sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "Derived: Mg × 1.6582" },
+];
+
+// ─── SECTION DEFINITIONS ─────────────────────────────────────────────────────
+const SECTION_DEFS = [
+  { code: "ELE", title: "Elemental / Nutrient Analysis", meta: "16 parameters · % DM · mg/kg DM", rows: null, defaultOpen: true },
+  { code: "PRX", title: "Proximate Analysis",            meta: "9 parameters · % wb · % DM · MJ/kg DM", rows: null, defaultOpen: false },
+  { code: "FIB", title: "Fiber Analysis",                meta: "6 parameters · % DM",              rows: null, defaultOpen: false },
+  { code: "PHY", title: "Physicochemical Properties",    meta: "8 parameters · various units",      rows: null, defaultOpen: false },
+];
+
 // ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
 export default function LabAnalysis() {
   const [activeStream, setActiveStream] = useState("EFB");
-  const [showAll, setShowAll] = useState(true); // Combined is default active
+  const [showAll, setShowAll] = useState(true);
   const [showEnzymes, setShowEnzymes] = useState(false);
-  const [eleOpen, setEleOpen] = useState(true);
+  const [openSections, setOpenSections] = useState({ ELE: true, PRX: false, FIB: false, PHY: false });
+
+  const toggleSection = (code) => setOpenSections(prev => ({ ...prev, [code]: !prev[code] }));
 
   return (
     <div style={{ background: "#060C14", minHeight: "100vh", fontFamily: "'DM Sans', sans-serif", color: "#FFFFFF" }}>
@@ -206,98 +251,108 @@ export default function LabAnalysis() {
         background: "#060C14", padding: "0 17px",
       }}>
 
-        {/* ─── ELE SECTION (Chunk 2) ──────────────────────────────────── */}
-        <div>
-          {/* Section Header */}
-          <div
-            onClick={() => setEleOpen(!eleOpen)}
-            style={{
-              background: "rgba(0, 201, 177, 0.048)", padding: "7px 20px",
-              display: "flex", alignItems: "center", gap: 10, cursor: "pointer",
-            }}
-          >
-            <span style={{
-              fontSize: 26, color: eleOpen ? "#F5A623" : "#FFFFFF",
-              transform: eleOpen ? "rotate(90deg)" : "rotate(0deg)",
-              transition: "transform 0.2s ease, color 0.15s ease",
-              display: "inline-block", lineHeight: 1,
-            }}>›</span>
-            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#F5A623" }}>ELE</span>
-            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#40D7C5" }}>Elemental / Nutrient Analysis</span>
-            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: "#666" }}>16 parameters · % DM · mg/kg DM</span>
-            <span style={{ marginLeft: "auto", color: "#666", cursor: "pointer", fontSize: 14 }}
-              onMouseEnter={e => e.currentTarget.style.color = "#FFFFFF"}
-              onMouseLeave={e => e.currentTarget.style.color = "#666"}
-            >🖨</span>
-          </div>
+        {/* ─── ALL SECTIONS ───────────────────────────────────────────── */}
+        {[
+          { code: "ELE", title: "Elemental / Nutrient Analysis", meta: "16 parameters · % DM · mg/kg DM", rows: ELE_ROWS },
+          { code: "PRX", title: "Proximate Analysis",            meta: "9 parameters · % wb · % DM · MJ/kg DM", rows: PRX_ROWS },
+          { code: "FIB", title: "Fiber Analysis",                meta: "6 parameters · % DM",              rows: FIB_ROWS },
+          { code: "PHY", title: "Physicochemical Properties",    meta: "8 parameters · various units",      rows: PHY_ROWS },
+        ].map(sec => {
+          const isOpen = openSections[sec.code];
+          return (
+            <div key={sec.code}>
+              {/* Section Header */}
+              <div
+                onClick={() => toggleSection(sec.code)}
+                style={{
+                  background: "rgba(0, 201, 177, 0.048)", padding: "7px 20px",
+                  display: "flex", alignItems: "center", gap: 10, cursor: "pointer",
+                }}
+              >
+                <span style={{
+                  fontSize: 26, color: isOpen ? "#F5A623" : "#FFFFFF",
+                  transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
+                  transition: "transform 0.2s ease, color 0.15s ease",
+                  display: "inline-block", lineHeight: 1,
+                }}>›</span>
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#F5A623" }}>{sec.code}</span>
+                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#40D7C5" }}>{sec.title}</span>
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: "#666" }}>{sec.meta}</span>
+                <span style={{ marginLeft: "auto", color: "#666", cursor: "pointer", fontSize: 14 }}
+                  onMouseEnter={e => e.currentTarget.style.color = "#FFFFFF"}
+                  onMouseLeave={e => e.currentTarget.style.color = "#666"}
+                  onClick={e => e.stopPropagation()}
+                >🖨</span>
+              </div>
 
-          {/* Table */}
-          {eleOpen && (
-            <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed" }}>
-              <colgroup>
-                {COLS.map(c => <col key={c.key} style={{ width: c.width }} />)}
-              </colgroup>
-              <thead>
-                <tr>
-                  {COLS.map(c => (
-                    <th key={c.key} style={{
-                      fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "#666",
-                      textTransform: "uppercase", textAlign: c.align,
-                      padding: "6px 8px", borderBottom: "1px solid rgba(139,160,180,0.12)",
-                      background: "#0A1220", fontWeight: 400,
-                    }}>{c.label}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {ELE_ROWS.map((row, idx) => {
-                  const isEven = idx % 2 === 1;
-                  const isDataGap = row.result === "DATA GAP";
-                  const isSniBlocker = row.sni === "SNI Blocker";
-                  const isDash = (v) => v === "—";
-                  return (
-                    <tr
-                      key={idx}
-                      style={{ background: isEven ? "rgba(0, 201, 177, 0.02)" : "#0A1220" }}
-                      onMouseEnter={e => e.currentTarget.style.background = "rgba(0, 201, 177, 0.06)"}
-                      onMouseLeave={e => e.currentTarget.style.background = isEven ? "rgba(0, 201, 177, 0.02)" : "#0A1220"}
-                    >
-                      <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: "#FFFFFF" }}>
-                        {row.parameter}
-                      </td>
-                      <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: "#888" }}>
-                        {row.unit}
-                      </td>
-                      <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: isDataGap ? "#FF5C5C" : "#FFFFFF", fontWeight: isDataGap ? 700 : 400 }}>
-                        {row.result}
-                      </td>
-                      <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: isDash(row.range) ? "#444" : "#FFFFFF" }}>
-                        {row.range}
-                      </td>
-                      <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: isSniBlocker ? "#FF5C5C" : isDash(row.sni) ? "#444" : "#FFFFFF" }}>
-                        {row.sni}
-                      </td>
-                      <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)" }}>
-                        <Badge type={row.status} text={row.status} />
-                      </td>
-                      <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)" }}>
-                        <Badge type={row.confidence} text={row.confidence} />
-                      </td>
-                      <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: "#888" }}>
-                        {row.method}
-                      </td>
-                      <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", textAlign: "center" }}>
-                        <span style={{ cursor: "pointer", color: "#666", fontSize: 12 }}>✎</span>
-                      </td>
+              {/* Table */}
+              {isOpen && (
+                <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed" }}>
+                  <colgroup>
+                    {COLS.map(c => <col key={c.key} style={{ width: c.width }} />)}
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      {COLS.map(c => (
+                        <th key={c.key} style={{
+                          fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "#666",
+                          textTransform: "uppercase", textAlign: c.align,
+                          padding: "6px 8px", borderBottom: "1px solid rgba(139,160,180,0.12)",
+                          background: "#0A1220", fontWeight: 400,
+                        }}>{c.label}</th>
+                      ))}
                     </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          )}
-        </div>
-
-        {/* ─── Remaining sections will be added in Chunks 3–4 ───────── */}
+                  </thead>
+                  <tbody>
+                    {sec.rows.map((row, idx) => {
+                      const isEven = idx % 2 === 1;
+                      const isDataGap = row.result === "DATA GAP";
+                      const isSniBlocker = row.sni === "SNI Blocker";
+                      const isDash = (v) => v === "—";
+                      const baseBg = isEven ? "rgba(0, 201, 177, 0.02)" : "#0A1220";
+                      return (
+                        <tr
+                          key={idx}
+                          style={{ background: baseBg }}
+                          onMouseEnter={e => e.currentTarget.style.background = "rgba(0, 201, 177, 0.06)"}
+                          onMouseLeave={e => e.currentTarget.style.background = baseBg}
+                        >
+                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: "#FFFFFF" }}>
+                            {row.parameter}
+                          </td>
+                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: "#888" }}>
+                            {row.unit}
+                          </td>
+                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: isDataGap ? "#FF5C5C" : "#FFFFFF", fontWeight: isDataGap ? 700 : 400 }}>
+                            {row.result}
+                          </td>
+                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: isDash(row.range) ? "#444" : "#FFFFFF" }}>
+                            {row.range}
+                          </td>
+                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: isSniBlocker ? "#FF5C5C" : isDash(row.sni) ? "#444" : "#FFFFFF" }}>
+                            {row.sni}
+                          </td>
+                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)" }}>
+                            <Badge type={row.status} text={row.status} />
+                          </td>
+                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)" }}>
+                            <Badge type={row.confidence} text={row.confidence} />
+                          </td>
+                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: "#888" }}>
+                            {row.method}
+                          </td>
+                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", textAlign: "center" }}>
+                            <span style={{ cursor: "pointer", color: "#666", fontSize: 12 }}>✎</span>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          );
+        })}
 
       </div>
     </div>
