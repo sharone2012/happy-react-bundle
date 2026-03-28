@@ -27,6 +27,7 @@ const ELE_ROWS = [
 function Badge({ type, text }) {
   const styles = {
     "VERIFIED":     { bg: "rgba(114, 223, 166, 0.15)", color: "#72DFA6" },
+    "PASS":         { bg: "rgba(114, 223, 166, 0.15)", color: "#72DFA6" },
     "PENDING":      { bg: "rgba(245, 166, 35, 0.12)",  color: "#F5A623" },
     "LDE-HIGH":     { bg: "rgba(114, 223, 166, 0.10)", color: "#72DFA6" },
     "LDE-MODERATE": { bg: "rgba(245, 166, 35, 0.10)",  color: "#F5A623" },
@@ -106,12 +107,36 @@ const PHY_ROWS = [
   { parameter: "MgO (Magnesium Oxide)",         unit: "% DM",        result: "1.19%",  range: "—",       sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "Derived: Mg × 1.6582" },
 ];
 
-// ─── SECTION DEFINITIONS ─────────────────────────────────────────────────────
-const SECTION_DEFS = [
-  { code: "ELE", title: "Elemental / Nutrient Analysis", meta: "16 parameters · % DM · mg/kg DM", rows: null, defaultOpen: true },
-  { code: "PRX", title: "Proximate Analysis",            meta: "9 parameters · % wb · % DM · MJ/kg DM", rows: null, defaultOpen: false },
-  { code: "FIB", title: "Fiber Analysis",                meta: "6 parameters · % DM",              rows: null, defaultOpen: false },
-  { code: "PHY", title: "Physicochemical Properties",    meta: "8 parameters · various units",      rows: null, defaultOpen: false },
+// ─── HMT HARDCODED DATA ──────────────────────────────────────────────────────
+const HMT_ROWS = [
+  { parameter: "Arsenic (As)",  unit: "mg/kg DM", result: "<LOD",      range: "—",     sni: "<5.0", status: "PASS",     confidence: "LDE-HIGH",     method: "ICP-MS / EPA 6020B" },
+  { parameter: "Cadmium (Cd)",  unit: "mg/kg DM", result: "<LOD–0.20", range: "—",     sni: "<1.0", status: "PASS",     confidence: "LDE-HIGH",     method: "ICP-MS / EPA 6020B" },
+  { parameter: "Chromium (Cr)", unit: "mg/kg DM", result: "<LOD–5.0",  range: "—",     sni: "<20",  status: "PASS",     confidence: "LDE-MODERATE", method: "ICP-MS / EPA 6020B" },
+  { parameter: "Lead (Pb)",     unit: "mg/kg DM", result: "<LOD–2.0",  range: "—",     sni: "<10",  status: "PASS",     confidence: "LDE-HIGH",     method: "ICP-MS / EPA 6020B" },
+  { parameter: "Mercury (Hg)",  unit: "mg/kg DM", result: "<LOD",      range: "—",     sni: "<1.0", status: "PASS",     confidence: "LDE-HIGH",     method: "ICP-MS / EPA 6020B" },
+  { parameter: "Nickel (Ni)",   unit: "mg/kg DM", result: "6.30",      range: "—",     sni: "<50",  status: "PASS",     confidence: "LDE-HIGH",     method: "ICP-MS / EPA 6020B" },
+  { parameter: "SiO₂ (in ash)", unit: "% ash",    result: "30.00%",    range: "31–36%", sni: "—",   status: "VERIFIED", confidence: "LDE-MODERATE", method: "XRF or ICP-OES" },
+];
+
+// ─── BIO HARDCODED DATA ──────────────────────────────────────────────────────
+const BIO_ROWS = [
+  { parameter: "BSF Suitability Score", unit: "score /5.0", result: "3.75",  range: "3.0–4.5", sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "CFI proprietary scoring" },
+  { parameter: "Humic Acid",            unit: "% DM",       result: "1.80%", range: "—",       sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Extraction method" },
+  { parameter: "Fulvic Acid",           unit: "% DM",       result: "0.90%", range: "—",       sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Extraction method" },
+];
+
+// ─── AGV HARDCODED DATA ──────────────────────────────────────────────────────
+const AGV_ROWS = [
+  { parameter: "Nitrogen Value",        unit: "USD/t DM", result: "$17.66", range: "—",     sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Market price × N content" },
+  { parameter: "Phosphorus Value",      unit: "USD/t DM", result: "$6.03",  range: "—",     sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Market price × P content" },
+  { parameter: "Potassium Value",       unit: "USD/t DM", result: "$6.66",  range: "—",     sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Market price × K content" },
+  { parameter: "Total Agronomic Value", unit: "USD/t DM", result: "$30.35", range: "—",     sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "Sum of N + P + K values" },
+  { parameter: "OPDC Yield from EFB",   unit: "% EFB ww", result: "15.20%", range: "14–17%", sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "Mill pressing data" },
+];
+
+// ─── LAR HARDCODED DATA ──────────────────────────────────────────────────────
+const LAR_ROWS = [
+  { parameter: "GHG Baseline Emissions", unit: "t CO₂e/t DM", result: "5.94", range: "—", sni: "—", status: "VERIFIED", confidence: "LDE-HIGH", method: "LCA calculation (GWP100)" },
 ];
 
 // ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
@@ -119,7 +144,7 @@ export default function LabAnalysis() {
   const [activeStream, setActiveStream] = useState("EFB");
   const [showAll, setShowAll] = useState(true);
   const [showEnzymes, setShowEnzymes] = useState(false);
-  const [openSections, setOpenSections] = useState({ ELE: true, PRX: false, FIB: false, PHY: false });
+  const [openSections, setOpenSections] = useState({ ELE: true, PRX: false, FIB: false, PHY: false, HMT: false, BIO: false, AGV: false, LAR: false });
 
   const toggleSection = (code) => setOpenSections(prev => ({ ...prev, [code]: !prev[code] }));
 
@@ -257,6 +282,10 @@ export default function LabAnalysis() {
           { code: "PRX", title: "Proximate Analysis",            meta: "9 parameters · % wb · % DM · MJ/kg DM", rows: PRX_ROWS },
           { code: "FIB", title: "Fiber Analysis",                meta: "6 parameters · % DM",              rows: FIB_ROWS },
           { code: "PHY", title: "Physicochemical Properties",    meta: "8 parameters · various units",      rows: PHY_ROWS },
+          { code: "HMT", title: "Heavy Metals & Trace Elements", meta: "7 parameters · mg/kg DM · % ash",  rows: HMT_ROWS },
+          { code: "BIO", title: "Biological Indicators",         meta: "3 parameters · score · % DM",      rows: BIO_ROWS },
+          { code: "AGV", title: "Agronomic Value",               meta: "5 parameters · USD/t DM · %",      rows: AGV_ROWS },
+          { code: "LAR", title: "Large Molecule Analysis",       meta: "1 parameter · t CO₂e/t DM",        rows: LAR_ROWS },
         ].map(sec => {
           const isOpen = openSections[sec.code];
           return (
