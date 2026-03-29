@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Download } from "lucide-react";
 
 const F = "'DM Sans', sans-serif";
 const FH = "'EB Garamond', serif";
@@ -13,7 +14,6 @@ export default function S1Index() {
       cards: [
         { type: "ASCII PROCESS FLOW", title: "EFB ASCII v2", desc: "10-node elevation profile with oversize return loop, noise zone, and baghouse parallel duct.", route: "/s1-efb-ascii" },
         { type: "CAPEX/OPEX", title: "Building & Equipment Costs", desc: "Building costs, equipment CapEx, and monthly OpEx for EFB line.", route: "/s1-capex-opex" },
-        { type: "ENGINEERING SPEC", title: "EFB Engineering Spec", desc: "Detailed equipment specs and datasheets.", route: "/s1-efb-spec" },
       ],
     },
     {
@@ -21,7 +21,6 @@ export default function S1Index() {
       cards: [
         { type: "ASCII PROCESS FLOW", title: "OPDC ASCII v2", desc: "10-node decanter cake flow with CLASS A gate, 24hr dwell bin, and lump breaker.", route: "/s1-opdc-ascii" },
         { type: "CAPEX/OPEX", title: "Shared with EFB line", desc: "Shared with EFB line — same building and shared equipment.", route: "/s1-capex-opex" },
-        { type: "ENGINEERING SPEC", title: "OPDC Engineering Spec", desc: "Detailed equipment specs and datasheets.", route: "/s1-opdc-spec" },
       ],
     },
     {
@@ -29,7 +28,6 @@ export default function S1Index() {
       cards: [
         { type: "ASCII PROCESS FLOW", title: "POS ASCII v1", desc: "5-node sludge processing flow with ICP-OES Fe gate and centrate split.", route: "/s1-pos-ascii" },
         { type: "CAPEX/OPEX", title: "POS CapEx/OpEx", desc: "ICP-OES Fe gate pending — costs provisional.", route: "/s1-capex-opex" },
-        { type: "ENGINEERING SPEC", title: "POS Engineering Spec", desc: "Detailed equipment specs and datasheets.", route: "/s1-pos-spec" },
       ],
     },
   ];
@@ -105,7 +103,7 @@ export default function S1Index() {
             display: "flex", justifyContent: "space-between", alignItems: "center",
           }}>
             <span style={{ fontFamily: F, fontSize: 10, color: "#40D7C5" }}>CFI S1 Pre-Processing — Master Index</span>
-            <span style={{ fontFamily: F, fontSize: 10, color: "#8BA0B4" }}>60 TPH FFB Mill · Bogor, West Java · March 2026 · Rev 01</span>
+            <span style={{ fontFamily: F, fontSize: 10, color: "#8BA0B4" }}>EFB 20→13 t/h | OPDC 5→3.3 t/h | POS 1.25→0.56 t/h</span>
           </div>
 
           {/* ═══ HERO CARD ═══ */}
@@ -176,17 +174,20 @@ export default function S1Index() {
             </div>
           </div>
 
-          {/* ═══ S1 ENGINEERING PDF — RFQ PACK ═══ */}
+          {/* ═══ S1 COMPLETE ENGINEERING SPECS — RFQ PACK ═══ */}
           <div style={{ padding: "20px 30px", borderTop: "1px solid #ddd" }}>
             <div style={{ border: "1.5px solid rgba(51,212,188,0.3)", borderRadius: 6, padding: "20px 24px", background: "#f8fcfb" }}>
-              <div style={{ fontFamily: F, fontSize: 10, fontWeight: 700, color: "#33D4BC", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }}>S1 Engineering PDF</div>
-              <div style={{ fontFamily: FH, fontSize: 18, fontWeight: 700, color: "#111", marginBottom: 6 }}>RFQ Pack</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                <Download size={18} color="#33D4BC" />
+                <div style={{ fontFamily: F, fontSize: 10, fontWeight: 700, color: "#33D4BC", textTransform: "uppercase", letterSpacing: "0.06em" }}>Engineering Specs</div>
+              </div>
+              <div style={{ fontFamily: FH, fontSize: 18, fontWeight: 700, color: "#111", marginBottom: 6 }}>S1 Complete Engineering Specs — RFQ Pack</div>
               <div style={{ fontFamily: F, fontSize: 12, color: "#555", lineHeight: 1.5, marginBottom: 16 }}>
                 22-page complete engineering documentation for all 3 processing lines (EFB, OPDC, POS). Ready for RFQ pack assembly and contractor bidding.
               </div>
               <div style={{ display: "flex", gap: 10 }}>
                 <a
-                  href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-engineering-pdf"
+                  href="https://lcpbtnipkvrmuwllymfw.supabase.co/storage/v1/object/public/documents/CFI_S1_Engineering_Complete.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -197,10 +198,10 @@ export default function S1Index() {
                   onMouseEnter={e => e.currentTarget.style.opacity = 0.85}
                   onMouseLeave={e => e.currentTarget.style.opacity = 1}
                 >
-                  View PDF →
+                  <Download size={14} /> View PDF →
                 </a>
                 <a
-                  href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-engineering-pdf"
+                  href="https://lcpbtnipkvrmuwllymfw.supabase.co/storage/v1/object/public/documents/CFI_S1_Engineering_Complete.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={e => {
