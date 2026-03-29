@@ -55,12 +55,12 @@ function Chevron({ open }) {
 
 /* ── KPI Strip ── */
 const kpis = [
-  { label: "Building CAPEX", value: "$1.37M", color: C.amber, unit: "S1 Building Only · Indo Rates", dot: C.teal2 },
-  { label: "Equipment CAPEX", value: "$233K", color: C.amber, unit: "Confirmed · + POS RFQ $80–150k", dot: C.teal2 },
-  { label: "Total S1 CAPEX", value: "$1.61M", color: C.green, unit: "Building + Equipment · Indo Only", dot: C.teal2 },
-  { label: "Electricity OPEX", value: "$24,825", color: C.amber, unit: "PLN I-3 · S1 lines · /month", dot: C.amber, pulse: true },
-  { label: "Labour OPEX", value: "DATA GAP", color: C.red, unit: "7 HC confirmed · salaries TBC", dot: C.grey },
-  { label: "Total Site Area", value: "5,000 m²", color: C.teal2, unit: "1.25 acres · Building 1,260 m²", dot: C.teal2 },
+  { label: "Total Building CAPEX", value: "$1,374,610", color: C.amber, unit: "S1 Building Only · Indo Rates", dot: C.teal2 },
+  { label: "Total Equipment CAPEX", value: "$233,000", color: C.amber, unit: "Confirmed · + POS RFQ pending", dot: C.teal2 },
+  { label: "Monthly OPEX", value: "(DATA GAP)", color: C.red, unit: "Labour + Electricity TBC", dot: C.grey },
+  { label: "Processing Lines", value: "3 Active", color: C.green, unit: "EFB · OPDC · POS", dot: C.teal2 },
+  { label: "Facility Area", value: "2,450 m²", color: C.teal2, unit: "Building footprint", dot: C.teal2 },
+  { label: "Electricity OPEX", value: "IDR 8.2M/mo", color: C.teal2, unit: "PLN I-3 tariff", dot: C.teal2, pulse: true },
 ];
 
 function KpiStrip() {
