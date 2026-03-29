@@ -1235,40 +1235,43 @@ const S3BiologyLibrary = () => {
     </div>
     <div className="tbl-wrap" style={{borderTop: '1.5px solid var(--border)'}}>
       <table>
-        <thead><tr><th className="left">Metric</th><th>Arthrospira platensis (Spirulina)</th><th>Chlorella vulgaris</th><th className="left">Notes</th></tr></thead>
+        <thead><tr><th className="left">Metric</th>{algae.map(a => <th key={a.id}>{a.algae_species}</th>)}<th className="left">Notes</th></tr></thead>
         <tbody>
-          <tr><td className="fn">Biomass Yield Per L POME</td><td className="num">1.25 g DM/L</td><td className="num">1.10 g DM/L</td><td className="note">POME as nutrient medium, tropical sunlight</td></tr>
-          <tr><td className="fn">Total Algae / Tonne EFB DM (1,850 L)</td><td className="num">2.31 kg DM</td><td className="num">2.03 kg DM</td><td className="note">1,850 L × yield / 1000</td></tr>
-          <tr><td className="fn">Crude Protein (CP) % DM</td><td className="num" style={{color: 'var(--amber)'}}>65%</td><td className="num">45%</td><td className="note">Spirulina significantly higher CP</td></tr>
-          <tr><td className="fn">Direct Protein Added / t EFB DM</td><td className="num" style={{color: 'var(--amber)'}}>+1.50 kg</td><td className="num">+0.91 kg</td><td className="note">Small but hyper-potent micronutrient starter</td></tr>
-          <tr><td className="fn">Amino Acid Profile</td><td className="fn">High Methionine + Lysine</td><td className="fn">High Lysine</td><td className="note">Fills EFB amino acid gaps — Met + Lys deficient</td></tr>
-          <tr><td className="fn">BSF Neonate Survival Boost</td><td className="num" style={{color: 'var(--green)'}}>+22%</td><td className="num">+15%</td><td className="note">Neonates gorge on soft algae cells in first 48h</td></tr>
-          <tr><td className="fn">Impact On Final BSF FCR</td><td className="num" style={{color: 'var(--green)'}}>FCR −0.7</td><td className="num">FCR −0.5</td><td className="note">BSF digest EFB faster — gut flora boosted</td></tr>
-          <tr><td className="fn">Final BSF Meal CP (Baseline 45%)</td><td className="num" style={{color: 'var(--amber)'}}>45% → 56%</td><td className="num">45% → 51%</td><td className="note">Algae unlocks EFB protein, not just adds its own</td></tr>
-          <tr><td className="fn">Optimal Culture Temp</td><td className="fn" style={{color: 'var(--green)'}}>25–38°C (tropical)</td><td className="fn">20–30°C (check shade)</td><td className="note">Spirulina better suited to Indonesian heat</td></tr>
-          <tr><td className="fn">Doubling Time</td><td className="num">3–5 days</td><td className="num">2–4 days</td><td className="note">Chlorella faster doubling; Spirulina higher yield/L</td></tr>
-          <tr><td className="fn">Harvesting Method</td><td className="fn">Sedimentation / skimming</td><td className="fn">Centrifuge or floc</td><td className="note">Spirulina simpler harvest — no centrifuge needed</td></tr>
-          <tr><td className="fn">POME BOD Removal</td><td className="num">40–55%</td><td className="num">35–50%</td><td className="note">Algae culture pre-treats POME — environmental co-benefit</td></tr>
-          <tr><td className="fn">BSF Meal Market Grade + Price</td><td className="fn" style={{color: 'var(--amber)'}}>Premium ($4,500–6,500/t)</td><td className="fn">Mid-Premium ($3,500–4,500/t)</td><td className="note">With 9-org stack + FSSC 22000 cert</td></tr>
-          <tr><td className="fn">Monthly OpEx</td><td className="num" style={{color: 'var(--green)'}}>$0 (CapEx only)</td><td className="num" style={{color: 'var(--green)'}}>$0 (CapEx only)</td><td className="note">Raceway ponds + POME = zero marginal cost</td></tr>
-          <tr><td className="fn" style={{fontWeight: '700', color: 'var(--teal)'}}>CFI Recommendation</td><td className="fn" style={{color: 'var(--green)', fontWeight: '700'}}>PRIMARY CHOICE</td><td className="fn" style={{color: 'var(--greyLt)'}}>Backup Option</td><td className="note">Spirulina = higher protein + tropical temp tolerance</td></tr>
+          <tr><td className="fn">Biomass Yield Per L POME</td>{algae.map(a => <td key={a.id} className="num">{a.biomass_yield_g_per_l} g DM/L</td>)}<td className="note">POME as nutrient medium, tropical sunlight</td></tr>
+          <tr><td className="fn">Total Algae / Tonne EFB DM ({algae[0]?.hydration_volume_l_per_t_efb_dm || 1850} L)</td>{algae.map(a => <td key={a.id} className="num">{a.algae_dm_per_t_efb_kg} kg DM</td>)}<td className="note">{algae[0]?.hydration_volume_l_per_t_efb_dm || 1850} L × yield / 1000</td></tr>
+          <tr><td className="fn">Crude Protein (CP) % DM</td>{algae.map(a => <td key={a.id} className="num" style={{color: a.crude_protein_pct_dm >= 60 ? 'var(--amber)' : undefined}}>{a.crude_protein_pct_dm}%</td>)}<td className="note">Spirulina significantly higher CP</td></tr>
+          <tr><td className="fn">Direct Protein Added / t EFB DM</td>{algae.map(a => <td key={a.id} className="num" style={{color: a.protein_added_kg_per_t_efb >= 1.5 ? 'var(--amber)' : undefined}}>+{a.protein_added_kg_per_t_efb} kg</td>)}<td className="note">Small but hyper-potent micronutrient starter</td></tr>
+          <tr><td className="fn">Amino Acid Profile</td>{algae.map(a => <td key={a.id} className="fn">{a.amino_acid_profile}</td>)}<td className="note">Fills EFB amino acid gaps</td></tr>
+          <tr><td className="fn">BSF Neonate Survival Boost</td>{algae.map(a => <td key={a.id} className="num" style={{color:'var(--green)'}}>+{a.bsf_neonate_survival_uplift_pct}%</td>)}<td className="note">Neonates gorge on soft algae cells in first 48h</td></tr>
+          <tr><td className="fn">Impact On Final BSF FCR</td>{algae.map(a => <td key={a.id} className="num" style={{color:'var(--green)'}}>FCR −{a.bsf_fcr_reduction}</td>)}<td className="note">BSF digest EFB faster — gut flora boosted</td></tr>
+          <tr><td className="fn">Final BSF Meal CP (Baseline {algae[0]?.baseline_bsf_meal_cp_pct || 45}%)</td>{algae.map(a => <td key={a.id} className="num" style={{color:'var(--amber)'}}>{a.baseline_bsf_meal_cp_pct}% → {a.final_bsf_meal_cp_pct}%</td>)}<td className="note">Algae unlocks EFB protein</td></tr>
+          <tr><td className="fn">Monthly OpEx</td>{algae.map(a => <td key={a.id} className="num" style={{color:'var(--green)'}}>${a.opex_monthly_usd} (CapEx only)</td>)}<td className="note">Raceway ponds + POME = zero marginal cost</td></tr>
+          <tr><td className="fn" style={{fontWeight:'700',color:'var(--teal)'}}>CFI Recommendation</td>{algae.map(a => <td key={a.id} className="fn" style={{color: a.cfi_recommendation?.includes('PRIMARY') ? 'var(--green)' : 'var(--greyLt)', fontWeight:'700'}}>{a.cfi_recommendation?.includes('PRIMARY') ? 'PRIMARY CHOICE' : 'Backup Option'}</td>)}<td className="note">Spirulina = higher protein + tropical temp tolerance</td></tr>
         </tbody>
       </table>
     </div>
     {/* CapEx */}
-    <div style={{padding: '14px 16px 6px', fontFamily: "'Syne', sans-serif", fontWeight: '700', fontSize: '13px', color: 'var(--amber)', borderTop: '1.5px solid var(--border)'}}>Raceway Pond CapEx Estimate</div>
+    <div style={{padding:'14px 16px 6px',fontFamily:"'Syne',sans-serif",fontWeight:'700',fontSize:'13px',color:'var(--amber)',borderTop:'1.5px solid var(--border)'}}>Raceway Pond CapEx Estimate</div>
     <div className="tbl-wrap">
       <table>
-        <thead><tr><th className="left">Item</th><th className="left">Specification</th><th>Unit Cost</th><th>Qty</th><th>Total ($)</th><th className="left">Notes</th></tr></thead>
+        <thead><tr><th className="left">Item Code</th><th className="left">Description</th><th>Category</th><th>Qty</th><th>Unit Cost ($)</th><th>Total ($)</th><th className="left">Notes</th></tr></thead>
         <tbody>
-          <tr><td className="fn">Raceway Pond Construction</td><td className="fn">HDPE-lined, 500 m² × 25 cm deep = 125 m³</td><td className="price">$8,000</td><td>2 ponds</td><td className="num">$16,000</td><td className="note">1 operating + 1 harvesting = covers ~180 m³/day</td></tr>
-          <tr><td className="fn">Paddle Wheel Aerator</td><td className="fn">0.5 kW electric × 2 ponds</td><td className="price">$1,500</td><td>2 units</td><td className="num">$3,000</td><td className="note">Keeps algae in suspension; prevents settling</td></tr>
-          <tr><td className="fn">POME Feed Pump + Pipe</td><td className="fn">Peristaltic pump + 50m PVC pipe to pond</td><td className="price">$2,500</td><td>1 unit</td><td className="num">$2,500</td><td className="note">Feeds diluted POME from sludge pit</td></tr>
-          <tr><td className="fn">Harvest Sedimentation Tank</td><td className="fn">5 m³ settling tank + discharge valve</td><td className="price">$3,000</td><td>1 unit</td><td className="num">$3,000</td><td className="note">Spirulina settles by gravity — no centrifuge needed</td></tr>
-          <tr><td className="fn">Substrate Injection Pump</td><td className="fn">Delivers 1,850 L slurry to S3 substrate mixer</td><td className="price">$2,000</td><td>1 unit</td><td className="num">$2,000</td><td className="note">Replaces existing hydration water pump</td></tr>
-          <tr><td className="fn">pH / Temp Monitoring Kit</td><td className="fn">Portable meter + logging, 2× probes</td><td className="price">$500</td><td>1 set</td><td className="num">$500</td><td className="note">Monthly calibration required</td></tr>
-          <tr><td className="fn">Contingency 20%</td><td>—</td><td>—</td><td>—</td><td className="num">$5,400</td><td>—</td></tr>
-          <tr className="capex-total"><td className="fn" style={{color: 'var(--green)', fontWeight: '700'}}>Total CapEx</td><td>—</td><td>—</td><td>—</td><td className="num" style={{color: 'var(--green)', fontWeight: '700'}}>~$32,400</td><td className="note" style={{color: 'var(--green)'}}>Payback &lt; 6 months at $3,500/t BSF meal premium</td></tr>
+          {capex.map(c => (
+            <tr key={c.id}>
+              <td className="fn">{c.item_code}</td>
+              <td className="fn">{c.description}</td>
+              <td className="cat">{c.category}</td>
+              <td className="num">{c.quantity}</td>
+              <td className="price">${c.unit_cost_usd?.toLocaleString()}</td>
+              <td className="num">${c.total_cost_usd?.toLocaleString()}</td>
+              <td className="note">{c.notes || '—'}</td>
+            </tr>
+          ))}
+          <tr className="total-row">
+            <td colSpan="5" style={{textAlign:'right',padding:'8px 14px',fontFamily:"'DM Sans',sans-serif",fontSize:'12px',fontWeight:'700',color:'var(--pastelGreen)'}}>Total CapEx</td>
+            <td className="num" style={{color:'var(--green)',fontWeight:'700'}}>${capex.reduce((s,c)=>s+(c.total_cost_usd||0),0).toLocaleString()}</td>
+            <td></td>
+          </tr>
         </tbody>
       </table>
     </div>
