@@ -39,6 +39,11 @@ export default function S1PosAscii() {
         <span onClick={() => navigate("/")} style={{ fontFamily: F, fontSize: 11, color: "#4A9EDB", cursor: "pointer" }}>← Home</span>
       </div>
 
+      {/* ── Back to S1 Master ── */}
+      <div style={{ background: "#060C14", padding: "8px 32px", fontFamily: F }}>
+        <a href="/s1-index" style={{ color: "#33D4BC", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: F }} onMouseEnter={e => e.currentTarget.style.opacity = 0.7} onMouseLeave={e => e.currentTarget.style.opacity = 1}>← S1 Master Index</a>
+      </div>
+
       <div style={{ background: "#fff", border: "3px solid #111", width: 960, margin: "24px auto", padding: 0 }}>
         {/* Topbar */}
         <div style={{ background: "#0B1422", color: "#40D7C5", padding: "8px 18px", fontSize: 10, display: "flex", justifyContent: "space-between", fontFamily: F }}>
