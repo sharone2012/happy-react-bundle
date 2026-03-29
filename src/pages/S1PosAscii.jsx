@@ -40,9 +40,16 @@ export default function S1PosAscii() {
         <span onClick={() => navigate("/")} style={{ fontFamily: F, fontSize: 11, color: "#4A9EDB", cursor: "pointer" }}>← Home</span>
       </div>
 
-      {/* ── Back to S1 Master ── */}
+      {/* ── Breadcrumb + Back ── */}
       <div style={{ background: "#060C14", padding: "8px 32px", fontFamily: F }}>
-        <a href="/s1-index" style={{ color: "#33D4BC", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: F }} onMouseEnter={e => e.currentTarget.style.opacity = 0.7} onMouseLeave={e => e.currentTarget.style.opacity = 1}>← S1 Master Index</a>
+        <div style={{ fontSize: 12, fontFamily: F, marginBottom: 4 }}>
+          <a href="/" style={{ color: "#8BA0B4", textDecoration: "none" }}>CFI Platform</a>
+          <span style={{ color: "#3a4a5a", margin: "0 6px" }}>›</span>
+          <a href="/s1-capex-opex" style={{ color: "#8BA0B4", textDecoration: "none" }}>S1 Pre-Processing</a>
+          <span style={{ color: "#3a4a5a", margin: "0 6px" }}>›</span>
+          <span style={{ color: "#fff", fontWeight: 700 }}>POS ASCII Flow</span>
+        </div>
+        <a href="/s1-capex-opex" style={{ color: "#00C9B1", fontSize: 14, fontWeight: 500, textDecoration: "none", fontFamily: F }} onMouseEnter={e => e.currentTarget.style.opacity = 0.7} onMouseLeave={e => e.currentTarget.style.opacity = 1}>← Back to CapEx / OpEx</a>
       </div>
 
       <div style={{ background: "#fff", border: "3px solid #111", width: 960, margin: "24px auto", padding: 0 }}>
