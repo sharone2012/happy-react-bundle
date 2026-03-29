@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
-const F = "'DM Mono', monospace";
-const FS = "'DM Sans', sans-serif";
+const F = "'DM Sans', sans-serif";
+const FH = "'EB Garamond', serif";
 
 function NavStrip() {
   const navigate = useNavigate();
