@@ -1,44 +1,13 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-const F = "'DM Mono', monospace";
-
-function NavStrip() {
-  const navigate = useNavigate();
-  const links = [
-    { label: "← S1 INDEX", to: "/s1-index", color: "#40D7C5", weight: 700 },
-    { label: "Master (all panes)", to: "/s1-master" },
-    { label: "Floor Plans", to: "/s1-combined" },
-    { label: "EFB ASCII", to: "/s1-efb-ascii" },
-    { label: "OPDC ASCII", to: "/s1-opdc-ascii", active: true },
-    { label: "POS ASCII", to: "/s1-pos-ascii" },
-  ];
-  return (
-    <div style={{ width: "100%", background: "#060C14", borderBottom: "2px solid #1E2A3A", fontFamily: F }}>
-      <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "center", height: 36, padding: "0 12px" }}>
-        {links.map((l, i) => (
-          <span key={i} onClick={() => navigate(l.to)} style={{
-            color: l.active ? "#F5A623" : (l.color || "#8BA0B4"),
-            fontSize: 10, fontWeight: l.weight || 400, textDecoration: "none",
-            padding: "0 12px", borderRight: i < links.length - 1 ? "1px solid #1E2A3A" : "none",
-            marginRight: 6, whiteSpace: "nowrap", cursor: "pointer",
-            letterSpacing: i === 0 ? ".06em" : undefined,
-          }}
-            onMouseEnter={e => { if (!l.active) e.currentTarget.style.color = "#F5A623"; }}
-            onMouseLeave={e => { if (!l.active) e.currentTarget.style.color = l.color || "#8BA0B4"; }}
-          >{l.label}</span>
-        ))}
-        <div style={{ flex: 1 }} />
-        <span style={{ color: "#3a4a5a", fontSize: 9, fontFamily: F }}>CFI · S1 Pre-Processing · Rev 02 · Mar 2026</span>
-      </div>
-    </div>
-  );
-}
+const F = "'DM Sans', sans-serif";
+const FH = "'EB Garamond', serif";
 
 function Pre({ children, className, style = {} }) {
   const classStyles = {
     side: { color: "#999" },
     noise: { background: "rgba(204,34,34,.05)", color: "#cc2222" },
-    classA: { background: "rgba(204,34,34,.07)", color: "#8b0000" },
+    classA: { background: "rgba(204,34,34,.07)", color: "#8b0000", border: "none" },
     "classA-sub": { background: "rgba(204,34,34,.07)", color: "#cc2222" },
     "gate-amber": { background: "rgba(200,134,10,.07)", color: "#7a4800" },
     "gate-red": { background: "rgba(204,34,34,.06)", color: "#8b0000" },
@@ -55,11 +24,39 @@ function Pre({ children, className, style = {} }) {
 
 export default function S1OpdcAscii() {
   return (
-    <div style={{ background: "#f0f0f0", padding: 24, fontFamily: F, minHeight: "100vh" }}>
-      <NavStrip />
-      <div style={{ background: "#fff", border: "3px solid #111", width: 1000, margin: "0 auto" }}>
+    <div style={{ background: "#f0f0f0", fontFamily: F, minHeight: "100vh" }}>
+      {/* ═══ PERSISTENT CFI GLOBAL HEADER ═══ */}
+      <div style={{
+        height: 83, background: "#0A1628",
+        borderBottom: "1px solid rgba(51, 212, 188, 0.15)",
+        display: "flex", alignItems: "center", padding: "0 32px",
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+      }}>
+        <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+          <span style={{ fontFamily: FH, fontSize: 26, fontWeight: 700, color: "#FFFFFF", letterSpacing: "0.06em" }}>CFI</span>
+          <span style={{ fontFamily: FH, fontSize: 26, fontWeight: 700, color: "#33D4BC", letterSpacing: "0.06em", marginLeft: 10 }}>Deep Tech</span>
+        </div>
+        <div style={{ width: 3, height: 44, background: "#33D4BC", margin: "0 20px 0 14px" }} />
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 4, height: 44 }}>
+          <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, lineHeight: 1.3, whiteSpace: "nowrap", display: "flex" }}>
+            <span style={{ color: "#FFFFFF", minWidth: 150, display: "inline-block" }}>Precision Engineering</span>
+            <span style={{ color: "#33D4BC" }}>Circular Nutrient Recovery in Agricultural Systems</span>
+          </div>
+          <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, lineHeight: 1.3, whiteSpace: "nowrap", display: "flex" }}>
+            <span style={{ color: "#FFFFFF", minWidth: 150, display: "inline-block" }}>Applied Biology</span>
+            <span style={{ color: "#33D4BC" }}>Rebalancing Soil&apos;s Microbiome &amp; Reducing Synthetic Fertiliser Use</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Spacer */}
+      <div style={{ height: 83 }} />
+
+      <div style={{ display: "flex", justifyContent: "center", padding: "24px 0" }}>
+      <div style={{ background: "#fff", border: "3px solid #111", width: 1000 }}>
+        {/* topbar */}
         <div style={{
-          background: "#2A1800", color: "#F5A623", padding: "7px 18px", fontSize: 10,
+          background: "#2A1800", color: "#F5A623", padding: "8px 12px", fontSize: 10,
           display: "flex", justifyContent: "space-between", fontFamily: F,
         }}>
           <span>CFI S1B — OPDC LINE · ASCII PROCESS FLOW</span>
@@ -67,23 +64,25 @@ export default function S1OpdcAscii() {
         </div>
 
         <div style={{ display: "flex" }}>
+          {/* elevation axis */}
           <div style={{
             width: 76, flexShrink: 0, borderRight: "1px solid #ddd",
             padding: "0 8px 0 4px", fontSize: 9, color: "#888", textAlign: "right",
             fontFamily: F, lineHeight: 1.7,
           }}>
-            <div style={{ paddingTop: 68 }}>±0.0m</div>
-            <div style={{ paddingTop: 52 }}>±0.0m</div>
-            <div style={{ paddingTop: 56 }}>+3.0m</div>
+            <div style={{ paddingTop: 68 }}>+1.0m</div>
+            <div style={{ paddingTop: 52 }}>+1.0m</div>
+            <div style={{ paddingTop: 56 }}>+3.5m</div>
             <div style={{ paddingTop: 44 }}>+3.5m</div>
-            <div style={{ paddingTop: 102 }}>+3.2m</div>
-            <div style={{ paddingTop: 68 }}>+4.0m</div>
-            <div style={{ paddingTop: 68 }}>+4.0m</div>
-            <div style={{ paddingTop: 84 }}>+4.0m</div>
-            <div style={{ paddingTop: 44 }}>outside</div>
-            <div style={{ paddingTop: 84 }}>+2.5m</div>
+            <div style={{ paddingTop: 102 }}>+3.5m</div>
+            <div style={{ paddingTop: 68 }}>+3.0m</div>
+            <div style={{ paddingTop: 68 }}>+1.5m</div>
+            <div style={{ paddingTop: 84 }}>+1.0m</div>
+            <div style={{ paddingTop: 44 }}>+0.8m</div>
+            <div style={{ paddingTop: 84 }}>+0.3m</div>
           </div>
 
+          {/* flow */}
           <div style={{ flex: 1, padding: "14px 20px 20px 14px", overflowX: "auto" }}>
 
 <Pre>{`  CFI S1B — OPDC LINE PROCESS FLOW
@@ -95,135 +94,132 @@ export default function S1OpdcAscii() {
            Paste form — anti-bridging handling required throughout`}</Pre>
 
 <Pre>{`  ┌───────────────────────────────────────────────────────────────────────────────────┐
-  │  RH-OPDC-101   Reciprocating Feeder (anti-bridging)       ±0.0m                  │
-  │  Carbon steel · 5.5kW · VFD · anti-bridging cone + pusher plate                 │
-  │  IN : 70–75% MC  ·  5 t/h  ·  OPDC decanter paste (paste blinds std hoppers)   │
+  │  RH-OPDC-101   Receiving Hopper (anti-bridging)            +1.0m                  │
+  │  SS304 · 10m³ · anti-bridging auger · 0.75kW                                     │
+  │  IN : 70–75% MC  ·  5 t/h  ·  OPDC decanter paste                               │
   └─────────────────────────────┬─────────────────────────────────────────────────────┘
-                                │  CV-OPDC-101 · incline feed conveyor
-                                │  10m · 15–20° · 4.5kW · 500mm belt · ±0.0 → +3.0m
-                                ▼
-  ┌───────────────────────────────────────────────────────────────────────────────────┐
-  │  CV-OPDC-101   Incline Feed Conveyor                      ±0.0 → +3.0m           │
-  │  4.5kW · 500mm belt · 10m · 15–20° inclination                                  │
-  │  IN : 70–75% MC  ·  5 t/h                                                       │
+                                │  CV-OPDC-101 · incline belt conveyor
+                                │  500mm · enclosed · 12m · 1.1kW · +1.0 → +3.5m
+                                ▼`}</Pre>
+
+<Pre>{`  ┌───────────────────────────────────────────────────────────────────────────────────┐
+  │  CV-OPDC-101   Belt Conveyor                               +1.0 → +3.5m           │
+  │  1.1kW · 500mm enclosed belt · 12m                                                │
+  │  IN : 70–75% MC  ·  5 t/h                                                        │
   └─────────────────────────────┬─────────────────────────────────────────────────────┘
                                 │  OB-02 · 8m level belt · 3.0kW
-                                ▼
-  ┌───────────────────────────────────────────────────────────────────────────────────┐
-  │  OTR-01   Trommel Screen                                  +3.0m                   │
-  │  11kW · 5 t/h · rubber isolators ×4 · pad 8m × 3m × 0.4m                       │
-  │  IN : 70–75% MC  ·  5 t/h  ·  removes stones + tramp metal                     │
-  │  OUT: OPDC forward  ·  stone/metal reject → waste skip                          │
-  └─────────────────────────────┬─────────────────────────────────────────────────────┘
-                                │  OB-03 · 8m level belt · 3.0kW
-                                ▼
-  ┌───────────────────────────────────────────────────────────────────────────────────┐
-  │  OBM-02   Overband Magnet                                 +3.5m suspended         │
-  │  3kW · 3m × 2m · suspended from structure · ferrous removal only                │
-  │  IN : 70–75% MC  ·  5 t/h  ·  no t/h capacity limit                            │`}</Pre>
-
-<Pre className="side">{`  │  Ferrous metal ──────────────────────────────────────────────────────────────────▶ waste skip`}</Pre>
-<Pre>{`  └─────────────────────────────┬─────────────────────────────────────────────────────┘
-                                │  OB-04 · 10m level belt · 3.0kW
                                 ▼`}</Pre>
 
 <Pre className="classA">{`  ╔═══════════════════════════════════════════════════════════════════════════════════╗
-  ║  OPR-01   Screw Press — CLASS A GATE                      +3.2m                  ║
-  ║  37kW · M24×8 anchor bolts · 600mm embedment · pad 3m × 2m × 0.5m              ║
-  ║  IN : 70–75% MC  ·  5 t/h  ·  OPDC paste                                       ║
-  ║  OUT: 60–62% MC cake  +  filtrate                                                ║
+  ║  OPR-01   Screw Press — CLASS A GATE                       +3.5m                  ║
+  ║  7.5kW · screw press · MC 72% → 45%                                              ║
+  ║  IN : 70–75% MC  ·  5 t/h  ·  OPDC paste                                        ║
+  ║  OUT: 60–62% MC cake  +  filtrate                                                 ║
   ║`}</Pre>
 <Pre className="classA-sub">{`  ║  [CLASS A GATE]  MC floor ≥ 40% LOCKED · Math.max(40, reading) · NON-NEGOTIABLE  ║
   ║  Pore damage above 40% MC kills BSF colonisation — cannot recover downstream    ║`}</Pre>
 <Pre className="side" style={{ background: "rgba(204,34,34,.07)" }}>{`  ║  Filtrate ────────────────────────────────────────────────────────────────────────▶ POME pond ONLY · never to substrate`}</Pre>
 <Pre className="classA">{`  ╚═════════════════════════════╦═════════════════════════════════════════════════════╝
-                                ║  OB-05 · 10m level belt · 3.0kW
+                                ║  OB-03 · 8m level belt · 3.0kW
                                 ▼`}</Pre>
 
 <Pre>{`  ┌───────────────────────────────────────────────────────────────────────────────────┐
-  │  OSD-01   Lump Breaker / Finger-Screw                     +4.0m                   │
-  │  22kW · M30×8 · 800mm embedment · finger cage design (NOT a hammer mill)         │
-  │  Wet paste requires finger cage — hammer rotor at this stage would mat material  │
-  │  IN : 60–62% MC  ·  5 t/h  ·  pressed OPDC cake                                │
-  │  OUT: 10–30mm crumbles  ·  suitable for hammer mill feed                        │
+  │  OLB-01   Lump Breaker                                     +3.0m                   │
+  │  Twin-roll · 3kW · 30mm output                                                    │
+  │  IN : 60–62% MC  ·  5 t/h  ·  pressed OPDC cake                                  │
+  │  OUT: 30mm crumbles · suitable for trommel screen feed                            │
   └─────────────────────────────┬─────────────────────────────────────────────────────┘
-                                │  OB-06 · 8m level belt · 2.2kW
+                                │  CV-OPDC-201 · 500mm · 8m decline · +3.0 → +1.5m
+                                ▼`}</Pre>
+
+<Pre>{`  ┌───────────────────────────────────────────────────────────────────────────────────┐
+  │  CV-OPDC-201   Belt Conveyor 2                             +3.0 → +1.5m            │
+  │  500mm · 8m decline belt                                                           │
+  │  IN : 60–62% MC  ·  5 t/h                                                        │
+  └─────────────────────────────┬─────────────────────────────────────────────────────┘
+                                │
+                                ▼`}</Pre>
+
+<Pre>{`  ┌───────────────────────────────────────────────────────────────────────────────────┐
+  │  OTR-01   Trommel Screen                                   +1.5m                   │
+  │  1.8m dia × 4m · 25mm aperture · 2.2kW                                            │
+  │  IN : 60–62% MC  ·  5 t/h  ·  removes oversize + tramp material                  │
+  │  OUT: OPDC forward  ·  oversize reject → waste skip                               │
+  └─────────────────────────────┬─────────────────────────────────────────────────────┘
+                                │
+                                ▼`}</Pre>
+
+<Pre className="gate-amber">{`  ┌───────────────────────────────────────────────────────────────────────────────────┐
+  │  ODR-01   Rotary Dryer                                     +1.0m                   │
+  │  Co-current · 11kW · 30min residence time                                         │
+  │  IN : 60–62% MC  ·  5 t/h                                                        │
+  │  OUT: target MC ≤ 35%                                                              │
+  │  [AMBER GATE]  MC ≤ 35% target — operator confirms before hammer mill             │
+  └─────────────────────────────┬─────────────────────────────────────────────────────┘
+                                │
                                 ▼`}</Pre>
 
 <Pre className="noise">{`  ░░░░░░░░░░░░░░░░░░░░░░  NOISE ZONE  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-  ░  Hearing protection + dust mask mandatory beyond this line                     ░░
+  ░  Hearing protection + dust mask mandatory — 82+ dBA                             ░░
   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░`}</Pre>
 
 <Pre className="gate-red">{`
   ┌───────────────────────────────────────────────────────────────────────────────────┐
-  │  OHM-01   Hammer Mill                                     +4.0m                   │
-  │  30kW · SPRING ISOLATION ONLY — never rigid-anchor to slab                       │
-  │  Pad 3m × 2.5m × 0.6m · spring mounts · flexible exhaust duct                   │
-  │  IN : 60–62% MC  ·  5 t/h derated (65% of nameplate)                           │
-  │  OUT: target D90 ≤ 2mm · exhaust → ODC-01 baghouse east wall                    │
-  │  [GUARDRAIL]  Spring isolation only · flexible duct only · never rigid mount     │`}</Pre>
+  │  OHM-01   Hammer Mill                                      +0.8m                   │
+  │  22kW · 6mm screen · 1500 RPM                                                     │
+  │  SPRING ISOLATION ONLY — never rigid-anchor to slab                               │
+  │  IN : ≤35% MC  ·  5 t/h derated                                                  │
+  │  OUT: target D90 ≤ 2mm                                                             │`}</Pre>
 <pre style={{ fontFamily: F, fontSize: 11, lineHeight: 1.7, color: "#111", margin: 0, background: "rgba(204,34,34,.06)", whiteSpace: "pre" }}>{`                 │ PASS ≤ 2mm              │ OVERSIZE > 2mm
-                 │ → vibrating screen      │ OB-07 return conveyor`}</pre>
-<Pre className="side" style={{ background: "rgba(204,34,34,.06)" }}>{`                 │                         └────────────────────────────────────────────▶ ↩ return to OHM-01 ⑦ (re-mill — not back to lump breaker ⑥)`}</Pre>
+                 │ → vibrating screen      │ return conveyor`}</pre>
+<Pre className="side" style={{ background: "rgba(204,34,34,.06)" }}>{`                 │                         └────────────────────────────────────────────▶ ↩ return to OHM-01 (re-mill)`}</Pre>
 <Pre className="gate-red">{`  └─────────────────────────────┬─────────────────────────────────────────────────────┘
-                                │  OB-06 pass · 8m · 2.2kW → vibrating screen
-                                ▼  (exhaust → ODC-01 ducted separately)`}</Pre>
-
-<Pre>{`  ┌───────────────────────────────────────────────────────────────────────────────────┐
-  │  OVS-01   Vibrating Screen                                +4.0m                   │
-  │  5.5kW · FLEXIBLE MOUNT ONLY · pad 2m × 2m × 0.3m · 2mm aperture               │
-  │  IN : 60–62% MC  ·  5 t/h  ·  milled OPDC                                      │`}</Pre>
-<Pre className="side">{`  │  Reject > 2mm ───────────────────────────────────────────────────────────────────▶ OB-07 return → OHM-01 ⑦ (re-mill cycle)`}</Pre>
-<Pre>{`  │  PASS ≤ 2mm → forward                                                            │
-  └─────────────────────────────┬─────────────────────────────────────────────────────┘
-                                │  OB-08 · 8m · -5° slope · 2.2kW → buffer bin
+                                │
                                 ▼`}</Pre>
 
 <Pre>{`  ┌───────────────────────────────────────────────────────────────────────────────────┐
-  │  ODC-01   Baghouse Dust Filter                            outside east wall       │
-  │  15kW · 3,000 m³/hr · 99% dust capture · carbon steel housing                   │
-  │  Connected by flexible duct from OHM-01 ⑦ hammer mill exhaust                   │
-  │  Dust discharge → solid waste skip or back-blend to OPDC stream                 │
-  │  NOTE: parallel unit — operates simultaneously with hammer mill, not in series   │
-  └──────────────────── (parallel to main flow — duct feed only) ────────────────────┘
-                                │  OB-08 · 8m · -5° slope · 2.2kW → buffer bin
+  │  OVS-01   Vibrating Screen                                 +0.5m                   │
+  │  3mm single deck · 2.2kW                                                           │
+  │  IN : ≤35% MC  ·  5 t/h  ·  milled OPDC                                          │`}</Pre>
+<Pre className="side">{`  │  Reject > 3mm ───────────────────────────────────────────────────────────────────▶ return → OHM-01 (re-mill cycle)`}</Pre>
+<Pre>{`  │  PASS ≤ 3mm → forward                                                             │
+  └─────────────────────────────┬─────────────────────────────────────────────────────┘
+                                │
                                 ▼`}</Pre>
 
-<Pre className="gate-amber">{`
-  ┌───────────────────────────────────────────────────────────────────────────────────┐
-  │  BIN-OPDC-301   Buffer Bin — 24hr Dwell                   +2.5m                   │
-  │  15 m³  ·  2.2kW live-bottom auger  ·  holds 6–10 t at 45–55% MC               │
-  │  pH probe · temp sensor · monitor every 8hrs · do not blend until gate clears   │
-  │  IN : 60–62% MC  ·  D90 ≤ 2mm  ·  milled OPDC cake                            │
-  │  [GATE C.G2/G3]  Dwell ≥ 24hrs · pH 8.0–9.0 required before S2 transfer        │
-  │  OUT: metered feed to S2 at confirmed pH + dwell window                         │
+<Pre className="gate-amber">{`  ┌───────────────────────────────────────────────────────────────────────────────────┐
+  │  BIN-OPDC-301   Product Bin — 24HR DWELL GATE              +0.3m                   │
+  │  20m³ · sealed · moisture-controlled                                               │
+  │  IN : ≤35% MC  ·  D90 ≤ 3mm  ·  milled OPDC                                     │
+  │  [24HR DWELL GATE]  Dwell ≥ 24hrs · pH 8.0–9.0 required before S2 transfer       │
+  │  OUT: metered feed to S2 at confirmed pH + dwell window                           │
   └─────────────────────────────┬─────────────────────────────────────────────────────┘
-                                │  BC-11 · 10m → conveyor gallery (25m × 4m covered)
+                                │  BC-11 · 10m → conveyor gallery
                                 ▼`}</Pre>
 
 <Pre className="final">{`  ╔═════════════════════════════════════════════════════════════════════════════════════╗
-  ║  S2 DISCHARGE — OPDC MILLED TO S2 CHEMICAL TREATMENT                              ║
-  ║  Handoff state:  60–62% MC  ·  D90 ≤ 2mm  ·  pH 8.0–9.0  ·  dwell ≥ 24hrs     ║
-  ║  Daily NPK contribution at 60 TPH:  N 582 kg · P 197 kg · K 930 kg (3 streams)  ║
+  ║  S2 DISCHARGE — OPDC DM product to S2 Composting/BSF                               ║
+  ║  Handoff state:  ≤35% MC  ·  D90 ≤ 3mm  ·  pH 8.0–9.0  ·  dwell ≥ 24hrs        ║
   ╚═════════════════════════════════════════════════════════════════════════════════════╝`}</Pre>
 
+            {/* legend */}
             <div style={{
               marginTop: 14, borderTop: "1px solid #ddd", paddingTop: 10,
               fontSize: 10, color: "#666", lineHeight: 1.9, fontFamily: F,
             }}>
               <strong>Legend</strong><br />
               ┌───┐  Process unit / vessel<br />
-              ╔═══╗  Critical CLASS A gate — hard limit, non-negotiable<br />
+              ╔═══╗  Critical CLASS A gate — hard limit, non-negotiable (double-border red)<br />
               ═════  S2 discharge / final handoff (amber on dark bg)<br />
               ─────  Primary OPDC solid flow path · 500mm belt<br />
-              <span style={{ color: "#999" }}>──▶  Side stream — filtrate to POME pond · ferrous to waste skip · oversize return</span><br />
-              ↩ OB-07  Oversize return conveyor loop — back into OHM-01 ⑦ hammer mill for re-milling (not back to lump breaker ⑥)<br />
-              <span style={{ color: "#cc2222" }}>░░░  Noise zone boundary — spring isolation + flexible mounts mandatory inside</span><br />
-              <span style={{ color: "#8b0000" }}>[CLASS A GATE]  Red double border — MC ≥ 40% floor · Math.max(40, reading) · BSF colonisation guardrail</span><br />
-              <span style={{ color: "#7a4800" }}>[GATE C.G2/G3]  Amber — 24hr dwell + pH 8.0–9.0 confirmed before S2 transfer</span>
+              <span style={{ color: "#999" }}>──▶  Side stream — filtrate to POME pond · metal to waste skip · oversize return</span><br />
+              <span style={{ color: "#cc2222" }}>░░░  Noise zone boundary — 82+ dBA — PPE required</span><br />
+              <span style={{ color: "#7a4800" }}>[AMBER GATE]  MC ≤ 35% target / 24hr dwell check</span><br />
+              <span style={{ color: "#8b0000" }}>[CLASS A]  MC ≥ 40% LOCKED — non-negotiable hard limit</span>
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
