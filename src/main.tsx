@@ -9,6 +9,9 @@ import S1CapexOpex from "./pages/S1CapexOpex.jsx";
 import S1EfbAscii from "./pages/S1EfbAscii.jsx";
 import S1OpdcAscii from "./pages/S1OpdcAscii.jsx";
 import S1PosAscii from "./pages/S1PosAscii.jsx";
+import S1EfbSpec from "./pages/S1EfbSpec.jsx";
+import S1OpdcSpec from "./pages/S1OpdcSpec.jsx";
+import S1PosSpec from "./pages/S1PosSpec.jsx";
 import CFI_AG_Management_Planning_Calculator from "./CFI_AG_Management_Planning_Calculator.jsx";
 import "./index.css";
 
