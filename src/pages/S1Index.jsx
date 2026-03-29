@@ -13,7 +13,7 @@ export default function S1Index() {
       cards: [
         { type: "ASCII PROCESS FLOW", title: "EFB ASCII v2", desc: "10-node elevation profile with oversize return loop, noise zone, and baghouse parallel duct.", route: "/s1-efb-ascii" },
         { type: "CAPEX/OPEX", title: "Building & Equipment Costs", desc: "Building costs, equipment CapEx, and monthly OpEx for EFB line.", route: "/s1-capex-opex" },
-        { type: "ENGINEERING SPEC", title: "EFB Engineering Spec", desc: "Detailed equipment specs and datasheets.", disabled: true },
+        { type: "ENGINEERING SPEC", title: "EFB Engineering Spec", desc: "Detailed equipment specs and datasheets.", route: "/s1-efb-spec" },
       ],
     },
     {
