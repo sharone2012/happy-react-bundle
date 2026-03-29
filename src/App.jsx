@@ -2557,23 +2557,40 @@ export default function CFI() {
                 </div>
 
                 <div style={{marginTop:20}}>
-                  <div style={{fontFamily:"'Syne', sans-serif",fontSize:13,fontWeight:700,color:C.amber,letterSpacing:"0.06em",marginBottom:10}}>S1 PROCESS ENGINEERING DRAWINGS</div>
-                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
-                    {[
-                      {label:"EFB ASCII Flow",href:"/s1-efb-ascii"},
-                      {label:"OPDC ASCII Flow",href:"/s1-opdc-ascii"},
-                      {label:"POS ASCII Flow",href:"/s1-pos-ascii"},
-                    ].map((btn,i)=>(
-                      <a key={i} href={btn.href} target="_blank" rel="noopener noreferrer" style={{
-                        display:"block",background:"#0a0f18",border:"1px solid rgba(64,215,197,0.35)",borderRadius:6,
-                        padding:"12px 14px",textDecoration:"none",color:"#8BA0B4",fontFamily:"'DM Sans', sans-serif",
-                        fontSize:12,fontWeight:700,textAlign:"center",cursor:"pointer",transition:"color 0.15s, border-color 0.15s",
-                      }}
-                      onMouseEnter={e=>{e.currentTarget.style.color="#F5A623";e.currentTarget.style.borderColor="#F5A623";}}
-                      onMouseLeave={e=>{e.currentTarget.style.color="#8BA0B4";e.currentTarget.style.borderColor="rgba(64,215,197,0.35)";}}
-                      >{btn.label}</a>
-                    ))}
-                  </div>
+                  <div style={{fontFamily:"'Syne', sans-serif",fontSize:13,fontWeight:700,color:C.teal,letterSpacing:"0.06em",marginBottom:12}}>S1 DRAWINGS & PROCESS FLOWS</div>
+                  {[
+                    {heading:"Architectural",items:[
+                      {label:"Site Master Plan",href:"CFI_S1_Architectural_Plan.html"},
+                      {label:"Building Architecture",href:"CFI_S1_Building_Architecture.html"},
+                      {label:"Building Floor Plan",href:"CFI_S1_FloorPlan_v2.html"},
+                    ]},
+                    {heading:"Machine Line Floor Plans",items:[
+                      {label:"EFB Line Floor Plan",href:"CFI_S1_Combined_v2.html#efb"},
+                      {label:"OPDC Line Floor Plan",href:"CFI_S1_Combined_v2.html#opdc"},
+                      {label:"Greenhouse Design",href:"CFI_S1_Greenhouse_Plan.html"},
+                    ]},
+                    {heading:"ASCII Process Flows",items:[
+                      {label:"EFB ASCII Flow",href:"CFI_S1_EFB_ASCII_v2.html"},
+                      {label:"OPDC ASCII Flow",href:"CFI_S1_OPDC_ASCII_v2.html"},
+                      {label:"POS ASCII Flow",href:"CFI_S1_POS_ASCII_v1.html"},
+                    ]},
+                  ].map((row,ri)=>(
+                    <div key={ri} style={{marginBottom:10}}>
+                      <div style={{fontFamily:"'DM Sans', sans-serif",fontSize:10,fontWeight:700,color:"#8BA0B4",letterSpacing:"0.04em",marginBottom:6,textTransform:"uppercase"}}>{row.heading}</div>
+                      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
+                        {row.items.map((btn,i)=>(
+                          <a key={i} href={btn.href} target="_blank" rel="noopener noreferrer" style={{
+                            display:"block",background:"#0C1E33",border:"1px solid rgba(139,160,180,0.18)",borderRadius:6,
+                            padding:"12px 14px",textDecoration:"none",color:"#FFFFFF",fontFamily:"'DM Sans', sans-serif",
+                            fontSize:12,fontWeight:700,textAlign:"center",cursor:"pointer",transition:"color 0.15s, border-color 0.15s",
+                          }}
+                          onMouseEnter={e=>{e.currentTarget.style.color="#F5A623";e.currentTarget.style.borderColor="rgba(64,215,197,0.7)";}}
+                          onMouseLeave={e=>{e.currentTarget.style.color="#FFFFFF";e.currentTarget.style.borderColor="rgba(139,160,180,0.18)";}}
+                          >{btn.label}</a>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
