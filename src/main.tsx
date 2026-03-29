@@ -10,6 +10,7 @@ import S1CapexOpex from "./pages/S1CapexOpex.jsx";
 import S1EfbAscii from "./pages/S1EfbAscii.jsx";
 import S1OpdcAscii from "./pages/S1OpdcAscii.jsx";
 import S1PosAscii from "./pages/S1PosAscii.jsx";
+import CFI_AG_Management_Planning_Calculator from "./CFI_AG_Management_Planning_Calculator.jsx";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
