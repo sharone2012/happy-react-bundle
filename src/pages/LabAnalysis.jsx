@@ -1,27 +1,50 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 // ─── STREAMS ─────────────────────────────────────────────────────────────────
 const STREAMS = ["EFB","OPDC","POS","POME","PKE","PKS","PMF","ASH","OPF","OPT","BSF"];
 
-// ─── ELE HARDCODED DATA ──────────────────────────────────────────────────────
-const ELE_ROWS = [
-  { parameter: "Carbon (C)",      unit: "% DM",     result: "41.41%",   range: "42–48%",  sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "CHNS Analyser" },
-  { parameter: "Nitrogen (N)",    unit: "% DM",     result: "2.32%",    range: "2.0–2.8%", sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "CHNS Analyser" },
-  { parameter: "Phosphorus (P)",  unit: "% DM",     result: "0.39%",    range: "0.3–0.5%", sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "ICP-OES" },
-  { parameter: "Potassium (K)",   unit: "% DM",     result: "1.20%",    range: "1.0–1.5%", sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "ICP-OES" },
-  { parameter: "Calcium (Ca)",    unit: "% DM",     result: "1.20%",    range: "—",        sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "ICP-OES" },
-  { parameter: "Magnesium (Mg)",  unit: "% DM",     result: "0.72%",    range: "—",        sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "ICP-OES" },
-  { parameter: "Sulfur (S)",      unit: "% DM",     result: "0.30%",    range: "—",        sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "ICP-OES" },
-  { parameter: "Hydrogen (H)",    unit: "% DM",     result: "5.92%",    range: "—",        sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "CHNS Analyser" },
-  { parameter: "Oxygen (O)",      unit: "% DM",     result: "47.06%",   range: "—",        sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "CHNS Analyser" },
-  { parameter: "Copper (Cu)",     unit: "mg/kg DM", result: "19.00",    range: "—",        sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "ICP-OES" },
-  { parameter: "Manganese (Mn)",  unit: "mg/kg DM", result: "190.00",   range: "—",        sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "ICP-OES" },
-  { parameter: "Zinc (Zn)",       unit: "mg/kg DM", result: "37.00",    range: "—",        sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "ICP-OES" },
-  { parameter: "Nickel (Ni)",     unit: "mg/kg DM", result: "6.30",     range: "—",        sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "ICP-MS" },
-  { parameter: "Iron (Fe)",       unit: "mg/kg DM", result: "DATA GAP", range: "—",        sni: "—", status: "PENDING",  confidence: "LDE-LOW",      method: "ICP-OES" },
-  { parameter: "Chlorine (Cl)",   unit: "% DM",     result: "DATA GAP", range: "—",        sni: "SNI Blocker", status: "PENDING",  confidence: "LDE-LOW",      method: "Ion Chromatography" },
-  { parameter: "C:N Ratio",       unit: "ratio",    result: "17.85",    range: "15–22",    sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "Derived from CHNS" },
-];
+// ─── PARAMETER NAME MAP ─────────────────────────────────────────────────────
+const PARAM_NAMES = {
+  carbon_pct: "Carbon (C)", N_pct: "Nitrogen (N)", P_pct: "Phosphorus (P)",
+  K_pct: "Potassium (K)", Ca_pct: "Calcium (Ca)", Mg_pct: "Magnesium (Mg)",
+  S_pct: "Sulfur (S)", H_pct: "Hydrogen (H)", O_pct: "Oxygen (O)",
+  Cu_mg_kg: "Copper (Cu)", Mn_mg_kg: "Manganese (Mn)", Zn_mg_kg: "Zinc (Zn)",
+  Ni_mg_kg: "Nickel (Ni)", Fe_mg_kg: "Iron (Fe)", Cl_pct: "Chlorine (Cl)",
+  cn_ratio: "C:N Ratio", moisture_pct: "Moisture", ash_pct: "Ash",
+  OM_pct: "Organic Matter", VM_pct: "Volatile Matter", FC_pct: "Fixed Carbon",
+  protein_pct: "Crude Protein", EE_pct: "Ether Extract",
+  HHV_mj_kg: "HHV (Higher Heating Value)", LHV_mj_kg: "LHV (Lower Heating Value)",
+  lignin_pct: "Lignin (ADL)", ADF_pct: "ADF (Acid Detergent Fiber)",
+  NDF_pct: "NDF (Neutral Detergent Fiber)", cellulose_pct: "Cellulose",
+  hemicellulose_pct: "Hemicellulose", ADL_VS_pct: "ADL (Van Soest)",
+  pH: "pH", EC_mS_cm: "EC (Electrical Conductivity)",
+  CEC_cmol_kg: "CEC (Cation Exchange Capacity)",
+  liming_eq_kg_caco3_t_dm: "Liming Equivalency",
+  P2O5_pct: "P₂O₅ (Phosphorus Pentoxide)", K2O_pct: "K₂O (Potassium Oxide)",
+  CaO_pct: "CaO (Calcium Oxide)", MgO_pct: "MgO (Magnesium Oxide)",
+  As_mg_kg: "Arsenic (As)", Cd_mg_kg: "Cadmium (Cd)", Cr_mg_kg: "Chromium (Cr)",
+  Pb_mg_kg: "Lead (Pb)", Hg_mg_kg: "Mercury (Hg)", SiO2_ash_pct: "SiO₂ (in ash)",
+  BSF_score: "BSF Suitability Score", humic_acid_pct: "Humic Acid",
+  fulvic_acid_pct: "Fulvic Acid", N_agro_usd_t_dm: "Nitrogen Value",
+  P_agro_usd_t_dm: "Phosphorus Value", K_agro_usd_t_dm: "Potassium Value",
+  total_agro_usd_t_dm: "Total Agronomic Value", yield_pct_EFB: "OPDC Yield from EFB",
+  GHG_baseline_t_co2e_t_dm: "GHG Baseline Emissions",
+};
+
+// ─── SECTION TITLES ──────────────────────────────────────────────────────────
+const SECTION_DEFS = {
+  ELE: { title: "Elemental / Nutrient Analysis", meta: "% DM · mg/kg DM" },
+  PRX: { title: "Proximate Analysis", meta: "% wb · % DM · MJ/kg DM" },
+  FIB: { title: "Fiber Analysis", meta: "% DM" },
+  PHY: { title: "Physicochemical Properties", meta: "various units" },
+  HMT: { title: "Heavy Metals & Trace Elements", meta: "mg/kg DM · % ash" },
+  BIO: { title: "Biological Indicators", meta: "score · % DM" },
+  AGV: { title: "Agronomic Value", meta: "USD/t DM · %" },
+  LAR: { title: "Large Molecule Analysis", meta: "t CO₂e/t DM" },
+};
+
+const SECTION_ORDER = ["ELE","PRX","FIB","PHY","HMT","BIO","AGV","LAR"];
 
 // ─── BADGE COMPONENT ─────────────────────────────────────────────────────────
 function Badge({ type, text }) {
@@ -30,6 +53,7 @@ function Badge({ type, text }) {
     "PASS":         { bg: "rgba(114, 223, 166, 0.15)", color: "#72DFA6" },
     "PENDING":      { bg: "rgba(245, 166, 35, 0.12)",  color: "#F5A623" },
     "LDE-HIGH":     { bg: "rgba(114, 223, 166, 0.10)", color: "#72DFA6" },
+    "LAB-CONFIRMED":{ bg: "rgba(114, 223, 166, 0.15)", color: "#72DFA6" },
     "LDE-MODERATE": { bg: "rgba(245, 166, 35, 0.10)",  color: "#F5A623" },
     "LDE-LOW":      { bg: "rgba(255, 92, 92, 0.10)",   color: "#FF5C5C" },
   };
@@ -44,7 +68,7 @@ function Badge({ type, text }) {
   );
 }
 
-// ─── COLUMN WIDTHS (Chunk 2 spec) ────────────────────────────────────────────
+// ─── COLUMN WIDTHS ───────────────────────────────────────────────────────────
 const COLS = [
   { key: "parameter",  label: "PARAMETER",  width: 210, align: "left" },
   { key: "unit",        label: "UNIT",       width: 90,  align: "left" },
@@ -72,81 +96,53 @@ const METRICS_HIDDEN = [
   { label: "Xylanase",  value: "1–3 U/g", sub: "" },
 ];
 
-// ─── PRX HARDCODED DATA ──────────────────────────────────────────────────────
-const PRX_ROWS = [
-  { parameter: "Moisture",                   unit: "% wb",     result: "76.70%", range: "70–80%", sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "AOAC 930.15" },
-  { parameter: "Ash",                        unit: "% DM",     result: "28.00%", range: "24–32%", sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "AOAC 942.05" },
-  { parameter: "Organic Matter",             unit: "% DM",     result: "78.00%", range: "—",      sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Derived: 100 − ash%" },
-  { parameter: "Volatile Matter",            unit: "% DM",     result: "64.50%", range: "—",      sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "APHA 2540G" },
-  { parameter: "Fixed Carbon",               unit: "% DM",     result: "11.15%", range: "—",      sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Derived: 100 − VM − ash" },
-  { parameter: "Crude Protein",              unit: "% DM",     result: "14.50%", range: "12–17%", sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "AOAC 984.13 / Kjeldahl" },
-  { parameter: "Ether Extract",              unit: "% DM",     result: "12.50%", range: "—",      sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "AOAC 920.39 / Soxhlet" },
-  { parameter: "HHV (Higher Heating Value)", unit: "MJ/kg DM", result: "17.68",  range: "—",      sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "ASTM E711 / Bomb calorimeter" },
-  { parameter: "LHV (Lower Heating Value)",  unit: "MJ/kg DM", result: "15.96",  range: "—",      sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "ASTM E711 / Bomb calorimeter" },
-];
-
-// ─── FIB HARDCODED DATA ──────────────────────────────────────────────────────
-const FIB_ROWS = [
-  { parameter: "Lignin (ADL)",                  unit: "% DM", result: "10.78%", range: "8–14%", sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "AOAC 973.18 / Van Soest ADL" },
-  { parameter: "ADF (Acid Detergent Fiber)",    unit: "% DM", result: "53.19%", range: "—",     sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "AOAC 973.18 / Van Soest ADF" },
-  { parameter: "NDF (Neutral Detergent Fiber)", unit: "% DM", result: "77.23%", range: "—",     sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "AOAC 2002.04 / Van Soest NDF" },
-  { parameter: "Cellulose",                     unit: "% DM", result: "42.41%", range: "—",     sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Derived: ADF − ADL" },
-  { parameter: "Hemicellulose",                 unit: "% DM", result: "24.04%", range: "—",     sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Derived: NDF − ADF" },
-  { parameter: "ADL (Van Soest)",               unit: "% DM", result: "10.78%", range: "—",     sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "Van Soest et al. 1991" },
-];
-
-// ─── PHY HARDCODED DATA ──────────────────────────────────────────────────────
-const PHY_ROWS = [
-  { parameter: "pH",                            unit: "—",           result: "4.40",   range: "4.0–5.0", sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "AOAC 981.12 / pH electrode" },
-  { parameter: "EC (Electrical Conductivity)",  unit: "mS/cm",       result: "2.96",   range: "—",       sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "ISO 11265 / EC electrode" },
-  { parameter: "CEC (Cation Exchange Capacity)",unit: "cmol/kg DM",  result: "20–35",  range: "—",       sni: "—", status: "PENDING",  confidence: "LDE-LOW",      method: "Standard soil method" },
-  { parameter: "Liming Equivalency",            unit: "kg CaCO₃/t",  result: "29.96",  range: "—",       sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Derived calculation" },
-  { parameter: "P₂O₅ (Phosphorus Pentoxide)",  unit: "% DM",        result: "0.894%", range: "—",       sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "Derived: P × 2.2914" },
-  { parameter: "K₂O (Potassium Oxide)",         unit: "% DM",        result: "1.45%",  range: "—",       sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "Derived: K × 1.2046" },
-  { parameter: "CaO (Calcium Oxide)",           unit: "% DM",        result: "1.68%",  range: "—",       sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "Derived: Ca × 1.3992" },
-  { parameter: "MgO (Magnesium Oxide)",         unit: "% DM",        result: "1.19%",  range: "—",       sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "Derived: Mg × 1.6582" },
-];
-
-// ─── HMT HARDCODED DATA ──────────────────────────────────────────────────────
-const HMT_ROWS = [
-  { parameter: "Arsenic (As)",  unit: "mg/kg DM", result: "<LOD",      range: "—",     sni: "<5.0", status: "PASS",     confidence: "LDE-HIGH",     method: "ICP-MS / EPA 6020B" },
-  { parameter: "Cadmium (Cd)",  unit: "mg/kg DM", result: "<LOD–0.20", range: "—",     sni: "<1.0", status: "PASS",     confidence: "LDE-HIGH",     method: "ICP-MS / EPA 6020B" },
-  { parameter: "Chromium (Cr)", unit: "mg/kg DM", result: "<LOD–5.0",  range: "—",     sni: "<20",  status: "PASS",     confidence: "LDE-MODERATE", method: "ICP-MS / EPA 6020B" },
-  { parameter: "Lead (Pb)",     unit: "mg/kg DM", result: "<LOD–2.0",  range: "—",     sni: "<10",  status: "PASS",     confidence: "LDE-HIGH",     method: "ICP-MS / EPA 6020B" },
-  { parameter: "Mercury (Hg)",  unit: "mg/kg DM", result: "<LOD",      range: "—",     sni: "<1.0", status: "PASS",     confidence: "LDE-HIGH",     method: "ICP-MS / EPA 6020B" },
-  { parameter: "Nickel (Ni)",   unit: "mg/kg DM", result: "6.30",      range: "—",     sni: "<50",  status: "PASS",     confidence: "LDE-HIGH",     method: "ICP-MS / EPA 6020B" },
-  { parameter: "SiO₂ (in ash)", unit: "% ash",    result: "30.00%",    range: "31–36%", sni: "—",   status: "VERIFIED", confidence: "LDE-MODERATE", method: "XRF or ICP-OES" },
-];
-
-// ─── BIO HARDCODED DATA ──────────────────────────────────────────────────────
-const BIO_ROWS = [
-  { parameter: "BSF Suitability Score", unit: "score /5.0", result: "3.75",  range: "3.0–4.5", sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "CFI proprietary scoring" },
-  { parameter: "Humic Acid",            unit: "% DM",       result: "1.80%", range: "—",       sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Extraction method" },
-  { parameter: "Fulvic Acid",           unit: "% DM",       result: "0.90%", range: "—",       sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Extraction method" },
-];
-
-// ─── AGV HARDCODED DATA ──────────────────────────────────────────────────────
-const AGV_ROWS = [
-  { parameter: "Nitrogen Value",        unit: "USD/t DM", result: "$17.66", range: "—",     sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Market price × N content" },
-  { parameter: "Phosphorus Value",      unit: "USD/t DM", result: "$6.03",  range: "—",     sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Market price × P content" },
-  { parameter: "Potassium Value",       unit: "USD/t DM", result: "$6.66",  range: "—",     sni: "—", status: "VERIFIED", confidence: "LDE-MODERATE", method: "Market price × K content" },
-  { parameter: "Total Agronomic Value", unit: "USD/t DM", result: "$30.35", range: "—",     sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "Sum of N + P + K values" },
-  { parameter: "OPDC Yield from EFB",   unit: "% EFB ww", result: "15.20%", range: "14–17%", sni: "—", status: "VERIFIED", confidence: "LDE-HIGH",     method: "Mill pressing data" },
-];
-
-// ─── LAR HARDCODED DATA ──────────────────────────────────────────────────────
-const LAR_ROWS = [
-  { parameter: "GHG Baseline Emissions", unit: "t CO₂e/t DM", result: "5.94", range: "—", sni: "—", status: "VERIFIED", confidence: "LDE-HIGH", method: "LCA calculation (GWP100)" },
-];
+// ─── HELPER: map DB row to table row ─────────────────────────────────────────
+function mapRow(p) {
+  const val = p.value_numeric != null ? String(p.value_numeric) : (p.value_text || null);
+  return {
+    parameter: PARAM_NAMES[p.parameter] || p.parameter,
+    unit: p.unit || "—",
+    result: val || "DATA GAP",
+    range: p.result_range || "—",
+    sni: p.sni_standard || "—",
+    status: p.status || "PENDING",
+    confidence: p.confidence_level || "LDE-LOW",
+    method: p.method_code || "—",
+  };
+}
 
 // ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
 export default function LabAnalysis() {
-  const [activeStream, setActiveStream] = useState("EFB");
-  const [showAll, setShowAll] = useState(true);
+  const [activeStream, setActiveStream] = useState("OPDC");
+  const [showAll, setShowAll] = useState(false);
   const [showEnzymes, setShowEnzymes] = useState(false);
   const [openSections, setOpenSections] = useState({ ELE: true, PRX: false, FIB: false, PHY: false, HMT: false, BIO: false, AGV: false, LAR: false });
+  const [labData, setLabData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const toggleSection = (code) => setOpenSections(prev => ({ ...prev, [code]: !prev[code] }));
+
+  // Fetch from Supabase when stream changes
+  useEffect(() => {
+    if (showAll) return; // Combined mode uses hardcoded for now
+    setLoading(true);
+    supabase
+      .from("canonical_lab_data")
+      .select("*")
+      .eq("stream", activeStream)
+      .order("section_code", { ascending: true })
+      .then(({ data, error }) => {
+        if (error) console.error("Lab fetch error:", error);
+        setLabData(data || []);
+        setLoading(false);
+      });
+  }, [activeStream, showAll]);
+
+  // Group by section_code
+  const sections = {};
+  SECTION_ORDER.forEach(code => {
+    sections[code] = (labData || []).filter(p => p.section_code === code).map(mapRow);
+  });
 
   return (
     <div style={{ background: "#060C14", minHeight: "100vh", fontFamily: "'DM Sans', sans-serif", color: "#FFFFFF" }}>
