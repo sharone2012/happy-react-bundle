@@ -147,25 +147,26 @@ export default function LabAnalysis() {
   return (
     <div style={{ background: "#060C14", minHeight: "100vh", fontFamily: "'DM Sans', sans-serif", color: "#FFFFFF" }}>
 
-      {/* ═══ 1. HEADER — 83px ═══ */}
+      {/* ═══ PERSISTENT CFI GLOBAL HEADER ═══ */}
       <div style={{
-        background: "#0A1628", height: 83, display: "flex", alignItems: "center",
-        padding: "0 32px", justifyContent: "space-between",
+        height: 83, background: "#0A1628",
+        borderBottom: "1px solid rgba(51, 212, 188, 0.15)",
+        display: "flex", alignItems: "center", padding: "0 32px",
       }}>
-        {/* Left */}
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 26, fontWeight: 700, color: "#FFFFFF" }}>CFI</span>
-          <span style={{ color: "#FFFFFF", fontSize: 26 }}>|</span>
-          <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 26, fontWeight: 700, color: "#33D4BC" }}>Deep Tech</span>
+        <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+          <span style={{ fontFamily: "'EB Garamond', serif", fontSize: 26, fontWeight: 700, color: "#FFFFFF", letterSpacing: "0.06em" }}>CFI</span>
+          <span style={{ fontFamily: "'EB Garamond', serif", fontSize: 26, fontWeight: 700, color: "#33D4BC", letterSpacing: "0.06em", marginLeft: 10 }}>Deep Tech</span>
         </div>
-        {/* Right — taglines */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 2, textAlign: "right" }}>
-          <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#FFFFFF", opacity: 0.7 }}>
-            Precision Engineering | Circular Nutrient Recovery in Agricultural Systems
-          </span>
-          <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#FFFFFF", opacity: 0.7 }}>
-            Applied Biology | Rebalancing Soil's Microbiome &amp; Reducing Synthetic Fertiliser Use
-          </span>
+        <div style={{ width: 3, height: 44, background: "#33D4BC", margin: "0 20px 0 14px" }} />
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 4, height: 44 }}>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 700, lineHeight: 1.3, whiteSpace: "nowrap", display: "flex" }}>
+            <span style={{ color: "#FFFFFF", minWidth: 150, display: "inline-block" }}>Precision Engineering</span>
+            <span style={{ color: "#33D4BC" }}>Circular Nutrient Recovery in Agricultural Systems</span>
+          </div>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 700, lineHeight: 1.3, whiteSpace: "nowrap", display: "flex" }}>
+            <span style={{ color: "#FFFFFF", minWidth: 150, display: "inline-block" }}>Applied Biology</span>
+            <span style={{ color: "#33D4BC" }}>Rebalancing Soil&apos;s Microbiome &amp; Reducing Synthetic Fertiliser Use</span>
+          </div>
         </div>
       </div>
 
