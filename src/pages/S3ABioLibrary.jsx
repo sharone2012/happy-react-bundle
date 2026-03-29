@@ -1,76 +1,59 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { supabase } from '@/lib/supabase';
 
 const S3BiologyLibrary = () => {
   const [activeTab, setActiveTab] = useState('registry');
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
+  const [loading, setLoading] = useState(true);
 
-  // Organism data
-  const organisms = [
-    // THERMOPHILIC FUNGI
-    { id: 1, name: 'Thermomyces lanuginosus', category: 'Thermo Fungi', function: 'Thermophilic cellulase/xylanase producer — Wave 1', temp: '50–60', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$25', pricePerG: '0.025', doseLow: '0.05', doseHigh: '0.15', costLow: '4.38', costHigh: '13.13', icbb: '—', supplier: 'Alibaba/Novozymes' },
-    { id: 2, name: 'Myceliophthora thermophila', category: 'Thermo Fungi', function: 'C1 cellulase system, industrial enzyme source — Wave 1', temp: '45–55', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$30', pricePerG: '0.030', doseLow: '0.05', doseHigh: '0.10', costLow: '5.25', costHigh: '10.50', icbb: '—', supplier: 'Novozymes Indonesia' },
-    { id: 3, name: 'Chaetomium thermophilum', category: 'Thermo Fungi', function: 'Thermophilic cellulase, model organism — Wave 1', temp: '50–60', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$35', pricePerG: '0.035', doseLow: '0.03', doseHigh: '0.08', costLow: '3.68', costHigh: '9.80', icbb: '—', supplier: 'IPB Bogor / LIPI' },
-    // THERMOPHILIC BACTERIA
-    { id: 4, name: 'Geobacillus stearothermophilus', category: 'Thermo Bacteria', function: 'Thermophilic amylase/protease producer — Wave 1', temp: '55–70', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$15', pricePerG: '0.015', doseLow: '0.05', doseHigh: '0.15', costLow: '2.63', costHigh: '7.88', icbb: '—', supplier: 'IndiaMART' },
-    { id: 5, name: 'Bacillus licheniformis', category: 'Thermo Bacteria', function: 'Thermotolerant protease/amylase — Wave 1 | 9-org: 0.04% DM locked', temp: '50–65', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$8', pricePerG: '0.008', doseLow: '0.05', doseHigh: '0.20', costLow: '1.40', costHigh: '5.60', icbb: '—', supplier: 'Alibaba bulk / Indotrading' },
-    { id: 6, name: 'Thermobifida fusca', category: 'Thermo Actino', function: 'Thermophilic actinomycete, cellulase — Wave 1', temp: '50–55', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$40', pricePerG: '0.040', doseLow: '0.02', doseHigh: '0.05', costLow: '2.80', costHigh: '7.00', icbb: '—', supplier: 'ATCC / DSMZ' },
-    // LIGNIN FUNGI
-    { id: 7, name: 'Phanerochaete sp.', category: 'Fungi', function: 'Primary lignin destroyer (LiP, MnP, Laccase)', temp: '25–42', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$8', pricePerG: '0.008', doseLow: '0.05', doseHigh: '0.15', costLow: '4.00', costHigh: '8.00', icbb: 'ICBB 9182', supplier: 'IPB Bogor ICBB' },
-    { id: 8, name: 'Phanerochaete chrysosporium', category: 'Fungi', function: 'Strongest lignin degrader (wild-type)', temp: '37–42', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$8', pricePerG: '0.008', doseLow: '0.05', doseHigh: '0.15', costLow: '4.00', costHigh: '8.00', icbb: 'Wild-type', supplier: 'IPB / LIPI Cibinong' },
-    { id: 9, name: 'Pleurotus ostreatus', category: 'Fungi', function: 'Selective lignin degrader (preserves cellulose)', temp: '20–28', bsfSafe: 'no', form: 'Wet', pricePerKg: '$0.30', pricePerG: '0.0003', doseLow: '0.05', doseHigh: '0.15', costLow: '0.15', costHigh: '0.30', icbb: '—', supplier: "Tokopedia 'bibit jamur'" },
-    { id: 10, name: 'Trametes versicolor', category: 'Fungi', function: 'Laccase producer, lignin oxidation', temp: '25–30', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$2', pricePerG: '0.002', doseLow: '0.03', doseHigh: '0.10', costLow: '0.60', costHigh: '1.40', icbb: '—', supplier: 'Tokopedia / Alibaba' },
-    { id: 11, name: 'Ganoderma lucidum', category: 'Fungi', function: 'Lignin degrader — CAUTION: palm pathogen', temp: '25–30', bsfSafe: 'warn', form: 'Wet', pricePerKg: '$1.50', pricePerG: '0.0015', doseLow: '0.03', doseHigh: '0.08', costLow: '0.45', costHigh: '0.84', icbb: '—', supplier: 'Tokopedia' },
-    { id: 12, name: 'Trichoderma harzianum / sp.', category: 'Fungi', function: 'Aggressive cellulase + Ganoderma biocontrol. Wave 1B/2 ONLY in 9-org stack', temp: '25–35', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$1.50', pricePerG: '0.0015', doseLow: '0.05', doseHigh: '0.15', costLow: '0.75', costHigh: '1.50', icbb: 'ICBB 9127', supplier: 'Tokopedia bulk' },
-    { id: 13, name: 'Aspergillus niger', category: 'Fungi', function: 'Industrial cellulase/pectinase. Wave 1A in 9-org stack', temp: '30–37', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$5', pricePerG: '0.005', doseLow: '0.03', doseHigh: '0.10', costLow: '1.50', costHigh: '3.50', icbb: '—', supplier: 'Alibaba / IndiaMART' },
-    { id: 14, name: 'Aspergillus oryzae', category: 'Fungi', function: 'Koji mold, amylase/protease', temp: '30–35', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$3', pricePerG: '0.003', doseLow: '0.05', doseHigh: '0.15', costLow: '1.50', costHigh: '3.00', icbb: '—', supplier: "Tokopedia 'koji'" },
-    // YEAST
-    { id: 15, name: 'Saccharomyces cerevisiae', category: 'Yeast', function: 'Anti-odour, N-conservation (50% NH₃ retention)', temp: '25–35', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$0.30', pricePerG: '0.0003', doseLow: '0.05', doseHigh: '0.20', costLow: '0.12', costHigh: '0.45', icbb: 'ICBB 8808', supplier: 'Fermipan retail' },
-    // BACTERIA
-    { id: 16, name: 'Microbacterium lactium', category: 'Bacteria', function: 'Primary cellulose decomposer → glucose', temp: '30–40', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$3', pricePerG: '0.003', doseLow: '0.05', doseHigh: '0.10', costLow: '1.50', costHigh: '2.40', icbb: 'ICBB 7125', supplier: 'Jaipur Bio India' },
-    { id: 17, name: 'Paenibacillus macerans', category: 'Bacteria', function: 'Hemicellulase + nif genes', temp: '30–45', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$3', pricePerG: '0.003', doseLow: '0.05', doseHigh: '0.10', costLow: '1.50', costHigh: '2.40', icbb: 'ICBB 8810', supplier: 'MarkNature / IPB' },
-    { id: 18, name: 'Bacillus subtilis', category: 'Bacteria', function: 'PGPR, endospore shelf-life. Wave 1 in 9-org stack', temp: '25–50', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$0.20', pricePerG: '0.0002', doseLow: '0.03', doseHigh: '0.05', costLow: '0.06', costHigh: '0.10', icbb: 'ICBB 8780', supplier: 'Ansel Biotech India' },
-    { id: 19, name: 'Lactobacillus sp. (EM-4)', category: 'Bacteria', function: 'LAB pH buffering 5.5–6.0. Wave 1 in 9-org stack', temp: '25–40', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$0.86', pricePerG: '0.00086', doseLow: '0.03', doseHigh: '0.10', costLow: '0.05', costHigh: '0.17', icbb: 'ICBB 6099', supplier: 'EM-4 retail Rp25k/L' },
-    { id: 20, name: 'Bacillus megaterium', category: 'Bacteria', function: 'P-solubiliser (gluconic acid)', temp: '25–37', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$1.50', pricePerG: '0.0015', doseLow: '0.03', doseHigh: '0.05', costLow: '0.45', costHigh: '0.75', icbb: '—', supplier: 'IndiaMART' },
-    { id: 21, name: 'Cellulomonas fimi', category: 'Bacteria', function: 'Cellulolytic bacterium', temp: '30–37', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$4', pricePerG: '0.004', doseLow: '0.03', doseHigh: '0.08', costLow: '1.20', costHigh: '2.24', icbb: '—', supplier: 'ATCC / IndiaMART' },
-    // N-FIXERS
-    { id: 22, name: 'Azotobacter vinelandii', category: 'N-Fixer', function: 'Free-living N₂ fixer: 10–20 mg N/kg/day — HIGHEST. Wave 2 / Day 3+', temp: '<50 ⚠️', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$0.40', pricePerG: '0.0004', doseLow: '0.05', doseHigh: '0.20', costLow: '0.20', costHigh: '0.60', icbb: 'ICBB 9098', supplier: 'HumicFactory India' },
-    { id: 23, name: 'Azospirillum lipoferum', category: 'N-Fixer', function: 'Associative N-fixer + IAA phytohormone. Wave 2', temp: '<50 ⚠️', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$1', pricePerG: '0.001', doseLow: '0.05', doseHigh: '0.10', costLow: '0.50', costHigh: '0.80', icbb: 'ICBB 6088', supplier: 'Jaipur Bio India' },
-    { id: 24, name: 'Bradyrhizobium japonicum', category: 'N-Fixer', function: 'Root-nodule N-fixer (soil phase). Wave 2', temp: '<45', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$1.50', pricePerG: '0.0015', doseLow: '0.03', doseHigh: '0.05', costLow: '0.45', costHigh: '0.75', icbb: 'ICBB 9251', supplier: 'Pioneer Agro India' },
-    // P/K SOLUBILISERS
-    { id: 25, name: 'Pseudomonas fluorescens', category: 'P-Solubiliser', function: 'P-solubiliser + HCN biocontrol vs Ganoderma', temp: '25–30', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$2.40', pricePerG: '0.0024', doseLow: '0.05', doseHigh: '0.10', costLow: '1.20', costHigh: '1.92', icbb: '—', supplier: 'Katyayani India' },
-    { id: 26, name: 'Bacillus coagulans', category: 'P-Solubiliser', function: 'P-solubiliser, probiotic. Wave 1 in 9-org stack', temp: '35–50', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$4.50', pricePerG: '0.002', doseLow: '0.03', doseHigh: '0.08', costLow: '0.60', costHigh: '1.12', icbb: '—', supplier: 'Alibaba' },
-    { id: 27, name: 'Bacillus mucilaginosus', category: 'K-Mobiliser', function: 'K-solubiliser from silicates', temp: '25–37', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$3', pricePerG: '0.003', doseLow: '0.03', doseHigh: '0.08', costLow: '0.90', costHigh: '1.68', icbb: '—', supplier: 'IndiaMART' },
-    { id: 28, name: 'Frateuria aurantia', category: 'K-Mobiliser', function: 'K-mobiliser specialist', temp: '25–30', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$4', pricePerG: '0.004', doseLow: '0.03', doseHigh: '0.05', costLow: '1.20', costHigh: '1.60', icbb: '—', supplier: 'IARI India' },
-    // ACTINOMYCETES
-    { id: 29, name: 'Streptomyces sp.', category: 'Actinomycete', function: 'Lignocellulolytic + antibiotic production', temp: '25–37', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$5', pricePerG: '0.005', doseLow: '0.02', doseHigh: '0.05', costLow: '1.00', costHigh: '2.00', icbb: 'ICBB 9155', supplier: 'IPB ICBB' },
-    { id: 30, name: 'Streptomyces sp.', category: 'Actinomycete', function: 'Complementary antibiotic profile', temp: '25–37', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$5', pricePerG: '0.005', doseLow: '0.02', doseHigh: '0.05', costLow: '1.00', costHigh: '2.00', icbb: 'ICBB 9469', supplier: 'IPB ICBB' },
-    // CONDITIONAL
-    { id: 31, name: 'Bacillus thuringiensis (Bt)', category: 'Conditional', function: 'S3 ONLY — titre decay <10⁴ CFU/g before S4. Cry proteins toxic to Diptera larvae', temp: '25–45', bsfSafe: 'warn', form: 'Dry', pricePerKg: '$0.15', pricePerG: '0.00015', doseLow: '—', doseHigh: '—', costLow: '—', costHigh: '—', icbb: 'ICBB 6095', supplier: 'IPB ICBB — USE WITH CAUTION' },
-    // ENZYMES
-    { id: 32, name: 'Cellulase (T. reesei)', category: 'Enzyme', function: 'β-1,4-glycosidic → glucose; +35–45% IVDMD', temp: '45–55', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$15', pricePerG: '0.015', doseLow: '0.01', doseHigh: '0.05', costLow: '1.58', costHigh: '7.88', icbb: 'EC 3.2.1.4', supplier: 'Novozymes Indonesia' },
-    { id: 33, name: 'Xylanase', category: 'Enzyme', function: 'β-1,4-xylosidic → xylose; strips hemi shield', temp: '40–55', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$17', pricePerG: '0.017', doseLow: '0.01', doseHigh: '0.05', costLow: '1.36', costHigh: '7.14', icbb: 'EC 3.2.1.8', supplier: 'Alibaba bulk' },
-    { id: 34, name: 'Laccase', category: 'Enzyme', function: 'Phenolic detoxification; opens lignin surface', temp: '30–50', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$20', pricePerG: '0.020', doseLow: '0.01', doseHigh: '0.03', costLow: '1.00', costHigh: '4.20', icbb: 'EC 1.10.3.2', supplier: 'Alibaba bulk' },
-    { id: 35, name: 'Pectinase', category: 'Enzyme', function: 'Pectin breakdown; softens cell walls', temp: '40–50', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$12', pricePerG: '0.012', doseLow: '0.005', doseHigh: '0.02', costLow: '0.42', costHigh: '1.68', icbb: 'EC 3.2.1.15', supplier: 'Alibaba bulk' },
-    { id: 36, name: 'Lipase', category: 'Enzyme', function: 'Fat breakdown; relevant for OPDC 3–8% lipid', temp: '35–45', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$18', pricePerG: '0.018', doseLow: '0.005', doseHigh: '0.02', costLow: '0.63', costHigh: '2.52', icbb: 'EC 3.1.1.3', supplier: 'Novozymes' },
-    { id: 37, name: 'Protease', category: 'Enzyme', function: 'Protein accessibility for BSF', temp: '40–55', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$10', pricePerG: '0.010', doseLow: '0.005', doseHigh: '0.02', costLow: '0.35', costHigh: '1.40', icbb: 'EC 3.4.x.x', supplier: 'Alibaba bulk' },
-    { id: 38, name: 'Amylase', category: 'Enzyme', function: 'Starch → glucose', temp: '55–70', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$8', pricePerG: '0.008', doseLow: '0.01', doseHigh: '0.03', costLow: '0.56', costHigh: '1.68', icbb: 'EC 3.2.1.1', supplier: 'Alibaba bulk' },
-    { id: 39, name: 'Mannanase', category: 'Enzyme', function: 'Mannan breakdown (palm kernel)', temp: '45–55', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$22', pricePerG: '0.022', doseLow: '0.005', doseHigh: '0.02', costLow: '0.77', costHigh: '3.08', icbb: 'EC 3.2.1.78', supplier: 'Alibaba / DSM' },
-    { id: 40, name: 'β-glucosidase', category: 'Enzyme', function: 'Final cellulose step → glucose', temp: '45–55', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$25', pricePerG: '0.025', doseLow: '0.005', doseHigh: '0.015', costLow: '0.88', costHigh: '2.63', icbb: 'EC 3.2.1.21', supplier: 'Novozymes' },
-    // NEW MAR 2026
-    { id: 41, name: 'Rhizopus oligosporus', category: 'Fungi', function: 'Fast mycelial protein — protease + lipase + phytase. Wave 1A Day 0. Vulnerable to Trichoderma', temp: '28–37', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$0.50', pricePerG: '0.0005', doseLow: '0.05', doseHigh: '0.15', costLow: '0.09', costHigh: '0.26', icbb: '—', supplier: 'Tokopedia / IndiaMART' },
-    { id: 42, name: 'Arthrospira platensis (Spirulina)', category: 'Algae', function: '1,850 L/t EFB DM. 65% CP. Neonate BSF +22%. FCR −0.7. BSF meal 45%→56% CP', temp: '25–38', bsfSafe: 'yes', form: 'Slurry', pricePerKg: '$0', pricePerG: '$0', doseLow: '1,850 L/t DM', doseHigh: '1,850 L/t DM', costLow: '$0', costHigh: '$0', icbb: '—', supplier: 'On-site POME raceway' },
-    { id: 43, name: 'Chlorella vulgaris', category: 'Algae', function: '1,850 L/t EFB DM. 45% CP. Neonate BSF +15%. FCR −0.5. BSF meal 45%→51% CP', temp: '20–30', bsfSafe: 'yes', form: 'Slurry', pricePerKg: '$0', pricePerG: '$0', doseLow: '1,850 L/t DM', doseHigh: '1,850 L/t DM', costLow: '$0', costHigh: '$0', icbb: '—', supplier: 'On-site POME raceway' },
-  ];
+  // Supabase data
+  const [organisms, setOrganisms] = useState([]);
+  const [procurement, setProcurement] = useState([]);
+  const [dosing, setDosing] = useState([]);
+  const [consortiumRules, setConsortiumRules] = useState([]);
+  const [timeline, setTimeline] = useState([]);
+  const [algae, setAlgae] = useState([]);
+  const [npk, setNpk] = useState([]);
+  const [capex, setCapex] = useState([]);
+
+  useEffect(() => {
+    async function fetchAll() {
+      setLoading(true);
+      const [orgRes, procRes, doseRes, consRes, tlRes, algRes, npkRes, capRes] = await Promise.all([
+        supabase.from('biological_library').select('*').order('id'),
+        supabase.from('s3_procurement').select('*').order('stack_position'),
+        supabase.from('s3_nine_org_dosing').select('*').order('stack_position'),
+        supabase.from('consortium_master_rules').select('*').order('id'),
+        supabase.from('s3_inoculation_timeline').select('*').order('day_number'),
+        supabase.from('s3_algae_uplift').select('*').order('id'),
+        supabase.from('s3_npk_contribution').select('*').order('id'),
+        supabase.from('s3_capex').select('*').order('id'),
+      ]);
+      setOrganisms(orgRes.data || []);
+      setProcurement(procRes.data || []);
+      setDosing(doseRes.data || []);
+      setConsortiumRules(consRes.data || []);
+      setTimeline(tlRes.data || []);
+      setAlgae(algRes.data || []);
+      setNpk(npkRes.data || []);
+      setCapex(capRes.data || []);
+      setLoading(false);
+    }
+    fetchAll();
+  }, []);
 
   const filteredOrganisms = useMemo(() => {
     return organisms.filter(org => {
-      const matchesSearch = org.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           org.category.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = categoryFilter === 'all' || org.category.toLowerCase().includes(categoryFilter.toLowerCase());
+      const name = (org.organism_name || '').toLowerCase();
+      const cat = (org.category || '').toLowerCase();
+      const search = searchTerm.toLowerCase();
+      const matchesSearch = name.includes(search) || cat.includes(search);
+      const matchesCategory = categoryFilter === 'all' ||
+        (categoryFilter === 'nfixer' ? (cat.includes('n-fixer') || cat.includes('n_fixer')) : cat.includes(categoryFilter.toLowerCase()));
       return matchesSearch && matchesCategory;
     });
-  }, [searchTerm, categoryFilter]);
+  }, [organisms, searchTerm, categoryFilter]);
 
   const styles = `
     :root {
