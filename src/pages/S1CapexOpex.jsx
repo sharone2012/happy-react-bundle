@@ -1,4 +1,5 @@
 import { useState } from "react";
+const FH = "'EB Garamond', serif";
 
 const F = "'DM Sans', sans-serif";
 
