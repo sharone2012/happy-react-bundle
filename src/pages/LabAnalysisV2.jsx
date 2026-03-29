@@ -291,7 +291,14 @@ export default function LabAnalysisV2() {
         height: "calc(100vh - 273px)", overflowY: "auto",
         background: "#060C14", padding: "0 17px",
       }}>
-        <EleSection />
+        <Section code="ELE" title="Elemental / Nutrient Analysis" meta="16 parameters · % DM · mg/kg DM" rows={ELE_ROWS} defaultOpen={true} />
+        <Section code="PRX" title="Proximate Analysis" meta="9 parameters · % wb · % DM · MJ/kg DM" rows={PRX_ROWS} />
+        <Section code="FIB" title="Fiber Analysis" meta="6 parameters · % DM" rows={FIB_ROWS} />
+        <Section code="PHY" title="Physicochemical Properties" meta="8 parameters · various units" rows={PHY_ROWS} />
+        <Section code="HMT" title="Heavy Metals & Trace Elements" meta="7 parameters · mg/kg DM · % ash" rows={HMT_ROWS} />
+        <Section code="BIO" title="Biological Indicators" meta="3 parameters · score · % DM" rows={BIO_ROWS} />
+        <Section code="AGV" title="Agronomic Value" meta="5 parameters · USD/t DM · %" rows={AGV_ROWS} />
+        <Section code="LAR" title="Large Molecule Analysis" meta="1 parameter · t CO₂e/t DM" rows={LAR_ROWS} />
       </div>
     </div>
   );
