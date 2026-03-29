@@ -1,62 +1,53 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { Download } from "lucide-react";
+import { toast } from "sonner";
 
 const F = "'DM Sans', sans-serif";
 const FH = "'EB Garamond', serif";
 
+const navCards = [
+  { title: "CapEx / OpEx / Facility", desc: "Building CAPEX $1.37M · Equipment $398K · OpEx $37,957/mo", route: "/s1-capex-opex", live: true },
+  { title: "EFB ASCII Flow", desc: "10-node mechanical line · 298 kW · 20 t/h", route: "/s1-efb-ascii", live: true },
+  { title: "OPDC ASCII Flow", desc: "10-node mechanical line · 206 kW · 5 t/h", route: "/s1-opdc-ascii", live: true },
+  { title: "POS ASCII Flow", desc: "4-node pre-skimming · 62 kW · 1.25 t/h", route: "/s1-pos-ascii", live: true },
+  { title: "Combined Floor Plans", desc: "Tabbed floor plans for all 3 lines", route: "/s1-combined", live: false },
+  { title: "Greenhouse Design", desc: "4 greenhouses · 40m × 8m · 2×2 grid layout", route: "/s1-greenhouse", live: false },
+];
+
+const streams = [
+  { name: "EFB", color: "#40D7C5", fresh: "300 t/day", dm: "112 t/day", mc: "62.5%" },
+  { name: "OPDC", color: "#F5A623", fresh: "45 t/day", dm: "13.5 t/day", mc: "70%" },
+  { name: "POS", color: "#3B82F6", fresh: "30 t/day", dm: "6 t/day", mc: "82%" },
+];
+
+const canonicalValues = [
+  { label: "FFB Capacity", value: "60 TPH" },
+  { label: "Operating", value: "20 hr/day" },
+  { label: "EFB Yield", value: "22% of FFB" },
+  { label: "OPDC Yield", value: "15.2% of EFB" },
+  { label: "POS Volume", value: "30 t/day" },
+  { label: "Belt Width", value: "600mm (EFB), 500mm (OPDC)" },
+  { label: "DM Target", value: "30% wb" },
+  { label: "Lignin Gate", value: "ADL <12% DM" },
+];
+
+const guardrails = [
+  "MC >=40% LOCKED (CLASS A)",
+  "Fe <3000 mg/kg DM target",
+  "ADL <12% DM for BSF",
+  "C:N 15-22 optimal",
+  "pH 4.0-5.0 range",
+  "CEC >20 cmol/kg target",
+  "No Cr >20 mg/kg",
+  "Belt speed locked at spec",
+  "All temps <85C",
+];
+
 export default function S1Index() {
   const navigate = useNavigate();
 
-  const lines = [
-    {
-      label: "EFB LINE (S1C)", color: "#40D7C5", sub: "8,262 t FW/month · 20 t/h",
-      cards: [
-        { type: "ASCII PROCESS FLOW", title: "EFB ASCII v2", desc: "10-node elevation profile with oversize return loop, noise zone, and baghouse parallel duct.", route: "/s1-efb-ascii" },
-        { type: "CAPEX/OPEX", title: "Building & Equipment Costs", desc: "Building costs, equipment CapEx, and monthly OpEx for EFB line.", route: "/s1-capex-opex" },
-      ],
-    },
-    {
-      label: "OPDC LINE (S1B)", color: "#F5A623", sub: "1,256 t FW/month · 5 t/h",
-      cards: [
-        { type: "ASCII PROCESS FLOW", title: "OPDC ASCII v2", desc: "10-node decanter cake flow with CLASS A gate, 24hr dwell bin, and lump breaker.", route: "/s1-opdc-ascii" },
-        { type: "CAPEX/OPEX", title: "Shared with EFB line", desc: "Shared with EFB line — same building and shared equipment.", route: "/s1-capex-opex" },
-      ],
-    },
-    {
-      label: "POS LINE (S1A)", color: "#4A9EDB", sub: "30 t/day · 1.5 t/h",
-      cards: [
-        { type: "ASCII PROCESS FLOW", title: "POS ASCII v1", desc: "5-node sludge processing flow with ICP-OES Fe gate and centrate split.", route: "/s1-pos-ascii" },
-        { type: "CAPEX/OPEX", title: "POS CapEx/OpEx", desc: "ICP-OES Fe gate pending — costs provisional.", route: "/s1-capex-opex" },
-      ],
-    },
-  ];
-
-  const canonicalValues = [
-    { label: "FFB Capacity", value: "60 TPH" },
-    { label: "Operating", value: "20 hr/day" },
-    { label: "EFB Yield", value: "22% of FFB" },
-    { label: "OPDC Yield", value: "15.2% of EFB" },
-    { label: "POS Volume", value: "30 t/day" },
-    { label: "Belt Width", value: "600mm (EFB), 500mm (OPDC)" },
-    { label: "DM Target", value: "30% wb" },
-    { label: "Lignin Gate", value: "ADL <12% DM" },
-  ];
-
-  const guardrails = [
-    "MC >=40% LOCKED (CLASS A)",
-    "Fe <3000 mg/kg DM target",
-    "ADL <12% DM for BSF",
-    "C:N 15-22 optimal",
-    "pH 4.0-5.0 range",
-    "CEC >20 cmol/kg target",
-    "No Cr >20 mg/kg",
-    "Belt speed locked at spec",
-    "All temps <85C",
-  ];
-
   return (
-    <div style={{ fontFamily: F, color: "#111" }}>
+    <div style={{ fontFamily: F, color: "#111", minHeight: "100vh", background: "#F1F5F9" }}>
       {/* ═══ PERSISTENT CFI GLOBAL HEADER ═══ */}
       <div style={{
         height: 83, background: "#0A1628",
@@ -84,156 +75,168 @@ export default function S1Index() {
       {/* Spacer */}
       <div style={{ height: 83 }} />
 
-      {/* ── Back to S1 Master ── */}
-      <div style={{ background: "#060C14", padding: "8px 32px", fontFamily: F }}>
-        <a href="/" style={{ color: "#33D4BC", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: F }}
-          onMouseEnter={e => e.currentTarget.style.opacity = 0.7}
-          onMouseLeave={e => e.currentTarget.style.opacity = 1}>
-          ← S1 Master Index
-        </a>
-      </div>
+      {/* ═══ PAGE CONTENT ═══ */}
+      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "24px 20px 60px" }}>
 
-      {/* ═══ PAGE WRAPPER ═══ */}
-      <div style={{ background: "#e0e0e0", display: "flex", justifyContent: "center", padding: "30px 0", minHeight: "calc(100vh - 83px)" }}>
-        <div style={{ width: 1000, background: "#FFFFFF", border: "3px solid #111", borderRadius: 0, overflow: "hidden" }}>
+        {/* ── Breadcrumb ── */}
+        <div style={{ fontSize: 13, fontFamily: F, marginBottom: 20 }}>
+          <a href="/" style={{ color: "#64748B", textDecoration: "none" }}
+            onMouseEnter={e => e.currentTarget.style.color = "#00C9B1"}
+            onMouseLeave={e => e.currentTarget.style.color = "#64748B"}>CFI Platform</a>
+          <span style={{ color: "#94A3B8", margin: "0 8px" }}>›</span>
+          <span style={{ color: "#0B1422", fontWeight: 700 }}>S1 Pre-Processing</span>
+        </div>
 
-          {/* ═══ TOPBAR ═══ */}
-          <div style={{
-            background: "#0B1422", padding: "10px 20px",
-            display: "flex", justifyContent: "space-between", alignItems: "center",
-          }}>
-            <span style={{ fontFamily: F, fontSize: 10, color: "#40D7C5" }}>CFI S1 Pre-Processing — Master Index</span>
-            <span style={{ fontFamily: F, fontSize: 10, color: "#8BA0B4" }}>EFB 20→13 t/h | OPDC 5→3.3 t/h | POS 1.25→0.56 t/h</span>
+        {/* ── Page Title ── */}
+        <h1 style={{ fontFamily: F, fontSize: 28, fontWeight: 700, color: "#0B1422", margin: "0 0 12px" }}>
+          S1 Pre-Processing
+        </h1>
+
+        {/* ── Subtitle Bar ── */}
+        <div style={{
+          background: "#F1F5F9", borderRadius: 6, padding: "12px 20px",
+          display: "flex", justifyContent: "space-between", alignItems: "center",
+          flexWrap: "wrap", gap: 8, marginBottom: 20,
+          border: "1px solid #E2E8F0",
+        }}>
+          <div style={{ fontFamily: F, fontSize: 14, fontWeight: 500, color: "#334155", display: "flex", flexWrap: "wrap", gap: 4 }}>
+            <span>Mill Size: <strong style={{ fontWeight: 700 }}>60 ton/hour</strong></span>
+            <span style={{ color: "#94A3B8" }}>·</span>
+            <span>Utilisation: <strong style={{ fontWeight: 700 }}>85%</strong></span>
+            <span style={{ color: "#94A3B8" }}>·</span>
+            <span>Operating: <strong style={{ fontWeight: 700 }}>20 hr/day · 30 days/mo</strong></span>
           </div>
-
-          {/* ═══ HERO CARD ═══ */}
-          <div style={{ background: "#060C14", padding: "28px 30px", borderBottom: "3px solid #111" }}>
-            <div style={{ fontFamily: F, fontSize: 20, fontWeight: 800, color: "#40D7C5" }}>CFI S1 Master — v3</div>
-            <div style={{ fontFamily: F, fontSize: 12, color: "#8BA0B4", marginTop: 4 }}>Pre-Processing Engineering Drawings &amp; Specifications</div>
-            <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-              {[
-                { text: "LOCKED", bg: "rgba(64,215,197,.12)", border: "rgba(64,215,197,.3)", color: "#40D7C5" },
-                { text: "Rev 03", bg: "rgba(64,215,197,.12)", border: "rgba(64,215,197,.3)", color: "#40D7C5" },
-                { text: "60 TPH", bg: "rgba(64,215,197,.12)", border: "rgba(64,215,197,.3)", color: "#40D7C5" },
-                { text: "3 Lines", bg: "rgba(245,166,35,.12)", border: "rgba(245,166,35,.3)", color: "#F5A623" },
-              ].map((b, i) => (
-                <span key={i} style={{
-                  fontFamily: F, fontSize: 9, fontWeight: 700, padding: "3px 9px",
-                  borderRadius: 2, background: b.bg, border: `1px solid ${b.border}`, color: b.color,
-                }}>{b.text}</span>
-              ))}
-            </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <span style={{ fontFamily: F, fontSize: 14, fontWeight: 400, color: "#64748B" }}>Bogor, West Java</span>
+            <span style={{
+              fontFamily: F, fontSize: 11, fontWeight: 600, color: "#00C9B1",
+              background: "#ECFDF5", padding: "2px 8px", borderRadius: 4,
+            }}>Reference Site</span>
           </div>
+        </div>
 
-          {/* ═══ LINE GRID ═══ */}
-          <div style={{ padding: "24px 30px", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
-            {lines.map((line, li) => (
-              <div key={li}>
-                {/* Column header */}
-                <div style={{ fontFamily: F, fontSize: 13, fontWeight: 700, color: line.color, marginBottom: 2 }}>{line.label}</div>
-                <div style={{ fontFamily: F, fontSize: 10, color: "#888", marginBottom: 10 }}>{line.sub}</div>
-                {/* Doc cards */}
-                {line.cards.map((card, ci) => (
-                  <div
-                    key={ci}
-                    onClick={() => !card.disabled && card.route && navigate(card.route)}
-                    style={{
-                      border: "1px solid #ddd", borderRadius: 4, padding: 12, marginBottom: 8,
-                      cursor: card.disabled ? "default" : "pointer",
-                      opacity: card.disabled ? 0.4 : 1,
-                      transition: "border-color 0.15s",
-                    }}
-                    onMouseEnter={e => { if (!card.disabled) e.currentTarget.style.borderColor = "#40D7C5"; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = "#ddd"; }}
-                  >
-                    <div style={{ fontFamily: F, fontSize: 9, fontWeight: 700, color: "#888", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 3 }}>{card.type}</div>
-                    <div style={{ fontFamily: F, fontSize: 13, fontWeight: 700, color: "#111" }}>{card.title}</div>
-                    <div style={{ fontFamily: F, fontSize: 11, color: "#555", marginTop: 2 }}>{card.desc}</div>
-                    {!card.disabled && card.route && (
-                      <div style={{ fontFamily: F, fontSize: 10, color: "#40D7C5", marginTop: 6 }}>{card.route} →</div>
-                    )}
-                    {card.disabled && (
-                      <div style={{ fontFamily: F, fontSize: 10, color: "#aaa", marginTop: 6 }}>Coming soon</div>
-                    )}
+        {/* ── Throughput Cards ── */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14, marginBottom: 28 }}>
+          {streams.map(s => (
+            <div key={s.name} style={{
+              background: "#fff", border: "1px solid #E2E8F0", borderRadius: 8, padding: 16,
+              borderLeft: `4px solid ${s.color}`,
+            }}>
+              <div style={{ fontFamily: F, fontSize: 14, fontWeight: 700, color: "#0B1422", marginBottom: 10 }}>{s.name}</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6 }}>
+                {[
+                  ["DAILY FRESH", s.fresh],
+                  ["DAILY DM", s.dm],
+                  ["MC", s.mc],
+                ].map(([label, val]) => (
+                  <div key={label}>
+                    <div style={{ fontFamily: F, fontSize: 11, fontWeight: 500, color: "#94A3B8", textTransform: "uppercase", letterSpacing: ".04em" }}>{label}</div>
+                    <div style={{ fontFamily: F, fontSize: 13, fontWeight: 400, color: "#0B1422", marginTop: 2 }}>{val}</div>
                   </div>
                 ))}
               </div>
+            </div>
+          ))}
+        </div>
+
+        {/* ── Quick Nav Cards ── */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 28 }}>
+          {navCards.map(card => (
+            <div
+              key={card.title}
+              onClick={() => {
+                if (card.live) navigate(card.route);
+                else toast("Coming soon", { duration: 2000 });
+              }}
+              style={{
+                background: "#fff", border: "1px solid #E2E8F0", borderRadius: 8, padding: 20,
+                cursor: card.live ? "pointer" : "default",
+                opacity: card.live ? 1 : 0.7,
+                display: "flex", justifyContent: "space-between", alignItems: "center",
+                transition: "border-color 0.15s, box-shadow 0.15s",
+              }}
+              onMouseEnter={e => { if (card.live) { e.currentTarget.style.borderColor = "#00C9B1"; e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,201,177,0.1)"; } }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = "#E2E8F0"; e.currentTarget.style.boxShadow = "none"; }}
+            >
+              <div>
+                <div style={{ fontFamily: F, fontSize: 16, fontWeight: 700, color: "#0B1422" }}>{card.title}</div>
+                <div style={{ fontFamily: F, fontSize: 13, fontWeight: 400, color: "#64748B", marginTop: 4 }}>{card.desc}</div>
+              </div>
+              <span style={{ fontSize: 18, color: "#94A3B8", flexShrink: 0, marginLeft: 12 }}>›</span>
+            </div>
+          ))}
+        </div>
+
+        {/* ═══ CANONICAL VALUES REFERENCE ═══ */}
+        <div style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: 8, padding: 20, marginBottom: 14 }}>
+          <div style={{ fontFamily: F, fontSize: 14, fontWeight: 700, color: "#0B1422", marginBottom: 12 }}>Canonical Values Reference</div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 10 }}>
+            {canonicalValues.map((cv, i) => (
+              <div key={i} style={{ border: "1px solid #F1F5F9", borderRadius: 4, padding: "8px 10px", background: "#FAFAFA" }}>
+                <div style={{ fontFamily: F, fontSize: 10, color: "#94A3B8" }}>{cv.label}</div>
+                <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, color: "#0B1422", marginTop: 2 }}>{cv.value}</div>
+              </div>
             ))}
           </div>
-
-          {/* ═══ CANONICAL VALUES REFERENCE ═══ */}
-          <div style={{ padding: "20px 30px", borderTop: "1px solid #ddd" }}>
-            <div style={{ fontFamily: F, fontSize: 14, fontWeight: 700, color: "#111", marginBottom: 12 }}>Canonical Values Reference</div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 10 }}>
-              {canonicalValues.map((cv, i) => (
-                <div key={i} style={{ border: "1px solid #eee", borderRadius: 3, padding: "8px 10px", background: "#fafafa" }}>
-                  <div style={{ fontFamily: F, fontSize: 10, color: "#888" }}>{cv.label}</div>
-                  <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, color: "#111", marginTop: 2 }}>{cv.value}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* ═══ S1 COMPLETE ENGINEERING SPECS — RFQ PACK ═══ */}
-          <div style={{ padding: "20px 30px", borderTop: "1px solid #ddd" }}>
-            <div style={{ border: "1.5px solid rgba(51,212,188,0.3)", borderRadius: 6, padding: "20px 24px", background: "#f8fcfb" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                <Download size={18} color="#33D4BC" />
-                <div style={{ fontFamily: F, fontSize: 10, fontWeight: 700, color: "#33D4BC", textTransform: "uppercase", letterSpacing: "0.06em" }}>Engineering Specs</div>
-              </div>
-              <div style={{ fontFamily: FH, fontSize: 18, fontWeight: 700, color: "#111", marginBottom: 6 }}>S1 Complete Engineering Specs — RFQ Pack</div>
-              <div style={{ fontFamily: F, fontSize: 12, color: "#555", lineHeight: 1.5, marginBottom: 16 }}>
-                22-page complete engineering documentation for all 3 processing lines (EFB, OPDC, POS). Ready for RFQ pack assembly and contractor bidding.
-              </div>
-              <div style={{ display: "flex", gap: 10 }}>
-                <a
-                  href="https://lcpbtnipkvrmuwllymfw.supabase.co/storage/v1/object/public/documents/CFI_S1_Engineering_Complete.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    fontFamily: F, fontSize: 12, fontWeight: 700, padding: "8px 20px",
-                    background: "#33D4BC", color: "#0A1628", borderRadius: 4, textDecoration: "none",
-                    display: "inline-flex", alignItems: "center", gap: 6,
-                  }}
-                  onMouseEnter={e => e.currentTarget.style.opacity = 0.85}
-                  onMouseLeave={e => e.currentTarget.style.opacity = 1}
-                >
-                  <Download size={14} /> View PDF →
-                </a>
-                <a
-                  href="https://lcpbtnipkvrmuwllymfw.supabase.co/storage/v1/object/public/documents/CFI_S1_Engineering_Complete.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={e => {
-                    e.preventDefault();
-                    const w = window.open(e.currentTarget.href, '_blank');
-                    if (w) { w.onload = () => { w.print(); }; }
-                  }}
-                  style={{
-                    fontFamily: F, fontSize: 12, fontWeight: 700, padding: "8px 20px",
-                    background: "transparent", color: "#33D4BC", borderRadius: 4, textDecoration: "none",
-                    border: "1.5px solid #33D4BC", display: "inline-flex", alignItems: "center", gap: 6,
-                  }}
-                  onMouseEnter={e => e.currentTarget.style.opacity = 0.85}
-                  onMouseLeave={e => e.currentTarget.style.opacity = 1}
-                >
-                  Print
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* ═══ GUARDRAILS STRIP ═══ */}
-          <div style={{ padding: "16px 30px", background: "#fafafa", borderTop: "1px solid #eee" }}>
-            <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, color: "#cc2222", marginBottom: 8 }}>9 Hard Guardrails</div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "4px 16px" }}>
-              {guardrails.map((g, i) => (
-                <div key={i} style={{ fontFamily: F, fontSize: 10, color: "#8b0000", lineHeight: 1.6 }}>⚠ {g}</div>
-              ))}
-            </div>
-          </div>
-
         </div>
+
+        {/* ═══ RFQ PACK ═══ */}
+        <div style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: 8, padding: 20, marginBottom: 14 }}>
+          <div style={{ border: "1.5px solid rgba(51,212,188,0.3)", borderRadius: 6, padding: "20px 24px", background: "#f8fcfb" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+              <Download size={18} color="#33D4BC" />
+              <div style={{ fontFamily: F, fontSize: 10, fontWeight: 700, color: "#33D4BC", textTransform: "uppercase", letterSpacing: "0.06em" }}>Engineering Specs</div>
+            </div>
+            <div style={{ fontFamily: F, fontSize: 18, fontWeight: 700, color: "#0B1422", marginBottom: 6 }}>S1 Complete Engineering Specs — RFQ Pack</div>
+            <div style={{ fontFamily: F, fontSize: 12, color: "#64748B", lineHeight: 1.5, marginBottom: 16 }}>
+              22-page complete engineering documentation for all 3 processing lines (EFB, OPDC, POS). Ready for RFQ pack assembly and contractor bidding.
+            </div>
+            <div style={{ display: "flex", gap: 10 }}>
+              <a
+                href="https://lcpbtnipkvrmuwllymfw.supabase.co/storage/v1/object/public/documents/CFI_S1_Engineering_Complete.pdf"
+                target="_blank" rel="noopener noreferrer"
+                style={{
+                  fontFamily: F, fontSize: 12, fontWeight: 700, padding: "8px 20px",
+                  background: "#33D4BC", color: "#0A1628", borderRadius: 4, textDecoration: "none",
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                }}
+                onMouseEnter={e => e.currentTarget.style.opacity = 0.85}
+                onMouseLeave={e => e.currentTarget.style.opacity = 1}
+              >
+                <Download size={14} /> View PDF →
+              </a>
+              <a
+                href="https://lcpbtnipkvrmuwllymfw.supabase.co/storage/v1/object/public/documents/CFI_S1_Engineering_Complete.pdf"
+                target="_blank" rel="noopener noreferrer"
+                onClick={e => {
+                  e.preventDefault();
+                  const w = window.open(e.currentTarget.href, '_blank');
+                  if (w) { w.onload = () => { w.print(); }; }
+                }}
+                style={{
+                  fontFamily: F, fontSize: 12, fontWeight: 700, padding: "8px 20px",
+                  background: "transparent", color: "#33D4BC", borderRadius: 4, textDecoration: "none",
+                  border: "1.5px solid #33D4BC", display: "inline-flex", alignItems: "center", gap: 6,
+                }}
+                onMouseEnter={e => e.currentTarget.style.opacity = 0.85}
+                onMouseLeave={e => e.currentTarget.style.opacity = 1}
+              >
+                Print
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* ═══ GUARDRAILS ═══ */}
+        <div style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: 8, padding: "16px 20px" }}>
+          <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, color: "#cc2222", marginBottom: 8 }}>9 Hard Guardrails</div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "4px 16px" }}>
+            {guardrails.map((g, i) => (
+              <div key={i} style={{ fontFamily: F, fontSize: 10, color: "#8b0000", lineHeight: 1.6 }}>⚠ {g}</div>
+            ))}
+          </div>
+        </div>
+
       </div>
     </div>
   );
