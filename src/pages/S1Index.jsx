@@ -174,17 +174,20 @@ export default function S1Index() {
             </div>
           </div>
 
-          {/* ═══ S1 ENGINEERING PDF — RFQ PACK ═══ */}
+          {/* ═══ S1 COMPLETE ENGINEERING SPECS — RFQ PACK ═══ */}
           <div style={{ padding: "20px 30px", borderTop: "1px solid #ddd" }}>
             <div style={{ border: "1.5px solid rgba(51,212,188,0.3)", borderRadius: 6, padding: "20px 24px", background: "#f8fcfb" }}>
-              <div style={{ fontFamily: F, fontSize: 10, fontWeight: 700, color: "#33D4BC", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }}>S1 Engineering PDF</div>
-              <div style={{ fontFamily: FH, fontSize: 18, fontWeight: 700, color: "#111", marginBottom: 6 }}>RFQ Pack</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                <Download size={18} color="#33D4BC" />
+                <div style={{ fontFamily: F, fontSize: 10, fontWeight: 700, color: "#33D4BC", textTransform: "uppercase", letterSpacing: "0.06em" }}>Engineering Specs</div>
+              </div>
+              <div style={{ fontFamily: FH, fontSize: 18, fontWeight: 700, color: "#111", marginBottom: 6 }}>S1 Complete Engineering Specs — RFQ Pack</div>
               <div style={{ fontFamily: F, fontSize: 12, color: "#555", lineHeight: 1.5, marginBottom: 16 }}>
                 22-page complete engineering documentation for all 3 processing lines (EFB, OPDC, POS). Ready for RFQ pack assembly and contractor bidding.
               </div>
               <div style={{ display: "flex", gap: 10 }}>
                 <a
-                  href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-engineering-pdf"
+                  href="https://lcpbtnipkvrmuwllymfw.supabase.co/storage/v1/object/public/documents/CFI_S1_Engineering_Complete.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -195,10 +198,10 @@ export default function S1Index() {
                   onMouseEnter={e => e.currentTarget.style.opacity = 0.85}
                   onMouseLeave={e => e.currentTarget.style.opacity = 1}
                 >
-                  View PDF →
+                  <Download size={14} /> View PDF →
                 </a>
                 <a
-                  href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-engineering-pdf"
+                  href="https://lcpbtnipkvrmuwllymfw.supabase.co/storage/v1/object/public/documents/CFI_S1_Engineering_Complete.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={e => {
