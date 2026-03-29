@@ -625,7 +625,7 @@ export default function S1CapexOpex() {
         </div>
         <div style={{ display: "flex", gap: 5 }}>
           {[
-            { label: "↗ Site Plan", c: "rgba(0,201,177,", tc: C.teal, onClick: () => toast("Floor plan coming soon", { duration: 2000 }) },
+            { label: "↗ Site Plan", c: "rgba(0,201,177,", tc: C.teal, onClick: () => navigate("/s1-combined") },
             { label: "↗ Architecture", c: "rgba(155,89,182,", tc: "#c090ff", onClick: () => toast("Architecture view coming soon", { duration: 2000 }) },
             { label: expandAll ? "Collapse All" : "Expand All", c: "rgba(245,166,35,", tc: C.amber, onClick: () => setExpandAll(!expandAll) },
           ].map((b, i) => (
