@@ -204,14 +204,14 @@ function SiteFacilityCard({ forceOpen }) {
 
 /* ── Building CAPEX Card ── */
 const lineItems = [
-  { ref: "A1", desc: "Site works — clearing, earthworks, drainage", val: "$79,540" },
-  { ref: "A2", desc: "Civil & concrete — slabs, hoppers, bays", val: "$105,900" },
-  { ref: "A3", desc: "Structural steel — PEB, cladding, platforms", val: "$336,790" },
-  { ref: "A4", desc: "Welfare fit-out — fixtures & finishes", val: "$107,650" },
-  { ref: "A5", desc: "MEP — power & lighting", val: "$140,000" },
-  { ref: "A6", desc: "MEP — HVAC & ventilation", val: "$28,000" },
-  { ref: "A7", desc: "Plumbing & drainage", val: "$42,000" },
-  { ref: "A8", desc: "Process building items", val: "$44,000" },
+  { ref: "A1", desc: "S1C EFB Processing Hall", val: "$425,000" },
+  { ref: "A2", desc: "S1B OPDC Processing Bay", val: "$185,000" },
+  { ref: "A3", desc: "Shared Infrastructure", val: "$312,610" },
+  { ref: "A4", desc: "Drying Yard & Hardstand", val: "$95,000" },
+  { ref: "A5", desc: "Storage & Bagging", val: "$142,000" },
+  { ref: "A6", desc: "Office & Laboratory", val: "$78,000" },
+  { ref: "A7", desc: "Utilities & Services", val: "$89,000" },
+  { ref: "A8", desc: "Contingency (5%)", val: "$48,000" },
 ];
 
 function BuildingCapexCard({ forceOpen }) {
