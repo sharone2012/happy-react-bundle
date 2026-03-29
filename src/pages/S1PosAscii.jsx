@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import S1SpecPanel from "../components/S1SpecPanel";
 
 const F = "'DM Sans', sans-serif";
 const FH = "'EB Garamond', serif";
@@ -39,9 +40,16 @@ export default function S1PosAscii() {
         <span onClick={() => navigate("/")} style={{ fontFamily: F, fontSize: 11, color: "#4A9EDB", cursor: "pointer" }}>← Home</span>
       </div>
 
-      {/* ── Back to S1 Master ── */}
+      {/* ── Breadcrumb + Back ── */}
       <div style={{ background: "#060C14", padding: "8px 32px", fontFamily: F }}>
-        <a href="/s1-index" style={{ color: "#33D4BC", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: F }} onMouseEnter={e => e.currentTarget.style.opacity = 0.7} onMouseLeave={e => e.currentTarget.style.opacity = 1}>← S1 Master Index</a>
+        <div style={{ fontSize: 12, fontFamily: F, marginBottom: 4 }}>
+          <a href="/" style={{ color: "#8BA0B4", textDecoration: "none" }}>CFI Platform</a>
+          <span style={{ color: "#3a4a5a", margin: "0 6px" }}>›</span>
+          <a href="/s1-capex-opex" style={{ color: "#8BA0B4", textDecoration: "none" }}>S1 Pre-Processing</a>
+          <span style={{ color: "#3a4a5a", margin: "0 6px" }}>›</span>
+          <span style={{ color: "#fff", fontWeight: 700 }}>POS ASCII Flow</span>
+        </div>
+        <a href="/s1-capex-opex" style={{ color: "#00C9B1", fontSize: 14, fontWeight: 500, textDecoration: "none", fontFamily: F }} onMouseEnter={e => e.currentTarget.style.opacity = 0.7} onMouseLeave={e => e.currentTarget.style.opacity = 1}>← Back to CapEx / OpEx</a>
       </div>
 
       <div style={{ background: "#fff", border: "3px solid #111", width: 960, margin: "24px auto", padding: 0 }}>
@@ -161,6 +169,23 @@ export default function S1PosAscii() {
 
           </div>
         </div>
+
+      {/* ── Engineering Specs ── */}
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 0 40px" }}>
+        <S1SpecPanel
+          title="S1A POS Line — Engineering Specifications (4 Nodes)"
+          totalPower="62"
+          totalCapex={<span style={{ color: "#92400E" }}>RFQ pending (decanter $80K–$150K only priced item)</span>}
+          monthlyElec="$1,806/mo"
+          monthlyKwh="19,747"
+          nodes={[
+            { tag:"RH-OPDC-101", name:"Sludge Pit 15m³", tph:1.25, mcIn:"82%", mcOut:"82%", elev:"0m", kw:0, gate:"ICP-OES-Fe", enforcement:"Fe result sets S2 inclusion", capex:null, supplier:null, description:"Sludge pit receiver" },
+            { tag:"DRS-SLD-01", name:"Rotary Drum Screen", tph:1.17, mcIn:"82%", mcOut:"78%", elev:"1.5m", kw:7, gate:null, enforcement:null, capex:null, supplier:null, description:null },
+            { tag:"DEC-SLD-101", name:"Decanter Centrifuge", tph:0.56, mcIn:"78%", mcOut:"65%", elev:"3m", kw:55, gate:null, enforcement:"Alfa Laval preferred", capex:"RFQ $80K–$150K", supplier:"PT Kharismapratama / SCK-Modipalm / Alfa Laval", description:"Horizontal 3-phase centrifuge, 3 m³/h, bowl 250-350mm" },
+            { tag:"BIN-OPDC-301", name:"Buffer Tank 15m³", tph:0.56, mcIn:"65%", mcOut:"65%", elev:"3m", kw:0, gate:null, enforcement:null, capex:null, supplier:null, description:null },
+          ]}
+        />
+      </div>
       </div>
     </div>
   );

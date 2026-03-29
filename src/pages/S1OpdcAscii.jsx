@@ -1,4 +1,5 @@
 import { useState } from "react";
+import S1SpecPanel from "../components/S1SpecPanel";
 
 const F = "'DM Sans', sans-serif";
 const FH = "'EB Garamond', serif";
@@ -52,9 +53,16 @@ export default function S1OpdcAscii() {
       {/* Spacer */}
       <div style={{ height: 83 }} />
 
-      {/* ── Back to S1 Master ── */}
+      {/* ── Breadcrumb + Back ── */}
       <div style={{ background: "#060C14", padding: "8px 32px", fontFamily: F }}>
-        <a href="/s1-index" style={{ color: "#33D4BC", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: F }} onMouseEnter={e => e.currentTarget.style.opacity = 0.7} onMouseLeave={e => e.currentTarget.style.opacity = 1}>← S1 Master Index</a>
+        <div style={{ fontSize: 12, fontFamily: F, marginBottom: 4 }}>
+          <a href="/" style={{ color: "#8BA0B4", textDecoration: "none" }}>CFI Platform</a>
+          <span style={{ color: "#3a4a5a", margin: "0 6px" }}>›</span>
+          <a href="/s1-capex-opex" style={{ color: "#8BA0B4", textDecoration: "none" }}>S1 Pre-Processing</a>
+          <span style={{ color: "#3a4a5a", margin: "0 6px" }}>›</span>
+          <span style={{ color: "#fff", fontWeight: 700 }}>OPDC ASCII Flow</span>
+        </div>
+        <a href="/s1-capex-opex" style={{ color: "#00C9B1", fontSize: 14, fontWeight: 500, textDecoration: "none", fontFamily: F }} onMouseEnter={e => e.currentTarget.style.opacity = 0.7} onMouseLeave={e => e.currentTarget.style.opacity = 1}>← Back to CapEx / OpEx</a>
       </div>
 
       <div style={{ display: "flex", justifyContent: "center", padding: "24px 0" }}>
@@ -224,6 +232,28 @@ export default function S1OpdcAscii() {
             </div>
           </div>
         </div>
+
+      {/* ── Engineering Specs ── */}
+      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 0 40px" }}>
+        <S1SpecPanel
+          title="S1B OPDC Line — Engineering Specifications (10 Nodes)"
+          totalPower="206"
+          totalCapex="$38,000"
+          monthlyElec="$6,651/mo"
+          monthlyKwh="72,742"
+          nodes={[
+            { tag:"SF-01", name:"Reciprocating Feeder", tph:5, mcIn:"72.5%", mcOut:"72.5%", elev:"0m", kw:7.5, gate:null, enforcement:null, capex:"$10,000", supplier:"Local fabricator", description:"Pusher feeder 5 t/h" },
+            { tag:"BC-10/11", name:"Incline Conveyor 500mm", tph:5, mcIn:"72.5%", mcOut:"72.5%", elev:"2m", kw:15, gate:null, enforcement:null, capex:"$8,000", supplier:"PT Sinar Surya Lestari", description:"Belt or screw conveyor 10m" },
+            { tag:"TR-OPDC-01", name:"Trommel Screen 50mm", tph:4.8, mcIn:"72.5%", mcOut:"72.5%", elev:"6m", kw:9, gate:null, enforcement:null, capex:"$5,000", supplier:"PT Hans Jaya Utama", description:"Concrete bay for decanter cake reception" },
+            { tag:"OBM-02", name:"Overband Magnet", tph:4.8, mcIn:"72.5%", mcOut:"72.5%", elev:"6m", kw:3, gate:null, enforcement:null, capex:null, supplier:null, description:null },
+            { tag:"DC-PRESS-01", name:"Screw Press + PKSA", tph:3.5, mcIn:"72.5%", mcOut:"61%", elev:"6m", kw:30, gate:"B.G2", enforcement:"MC ≥ 40% MIN CLASS A", capex:null, supplier:null, description:null },
+            { tag:"LB-01", name:"Lump Breaker", tph:3.5, mcIn:"61%", mcOut:"61%", elev:"6m", kw:37, gate:null, enforcement:null, capex:null, supplier:null, description:null },
+            { tag:"HM-02", name:"Hammer Mill", tph:3.5, mcIn:"61%", mcOut:"61%", elev:"6m", kw:90, gate:"SPRING-ISO", enforcement:null, capex:null, supplier:null, description:null },
+            { tag:"VS-02", name:"Vibrating Screen 2mm", tph:3.3, mcIn:"61%", mcOut:"61%", elev:"6m", kw:9, gate:"B.G1", enforcement:null, capex:null, supplier:null, description:null },
+            { tag:"DC-01", name:"Baghouse (Shared)", tph:3.3, mcIn:"61%", mcOut:"61%", elev:"6m", kw:0, gate:null, enforcement:"Shared with S1A", capex:null, supplier:null, description:"Shared with S1A" },
+            { tag:"BIN-OPDC-24HR", name:"Buffer Bin 85m³ + Rake", tph:3.3, mcIn:"61%", mcOut:"61%", elev:"6m", kw:5.5, gate:"C.G2/G3", enforcement:"pH 8.0–9.0 post-24hr dwell", capex:"$15,000", supplier:"PT BSB", description:"Steel bin 20 m³" },
+          ]}
+        />
       </div>
       </div>
     </div>
