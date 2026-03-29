@@ -13,6 +13,7 @@ import S1EfbSpec from "./pages/S1EfbSpec.jsx";
 import S1OpdcSpec from "./pages/S1OpdcSpec.jsx";
 import S1PosSpec from "./pages/S1PosSpec.jsx";
 import S1Combined from "./pages/S1Combined.jsx";
+import S1Engineering from "./pages/S1Engineering";
 import CFI_AG_Management_Planning_Calculator from "./CFI_AG_Management_Planning_Calculator.jsx";
 import "./index.css";
 

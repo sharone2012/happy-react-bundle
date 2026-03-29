@@ -11,6 +11,7 @@ const navCards = [
   { title: "OPDC ASCII Flow", desc: "10-node mechanical line · 206 kW · 5 t/h", route: "/s1-opdc-ascii", live: true },
   { title: "POS ASCII Flow", desc: "4-node pre-skimming · 62 kW · 1.25 t/h", route: "/s1-pos-ascii", live: true },
   { title: "Combined Floor Plans", desc: "Tabbed floor plans · EFB · OPDC · POS", route: "/s1-combined", live: true },
+  { title: "S1 Engineering Complete", desc: "24 equipment nodes · 3 processing lines · CAPEX + OpEx + Greenhouse + Guardrails", route: "/s1-engineering", live: true },
   { title: "Greenhouse Design", desc: "4 greenhouses · 40m × 8m · 2×2 grid layout", route: "/s1-greenhouse", live: false },
 ];
 
