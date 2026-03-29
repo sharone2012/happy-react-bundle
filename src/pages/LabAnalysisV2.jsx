@@ -102,7 +102,9 @@ export default function LabAnalysisV2() {
       <div style={{
         height: "calc(100vh - 273px)", overflowY: "auto",
         background: "#060C14", padding: "0 17px",
-      }} />
+      }}>
+        <EleSection />
+      </div>
     </div>
   );
 }
