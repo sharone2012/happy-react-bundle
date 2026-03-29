@@ -32,6 +32,7 @@ createRoot(document.getElementById("root")!).render(
       <Route path="/s1-efb-spec" element={<S1EfbSpec />} />
       <Route path="/s1-opdc-spec" element={<S1OpdcSpec />} />
       <Route path="/s1-pos-spec" element={<S1PosSpec />} />
+      <Route path="/s1-combined" element={<S1Combined />} />
       <Route path="/CFI_AG_Management_Planning_Calculator" element={<CFI_AG_Management_Planning_Calculator />} />
     </Routes>
   </BrowserRouter>
