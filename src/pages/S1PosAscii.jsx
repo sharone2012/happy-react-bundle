@@ -169,6 +169,23 @@ export default function S1PosAscii() {
 
           </div>
         </div>
+
+      {/* ── Engineering Specs ── */}
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 0 40px" }}>
+        <S1SpecPanel
+          title="S1A POS Line — Engineering Specifications (4 Nodes)"
+          totalPower="62"
+          totalCapex={<span style={{ color: "#92400E" }}>RFQ pending (decanter $80K–$150K only priced item)</span>}
+          monthlyElec="$1,806/mo"
+          monthlyKwh="19,747"
+          nodes={[
+            { tag:"RH-OPDC-101", name:"Sludge Pit 15m³", tph:1.25, mcIn:"82%", mcOut:"82%", elev:"0m", kw:0, gate:"ICP-OES-Fe", enforcement:"Fe result sets S2 inclusion", capex:null, supplier:null, description:"Sludge pit receiver" },
+            { tag:"DRS-SLD-01", name:"Rotary Drum Screen", tph:1.17, mcIn:"82%", mcOut:"78%", elev:"1.5m", kw:7, gate:null, enforcement:null, capex:null, supplier:null, description:null },
+            { tag:"DEC-SLD-101", name:"Decanter Centrifuge", tph:0.56, mcIn:"78%", mcOut:"65%", elev:"3m", kw:55, gate:null, enforcement:"Alfa Laval preferred", capex:"RFQ $80K–$150K", supplier:"PT Kharismapratama / SCK-Modipalm / Alfa Laval", description:"Horizontal 3-phase centrifuge, 3 m³/h, bowl 250-350mm" },
+            { tag:"BIN-OPDC-301", name:"Buffer Tank 15m³", tph:0.56, mcIn:"65%", mcOut:"65%", elev:"3m", kw:0, gate:null, enforcement:null, capex:null, supplier:null, description:null },
+          ]}
+        />
+      </div>
       </div>
     </div>
   );

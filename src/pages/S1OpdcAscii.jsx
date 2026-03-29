@@ -232,6 +232,28 @@ export default function S1OpdcAscii() {
             </div>
           </div>
         </div>
+
+      {/* ── Engineering Specs ── */}
+      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 0 40px" }}>
+        <S1SpecPanel
+          title="S1B OPDC Line — Engineering Specifications (10 Nodes)"
+          totalPower="206"
+          totalCapex="$38,000"
+          monthlyElec="$6,651/mo"
+          monthlyKwh="72,742"
+          nodes={[
+            { tag:"SF-01", name:"Reciprocating Feeder", tph:5, mcIn:"72.5%", mcOut:"72.5%", elev:"0m", kw:7.5, gate:null, enforcement:null, capex:"$10,000", supplier:"Local fabricator", description:"Pusher feeder 5 t/h" },
+            { tag:"BC-10/11", name:"Incline Conveyor 500mm", tph:5, mcIn:"72.5%", mcOut:"72.5%", elev:"2m", kw:15, gate:null, enforcement:null, capex:"$8,000", supplier:"PT Sinar Surya Lestari", description:"Belt or screw conveyor 10m" },
+            { tag:"TR-OPDC-01", name:"Trommel Screen 50mm", tph:4.8, mcIn:"72.5%", mcOut:"72.5%", elev:"6m", kw:9, gate:null, enforcement:null, capex:"$5,000", supplier:"PT Hans Jaya Utama", description:"Concrete bay for decanter cake reception" },
+            { tag:"OBM-02", name:"Overband Magnet", tph:4.8, mcIn:"72.5%", mcOut:"72.5%", elev:"6m", kw:3, gate:null, enforcement:null, capex:null, supplier:null, description:null },
+            { tag:"DC-PRESS-01", name:"Screw Press + PKSA", tph:3.5, mcIn:"72.5%", mcOut:"61%", elev:"6m", kw:30, gate:"B.G2", enforcement:"MC ≥ 40% MIN CLASS A", capex:null, supplier:null, description:null },
+            { tag:"LB-01", name:"Lump Breaker", tph:3.5, mcIn:"61%", mcOut:"61%", elev:"6m", kw:37, gate:null, enforcement:null, capex:null, supplier:null, description:null },
+            { tag:"HM-02", name:"Hammer Mill", tph:3.5, mcIn:"61%", mcOut:"61%", elev:"6m", kw:90, gate:"SPRING-ISO", enforcement:null, capex:null, supplier:null, description:null },
+            { tag:"VS-02", name:"Vibrating Screen 2mm", tph:3.3, mcIn:"61%", mcOut:"61%", elev:"6m", kw:9, gate:"B.G1", enforcement:null, capex:null, supplier:null, description:null },
+            { tag:"DC-01", name:"Baghouse (Shared)", tph:3.3, mcIn:"61%", mcOut:"61%", elev:"6m", kw:0, gate:null, enforcement:"Shared with S1A", capex:null, supplier:null, description:"Shared with S1A" },
+            { tag:"BIN-OPDC-24HR", name:"Buffer Bin 85m³ + Rake", tph:3.3, mcIn:"61%", mcOut:"61%", elev:"6m", kw:5.5, gate:"C.G2/G3", enforcement:"pH 8.0–9.0 post-24hr dwell", capex:"$15,000", supplier:"PT BSB", description:"Steel bin 20 m³" },
+          ]}
+        />
       </div>
       </div>
     </div>

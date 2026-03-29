@@ -245,6 +245,29 @@ export default function S1EfbAscii() {
           </div>
         </div>
       </div>
+
+      {/* ── Engineering Specs ── */}
+      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 0 40px" }}>
+        <S1SpecPanel
+          title="S1C EFB Line — Engineering Specifications (10 Nodes)"
+          totalPower="298"
+          totalCapex="$184,000"
+          monthlyElec="$14,191/mo"
+          monthlyKwh="155,199"
+          nodes={[
+            { tag:"AF-01", name:"Hydraulic Feeder", tph:20, mcIn:"62.5%", mcOut:"62.5%", elev:"0m", kw:18, gate:null, enforcement:null, capex:"$15,000", supplier:"PT Jayatech Palmindo", description:"Floor-level pusher plate feeder, 20 t/h" },
+            { tag:"BC-01/02", name:"Incline Conveyor 600mm", tph:20, mcIn:"62.5%", mcOut:"62.5%", elev:"2m", kw:22, gate:null, enforcement:null, capex:"$18,000", supplier:"PT Sinar Surya Lestari", description:"Heavy-duty apron conveyor, 15m long, 20 t/h" },
+            { tag:"TR-2060", name:"Trommel Screen 50mm", tph:19, mcIn:"62.5%", mcOut:"62.5%", elev:"6m", kw:11, gate:null, enforcement:null, capex:"$8,000", supplier:"PT Hans Jaya Utama", description:"Concrete unloading bay with side walls" },
+            { tag:"OBM-01", name:"Overband Magnet", tph:19, mcIn:"62.5%", mcOut:"62.5%", elev:"6m", kw:3, gate:null, enforcement:null, capex:null, supplier:null, description:null },
+            { tag:"PR-01", name:"Screw Press + PKSA", tph:14, mcIn:"62.5%", mcOut:"47.5%", elev:"6m", kw:30, gate:"B.G2", enforcement:null, capex:null, supplier:null, description:null },
+            { tag:"SD-01", name:"Primary Shredder", tph:14, mcIn:"47.5%", mcOut:"47.5%", elev:"6m", kw:75, gate:null, enforcement:null, capex:"$45,000", supplier:"CV Has Engineering", description:"Rotary shredder 50-100mm output, 20 t/h" },
+            { tag:"HM-01", name:"Hammer Mill", tph:14, mcIn:"47.5%", mcOut:"47.5%", elev:"6m", kw:110, gate:"SPRING-ISO", enforcement:null, capex:"$35,000", supplier:"Cakrawala Mesin Multindo", description:"High-speed hammer mill to 2mm, 15 t/h" },
+            { tag:"VS-01", name:"Vibrating Screen 2mm", tph:13, mcIn:"47.5%", mcOut:"47.5%", elev:"6m", kw:11, gate:"B.G1", enforcement:null, capex:"$12,000", supplier:"CV Has Engineering", description:"2mm screen deck, 15 t/h" },
+            { tag:"DC-01", name:"Baghouse (Shared)", tph:13, mcIn:"47.5%", mcOut:"47.5%", elev:"6m", kw:18, gate:null, enforcement:null, capex:null, supplier:null, description:"Shared with S1B" },
+            { tag:"BIN-EFB-01", name:"Buffer Bin 50m³", tph:13, mcIn:"47.5%", mcOut:"47.5%", elev:"6m", kw:0, gate:null, enforcement:null, capex:"$25,000", supplier:"PT BSB (Bangun Sarana Baja)", description:"Steel bin 50 m³, live bottom discharge" },
+          ]}
+        />
+      </div>
       </div>
     </div>
   );
