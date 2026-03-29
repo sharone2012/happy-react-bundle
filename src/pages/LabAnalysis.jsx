@@ -293,23 +293,24 @@ export default function LabAnalysis() {
         background: "#060C14", padding: "0 17px",
       }}>
 
+        {/* ─── LOADING STATE ─────────────────────────────────────────── */}
+        {loading && !showAll && (
+          <div style={{ padding: 40, textAlign: "center", color: "#7E9EB4", fontFamily: "'DM Sans', sans-serif" }}>
+            Loading {activeStream} data from Supabase…
+          </div>
+        )}
+
         {/* ─── ALL SECTIONS ───────────────────────────────────────────── */}
-        {[
-          { code: "ELE", title: "Elemental / Nutrient Analysis", meta: "16 parameters · % DM · mg/kg DM", rows: ELE_ROWS },
-          { code: "PRX", title: "Proximate Analysis",            meta: "9 parameters · % wb · % DM · MJ/kg DM", rows: PRX_ROWS },
-          { code: "FIB", title: "Fiber Analysis",                meta: "6 parameters · % DM",              rows: FIB_ROWS },
-          { code: "PHY", title: "Physicochemical Properties",    meta: "8 parameters · various units",      rows: PHY_ROWS },
-          { code: "HMT", title: "Heavy Metals & Trace Elements", meta: "7 parameters · mg/kg DM · % ash",  rows: HMT_ROWS },
-          { code: "BIO", title: "Biological Indicators",         meta: "3 parameters · score · % DM",      rows: BIO_ROWS },
-          { code: "AGV", title: "Agronomic Value",               meta: "5 parameters · USD/t DM · %",      rows: AGV_ROWS },
-          { code: "LAR", title: "Large Molecule Analysis",       meta: "1 parameter · t CO₂e/t DM",        rows: LAR_ROWS },
-        ].map(sec => {
-          const isOpen = openSections[sec.code];
+        {SECTION_ORDER.map(code => {
+          const rows = sections[code] || [];
+          const def = SECTION_DEFS[code];
+          const isOpen = openSections[code];
+          const meta = `${rows.length} parameters · ${def.meta}`;
           return (
-            <div key={sec.code}>
+            <div key={code}>
               {/* Section Header */}
               <div
-                onClick={() => toggleSection(sec.code)}
+                onClick={() => toggleSection(code)}
                 style={{
                   background: "rgba(0, 201, 177, 0.048)", padding: "7px 20px",
                   display: "flex", alignItems: "center", gap: 10, cursor: "pointer",
@@ -321,9 +322,9 @@ export default function LabAnalysis() {
                   transition: "transform 0.2s ease, color 0.15s ease",
                   display: "inline-block", lineHeight: 1,
                 }}>›</span>
-                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#F5A623" }}>{sec.code}</span>
-                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#40D7C5" }}>{sec.title}</span>
-                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: "#666" }}>{sec.meta}</span>
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#F5A623" }}>{code}</span>
+                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#40D7C5" }}>{def.title}</span>
+                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: "#666" }}>{meta}</span>
                 <span style={{ marginLeft: "auto", color: "#666", cursor: "pointer", fontSize: 14 }}
                   onMouseEnter={e => e.currentTarget.style.color = "#FFFFFF"}
                   onMouseLeave={e => e.currentTarget.style.color = "#666"}
@@ -333,6 +334,11 @@ export default function LabAnalysis() {
 
               {/* Table */}
               {isOpen && (
+                rows.length === 0 ? (
+                  <div style={{ padding: "12px 20px", color: "#7E9EB4", fontFamily: "'DM Sans', sans-serif", fontSize: 12 }}>
+                    No data for {code} in {activeStream}
+                  </div>
+                ) : (
                 <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed" }}>
                   <colgroup>
                     {COLS.map(c => <col key={c.key} style={{ width: c.width }} />)}
@@ -350,7 +356,7 @@ export default function LabAnalysis() {
                     </tr>
                   </thead>
                   <tbody>
-                    {sec.rows.map((row, idx) => {
+                    {rows.map((row, idx) => {
                       const isEven = idx % 2 === 1;
                       const isDataGap = row.result === "DATA GAP";
                       const isSniBlocker = row.sni === "SNI Blocker";
@@ -395,6 +401,7 @@ export default function LabAnalysis() {
                     })}
                   </tbody>
                 </table>
+                )
               )}
             </div>
           );
