@@ -110,12 +110,12 @@ const expandedTiles = [
 ];
 
 const drawingBtns = [
-  { title: "Site Master Plan", sub: "98m × 85m · All zones · North arrow", action: "toast" },
+  { title: "Site Master Plan", sub: "98m × 85m · All zones · North arrow", action: "nav", route: "/s1-combined" },
   { title: "Building Architecture", sub: "Floor · Elevation · Section · 3D · Machinery", action: "toast" },
-  { title: "Building Floor Plan", sub: "36×35m · All machines ①–⑳ · Legend", action: "toast" },
+  { title: "Building Floor Plan", sub: "36×35m · All machines ①–⑳ · Legend", action: "nav", route: "/s1-combined" },
   { title: "Greenhouse Design", sub: "Site plan · Section XX · Store", action: "toast" },
-  { title: "EFB Floor Plan", sub: "①–⑩ · 20 t/h · 10 machines · 600mm belt", action: "toast" },
-  { title: "OPDC Floor Plan", sub: "⑪–⑳ · 5 t/h · CLASS A gate", action: "toast" },
+  { title: "EFB Floor Plan", sub: "①–⑩ · 20 t/h · 10 machines · 600mm belt", action: "nav", route: "/s1-combined" },
+  { title: "OPDC Floor Plan", sub: "⑪–⑳ · 5 t/h · CLASS A gate", action: "nav", route: "/s1-combined" },
   { title: "EFB ASCII Flow", sub: "Step-by-step · machines · specs · gates", action: "nav", route: "/s1-efb-ascii" },
   { title: "OPDC ASCII Flow", sub: "Step-by-step · CLASS A gate · 24h dwell", action: "nav", route: "/s1-opdc-ascii" },
   { title: "POS ASCII Flow", sub: "ICP-OES Fe gate · decanter · inclusion rate", action: "nav", route: "/s1-pos-ascii" },
