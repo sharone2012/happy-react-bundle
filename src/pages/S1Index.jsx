@@ -21,7 +21,7 @@ export default function S1Index() {
       cards: [
         { type: "ASCII PROCESS FLOW", title: "OPDC ASCII v2", desc: "10-node decanter cake flow with CLASS A gate, 24hr dwell bin, and lump breaker.", route: "/s1-opdc-ascii" },
         { type: "CAPEX/OPEX", title: "Shared with EFB line", desc: "Shared with EFB line — same building and shared equipment.", route: "/s1-capex-opex" },
-        { type: "ENGINEERING SPEC", title: "OPDC Engineering Spec", desc: "Detailed equipment specs and datasheets.", disabled: true },
+        { type: "ENGINEERING SPEC", title: "OPDC Engineering Spec", desc: "Detailed equipment specs and datasheets.", route: "/s1-opdc-spec" },
       ],
     },
     {
