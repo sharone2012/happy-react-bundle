@@ -19,6 +19,7 @@ createRoot(document.getElementById("root")!).render(
       <Route path="/s3/a-bio-library" element={<S3ABioLibrary />} />
       <Route path="/s1-index" element={<S1Index />} />
       <Route path="/S1-index" element={<S1Index />} />
+      <Route path="/s1-capex-opex" element={<S1CapexOpex />} />
     </Routes>
   </BrowserRouter>
 );
