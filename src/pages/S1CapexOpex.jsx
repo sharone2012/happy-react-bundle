@@ -341,15 +341,29 @@ export default function S1CapexOpex() {
 
       {/* ── GLOBAL HEADER ── */}
       <div style={{
-        background: "#0A1628", height: 56, display: "flex", alignItems: "center",
-        padding: "0 20px", justifyContent: "space-between",
+        background: "#0A1628", height: 83, display: "flex", alignItems: "center",
+        padding: "0 32px", borderBottom: "1px solid rgba(51, 212, 188, 0.15)",
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontFamily: F, fontSize: 20, fontWeight: 700, color: "#FFFFFF" }}>CFI</span>
-          <span style={{ color: "#FFFFFF", fontSize: 20 }}>|</span>
-          <span style={{ fontFamily: F, fontSize: 20, fontWeight: 700, color: C.teal2 }}>Deep Tech</span>
+        <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+          <span style={{ fontFamily: FH, fontSize: 26, fontWeight: 700, color: "#FFFFFF", letterSpacing: "0.06em" }}>CFI</span>
+          <span style={{ fontFamily: FH, fontSize: 26, fontWeight: 700, color: "#33D4BC", letterSpacing: "0.06em", marginLeft: 10 }}>Deep Tech</span>
+        </div>
+        <div style={{ width: 3, height: 44, background: "#33D4BC", margin: "0 20px 0 14px" }} />
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 4, height: 44 }}>
+          <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, lineHeight: 1.3, whiteSpace: "nowrap", display: "flex" }}>
+            <span style={{ color: "#FFFFFF", minWidth: 150, display: "inline-block" }}>Precision Engineering</span>
+            <span style={{ color: "#33D4BC" }}>Circular Nutrient Recovery in Agricultural Systems</span>
+          </div>
+          <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, lineHeight: 1.3, whiteSpace: "nowrap", display: "flex" }}>
+            <span style={{ color: "#FFFFFF", minWidth: 150, display: "inline-block" }}>Applied Biology</span>
+            <span style={{ color: "#33D4BC" }}>Rebalancing Soil&apos;s Microbiome &amp; Reducing Synthetic Fertiliser Use</span>
+          </div>
         </div>
       </div>
+
+      {/* Spacer */}
+      <div style={{ height: 83 }} />
 
       {/* ── CONTEXT BAR ── */}
       <div style={{
