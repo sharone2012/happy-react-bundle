@@ -1002,32 +1002,34 @@ const S3BiologyLibrary = () => {
     <div className="tbl-wrap">
       <table>
         <thead><tr>
-          <th>#</th><th className="left">Organism / Enzyme</th><th>Form</th><th>Unit</th><th>$/Unit</th>
-          <th>Dose Low % DM</th><th>Dose High % DM</th><th>kg/t FW Low</th><th>kg/t FW High</th>
-          <th>Cost Low $/t FW</th><th>Cost High $/t FW</th><th>Monthly kg Low</th><th>Monthly Cost Low $</th><th>Quote</th>
+          <th>#</th><th className="left">Organism</th><th>Wave</th><th>Category</th><th>Dose % DM</th>
+          <th>$/kg</th><th>$/t FW</th><th>Monthly kg</th><th>Monthly OpEx $</th>
+          <th>BSF Safe</th><th className="left">Supplier</th><th className="left">ICBB</th>
         </tr></thead>
         <tbody>
-          <tr><td className="num">1</td><td className="name">Thermomyces lanuginosus</td><td>Dry</td><td>kg</td><td className="price">$25</td><td>0.05</td><td>0.15</td><td>0.0175</td><td>0.0525</td><td className="num">0.4375</td><td className="num">1.3125</td><td>142.7</td><td className="num">$3,569</td><td>Alibaba</td></tr>
-          <tr><td className="num">2</td><td className="name">Geobacillus stearothermophilus</td><td>Dry</td><td>kg</td><td className="price">$15</td><td>0.05</td><td>0.15</td><td>0.0175</td><td>0.0525</td><td className="num">0.2625</td><td className="num">0.7875</td><td>142.7</td><td className="num">$2,141</td><td>IndiaMART</td></tr>
-          <tr><td className="num">3</td><td className="name">Bacillus licheniformis</td><td>Dry</td><td>kg</td><td className="price">$8</td><td>0.05</td><td>0.20</td><td>0.0175</td><td>0.0700</td><td className="num">0.1400</td><td className="num">0.5600</td><td>142.7</td><td className="num">$1,142</td><td>Alibaba</td></tr>
-          <tr><td className="num">4</td><td className="name">Phanerochaete sp. ICBB 9182</td><td>Wet</td><td>L</td><td className="price">$8</td><td>0.05</td><td>0.15</td><td>0.0175</td><td>0.0525</td><td className="num">0.1400</td><td className="num">0.4200</td><td>142.7</td><td className="num">$1,142</td><td>IPB ICBB</td></tr>
-          <tr><td className="num">5</td><td className="name">Pleurotus ostreatus</td><td>Wet</td><td>kg</td><td className="price">$0.30</td><td>0.05</td><td>0.15</td><td>0.0175</td><td>0.0525</td><td className="num">0.0053</td><td className="num">0.0158</td><td>142.7</td><td className="num">$43</td><td>Tokopedia</td></tr>
-          <tr><td className="num">6</td><td className="name">Trichoderma harzianum</td><td>Dry</td><td>kg</td><td className="price">$1.50</td><td>0.05</td><td>0.15</td><td>0.0175</td><td>0.0525</td><td className="num">0.0263</td><td className="num">0.0788</td><td>142.7</td><td className="num">$214</td><td>Tokopedia</td></tr>
-          <tr><td className="num">7</td><td className="name">Saccharomyces cerevisiae</td><td>Dry</td><td>kg</td><td className="price">$0.30</td><td>0.05</td><td>0.20</td><td>0.0175</td><td>0.0700</td><td className="num">0.0053</td><td className="num">0.0210</td><td>142.7</td><td className="num">$43</td><td>Fermipan</td></tr>
-          <tr className="wave2-row"><td className="num">8</td><td className="name">Azotobacter vinelandii</td><td>Wet</td><td>L</td><td className="price">$0.40</td><td>0.05</td><td>0.20</td><td>0.0175</td><td>0.0700</td><td className="num">0.0070</td><td className="num">0.0280</td><td>142.7</td><td className="num">$57</td><td>HumicFactory</td></tr>
-          <tr className="wave2-row"><td className="num">9</td><td className="name">Azospirillum lipoferum</td><td>Wet</td><td>L</td><td className="price">$1</td><td>0.05</td><td>0.10</td><td>0.0175</td><td>0.0350</td><td className="num">0.0175</td><td className="num">0.0350</td><td>142.7</td><td className="num">$143</td><td>Jaipur Bio</td></tr>
-          <tr><td className="num">10</td><td className="name">Lactobacillus sp. (EM-4)</td><td>Wet</td><td>L</td><td className="price">$0.17</td><td>0.05</td><td>0.15</td><td>0.0175</td><td>0.0525</td><td className="num">0.0030</td><td className="num">0.0089</td><td>142.7</td><td className="num">$24</td><td>EM-4 retail</td></tr>
-          <tr><td className="num">11</td><td className="name">Bacillus subtilis</td><td>Dry</td><td>kg</td><td className="price">$0.20</td><td>0.03</td><td>0.05</td><td>0.0105</td><td>0.0175</td><td className="num">0.0021</td><td className="num">0.0035</td><td>85.6</td><td className="num">$17</td><td>Ansel Biotech</td></tr>
-          <tr><td className="num">12</td><td className="name">Bacillus megaterium</td><td>Dry</td><td>kg</td><td className="price">$1.50</td><td>0.03</td><td>0.05</td><td>0.0105</td><td>0.0175</td><td className="num">0.0158</td><td className="num">0.0263</td><td>85.6</td><td className="num">$128</td><td>IndiaMART</td></tr>
-          <tr><td className="num">13</td><td className="name">Pseudomonas fluorescens</td><td>Wet</td><td>L</td><td className="price">$2.40</td><td>0.05</td><td>0.10</td><td>0.0175</td><td>0.0350</td><td className="num">0.0420</td><td className="num">0.0840</td><td>142.7</td><td className="num">$343</td><td>Katyayani</td></tr>
-          <tr><td className="num">14</td><td className="name">Streptomyces sp. ICBB 9155</td><td>Dry</td><td>kg</td><td className="price">$5</td><td>0.02</td><td>0.05</td><td>0.0070</td><td>0.0175</td><td className="num">0.0350</td><td className="num">0.0875</td><td>57.1</td><td className="num">$285</td><td>IPB ICBB</td></tr>
-          <tr data-cat="enzyme"><td className="num">15</td><td className="name">Cellulase (T. reesei)</td><td>Dry</td><td>kg</td><td className="price">$15</td><td>0.01</td><td>0.05</td><td>0.0035</td><td>0.0175</td><td className="num">0.0525</td><td className="num">0.2625</td><td>28.5</td><td className="num">$428</td><td>Novozymes</td></tr>
-          <tr data-cat="enzyme"><td className="num">16</td><td className="name">Xylanase</td><td>Dry</td><td>kg</td><td className="price">$17</td><td>0.01</td><td>0.05</td><td>0.0035</td><td>0.0175</td><td className="num">0.0595</td><td className="num">0.2975</td><td>28.5</td><td className="num">$485</td><td>Alibaba</td></tr>
-          <tr data-cat="enzyme"><td className="num">17</td><td className="name">Laccase</td><td>Dry</td><td>kg</td><td className="price">$20</td><td>0.01</td><td>0.03</td><td>0.0035</td><td>0.0105</td><td className="num">0.0700</td><td className="num">0.2100</td><td>28.5</td><td className="num">$571</td><td>Alibaba</td></tr>
-          <tr data-cat="enzyme"><td className="num">18</td><td className="name">Pectinase</td><td>Dry</td><td>kg</td><td className="price">$12</td><td>0.005</td><td>0.02</td><td>0.00175</td><td>0.0070</td><td className="num">0.0210</td><td className="num">0.0840</td><td>14.3</td><td className="num">$171</td><td>Alibaba</td></tr>
-          <tr data-cat="enzyme"><td className="num">19</td><td className="name">Lipase</td><td>Dry</td><td>kg</td><td className="price">$18</td><td>0.005</td><td>0.02</td><td>0.00175</td><td>0.0070</td><td className="num">0.0315</td><td className="num">0.1260</td><td>14.3</td><td className="num">$257</td><td>Novozymes</td></tr>
-          <tr data-cat="enzyme"><td className="num">20</td><td className="name">Protease</td><td>Dry</td><td>kg</td><td className="price">$10</td><td>0.005</td><td>0.02</td><td>0.00175</td><td>0.0070</td><td className="num">0.0175</td><td className="num">0.0700</td><td>14.3</td><td className="num">$143</td><td>Alibaba</td></tr>
-          <tr className="total-row"><td colspan="9" style={{textAlign: 'right', color: 'var(--pastelGreen)', fontFamily: "'DM Sans', sans-serif", fontSize: '12px', fontWeight: '700', padding: '8px 14px'}}>Total (20-item stack)</td><td className="num" style={{color: 'var(--pastelGreen)'}}>$1.39</td><td className="num" style={{color: 'var(--pastelGreen)'}}>$4.52</td><td colspan="2" className="num" style={{color: 'var(--pastelGreen)'}}>$11,347 / month</td><td></td></tr>
+          {dosing.filter(d => d.is_active).map((d, i) => (
+            <tr key={d.id} className={d.wave?.includes('1B') || d.wave?.includes('2') ? 'wave2-row' : ''}>
+              <td className="num">{d.stack_position}</td>
+              <td className="name">{d.organism_name}</td>
+              <td><span className={`pill ${d.wave?.includes('1A') ? 'pill-teal' : d.wave?.includes('1B') ? 'pill-blue' : d.wave?.includes('2') ? 'pill-amber' : 'pill-grey'}`} style={{fontSize:'10px'}}>{d.wave || '—'}</span></td>
+              <td className="cat">{d.category || '—'}</td>
+              <td className="num">{d.dose_pct_dm != null ? (d.dose_pct_dm * 100).toFixed(2) + '%' : '—'}</td>
+              <td className="price">{d.cost_per_kg_usd != null ? `$${d.cost_per_kg_usd}` : '—'}</td>
+              <td className="num">{d.cost_per_tonne_fw_usd != null ? `$${d.cost_per_tonne_fw_usd}` : '—'}</td>
+              <td>{d.monthly_kg_required != null ? d.monthly_kg_required.toLocaleString() : '—'}</td>
+              <td className="num">{d.monthly_opex_usd != null ? `$${d.monthly_opex_usd.toLocaleString()}` : '—'}</td>
+              <td>{d.bsf_safe === '✅' ? <span className="dot-yes">●</span> : d.bsf_safe === '⚠️' ? <span className="dot-warn">●</span> : <span className="dot-no">●</span>}</td>
+              <td className="note">{d.supplier_source || '—'}</td>
+              <td>{d.provibio_icbb || '—'}</td>
+            </tr>
+          ))}
+          <tr className="total-row">
+            <td colSpan="6" style={{textAlign:'right',padding:'8px 14px',fontFamily:"'DM Sans',sans-serif",fontSize:'12px',fontWeight:'700'}}>Total 9-Org Stack</td>
+            <td className="num" style={{color:'var(--pastelGreen)'}}>${dosing.filter(d=>d.is_active).reduce((s,d)=>s+(d.cost_per_tonne_fw_usd||0),0).toFixed(2)}</td>
+            <td className="num" style={{color:'var(--pastelGreen)'}}>{dosing.filter(d=>d.is_active).reduce((s,d)=>s+(d.monthly_kg_required||0),0).toLocaleString()}</td>
+            <td className="num" style={{color:'var(--pastelGreen)'}}>${dosing.filter(d=>d.is_active).reduce((s,d)=>s+(d.monthly_opex_usd||0),0).toLocaleString()}</td>
+            <td colSpan="3"></td>
+          </tr>
         </tbody>
       </table>
     </div>
