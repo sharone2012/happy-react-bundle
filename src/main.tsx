@@ -16,6 +16,8 @@ createRoot(document.getElementById("root")!).render(
       <Route path="/lab-analysis" element={<LabAnalysisV2 />} />
       <Route path="/s3" element={<S3Landing />} />
       <Route path="/s3/a-bio-library" element={<S3ABioLibrary />} />
+      <Route path="/s1-index" element={<S1Index />} />
+      <Route path="/S1-index" element={<S1Index />} />
     </Routes>
   </BrowserRouter>
 );
