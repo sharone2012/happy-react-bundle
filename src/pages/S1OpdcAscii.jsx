@@ -233,6 +233,9 @@ export default function S1OpdcAscii() {
           </div>
         </div>
 
+      </div>
+      </div>
+
       {/* ── Engineering Specs ── */}
       <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 0 40px" }}>
         <S1SpecPanel
@@ -254,7 +257,6 @@ export default function S1OpdcAscii() {
             { tag:"BIN-OPDC-24HR", name:"Buffer Bin 85m³ + Rake", tph:3.3, mcIn:"61%", mcOut:"61%", elev:"6m", kw:5.5, gate:"C.G2/G3", enforcement:"pH 8.0–9.0 post-24hr dwell", capex:"$15,000", supplier:"PT BSB", description:"Steel bin 20 m³" },
           ]}
         />
-      </div>
       </div>
     </div>
   );
