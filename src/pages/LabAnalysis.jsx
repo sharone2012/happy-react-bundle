@@ -252,27 +252,27 @@ export default function LabAnalysis() {
         {METRICS_VISIBLE.map((m, i) => (
           <div key={i} style={{
             flex: "1 1 0", minWidth: 100, padding: "8px 12px",
-            background: "#0D1B2A", border: "1px solid #1A2A3A",
+            background: "#0D1B2A", border: "1px solid rgba(255,255,255,0.07)",
           }}>
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#888" }}>{m.label}</div>
-            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: m.isGap ? "#FF5C5C" : "#FFFFFF", marginTop: 2 }}>{m.value}</div>
-            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#666", marginTop: 1 }}>{m.sub}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#7E9EB4" }}>{m.label}</div>
+            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: m.isGap ? "#FF5C5C" : "#C8D8E8", marginTop: 2 }}>{m.value}</div>
+            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#7E9EB4", marginTop: 1 }}>{m.sub}</div>
           </div>
         ))}
         {showEnzymes && METRICS_HIDDEN.map((m, i) => (
           <div key={`h${i}`} style={{
             flex: "1 1 0", minWidth: 100, padding: "8px 12px",
-            background: "#0D1B2A", border: "1px solid #1A2A3A",
+            background: "#0D1B2A", border: "1px solid rgba(255,255,255,0.07)",
           }}>
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#888" }}>{m.label}</div>
-            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: "#FFFFFF", marginTop: 2 }}>{m.value}</div>
-            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#666", marginTop: 1 }}>{m.sub}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#7E9EB4" }}>{m.label}</div>
+            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: "#C8D8E8", marginTop: 2 }}>{m.value}</div>
+            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#7E9EB4", marginTop: 1 }}>{m.sub}</div>
           </div>
         ))}
         <div style={{ display: "flex", alignItems: "center", padding: "0 12px" }}>
           <span
             onClick={() => setShowEnzymes(!showEnzymes)}
-            style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "#00C9B1", cursor: "pointer", whiteSpace: "nowrap" }}
+            style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "#40D7C5", cursor: "pointer", whiteSpace: "nowrap" }}
           >
             {showEnzymes ? "− Cellulase · Xylanase" : "+ Cellulase · Xylanase"}
           </span>
@@ -280,12 +280,16 @@ export default function LabAnalysis() {
       </div>
 
       {/* ═══ 4. BANNER ═══ */}
-      <div style={{
-        background: "#0A1220", padding: "4px 0", textAlign: "center",
-        fontFamily: "'DM Sans', sans-serif", fontSize: 8, color: "#666",
-      }}>
-        Combined S0 Analysis · EFB + OPDC + POS · DM-weighted blend · 60 TPH FFB Mill
-      </div>
+      {showAll && (
+        <div style={{
+          background: "#0A1220", padding: "4px 20px", textAlign: "center",
+          fontFamily: "'DM Sans', sans-serif", fontSize: 8, color: "#7E9EB4",
+          borderBottom: "1px solid rgba(255,255,255,0.07)",
+        }}>
+          <span style={{ fontWeight: 700, color: "#40D7C5" }}>Combined S0 Analysis</span>
+          {" · EFB + OPDC + POS · DM-weighted blend · 60 TPH FFB Mill"}
+        </div>
+      )}
 
       {/* ═══ 5. MAIN CONTAINER ═══ */}
       <div style={{
