@@ -7,6 +7,7 @@ import S3Landing from "./pages/S3Landing.jsx";
 import S3ABioLibrary from "./pages/S3ABioLibrary.jsx";
 import S1Index from "./pages/S1Index.jsx";
 import S1CapexOpex from "./pages/S1CapexOpex.jsx";
+import S1EfbAscii from "./pages/S1EfbAscii.jsx";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
@@ -20,6 +21,7 @@ createRoot(document.getElementById("root")!).render(
       <Route path="/s1-index" element={<S1Index />} />
       <Route path="/S1-index" element={<S1Index />} />
       <Route path="/s1-capex-opex" element={<S1CapexOpex />} />
+      <Route path="/s1-efb-ascii" element={<S1EfbAscii />} />
     </Routes>
   </BrowserRouter>
 );
