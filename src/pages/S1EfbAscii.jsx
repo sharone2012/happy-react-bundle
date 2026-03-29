@@ -249,7 +249,7 @@ function Pre({ children, className, style = {} }) {
   };
   return (
     <pre style={{
-      fontFamily: "'DM Mono', monospace", fontSize: 11, lineHeight: 1.7,
+      fontFamily: "'DM Sans', sans-serif", fontSize: 11, lineHeight: 1.7,
       color: "#111", margin: 0, padding: 0, background: "none", whiteSpace: "pre",
       ...(className ? classStyles[className] || {} : {}),
       ...style,
