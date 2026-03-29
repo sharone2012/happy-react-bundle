@@ -12,6 +12,7 @@ import S1PosAscii from "./pages/S1PosAscii.jsx";
 import S1EfbSpec from "./pages/S1EfbSpec.jsx";
 import S1OpdcSpec from "./pages/S1OpdcSpec.jsx";
 import S1PosSpec from "./pages/S1PosSpec.jsx";
+import S1Combined from "./pages/S1Combined.jsx";
 import CFI_AG_Management_Planning_Calculator from "./CFI_AG_Management_Planning_Calculator.jsx";
 import "./index.css";
 
@@ -31,6 +32,7 @@ createRoot(document.getElementById("root")!).render(
       <Route path="/s1-efb-spec" element={<S1EfbSpec />} />
       <Route path="/s1-opdc-spec" element={<S1OpdcSpec />} />
       <Route path="/s1-pos-spec" element={<S1PosSpec />} />
+      <Route path="/s1-combined" element={<S1Combined />} />
       <Route path="/CFI_AG_Management_Planning_Calculator" element={<CFI_AG_Management_Planning_Calculator />} />
     </Routes>
   </BrowserRouter>
