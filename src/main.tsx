@@ -28,6 +28,9 @@ createRoot(document.getElementById("root")!).render(
       <Route path="/s1-efb-ascii" element={<S1EfbAscii />} />
       <Route path="/s1-opdc-ascii" element={<S1OpdcAscii />} />
       <Route path="/s1-pos-ascii" element={<S1PosAscii />} />
+      <Route path="/s1-efb-spec" element={<S1EfbSpec />} />
+      <Route path="/s1-opdc-spec" element={<S1OpdcSpec />} />
+      <Route path="/s1-pos-spec" element={<S1PosSpec />} />
       <Route path="/CFI_AG_Management_Planning_Calculator" element={<CFI_AG_Management_Planning_Calculator />} />
     </Routes>
   </BrowserRouter>

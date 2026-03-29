@@ -29,7 +29,7 @@ export default function S1Index() {
       cards: [
         { type: "ASCII PROCESS FLOW", title: "POS ASCII v1", desc: "5-node sludge processing flow with ICP-OES Fe gate and centrate split.", route: "/s1-pos-ascii" },
         { type: "CAPEX/OPEX", title: "POS CapEx/OpEx", desc: "ICP-OES Fe gate pending — costs provisional.", route: "/s1-capex-opex" },
-        { type: "ENGINEERING SPEC", title: "POS Engineering Spec", desc: "Detailed equipment specs and datasheets.", disabled: true },
+        { type: "ENGINEERING SPEC", title: "POS Engineering Spec", desc: "Detailed equipment specs and datasheets.", route: "/s1-pos-spec" },
       ],
     },
   ];
