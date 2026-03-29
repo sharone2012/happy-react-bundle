@@ -5,6 +5,7 @@ import LabAnalysis from "./pages/LabAnalysis.jsx";
 import LabAnalysisV2 from "./pages/LabAnalysisV2.jsx";
 import S3Landing from "./pages/S3Landing.jsx";
 import S3ABioLibrary from "./pages/S3ABioLibrary.jsx";
+import S1Index from "./pages/S1Index.jsx";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
@@ -15,6 +16,8 @@ createRoot(document.getElementById("root")!).render(
       <Route path="/lab-analysis" element={<LabAnalysisV2 />} />
       <Route path="/s3" element={<S3Landing />} />
       <Route path="/s3/a-bio-library" element={<S3ABioLibrary />} />
+      <Route path="/s1-index" element={<S1Index />} />
+      <Route path="/S1-index" element={<S1Index />} />
     </Routes>
   </BrowserRouter>
 );
