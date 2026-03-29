@@ -67,6 +67,11 @@ export default function S1EfbAscii() {
       {/* Spacer */}
       <div style={{ height: 83 }} />
 
+      {/* ── Back to S1 Master ── */}
+      <div style={{ background: "#060C14", padding: "8px 32px", fontFamily: F }}>
+        <a href="/s1-index" style={{ color: "#33D4BC", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: F }} onMouseEnter={e => e.currentTarget.style.opacity = 0.7} onMouseLeave={e => e.currentTarget.style.opacity = 1}>← S1 Master Index</a>
+      </div>
+
       <div style={{ display: "flex", justifyContent: "center", padding: "24px 0" }}>
       <div style={{ background: "#fff", border: "3px solid #111", width: 1000 }}>
         {/* topbar */}

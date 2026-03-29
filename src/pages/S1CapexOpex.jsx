@@ -365,6 +365,11 @@ export default function S1CapexOpex() {
       {/* Spacer */}
       <div style={{ height: 83 }} />
 
+      {/* ── Back to S1 Master ── */}
+      <div style={{ background: C.s1, padding: "8px 20px", fontFamily: F, borderBottom: "1px solid rgba(30,107,140,0.15)" }}>
+        <a href="/s1-index" style={{ color: "#33D4BC", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: F }} onMouseEnter={e => e.currentTarget.style.opacity = 0.7} onMouseLeave={e => e.currentTarget.style.opacity = 1}>← S1 Master Index</a>
+      </div>
+
       {/* ── CONTEXT BAR ── */}
       <div style={{
         background: C.s1, borderBottom: "1px solid rgba(30,107,140,0.25)",
