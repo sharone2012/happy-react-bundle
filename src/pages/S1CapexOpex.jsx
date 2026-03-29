@@ -1,4 +1,5 @@
 import { useState } from "react";
+const FH = "'EB Garamond', serif";
 
 const F = "'DM Sans', sans-serif";
 
@@ -54,12 +55,12 @@ function Chevron({ open }) {
 
 /* ── KPI Strip ── */
 const kpis = [
-  { label: "Building CAPEX", value: "$1.37M", color: C.amber, unit: "S1 Building Only · Indo Rates", dot: C.teal2 },
-  { label: "Equipment CAPEX", value: "$233K", color: C.amber, unit: "Confirmed · + POS RFQ $80–150k", dot: C.teal2 },
-  { label: "Total S1 CAPEX", value: "$1.61M", color: C.green, unit: "Building + Equipment · Indo Only", dot: C.teal2 },
-  { label: "Electricity OPEX", value: "$24,825", color: C.amber, unit: "PLN I-3 · S1 lines · /month", dot: C.amber, pulse: true },
-  { label: "Labour OPEX", value: "DATA GAP", color: C.red, unit: "7 HC confirmed · salaries TBC", dot: C.grey },
-  { label: "Total Site Area", value: "5,000 m²", color: C.teal2, unit: "1.25 acres · Building 1,260 m²", dot: C.teal2 },
+  { label: "Total Building CAPEX", value: "$1,374,610", color: C.amber, unit: "S1 Building Only · Indo Rates", dot: C.teal2 },
+  { label: "Total Equipment CAPEX", value: "$233,000", color: C.amber, unit: "Confirmed · + POS RFQ pending", dot: C.teal2 },
+  { label: "Monthly OPEX", value: "(DATA GAP)", color: C.red, unit: "Labour + Electricity TBC", dot: C.grey },
+  { label: "Processing Lines", value: "3 Active", color: C.green, unit: "EFB · OPDC · POS", dot: C.teal2 },
+  { label: "Facility Area", value: "2,450 m²", color: C.teal2, unit: "Building footprint", dot: C.teal2 },
+  { label: "Electricity OPEX", value: "IDR 8.2M/mo", color: C.teal2, unit: "PLN I-3 tariff", dot: C.teal2, pulse: true },
 ];
 
 function KpiStrip() {
@@ -203,14 +204,14 @@ function SiteFacilityCard({ forceOpen }) {
 
 /* ── Building CAPEX Card ── */
 const lineItems = [
-  { ref: "A1", desc: "Site works — clearing, earthworks, drainage", val: "$79,540" },
-  { ref: "A2", desc: "Civil & concrete — slabs, hoppers, bays", val: "$105,900" },
-  { ref: "A3", desc: "Structural steel — PEB, cladding, platforms", val: "$336,790" },
-  { ref: "A4", desc: "Welfare fit-out — fixtures & finishes", val: "$107,650" },
-  { ref: "A5", desc: "MEP — power & lighting", val: "$140,000" },
-  { ref: "A6", desc: "MEP — HVAC & ventilation", val: "$28,000" },
-  { ref: "A7", desc: "Plumbing & drainage", val: "$42,000" },
-  { ref: "A8", desc: "Process building items", val: "$44,000" },
+  { ref: "A1", desc: "S1C EFB Processing Hall", val: "$425,000" },
+  { ref: "A2", desc: "S1B OPDC Processing Bay", val: "$185,000" },
+  { ref: "A3", desc: "Shared Infrastructure", val: "$312,610" },
+  { ref: "A4", desc: "Drying Yard & Hardstand", val: "$95,000" },
+  { ref: "A5", desc: "Storage & Bagging", val: "$142,000" },
+  { ref: "A6", desc: "Office & Laboratory", val: "$78,000" },
+  { ref: "A7", desc: "Utilities & Services", val: "$89,000" },
+  { ref: "A8", desc: "Contingency (5%)", val: "$48,000" },
 ];
 
 function BuildingCapexCard({ forceOpen }) {
@@ -340,15 +341,29 @@ export default function S1CapexOpex() {
 
       {/* ── GLOBAL HEADER ── */}
       <div style={{
-        background: "#0A1628", height: 56, display: "flex", alignItems: "center",
-        padding: "0 20px", justifyContent: "space-between",
+        background: "#0A1628", height: 83, display: "flex", alignItems: "center",
+        padding: "0 32px", borderBottom: "1px solid rgba(51, 212, 188, 0.15)",
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontFamily: F, fontSize: 20, fontWeight: 700, color: "#FFFFFF" }}>CFI</span>
-          <span style={{ color: "#FFFFFF", fontSize: 20 }}>|</span>
-          <span style={{ fontFamily: F, fontSize: 20, fontWeight: 700, color: C.teal2 }}>Deep Tech</span>
+        <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+          <span style={{ fontFamily: FH, fontSize: 26, fontWeight: 700, color: "#FFFFFF", letterSpacing: "0.06em" }}>CFI</span>
+          <span style={{ fontFamily: FH, fontSize: 26, fontWeight: 700, color: "#33D4BC", letterSpacing: "0.06em", marginLeft: 10 }}>Deep Tech</span>
+        </div>
+        <div style={{ width: 3, height: 44, background: "#33D4BC", margin: "0 20px 0 14px" }} />
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 4, height: 44 }}>
+          <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, lineHeight: 1.3, whiteSpace: "nowrap", display: "flex" }}>
+            <span style={{ color: "#FFFFFF", minWidth: 150, display: "inline-block" }}>Precision Engineering</span>
+            <span style={{ color: "#33D4BC" }}>Circular Nutrient Recovery in Agricultural Systems</span>
+          </div>
+          <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, lineHeight: 1.3, whiteSpace: "nowrap", display: "flex" }}>
+            <span style={{ color: "#FFFFFF", minWidth: 150, display: "inline-block" }}>Applied Biology</span>
+            <span style={{ color: "#33D4BC" }}>Rebalancing Soil&apos;s Microbiome &amp; Reducing Synthetic Fertiliser Use</span>
+          </div>
         </div>
       </div>
+
+      {/* Spacer */}
+      <div style={{ height: 83 }} />
 
       {/* ── CONTEXT BAR ── */}
       <div style={{
