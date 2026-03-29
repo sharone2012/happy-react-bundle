@@ -176,6 +176,52 @@ export default function S1Index() {
             </div>
           </div>
 
+          {/* ═══ S1 ENGINEERING PDF — RFQ PACK ═══ */}
+          <div style={{ padding: "20px 30px", borderTop: "1px solid #ddd" }}>
+            <div style={{ border: "1.5px solid rgba(51,212,188,0.3)", borderRadius: 6, padding: "20px 24px", background: "#f8fcfb" }}>
+              <div style={{ fontFamily: F, fontSize: 10, fontWeight: 700, color: "#33D4BC", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }}>S1 Engineering PDF</div>
+              <div style={{ fontFamily: FH, fontSize: 18, fontWeight: 700, color: "#111", marginBottom: 6 }}>RFQ Pack</div>
+              <div style={{ fontFamily: F, fontSize: 12, color: "#555", lineHeight: 1.5, marginBottom: 16 }}>
+                22-page complete engineering documentation for all 3 processing lines (EFB, OPDC, POS). Ready for RFQ pack assembly and contractor bidding.
+              </div>
+              <div style={{ display: "flex", gap: 10 }}>
+                <a
+                  href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-engineering-pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontFamily: F, fontSize: 12, fontWeight: 700, padding: "8px 20px",
+                    background: "#33D4BC", color: "#0A1628", borderRadius: 4, textDecoration: "none",
+                    display: "inline-flex", alignItems: "center", gap: 6,
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.opacity = 0.85}
+                  onMouseLeave={e => e.currentTarget.style.opacity = 1}
+                >
+                  View PDF →
+                </a>
+                <a
+                  href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-engineering-pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={e => {
+                    e.preventDefault();
+                    const w = window.open(e.currentTarget.href, '_blank');
+                    if (w) { w.onload = () => { w.print(); }; }
+                  }}
+                  style={{
+                    fontFamily: F, fontSize: 12, fontWeight: 700, padding: "8px 20px",
+                    background: "transparent", color: "#33D4BC", borderRadius: 4, textDecoration: "none",
+                    border: "1.5px solid #33D4BC", display: "inline-flex", alignItems: "center", gap: 6,
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.opacity = 0.85}
+                  onMouseLeave={e => e.currentTarget.style.opacity = 1}
+                >
+                  Print
+                </a>
+              </div>
+            </div>
+          </div>
+
           {/* ═══ GUARDRAILS STRIP ═══ */}
           <div style={{ padding: "16px 30px", background: "#fafafa", borderTop: "1px solid #eee" }}>
             <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, color: "#cc2222", marginBottom: 8 }}>9 Hard Guardrails</div>
