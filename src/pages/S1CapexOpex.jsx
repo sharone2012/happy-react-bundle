@@ -1,6 +1,8 @@
 import { useState } from "react";
-const FH = "'EB Garamond', serif";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
+const FH = "'EB Garamond', serif";
 const F = "'DM Sans', sans-serif";
 
 const C = {
@@ -25,7 +27,7 @@ const C = {
 function Tag({ text, color = C.teal2 }) {
   return (
     <span style={{
-      background: color === C.red ? "rgba(232,64,64,0.08)" : `rgba(64,215,197,0.1)`,
+      background: color === C.red ? "rgba(232,64,64,0.08)" : "rgba(64,215,197,0.1)",
       border: `1px solid ${color === C.red ? "rgba(232,64,64,0.28)" : "rgba(64,215,197,0.28)"}`,
       color, fontFamily: F, fontSize: 9, fontWeight: 700,
       padding: "2px 8px", borderRadius: 3,
@@ -56,10 +58,10 @@ function Chevron({ open }) {
 /* ── KPI Strip ── */
 const kpis = [
   { label: "Total Building CAPEX", value: "$1,374,610", color: C.amber, unit: "S1 Building Only · Indo Rates", dot: C.teal2 },
-  { label: "Total Equipment CAPEX", value: "$233,000", color: C.amber, unit: "Confirmed · + POS RFQ pending", dot: C.teal2 },
-  { label: "Monthly OPEX", value: "(DATA GAP)", color: C.red, unit: "Labour + Electricity TBC", dot: C.grey },
+  { label: "Total Equipment CAPEX", value: "$398,000", color: C.amber, unit: "POS decanter $80K–$150K RFQ pending", dot: C.teal2 },
+  { label: "Monthly OPEX", value: "$37,957/mo", color: C.green, unit: "Labour + Electricity + Maintenance + Admin", dot: C.teal2 },
   { label: "Processing Lines", value: "3 Active", color: C.green, unit: "EFB · OPDC · POS", dot: C.teal2 },
-  { label: "Facility Area", value: "2,450 m²", color: C.teal2, unit: "Building footprint", dot: C.teal2 },
+  { label: "Facility Area", value: "2,450 m²", unit: "Building footprint", color: C.teal2, dot: C.teal2 },
   { label: "Electricity OPEX", value: "IDR 8.2M/mo", color: C.teal2, unit: "PLN I-3 tariff", dot: C.teal2, pulse: true },
 ];
 
@@ -73,7 +75,7 @@ function KpiStrip() {
       {kpis.map((k, i) => (
         <div key={i} style={{
           padding: "12px 14px", textAlign: "center",
-          borderRight: i < 5 ? `1px solid rgba(30,107,140,0.28)` : "none",
+          borderRight: i < 5 ? "1px solid rgba(30,107,140,0.28)" : "none",
           display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 6,
         }}>
           <div style={{ fontFamily: F, fontSize: 9, fontWeight: 700, color: C.grey, textTransform: "uppercase", letterSpacing: "0.07em" }}>{k.label}</div>
@@ -106,16 +108,17 @@ const expandedTiles = [
   { label: "Total Conveyors", value: "22", unit: "EFB 9 · OPDC 8 · Gallery 5" },
   { label: "Portal Frames", value: "7", unit: "@ 6m spacing · PEB" },
 ];
+
 const drawingBtns = [
-  { title: "Site Master Plan", sub: "98m × 85m · All zones · North arrow" },
-  { title: "Building Architecture", sub: "Floor · Elevation · Section · 3D · Machinery" },
-  { title: "Building Floor Plan", sub: "36×35m · All machines ①–⑳ · Legend" },
-  { title: "Greenhouse Design", sub: "Site plan · Section XX · Store" },
-  { title: "EFB Floor Plan", sub: "①–⑩ · 20 t/h · 10 machines · 600mm belt" },
-  { title: "OPDC Floor Plan", sub: "⑪–⑳ · 5 t/h · CLASS A gate" },
-  { title: "EFB ASCII Flow", sub: "Step-by-step · machines · specs · gates" },
-  { title: "OPDC ASCII Flow", sub: "Step-by-step · CLASS A gate · 24h dwell" },
-  { title: "POS ASCII Flow", sub: "ICP-OES Fe gate · decanter · inclusion rate" },
+  { title: "Site Master Plan", sub: "98m × 85m · All zones · North arrow", action: "toast" },
+  { title: "Building Architecture", sub: "Floor · Elevation · Section · 3D · Machinery", action: "toast" },
+  { title: "Building Floor Plan", sub: "36×35m · All machines ①–⑳ · Legend", action: "toast" },
+  { title: "Greenhouse Design", sub: "Site plan · Section XX · Store", action: "toast" },
+  { title: "EFB Floor Plan", sub: "①–⑩ · 20 t/h · 10 machines · 600mm belt", action: "toast" },
+  { title: "OPDC Floor Plan", sub: "⑪–⑳ · 5 t/h · CLASS A gate", action: "toast" },
+  { title: "EFB ASCII Flow", sub: "Step-by-step · machines · specs · gates", action: "nav", route: "/s1-efb-ascii" },
+  { title: "OPDC ASCII Flow", sub: "Step-by-step · CLASS A gate · 24h dwell", action: "nav", route: "/s1-opdc-ascii" },
+  { title: "POS ASCII Flow", sub: "ICP-OES Fe gate · decanter · inclusion rate", action: "nav", route: "/s1-pos-ascii" },
 ];
 
 function MetricTile({ label, value, unit }) {
@@ -131,14 +134,21 @@ function MetricTile({ label, value, unit }) {
   );
 }
 
-function SiteFacilityCard({ forceOpen }) {
+function SiteFacilityCard({ forceOpen, navigate }) {
   const [open, setOpen] = useState(true);
   const [moreOpen, setMoreOpen] = useState(false);
   const isOpen = forceOpen !== undefined ? forceOpen : open;
 
+  const handleDrawingClick = (btn) => {
+    if (btn.action === "nav") {
+      navigate(btn.route);
+    } else {
+      toast("Coming soon", { duration: 2000 });
+    }
+  };
+
   return (
     <div style={{ background: C.s1, border: `1.5px solid ${C.border}`, borderRadius: 8, overflow: "hidden" }}>
-      {/* header */}
       <div onClick={() => setOpen(!open)} style={{
         background: C.s1, padding: "10px 14px", display: "flex", justifyContent: "space-between",
         alignItems: "center", borderBottom: "1px solid rgba(30,107,140,0.2)", cursor: "pointer", userSelect: "none",
@@ -153,12 +163,9 @@ function SiteFacilityCard({ forceOpen }) {
 
       {isOpen && (
         <>
-          {/* visible tiles */}
           <div style={{ padding: "8px 14px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
             {visibleTiles.map((t, i) => <MetricTile key={i} {...t} />)}
           </div>
-
-          {/* expandable */}
           <div onClick={() => setMoreOpen(!moreOpen)} style={{
             padding: "6px 14px", borderTop: "1px solid rgba(30,107,140,0.15)",
             display: "flex", justifyContent: "center", cursor: "pointer",
@@ -171,8 +178,6 @@ function SiteFacilityCard({ forceOpen }) {
               {expandedTiles.map((t, i) => <MetricTile key={i} {...t} />)}
             </div>
           )}
-
-          {/* drawing buttons */}
           <div style={{
             paddingTop: 10, paddingBottom: 2, paddingLeft: 14,
             fontFamily: F, fontSize: 9, fontWeight: 700, color: C.teal2,
@@ -181,11 +186,10 @@ function SiteFacilityCard({ forceOpen }) {
           }}>Open Design Drawings</div>
           <div style={{ padding: "8px 14px 12px", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
             {drawingBtns.map((b, i) => (
-              <div key={i} style={{
+              <div key={i} onClick={() => handleDrawingClick(b)} style={{
                 background: "#0C1E33", border: "1px solid rgba(139,160,180,0.18)", borderRadius: 6,
                 padding: "11px 12px", display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
-                cursor: "pointer", textAlign: "center", position: "relative",
-                transition: "all 0.2s ease",
+                cursor: "pointer", textAlign: "center", position: "relative", transition: "all 0.2s ease",
               }}
                 onMouseEnter={e => { e.currentTarget.style.background = "rgba(64,215,197,0.05)"; e.currentTarget.style.borderColor = "rgba(139,160,180,0.35)"; }}
                 onMouseLeave={e => { e.currentTarget.style.background = "#0C1E33"; e.currentTarget.style.borderColor = "rgba(139,160,180,0.18)"; }}
@@ -220,7 +224,6 @@ function BuildingCapexCard({ forceOpen }) {
 
   return (
     <div style={{ background: C.s1, border: `1.5px solid ${C.border}`, borderRadius: 8, overflow: "hidden" }}>
-      {/* header */}
       <div onClick={() => setOpen(!open)} style={{
         background: C.s1, padding: "10px 14px", display: "flex", justifyContent: "space-between",
         alignItems: "center", borderBottom: "1px solid rgba(30,107,140,0.2)", cursor: "pointer", userSelect: "none",
@@ -235,7 +238,6 @@ function BuildingCapexCard({ forceOpen }) {
 
       {isOpen && (
         <>
-          {/* hero total */}
           <div style={{
             background: "rgba(61,203,122,0.05)", borderBottom: "1px solid rgba(30,107,140,0.2)",
             padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12,
@@ -252,7 +254,6 @@ function BuildingCapexCard({ forceOpen }) {
             </div>
           </div>
 
-          {/* line items */}
           {lineItems.map((li, i) => (
             <div key={i} style={{
               padding: "8px 14px", borderBottom: "1px solid rgba(30,107,140,0.09)",
@@ -266,7 +267,6 @@ function BuildingCapexCard({ forceOpen }) {
             </div>
           ))}
 
-          {/* subtotal */}
           <div style={{ borderTop: "1px dashed rgba(30,107,140,0.3)", padding: "8px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
               <span style={{ fontFamily: F, fontSize: 9, fontWeight: 600, color: C.grey, width: 45 }}>—</span>
@@ -275,7 +275,6 @@ function BuildingCapexCard({ forceOpen }) {
             <span style={{ fontFamily: F, fontSize: 13, fontWeight: 700, color: C.white, width: 100, textAlign: "right" }}>$883,880</span>
           </div>
 
-          {/* markups */}
           {[
             { ref: "+8%", desc: "Contingency", val: "$70,710" },
             { ref: "+20%", desc: "EPC overheads & margin", val: "$190,918" },
@@ -293,7 +292,6 @@ function BuildingCapexCard({ forceOpen }) {
             </div>
           ))}
 
-          {/* final total */}
           <div style={{ borderTop: `2px solid ${C.green}`, padding: "8px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
               <span style={{ fontFamily: F, fontSize: 9, fontWeight: 600, color: C.grey, width: 45 }}>—</span>
@@ -302,7 +300,6 @@ function BuildingCapexCard({ forceOpen }) {
             <span style={{ fontFamily: F, fontSize: 20, fontWeight: 700, color: C.green, width: 120, textAlign: "right" }}>$1,374,610</span>
           </div>
 
-          {/* detailed schedule trigger */}
           <div style={{
             padding: "10px 14px", borderTop: "1px solid rgba(30,107,140,0.2)",
             display: "flex", justifyContent: "center", cursor: "pointer",
@@ -316,16 +313,228 @@ function BuildingCapexCard({ forceOpen }) {
   );
 }
 
-/* ── Column 3 Placeholder ── */
-function Col3Placeholder() {
+/* ── Equipment CAPEX Card (Column 3) ── */
+const efbEquip = [
+  { code: "TR-EFB-101", desc: "EFB Truck Receiving Bay", val: "$8,000" },
+  { code: "RH-EFB-101", desc: "EFB Hydraulic Reciprocating Feeder", val: "$15,000" },
+  { code: "CV-EFB-101", desc: "EFB Apron Conveyor to Shredder", val: "$18,000" },
+  { code: "SH-EFB-101", desc: "EFB Primary Shredder", val: "$45,000" },
+  { code: "CV-EFB-102", desc: "Shredder Discharge Conveyor", val: "$8,000" },
+  { code: "ML-EFB-101", desc: "EFB Hammer Mill (2mm)", val: "$35,000" },
+  { code: "SC-EFB-101", desc: "EFB Vibrating Screen", val: "$12,000" },
+  { code: "CV-EFB-103", desc: "Screen Undersize Conveyor", val: "$10,000" },
+  { code: "CV-EFB-104", desc: "Screen Oversize Return", val: "$8,000" },
+  { code: "BIN-EFB-201", desc: "EFB Buffer Storage Bin", val: "$25,000" },
+];
+const opdcEquip = [
+  { code: "TR-OPDC-101", desc: "OPDC Receiving Bay", val: "$5,000" },
+  { code: "RH-OPDC-101", desc: "OPDC Reciprocating Feeder", val: "$10,000" },
+  { code: "CV-OPDC-101", desc: "OPDC Feed Conveyor", val: "$8,000" },
+  { code: "BIN-OPDC-301", desc: "OPDC Buffer Bin", val: "$15,000" },
+];
+const posEquip = [
+  { code: "DEC-SLD-101", desc: "POS 3-Phase Decanter", val: "RFQ $80K–$150K", rfq: true },
+];
+const sharedEquip = [
+  { code: "S-LIME-01", desc: "Limestone Storage and Dosing", val: "$6,000" },
+  { code: "V-LOADER-ROW-A-01", desc: "Wheel Loader — Duty", val: "$85,000" },
+  { code: "V-LOADER-ROW-A-02", desc: "Wheel Loader — Standby", val: "$85,000" },
+];
+
+function EquipRow({ code, desc, val, rfq }) {
   return (
     <div style={{
-      background: C.s1, border: `1.5px solid ${C.border}`, borderRadius: 8,
-      padding: "20px 14px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-      minHeight: 300, gap: 8,
+      padding: "6px 14px", borderBottom: "1px solid rgba(30,107,140,0.09)",
+      display: "flex", justifyContent: "space-between", alignItems: "center",
     }}>
-      <div style={{ fontFamily: F, fontSize: 11, fontWeight: 700, color: C.grey, textTransform: "uppercase" }}>Column 3</div>
-      <div style={{ fontFamily: F, fontSize: 9, color: C.greyMd }}>Equipment CAPEX · OPEX · Residue — Chunk 2</div>
+      <div style={{ display: "flex", alignItems: "center", minWidth: 0, flex: 1 }}>
+        <span style={{ fontFamily: F, fontSize: 8, fontWeight: 600, color: C.grey, width: 95, flexShrink: 0 }}>{code}</span>
+        <span style={{ fontFamily: F, fontSize: 10, fontWeight: 500, color: C.greyMd, paddingLeft: 6, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{desc}</span>
+      </div>
+      <span style={{ fontFamily: F, fontSize: 11, fontWeight: 700, color: rfq ? C.red : C.amber, width: 110, textAlign: "right", flexShrink: 0 }}>{val}</span>
+    </div>
+  );
+}
+
+function EquipGroup({ title, subtotal, items }) {
+  return (
+    <>
+      <div style={{
+        padding: "7px 14px", background: "rgba(30,107,140,0.08)",
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+        borderBottom: "1px solid rgba(30,107,140,0.15)",
+      }}>
+        <span style={{ fontFamily: F, fontSize: 10, fontWeight: 700, color: C.teal2 }}>{title}</span>
+        {subtotal && <span style={{ fontFamily: F, fontSize: 10, fontWeight: 700, color: C.amber }}>{subtotal}</span>}
+      </div>
+      {items.map((item, i) => <EquipRow key={i} {...item} />)}
+    </>
+  );
+}
+
+function EquipmentCapexCard({ forceOpen }) {
+  const [open, setOpen] = useState(true);
+  const isOpen = forceOpen !== undefined ? forceOpen : open;
+
+  return (
+    <div style={{ background: C.s1, border: `1.5px solid ${C.border}`, borderRadius: 8, overflow: "hidden" }}>
+      <div onClick={() => setOpen(!open)} style={{
+        background: C.s1, padding: "10px 14px", display: "flex", justifyContent: "space-between",
+        alignItems: "center", borderBottom: "1px solid rgba(30,107,140,0.2)", cursor: "pointer", userSelect: "none",
+      }}>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <Pill letter="E" />
+          <span style={{ fontFamily: F, fontSize: 13, fontWeight: 700, color: C.teal2 }}>Equipment CAPEX — S1 Only</span>
+          <Tag text="Indonesian Rates" />
+        </div>
+        <Chevron open={isOpen} />
+      </div>
+
+      {isOpen && (
+        <>
+          <div style={{
+            background: "rgba(61,203,122,0.05)", borderBottom: "1px solid rgba(30,107,140,0.2)",
+            padding: "10px 14px",
+          }}>
+            <div style={{ fontFamily: F, fontSize: 9, fontWeight: 700, color: C.grey, textTransform: "uppercase", letterSpacing: "0.07em" }}>Total S1 Equipment</div>
+            <div style={{ fontFamily: F, fontSize: 28, fontWeight: 700, color: C.green, lineHeight: 1.2 }}>$398,000</div>
+            <div style={{ fontFamily: F, fontSize: 9, color: C.red, marginTop: 2 }}>POS decanter: RFQ $80K–$150K (not included)</div>
+          </div>
+
+          <EquipGroup title="EFB Line (10 items)" subtotal="$184,000" items={efbEquip} />
+          <EquipGroup title="OPDC Line (5 items)" subtotal="$38,000" items={opdcEquip} />
+          <EquipGroup title="POS Line (1 item)" subtotal="" items={posEquip} />
+          <EquipGroup title="Shared (2 items)" subtotal="$176,000" items={sharedEquip} />
+
+          <div style={{
+            padding: "10px 14px", borderTop: "1px solid rgba(30,107,140,0.2)",
+            display: "flex", justifyContent: "center", cursor: "pointer",
+            fontFamily: F, fontSize: 10, fontWeight: 600, color: C.teal2,
+          }}>
+            + View Detailed Equipment Schedule — 18 Line Items
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+/* ── Monthly OpEx Section ── */
+const labourRows = [
+  { role: "S1C EFB Line Operator", hc: 2, cost: "$949" },
+  { role: "S1B OPDC Line Operator", hc: 2, cost: "$949" },
+  { role: "Maintenance Technician", hc: 1, cost: "$570" },
+  { role: "Quality and Gate Checker", hc: 1, cost: "$411" },
+  { role: "S1 Shift Supervisor", hc: 1, cost: "$696" },
+];
+const elecRows = [
+  { line: "S1C EFB Pre-Processing", cost: "$14,191" },
+  { line: "S1B OPDC Pre-Processing", cost: "$6,651" },
+  { line: "S1A POS Pre-Skimming", cost: "$1,806" },
+];
+const maintRows = [
+  { cat: "Preventive Maintenance", cost: "$639" },
+  { cat: "EFB Wear Parts", cost: "$271" },
+  { cat: "OPDC Wear Parts", cost: "$167" },
+  { cat: "Conveyor Maintenance", cost: "$367" },
+  { cat: "Breakdown Repairs", cost: "$154" },
+  { cat: "Electrical Repairs", cost: "$83" },
+  { cat: "Filter Bags", cost: "$83" },
+  { cat: "Hydraulic Oil", cost: "$33" },
+  { cat: "Bearing Grease", cost: "$25" },
+  { cat: "Water and Dust Suppression", cost: "$75" },
+  { cat: "Administration", cost: "$833" },
+  { cat: "Building Depreciation", cost: "$5,729" },
+  { cat: "Equipment Depreciation", cost: "$2,774" },
+  { cat: "Utilities Misc", cost: "$200" },
+  { cat: "Transport and Logistics", cost: "$300" },
+];
+
+function OpexSubTable({ title, subtitle, total, headers, rows }) {
+  return (
+    <div style={{ background: C.s1, border: `1px solid rgba(30,107,140,0.25)`, borderRadius: 6, overflow: "hidden", flex: 1, minWidth: 0 }}>
+      <div style={{ padding: "8px 12px", borderBottom: "1px solid rgba(30,107,140,0.2)", background: "rgba(30,107,140,0.06)" }}>
+        <div style={{ fontFamily: F, fontSize: 11, fontWeight: 700, color: C.teal2 }}>{title}</div>
+        <div style={{ fontFamily: F, fontSize: 16, fontWeight: 700, color: C.amber }}>{total}</div>
+        {subtitle && <div style={{ fontFamily: F, fontSize: 8, color: C.grey, marginTop: 2 }}>{subtitle}</div>}
+      </div>
+      <div style={{ padding: "4px 12px 2px", display: "flex", justifyContent: "space-between", borderBottom: "1px solid rgba(30,107,140,0.12)" }}>
+        {headers.map((h, i) => (
+          <span key={i} style={{ fontFamily: F, fontSize: 8, fontWeight: 700, color: C.grey, textTransform: "uppercase", flex: h.flex || 1, textAlign: h.align || "left" }}>{h.label}</span>
+        ))}
+      </div>
+      {rows}
+    </div>
+  );
+}
+
+function MonthlyOpexSection({ forceOpen }) {
+  const [open, setOpen] = useState(true);
+  const isOpen = forceOpen !== undefined ? forceOpen : open;
+
+  return (
+    <div style={{ background: C.s1, border: `1.5px solid ${C.border}`, borderRadius: 8, overflow: "hidden", marginTop: 10 }}>
+      <div onClick={() => setOpen(!open)} style={{
+        padding: "10px 14px", display: "flex", justifyContent: "space-between",
+        alignItems: "center", borderBottom: "1px solid rgba(30,107,140,0.2)", cursor: "pointer", userSelect: "none",
+      }}>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <Pill letter="O" />
+          <span style={{ fontFamily: F, fontSize: 13, fontWeight: 700, color: C.teal2 }}>S1 Monthly Operating Expenditure</span>
+          <span style={{ fontFamily: F, fontSize: 13, fontWeight: 700, color: C.amber }}>— $37,957/mo</span>
+        </div>
+        <Chevron open={isOpen} />
+      </div>
+
+      {isOpen && (
+        <div style={{ padding: "10px 14px", display: "flex", gap: 10 }}>
+          {/* Labour */}
+          <OpexSubTable
+            title="Labour"
+            total="$3,576/mo"
+            subtitle="7 headcount"
+            headers={[{ label: "Role", flex: 3 }, { label: "HC", flex: 0.5, align: "center" }, { label: "Monthly USD", flex: 1.2, align: "right" }]}
+            rows={labourRows.map((r, i) => (
+              <div key={i} style={{ padding: "4px 12px", display: "flex", justifyContent: "space-between", borderBottom: "1px solid rgba(30,107,140,0.06)" }}>
+                <span style={{ fontFamily: F, fontSize: 9, color: C.greyMd, flex: 3 }}>{r.role}</span>
+                <span style={{ fontFamily: F, fontSize: 9, fontWeight: 700, color: C.white, flex: 0.5, textAlign: "center" }}>{r.hc}</span>
+                <span style={{ fontFamily: F, fontSize: 9, fontWeight: 700, color: C.amber, flex: 1.2, textAlign: "right" }}>{r.cost}</span>
+              </div>
+            ))}
+          />
+
+          {/* Electricity */}
+          <OpexSubTable
+            title="Electricity"
+            total="$22,648/mo"
+            subtitle="PLN I-3 tariff · IDR 1,444.70/kWh"
+            headers={[{ label: "Line", flex: 3 }, { label: "Monthly USD", flex: 1.2, align: "right" }]}
+            rows={elecRows.map((r, i) => (
+              <div key={i} style={{ padding: "4px 12px", display: "flex", justifyContent: "space-between", borderBottom: "1px solid rgba(30,107,140,0.06)" }}>
+                <span style={{ fontFamily: F, fontSize: 9, color: C.greyMd, flex: 3 }}>{r.line}</span>
+                <span style={{ fontFamily: F, fontSize: 9, fontWeight: 700, color: C.amber, flex: 1.2, textAlign: "right" }}>{r.cost}</span>
+              </div>
+            ))}
+          />
+
+          {/* Maintenance */}
+          <OpexSubTable
+            title="Maintenance and Other"
+            total="$11,733/mo"
+            headers={[{ label: "Category", flex: 3 }, { label: "Monthly USD", flex: 1.2, align: "right" }]}
+            rows={
+              <div style={{ maxHeight: 260, overflowY: "auto" }}>
+                {maintRows.map((r, i) => (
+                  <div key={i} style={{ padding: "3px 12px", display: "flex", justifyContent: "space-between", borderBottom: "1px solid rgba(30,107,140,0.06)" }}>
+                    <span style={{ fontFamily: F, fontSize: 9, color: C.greyMd, flex: 3 }}>{r.cat}</span>
+                    <span style={{ fontFamily: F, fontSize: 9, fontWeight: 700, color: C.amber, flex: 1.2, textAlign: "right" }}>{r.cost}</span>
+                  </div>
+                ))}
+              </div>
+            }
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -333,10 +542,10 @@ function Col3Placeholder() {
 /* ══════════════ MAIN PAGE ══════════════ */
 export default function S1CapexOpex() {
   const [expandAll, setExpandAll] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div style={{ fontFamily: F, color: C.white, background: C.bg, minHeight: "100vh" }}>
-      {/* CSS for pulse animation */}
       <style>{`@keyframes cfi-pulse { 0%{opacity:1} 50%{opacity:0.3} 100%{opacity:1} }`}</style>
 
       {/* ── GLOBAL HEADER ── */}
@@ -362,24 +571,28 @@ export default function S1CapexOpex() {
         </div>
       </div>
 
-      {/* Spacer */}
       <div style={{ height: 83 }} />
 
       {/* ── Back to S1 Master ── */}
       <div style={{ background: C.s1, padding: "8px 20px", fontFamily: F, borderBottom: "1px solid rgba(30,107,140,0.15)" }}>
-        <a href="/s1-index" style={{ color: "#33D4BC", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: F }} onMouseEnter={e => e.currentTarget.style.opacity = 0.7} onMouseLeave={e => e.currentTarget.style.opacity = 1}>← S1 Master Index</a>
+        <a href="/s1-index" style={{ color: "#33D4BC", fontSize: 12, fontWeight: 600, textDecoration: "none", fontFamily: F }}
+          onMouseEnter={e => e.currentTarget.style.opacity = 0.7} onMouseLeave={e => e.currentTarget.style.opacity = 1}>
+          ← S1 Master Index
+        </a>
       </div>
 
-      {/* ── CONTEXT BAR ── */}
+      {/* ── CONTEXT BAR / BREADCRUMB ── */}
       <div style={{
         background: C.s1, borderBottom: "1px solid rgba(30,107,140,0.25)",
         padding: "6px 20px", display: "flex", justifyContent: "space-between", alignItems: "center",
         fontFamily: F, fontSize: 9,
       }}>
         <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
-          <span style={{ color: C.teal2, fontWeight: 700 }}>CFI Platform</span>
+          <a href="/" style={{ color: C.teal2, fontWeight: 700, textDecoration: "none", fontFamily: F, fontSize: 9 }}
+            onMouseEnter={e => e.currentTarget.style.opacity = 0.7} onMouseLeave={e => e.currentTarget.style.opacity = 1}>CFI Platform</a>
           <span style={{ color: "rgba(30,107,140,0.5)" }}> › </span>
-          <span style={{ color: C.grey }}>S0 Mill Config</span>
+          <a href="/" style={{ color: C.grey, textDecoration: "none", fontFamily: F, fontSize: 9 }}
+            onMouseEnter={e => e.currentTarget.style.opacity = 0.7} onMouseLeave={e => e.currentTarget.style.opacity = 1}>S0 Mill Config</a>
           <span style={{ color: "rgba(30,107,140,0.5)" }}> › </span>
           <span style={{ color: C.teal2, fontWeight: 700 }}>S1 Pre-Processing</span>
         </div>
@@ -406,17 +619,17 @@ export default function S1CapexOpex() {
       }}>
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
           <Pill letter="S1" />
-          <span style={{ fontFamily: F, fontSize: 16, fontWeight: 800, color: C.teal2, marginLeft: 6 }}>
+          <span style={{ fontFamily: F, fontSize: 16, fontWeight: 700, color: C.teal2, marginLeft: 6 }}>
             Pre-Processing — CAPEX · OPEX · Facility
           </span>
         </div>
         <div style={{ display: "flex", gap: 5 }}>
           {[
-            { label: "↗ Site Plan", c: "rgba(0,201,177,", tc: C.teal },
-            { label: "↗ Architecture", c: "rgba(155,89,182,", tc: "#c090ff" },
-            { label: "Expand All", c: "rgba(245,166,35,", tc: C.amber },
+            { label: "↗ Site Plan", c: "rgba(0,201,177,", tc: C.teal, onClick: () => toast("Floor plan coming soon", { duration: 2000 }) },
+            { label: "↗ Architecture", c: "rgba(155,89,182,", tc: "#c090ff", onClick: () => toast("Architecture view coming soon", { duration: 2000 }) },
+            { label: expandAll ? "Collapse All" : "Expand All", c: "rgba(245,166,35,", tc: C.amber, onClick: () => setExpandAll(!expandAll) },
           ].map((b, i) => (
-            <button key={i} onClick={i === 2 ? () => setExpandAll(!expandAll) : undefined} style={{
+            <button key={i} onClick={b.onClick} style={{
               fontFamily: F, fontSize: 10, fontWeight: 700, padding: "5px 11px", borderRadius: 4,
               height: 28, cursor: "pointer", transition: "all 0.2s ease",
               border: `1px solid ${b.c}0.4)`, color: b.tc, background: `${b.c}0.07)`,
@@ -429,15 +642,18 @@ export default function S1CapexOpex() {
       </div>
 
       {/* ── CONTENT ── */}
-      <div style={{ padding: "0 20px 20px" }}>
+      <div style={{ padding: "0 20px 20px", maxWidth: 1400, margin: "0 auto" }}>
         <KpiStrip />
 
         {/* 3-col layout */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
-          <SiteFacilityCard forceOpen={expandAll ? true : undefined} />
+          <SiteFacilityCard forceOpen={expandAll ? true : undefined} navigate={navigate} />
           <BuildingCapexCard forceOpen={expandAll ? true : undefined} />
-          <Col3Placeholder />
+          <EquipmentCapexCard forceOpen={expandAll ? true : undefined} />
         </div>
+
+        {/* Monthly OpEx full-width */}
+        <MonthlyOpexSection forceOpen={expandAll ? true : undefined} />
       </div>
     </div>
   );
