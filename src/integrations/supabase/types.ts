@@ -335,8 +335,12 @@ export type Database = {
           method_standard: string | null
           parameter: string
           research_intensity: string | null
+          result_range: string | null
+          section_code: string | null
+          sni_standard: string | null
           source_count: number | null
           source_ref: string | null
+          status: string | null
           stream: string
           unit: string | null
           value_numeric: number | null
@@ -362,8 +366,12 @@ export type Database = {
           method_standard?: string | null
           parameter: string
           research_intensity?: string | null
+          result_range?: string | null
+          section_code?: string | null
+          sni_standard?: string | null
           source_count?: number | null
           source_ref?: string | null
+          status?: string | null
           stream: string
           unit?: string | null
           value_numeric?: number | null
@@ -389,8 +397,12 @@ export type Database = {
           method_standard?: string | null
           parameter?: string
           research_intensity?: string | null
+          result_range?: string | null
+          section_code?: string | null
+          sni_standard?: string | null
           source_count?: number | null
           source_ref?: string | null
+          status?: string | null
           stream?: string
           unit?: string | null
           value_numeric?: number | null
