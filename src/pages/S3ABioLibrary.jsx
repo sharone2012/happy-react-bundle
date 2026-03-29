@@ -1377,28 +1377,27 @@ const S3BiologyLibrary = () => {
           </div>
   <div className="section">
     <div className="section-header">
-      <span className="section-title teal">Section I: Potassium From PKSA — Free Nutrient Boost</span>
-      <span className="badge badge-green">Calculated Output</span>
+      <span className="section-title teal">Section I: NPK Contribution From Biologicals — {npk.length} Records</span>
+      <span className="badge badge-green">Supabase Live</span>
     </div>
     <div className="alert alert-green"><strong>PKSA = $0.00/kg — Free Mill Boiler Waste.</strong> 294 t/month at 60 TPH mill. K₂O content 35–45% DM. SNI 19-7030-2004 requires min 0.2% K₂O — CFI delivers 10–27× more.</div>
-    <div className="kv-grid cols3">
-      <div className="kv-pair"><div className="kv-key">K₂O Content</div><div className="kv-val amber">35–45% DM</div></div>
-      <div className="kv-pair"><div className="kv-key">CaO Content</div><div className="kv-val">8–12% DM</div></div>
-      <div className="kv-pair"><div className="kv-key">MgO Content</div><div className="kv-val">3–5% DM</div></div>
-      <div className="kv-pair"><div className="kv-key">P₂O₅ Content</div><div className="kv-val">1–2% DM</div></div>
-      <div className="kv-pair"><div className="kv-key">pH</div><div className="kv-val amber">10–12</div></div>
-      <div className="kv-pair"><div className="kv-key">Availability At 60 TPH</div><div className="kv-val green">294 t/month</div></div>
-    </div>
-    <div style={{padding: '14px 16px 6px', borderTop: '1.5px solid var(--border)', fontFamily: "'Syne', sans-serif", fontWeight: '700', fontSize: '13px', color: 'var(--amber)'}}>K Contribution To Final Compost</div>
     <div className="tbl-wrap">
       <table>
-        <thead><tr><th className="left">Source</th><th>K Content % DM</th><th>Contribution To Blend</th><th className="left">Calculation</th></tr></thead>
+        <thead><tr><th>#</th><th className="left">Organism</th><th>Nutrient</th><th className="left">Mechanism</th><th>kg/t DM</th><th>Monthly kg</th><th>Annual kg</th><th>Confidence</th><th className="left">Notes</th></tr></thead>
         <tbody>
-          <tr><td className="fn">EFB (60% Of Blend)</td><td className="num">2.21%</td><td className="num">1.33% K DM</td><td className="note">0.60 × 2.21%</td></tr>
-          <tr><td className="fn">OPDC (40% Of Blend)</td><td className="num">2.20%</td><td className="num">0.88% K DM</td><td className="note">0.40 × 2.20%</td></tr>
-          <tr><td className="fn">PKSA Addition (3–5% DM)</td><td className="fn">35–45% K₂O → 29–37% K</td><td className="num">+0.9–1.9% K DM</td><td className="note">0.04 × 32% K × 0.83 K/K₂O</td></tr>
-          <tr className="total-row"><td className="fn">Total K In Substrate</td><td>—</td><td className="num" style={{color: 'var(--pastelGreen)'}}>3.1–4.1% K DM</td><td className="note">Sum Of Above</td></tr>
-          <tr className="total-row"><td className="fn">Final CFI Compost K₂O</td><td>—</td><td className="num" style={{color: 'var(--pastelGreen)'}}>2.0–5.4% K₂O</td><td className="note">After Composting Concentration</td></tr>
+          {npk.map((n, i) => (
+            <tr key={n.id}>
+              <td className="num">{i + 1}</td>
+              <td className="name">{n.organism_name}</td>
+              <td><span className={`pill ${n.nutrient === 'N' ? 'pill-teal' : n.nutrient === 'P' ? 'pill-amber' : n.nutrient === 'K' ? 'pill-green' : 'pill-grey'}`} style={{fontSize:'10px'}}>{n.nutrient}</span></td>
+              <td className="fn">{n.mechanism}</td>
+              <td className="num">{n.contribution_kg_per_t_dm}</td>
+              <td className="num">{n.monthly_total_kg?.toFixed(1)}</td>
+              <td className="num">{n.annual_total_kg?.toFixed(1)}</td>
+              <td><span className={`pill ${n.confidence === 'HIGH' ? 'pill-green' : n.confidence === 'MEDIUM' ? 'pill-amber' : 'pill-red'}`} style={{fontSize:'10px'}}>{n.confidence}</span></td>
+              <td className="note">{n.notes}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
