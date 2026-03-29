@@ -103,7 +103,7 @@ export default function S1Index() {
             display: "flex", justifyContent: "space-between", alignItems: "center",
           }}>
             <span style={{ fontFamily: F, fontSize: 10, color: "#40D7C5" }}>CFI S1 Pre-Processing — Master Index</span>
-            <span style={{ fontFamily: F, fontSize: 10, color: "#8BA0B4" }}>60 TPH FFB Mill · Bogor, West Java · March 2026 · Rev 01</span>
+            <span style={{ fontFamily: F, fontSize: 10, color: "#8BA0B4" }}>EFB 20→13 t/h | OPDC 5→3.3 t/h | POS 1.25→0.56 t/h</span>
           </div>
 
           {/* ═══ HERO CARD ═══ */}
