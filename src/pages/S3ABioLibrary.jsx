@@ -874,23 +874,23 @@ const S3BiologyLibrary = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredOrganisms.map(org => (
-                    <tr key={org.id}>
+                  {filteredOrganisms.map((org, i) => (
+                    <tr key={org.id} className={org.is_conditional ? 'warning-row' : (org.category || '').toLowerCase().includes('algae') ? 'algae-row' : ''}>
                       <td className="num">{org.id}</td>
-                      <td className="name">{org.name}</td>
-                      <td className="cat">{org.category}</td>
-                      <td className="fn">{org.function}</td>
-                      <td className="num">{org.temp}</td>
-                      <td>{renderDot(org.bsfSafe)}</td>
-                      <td>{org.form}</td>
-                      <td className="price">{org.pricePerKg}</td>
-                      <td>{org.pricePerG}</td>
-                      <td>{org.doseLow}</td>
-                      <td>{org.doseHigh}</td>
-                      <td className="num">{org.costLow}</td>
-                      <td className="num">{org.costHigh}</td>
-                      <td>{org.icbb}</td>
-                      <td>{org.supplier}</td>
+                      <td className="name">{org.organism_name}</td>
+                      <td className="cat">{(org.category || '—').replace(/^[^\w]+\s*/, '')}</td>
+                      <td className="fn">{org.primary_function || '—'}</td>
+                      <td className="num">{org.optimal_temp_c_low != null && org.optimal_temp_c_high != null ? `${org.optimal_temp_c_low}–${org.optimal_temp_c_high}` : '—'}</td>
+                      <td>{renderDot(org.is_conditional ? 'warn' : org.bsf_safe === true ? 'yes' : org.bsf_safe === false ? 'no' : 'warn')}</td>
+                      <td>{org.form || '—'}</td>
+                      <td className="price">{org.price_usd_per_kg != null ? `$${org.price_usd_per_kg}` : '—'}</td>
+                      <td>{org.price_usd_per_kg != null ? (org.price_usd_per_kg / 1000).toFixed(4) : '—'}</td>
+                      <td>{org.dose_low_pct ?? '—'}</td>
+                      <td>{org.dose_high_pct ?? '—'}</td>
+                      <td className="num">{org.cost_low_usd != null ? `$${Number(org.cost_low_usd).toFixed(2)}` : '—'}</td>
+                      <td className="num">{org.cost_high_usd != null ? `$${Number(org.cost_high_usd).toFixed(2)}` : '—'}</td>
+                      <td>{org.icbb_code || '—'}</td>
+                      <td>{org.supplier_idn || '—'}</td>
                     </tr>
                   ))}
                 </tbody>
