@@ -1,4 +1,5 @@
 import { useState } from "react";
+import S1SpecPanel from "../components/S1SpecPanel";
 
 const F = "'DM Sans', sans-serif";
 const FH = "'EB Garamond', serif";
