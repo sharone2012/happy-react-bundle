@@ -1,76 +1,59 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { supabase } from '@/lib/supabase';
 
 const S3BiologyLibrary = () => {
   const [activeTab, setActiveTab] = useState('registry');
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
+  const [loading, setLoading] = useState(true);
 
-  // Organism data
-  const organisms = [
-    // THERMOPHILIC FUNGI
-    { id: 1, name: 'Thermomyces lanuginosus', category: 'Thermo Fungi', function: 'Thermophilic cellulase/xylanase producer — Wave 1', temp: '50–60', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$25', pricePerG: '0.025', doseLow: '0.05', doseHigh: '0.15', costLow: '4.38', costHigh: '13.13', icbb: '—', supplier: 'Alibaba/Novozymes' },
-    { id: 2, name: 'Myceliophthora thermophila', category: 'Thermo Fungi', function: 'C1 cellulase system, industrial enzyme source — Wave 1', temp: '45–55', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$30', pricePerG: '0.030', doseLow: '0.05', doseHigh: '0.10', costLow: '5.25', costHigh: '10.50', icbb: '—', supplier: 'Novozymes Indonesia' },
-    { id: 3, name: 'Chaetomium thermophilum', category: 'Thermo Fungi', function: 'Thermophilic cellulase, model organism — Wave 1', temp: '50–60', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$35', pricePerG: '0.035', doseLow: '0.03', doseHigh: '0.08', costLow: '3.68', costHigh: '9.80', icbb: '—', supplier: 'IPB Bogor / LIPI' },
-    // THERMOPHILIC BACTERIA
-    { id: 4, name: 'Geobacillus stearothermophilus', category: 'Thermo Bacteria', function: 'Thermophilic amylase/protease producer — Wave 1', temp: '55–70', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$15', pricePerG: '0.015', doseLow: '0.05', doseHigh: '0.15', costLow: '2.63', costHigh: '7.88', icbb: '—', supplier: 'IndiaMART' },
-    { id: 5, name: 'Bacillus licheniformis', category: 'Thermo Bacteria', function: 'Thermotolerant protease/amylase — Wave 1 | 9-org: 0.04% DM locked', temp: '50–65', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$8', pricePerG: '0.008', doseLow: '0.05', doseHigh: '0.20', costLow: '1.40', costHigh: '5.60', icbb: '—', supplier: 'Alibaba bulk / Indotrading' },
-    { id: 6, name: 'Thermobifida fusca', category: 'Thermo Actino', function: 'Thermophilic actinomycete, cellulase — Wave 1', temp: '50–55', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$40', pricePerG: '0.040', doseLow: '0.02', doseHigh: '0.05', costLow: '2.80', costHigh: '7.00', icbb: '—', supplier: 'ATCC / DSMZ' },
-    // LIGNIN FUNGI
-    { id: 7, name: 'Phanerochaete sp.', category: 'Fungi', function: 'Primary lignin destroyer (LiP, MnP, Laccase)', temp: '25–42', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$8', pricePerG: '0.008', doseLow: '0.05', doseHigh: '0.15', costLow: '4.00', costHigh: '8.00', icbb: 'ICBB 9182', supplier: 'IPB Bogor ICBB' },
-    { id: 8, name: 'Phanerochaete chrysosporium', category: 'Fungi', function: 'Strongest lignin degrader (wild-type)', temp: '37–42', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$8', pricePerG: '0.008', doseLow: '0.05', doseHigh: '0.15', costLow: '4.00', costHigh: '8.00', icbb: 'Wild-type', supplier: 'IPB / LIPI Cibinong' },
-    { id: 9, name: 'Pleurotus ostreatus', category: 'Fungi', function: 'Selective lignin degrader (preserves cellulose)', temp: '20–28', bsfSafe: 'no', form: 'Wet', pricePerKg: '$0.30', pricePerG: '0.0003', doseLow: '0.05', doseHigh: '0.15', costLow: '0.15', costHigh: '0.30', icbb: '—', supplier: "Tokopedia 'bibit jamur'" },
-    { id: 10, name: 'Trametes versicolor', category: 'Fungi', function: 'Laccase producer, lignin oxidation', temp: '25–30', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$2', pricePerG: '0.002', doseLow: '0.03', doseHigh: '0.10', costLow: '0.60', costHigh: '1.40', icbb: '—', supplier: 'Tokopedia / Alibaba' },
-    { id: 11, name: 'Ganoderma lucidum', category: 'Fungi', function: 'Lignin degrader — CAUTION: palm pathogen', temp: '25–30', bsfSafe: 'warn', form: 'Wet', pricePerKg: '$1.50', pricePerG: '0.0015', doseLow: '0.03', doseHigh: '0.08', costLow: '0.45', costHigh: '0.84', icbb: '—', supplier: 'Tokopedia' },
-    { id: 12, name: 'Trichoderma harzianum / sp.', category: 'Fungi', function: 'Aggressive cellulase + Ganoderma biocontrol. Wave 1B/2 ONLY in 9-org stack', temp: '25–35', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$1.50', pricePerG: '0.0015', doseLow: '0.05', doseHigh: '0.15', costLow: '0.75', costHigh: '1.50', icbb: 'ICBB 9127', supplier: 'Tokopedia bulk' },
-    { id: 13, name: 'Aspergillus niger', category: 'Fungi', function: 'Industrial cellulase/pectinase. Wave 1A in 9-org stack', temp: '30–37', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$5', pricePerG: '0.005', doseLow: '0.03', doseHigh: '0.10', costLow: '1.50', costHigh: '3.50', icbb: '—', supplier: 'Alibaba / IndiaMART' },
-    { id: 14, name: 'Aspergillus oryzae', category: 'Fungi', function: 'Koji mold, amylase/protease', temp: '30–35', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$3', pricePerG: '0.003', doseLow: '0.05', doseHigh: '0.15', costLow: '1.50', costHigh: '3.00', icbb: '—', supplier: "Tokopedia 'koji'" },
-    // YEAST
-    { id: 15, name: 'Saccharomyces cerevisiae', category: 'Yeast', function: 'Anti-odour, N-conservation (50% NH₃ retention)', temp: '25–35', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$0.30', pricePerG: '0.0003', doseLow: '0.05', doseHigh: '0.20', costLow: '0.12', costHigh: '0.45', icbb: 'ICBB 8808', supplier: 'Fermipan retail' },
-    // BACTERIA
-    { id: 16, name: 'Microbacterium lactium', category: 'Bacteria', function: 'Primary cellulose decomposer → glucose', temp: '30–40', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$3', pricePerG: '0.003', doseLow: '0.05', doseHigh: '0.10', costLow: '1.50', costHigh: '2.40', icbb: 'ICBB 7125', supplier: 'Jaipur Bio India' },
-    { id: 17, name: 'Paenibacillus macerans', category: 'Bacteria', function: 'Hemicellulase + nif genes', temp: '30–45', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$3', pricePerG: '0.003', doseLow: '0.05', doseHigh: '0.10', costLow: '1.50', costHigh: '2.40', icbb: 'ICBB 8810', supplier: 'MarkNature / IPB' },
-    { id: 18, name: 'Bacillus subtilis', category: 'Bacteria', function: 'PGPR, endospore shelf-life. Wave 1 in 9-org stack', temp: '25–50', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$0.20', pricePerG: '0.0002', doseLow: '0.03', doseHigh: '0.05', costLow: '0.06', costHigh: '0.10', icbb: 'ICBB 8780', supplier: 'Ansel Biotech India' },
-    { id: 19, name: 'Lactobacillus sp. (EM-4)', category: 'Bacteria', function: 'LAB pH buffering 5.5–6.0. Wave 1 in 9-org stack', temp: '25–40', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$0.86', pricePerG: '0.00086', doseLow: '0.03', doseHigh: '0.10', costLow: '0.05', costHigh: '0.17', icbb: 'ICBB 6099', supplier: 'EM-4 retail Rp25k/L' },
-    { id: 20, name: 'Bacillus megaterium', category: 'Bacteria', function: 'P-solubiliser (gluconic acid)', temp: '25–37', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$1.50', pricePerG: '0.0015', doseLow: '0.03', doseHigh: '0.05', costLow: '0.45', costHigh: '0.75', icbb: '—', supplier: 'IndiaMART' },
-    { id: 21, name: 'Cellulomonas fimi', category: 'Bacteria', function: 'Cellulolytic bacterium', temp: '30–37', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$4', pricePerG: '0.004', doseLow: '0.03', doseHigh: '0.08', costLow: '1.20', costHigh: '2.24', icbb: '—', supplier: 'ATCC / IndiaMART' },
-    // N-FIXERS
-    { id: 22, name: 'Azotobacter vinelandii', category: 'N-Fixer', function: 'Free-living N₂ fixer: 10–20 mg N/kg/day — HIGHEST. Wave 2 / Day 3+', temp: '<50 ⚠️', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$0.40', pricePerG: '0.0004', doseLow: '0.05', doseHigh: '0.20', costLow: '0.20', costHigh: '0.60', icbb: 'ICBB 9098', supplier: 'HumicFactory India' },
-    { id: 23, name: 'Azospirillum lipoferum', category: 'N-Fixer', function: 'Associative N-fixer + IAA phytohormone. Wave 2', temp: '<50 ⚠️', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$1', pricePerG: '0.001', doseLow: '0.05', doseHigh: '0.10', costLow: '0.50', costHigh: '0.80', icbb: 'ICBB 6088', supplier: 'Jaipur Bio India' },
-    { id: 24, name: 'Bradyrhizobium japonicum', category: 'N-Fixer', function: 'Root-nodule N-fixer (soil phase). Wave 2', temp: '<45', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$1.50', pricePerG: '0.0015', doseLow: '0.03', doseHigh: '0.05', costLow: '0.45', costHigh: '0.75', icbb: 'ICBB 9251', supplier: 'Pioneer Agro India' },
-    // P/K SOLUBILISERS
-    { id: 25, name: 'Pseudomonas fluorescens', category: 'P-Solubiliser', function: 'P-solubiliser + HCN biocontrol vs Ganoderma', temp: '25–30', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$2.40', pricePerG: '0.0024', doseLow: '0.05', doseHigh: '0.10', costLow: '1.20', costHigh: '1.92', icbb: '—', supplier: 'Katyayani India' },
-    { id: 26, name: 'Bacillus coagulans', category: 'P-Solubiliser', function: 'P-solubiliser, probiotic. Wave 1 in 9-org stack', temp: '35–50', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$4.50', pricePerG: '0.002', doseLow: '0.03', doseHigh: '0.08', costLow: '0.60', costHigh: '1.12', icbb: '—', supplier: 'Alibaba' },
-    { id: 27, name: 'Bacillus mucilaginosus', category: 'K-Mobiliser', function: 'K-solubiliser from silicates', temp: '25–37', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$3', pricePerG: '0.003', doseLow: '0.03', doseHigh: '0.08', costLow: '0.90', costHigh: '1.68', icbb: '—', supplier: 'IndiaMART' },
-    { id: 28, name: 'Frateuria aurantia', category: 'K-Mobiliser', function: 'K-mobiliser specialist', temp: '25–30', bsfSafe: 'yes', form: 'Wet', pricePerKg: '$4', pricePerG: '0.004', doseLow: '0.03', doseHigh: '0.05', costLow: '1.20', costHigh: '1.60', icbb: '—', supplier: 'IARI India' },
-    // ACTINOMYCETES
-    { id: 29, name: 'Streptomyces sp.', category: 'Actinomycete', function: 'Lignocellulolytic + antibiotic production', temp: '25–37', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$5', pricePerG: '0.005', doseLow: '0.02', doseHigh: '0.05', costLow: '1.00', costHigh: '2.00', icbb: 'ICBB 9155', supplier: 'IPB ICBB' },
-    { id: 30, name: 'Streptomyces sp.', category: 'Actinomycete', function: 'Complementary antibiotic profile', temp: '25–37', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$5', pricePerG: '0.005', doseLow: '0.02', doseHigh: '0.05', costLow: '1.00', costHigh: '2.00', icbb: 'ICBB 9469', supplier: 'IPB ICBB' },
-    // CONDITIONAL
-    { id: 31, name: 'Bacillus thuringiensis (Bt)', category: 'Conditional', function: 'S3 ONLY — titre decay <10⁴ CFU/g before S4. Cry proteins toxic to Diptera larvae', temp: '25–45', bsfSafe: 'warn', form: 'Dry', pricePerKg: '$0.15', pricePerG: '0.00015', doseLow: '—', doseHigh: '—', costLow: '—', costHigh: '—', icbb: 'ICBB 6095', supplier: 'IPB ICBB — USE WITH CAUTION' },
-    // ENZYMES
-    { id: 32, name: 'Cellulase (T. reesei)', category: 'Enzyme', function: 'β-1,4-glycosidic → glucose; +35–45% IVDMD', temp: '45–55', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$15', pricePerG: '0.015', doseLow: '0.01', doseHigh: '0.05', costLow: '1.58', costHigh: '7.88', icbb: 'EC 3.2.1.4', supplier: 'Novozymes Indonesia' },
-    { id: 33, name: 'Xylanase', category: 'Enzyme', function: 'β-1,4-xylosidic → xylose; strips hemi shield', temp: '40–55', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$17', pricePerG: '0.017', doseLow: '0.01', doseHigh: '0.05', costLow: '1.36', costHigh: '7.14', icbb: 'EC 3.2.1.8', supplier: 'Alibaba bulk' },
-    { id: 34, name: 'Laccase', category: 'Enzyme', function: 'Phenolic detoxification; opens lignin surface', temp: '30–50', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$20', pricePerG: '0.020', doseLow: '0.01', doseHigh: '0.03', costLow: '1.00', costHigh: '4.20', icbb: 'EC 1.10.3.2', supplier: 'Alibaba bulk' },
-    { id: 35, name: 'Pectinase', category: 'Enzyme', function: 'Pectin breakdown; softens cell walls', temp: '40–50', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$12', pricePerG: '0.012', doseLow: '0.005', doseHigh: '0.02', costLow: '0.42', costHigh: '1.68', icbb: 'EC 3.2.1.15', supplier: 'Alibaba bulk' },
-    { id: 36, name: 'Lipase', category: 'Enzyme', function: 'Fat breakdown; relevant for OPDC 3–8% lipid', temp: '35–45', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$18', pricePerG: '0.018', doseLow: '0.005', doseHigh: '0.02', costLow: '0.63', costHigh: '2.52', icbb: 'EC 3.1.1.3', supplier: 'Novozymes' },
-    { id: 37, name: 'Protease', category: 'Enzyme', function: 'Protein accessibility for BSF', temp: '40–55', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$10', pricePerG: '0.010', doseLow: '0.005', doseHigh: '0.02', costLow: '0.35', costHigh: '1.40', icbb: 'EC 3.4.x.x', supplier: 'Alibaba bulk' },
-    { id: 38, name: 'Amylase', category: 'Enzyme', function: 'Starch → glucose', temp: '55–70', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$8', pricePerG: '0.008', doseLow: '0.01', doseHigh: '0.03', costLow: '0.56', costHigh: '1.68', icbb: 'EC 3.2.1.1', supplier: 'Alibaba bulk' },
-    { id: 39, name: 'Mannanase', category: 'Enzyme', function: 'Mannan breakdown (palm kernel)', temp: '45–55', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$22', pricePerG: '0.022', doseLow: '0.005', doseHigh: '0.02', costLow: '0.77', costHigh: '3.08', icbb: 'EC 3.2.1.78', supplier: 'Alibaba / DSM' },
-    { id: 40, name: 'β-glucosidase', category: 'Enzyme', function: 'Final cellulose step → glucose', temp: '45–55', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$25', pricePerG: '0.025', doseLow: '0.005', doseHigh: '0.015', costLow: '0.88', costHigh: '2.63', icbb: 'EC 3.2.1.21', supplier: 'Novozymes' },
-    // NEW MAR 2026
-    { id: 41, name: 'Rhizopus oligosporus', category: 'Fungi', function: 'Fast mycelial protein — protease + lipase + phytase. Wave 1A Day 0. Vulnerable to Trichoderma', temp: '28–37', bsfSafe: 'yes', form: 'Dry', pricePerKg: '$0.50', pricePerG: '0.0005', doseLow: '0.05', doseHigh: '0.15', costLow: '0.09', costHigh: '0.26', icbb: '—', supplier: 'Tokopedia / IndiaMART' },
-    { id: 42, name: 'Arthrospira platensis (Spirulina)', category: 'Algae', function: '1,850 L/t EFB DM. 65% CP. Neonate BSF +22%. FCR −0.7. BSF meal 45%→56% CP', temp: '25–38', bsfSafe: 'yes', form: 'Slurry', pricePerKg: '$0', pricePerG: '$0', doseLow: '1,850 L/t DM', doseHigh: '1,850 L/t DM', costLow: '$0', costHigh: '$0', icbb: '—', supplier: 'On-site POME raceway' },
-    { id: 43, name: 'Chlorella vulgaris', category: 'Algae', function: '1,850 L/t EFB DM. 45% CP. Neonate BSF +15%. FCR −0.5. BSF meal 45%→51% CP', temp: '20–30', bsfSafe: 'yes', form: 'Slurry', pricePerKg: '$0', pricePerG: '$0', doseLow: '1,850 L/t DM', doseHigh: '1,850 L/t DM', costLow: '$0', costHigh: '$0', icbb: '—', supplier: 'On-site POME raceway' },
-  ];
+  // Supabase data
+  const [organisms, setOrganisms] = useState([]);
+  const [procurement, setProcurement] = useState([]);
+  const [dosing, setDosing] = useState([]);
+  const [consortiumRules, setConsortiumRules] = useState([]);
+  const [timeline, setTimeline] = useState([]);
+  const [algae, setAlgae] = useState([]);
+  const [npk, setNpk] = useState([]);
+  const [capex, setCapex] = useState([]);
+
+  useEffect(() => {
+    async function fetchAll() {
+      setLoading(true);
+      const [orgRes, procRes, doseRes, consRes, tlRes, algRes, npkRes, capRes] = await Promise.all([
+        supabase.from('biological_library').select('*').order('id'),
+        supabase.from('s3_procurement').select('*').order('stack_position'),
+        supabase.from('s3_nine_org_dosing').select('*').order('stack_position'),
+        supabase.from('consortium_master_rules').select('*').order('id'),
+        supabase.from('s3_inoculation_timeline').select('*').order('day_number'),
+        supabase.from('s3_algae_uplift').select('*').order('id'),
+        supabase.from('s3_npk_contribution').select('*').order('id'),
+        supabase.from('s3_capex').select('*').order('id'),
+      ]);
+      setOrganisms(orgRes.data || []);
+      setProcurement(procRes.data || []);
+      setDosing(doseRes.data || []);
+      setConsortiumRules(consRes.data || []);
+      setTimeline(tlRes.data || []);
+      setAlgae(algRes.data || []);
+      setNpk(npkRes.data || []);
+      setCapex(capRes.data || []);
+      setLoading(false);
+    }
+    fetchAll();
+  }, []);
 
   const filteredOrganisms = useMemo(() => {
     return organisms.filter(org => {
-      const matchesSearch = org.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           org.category.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = categoryFilter === 'all' || org.category.toLowerCase().includes(categoryFilter.toLowerCase());
+      const name = (org.organism_name || '').toLowerCase();
+      const cat = (org.category || '').toLowerCase();
+      const search = searchTerm.toLowerCase();
+      const matchesSearch = name.includes(search) || cat.includes(search);
+      const matchesCategory = categoryFilter === 'all' ||
+        (categoryFilter === 'nfixer' ? (cat.includes('n-fixer') || cat.includes('n_fixer')) : cat.includes(categoryFilter.toLowerCase()));
       return matchesSearch && matchesCategory;
     });
-  }, [searchTerm, categoryFilter]);
+  }, [organisms, searchTerm, categoryFilter]);
 
   const styles = `
     :root {
@@ -768,7 +751,7 @@ const S3BiologyLibrary = () => {
           <h1>S3 — Biological Inoculation Library</h1>
         </div>
         <div className="header-badges">
-          <span className="badge badge-teal">43 Organisms + Enzymes</span>
+          <span className="badge badge-teal">{organisms.length} Organisms + Enzymes</span>
           <span className="badge badge-amber">8,157 t FW/month</span>
           <span className="badge badge-red">Bt ICBB 6095 — Conditional</span>
           <span className="badge badge-green">5-Day Bio Minimum</span>
@@ -800,6 +783,13 @@ const S3BiologyLibrary = () => {
 
       {/* Content Area */}
       <div className="content">
+        {loading && (
+          <div style={{display:'flex',alignItems:'center',justifyContent:'center',padding:'60px 0',gap:'12px'}}>
+            <div style={{width:20,height:20,border:'2px solid var(--teal)',borderTopColor:'transparent',borderRadius:'50%',animation:'spin 0.8s linear infinite'}}/>
+            <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:13,color:'var(--grey)'}}>Loading biological data from Supabase...</span>
+            <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+          </div>
+        )}
         {/* TAB: ORGANISM REGISTRY */}
         <div className={`tab-panel ${activeTab === 'registry' ? 'active' : ''}`}>
           <div className="section">
@@ -884,23 +874,23 @@ const S3BiologyLibrary = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredOrganisms.map(org => (
-                    <tr key={org.id}>
+                  {filteredOrganisms.map((org, i) => (
+                    <tr key={org.id} className={org.is_conditional ? 'warning-row' : (org.category || '').toLowerCase().includes('algae') ? 'algae-row' : ''}>
                       <td className="num">{org.id}</td>
-                      <td className="name">{org.name}</td>
-                      <td className="cat">{org.category}</td>
-                      <td className="fn">{org.function}</td>
-                      <td className="num">{org.temp}</td>
-                      <td>{renderDot(org.bsfSafe)}</td>
-                      <td>{org.form}</td>
-                      <td className="price">{org.pricePerKg}</td>
-                      <td>{org.pricePerG}</td>
-                      <td>{org.doseLow}</td>
-                      <td>{org.doseHigh}</td>
-                      <td className="num">{org.costLow}</td>
-                      <td className="num">{org.costHigh}</td>
-                      <td>{org.icbb}</td>
-                      <td>{org.supplier}</td>
+                      <td className="name">{org.organism_name}</td>
+                      <td className="cat">{(org.category || '—').replace(/^[^\w]+\s*/, '')}</td>
+                      <td className="fn">{org.primary_function || '—'}</td>
+                      <td className="num">{org.optimal_temp_c_low != null && org.optimal_temp_c_high != null ? `${org.optimal_temp_c_low}–${org.optimal_temp_c_high}` : '—'}</td>
+                      <td>{renderDot(org.is_conditional ? 'warn' : org.bsf_safe === true ? 'yes' : org.bsf_safe === false ? 'no' : 'warn')}</td>
+                      <td>{org.form || '—'}</td>
+                      <td className="price">{org.price_usd_per_kg != null ? `$${org.price_usd_per_kg}` : '—'}</td>
+                      <td>{org.price_usd_per_kg != null ? (org.price_usd_per_kg / 1000).toFixed(4) : '—'}</td>
+                      <td>{org.dose_low_pct ?? '—'}</td>
+                      <td>{org.dose_high_pct ?? '—'}</td>
+                      <td className="num">{org.cost_low_usd != null ? `$${Number(org.cost_low_usd).toFixed(2)}` : '—'}</td>
+                      <td className="num">{org.cost_high_usd != null ? `$${Number(org.cost_high_usd).toFixed(2)}` : '—'}</td>
+                      <td>{org.icbb_code || '—'}</td>
+                      <td>{org.supplier_idn || '—'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -925,41 +915,35 @@ const S3BiologyLibrary = () => {
     <div className="alert alert-teal">Priority: Indonesia (fastest) → SE Asia → India (cheapest) → China (bulk). Lead time = days from order to delivery FOB Indonesia. MOQ = Minimum Order Quantity.</div>
     <div className="tbl-wrap">
       <table>
-        <thead><tr><th>#</th><th className="left">Organism / Enzyme</th><th className="left">Category</th><th className="left">Indonesia Supplier</th><th>Indo Lead</th><th>Indo MOQ</th><th className="left">SE Asia Supplier</th><th>SEA Lead</th><th className="left">India Supplier</th><th>India Lead</th><th>India $/kg</th><th className="left">China Supplier</th><th>China Lead</th><th className="left">Best Quote</th></tr></thead>
+        <thead><tr><th>#</th><th className="left">Organism</th><th>ICBB</th><th className="left">Provibio Form</th><th>Provibio $/kg</th><th className="left">Commercial Supplier</th><th>Comm $/kg</th><th>Lead Days</th><th>MOQ kg</th><th>Monthly kg</th><th>Monthly $ (Provibio)</th><th>Monthly $ (Commercial)</th><th>Saving $</th><th className="left">Recommended</th></tr></thead>
         <tbody>
-          <tr><td className="num">1</td><td className="name">Thermomyces lanuginosus</td><td className="cat">Thermo</td><td>IPB Bogor Lab</td><td>14–21d</td><td>100g</td><td>MARDI Malaysia</td><td>21–28d</td><td>NCIM Pune</td><td>14–21d</td><td className="price">$25</td><td>Alibaba ferment</td><td>21–30d</td><td className="note">ipb.ac.id/biotek</td></tr>
-          <tr><td className="num">2</td><td className="name">Myceliophthora thermophila</td><td className="cat">Thermo</td><td>—</td><td>—</td><td>—</td><td>DSM Singapore</td><td>7–14d</td><td>Novozymes India</td><td>14–21d</td><td className="price">$30</td><td>—</td><td>—</td><td className="note">novozymes.com</td></tr>
-          <tr><td className="num">3</td><td className="name">Geobacillus stearothermophilus</td><td className="cat">Thermo</td><td>LIPI Cibinong</td><td>14–21d</td><td>100g</td><td>—</td><td>—</td><td>IndiaMART bulk</td><td>7–14d</td><td className="price">$15</td><td>Alibaba bulk</td><td>14–21d</td><td className="note">indiamart.com</td></tr>
-          <tr><td className="num">4</td><td className="name">Bacillus licheniformis</td><td className="cat">Thermo</td><td>Indotrading</td><td>3–7d</td><td>1kg</td><td>—</td><td>—</td><td>Jaipur Bio</td><td>7–14d</td><td className="price">$8</td><td>Alibaba bulk</td><td>14–21d</td><td className="note">indotrading.com</td></tr>
-          <tr><td className="num">5</td><td className="name">Phanerochaete sp. ICBB 9182</td><td className="cat">Lignin Fungi</td><td>IPB ICBB Bogor</td><td>7–14d</td><td>500g</td><td>—</td><td>—</td><td>—</td><td>—</td><td className="price">$8</td><td>—</td><td>—</td><td className="note">ab2ti.org/provibio</td></tr>
-          <tr><td className="num">6</td><td className="name">Pleurotus ostreatus</td><td className="cat">Lignin Fungi</td><td>Tokopedia 'bibit jamur'</td><td>1–3d ✅</td><td>100g</td><td>Thai Mushroom Co</td><td>7–14d</td><td>BM Mushroom India</td><td>7–14d</td><td className="price">$0.30</td><td>Alibaba spawn</td><td>14–21d</td><td className="note">tokopedia.com/jamur</td></tr>
-          <tr><td className="num">7</td><td className="name">Trametes versicolor</td><td className="cat">Lignin Fungi</td><td>Tokopedia spawn</td><td>3–7d</td><td>500g</td><td>—</td><td>—</td><td>IndiaMART</td><td>14–21d</td><td className="price">$2</td><td>Alibaba spawn</td><td>14–21d</td><td className="note">tokopedia.com</td></tr>
-          <tr><td className="num">8</td><td className="name">Trichoderma harzianum</td><td className="cat">Cellulase Fungi</td><td>Tokopedia bulk</td><td>1–3d ✅</td><td>1kg</td><td>Thai Agri Bio</td><td>7–14d</td><td>IndiaMART bulk</td><td>7–14d</td><td className="price">$1.50</td><td>Alibaba bulk</td><td>14–21d</td><td className="note">tokopedia.com/trichoderma</td></tr>
-          <tr><td className="num">9</td><td className="name">Aspergillus niger</td><td className="cat">Cellulase Fungi</td><td>Indotrading</td><td>3–7d</td><td>1kg</td><td>—</td><td>—</td><td>IndiaMART</td><td>7–14d</td><td className="price">$5</td><td>Alibaba ferment</td><td>14–21d</td><td className="note">indotrading.com</td></tr>
-          <tr><td className="num">10</td><td className="name">Aspergillus oryzae (Koji)</td><td className="cat">Amylase Fungi</td><td>Tokopedia 'koji'</td><td>1–3d ✅</td><td>500g</td><td>Vietnam Bio</td><td>7–14d</td><td>—</td><td>—</td><td className="price">$3</td><td>Alibaba koji</td><td>14–21d</td><td className="note">tokopedia.com/koji</td></tr>
-          <tr><td className="num">11</td><td className="name">Saccharomyces cerevisiae</td><td className="cat">Yeast</td><td>Fermipan retail</td><td>1d ✅</td><td>100g</td><td>Angel Yeast VN</td><td>3–7d</td><td>—</td><td>—</td><td className="price">$0.30</td><td>Hebei Youngdo</td><td>14–21d</td><td className="note">tokopedia.com/fermipan</td></tr>
-          <tr className="wave2-row"><td className="num">12</td><td className="name">Azotobacter vinelandii</td><td className="cat">N-Fixer</td><td>PT Pupuk Kaltim Biotara</td><td>7–14d</td><td>1L</td><td>—</td><td>—</td><td>HumicFactory</td><td>7–14d</td><td className="price" style={{color: 'var(--green)'}}>$0.40 ⭐</td><td>—</td><td>—</td><td className="note">indiamart.com/humicfactory</td></tr>
-          <tr className="wave2-row"><td className="num">13</td><td className="name">Azospirillum lipoferum</td><td className="cat">N-Fixer</td><td>PT Petrokimia Gresik</td><td>7–14d</td><td>1L</td><td>—</td><td>—</td><td>Jaipur Bio Fert</td><td>7–14d</td><td className="price">$1</td><td>—</td><td>—</td><td className="note">petrokimia-gresik.com</td></tr>
-          <tr className="wave2-row"><td className="num">14</td><td className="name">Bradyrhizobium japonicum</td><td className="cat">N-Fixer</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Pioneer Agro India</td><td>7–14d</td><td className="price">$1.50</td><td>—</td><td>—</td><td className="note">indiamart.com</td></tr>
-          <tr><td className="num">15</td><td className="name">Lactobacillus sp. (EM-4)</td><td className="cat">LAB</td><td>EM-4 retail everywhere</td><td>1d ✅</td><td>1L</td><td>Vietnam EM</td><td>3–7d</td><td>Enzyme Bioscience</td><td>7–14d</td><td className="price">$0.86</td><td>—</td><td>—</td><td className="note">tokopedia.com/em4</td></tr>
-          <tr><td className="num">16</td><td className="name">Bacillus subtilis</td><td className="cat">PGPR</td><td>Indotrading bio</td><td>3–7d</td><td>1kg</td><td>Thai Bio Co</td><td>7–14d</td><td>Ansel Biotech Vadodara</td><td>7–14d</td><td className="price" style={{color: 'var(--green)'}}>$0.20 ⭐</td><td>Alibaba bulk</td><td>14–21d</td><td className="note">indiamart.com/ansel</td></tr>
-          <tr><td className="num">17</td><td className="name">Bacillus megaterium</td><td className="cat">P-Solubiliser</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>IndiaMART bulk</td><td>7–14d</td><td className="price">$1.50</td><td>Alibaba bulk</td><td>14–21d</td><td className="note">indiamart.com</td></tr>
-          <tr><td className="num">18</td><td className="name">Pseudomonas fluorescens</td><td className="cat">P-Solubiliser</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Katyayani Organics</td><td>7–14d</td><td className="price">$2.40</td><td>—</td><td>—</td><td className="note">indiamart.com/katyayani</td></tr>
-          <tr><td className="num">19</td><td className="name">Streptomyces sp. ICBB 9155</td><td className="cat">Actinomycete</td><td>IPB ICBB Bogor</td><td>14–21d</td><td>100g</td><td>—</td><td>—</td><td>—</td><td>—</td><td className="price">$5</td><td>—</td><td>—</td><td className="note">ab2ti.org</td></tr>
-          <tr><td className="num">20</td><td className="name">Streptomyces sp. ICBB 9469</td><td className="cat">Actinomycete</td><td>IPB Bogor</td><td>14–21d</td><td>100g</td><td>—</td><td>—</td><td>—</td><td>—</td><td className="price">$5</td><td>—</td><td>—</td><td className="note">ab2ti.org</td></tr>
-          <tr><td className="num">21</td><td className="name">Bacillus mucilaginosus</td><td className="cat">K-Mobiliser</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>IndiaMART</td><td>7–14d</td><td className="price">$3</td><td>Alibaba</td><td>14–21d</td><td className="note">indiamart.com</td></tr>
-          <tr><td className="num">22</td><td className="name">Frateuria aurantia</td><td className="cat">K-Mobiliser</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>IARI India</td><td>14–21d</td><td className="price">$4</td><td>—</td><td>—</td><td className="note">iari.res.in</td></tr>
-          <tr className="warning-row"><td className="num" style={{color: 'var(--red)'}}>23</td><td className="name" style={{color: 'var(--red)'}}>Bt ICBB 6095</td><td><span className="pill pill-red" style={{fontSize: '10px'}}>Excluded/Conditional</span></td><td style={{color: 'var(--red)'}}>DO NOT SOURCE</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td className="note" style={{color: 'var(--red)'}}>Toxic to BSF Diptera</td></tr>
-          <tr><td className="num">24</td><td className="name">Cellulase (T. reesei)</td><td className="cat">Enzyme</td><td>Novozymes Indonesia</td><td>7–14d</td><td>25kg</td><td>DSM Singapore</td><td>7–14d</td><td>Alibaba India</td><td>14–21d</td><td className="price">$15</td><td>Alibaba bulk</td><td>14–21d</td><td className="note">novozymes.com</td></tr>
-          <tr><td className="num">25</td><td className="name">Xylanase</td><td className="cat">Enzyme</td><td>PT Enzymes Indo</td><td>7–14d</td><td>25kg</td><td>DSM Singapore</td><td>7–14d</td><td>Alibaba India</td><td>14–21d</td><td className="price">$17</td><td>Alibaba bulk</td><td>14–21d</td><td className="note">alibaba.com</td></tr>
-          <tr><td className="num">26</td><td className="name">Laccase</td><td className="cat">Enzyme</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Alibaba India</td><td>14–21d</td><td className="price">$20</td><td>Alibaba bulk</td><td>14–21d</td><td className="note">alibaba.com</td></tr>
-          <tr><td className="num">27</td><td className="name">Pectinase</td><td className="cat">Enzyme</td><td>—</td><td>—</td><td>—</td><td>DSM Singapore</td><td>7–14d</td><td>Alibaba India</td><td>14–21d</td><td className="price">$12</td><td>Alibaba bulk</td><td>14–21d</td><td className="note">alibaba.com</td></tr>
-          <tr><td className="num">28</td><td className="name">Lipase</td><td className="cat">Enzyme</td><td>Novozymes Indonesia</td><td>7–14d</td><td>25kg</td><td>—</td><td>—</td><td>Novozymes India</td><td>14–21d</td><td className="price">$18</td><td>Alibaba bulk</td><td>14–21d</td><td className="note">novozymes.com</td></tr>
-          <tr><td className="num">29</td><td className="name">Protease</td><td className="cat">Enzyme</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Alibaba India</td><td>14–21d</td><td className="price">$10</td><td>Alibaba bulk</td><td>14–21d</td><td className="note">alibaba.com</td></tr>
-          <tr><td className="num">30</td><td className="name">Amylase</td><td className="cat">Enzyme</td><td>Indotrading</td><td>3–7d</td><td>25kg</td><td>—</td><td>—</td><td>Alibaba India</td><td>14–21d</td><td className="price">$8</td><td>Alibaba bulk</td><td>14–21d</td><td className="note">alibaba.com</td></tr>
-          <tr style={{background: 'rgba(0,50,30,.4)'}}><td className="num" style={{color: 'var(--teal)'}}>31</td><td className="name" style={{color: 'var(--teal)'}}>Rhizopus oligosporus</td><td className="cat">Protein Fungi</td><td>Tokopedia 'ragi tempe'</td><td>1–3d ✅</td><td>100g</td><td>Vietnam tempeh starter</td><td>3–7d</td><td>IndiaMART tempeh culture</td><td>7–14d</td><td className="price">$0.50</td><td>Alibaba spore powder</td><td>14–21d</td><td className="note">tokopedia.com/ragi-tempe</td></tr>
-          <tr className="algae-row"><td className="num" style={{color: 'var(--green)'}}>32</td><td className="name" style={{color: 'var(--green)'}}>Arthrospira platensis (Spirulina)</td><td className="cat" style={{color: 'var(--green)'}}>Algae-B</td><td>CFI on-site POME raceway</td><td>N/A CapEx</td><td>N/A</td><td>PT Sari Segar Nusantara</td><td>14–30d</td><td>Parry Nutraceuticals</td><td>21–30d</td><td className="price">$0 (CapEx)</td><td>Hainan Simai China</td><td>21–30d</td><td className="note">On-site raceway</td></tr>
-          <tr className="algae-row"><td className="num" style={{color: 'var(--pastelGreen)'}}>33</td><td className="name" style={{color: 'var(--pastelGreen)'}}>Chlorella vulgaris</td><td className="cat" style={{color: 'var(--green)'}}>Algae-B</td><td>CFI on-site POME raceway</td><td>N/A CapEx</td><td>N/A</td><td>PT Bio Niaga Nusantara</td><td>14–21d</td><td>Roquette India</td><td>21–30d</td><td className="price">$0 (CapEx)</td><td>Algal Scientific China</td><td>21–30d</td><td className="note">On-site raceway</td></tr>
+          {procurement.filter(p => p.stack_position > 0).map((p, i) => (
+            <tr key={p.id} className={p.organism_name?.includes('Azotobacter') || p.organism_name?.includes('Azospirillum') ? 'wave2-row' : p.organism_name?.includes('Bt') ? 'warning-row' : ''}>
+              <td className="num">{p.stack_position}</td>
+              <td className="name">{p.organism_name}</td>
+              <td>{p.provibio_icbb || '—'}</td>
+              <td className="fn">{p.provibio_form || '—'}</td>
+              <td className="price">{p.provibio_price_usd_kg != null ? `$${p.provibio_price_usd_kg}` : '—'}</td>
+              <td className="fn">{p.commercial_supplier || '—'}</td>
+              <td className="price">{p.commercial_price_usd_kg != null ? `$${p.commercial_price_usd_kg}` : '—'}</td>
+              <td>{p.lead_time_days != null ? `${p.lead_time_days}d` : '—'}</td>
+              <td>{p.minimum_order_kg != null ? `${p.minimum_order_kg}kg` : '—'}</td>
+              <td className="num">{p.monthly_kg_required != null ? p.monthly_kg_required.toLocaleString() : '—'}</td>
+              <td className="num">{p.monthly_cost_provibio_usd != null ? `$${p.monthly_cost_provibio_usd.toLocaleString()}` : '—'}</td>
+              <td className="num">{p.monthly_cost_commercial_usd != null ? `$${p.monthly_cost_commercial_usd.toLocaleString()}` : '—'}</td>
+              <td className={p.saving_usd_if_provibio > 0 ? 'num' : 'price'}>{p.saving_usd_if_provibio != null ? `$${p.saving_usd_if_provibio.toLocaleString()}` : '—'}</td>
+              <td className="note">{p.recommended_source || '—'}</td>
+            </tr>
+          ))}
+          {procurement.filter(p => p.stack_position === 0).map((p, i) => (
+            <tr key={`total-${i}`} className="total-row">
+              <td colSpan="9" style={{textAlign:'right',padding:'8px 14px',fontFamily:"'DM Sans',sans-serif",fontSize:'12px',fontWeight:'700'}}>{p.organism_name}</td>
+              <td className="num">{p.monthly_kg_required != null ? p.monthly_kg_required.toLocaleString() : '—'}</td>
+              <td className="num" style={{color:'var(--pastelGreen)'}}>{p.monthly_cost_provibio_usd != null ? `$${p.monthly_cost_provibio_usd.toLocaleString()}` : '—'}</td>
+              <td className="num" style={{color:'var(--pastelGreen)'}}>{p.monthly_cost_commercial_usd != null ? `$${p.monthly_cost_commercial_usd.toLocaleString()}` : '—'}</td>
+              <td colSpan="2" className="note">{p.rationale || '—'}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
@@ -1018,32 +1002,34 @@ const S3BiologyLibrary = () => {
     <div className="tbl-wrap">
       <table>
         <thead><tr>
-          <th>#</th><th className="left">Organism / Enzyme</th><th>Form</th><th>Unit</th><th>$/Unit</th>
-          <th>Dose Low % DM</th><th>Dose High % DM</th><th>kg/t FW Low</th><th>kg/t FW High</th>
-          <th>Cost Low $/t FW</th><th>Cost High $/t FW</th><th>Monthly kg Low</th><th>Monthly Cost Low $</th><th>Quote</th>
+          <th>#</th><th className="left">Organism</th><th>Wave</th><th>Category</th><th>Dose % DM</th>
+          <th>$/kg</th><th>$/t FW</th><th>Monthly kg</th><th>Monthly OpEx $</th>
+          <th>BSF Safe</th><th className="left">Supplier</th><th className="left">ICBB</th>
         </tr></thead>
         <tbody>
-          <tr><td className="num">1</td><td className="name">Thermomyces lanuginosus</td><td>Dry</td><td>kg</td><td className="price">$25</td><td>0.05</td><td>0.15</td><td>0.0175</td><td>0.0525</td><td className="num">0.4375</td><td className="num">1.3125</td><td>142.7</td><td className="num">$3,569</td><td>Alibaba</td></tr>
-          <tr><td className="num">2</td><td className="name">Geobacillus stearothermophilus</td><td>Dry</td><td>kg</td><td className="price">$15</td><td>0.05</td><td>0.15</td><td>0.0175</td><td>0.0525</td><td className="num">0.2625</td><td className="num">0.7875</td><td>142.7</td><td className="num">$2,141</td><td>IndiaMART</td></tr>
-          <tr><td className="num">3</td><td className="name">Bacillus licheniformis</td><td>Dry</td><td>kg</td><td className="price">$8</td><td>0.05</td><td>0.20</td><td>0.0175</td><td>0.0700</td><td className="num">0.1400</td><td className="num">0.5600</td><td>142.7</td><td className="num">$1,142</td><td>Alibaba</td></tr>
-          <tr><td className="num">4</td><td className="name">Phanerochaete sp. ICBB 9182</td><td>Wet</td><td>L</td><td className="price">$8</td><td>0.05</td><td>0.15</td><td>0.0175</td><td>0.0525</td><td className="num">0.1400</td><td className="num">0.4200</td><td>142.7</td><td className="num">$1,142</td><td>IPB ICBB</td></tr>
-          <tr><td className="num">5</td><td className="name">Pleurotus ostreatus</td><td>Wet</td><td>kg</td><td className="price">$0.30</td><td>0.05</td><td>0.15</td><td>0.0175</td><td>0.0525</td><td className="num">0.0053</td><td className="num">0.0158</td><td>142.7</td><td className="num">$43</td><td>Tokopedia</td></tr>
-          <tr><td className="num">6</td><td className="name">Trichoderma harzianum</td><td>Dry</td><td>kg</td><td className="price">$1.50</td><td>0.05</td><td>0.15</td><td>0.0175</td><td>0.0525</td><td className="num">0.0263</td><td className="num">0.0788</td><td>142.7</td><td className="num">$214</td><td>Tokopedia</td></tr>
-          <tr><td className="num">7</td><td className="name">Saccharomyces cerevisiae</td><td>Dry</td><td>kg</td><td className="price">$0.30</td><td>0.05</td><td>0.20</td><td>0.0175</td><td>0.0700</td><td className="num">0.0053</td><td className="num">0.0210</td><td>142.7</td><td className="num">$43</td><td>Fermipan</td></tr>
-          <tr className="wave2-row"><td className="num">8</td><td className="name">Azotobacter vinelandii</td><td>Wet</td><td>L</td><td className="price">$0.40</td><td>0.05</td><td>0.20</td><td>0.0175</td><td>0.0700</td><td className="num">0.0070</td><td className="num">0.0280</td><td>142.7</td><td className="num">$57</td><td>HumicFactory</td></tr>
-          <tr className="wave2-row"><td className="num">9</td><td className="name">Azospirillum lipoferum</td><td>Wet</td><td>L</td><td className="price">$1</td><td>0.05</td><td>0.10</td><td>0.0175</td><td>0.0350</td><td className="num">0.0175</td><td className="num">0.0350</td><td>142.7</td><td className="num">$143</td><td>Jaipur Bio</td></tr>
-          <tr><td className="num">10</td><td className="name">Lactobacillus sp. (EM-4)</td><td>Wet</td><td>L</td><td className="price">$0.17</td><td>0.05</td><td>0.15</td><td>0.0175</td><td>0.0525</td><td className="num">0.0030</td><td className="num">0.0089</td><td>142.7</td><td className="num">$24</td><td>EM-4 retail</td></tr>
-          <tr><td className="num">11</td><td className="name">Bacillus subtilis</td><td>Dry</td><td>kg</td><td className="price">$0.20</td><td>0.03</td><td>0.05</td><td>0.0105</td><td>0.0175</td><td className="num">0.0021</td><td className="num">0.0035</td><td>85.6</td><td className="num">$17</td><td>Ansel Biotech</td></tr>
-          <tr><td className="num">12</td><td className="name">Bacillus megaterium</td><td>Dry</td><td>kg</td><td className="price">$1.50</td><td>0.03</td><td>0.05</td><td>0.0105</td><td>0.0175</td><td className="num">0.0158</td><td className="num">0.0263</td><td>85.6</td><td className="num">$128</td><td>IndiaMART</td></tr>
-          <tr><td className="num">13</td><td className="name">Pseudomonas fluorescens</td><td>Wet</td><td>L</td><td className="price">$2.40</td><td>0.05</td><td>0.10</td><td>0.0175</td><td>0.0350</td><td className="num">0.0420</td><td className="num">0.0840</td><td>142.7</td><td className="num">$343</td><td>Katyayani</td></tr>
-          <tr><td className="num">14</td><td className="name">Streptomyces sp. ICBB 9155</td><td>Dry</td><td>kg</td><td className="price">$5</td><td>0.02</td><td>0.05</td><td>0.0070</td><td>0.0175</td><td className="num">0.0350</td><td className="num">0.0875</td><td>57.1</td><td className="num">$285</td><td>IPB ICBB</td></tr>
-          <tr data-cat="enzyme"><td className="num">15</td><td className="name">Cellulase (T. reesei)</td><td>Dry</td><td>kg</td><td className="price">$15</td><td>0.01</td><td>0.05</td><td>0.0035</td><td>0.0175</td><td className="num">0.0525</td><td className="num">0.2625</td><td>28.5</td><td className="num">$428</td><td>Novozymes</td></tr>
-          <tr data-cat="enzyme"><td className="num">16</td><td className="name">Xylanase</td><td>Dry</td><td>kg</td><td className="price">$17</td><td>0.01</td><td>0.05</td><td>0.0035</td><td>0.0175</td><td className="num">0.0595</td><td className="num">0.2975</td><td>28.5</td><td className="num">$485</td><td>Alibaba</td></tr>
-          <tr data-cat="enzyme"><td className="num">17</td><td className="name">Laccase</td><td>Dry</td><td>kg</td><td className="price">$20</td><td>0.01</td><td>0.03</td><td>0.0035</td><td>0.0105</td><td className="num">0.0700</td><td className="num">0.2100</td><td>28.5</td><td className="num">$571</td><td>Alibaba</td></tr>
-          <tr data-cat="enzyme"><td className="num">18</td><td className="name">Pectinase</td><td>Dry</td><td>kg</td><td className="price">$12</td><td>0.005</td><td>0.02</td><td>0.00175</td><td>0.0070</td><td className="num">0.0210</td><td className="num">0.0840</td><td>14.3</td><td className="num">$171</td><td>Alibaba</td></tr>
-          <tr data-cat="enzyme"><td className="num">19</td><td className="name">Lipase</td><td>Dry</td><td>kg</td><td className="price">$18</td><td>0.005</td><td>0.02</td><td>0.00175</td><td>0.0070</td><td className="num">0.0315</td><td className="num">0.1260</td><td>14.3</td><td className="num">$257</td><td>Novozymes</td></tr>
-          <tr data-cat="enzyme"><td className="num">20</td><td className="name">Protease</td><td>Dry</td><td>kg</td><td className="price">$10</td><td>0.005</td><td>0.02</td><td>0.00175</td><td>0.0070</td><td className="num">0.0175</td><td className="num">0.0700</td><td>14.3</td><td className="num">$143</td><td>Alibaba</td></tr>
-          <tr className="total-row"><td colspan="9" style={{textAlign: 'right', color: 'var(--pastelGreen)', fontFamily: "'DM Sans', sans-serif", fontSize: '12px', fontWeight: '700', padding: '8px 14px'}}>Total (20-item stack)</td><td className="num" style={{color: 'var(--pastelGreen)'}}>$1.39</td><td className="num" style={{color: 'var(--pastelGreen)'}}>$4.52</td><td colspan="2" className="num" style={{color: 'var(--pastelGreen)'}}>$11,347 / month</td><td></td></tr>
+          {dosing.filter(d => d.is_active).map((d, i) => (
+            <tr key={d.id} className={d.wave?.includes('1B') || d.wave?.includes('2') ? 'wave2-row' : ''}>
+              <td className="num">{d.stack_position}</td>
+              <td className="name">{d.organism_name}</td>
+              <td><span className={`pill ${d.wave?.includes('1A') ? 'pill-teal' : d.wave?.includes('1B') ? 'pill-blue' : d.wave?.includes('2') ? 'pill-amber' : 'pill-grey'}`} style={{fontSize:'10px'}}>{d.wave || '—'}</span></td>
+              <td className="cat">{d.category || '—'}</td>
+              <td className="num">{d.dose_pct_dm != null ? (d.dose_pct_dm * 100).toFixed(2) + '%' : '—'}</td>
+              <td className="price">{d.cost_per_kg_usd != null ? `$${d.cost_per_kg_usd}` : '—'}</td>
+              <td className="num">{d.cost_per_tonne_fw_usd != null ? `$${d.cost_per_tonne_fw_usd}` : '—'}</td>
+              <td>{d.monthly_kg_required != null ? d.monthly_kg_required.toLocaleString() : '—'}</td>
+              <td className="num">{d.monthly_opex_usd != null ? `$${d.monthly_opex_usd.toLocaleString()}` : '—'}</td>
+              <td>{d.bsf_safe === '✅' ? <span className="dot-yes">●</span> : d.bsf_safe === '⚠️' ? <span className="dot-warn">●</span> : <span className="dot-no">●</span>}</td>
+              <td className="note">{d.supplier_source || '—'}</td>
+              <td>{d.provibio_icbb || '—'}</td>
+            </tr>
+          ))}
+          <tr className="total-row">
+            <td colSpan="6" style={{textAlign:'right',padding:'8px 14px',fontFamily:"'DM Sans',sans-serif",fontSize:'12px',fontWeight:'700'}}>Total 9-Org Stack</td>
+            <td className="num" style={{color:'var(--pastelGreen)'}}>${dosing.filter(d=>d.is_active).reduce((s,d)=>s+(d.cost_per_tonne_fw_usd||0),0).toFixed(2)}</td>
+            <td className="num" style={{color:'var(--pastelGreen)'}}>{dosing.filter(d=>d.is_active).reduce((s,d)=>s+(d.monthly_kg_required||0),0).toLocaleString()}</td>
+            <td className="num" style={{color:'var(--pastelGreen)'}}>${dosing.filter(d=>d.is_active).reduce((s,d)=>s+(d.monthly_opex_usd||0),0).toLocaleString()}</td>
+            <td colSpan="3"></td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -1060,27 +1046,28 @@ const S3BiologyLibrary = () => {
           </div>
   <div className="section">
     <div className="section-header">
-      <span className="section-title teal">Section C: Consortium Groups — 18 Pre-Built Stacks</span>
-      <span className="badge badge-green">Calculated Output</span>
+      <span className="section-title teal">Section C: Consortium Master Rules — {consortiumRules.length} Rules</span>
+      <span className="badge badge-green">Supabase Live</span>
     </div>
     <div className="alert alert-amber"><strong>Wave Rule:</strong> Wave 1 (Day 0, 50–70°C) = Thermophilic specialists. Wave 2 (Day 5+, &lt;50°C) = Temperature-sensitive N-fixers. In the 9-org stack: Wave 1A (Day 0) then Wave 1B (Day 3+) after Rhizopus mycelium confirmed.</div>
-    <div className="consortium-grid">
-      <div className="c-card"><div className="c-card-name">Thermophilic Start</div><div className="c-card-orgs">Thermomyces + Geobacillus + B. licheniformis</div><div className="c-card-metrics"><div className="c-mini"><div className="c-mini-label">Cost</div><div className="c-mini-val amber">$4.50–$13.00/t</div></div><div className="c-mini"><div className="c-mini-label">BSF Uplift</div><div className="c-mini-val green">+20–30%</div></div><div className="c-mini"><div className="c-mini-label">Ready</div><div className="c-mini-val teal">Day 0–7</div></div></div></div>
-      <div className="c-card"><div className="c-card-name">Hot Cellulase</div><div className="c-card-orgs">Cellulase + Xylanase + Thermomyces</div><div className="c-card-metrics"><div className="c-mini"><div className="c-mini-label">Cost</div><div className="c-mini-val amber">$5.00–$15.00/t</div></div><div className="c-mini"><div className="c-mini-label">BSF Uplift</div><div className="c-mini-val green">+35–50%</div></div><div className="c-mini"><div className="c-mini-label">Ready</div><div className="c-mini-val teal">Day 0–7</div></div></div></div>
-      <div className="c-card"><div className="c-card-name">Biggest BSF</div><div className="c-card-orgs">Pleurotus + Azotobacter (Day 5+)</div><div className="c-card-metrics"><div className="c-mini"><div className="c-mini-label">Cost</div><div className="c-mini-val amber">$0.35–$0.90/t</div></div><div className="c-mini"><div className="c-mini-label">Larvae</div><div className="c-mini-val green">220–240 kg/t</div></div><div className="c-mini"><div className="c-mini-label">Ready</div><div className="c-mini-val teal">Day 0–28</div></div></div></div>
-      <div className="c-card"><div className="c-card-name">Shortest Time</div><div className="c-card-orgs">Cellulase + Lactobacillus EM-4</div><div className="c-card-metrics"><div className="c-mini"><div className="c-mini-label">Cost</div><div className="c-mini-val amber">$1.75–$8.00/t</div></div><div className="c-mini"><div className="c-mini-label">BSF Uplift</div><div className="c-mini-val green">+28–38%</div></div><div className="c-mini"><div className="c-mini-label">Ready</div><div className="c-mini-val teal">Day 0–21</div></div></div></div>
-      <div className="c-card"><div className="c-card-name">Least Cost</div><div className="c-card-orgs">Pleurotus + Lactobacillus + S. cerevisiae</div><div className="c-card-metrics"><div className="c-mini"><div className="c-mini-label">Cost</div><div className="c-mini-val amber">$0.32–$0.92/t</div></div><div className="c-mini"><div className="c-mini-label">BSF Uplift</div><div className="c-mini-val green">+25–35%</div></div><div className="c-mini"><div className="c-mini-label">Use</div><div className="c-mini-val teal">Budget Pilots</div></div></div></div>
-      <div className="c-card"><div className="c-card-name">Max Nutrients</div><div className="c-card-orgs">Azotobacter + B. megaterium + Pseudomonas</div><div className="c-card-metrics"><div className="c-mini"><div className="c-mini-label">Cost</div><div className="c-mini-val amber">$2.00–$3.30/t</div></div><div className="c-mini"><div className="c-mini-label">NPK</div><div className="c-mini-val green">+35–45%</div></div><div className="c-mini"><div className="c-mini-label">Ready</div><div className="c-mini-val teal">Day 7–35</div></div></div></div>
-      <div className="c-card"><div className="c-card-name">The Big 3</div><div className="c-card-orgs">Phanerochaete + Azotobacter + Trichoderma</div><div className="c-card-metrics"><div className="c-mini"><div className="c-mini-label">Cost</div><div className="c-mini-val amber">$4.95–$10.10/t</div></div><div className="c-mini"><div className="c-mini-label">BSF Uplift</div><div className="c-mini-val green">+50–70%</div></div><div className="c-mini"><div className="c-mini-label">Lignin</div><div className="c-mini-val teal">−10–15% DM</div></div></div></div>
-      <div className="c-card"><div className="c-card-name">Full Fibre + N</div><div className="c-card-orgs">Phanerochaete + Azotobacter + Paenibacillus + Microbacterium</div><div className="c-card-metrics"><div className="c-mini"><div className="c-mini-label">Cost</div><div className="c-mini-val amber">$6.00–$13.60/t</div></div><div className="c-mini"><div className="c-mini-label">BSF Uplift</div><div className="c-mini-val green">+60–80%</div></div><div className="c-mini"><div className="c-mini-label">N Result</div><div className="c-mini-val teal">+0.5–0.7%</div></div></div></div>
-      <div className="c-card"><div className="c-card-name">Budget Powerhouse</div><div className="c-card-orgs">Pleurotus + Azotobacter + Saccharomyces</div><div className="c-card-metrics"><div className="c-mini"><div className="c-mini-label">Cost</div><div className="c-mini-val amber">$0.35–$1.35/t</div></div><div className="c-mini"><div className="c-mini-label">BSF Uplift</div><div className="c-mini-val green">+35–50%</div></div><div className="c-mini"><div className="c-mini-label">Use</div><div className="c-mini-val teal">Proof Of Concept</div></div></div></div>
-      <div className="c-card"><div className="c-card-name">Provibio 9-Org</div><div className="c-card-orgs">All 9 ICBB strains (excl. Bt for BSF)</div><div className="c-card-metrics"><div className="c-mini"><div className="c-mini-label">Cost</div><div className="c-mini-val amber">$7.00/t</div></div><div className="c-mini"><div className="c-mini-label">BSF Uplift</div><div className="c-mini-val green">+50–65%</div></div><div className="c-mini"><div className="c-mini-label">Lignin</div><div className="c-mini-val teal">−15–18% DM</div></div></div></div>
-      <div className="c-card"><div className="c-card-name">Enzyme Cocktail</div><div className="c-card-orgs">Cellulase + Xylanase + Pectinase + Laccase</div><div className="c-card-metrics"><div className="c-mini"><div className="c-mini-label">Cost</div><div className="c-mini-val amber">$4.00–$12.00/t</div></div><div className="c-mini"><div className="c-mini-label">BSF Uplift</div><div className="c-mini-val green">+50–72%</div></div><div className="c-mini"><div className="c-mini-label">Ready</div><div className="c-mini-val teal">Day 0–7</div></div></div></div>
-      {/* NEW MAR 2026 */}
-      <div className="c-card" style={{borderColor: 'var(--teal)'}}><div className="c-card-name" style={{color: 'var(--green)'}}>9-Org One-Shot</div><div className="c-card-orgs">Wave 1A: Lactobacillus + Saccharomyces + B. subtilis + B. licheniformis + B. coagulans + Rhizopus + Aspergillus<br />Wave 1B Day 3+: Azotobacter + Trichoderma</div><div className="c-card-metrics"><div className="c-mini"><div className="c-mini-label">Cost</div><div className="c-mini-val amber">$3.56–$4.50/t</div></div><div className="c-mini"><div className="c-mini-label">BSF Meal CP</div><div className="c-mini-val green">+45–55%</div></div><div className="c-mini"><div className="c-mini-label">Ready</div><div className="c-mini-val teal">Day 0–28</div></div></div></div>
-      <div className="c-card" style={{borderColor: 'var(--green)'}}><div className="c-card-name" style={{color: 'var(--green)'}}>9-Org + Spirulina</div><div className="c-card-orgs">All 9 organisms + Arthrospira platensis via 1,850 L POME hydration. 2.31 kg DM algae/t EFB DM. +22% neonate survival</div><div className="c-card-metrics"><div className="c-mini"><div className="c-mini-label">Cost</div><div className="c-mini-val amber">$3.56/t</div></div><div className="c-mini"><div className="c-mini-label">BSF Meal CP</div><div className="c-mini-val green">52–56%</div></div><div className="c-mini"><div className="c-mini-label">Market</div><div className="c-mini-val teal">$4,500–6,500/t</div></div></div></div>
-      <div className="c-card" style={{borderColor: 'var(--pastelGreen)'}}><div className="c-card-name" style={{color: 'var(--pastelGreen)'}}>9-Org + Chlorella</div><div className="c-card-orgs">All 9 organisms + Chlorella vulgaris via 1,850 L POME hydration. 2.03 kg DM algae/t EFB DM. +15% neonate survival</div><div className="c-card-metrics"><div className="c-mini"><div className="c-mini-label">Cost</div><div className="c-mini-val amber">$3.56/t</div></div><div className="c-mini"><div className="c-mini-label">BSF Meal CP</div><div className="c-mini-val green">50–51%</div></div><div className="c-mini"><div className="c-mini-label">Market</div><div className="c-mini-val teal">$3,500–4,500/t</div></div></div></div>
-      <div className="c-card"><div className="c-card-name">Rhizopus Protein-First</div><div className="c-card-orgs">Rhizopus + Aspergillus niger + Lactobacillus. Fast 48–72h action. No Trichoderma (protects Rhizopus)</div><div className="c-card-metrics"><div className="c-mini"><div className="c-mini-label">Cost</div><div className="c-mini-val amber">$0.15–$0.40/t</div></div><div className="c-mini"><div className="c-mini-label">CP Uplift</div><div className="c-mini-val green">+12–18%</div></div><div className="c-mini"><div className="c-mini-label">Ready</div><div className="c-mini-val teal">Day 0–5</div></div></div></div>
+    <div className="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th className="left">Rule Name</th><th>Type</th><th>Severity</th><th className="left">Description</th><th className="left">Affected Organisms</th><th className="left">Consequences</th><th className="left">Validation</th></tr></thead>
+        <tbody>
+          {consortiumRules.map((r, i) => (
+            <tr key={r.id} className={r.severity === 'CRITICAL' ? 'warning-row' : ''}>
+              <td className="num">{i + 1}</td>
+              <td className="name">{r.rule_name}</td>
+              <td><span className={`pill ${r.rule_type === 'conflict' ? 'pill-red' : r.rule_type === 'hard_gate' ? 'pill-amber' : r.rule_type === 'bsf_safety' ? 'pill-red' : 'pill-teal'}`} style={{fontSize:'10px'}}>{r.rule_type}</span></td>
+              <td><span className={`pill ${r.severity === 'CRITICAL' ? 'pill-red' : r.severity === 'HIGH' ? 'pill-amber' : 'pill-grey'}`} style={{fontSize:'10px'}}>{r.severity}</span></td>
+              <td className="fn">{r.rule_description}</td>
+              <td className="fn">{Array.isArray(r.affected_organisms) ? r.affected_organisms.join(', ') : r.affected_organisms || '—'}</td>
+              <td className="note">{r.consequences}</td>
+              <td className="note">{r.validation_method}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   </div>
 
@@ -1248,40 +1235,43 @@ const S3BiologyLibrary = () => {
     </div>
     <div className="tbl-wrap" style={{borderTop: '1.5px solid var(--border)'}}>
       <table>
-        <thead><tr><th className="left">Metric</th><th>Arthrospira platensis (Spirulina)</th><th>Chlorella vulgaris</th><th className="left">Notes</th></tr></thead>
+        <thead><tr><th className="left">Metric</th>{algae.map(a => <th key={a.id}>{a.algae_species}</th>)}<th className="left">Notes</th></tr></thead>
         <tbody>
-          <tr><td className="fn">Biomass Yield Per L POME</td><td className="num">1.25 g DM/L</td><td className="num">1.10 g DM/L</td><td className="note">POME as nutrient medium, tropical sunlight</td></tr>
-          <tr><td className="fn">Total Algae / Tonne EFB DM (1,850 L)</td><td className="num">2.31 kg DM</td><td className="num">2.03 kg DM</td><td className="note">1,850 L × yield / 1000</td></tr>
-          <tr><td className="fn">Crude Protein (CP) % DM</td><td className="num" style={{color: 'var(--amber)'}}>65%</td><td className="num">45%</td><td className="note">Spirulina significantly higher CP</td></tr>
-          <tr><td className="fn">Direct Protein Added / t EFB DM</td><td className="num" style={{color: 'var(--amber)'}}>+1.50 kg</td><td className="num">+0.91 kg</td><td className="note">Small but hyper-potent micronutrient starter</td></tr>
-          <tr><td className="fn">Amino Acid Profile</td><td className="fn">High Methionine + Lysine</td><td className="fn">High Lysine</td><td className="note">Fills EFB amino acid gaps — Met + Lys deficient</td></tr>
-          <tr><td className="fn">BSF Neonate Survival Boost</td><td className="num" style={{color: 'var(--green)'}}>+22%</td><td className="num">+15%</td><td className="note">Neonates gorge on soft algae cells in first 48h</td></tr>
-          <tr><td className="fn">Impact On Final BSF FCR</td><td className="num" style={{color: 'var(--green)'}}>FCR −0.7</td><td className="num">FCR −0.5</td><td className="note">BSF digest EFB faster — gut flora boosted</td></tr>
-          <tr><td className="fn">Final BSF Meal CP (Baseline 45%)</td><td className="num" style={{color: 'var(--amber)'}}>45% → 56%</td><td className="num">45% → 51%</td><td className="note">Algae unlocks EFB protein, not just adds its own</td></tr>
-          <tr><td className="fn">Optimal Culture Temp</td><td className="fn" style={{color: 'var(--green)'}}>25–38°C (tropical)</td><td className="fn">20–30°C (check shade)</td><td className="note">Spirulina better suited to Indonesian heat</td></tr>
-          <tr><td className="fn">Doubling Time</td><td className="num">3–5 days</td><td className="num">2–4 days</td><td className="note">Chlorella faster doubling; Spirulina higher yield/L</td></tr>
-          <tr><td className="fn">Harvesting Method</td><td className="fn">Sedimentation / skimming</td><td className="fn">Centrifuge or floc</td><td className="note">Spirulina simpler harvest — no centrifuge needed</td></tr>
-          <tr><td className="fn">POME BOD Removal</td><td className="num">40–55%</td><td className="num">35–50%</td><td className="note">Algae culture pre-treats POME — environmental co-benefit</td></tr>
-          <tr><td className="fn">BSF Meal Market Grade + Price</td><td className="fn" style={{color: 'var(--amber)'}}>Premium ($4,500–6,500/t)</td><td className="fn">Mid-Premium ($3,500–4,500/t)</td><td className="note">With 9-org stack + FSSC 22000 cert</td></tr>
-          <tr><td className="fn">Monthly OpEx</td><td className="num" style={{color: 'var(--green)'}}>$0 (CapEx only)</td><td className="num" style={{color: 'var(--green)'}}>$0 (CapEx only)</td><td className="note">Raceway ponds + POME = zero marginal cost</td></tr>
-          <tr><td className="fn" style={{fontWeight: '700', color: 'var(--teal)'}}>CFI Recommendation</td><td className="fn" style={{color: 'var(--green)', fontWeight: '700'}}>PRIMARY CHOICE</td><td className="fn" style={{color: 'var(--greyLt)'}}>Backup Option</td><td className="note">Spirulina = higher protein + tropical temp tolerance</td></tr>
+          <tr><td className="fn">Biomass Yield Per L POME</td>{algae.map(a => <td key={a.id} className="num">{a.biomass_yield_g_per_l} g DM/L</td>)}<td className="note">POME as nutrient medium, tropical sunlight</td></tr>
+          <tr><td className="fn">Total Algae / Tonne EFB DM ({algae[0]?.hydration_volume_l_per_t_efb_dm || 1850} L)</td>{algae.map(a => <td key={a.id} className="num">{a.algae_dm_per_t_efb_kg} kg DM</td>)}<td className="note">{algae[0]?.hydration_volume_l_per_t_efb_dm || 1850} L × yield / 1000</td></tr>
+          <tr><td className="fn">Crude Protein (CP) % DM</td>{algae.map(a => <td key={a.id} className="num" style={{color: a.crude_protein_pct_dm >= 60 ? 'var(--amber)' : undefined}}>{a.crude_protein_pct_dm}%</td>)}<td className="note">Spirulina significantly higher CP</td></tr>
+          <tr><td className="fn">Direct Protein Added / t EFB DM</td>{algae.map(a => <td key={a.id} className="num" style={{color: a.protein_added_kg_per_t_efb >= 1.5 ? 'var(--amber)' : undefined}}>+{a.protein_added_kg_per_t_efb} kg</td>)}<td className="note">Small but hyper-potent micronutrient starter</td></tr>
+          <tr><td className="fn">Amino Acid Profile</td>{algae.map(a => <td key={a.id} className="fn">{a.amino_acid_profile}</td>)}<td className="note">Fills EFB amino acid gaps</td></tr>
+          <tr><td className="fn">BSF Neonate Survival Boost</td>{algae.map(a => <td key={a.id} className="num" style={{color:'var(--green)'}}>+{a.bsf_neonate_survival_uplift_pct}%</td>)}<td className="note">Neonates gorge on soft algae cells in first 48h</td></tr>
+          <tr><td className="fn">Impact On Final BSF FCR</td>{algae.map(a => <td key={a.id} className="num" style={{color:'var(--green)'}}>FCR −{a.bsf_fcr_reduction}</td>)}<td className="note">BSF digest EFB faster — gut flora boosted</td></tr>
+          <tr><td className="fn">Final BSF Meal CP (Baseline {algae[0]?.baseline_bsf_meal_cp_pct || 45}%)</td>{algae.map(a => <td key={a.id} className="num" style={{color:'var(--amber)'}}>{a.baseline_bsf_meal_cp_pct}% → {a.final_bsf_meal_cp_pct}%</td>)}<td className="note">Algae unlocks EFB protein</td></tr>
+          <tr><td className="fn">Monthly OpEx</td>{algae.map(a => <td key={a.id} className="num" style={{color:'var(--green)'}}>${a.opex_monthly_usd} (CapEx only)</td>)}<td className="note">Raceway ponds + POME = zero marginal cost</td></tr>
+          <tr><td className="fn" style={{fontWeight:'700',color:'var(--teal)'}}>CFI Recommendation</td>{algae.map(a => <td key={a.id} className="fn" style={{color: a.cfi_recommendation?.includes('PRIMARY') ? 'var(--green)' : 'var(--greyLt)', fontWeight:'700'}}>{a.cfi_recommendation?.includes('PRIMARY') ? 'PRIMARY CHOICE' : 'Backup Option'}</td>)}<td className="note">Spirulina = higher protein + tropical temp tolerance</td></tr>
         </tbody>
       </table>
     </div>
     {/* CapEx */}
-    <div style={{padding: '14px 16px 6px', fontFamily: "'Syne', sans-serif", fontWeight: '700', fontSize: '13px', color: 'var(--amber)', borderTop: '1.5px solid var(--border)'}}>Raceway Pond CapEx Estimate</div>
+    <div style={{padding:'14px 16px 6px',fontFamily:"'Syne',sans-serif",fontWeight:'700',fontSize:'13px',color:'var(--amber)',borderTop:'1.5px solid var(--border)'}}>Raceway Pond CapEx Estimate</div>
     <div className="tbl-wrap">
       <table>
-        <thead><tr><th className="left">Item</th><th className="left">Specification</th><th>Unit Cost</th><th>Qty</th><th>Total ($)</th><th className="left">Notes</th></tr></thead>
+        <thead><tr><th className="left">Item Code</th><th className="left">Description</th><th>Category</th><th>Qty</th><th>Unit Cost ($)</th><th>Total ($)</th><th className="left">Notes</th></tr></thead>
         <tbody>
-          <tr><td className="fn">Raceway Pond Construction</td><td className="fn">HDPE-lined, 500 m² × 25 cm deep = 125 m³</td><td className="price">$8,000</td><td>2 ponds</td><td className="num">$16,000</td><td className="note">1 operating + 1 harvesting = covers ~180 m³/day</td></tr>
-          <tr><td className="fn">Paddle Wheel Aerator</td><td className="fn">0.5 kW electric × 2 ponds</td><td className="price">$1,500</td><td>2 units</td><td className="num">$3,000</td><td className="note">Keeps algae in suspension; prevents settling</td></tr>
-          <tr><td className="fn">POME Feed Pump + Pipe</td><td className="fn">Peristaltic pump + 50m PVC pipe to pond</td><td className="price">$2,500</td><td>1 unit</td><td className="num">$2,500</td><td className="note">Feeds diluted POME from sludge pit</td></tr>
-          <tr><td className="fn">Harvest Sedimentation Tank</td><td className="fn">5 m³ settling tank + discharge valve</td><td className="price">$3,000</td><td>1 unit</td><td className="num">$3,000</td><td className="note">Spirulina settles by gravity — no centrifuge needed</td></tr>
-          <tr><td className="fn">Substrate Injection Pump</td><td className="fn">Delivers 1,850 L slurry to S3 substrate mixer</td><td className="price">$2,000</td><td>1 unit</td><td className="num">$2,000</td><td className="note">Replaces existing hydration water pump</td></tr>
-          <tr><td className="fn">pH / Temp Monitoring Kit</td><td className="fn">Portable meter + logging, 2× probes</td><td className="price">$500</td><td>1 set</td><td className="num">$500</td><td className="note">Monthly calibration required</td></tr>
-          <tr><td className="fn">Contingency 20%</td><td>—</td><td>—</td><td>—</td><td className="num">$5,400</td><td>—</td></tr>
-          <tr className="capex-total"><td className="fn" style={{color: 'var(--green)', fontWeight: '700'}}>Total CapEx</td><td>—</td><td>—</td><td>—</td><td className="num" style={{color: 'var(--green)', fontWeight: '700'}}>~$32,400</td><td className="note" style={{color: 'var(--green)'}}>Payback &lt; 6 months at $3,500/t BSF meal premium</td></tr>
+          {capex.map(c => (
+            <tr key={c.id}>
+              <td className="fn">{c.item_code}</td>
+              <td className="fn">{c.description}</td>
+              <td className="cat">{c.category}</td>
+              <td className="num">{c.quantity}</td>
+              <td className="price">${c.unit_cost_usd?.toLocaleString()}</td>
+              <td className="num">${c.total_cost_usd?.toLocaleString()}</td>
+              <td className="note">{c.notes || '—'}</td>
+            </tr>
+          ))}
+          <tr className="total-row">
+            <td colSpan="5" style={{textAlign:'right',padding:'8px 14px',fontFamily:"'DM Sans',sans-serif",fontSize:'12px',fontWeight:'700',color:'var(--pastelGreen)'}}>Total CapEx</td>
+            <td className="num" style={{color:'var(--green)',fontWeight:'700'}}>${capex.reduce((s,c)=>s+(c.total_cost_usd||0),0).toLocaleString()}</td>
+            <td></td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -1387,28 +1377,27 @@ const S3BiologyLibrary = () => {
           </div>
   <div className="section">
     <div className="section-header">
-      <span className="section-title teal">Section I: Potassium From PKSA — Free Nutrient Boost</span>
-      <span className="badge badge-green">Calculated Output</span>
+      <span className="section-title teal">Section I: NPK Contribution From Biologicals — {npk.length} Records</span>
+      <span className="badge badge-green">Supabase Live</span>
     </div>
     <div className="alert alert-green"><strong>PKSA = $0.00/kg — Free Mill Boiler Waste.</strong> 294 t/month at 60 TPH mill. K₂O content 35–45% DM. SNI 19-7030-2004 requires min 0.2% K₂O — CFI delivers 10–27× more.</div>
-    <div className="kv-grid cols3">
-      <div className="kv-pair"><div className="kv-key">K₂O Content</div><div className="kv-val amber">35–45% DM</div></div>
-      <div className="kv-pair"><div className="kv-key">CaO Content</div><div className="kv-val">8–12% DM</div></div>
-      <div className="kv-pair"><div className="kv-key">MgO Content</div><div className="kv-val">3–5% DM</div></div>
-      <div className="kv-pair"><div className="kv-key">P₂O₅ Content</div><div className="kv-val">1–2% DM</div></div>
-      <div className="kv-pair"><div className="kv-key">pH</div><div className="kv-val amber">10–12</div></div>
-      <div className="kv-pair"><div className="kv-key">Availability At 60 TPH</div><div className="kv-val green">294 t/month</div></div>
-    </div>
-    <div style={{padding: '14px 16px 6px', borderTop: '1.5px solid var(--border)', fontFamily: "'Syne', sans-serif", fontWeight: '700', fontSize: '13px', color: 'var(--amber)'}}>K Contribution To Final Compost</div>
     <div className="tbl-wrap">
       <table>
-        <thead><tr><th className="left">Source</th><th>K Content % DM</th><th>Contribution To Blend</th><th className="left">Calculation</th></tr></thead>
+        <thead><tr><th>#</th><th className="left">Organism</th><th>Nutrient</th><th className="left">Mechanism</th><th>kg/t DM</th><th>Monthly kg</th><th>Annual kg</th><th>Confidence</th><th className="left">Notes</th></tr></thead>
         <tbody>
-          <tr><td className="fn">EFB (60% Of Blend)</td><td className="num">2.21%</td><td className="num">1.33% K DM</td><td className="note">0.60 × 2.21%</td></tr>
-          <tr><td className="fn">OPDC (40% Of Blend)</td><td className="num">2.20%</td><td className="num">0.88% K DM</td><td className="note">0.40 × 2.20%</td></tr>
-          <tr><td className="fn">PKSA Addition (3–5% DM)</td><td className="fn">35–45% K₂O → 29–37% K</td><td className="num">+0.9–1.9% K DM</td><td className="note">0.04 × 32% K × 0.83 K/K₂O</td></tr>
-          <tr className="total-row"><td className="fn">Total K In Substrate</td><td>—</td><td className="num" style={{color: 'var(--pastelGreen)'}}>3.1–4.1% K DM</td><td className="note">Sum Of Above</td></tr>
-          <tr className="total-row"><td className="fn">Final CFI Compost K₂O</td><td>—</td><td className="num" style={{color: 'var(--pastelGreen)'}}>2.0–5.4% K₂O</td><td className="note">After Composting Concentration</td></tr>
+          {npk.map((n, i) => (
+            <tr key={n.id}>
+              <td className="num">{i + 1}</td>
+              <td className="name">{n.organism_name}</td>
+              <td><span className={`pill ${n.nutrient === 'N' ? 'pill-teal' : n.nutrient === 'P' ? 'pill-amber' : n.nutrient === 'K' ? 'pill-green' : 'pill-grey'}`} style={{fontSize:'10px'}}>{n.nutrient}</span></td>
+              <td className="fn">{n.mechanism}</td>
+              <td className="num">{n.contribution_kg_per_t_dm}</td>
+              <td className="num">{n.monthly_total_kg?.toFixed(1)}</td>
+              <td className="num">{n.annual_total_kg?.toFixed(1)}</td>
+              <td><span className={`pill ${n.confidence === 'HIGH' ? 'pill-green' : n.confidence === 'MEDIUM' ? 'pill-amber' : 'pill-red'}`} style={{fontSize:'10px'}}>{n.confidence}</span></td>
+              <td className="note">{n.notes}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
