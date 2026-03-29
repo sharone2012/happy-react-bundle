@@ -176,45 +176,37 @@ export default function LabAnalysis() {
       {/* ═══ 2. TOPBAR ═══ */}
       <div style={{
         background: "#0A1220", padding: "14px 17px 4px",
-        display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap",
+        display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
+        borderBottom: "1px solid rgba(255,255,255,0.07)",
       }}>
-        {/* Left — label */}
-        <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, fontWeight: 600, color: "#F5A623" }}>
+        {/* Left — title */}
+        <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, fontWeight: 600, color: "#F5A623", marginRight: 8 }}>
           Lab Analysis
         </span>
-        {/* Center — tab buttons */}
-        <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
-          {/* Lab Analysis — always active amber */}
-          <button
-            style={{
-              fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600,
-              padding: "5px 14px", borderRadius: 4, cursor: "pointer", border: "none",
-              background: "#F5A623", color: "#060C14",
-            }}
-          >
-            Lab Analysis
-          </button>
-          {/* Combined */}
+
+        {/* Tab buttons row */}
+        <div style={{ display: "flex", gap: 4, flexWrap: "wrap", flex: 1 }}>
+          {/* Lab Analysis Combined */}
           <button
             onClick={() => { setShowAll(true); setActiveStream("ALL"); }}
             style={{
-              fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: showAll ? 600 : 400,
+              fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600,
               padding: "5px 14px", borderRadius: 4, cursor: "pointer",
               background: showAll ? "rgba(245,166,35,0.15)" : "transparent",
-              color: showAll ? "#F5A623" : "#FFFFFF",
-              border: showAll ? "1px solid #F5A623" : "1px solid #333",
+              color: showAll ? "#F5A623" : "#7E9EB4",
+              border: showAll ? "1px solid #F5A623" : "1px solid rgba(255,255,255,0.07)",
             }}
           >
-            Combined
+            Lab Analysis Combined
           </button>
           {/* Individual → */}
           <button
             style={{
-              fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 400,
+              fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: !showAll ? 600 : 400,
               padding: "5px 14px", borderRadius: 4, cursor: "pointer",
               background: !showAll ? "rgba(245,166,35,0.15)" : "transparent",
-              color: !showAll ? "#F5A623" : "#FFFFFF",
-              border: !showAll ? "1px solid #F5A623" : "1px solid #333",
+              color: !showAll ? "#F5A623" : "#7E9EB4",
+              border: !showAll ? "1px solid #F5A623" : "1px solid rgba(255,255,255,0.07)",
             }}
           >
             Individual →
@@ -230,8 +222,8 @@ export default function LabAnalysis() {
                   fontFamily: "'DM Sans', sans-serif", fontSize: 13, padding: "5px 14px",
                   borderRadius: 4, cursor: "pointer",
                   background: active ? "#F5A623" : "transparent",
-                  color: active ? "#060C14" : "#FFFFFF",
-                  border: active ? "none" : "1px solid #333",
+                  color: active ? "#060C14" : "#7E9EB4",
+                  border: active ? "none" : "1px solid rgba(255,255,255,0.07)",
                   fontWeight: active ? 600 : 400,
                 }}
               >
@@ -240,12 +232,13 @@ export default function LabAnalysis() {
             );
           })}
         </div>
-        {/* Right — buttons */}
+
+        {/* Right — action buttons */}
         <div style={{ display: "flex", gap: 8 }}>
-          <button style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, padding: "5px 14px", borderRadius: 4, cursor: "pointer", background: "transparent", border: "1px solid #333", color: "#FFFFFF" }}>
+          <button style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, padding: "5px 14px", borderRadius: 4, cursor: "pointer", background: "transparent", border: "1px solid rgba(255,255,255,0.07)", color: "#7E9EB4" }}>
             Upload Report
           </button>
-          <button style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, padding: "5px 14px", borderRadius: 4, cursor: "pointer", background: "transparent", border: "1px solid #333", color: "#FFFFFF" }}>
+          <button style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, padding: "5px 14px", borderRadius: 4, cursor: "pointer", background: "transparent", border: "1px solid rgba(255,255,255,0.07)", color: "#7E9EB4" }}>
             Print Report
           </button>
         </div>
