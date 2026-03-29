@@ -60,7 +60,7 @@ function Badge({ type, text }) {
   const s = styles[type] || { bg: "rgba(139,160,180,0.10)", color: "#888" };
   return (
     <span style={{
-      background: s.bg, color: s.color, fontFamily: "'DM Mono', monospace", fontSize: 11,
+      background: s.bg, color: s.color, fontFamily: "'DM Sans', sans-serif", fontSize: 11,
       padding: "2px 7px", borderRadius: 3, whiteSpace: "nowrap",
     }}>
       {text}
@@ -154,9 +154,9 @@ export default function LabAnalysis() {
       }}>
         {/* Left */}
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontFamily: "'EB Garamond', serif", fontSize: 26, fontWeight: 700, color: "#FFFFFF" }}>CFI</span>
+          <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 26, fontWeight: 700, color: "#FFFFFF" }}>CFI</span>
           <span style={{ color: "#FFFFFF", fontSize: 26 }}>|</span>
-          <span style={{ fontFamily: "'EB Garamond', serif", fontSize: 26, fontWeight: 700, color: "#33D4BC" }}>Deep Tech</span>
+          <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 26, fontWeight: 700, color: "#33D4BC" }}>Deep Tech</span>
         </div>
         {/* Right — taglines */}
         <div style={{ display: "flex", flexDirection: "column", gap: 2, textAlign: "right" }}>
@@ -251,8 +251,8 @@ export default function LabAnalysis() {
             background: "#0D1B2A", border: "1px solid rgba(255,255,255,0.07)",
           }}>
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#7E9EB4" }}>{m.label}</div>
-            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: m.isGap ? "#FF5C5C" : "#C8D8E8", marginTop: 2 }}>{m.value}</div>
-            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#7E9EB4", marginTop: 1 }}>{m.sub}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: m.isGap ? "#FF5C5C" : "#C8D8E8", marginTop: 2 }}>{m.value}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, color: "#7E9EB4", marginTop: 1 }}>{m.sub}</div>
           </div>
         ))}
         {showEnzymes && METRICS_HIDDEN.map((m, i) => (
@@ -261,8 +261,8 @@ export default function LabAnalysis() {
             background: "#0D1B2A", border: "1px solid rgba(255,255,255,0.07)",
           }}>
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#7E9EB4" }}>{m.label}</div>
-            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: "#C8D8E8", marginTop: 2 }}>{m.value}</div>
-            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#7E9EB4", marginTop: 1 }}>{m.sub}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "#C8D8E8", marginTop: 2 }}>{m.value}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, color: "#7E9EB4", marginTop: 1 }}>{m.sub}</div>
           </div>
         ))}
         <div style={{ display: "flex", alignItems: "center", padding: "0 12px" }}>
@@ -322,9 +322,9 @@ export default function LabAnalysis() {
                   transition: "transform 0.2s ease, color 0.15s ease",
                   display: "inline-block", lineHeight: 1,
                 }}>›</span>
-                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#F5A623" }}>{code}</span>
+                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, color: "#F5A623" }}>{code}</span>
                 <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#40D7C5" }}>{def.title}</span>
-                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: "#666" }}>{meta}</span>
+                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "#666" }}>{meta}</span>
                 <span style={{ marginLeft: "auto", color: "#666", cursor: "pointer", fontSize: 14 }}
                   onMouseEnter={e => e.currentTarget.style.color = "#FFFFFF"}
                   onMouseLeave={e => e.currentTarget.style.color = "#666"}
@@ -369,31 +369,31 @@ export default function LabAnalysis() {
                           onMouseEnter={e => e.currentTarget.style.background = "rgba(0, 201, 177, 0.06)"}
                           onMouseLeave={e => e.currentTarget.style.background = baseBg}
                         >
-                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: "#FFFFFF" }}>
+                          <td style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: "#FFFFFF" }}>
                             {row.parameter}
                           </td>
-                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: "#888" }}>
+                          <td style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: "#888" }}>
                             {row.unit}
                           </td>
-                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: isDataGap ? "#FF5C5C" : "#FFFFFF", fontWeight: isDataGap ? 700 : 400 }}>
+                          <td style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: isDataGap ? "#FF5C5C" : "#FFFFFF", fontWeight: isDataGap ? 700 : 400 }}>
                             {row.result}
                           </td>
-                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: isDash(row.range) ? "#444" : "#FFFFFF" }}>
+                          <td style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: isDash(row.range) ? "#444" : "#FFFFFF" }}>
                             {row.range}
                           </td>
-                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: isSniBlocker ? "#FF5C5C" : isDash(row.sni) ? "#444" : "#FFFFFF" }}>
+                          <td style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: isSniBlocker ? "#FF5C5C" : isDash(row.sni) ? "#444" : "#FFFFFF" }}>
                             {row.sni}
                           </td>
-                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)" }}>
+                          <td style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)" }}>
                             <Badge type={row.status} text={row.status} />
                           </td>
-                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)" }}>
+                          <td style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)" }}>
                             <Badge type={row.confidence} text={row.confidence} />
                           </td>
-                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: "#888" }}>
+                          <td style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", color: "#888" }}>
                             {row.method}
                           </td>
-                          <td style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", textAlign: "center" }}>
+                          <td style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, padding: "5px 8px", borderBottom: "1px solid rgba(139,160,180,0.06)", textAlign: "center" }}>
                             <span style={{ cursor: "pointer", color: "#666", fontSize: 12 }}>✎</span>
                           </td>
                         </tr>
