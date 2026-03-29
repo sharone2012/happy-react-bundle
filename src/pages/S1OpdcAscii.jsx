@@ -233,6 +233,9 @@ export default function S1OpdcAscii() {
           </div>
         </div>
 
+      </div>
+      </div>
+
       {/* ── Engineering Specs ── */}
       <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 0 40px" }}>
         <S1SpecPanel
