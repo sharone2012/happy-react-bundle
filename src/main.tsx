@@ -10,6 +10,7 @@ import S1CapexOpex from "./pages/S1CapexOpex.jsx";
 import S1EfbAscii from "./pages/S1EfbAscii.jsx";
 import S1OpdcAscii from "./pages/S1OpdcAscii.jsx";
 import S1PosAscii from "./pages/S1PosAscii.jsx";
+import CFI_AG_Management_Planning_Calculator from "./CFI_AG_Management_Planning_Calculator.jsx";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
@@ -26,6 +27,7 @@ createRoot(document.getElementById("root")!).render(
       <Route path="/s1-efb-ascii" element={<S1EfbAscii />} />
       <Route path="/s1-opdc-ascii" element={<S1OpdcAscii />} />
       <Route path="/s1-pos-ascii" element={<S1PosAscii />} />
+      <Route path="/CFI_AG_Management_Planning_Calculator" element={<CFI_AG_Management_Planning_Calculator />} />
     </Routes>
   </BrowserRouter>
 );
