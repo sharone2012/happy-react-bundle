@@ -21,6 +21,7 @@ createRoot(document.getElementById("root")!).render(
       <Route path="/s1-index" element={<S1Index />} />
       <Route path="/S1-index" element={<S1Index />} />
       <Route path="/s1-capex-opex" element={<S1CapexOpex />} />
+      <Route path="/s1-efb-ascii" element={<S1EfbAscii />} />
     </Routes>
   </BrowserRouter>
 );
