@@ -2555,6 +2555,26 @@ export default function CFI() {
                   <CalcField label="Operating Hours" unit="hr/day" value={s0.hrsDay}/>
                   <CalcField label="Operating Days" unit="days/month" value={s0.daysMonth}/>
                 </div>
+
+                <div style={{marginTop:20}}>
+                  <div style={{fontFamily:"'Syne', sans-serif",fontSize:13,fontWeight:700,color:C.amber,letterSpacing:"0.06em",marginBottom:10}}>S1 PROCESS ENGINEERING DRAWINGS</div>
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
+                    {[
+                      {label:"EFB ASCII Flow",href:"/s1-efb-ascii"},
+                      {label:"OPDC ASCII Flow",href:"/s1-opdc-ascii"},
+                      {label:"POS ASCII Flow",href:"/s1-pos-ascii"},
+                    ].map((btn,i)=>(
+                      <a key={i} href={btn.href} target="_blank" rel="noopener noreferrer" style={{
+                        display:"block",background:"#0a0f18",border:"1px solid rgba(64,215,197,0.35)",borderRadius:6,
+                        padding:"12px 14px",textDecoration:"none",color:"#8BA0B4",fontFamily:"'DM Sans', sans-serif",
+                        fontSize:12,fontWeight:700,textAlign:"center",cursor:"pointer",transition:"color 0.15s, border-color 0.15s",
+                      }}
+                      onMouseEnter={e=>{e.currentTarget.style.color="#F5A623";e.currentTarget.style.borderColor="#F5A623";}}
+                      onMouseLeave={e=>{e.currentTarget.style.color="#8BA0B4";e.currentTarget.style.borderColor="rgba(64,215,197,0.35)";}}
+                      >{btn.label}</a>
+                    ))}
+                  </div>
+                </div>
               </div>
 
             <NutrLedger stg="S1 · After Shredding (No Nutrient Change)" N={nl_N} P={nl_P} K={nl_K} Ca={nl_Ca} Mg={nl_Mg} OM={nl_OM} cn={nl_CN} wetPD={nl_wetPD} mc={blendMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.tealLt}/>
