@@ -258,7 +258,6 @@ export default function S1OpdcAscii() {
           ]}
         />
       </div>
-      </div>
     </div>
   );
 }
