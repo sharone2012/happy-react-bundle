@@ -368,7 +368,31 @@ export default function CFI_AG_Management_Planning_Calculator() {
 
   return (
     <div style={{background:C.navy,minHeight:"100vh",color:C.white,
-      fontFamily:"'Courier New',monospace",fontSize:12,padding:"0 0 40px"}}>
+      fontFamily:"'DM Sans', sans-serif",fontSize:12,padding:"0 0 40px"}}>
+
+      {/* ═══ PERSISTENT CFI GLOBAL HEADER ═══ */}
+      <div style={{
+        height: 83, background: "#0A1628",
+        borderBottom: "1px solid rgba(51, 212, 188, 0.075)",
+        display: "flex", alignItems: "center", padding: "0 32px",
+        position: "sticky", top: 0, zIndex: 301,
+      }}>
+        <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+          <span style={{ fontFamily: "'EB Garamond', serif", fontSize: 26, fontWeight: 700, color: "#FFFFFF", letterSpacing: "0.06em" }}>CFI</span>
+          <span style={{ fontFamily: "'EB Garamond', serif", fontSize: 26, fontWeight: 700, color: "#33D4BC", letterSpacing: "0.06em", marginLeft: 10 }}>Deep Tech</span>
+        </div>
+        <div style={{ width: 3, height: 44, background: "#33D4BC", margin: "0 20px 0 14px" }} />
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 4, height: 44 }}>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 700, lineHeight: 1.3, whiteSpace: "nowrap", display: "flex" }}>
+            <span style={{ color: "#FFFFFF", minWidth: 150, display: "inline-block" }}>Precision Engineering</span>
+            <span style={{ color: "#33D4BC" }}>Circular Nutrient Recovery in Agricultural Systems</span>
+          </div>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 700, lineHeight: 1.3, whiteSpace: "nowrap", display: "flex" }}>
+            <span style={{ color: "#FFFFFF", minWidth: 150, display: "inline-block" }}>Applied Biology</span>
+            <span style={{ color: "#33D4BC" }}>Rebalancing Soil&apos;s Microbiome &amp; Reducing Synthetic Fertiliser Use</span>
+          </div>
+        </div>
+      </div>
 
       {/* ── HEADER ── */}
       <div style={{background:`linear-gradient(135deg,${C.navyMid},#040a14)`,
