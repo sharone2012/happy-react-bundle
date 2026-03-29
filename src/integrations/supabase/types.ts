@@ -1265,6 +1265,7 @@ export type Database = {
           is_published: boolean | null
           keywords: string[] | null
           page_count: number | null
+          pdf_base64: string | null
           published_date: string | null
           stage: string | null
           stream: string | null
@@ -1287,6 +1288,7 @@ export type Database = {
           is_published?: boolean | null
           keywords?: string[] | null
           page_count?: number | null
+          pdf_base64?: string | null
           published_date?: string | null
           stage?: string | null
           stream?: string | null
@@ -1309,6 +1311,7 @@ export type Database = {
           is_published?: boolean | null
           keywords?: string[] | null
           page_count?: number | null
+          pdf_base64?: string | null
           published_date?: string | null
           stage?: string | null
           stream?: string | null
@@ -6439,6 +6442,27 @@ export type Database = {
             referencedColumns: ["industry_id"]
           },
         ]
+      }
+      pdf_document_chunks: {
+        Row: {
+          chunk_data: string
+          chunk_index: number
+          document_code: string
+          id: number
+        }
+        Insert: {
+          chunk_data: string
+          chunk_index: number
+          document_code: string
+          id?: number
+        }
+        Update: {
+          chunk_data?: string
+          chunk_index?: number
+          document_code?: string
+          id?: number
+        }
+        Relationships: []
       }
       project_pathways: {
         Row: {
