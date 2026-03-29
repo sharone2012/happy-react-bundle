@@ -783,6 +783,13 @@ const S3BiologyLibrary = () => {
 
       {/* Content Area */}
       <div className="content">
+        {loading && (
+          <div style={{display:'flex',alignItems:'center',justifyContent:'center',padding:'60px 0',gap:'12px'}}>
+            <div style={{width:20,height:20,border:'2px solid var(--teal)',borderTopColor:'transparent',borderRadius:'50%',animation:'spin 0.8s linear infinite'}}/>
+            <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:13,color:'var(--grey)'}}>Loading biological data from Supabase...</span>
+            <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+          </div>
+        )}
         {/* TAB: ORGANISM REGISTRY */}
         <div className={`tab-panel ${activeTab === 'registry' ? 'active' : ''}`}>
           <div className="section">
