@@ -15,9 +15,7 @@ import "./index.css";
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App />} />
-      <Route path="/lab" element={<LabAnalysis />} />
-      <Route path="/lab-analysis" element={<LabAnalysisV2 />} />
+      <Route path="/lab" element={<LabAnalysisV2 />} />
       <Route path="/s3" element={<S3Landing />} />
       <Route path="/s3/a-bio-library" element={<S3ABioLibrary />} />
       <Route path="/s1-index" element={<S1Index />} />
