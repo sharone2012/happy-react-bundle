@@ -39,17 +39,43 @@ function NavStrip() {
 
 export default function S1EfbAscii() {
   return (
-    <div style={{ background: "#f0f0f0", padding: 24, fontFamily: F, minHeight: "100vh" }}>
-      <NavStrip />
+    <div style={{ background: "#f0f0f0", fontFamily: F, minHeight: "100vh" }}>
+      {/* ═══ PERSISTENT CFI GLOBAL HEADER ═══ */}
+      <div style={{
+        height: 83, background: "#0A1628",
+        borderBottom: "1px solid rgba(51, 212, 188, 0.15)",
+        display: "flex", alignItems: "center", padding: "0 32px",
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+      }}>
+        <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+          <span style={{ fontFamily: FH, fontSize: 26, fontWeight: 700, color: "#FFFFFF", letterSpacing: "0.06em" }}>CFI</span>
+          <span style={{ fontFamily: FH, fontSize: 26, fontWeight: 700, color: "#33D4BC", letterSpacing: "0.06em", marginLeft: 10 }}>Deep Tech</span>
+        </div>
+        <div style={{ width: 3, height: 44, background: "#33D4BC", margin: "0 20px 0 14px" }} />
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 4, height: 44 }}>
+          <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, lineHeight: 1.3, whiteSpace: "nowrap", display: "flex" }}>
+            <span style={{ color: "#FFFFFF", minWidth: 150, display: "inline-block" }}>Precision Engineering</span>
+            <span style={{ color: "#33D4BC" }}>Circular Nutrient Recovery in Agricultural Systems</span>
+          </div>
+          <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, lineHeight: 1.3, whiteSpace: "nowrap", display: "flex" }}>
+            <span style={{ color: "#FFFFFF", minWidth: 150, display: "inline-block" }}>Applied Biology</span>
+            <span style={{ color: "#33D4BC" }}>Rebalancing Soil&apos;s Microbiome &amp; Reducing Synthetic Fertiliser Use</span>
+          </div>
+        </div>
+      </div>
 
-      <div style={{ background: "#fff", border: "3px solid #111", width: 1000, margin: "0 auto" }}>
+      {/* Spacer */}
+      <div style={{ height: 83 }} />
+
+      <div style={{ display: "flex", justifyContent: "center", padding: "24px 0" }}>
+      <div style={{ background: "#fff", border: "3px solid #111", width: 1000 }}>
         {/* topbar */}
         <div style={{
           background: "#0B3A4A", color: "#40C8C0", padding: "7px 18px", fontSize: 10,
           display: "flex", justifyContent: "space-between", fontFamily: F,
         }}>
           <span>CFI S1C — EFB LINE · ASCII PROCESS FLOW</span>
-          <span>60 TPH FFB Mill · 20 t/h · 600mm belt · Bogor, West Java · March 2026 · CFI-S1-EFB-ASCII-001 Rev 01</span>
+          <span>60 TPH FFB Mill · 20 t/h · 600mm belt · Bogor, West Java · March 2026</span>
         </div>
 
         <div style={{ display: "flex" }}>
