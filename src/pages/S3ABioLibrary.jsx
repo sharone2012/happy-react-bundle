@@ -751,7 +751,7 @@ const S3BiologyLibrary = () => {
           <h1>S3 — Biological Inoculation Library</h1>
         </div>
         <div className="header-badges">
-          <span className="badge badge-teal">43 Organisms + Enzymes</span>
+          <span className="badge badge-teal">{organisms.length} Organisms + Enzymes</span>
           <span className="badge badge-amber">8,157 t FW/month</span>
           <span className="badge badge-red">Bt ICBB 6095 — Conditional</span>
           <span className="badge badge-green">5-Day Bio Minimum</span>
