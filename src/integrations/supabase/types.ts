@@ -6300,6 +6300,27 @@ export type Database = {
           },
         ]
       }
+      html_screenshots: {
+        Row: {
+          content: string
+          created_at: string | null
+          filename: string
+          id: number
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          filename: string
+          id?: number
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          filename?: string
+          id?: number
+        }
+        Relationships: []
+      }
       lab_analyses: {
         Row: {
           adl_frac_dm: number | null
