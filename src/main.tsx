@@ -12,6 +12,7 @@ createRoot(document.getElementById("root")!).render(
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="/lab" element={<LabAnalysis />} />
+      <Route path="/lab-analysis" element={<LabAnalysisV2 />} />
       <Route path="/s3" element={<S3Landing />} />
       <Route path="/s3/a-bio-library" element={<S3ABioLibrary />} />
     </Routes>
