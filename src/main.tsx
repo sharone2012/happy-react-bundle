@@ -26,8 +26,8 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/lab" element={<LabAnalysisV2 />} />
         <Route path="/s3" element={<S3Landing />} />
         <Route path="/s3/a-bio-library" element={<S3ABioLibrary />} />
-        <Route path="/s1-index" element={<S1Index />} />
-        <Route path="/S1-index" element={<S1Index />} />
+        <Route path="/s1-index" element={<S1CapexOpex />} />
+        <Route path="/S1-index" element={<S1CapexOpex />} />
         <Route path="/s1-capex-opex" element={<S1CapexOpex />} />
         <Route path="/s1-efb-ascii" element={<S1EfbAscii />} />
         <Route path="/s1-opdc-ascii" element={<S1OpdcAscii />} />
