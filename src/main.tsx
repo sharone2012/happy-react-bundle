@@ -15,6 +15,10 @@ import S1OpdcSpec from "./pages/S1OpdcSpec.jsx";
 import S1PosSpec from "./pages/S1PosSpec.jsx";
 import S1Combined from "./pages/S1Combined.jsx";
 import S1Engineering from "./pages/S1Engineering";
+import S1FloorPlanEfb from "./pages/S1FloorPlanEfb.jsx";
+import S1FloorPlanOpdc from "./pages/S1FloorPlanOpdc.jsx";
+import S1FloorPlanPos from "./pages/S1FloorPlanPos.jsx";
+import S0ResidueSelector from "./pages/S0ResidueSelector.jsx";
 import CFI_AG_Management_Planning_Calculator from "./CFI_AG_Management_Planning_Calculator.jsx";
 import "./index.css";
 
@@ -36,6 +40,10 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/s1-opdc-spec" element={<S1OpdcSpec />} />
         <Route path="/s1-pos-spec" element={<S1PosSpec />} />
         <Route path="/s1-combined" element={<S1Combined />} />
+        <Route path="/s1-floor-efb" element={<S1FloorPlanEfb />} />
+        <Route path="/s1-floor-opdc" element={<S1FloorPlanOpdc />} />
+        <Route path="/s1-floor-pos" element={<S1FloorPlanPos />} />
+        <Route path="/s0-residue-select" element={<S0ResidueSelector />} />
         <Route path="/s1-engineering" element={<S1Engineering />} />
         <Route path="/CFI_AG_Management_Planning_Calculator" element={<CFI_AG_Management_Planning_Calculator />} />
       </Routes>

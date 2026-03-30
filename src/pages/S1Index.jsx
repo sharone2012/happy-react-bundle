@@ -6,13 +6,17 @@ const F = "'DM Sans', sans-serif";
 const FH = "'EB Garamond', serif";
 
 const navCards = [
-  { title: "CapEx / OpEx / Facility", desc: "Building CAPEX $1.37M · Equipment $398K · OpEx $37,957/mo", route: "/s1-capex-opex", live: true },
-  { title: "EFB ASCII Flow", desc: "10-node mechanical line · 298 kW · 20 t/h", route: "/s1-efb-ascii", live: true },
-  { title: "OPDC ASCII Flow", desc: "10-node mechanical line · 206 kW · 5 t/h", route: "/s1-opdc-ascii", live: true },
-  { title: "POS ASCII Flow", desc: "4-node pre-skimming · 62 kW · 1.25 t/h", route: "/s1-pos-ascii", live: true },
-  { title: "Combined Floor Plans", desc: "Tabbed floor plans · EFB · OPDC · POS", route: "/s1-combined", live: true },
-  { title: "S1 Engineering Complete", desc: "24 equipment nodes · 3 processing lines · CAPEX + OpEx + Greenhouse + Guardrails", route: "/s1-engineering", live: true },
-  { title: "Greenhouse Design", desc: "4 greenhouses · 40m × 8m · 2×2 grid layout", route: "/s1-greenhouse", live: false },
+  { title: "CapEx / OpEx / Facility", desc: "Building CAPEX $1.37M \u00b7 Equipment $398K \u00b7 OpEx $37,957/mo", route: "/s1-capex-opex", live: true },
+  { title: "Efb Floor Plan", desc: "10-node mechanical line \u00b7 212 kW \u00b7 8 t/h \u00b7 600mm belt", route: "/s1-floor-efb", live: true },
+  { title: "Opdc Floor Plan", desc: "10-node mechanical line \u00b7 206 kW \u00b7 5 t/h \u00b7 500mm belt", route: "/s1-floor-opdc", live: true },
+  { title: "Pos Floor Plan", desc: "10-node liquid/semi line \u00b7 113 kW \u00b7 6 m\u00b3/h", route: "/s1-floor-pos", live: true },
+  { title: "S0 Residue Selector", desc: "S0 exit stage \u2014 select residue for S1 processing", route: "/s0-residue-select", live: true },
+  { title: "Efb Ascii Flow", desc: "10-node mechanical line \u00b7 298 kW \u00b7 20 t/h", route: "/s1-efb-ascii", live: true },
+  { title: "Opdc Ascii Flow", desc: "10-node mechanical line \u00b7 206 kW \u00b7 5 t/h", route: "/s1-opdc-ascii", live: true },
+  { title: "Pos Ascii Flow", desc: "4-node pre-skimming \u00b7 62 kW \u00b7 1.25 t/h", route: "/s1-pos-ascii", live: true },
+  { title: "Combined Floor Plans", desc: "Tabbed floor plans \u00b7 Efb \u00b7 Opdc \u00b7 Pos", route: "/s1-combined", live: true },
+  { title: "S1 Engineering Complete", desc: "24 equipment nodes \u00b7 3 processing lines \u00b7 Capex + Opex + Greenhouse + Guardrails", route: "/s1-engineering", live: true },
+  { title: "Greenhouse Design", desc: "4 greenhouses \u00b7 40m \u00d7 8m \u00b7 2\u00d72 grid layout", route: "/s1-greenhouse", live: false },
 ];
 
 const streams = [
