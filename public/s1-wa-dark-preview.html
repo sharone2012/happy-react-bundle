@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>S1 Index — WhatsApp Dark Preview</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@500;700&display=swap" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* ═══ WA DARK TOKENS ═══ */
+  :root {
+    --bg:        #0B141A;
+    --bg-card:   #111B21;
+    --bg-node:   #1F2C34;
+    --bg-header: #202C33;
+    --bg-hover:  #2A3942;
+    --border:    #1B282E;
+    --border-act:#00A884;
+    --text:      #E9EDEF;
+    --text-sec:  #8696A0;
+    --text-muted:#AEBAC1;
+    --teal:      #00A884;
+    --teal-glow: rgba(0,168,132,0.12);
+    --amber:     #F5A623;
+    --amber-glow:rgba(245,166,35,0.10);
+    --red:       #C62828;
+    --green:     #25D366;
+    --blue:      #53BDEB;
+    --font:      'DM Sans', sans-serif;
+    --font-h:    'EB Garamond', serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ═══ HEADER ═══ */
+  .header {
+    height: 72px;
+    background: var(--bg-header);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-cfi { font-family: var(--font-h); font-size: 26px; font-weight: 700; color: var(--text); letter-spacing: 0.06em; }
+  .brand-dt  { font-family: var(--font-h); font-size: 26px; font-weight: 700; color: var(--teal); letter-spacing: 0.06em; }
+  .brand-div { width: 2px; height: 36px; background: var(--teal); margin: 0 10px; border-radius: 1px; }
+  .brand-tag { display: flex; flex-direction: column; gap: 3px; }
+  .brand-tag-row { font-size: 11px; font-weight: 600; display: flex; gap: 6px; }
+  .brand-tag-row .label { color: var(--text); min-width: 140px; }
+  .brand-tag-row .value { color: var(--teal); }
+
+  /* ═══ CONTENT ═══ */
+  .content { max-width: 1000px; margin: 0 auto; padding: 20px 20px 60px; }
+
+  /* ═══ BREADCRUMB ═══ */
+  .breadcrumb { font-size: 12px; margin-bottom: 18px; color: var(--text-sec); }
+  .breadcrumb a { color: var(--text-sec); text-decoration: none; transition: color 0.15s; }
+  .breadcrumb a:hover { color: var(--teal); }
+  .breadcrumb .sep { margin: 0 8px; color: var(--text-muted); opacity: 0.4; }
+  .breadcrumb .current { color: var(--text); font-weight: 700; }
+
+  /* ═══ PAGE TITLE ═══ */
+  .page-title { font-size: 26px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
+
+  /* ═══ CONTEXT BAR ═══ */
+  .ctx-bar {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .ctx-bar .stats { font-size: 13px; color: var(--text-sec); display: flex; flex-wrap: wrap; gap: 4px; }
+  .ctx-bar .stats strong { color: var(--text); font-weight: 700; }
+  .ctx-bar .stats .dot { color: var(--text-muted); opacity: 0.4; }
+  .ctx-bar .location { display: flex; align-items: center; gap: 8px; }
+  .ctx-bar .location .name { font-size: 13px; color: var(--text-sec); }
+  .ctx-bar .location .badge {
+    font-size: 10px; font-weight: 700; color: var(--teal);
+    background: var(--teal-glow);
+    padding: 2px 8px; border-radius: 4px;
+    border: 1px solid rgba(0,168,132,0.2);
+  }
+
+  /* ═══ THROUGHPUT CARDS ═══ */
+  .streams { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+  .stream-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .stream-card:hover { background: var(--bg-hover); border-color: var(--border); }
+  .stream-card .name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+  .stream-card .name .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+  .stream-card .metrics { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .stream-card .metric-label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  .stream-card .metric-value { font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--amber); margin-top: 2px; }
+
+  /* ═══ NAV CARDS ═══ */
+  .nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+  .nav-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.15s;
+  }
+  .nav-card:hover {
+    background: var(--bg-hover);
+    border-color: var(--teal);
+    box-shadow: 0 0 0 1px var(--teal), 0 4px 12px rgba(0,168,132,0.08);
+  }
+  .nav-card:active {
+    background: #1F2C34;
+    border-color: var(--border-act);
+    box-shadow: 0 0 0 2px var(--border-act);
+  }
+  .nav-card .title { font-size: 15px; font-weight: 700; color: var(--text); }
+  .nav-card .desc { font-size: 12px; color: var(--text-sec); margin-top: 4px; }
+  .nav-card .arrow { font-size: 18px; color: var(--text-muted); flex-shrink: 0; margin-left: 12px; transition: color 0.15s, transform 0.15s; }
+  .nav-card:hover .arrow { color: var(--teal); transform: translateX(2px); }
+  .nav-card.disabled { opacity: 0.4; cursor: default; }
+  .nav-card.disabled:hover { background: var(--bg-card); border-color: var(--border); box-shadow: none; }
+  .nav-card.disabled:hover .arrow { color: var(--text-muted); transform: none; }
+
+  /* ═══ LIVE BADGE ═══ */
+  .live-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); margin-right: 6px; vertical-align: middle; }
+
+  /* ═══ REFERENCE SECTION ═══ */
+  .ref-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+  .ref-card .section-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+  .ref-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; }
+  .ref-item {
+    background: var(--bg-node);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 10px;
+  }
+  .ref-item .label { font-size: 10px; color: var(--text-muted); }
+  .ref-item .value { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--amber); margin-top: 2px; }
+
+  /* ═══ RFQ PACK ═══ */
+  .rfq-outer {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+  .rfq-inner {
+    border: 1.5px solid rgba(0,168,132,0.25);
+    border-radius: 6px;
+    padding: 20px 22px;
+    background: rgba(0,168,132,0.04);
+  }
+  .rfq-badge { font-size: 10px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .rfq-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .rfq-desc { font-size: 12px; color: var(--text-sec); line-height: 1.5; margin-bottom: 16px; }
+  .rfq-btns { display: flex; gap: 10px; }
+  .btn-primary {
+    font-family: var(--font); font-size: 12px; font-weight: 700;
+    padding: 8px 20px; border-radius: 6px;
+    background: var(--teal); color: var(--bg);
+    border: none; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: opacity 0.15s;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-outline {
+    font-family: var(--font); font-size: 12px; font-weight: 700;
+    padding: 8px 20px; border-radius: 6px;
+    background: transparent; color: var(--teal);
+    border: 1.5px solid var(--teal); cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-outline:hover { background: var(--teal-glow); }
+
+  /* ═══ GUARDRAILS ═══ */
+  .guardrails {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    border-radius: 8px;
+    padding: 14px 20px;
+  }
+  .guardrails .section-title { font-size: 12px; font-weight: 700; color: var(--red); margin-bottom: 8px; }
+  .guardrails-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px 16px; }
+  .guardrail-item { font-size: 10px; color: #EF9A9A; line-height: 1.8; }
+  .guardrail-item::before { content: "⚠ "; }
+
+  /* ═══ COLOR SWATCH LEGEND ═══ */
+  .legend { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); }
+  .legend h3 { font-size: 14px; font-weight: 700; color: var(--text-muted); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .swatch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .swatch {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 6px; padding: 10px 12px;
+  }
+  .swatch .color-box { width: 32px; height: 32px; border-radius: 4px; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.06); }
+  .swatch .color-info .name { font-size: 10px; color: var(--text-muted); }
+  .swatch .color-info .hex { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--text); margin-top: 1px; }
+</style>
+</head>
+<body>
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="header">
+    <div class="brand">
+      <span class="brand-cfi">CFI</span>
+      <span class="brand-dt">Deep Tech</span>
+    </div>
+    <div class="brand-div"></div>
+    <div class="brand-tag">
+      <div class="brand-tag-row">
+        <span class="label">Precision Engineering</span>
+        <span class="value">Circular Nutrient Recovery in Agricultural Systems</span>
+      </div>
+      <div class="brand-tag-row">
+        <span class="label">Applied Biology</span>
+        <span class="value">Rebalancing Soil's Microbiome &amp; Reducing Synthetic Fertiliser Use</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ═══ BREADCRUMB ═══ -->
+    <div class="breadcrumb">
+      <a href="#">CFI Platform</a>
+      <span class="sep">›</span>
+      <span class="current">S1 Pre-Processing</span>
+    </div>
+
+    <!-- ═══ PAGE TITLE ═══ -->
+    <h1 class="page-title">S1 Pre-Processing</h1>
+
+    <!-- ═══ CONTEXT BAR ═══ -->
+    <div class="ctx-bar">
+      <div class="stats">
+        <span>Mill Size: <strong>60 ton/hour</strong></span>
+        <span class="dot">&middot;</span>
+        <span>Utilisation: <strong>85%</strong></span>
+        <span class="dot">&middot;</span>
+        <span>Operating: <strong>20 hr/day &middot; 30 days/mo</strong></span>
+      </div>
+      <div class="location">
+        <span class="name">Bogor, West Java</span>
+        <span class="badge">Reference Site</span>
+      </div>
+    </div>
+
+    <!-- ═══ THROUGHPUT CARDS ═══ -->
+    <div class="streams">
+      <div class="stream-card" style="border-left: 3px solid #00A884;">
+        <div class="name"><span class="dot" style="background:#00A884;"></span>EFB</div>
+        <div class="metrics">
+          <div><div class="metric-label">Daily Fresh</div><div class="metric-value">300 t/day</div></div>
+          <div><div class="metric-label">Daily DM</div><div class="metric-value">112 t/day</div></div>
+          <div><div class="metric-label">MC</div><div class="metric-value">62.5%</div></div>
+        </div>
+      </div>
+      <div class="stream-card" style="border-left: 3px solid #F5A623;">
+        <div class="name"><span class="dot" style="background:#F5A623;"></span>OPDC</div>
+        <div class="metrics">
+          <div><div class="metric-label">Daily Fresh</div><div class="metric-value">45 t/day</div></div>
+          <div><div class="metric-label">Daily DM</div><div class="metric-value">13.5 t/day</div></div>
+          <div><div class="metric-label">MC</div><div class="metric-value">70%</div></div>
+        </div>
+      </div>
+      <div class="stream-card" style="border-left: 3px solid #53BDEB;">
+        <div class="name"><span class="dot" style="background:#53BDEB;"></span>POS</div>
+        <div class="metrics">
+          <div><div class="metric-label">Daily Fresh</div><div class="metric-value">30 t/day</div></div>
+          <div><div class="metric-label">Daily DM</div><div class="metric-value">6 t/day</div></div>
+          <div><div class="metric-label">MC</div><div class="metric-value">82%</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ NAV CARDS ═══ -->
+    <div class="nav-grid">
+      <div class="nav-card" onclick="this.style.borderColor='var(--border-act)'">
+        <div>
+          <div class="title"><span class="live-dot"></span>CapEx / OpEx / Facility</div>
+          <div class="desc">Building CAPEX $1.37M &middot; Equipment $398K &middot; OpEx $37,957/mo</div>
+        </div>
+        <span class="arrow">&#x203A;</span>
+      </div>
+      <div class="nav-card">
+        <div>
+          <div class="title"><span class="live-dot"></span>EFB ASCII Flow</div>
+          <div class="desc">10-node mechanical line &middot; 298 kW &middot; 20 t/h</div>
+        </div>
+        <span class="arrow">&#x203A;</span>
+      </div>
+      <div class="nav-card">
+        <div>
+          <div class="title"><span class="live-dot"></span>OPDC ASCII Flow</div>
+          <div class="desc">10-node mechanical line &middot; 206 kW &middot; 5 t/h</div>
+        </div>
+        <span class="arrow">&#x203A;</span>
+      </div>
+      <div class="nav-card">
+        <div>
+          <div class="title"><span class="live-dot"></span>POS ASCII Flow</div>
+          <div class="desc">4-node pre-skimming &middot; 62 kW &middot; 1.25 t/h</div>
+        </div>
+        <span class="arrow">&#x203A;</span>
+      </div>
+      <div class="nav-card">
+        <div>
+          <div class="title"><span class="live-dot"></span>Combined Floor Plans</div>
+          <div class="desc">Tabbed floor plans &middot; EFB &middot; OPDC &middot; POS</div>
+        </div>
+        <span class="arrow">&#x203A;</span>
+      </div>
+      <div class="nav-card">
+        <div>
+          <div class="title"><span class="live-dot"></span>S1 Engineering Complete</div>
+          <div class="desc">24 equipment nodes &middot; 3 processing lines &middot; CAPEX + OpEx + Greenhouse + Guardrails</div>
+        </div>
+        <span class="arrow">&#x203A;</span>
+      </div>
+      <div class="nav-card disabled">
+        <div>
+          <div class="title">Greenhouse Design</div>
+          <div class="desc">4 greenhouses &middot; 40m &times; 8m &middot; 2&times;2 grid layout</div>
+        </div>
+        <span class="arrow">&#x203A;</span>
+      </div>
+    </div>
+
+    <!-- ═══ CANONICAL VALUES ═══ -->
+    <div class="ref-card">
+      <div class="section-title">Canonical Values Reference</div>
+      <div class="ref-grid">
+        <div class="ref-item"><div class="label">FFB Capacity</div><div class="value">60 TPH</div></div>
+        <div class="ref-item"><div class="label">Operating</div><div class="value">20 hr/day</div></div>
+        <div class="ref-item"><div class="label">EFB Yield</div><div class="value">22% of FFB</div></div>
+        <div class="ref-item"><div class="label">OPDC Yield</div><div class="value">15.2% of EFB</div></div>
+        <div class="ref-item"><div class="label">POS Volume</div><div class="value">30 t/day</div></div>
+        <div class="ref-item"><div class="label">Belt Width</div><div class="value">600mm / 500mm</div></div>
+        <div class="ref-item"><div class="label">DM Target</div><div class="value">30% wb</div></div>
+        <div class="ref-item"><div class="label">Lignin Gate</div><div class="value">ADL &lt;12% DM</div></div>
+      </div>
+    </div>
+
+    <!-- ═══ RFQ PACK ═══ -->
+    <div class="rfq-outer">
+      <div class="rfq-inner">
+        <div class="rfq-badge">&#9660; Engineering Specs</div>
+        <div class="rfq-title">S1 Complete Engineering Specs &mdash; RFQ Pack</div>
+        <div class="rfq-desc">22-page complete engineering documentation for all 3 processing lines (EFB, OPDC, POS). Ready for RFQ pack assembly and contractor bidding.</div>
+        <div class="rfq-btns">
+          <button class="btn-primary">&#9660; View PDF &rarr;</button>
+          <button class="btn-outline">Print</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ GUARDRAILS ═══ -->
+    <div class="guardrails">
+      <div class="section-title">9 Hard Guardrails</div>
+      <div class="guardrails-grid">
+        <div class="guardrail-item">MC &ge;40% LOCKED (CLASS A)</div>
+        <div class="guardrail-item">Fe &lt;3000 mg/kg DM target</div>
+        <div class="guardrail-item">ADL &lt;12% DM for BSF</div>
+        <div class="guardrail-item">C:N 15-22 optimal</div>
+        <div class="guardrail-item">pH 4.0-5.0 range</div>
+        <div class="guardrail-item">CEC &gt;20 cmol/kg target</div>
+        <div class="guardrail-item">No Cr &gt;20 mg/kg</div>
+        <div class="guardrail-item">Belt speed locked at spec</div>
+        <div class="guardrail-item">All temps &lt;85C</div>
+      </div>
+    </div>
+
+    <!-- ═══ COLOR SWATCH LEGEND ═══ -->
+    <div class="legend">
+      <h3>WhatsApp Dark &mdash; Token Reference</h3>
+      <div class="swatch-grid">
+        <div class="swatch">
+          <div class="color-box" style="background:#0B141A;"></div>
+          <div class="color-info"><div class="name">Page Background</div><div class="hex">#0B141A</div></div>
+        </div>
+        <div class="swatch">
+          <div class="color-box" style="background:#111B21;"></div>
+          <div class="color-info"><div class="name">Card Background</div><div class="hex">#111B21</div></div>
+        </div>
+        <div class="swatch">
+          <div class="color-box" style="background:#1F2C34;"></div>
+          <div class="color-info"><div class="name">Node / Input</div><div class="hex">#1F2C34</div></div>
+        </div>
+        <div class="swatch">
+          <div class="color-box" style="background:#202C33;"></div>
+          <div class="color-info"><div class="name">Header Bar</div><div class="hex">#202C33</div></div>
+        </div>
+        <div class="swatch">
+          <div class="color-box" style="background:#2A3942;"></div>
+          <div class="color-info"><div class="name">Hover State</div><div class="hex">#2A3942</div></div>
+        </div>
+        <div class="swatch">
+          <div class="color-box" style="background:#1B282E;"></div>
+          <div class="color-info"><div class="name">Border</div><div class="hex">#1B282E</div></div>
+        </div>
+        <div class="swatch">
+          <div class="color-box" style="background:#E9EDEF;"></div>
+          <div class="color-info"><div class="name">Primary Text</div><div class="hex">#E9EDEF</div></div>
+        </div>
+        <div class="swatch">
+          <div class="color-box" style="background:#8696A0;"></div>
+          <div class="color-info"><div class="name">Secondary Text</div><div class="hex">#8696A0</div></div>
+        </div>
+        <div class="swatch">
+          <div class="color-box" style="background:#AEBAC1;"></div>
+          <div class="color-info"><div class="name">Muted / Labels</div><div class="hex">#AEBAC1</div></div>
+        </div>
+        <div class="swatch">
+          <div class="color-box" style="background:#00A884;"></div>
+          <div class="color-info"><div class="name">Teal Accent</div><div class="hex">#00A884</div></div>
+        </div>
+        <div class="swatch">
+          <div class="color-box" style="background:#F5A623;"></div>
+          <div class="color-info"><div class="name">Amber (values)</div><div class="hex">#F5A623</div></div>
+        </div>
+        <div class="swatch">
+          <div class="color-box" style="background:#C62828;"></div>
+          <div class="color-info"><div class="name">Red (warnings)</div><div class="hex">#C62828</div></div>
+        </div>
+        <div class="swatch">
+          <div class="color-box" style="background:#53BDEB;"></div>
+          <div class="color-info"><div class="name">Blue (info)</div><div class="hex">#53BDEB</div></div>
+        </div>
+        <div class="swatch">
+          <div class="color-box" style="background:#25D366;"></div>
+          <div class="color-info"><div class="name">Green (success)</div><div class="hex">#25D366</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
