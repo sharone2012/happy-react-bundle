@@ -348,8 +348,8 @@ export default function S3() {
   // RENDER
   // ═══════════════════════════════════════════
   return (
-    <div style={s.page}>
-      {/* ── HEADER (white, logo on top) ── */}
+    <>
+      {/* ── HEADER (white, logo on top — above entire page) ── */}
       <header style={s.header}>
         <div style={s.logo}>
           <div style={s.logoMark}>CFI</div>
@@ -361,6 +361,8 @@ export default function S3() {
           ))}
         </nav>
       </header>
+
+      <div style={s.page}>
 
       {/* ── LIVE TICKER ── */}
       <div style={s.ticker}>
@@ -728,5 +730,6 @@ export default function S3() {
         </div>
       )}
     </div>
+    </>
   );
 }
