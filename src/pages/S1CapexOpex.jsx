@@ -568,7 +568,7 @@ export default function S1CapexOpex() {
   const navigate = useNavigate();
 
   return (
-    <div style={{ fontFamily: F, color: C.white, background: C.bg, minHeight: "100vh", filter: "brightness(2.0)" }}>
+    <div style={{ fontFamily: F, color: C.white, background: C.bg, minHeight: "100vh", filter: "brightness(1.8)" }}>
       <style>{`@keyframes cfi-pulse { 0%{opacity:1} 50%{opacity:0.3} 100%{opacity:1} }`}</style>
 
       {/* ââ GLOBAL HEADER ââ */}
