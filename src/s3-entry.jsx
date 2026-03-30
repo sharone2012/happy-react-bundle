@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import BioProcessing from "./pages/BioProcessing";
+import S3 from "./pages/S3";
 
 ReactDOM.createRoot(document.getElementById("s3-root")).render(
   <React.StrictMode>
-    <BioProcessing />
+    <S3 />
   </React.StrictMode>
 );

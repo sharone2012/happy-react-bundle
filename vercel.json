@@ -1,6 +1,5 @@
 {
   "rewrites": [
-    { "source": "/bioprocessing", "destination": "/s3.html" },
     { "source": "/s3", "destination": "/s3.html" },
     { "source": "/(.*)", "destination": "/" }
   ]
