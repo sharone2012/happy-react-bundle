@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WhatsApp Dark — Pick Your Colors</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@500;700&display=swap" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: #000; color: #E9EDEF; }
+
+  .page { display: flex; gap: 32px; padding: 24px; max-width: 1400px; margin: 0 auto; }
+  .wa-mock { flex: 1; max-width: 680px; }
+  .picker { flex: 0 0 340px; position: sticky; top: 24px; align-self: flex-start; }
+
+  h1 { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #E9EDEF; }
+  h2 { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: #8696A0; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* ═══ NUMBERED BADGE ═══ */
+  .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: #FF4081; color: #fff; font-size: 11px; font-weight: 700;
+    position: absolute; z-index: 10;
+    box-shadow: 0 2px 6px rgba(255,64,129,0.5);
+  }
+
+  /* ═══ WHATSAPP MOCK ═══ */
+  .wa-container {
+    border-radius: 12px; overflow: hidden;
+    border: 1px solid #1B282E;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+
+  /* 1 - Top header bar */
+  .wa-header {
+    background: #202C33; padding: 12px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid #1B282E; position: relative;
+  }
+  .wa-header .title { font-size: 16px; font-weight: 700; }
+  .wa-header .icons { display: flex; gap: 16px; color: #AEBAC1; font-size: 14px; }
+
+  /* 2 - Search bar area */
+  .wa-search {
+    background: #111B21; padding: 8px 12px;
+    border-bottom: 1px solid #1B282E; position: relative;
+  }
+  .wa-search-input {
+    background: #202C33; border: none; border-radius: 8px;
+    padding: 8px 14px; color: #8696A0; font-size: 13px;
+    width: 100%; font-family: 'DM Sans', sans-serif;
+  }
+
+  /* 3 - Sidebar / chat list background */
+  .wa-sidebar {
+    background: #111B21; position: relative;
+  }
+
+  /* 4 - Chat list item (default) */
+  .wa-chat-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; border-bottom: 1px solid #1B282E;
+    cursor: pointer; transition: background 0.15s;
+    position: relative;
+  }
+
+  /* 5 - Chat list item (hovered) */
+  .wa-chat-item.hovered {
+    background: #2A3942;
+  }
+
+  /* 6 - Chat list item (selected / active) */
+  .wa-chat-item.selected {
+    background: #2A3942;
+    border-left: 3px solid #00A884;
+  }
+
+  .wa-avatar {
+    width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+  }
+  .wa-chat-info { flex: 1; min-width: 0; }
+  .wa-chat-name { font-size: 14px; font-weight: 600; color: #E9EDEF; }
+  .wa-chat-msg { font-size: 12px; color: #8696A0; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .wa-chat-time { font-size: 10px; color: #8696A0; flex-shrink: 0; }
+  .wa-unread {
+    background: #00A884; color: #111B21; font-size: 10px; font-weight: 700;
+    width: 18px; height: 18px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-left: auto;
+  }
+
+  /* ═══ CHAT AREA ═══ */
+  /* 7 - Chat background (deepest) */
+  .wa-chat-bg {
+    background: #0B141A; padding: 16px 20px;
+    min-height: 260px; position: relative;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+
+  /* 8 - Incoming message bubble */
+  .wa-bubble-in {
+    background: #202C33; color: #E9EDEF;
+    padding: 8px 12px; border-radius: 0 8px 8px 8px;
+    max-width: 70%; font-size: 13px; line-height: 1.5;
+    position: relative; align-self: flex-start;
+  }
+
+  /* 9 - Outgoing message bubble (green) */
+  .wa-bubble-out {
+    background: #005C4B; color: #E9EDEF;
+    padding: 8px 12px; border-radius: 8px 0 8px 8px;
+    max-width: 70%; font-size: 13px; line-height: 1.5;
+    position: relative; align-self: flex-end;
+  }
+
+  .wa-bubble-time { font-size: 10px; color: rgba(233,237,239,0.5); text-align: right; margin-top: 4px; }
+
+  /* 10 - Input / compose area */
+  .wa-compose {
+    background: #202C33; padding: 10px 14px;
+    display: flex; align-items: center; gap: 10px;
+    border-top: 1px solid #1B282E; position: relative;
+  }
+  .wa-compose-input {
+    flex: 1; background: #2A3942; border: none;
+    border-radius: 8px; padding: 10px 14px;
+    color: #E9EDEF; font-size: 13px; font-family: 'DM Sans', sans-serif;
+  }
+  .wa-compose-btn {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: #00A884; border: none; color: #111B21;
+    font-size: 16px; cursor: pointer; display: flex;
+    align-items: center; justify-content: center;
+  }
+
+  /* 11 - Unread badge green */
+  /* 12 - Active/accent green */
+  /* 13 - Secondary text */
+  /* 14 - Border / divider */
+
+  /* ═══ PICKER PANEL ═══ */
+  .color-list { display: flex; flex-direction: column; gap: 6px; }
+  .color-row {
+    display: flex; align-items: center; gap: 10px;
+    background: #111B21; border: 1px solid #1B282E;
+    border-radius: 8px; padding: 10px 14px;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .color-row:hover {
+    background: #2A3942; border-color: #00A884;
+  }
+  .color-num {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: #FF4081; color: #fff; font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .color-swatch {
+    width: 32px; height: 32px; border-radius: 6px; flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .color-details { flex: 1; }
+  .color-name { font-size: 12px; font-weight: 600; color: #E9EDEF; }
+  .color-hex { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 700; color: #00A884; margin-top: 1px; }
+  .color-use { font-size: 10px; color: #8696A0; margin-top: 2px; }
+
+  .section-gap { margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ═══ LEFT: WhatsApp Mock ═══ -->
+  <div class="wa-mock">
+    <h1>WhatsApp Dark Mode — Numbered Elements</h1>
+    <div class="wa-container">
+
+      <!-- 1 - Header -->
+      <div class="wa-header">
+        <div class="num" style="top:-8px;left:-8px;">1</div>
+        <div class="title">WhatsApp</div>
+        <div class="icons">
+          <span>&#9900;</span> <span>&#9900;</span> <span>&#8942;</span>
+        </div>
+      </div>
+
+      <!-- 2 - Search -->
+      <div class="wa-search">
+        <div class="num" style="top:-8px;left:-8px;">2</div>
+        <input class="wa-search-input" value="Search or start new chat" readonly />
+      </div>
+
+      <!-- 3 - Sidebar list -->
+      <div class="wa-sidebar">
+        <div class="num" style="top:4px;right:4px;">3</div>
+
+        <!-- 4 - Normal item -->
+        <div class="wa-chat-item">
+          <div class="num" style="top:-8px;left:-8px;">4</div>
+          <div class="wa-avatar" style="background:#1F2C34;"></div>
+          <div class="wa-chat-info">
+            <div class="wa-chat-name">Engineering Team</div>
+            <div class="wa-chat-msg">Updated the S1 equipment spec...</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="wa-chat-time">10:34 AM</div>
+          </div>
+        </div>
+
+        <!-- 5 - Hovered item -->
+        <div class="wa-chat-item hovered">
+          <div class="num" style="top:-8px;left:-8px;">5</div>
+          <div class="wa-avatar" style="background:#2A3942;"></div>
+          <div class="wa-chat-info">
+            <div class="wa-chat-name">Site Manager</div>
+            <div class="wa-chat-msg">Greenhouse specs confirmed...</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="wa-chat-time">9:15 AM</div>
+            <div class="wa-unread" style="margin-top:4px;">
+              <div class="num" style="top:-12px;right:-14px;">11</div>
+              3
+            </div>
+          </div>
+        </div>
+
+        <!-- 6 - Selected item -->
+        <div class="wa-chat-item selected">
+          <div class="num" style="top:-8px;left:-8px;">6</div>
+          <div class="wa-avatar" style="background:#005C4B;"></div>
+          <div class="wa-chat-info">
+            <div class="wa-chat-name" style="color:#00A884;">
+              CFI Deep Tech
+              <span class="num" style="position:relative;top:-2px;left:4px;display:inline-flex;">12</span>
+            </div>
+            <div class="wa-chat-msg">EFB line running at 298 kW...</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="wa-chat-time" style="color:#00A884;">Now</div>
+          </div>
+        </div>
+
+        <!-- Another normal item -->
+        <div class="wa-chat-item">
+          <div class="wa-avatar" style="background:#1F2C34;"></div>
+          <div class="wa-chat-info">
+            <div class="wa-chat-name">Procurement</div>
+            <div class="wa-chat-msg" style="position:relative;">
+              Hammer mill quote received...
+              <span class="num" style="position:absolute;top:-14px;right:-8px;">13</span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div class="wa-chat-time">Yesterday</div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div style="height:1px;background:#1B282E;position:relative;">
+          <div class="num" style="top:-11px;right:40px;">14</div>
+        </div>
+      </div>
+
+      <!-- 7 - Chat background -->
+      <div class="wa-chat-bg">
+        <div class="num" style="top:4px;right:4px;">7</div>
+
+        <!-- 8 - Incoming bubble -->
+        <div class="wa-bubble-in">
+          <div class="num" style="top:-10px;left:-10px;">8</div>
+          EFB throughput confirmed at 20 t/h. Belt width 600mm.
+          <div class="wa-bubble-time">10:32 AM</div>
+        </div>
+
+        <!-- 9 - Outgoing bubble -->
+        <div class="wa-bubble-out">
+          <div class="num" style="top:-10px;right:-10px;">9</div>
+          Great. CAPEX for shredder line locked at $45K. Ready for RFQ.
+          <div class="wa-bubble-time">10:34 AM &#10003;&#10003;</div>
+        </div>
+
+        <div class="wa-bubble-in">
+          Hammer mill running 110 kW. Temperature gate active.
+          <div class="wa-bubble-time">10:35 AM</div>
+        </div>
+      </div>
+
+      <!-- 10 - Compose area -->
+      <div class="wa-compose">
+        <div class="num" style="top:-10px;left:-8px;">10</div>
+        <span style="color:#AEBAC1; font-size:18px;">&#9786;</span>
+        <input class="wa-compose-input" placeholder="Type a message" readonly />
+        <button class="wa-compose-btn">&#9654;</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ RIGHT: Color Picker Legend ═══ -->
+  <div class="picker">
+    <h2>Pick Your Colors</h2>
+    <p style="font-size:12px;color:#8696A0;margin-bottom:16px;">Each number matches the mock on the left. Tell me which numbers you want for your S1 cards.</p>
+
+    <div class="color-list">
+
+      <div class="color-row">
+        <div class="color-num">1</div>
+        <div class="color-swatch" style="background:#202C33;"></div>
+        <div class="color-details">
+          <div class="color-name">Header Bar</div>
+          <div class="color-hex">#202C33</div>
+          <div class="color-use">Top bar, compose bar, input areas</div>
+        </div>
+      </div>
+
+      <div class="color-row">
+        <div class="color-num">2</div>
+        <div class="color-swatch" style="background:#111B21;"></div>
+        <div class="color-details">
+          <div class="color-name">Panel Background</div>
+          <div class="color-hex">#111B21</div>
+          <div class="color-use">Sidebar bg, search area, list bg</div>
+        </div>
+      </div>
+
+      <div class="color-row">
+        <div class="color-num">3</div>
+        <div class="color-swatch" style="background:#111B21;"></div>
+        <div class="color-details">
+          <div class="color-name">List Background</div>
+          <div class="color-hex">#111B21</div>
+          <div class="color-use">Same as panel — chat list area</div>
+        </div>
+      </div>
+
+      <div class="color-row">
+        <div class="color-num">4</div>
+        <div class="color-swatch" style="background:#111B21;"></div>
+        <div class="color-details">
+          <div class="color-name">Card — Default</div>
+          <div class="color-hex">#111B21</div>
+          <div class="color-use">Normal state, not hovered or selected</div>
+        </div>
+      </div>
+
+      <div class="color-row">
+        <div class="color-num">5</div>
+        <div class="color-swatch" style="background:#2A3942;"></div>
+        <div class="color-details">
+          <div class="color-name">Card — Hovered</div>
+          <div class="color-hex">#2A3942</div>
+          <div class="color-use">Mouse over / hover state</div>
+        </div>
+      </div>
+
+      <div class="color-row">
+        <div class="color-num">6</div>
+        <div class="color-swatch" style="background:#2A3942; border-left:3px solid #00A884;"></div>
+        <div class="color-details">
+          <div class="color-name">Card — Selected / Active</div>
+          <div class="color-hex">#2A3942 + #00A884 accent</div>
+          <div class="color-use">Currently active / clicked item</div>
+        </div>
+      </div>
+
+      <div class="color-row">
+        <div class="color-num">7</div>
+        <div class="color-swatch" style="background:#0B141A;"></div>
+        <div class="color-details">
+          <div class="color-name">Deepest Background</div>
+          <div class="color-hex">#0B141A</div>
+          <div class="color-use">Page bg, chat area, empty space</div>
+        </div>
+      </div>
+
+      <div class="color-row">
+        <div class="color-num">8</div>
+        <div class="color-swatch" style="background:#202C33;"></div>
+        <div class="color-details">
+          <div class="color-name">Incoming Bubble / Input Card</div>
+          <div class="color-hex">#202C33</div>
+          <div class="color-use">Received messages, inner input zones</div>
+        </div>
+      </div>
+
+      <div class="color-row">
+        <div class="color-num">9</div>
+        <div class="color-swatch" style="background:#005C4B;"></div>
+        <div class="color-details">
+          <div class="color-name">Outgoing Bubble / Accent Card</div>
+          <div class="color-hex">#005C4B</div>
+          <div class="color-use">Sent messages, highlighted sections</div>
+        </div>
+      </div>
+
+      <div class="color-row">
+        <div class="color-num">10</div>
+        <div class="color-swatch" style="background:#2A3942;"></div>
+        <div class="color-details">
+          <div class="color-name">Input Field Background</div>
+          <div class="color-hex">#2A3942</div>
+          <div class="color-use">Text input, search field inner bg</div>
+        </div>
+      </div>
+
+      <div class="section-gap"></div>
+      <h2>Accents &amp; Text</h2>
+
+      <div class="color-row">
+        <div class="color-num">11</div>
+        <div class="color-swatch" style="background:#00A884;"></div>
+        <div class="color-details">
+          <div class="color-name">Green Accent / Badge</div>
+          <div class="color-hex">#00A884</div>
+          <div class="color-use">Unread badges, active name, send btn</div>
+        </div>
+      </div>
+
+      <div class="color-row">
+        <div class="color-num">12</div>
+        <div class="color-swatch" style="background:#00A884;"></div>
+        <div class="color-details">
+          <div class="color-name">Active Text / Name Highlight</div>
+          <div class="color-hex">#00A884</div>
+          <div class="color-use">Selected contact name, active tab</div>
+        </div>
+      </div>
+
+      <div class="color-row">
+        <div class="color-num">13</div>
+        <div class="color-swatch" style="background:#8696A0;"></div>
+        <div class="color-details">
+          <div class="color-name">Secondary Text</div>
+          <div class="color-hex">#8696A0</div>
+          <div class="color-use">Message preview, timestamps, sublabels</div>
+        </div>
+      </div>
+
+      <div class="color-row">
+        <div class="color-num">14</div>
+        <div class="color-swatch" style="background:#1B282E;"></div>
+        <div class="color-details">
+          <div class="color-name">Border / Divider</div>
+          <div class="color-hex">#1B282E</div>
+          <div class="color-use">Lines between items, card borders</div>
+        </div>
+      </div>
+
+      <div class="color-row">
+        <div class="color-num" style="background:#53BDEB;">+</div>
+        <div class="color-swatch" style="background:#E9EDEF;"></div>
+        <div class="color-details">
+          <div class="color-name">Primary Text</div>
+          <div class="color-hex">#E9EDEF</div>
+          <div class="color-use">Main headings, contact names, body text</div>
+        </div>
+      </div>
+
+      <div class="color-row">
+        <div class="color-num" style="background:#53BDEB;">+</div>
+        <div class="color-swatch" style="background:#AEBAC1;"></div>
+        <div class="color-details">
+          <div class="color-name">Muted / Icons</div>
+          <div class="color-hex">#AEBAC1</div>
+          <div class="color-use">Icons, placeholder text, tertiary labels</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
