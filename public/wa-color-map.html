@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WhatsApp Dark — Numbered Color Map</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@500;700&display=swap" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: #000; color: #E9EDEF; padding: 24px; }
+  h1 { font-size: 20px; margin-bottom: 8px; }
+  .subtitle { font-size: 13px; color: #8696A0; margin-bottom: 24px; }
+
+  .layout { display: flex; gap: 24px; max-width: 1500px; margin: 0 auto; }
+  .panels { flex: 1; display: flex; gap: 0; }
+  .legend-col { flex: 0 0 380px; position: sticky; top: 24px; align-self: flex-start; }
+
+  /* ═══ NUMBERED BADGE ═══ */
+  .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 20px; height: 20px; border-radius: 10px;
+    background: #FF4081; color: #fff; font-size: 10px; font-weight: 700;
+    position: absolute; z-index: 10; padding: 0 5px;
+    box-shadow: 0 2px 6px rgba(255,64,129,0.6);
+    pointer-events: none;
+  }
+  .n.blue { background: #2196F3; box-shadow: 0 2px 6px rgba(33,150,243,0.6); }
+
+  /* ═══ LEFT PANEL ═══ */
+  .left-panel {
+    width: 340px; display: flex; flex-direction: column;
+    border: 1px solid #1B282E; border-radius: 10px 0 0 10px; overflow: hidden;
+  }
+
+  /* L1 - Icon sidebar */
+  .icon-sidebar {
+    width: 100%; display: flex; position: relative;
+  }
+  .icon-strip {
+    width: 56px; background: #111B21; display: flex; flex-direction: column;
+    align-items: center; padding: 14px 0; gap: 20px;
+    border-right: 1px solid #1B282E; min-height: 100%;
+  }
+  .icon-dot { width: 24px; height: 24px; border-radius: 50%; background: #3B4A54; }
+  .icon-dot.active { background: #00A884; }
+  .icon-badge { position: absolute; top: 6px; left: 34px; background: #25D366; color: #fff; font-size: 9px; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+  /* L2 - Header bar */
+  .left-header {
+    background: #1F2C34; padding: 14px 16px;
+    display: flex; justify-content: space-between; align-items: center;
+    position: relative;
+  }
+  .left-header .title { font-size: 20px; font-weight: 700; }
+  .left-header .icons { display: flex; gap: 14px; color: #AEBAC1; }
+
+  /* L3 - Search bar */
+  .left-search {
+    background: #111B21; padding: 8px 12px;
+    position: relative;
+  }
+  .search-input {
+    background: #202C33; border: none; border-radius: 8px;
+    padding: 7px 12px 7px 32px; width: 100%; color: #8696A0;
+    font-size: 13px; font-family: inherit;
+  }
+
+  /* L4 - Filter tabs */
+  .filter-tabs {
+    background: #111B21; padding: 6px 12px 8px;
+    display: flex; gap: 6px; position: relative;
+  }
+  .filter-tab {
+    padding: 4px 14px; border-radius: 16px; font-size: 12px; font-weight: 600;
+    cursor: pointer;
+  }
+  .filter-tab.active { background: #00A884; color: #111B21; }
+  .filter-tab.inactive { background: #202C33; color: #8696A0; }
+
+  /* L5 - Archived row */
+  .archived-row {
+    background: #111B21; padding: 10px 16px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid #1B282E; position: relative;
+  }
+  .archived-row .label { font-size: 13px; color: #00A884; font-weight: 600; }
+  .archived-row .count { background: #00A884; color: #111B21; font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 10px; }
+
+  /* L6 - Chat list */
+  .chat-list {
+    background: #111B21; flex: 1; overflow: hidden; position: relative;
+  }
+  .chat-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; border-bottom: 1px solid rgba(27,40,46,0.6);
+    position: relative; cursor: pointer;
+    transition: background 0.15s;
+  }
+  .chat-item:hover { background: #202C33; }
+  .chat-item.hovered-demo { background: #2A3942; }
+  .chat-avatar { width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0; }
+  .chat-name { font-size: 14px; font-weight: 600; color: #E9EDEF; }
+  .chat-preview { font-size: 12px; color: #8696A0; margin-top: 1px; }
+  .chat-time { font-size: 10px; color: #8696A0; position: absolute; right: 14px; top: 12px; }
+  .pin-icon { position: absolute; right: 14px; bottom: 10px; color: #8696A0; font-size: 11px; }
+  .verified { color: #53BDEB; font-size: 12px; }
+
+  /* L8 - Bottom icons */
+  .left-bottom {
+    background: #111B21; padding: 12px 0;
+    display: flex; justify-content: center; gap: 24px;
+    border-top: 1px solid #1B282E; position: relative;
+  }
+
+  /* ═══ RIGHT PANEL ═══ */
+  .right-panel {
+    flex: 1; display: flex; flex-direction: column;
+    border: 1px solid #1B282E; border-left: none;
+    border-radius: 0 10px 10px 0; overflow: hidden;
+    min-width: 500px;
+  }
+
+  /* R1 - Chat header */
+  .right-header {
+    background: #202C33; padding: 10px 16px;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid #1B282E; position: relative;
+  }
+  .rh-avatar { width: 38px; height: 38px; border-radius: 50%; background: #00A884; flex-shrink: 0; }
+  .rh-name { font-size: 15px; font-weight: 600; }
+  .rh-sub { font-size: 11px; color: #8696A0; }
+  .rh-icons { margin-left: auto; display: flex; gap: 16px; color: #AEBAC1; }
+
+  /* R2 - Chat area */
+  .chat-area {
+    background: #0B141A; flex: 1; padding: 16px 60px;
+    display: flex; flex-direction: column; gap: 6px;
+    position: relative; min-height: 380px;
+  }
+
+  /* R3 - Encryption notice */
+  .encrypt-notice {
+    text-align: center; font-size: 10px; color: #F5C842;
+    background: rgba(245,200,66,0.08); padding: 6px 20px;
+    border-radius: 6px; margin: 0 auto 8px; max-width: 420px;
+    position: relative;
+  }
+
+  /* R4 - System message */
+  .system-msg {
+    text-align: center; font-size: 10px; color: #8696A0;
+    background: #1B282E; padding: 5px 14px; border-radius: 6px;
+    margin: 0 auto 4px; position: relative;
+  }
+
+  /* R5 - Outgoing bubble (green) */
+  .bubble-out {
+    background: #005C4B; color: #E9EDEF;
+    padding: 6px 10px; border-radius: 8px 0 8px 8px;
+    max-width: 55%; font-size: 12px; line-height: 1.5;
+    align-self: flex-end; position: relative;
+  }
+  .bubble-time { font-size: 9px; color: rgba(255,255,255,0.5); text-align: right; margin-top: 3px; }
+
+  /* R6 - Incoming bubble */
+  .bubble-in {
+    background: #202C33; color: #E9EDEF;
+    padding: 6px 10px; border-radius: 0 8px 8px 8px;
+    max-width: 55%; font-size: 12px; line-height: 1.5;
+    align-self: flex-start; position: relative;
+  }
+
+  /* R7 - Compose bar */
+  .compose-bar {
+    background: #202C33; padding: 8px 12px;
+    display: flex; align-items: center; gap: 10px;
+    border-top: 1px solid #1B282E; position: relative;
+  }
+  .compose-icon { color: #8696A0; font-size: 18px; cursor: pointer; }
+  .compose-input {
+    flex: 1; background: #2A3942; border: none; border-radius: 8px;
+    padding: 9px 14px; color: #8696A0; font-size: 13px; font-family: inherit;
+    position: relative;
+  }
+  .mic-btn {
+    width: 34px; height: 34px; border-radius: 50%; background: transparent;
+    border: none; color: #8696A0; font-size: 18px; cursor: pointer;
+  }
+
+  /* ═══ LEGEND ═══ */
+  h2 { font-size: 13px; font-weight: 700; color: #8696A0; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+  .legend-section { margin-bottom: 16px; }
+  .legend-list { display: flex; flex-direction: column; gap: 4px; }
+  .legend-row {
+    display: flex; align-items: center; gap: 8px;
+    background: #111B21; border: 1px solid #1B282E;
+    border-radius: 6px; padding: 8px 10px;
+  }
+  .ln {
+    min-width: 20px; height: 20px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: #fff; padding: 0 5px;
+  }
+  .ln.pink { background: #FF4081; }
+  .ln.blue { background: #2196F3; }
+  .lswatch { width: 24px; height: 24px; border-radius: 4px; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.06); }
+  .linfo { flex: 1; }
+  .lname { font-size: 11px; font-weight: 600; color: #E9EDEF; }
+  .lhex { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; color: #00A884; }
+</style>
+</head>
+<body>
+
+<h1>WhatsApp Dark — Every Zone Numbered</h1>
+<p class="subtitle">Left panel = <span style="color:#FF4081;">PINK L1-L8</span> &nbsp;&nbsp; Right panel = <span style="color:#2196F3;">BLUE R1-R8</span></p>
+
+<div class="layout">
+
+  <!-- ═══ WA MOCK ═══ -->
+  <div class="panels">
+
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+      <div class="icon-sidebar" style="display:flex;">
+        <div class="icon-strip" style="position:relative;">
+          <div class="n" style="top:-8px;left:-4px;">L1</div>
+          <div class="icon-dot active"></div>
+          <div class="icon-dot"></div>
+          <div class="icon-dot"></div>
+          <div class="icon-dot"></div>
+          <div style="flex:1;"></div>
+          <div class="icon-dot"></div>
+          <div class="icon-dot"></div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;">
+
+          <!-- L2 Header -->
+          <div class="left-header">
+            <div class="n" style="top:-8px;left:-4px;">L2</div>
+            <div class="title">Chats</div>
+            <div class="icons"><span>+</span> <span>&#8942;</span></div>
+          </div>
+
+          <!-- L3 Search -->
+          <div class="left-search">
+            <div class="n" style="top:-6px;left:-4px;">L3</div>
+            <input class="search-input" value="  Search" readonly />
+          </div>
+
+          <!-- L4 Filter tabs -->
+          <div class="filter-tabs">
+            <div class="n" style="top:-8px;left:-4px;">L4</div>
+            <div class="filter-tab active">All</div>
+            <div class="filter-tab inactive">Unread</div>
+            <div class="filter-tab inactive">Groups</div>
+          </div>
+
+          <!-- L5 Archived -->
+          <div class="archived-row">
+            <div class="n" style="top:-8px;left:-4px;">L5</div>
+            <div class="label">Archived</div>
+            <div class="count">2</div>
+          </div>
+
+          <!-- L6 Chat list -->
+          <div class="chat-list">
+            <div class="n" style="top:4px;right:4px;">L6</div>
+
+            <!-- L6a - Normal chat row -->
+            <div class="chat-item" style="position:relative;">
+              <div class="n" style="top:-6px;left:-4px;font-size:8px;">L6a</div>
+              <div class="chat-avatar" style="background:#3B4A54;"></div>
+              <div>
+                <div class="chat-name">Darlene Robertson <span class="verified">&#10003;</span></div>
+                <div class="chat-preview">Message loren ipsum</div>
+              </div>
+              <div class="chat-time">12:18</div>
+              <div class="pin-icon">&#128204;</div>
+            </div>
+
+            <!-- L6b - WhatsApp row -->
+            <div class="chat-item" style="position:relative;">
+              <div class="chat-avatar" style="background:#25D366;"></div>
+              <div>
+                <div class="chat-name">WhatsApp <span class="verified">&#10003;</span></div>
+                <div class="chat-preview">Lorem ipsum dolor sit amet...</div>
+              </div>
+              <div class="chat-time">12:18</div>
+            </div>
+
+            <!-- L7 - Hovered state -->
+            <div class="chat-item hovered-demo" style="position:relative;">
+              <div class="n" style="top:-6px;left:-4px;">L7</div>
+              <div class="chat-avatar" style="background:#3B4A54;"></div>
+              <div>
+                <div class="chat-name">Brooklyn Simmons</div>
+                <div class="chat-preview">Message loren ipsum</div>
+              </div>
+              <div class="chat-time">12:18</div>
+            </div>
+
+            <div class="chat-item">
+              <div class="chat-avatar" style="background:#3B4A54;"></div>
+              <div>
+                <div class="chat-name">Savannah Nguyen</div>
+                <div class="chat-preview">Message loren ipsum</div>
+              </div>
+              <div class="chat-time">12:18</div>
+            </div>
+
+            <div class="chat-item">
+              <div class="chat-avatar" style="background:#3B4A54;"></div>
+              <div>
+                <div class="chat-name">Kathryn Murphy</div>
+                <div class="chat-preview">0:08</div>
+              </div>
+              <div class="chat-time">12:18</div>
+            </div>
+
+            <div class="chat-item">
+              <div class="chat-avatar" style="background:#3B4A54;"></div>
+              <div>
+                <div class="chat-name">Eleanor Pena</div>
+                <div class="chat-preview">Message loren ipsum</div>
+              </div>
+              <div class="chat-time">12:18</div>
+            </div>
+          </div>
+
+          <!-- L8 Bottom bar -->
+          <div class="left-bottom">
+            <div class="n" style="top:-8px;left:-4px;">L8</div>
+            <div class="icon-dot" style="width:20px;height:20px;"></div>
+            <div class="icon-dot" style="width:20px;height:20px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+
+      <!-- R1 Chat header -->
+      <div class="right-header">
+        <div class="n blue" style="top:-8px;left:-4px;">R1</div>
+        <div class="rh-avatar"></div>
+        <div>
+          <div class="rh-name">WhatsApp <span class="verified">&#10003;</span></div>
+          <div class="rh-sub">Business account</div>
+        </div>
+        <div class="rh-icons"><span>&#9900;</span> <span>&#128269;</span> <span>&#8942;</span></div>
+      </div>
+
+      <!-- R2 Chat area -->
+      <div class="chat-area">
+        <div class="n blue" style="top:4px;left:4px;">R2</div>
+
+        <!-- R3 Encryption notice -->
+        <div class="encrypt-notice">
+          <div class="n blue" style="top:-10px;left:-10px;font-size:8px;">R3</div>
+          Messages and calls are protected with end-to-end encryption.
+        </div>
+
+        <!-- R4 System message -->
+        <div class="system-msg">
+          <div class="n blue" style="top:-10px;left:-10px;font-size:8px;">R4</div>
+          This company uses a secure service from Meta to manage this conversation.
+        </div>
+
+        <!-- R5 Outgoing bubble -->
+        <div class="bubble-out" style="margin-left:auto;">
+          <div class="n blue" style="top:-10px;right:-10px;">R5</div>
+          Hello
+          <div class="bubble-time">23:00 &#10003;&#10003;</div>
+        </div>
+
+        <!-- R6 Incoming bubble -->
+        <div class="bubble-in">
+          <div class="n blue" style="top:-10px;left:-10px;">R6a</div>
+          Lorem ipsum dolor sit amet consectetur. Nunc ut tellus condimentum sit ante etiam. Cras aliquam elit suspendisse gravida pellentesque.
+          <div class="bubble-time">23:00</div>
+        </div>
+
+        <div class="bubble-in">
+          Lorem ipsum dolor sit amet consectetur. Mattis tellus lacus volutpat diam sapien lobortis risus at.
+          <div class="bubble-time">23:00</div>
+        </div>
+
+        <!-- Another outgoing -->
+        <div class="bubble-out" style="margin-left:auto;">
+          <div class="n blue" style="top:-10px;right:-10px;">R6b</div>
+          Lorem ipsum dolor sit amet consectetur. Vivamus neque morbi neque amet cursus morbi id mauris.
+          <div class="bubble-time">23:00 &#10003;&#10003;</div>
+        </div>
+      </div>
+
+      <!-- R7 Compose bar -->
+      <div class="compose-bar">
+        <div class="n blue" style="top:-10px;left:-4px;">R7</div>
+        <span class="compose-icon">&#9786;</span>
+        <span class="compose-icon">+</span>
+        <input class="compose-input" value="Type a message" readonly style="position:relative;" />
+        <div class="n blue" style="top:-10px;right:50px;font-size:8px;">R8</div>
+        <span class="compose-icon">&#127908;</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ LEGEND ═══ -->
+  <div class="legend-col">
+
+    <div class="legend-section">
+      <h2 style="color:#FF4081;">Left Panel</h2>
+      <div class="legend-list">
+        <div class="legend-row">
+          <div class="ln pink">L1</div>
+          <div class="lswatch" style="background:#111B21;"></div>
+          <div class="linfo"><div class="lname">Icon Sidebar</div><div class="lhex">#111B21</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln pink">L2</div>
+          <div class="lswatch" style="background:#1F2C34;"></div>
+          <div class="linfo"><div class="lname">Header "Chats" bar</div><div class="lhex">#1F2C34</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln pink">L3</div>
+          <div class="lswatch" style="background:#111B21;"></div>
+          <div class="linfo"><div class="lname">Search area background</div><div class="lhex">#111B21</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln pink">L3i</div>
+          <div class="lswatch" style="background:#202C33;"></div>
+          <div class="linfo"><div class="lname">Search input field (inner)</div><div class="lhex">#202C33</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln pink">L4</div>
+          <div class="lswatch" style="background:#111B21;"></div>
+          <div class="linfo"><div class="lname">Filter tabs area bg</div><div class="lhex">#111B21</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln pink">L4a</div>
+          <div class="lswatch" style="background:#00A884;"></div>
+          <div class="linfo"><div class="lname">Active tab pill ("All")</div><div class="lhex">#00A884</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln pink">L4b</div>
+          <div class="lswatch" style="background:#202C33;"></div>
+          <div class="linfo"><div class="lname">Inactive tab pill</div><div class="lhex">#202C33</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln pink">L5</div>
+          <div class="lswatch" style="background:#111B21;"></div>
+          <div class="linfo"><div class="lname">Archived row bg</div><div class="lhex">#111B21</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln pink">L6</div>
+          <div class="lswatch" style="background:#111B21;"></div>
+          <div class="linfo"><div class="lname">Chat list bg (default row)</div><div class="lhex">#111B21</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln pink">L6a</div>
+          <div class="lswatch" style="background:#111B21;"></div>
+          <div class="linfo"><div class="lname">Chat row — normal</div><div class="lhex">#111B21</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln pink">L7</div>
+          <div class="lswatch" style="background:#2A3942;"></div>
+          <div class="linfo"><div class="lname">Chat row — hovered</div><div class="lhex">#2A3942</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln pink">L8</div>
+          <div class="lswatch" style="background:#111B21;"></div>
+          <div class="linfo"><div class="lname">Bottom icons bar</div><div class="lhex">#111B21</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend-section">
+      <h2 style="color:#2196F3;">Right Panel</h2>
+      <div class="legend-list">
+        <div class="legend-row">
+          <div class="ln blue">R1</div>
+          <div class="lswatch" style="background:#202C33;"></div>
+          <div class="linfo"><div class="lname">Chat header bar</div><div class="lhex">#202C33</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln blue">R2</div>
+          <div class="lswatch" style="background:#0B141A;"></div>
+          <div class="linfo"><div class="lname">Chat area background (deepest)</div><div class="lhex">#0B141A</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln blue">R3</div>
+          <div class="lswatch" style="background:rgba(245,200,66,0.08); border:1px solid #F5C842;"></div>
+          <div class="linfo"><div class="lname">Encryption notice banner</div><div class="lhex">rgba(245,200,66,0.08)</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln blue">R4</div>
+          <div class="lswatch" style="background:#1B282E;"></div>
+          <div class="linfo"><div class="lname">System message pill</div><div class="lhex">#1B282E</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln blue">R5</div>
+          <div class="lswatch" style="background:#005C4B;"></div>
+          <div class="linfo"><div class="lname">Outgoing bubble (green)</div><div class="lhex">#005C4B</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln blue">R6a</div>
+          <div class="lswatch" style="background:#202C33;"></div>
+          <div class="linfo"><div class="lname">Incoming bubble</div><div class="lhex">#202C33</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln blue">R6b</div>
+          <div class="lswatch" style="background:#005C4B;"></div>
+          <div class="linfo"><div class="lname">Outgoing bubble (same as R5)</div><div class="lhex">#005C4B</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln blue">R7</div>
+          <div class="lswatch" style="background:#202C33;"></div>
+          <div class="linfo"><div class="lname">Compose bar background</div><div class="lhex">#202C33</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln blue">R8</div>
+          <div class="lswatch" style="background:#2A3942;"></div>
+          <div class="linfo"><div class="lname">Compose input field (inner)</div><div class="lhex">#2A3942</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend-section">
+      <h2 style="color:#AEBAC1;">Text &amp; Accents</h2>
+      <div class="legend-list">
+        <div class="legend-row">
+          <div class="ln" style="background:#E9EDEF;color:#111B21;">T1</div>
+          <div class="lswatch" style="background:#E9EDEF;"></div>
+          <div class="linfo"><div class="lname">Primary text (names, headings)</div><div class="lhex">#E9EDEF</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln" style="background:#8696A0;color:#fff;">T2</div>
+          <div class="lswatch" style="background:#8696A0;"></div>
+          <div class="linfo"><div class="lname">Secondary text (preview, time)</div><div class="lhex">#8696A0</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln" style="background:#AEBAC1;color:#111B21;">T3</div>
+          <div class="lswatch" style="background:#AEBAC1;"></div>
+          <div class="linfo"><div class="lname">Icons / muted labels</div><div class="lhex">#AEBAC1</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln" style="background:#00A884;color:#fff;">T4</div>
+          <div class="lswatch" style="background:#00A884;"></div>
+          <div class="linfo"><div class="lname">Green accent (teal)</div><div class="lhex">#00A884</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln" style="background:#53BDEB;color:#fff;">T5</div>
+          <div class="lswatch" style="background:#53BDEB;"></div>
+          <div class="linfo"><div class="lname">Blue verified badge</div><div class="lhex">#53BDEB</div></div>
+        </div>
+        <div class="legend-row">
+          <div class="ln" style="background:#1B282E;color:#8696A0;">B</div>
+          <div class="lswatch" style="background:#1B282E;"></div>
+          <div class="linfo"><div class="lname">Border / divider lines</div><div class="lhex">#1B282E</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
