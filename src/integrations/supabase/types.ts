@@ -928,6 +928,175 @@ export type Database = {
         }
         Relationships: []
       }
+      cfi_building_specifications: {
+        Row: {
+          building_id: number
+          building_name: string
+          building_type: string | null
+          construction_cost_usd: number | null
+          construction_duration_days: number | null
+          created_at: string | null
+          drainage_capacity_m3_per_h: number | null
+          electrical_capacity_kva: number | null
+          element_id: number | null
+          footprint_m2: number
+          foundation_type: string | null
+          height_m: number | null
+          humidity_control: boolean | null
+          hvac_system: Json | null
+          local_code_compliance: string[] | null
+          roof_type: string | null
+          stage: string
+          stories: number | null
+          structural_system: string | null
+          temperature_range_c: Json | null
+          updated_at: string | null
+          ventilation_rate_m3_per_h: number | null
+          volume_m3: number | null
+          wall_type: string | null
+          water_supply_capacity_m3_per_h: number | null
+        }
+        Insert: {
+          building_id?: number
+          building_name: string
+          building_type?: string | null
+          construction_cost_usd?: number | null
+          construction_duration_days?: number | null
+          created_at?: string | null
+          drainage_capacity_m3_per_h?: number | null
+          electrical_capacity_kva?: number | null
+          element_id?: number | null
+          footprint_m2: number
+          foundation_type?: string | null
+          height_m?: number | null
+          humidity_control?: boolean | null
+          hvac_system?: Json | null
+          local_code_compliance?: string[] | null
+          roof_type?: string | null
+          stage: string
+          stories?: number | null
+          structural_system?: string | null
+          temperature_range_c?: Json | null
+          updated_at?: string | null
+          ventilation_rate_m3_per_h?: number | null
+          volume_m3?: number | null
+          wall_type?: string | null
+          water_supply_capacity_m3_per_h?: number | null
+        }
+        Update: {
+          building_id?: number
+          building_name?: string
+          building_type?: string | null
+          construction_cost_usd?: number | null
+          construction_duration_days?: number | null
+          created_at?: string | null
+          drainage_capacity_m3_per_h?: number | null
+          electrical_capacity_kva?: number | null
+          element_id?: number | null
+          footprint_m2?: number
+          foundation_type?: string | null
+          height_m?: number | null
+          humidity_control?: boolean | null
+          hvac_system?: Json | null
+          local_code_compliance?: string[] | null
+          roof_type?: string | null
+          stage?: string
+          stories?: number | null
+          structural_system?: string | null
+          temperature_range_c?: Json | null
+          updated_at?: string | null
+          ventilation_rate_m3_per_h?: number | null
+          volume_m3?: number | null
+          wall_type?: string | null
+          water_supply_capacity_m3_per_h?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_building_specifications_element_id_fkey"
+            columns: ["element_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_design_elements"
+            referencedColumns: ["element_id"]
+          },
+        ]
+      }
+      cfi_capex_opex_breakdown: {
+        Row: {
+          confidence: string | null
+          cost_category: string | null
+          cost_id: number
+          cost_subcategory: string | null
+          cost_type: string | null
+          created_at: string | null
+          element_id: number | null
+          is_recurring: boolean | null
+          item_description: string
+          quantity: number | null
+          quotation_reference: string | null
+          recurrence_frequency: string | null
+          scales_with: string | null
+          scaling_factor: number | null
+          source: string | null
+          total_cost_usd: number
+          unit: string | null
+          unit_cost_usd: number | null
+          updated_at: string | null
+          year_of_expenditure: number | null
+        }
+        Insert: {
+          confidence?: string | null
+          cost_category?: string | null
+          cost_id?: number
+          cost_subcategory?: string | null
+          cost_type?: string | null
+          created_at?: string | null
+          element_id?: number | null
+          is_recurring?: boolean | null
+          item_description: string
+          quantity?: number | null
+          quotation_reference?: string | null
+          recurrence_frequency?: string | null
+          scales_with?: string | null
+          scaling_factor?: number | null
+          source?: string | null
+          total_cost_usd: number
+          unit?: string | null
+          unit_cost_usd?: number | null
+          updated_at?: string | null
+          year_of_expenditure?: number | null
+        }
+        Update: {
+          confidence?: string | null
+          cost_category?: string | null
+          cost_id?: number
+          cost_subcategory?: string | null
+          cost_type?: string | null
+          created_at?: string | null
+          element_id?: number | null
+          is_recurring?: boolean | null
+          item_description?: string
+          quantity?: number | null
+          quotation_reference?: string | null
+          recurrence_frequency?: string | null
+          scales_with?: string | null
+          scaling_factor?: number | null
+          source?: string | null
+          total_cost_usd?: number
+          unit?: string | null
+          unit_cost_usd?: number | null
+          updated_at?: string | null
+          year_of_expenditure?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_capex_opex_breakdown_element_id_fkey"
+            columns: ["element_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_design_elements"
+            referencedColumns: ["element_id"]
+          },
+        ]
+      }
       cfi_chemical_treatments: {
         Row: {
           best_bsf_rank: number | null
@@ -1192,6 +1361,253 @@ export type Database = {
           },
         ]
       }
+      cfi_design_changelog: {
+        Row: {
+          change_date: string | null
+          change_description: string | null
+          change_id: number
+          change_reason: string | null
+          change_type: string | null
+          changed_by: string
+          element_id: number | null
+          field_changed: string | null
+          new_value: string | null
+          old_value: string | null
+          version_from: string | null
+          version_to: string | null
+        }
+        Insert: {
+          change_date?: string | null
+          change_description?: string | null
+          change_id?: number
+          change_reason?: string | null
+          change_type?: string | null
+          changed_by: string
+          element_id?: number | null
+          field_changed?: string | null
+          new_value?: string | null
+          old_value?: string | null
+          version_from?: string | null
+          version_to?: string | null
+        }
+        Update: {
+          change_date?: string | null
+          change_description?: string | null
+          change_id?: number
+          change_reason?: string | null
+          change_type?: string | null
+          changed_by?: string
+          element_id?: number | null
+          field_changed?: string | null
+          new_value?: string | null
+          old_value?: string | null
+          version_from?: string | null
+          version_to?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_design_changelog_element_id_fkey"
+            columns: ["element_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_design_elements"
+            referencedColumns: ["element_id"]
+          },
+        ]
+      }
+      cfi_design_elements: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          assumptions: string | null
+          calculation_logic: string | null
+          capacity_specs: Json | null
+          category_id: string | null
+          confidence_level: string | null
+          created_at: string | null
+          created_by: string | null
+          depends_on: string[] | null
+          description: string | null
+          design_notes: string | null
+          design_type: string | null
+          dimensions: Json | null
+          dwg_reference: string | null
+          element_code: string
+          element_id: number
+          element_name: string
+          equipment_list: Json | null
+          feeds_into: string[] | null
+          file_reference: string | null
+          input_parameters: Json | null
+          output_metrics: Json | null
+          source_references: string[] | null
+          stage: string
+          status: string | null
+          updated_at: string | null
+          version: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          assumptions?: string | null
+          calculation_logic?: string | null
+          capacity_specs?: Json | null
+          category_id?: string | null
+          confidence_level?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          depends_on?: string[] | null
+          description?: string | null
+          design_notes?: string | null
+          design_type?: string | null
+          dimensions?: Json | null
+          dwg_reference?: string | null
+          element_code: string
+          element_id?: number
+          element_name: string
+          equipment_list?: Json | null
+          feeds_into?: string[] | null
+          file_reference?: string | null
+          input_parameters?: Json | null
+          output_metrics?: Json | null
+          source_references?: string[] | null
+          stage: string
+          status?: string | null
+          updated_at?: string | null
+          version?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          assumptions?: string | null
+          calculation_logic?: string | null
+          capacity_specs?: Json | null
+          category_id?: string | null
+          confidence_level?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          depends_on?: string[] | null
+          description?: string | null
+          design_notes?: string | null
+          design_type?: string | null
+          dimensions?: Json | null
+          dwg_reference?: string | null
+          element_code?: string
+          element_id?: number
+          element_name?: string
+          equipment_list?: Json | null
+          feeds_into?: string[] | null
+          file_reference?: string | null
+          input_parameters?: Json | null
+          output_metrics?: Json | null
+          source_references?: string[] | null
+          stage?: string
+          status?: string | null
+          updated_at?: string | null
+          version?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_design_elements_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_engineering_categories"
+            referencedColumns: ["category_id"]
+          },
+        ]
+      }
+      cfi_design_logic: {
+        Row: {
+          assumptions: string | null
+          category_id: string | null
+          constants: Json | null
+          created_at: string | null
+          description: string | null
+          element_id: number | null
+          formula_latex: string | null
+          formula_text: string | null
+          input_params: Json | null
+          limitations: string | null
+          logic_code: string
+          logic_id: number
+          logic_name: string
+          logic_type: string | null
+          methodology: string | null
+          output_params: Json | null
+          pseudocode: string | null
+          python_code: string | null
+          source_references: string[] | null
+          sql_function: string | null
+          test_cases: Json | null
+          updated_at: string | null
+          validation_rules: string[] | null
+        }
+        Insert: {
+          assumptions?: string | null
+          category_id?: string | null
+          constants?: Json | null
+          created_at?: string | null
+          description?: string | null
+          element_id?: number | null
+          formula_latex?: string | null
+          formula_text?: string | null
+          input_params?: Json | null
+          limitations?: string | null
+          logic_code: string
+          logic_id?: number
+          logic_name: string
+          logic_type?: string | null
+          methodology?: string | null
+          output_params?: Json | null
+          pseudocode?: string | null
+          python_code?: string | null
+          source_references?: string[] | null
+          sql_function?: string | null
+          test_cases?: Json | null
+          updated_at?: string | null
+          validation_rules?: string[] | null
+        }
+        Update: {
+          assumptions?: string | null
+          category_id?: string | null
+          constants?: Json | null
+          created_at?: string | null
+          description?: string | null
+          element_id?: number | null
+          formula_latex?: string | null
+          formula_text?: string | null
+          input_params?: Json | null
+          limitations?: string | null
+          logic_code?: string
+          logic_id?: number
+          logic_name?: string
+          logic_type?: string | null
+          methodology?: string | null
+          output_params?: Json | null
+          pseudocode?: string | null
+          python_code?: string | null
+          source_references?: string[] | null
+          sql_function?: string | null
+          test_cases?: Json | null
+          updated_at?: string | null
+          validation_rules?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_design_logic_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_engineering_categories"
+            referencedColumns: ["category_id"]
+          },
+          {
+            foreignKeyName: "cfi_design_logic_element_id_fkey"
+            columns: ["element_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_design_elements"
+            referencedColumns: ["element_id"]
+          },
+        ]
+      }
       cfi_electricity_opex: {
         Row: {
           cost_idr_per_month: number | null
@@ -1248,6 +1664,119 @@ export type Database = {
           usd_kwh_rate?: number | null
         }
         Relationships: []
+      }
+      cfi_engineering_calculations: {
+        Row: {
+          calc_code: string
+          calc_id: number
+          calc_name: string
+          calculation_notes: string | null
+          created_at: string | null
+          element_id: number | null
+          input_values: Json | null
+          logic_id: number | null
+          mill_capacity_tph: number | null
+          output_values: Json | null
+          processing_hours_per_day: number | null
+          scenario_name: string | null
+          verification_method: string | null
+          verified: boolean | null
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          calc_code: string
+          calc_id?: number
+          calc_name: string
+          calculation_notes?: string | null
+          created_at?: string | null
+          element_id?: number | null
+          input_values?: Json | null
+          logic_id?: number | null
+          mill_capacity_tph?: number | null
+          output_values?: Json | null
+          processing_hours_per_day?: number | null
+          scenario_name?: string | null
+          verification_method?: string | null
+          verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          calc_code?: string
+          calc_id?: number
+          calc_name?: string
+          calculation_notes?: string | null
+          created_at?: string | null
+          element_id?: number | null
+          input_values?: Json | null
+          logic_id?: number | null
+          mill_capacity_tph?: number | null
+          output_values?: Json | null
+          processing_hours_per_day?: number | null
+          scenario_name?: string | null
+          verification_method?: string | null
+          verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_engineering_calculations_element_id_fkey"
+            columns: ["element_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_design_elements"
+            referencedColumns: ["element_id"]
+          },
+          {
+            foreignKeyName: "cfi_engineering_calculations_logic_id_fkey"
+            columns: ["logic_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_design_logic"
+            referencedColumns: ["logic_id"]
+          },
+        ]
+      }
+      cfi_engineering_categories: {
+        Row: {
+          category_id: string
+          category_name: string
+          created_at: string | null
+          description: string | null
+          display_order: number | null
+          parent_category_id: string | null
+          stage: string
+          updated_at: string | null
+        }
+        Insert: {
+          category_id: string
+          category_name: string
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          parent_category_id?: string | null
+          stage: string
+          updated_at?: string | null
+        }
+        Update: {
+          category_id?: string
+          category_name?: string
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          parent_category_id?: string | null
+          stage?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_engineering_categories_parent_category_id_fkey"
+            columns: ["parent_category_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_engineering_categories"
+            referencedColumns: ["category_id"]
+          },
+        ]
       }
       cfi_engineering_documents: {
         Row: {
@@ -1784,6 +2313,83 @@ export type Database = {
         }
         Relationships: []
       }
+      cfi_floor_plans: {
+        Row: {
+          building_height_m: number | null
+          building_length_m: number | null
+          building_width_m: number | null
+          cad_file: string | null
+          created_at: string | null
+          drainage_layout: Json | null
+          electrical_layout: Json | null
+          element_id: number | null
+          equipment_locations: Json | null
+          floor_plan_id: number
+          flow_paths: Json | null
+          html_file: string | null
+          pdf_file: string | null
+          plan_name: string
+          residue_type: string | null
+          stage: string
+          total_area_m2: number
+          updated_at: string | null
+          water_supply_layout: Json | null
+          zones: Json | null
+        }
+        Insert: {
+          building_height_m?: number | null
+          building_length_m?: number | null
+          building_width_m?: number | null
+          cad_file?: string | null
+          created_at?: string | null
+          drainage_layout?: Json | null
+          electrical_layout?: Json | null
+          element_id?: number | null
+          equipment_locations?: Json | null
+          floor_plan_id?: number
+          flow_paths?: Json | null
+          html_file?: string | null
+          pdf_file?: string | null
+          plan_name: string
+          residue_type?: string | null
+          stage: string
+          total_area_m2: number
+          updated_at?: string | null
+          water_supply_layout?: Json | null
+          zones?: Json | null
+        }
+        Update: {
+          building_height_m?: number | null
+          building_length_m?: number | null
+          building_width_m?: number | null
+          cad_file?: string | null
+          created_at?: string | null
+          drainage_layout?: Json | null
+          electrical_layout?: Json | null
+          element_id?: number | null
+          equipment_locations?: Json | null
+          floor_plan_id?: number
+          flow_paths?: Json | null
+          html_file?: string | null
+          pdf_file?: string | null
+          plan_name?: string
+          residue_type?: string | null
+          stage?: string
+          total_area_m2?: number
+          updated_at?: string | null
+          water_supply_layout?: Json | null
+          zones?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_floor_plans_element_id_fkey"
+            columns: ["element_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_design_elements"
+            referencedColumns: ["element_id"]
+          },
+        ]
+      }
       cfi_gps_submissions: {
         Row: {
           created_at: string | null
@@ -2169,6 +2775,93 @@ export type Database = {
           display_stage?: string
           id?: number
           is_final_output?: boolean | null
+        }
+        Relationships: []
+      }
+      cfi_machinery_equipment: {
+        Row: {
+          annual_maintenance_cost_usd: number | null
+          capacity_specs: Json | null
+          category: string
+          connects_to: string[] | null
+          created_at: string | null
+          electrical_requirements: Json | null
+          equipment_code: string
+          equipment_id: number
+          equipment_name: string
+          installation_cost_usd: number | null
+          maintenance_schedule: string | null
+          manufacturer: string | null
+          material_input: string[] | null
+          material_output: string[] | null
+          model_number: string | null
+          operation_manual: string | null
+          performance_specs: Json | null
+          replacement_cycle_years: number | null
+          space_requirements: Json | null
+          specification_sheet: string | null
+          stage: string
+          subcategory: string | null
+          supplier_contact: string | null
+          unit_cost_usd: number | null
+          updated_at: string | null
+          water_requirements: Json | null
+        }
+        Insert: {
+          annual_maintenance_cost_usd?: number | null
+          capacity_specs?: Json | null
+          category: string
+          connects_to?: string[] | null
+          created_at?: string | null
+          electrical_requirements?: Json | null
+          equipment_code: string
+          equipment_id?: number
+          equipment_name: string
+          installation_cost_usd?: number | null
+          maintenance_schedule?: string | null
+          manufacturer?: string | null
+          material_input?: string[] | null
+          material_output?: string[] | null
+          model_number?: string | null
+          operation_manual?: string | null
+          performance_specs?: Json | null
+          replacement_cycle_years?: number | null
+          space_requirements?: Json | null
+          specification_sheet?: string | null
+          stage: string
+          subcategory?: string | null
+          supplier_contact?: string | null
+          unit_cost_usd?: number | null
+          updated_at?: string | null
+          water_requirements?: Json | null
+        }
+        Update: {
+          annual_maintenance_cost_usd?: number | null
+          capacity_specs?: Json | null
+          category?: string
+          connects_to?: string[] | null
+          created_at?: string | null
+          electrical_requirements?: Json | null
+          equipment_code?: string
+          equipment_id?: number
+          equipment_name?: string
+          installation_cost_usd?: number | null
+          maintenance_schedule?: string | null
+          manufacturer?: string | null
+          material_input?: string[] | null
+          material_output?: string[] | null
+          model_number?: string | null
+          operation_manual?: string | null
+          performance_specs?: Json | null
+          replacement_cycle_years?: number | null
+          space_requirements?: Json | null
+          specification_sheet?: string | null
+          stage?: string
+          subcategory?: string | null
+          supplier_contact?: string | null
+          unit_cost_usd?: number | null
+          updated_at?: string | null
+          water_requirements?: Json | null
         }
         Relationships: []
       }
@@ -2895,6 +3588,68 @@ export type Database = {
         }
         Relationships: []
       }
+      cfi_process_flows: {
+        Row: {
+          ascii_diagram: string | null
+          control_logic: string | null
+          created_at: string | null
+          decision_points: Json | null
+          diagram_type: string | null
+          element_id: number | null
+          flow_code: string
+          flow_id: number
+          flow_name: string
+          flow_steps: Json | null
+          flow_type: string | null
+          html_file: string | null
+          image_file: string | null
+          mass_balance: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          ascii_diagram?: string | null
+          control_logic?: string | null
+          created_at?: string | null
+          decision_points?: Json | null
+          diagram_type?: string | null
+          element_id?: number | null
+          flow_code: string
+          flow_id?: number
+          flow_name: string
+          flow_steps?: Json | null
+          flow_type?: string | null
+          html_file?: string | null
+          image_file?: string | null
+          mass_balance?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          ascii_diagram?: string | null
+          control_logic?: string | null
+          created_at?: string | null
+          decision_points?: Json | null
+          diagram_type?: string | null
+          element_id?: number | null
+          flow_code?: string
+          flow_id?: number
+          flow_name?: string
+          flow_steps?: Json | null
+          flow_type?: string | null
+          html_file?: string | null
+          image_file?: string | null
+          mass_balance?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cfi_process_flows_element_id_fkey"
+            columns: ["element_id"]
+            isOneToOne: false
+            referencedRelation: "cfi_design_elements"
+            referencedColumns: ["element_id"]
+          },
+        ]
+      }
       cfi_product_nutrients: {
         Row: {
           b_g_per_t_wet: number | null
@@ -3431,6 +4186,72 @@ export type Database = {
         }
         Relationships: []
       }
+      cfi_s1_line_config: {
+        Row: {
+          belt_mm: number | null
+          building_dims: string | null
+          created_at: string | null
+          doc_ref: string
+          id: number
+          key_guardrails_json: Json
+          line_code: string
+          line_designation: string
+          residue_code: string
+          residue_name: string
+          s2_handoff_state: string
+          s2_npk_contribution: string | null
+          section_number: string
+          side_flows_text: string | null
+          source_description: string
+          stream_data_json: Json
+          throughput_label: string
+          topbar_bg: string
+          topbar_color: string
+        }
+        Insert: {
+          belt_mm?: number | null
+          building_dims?: string | null
+          created_at?: string | null
+          doc_ref: string
+          id?: number
+          key_guardrails_json?: Json
+          line_code: string
+          line_designation: string
+          residue_code: string
+          residue_name: string
+          s2_handoff_state: string
+          s2_npk_contribution?: string | null
+          section_number: string
+          side_flows_text?: string | null
+          source_description: string
+          stream_data_json?: Json
+          throughput_label: string
+          topbar_bg: string
+          topbar_color: string
+        }
+        Update: {
+          belt_mm?: number | null
+          building_dims?: string | null
+          created_at?: string | null
+          doc_ref?: string
+          id?: number
+          key_guardrails_json?: Json
+          line_code?: string
+          line_designation?: string
+          residue_code?: string
+          residue_name?: string
+          s2_handoff_state?: string
+          s2_npk_contribution?: string | null
+          section_number?: string
+          side_flows_text?: string | null
+          source_description?: string
+          stream_data_json?: Json
+          throughput_label?: string
+          topbar_bg?: string
+          topbar_color?: string
+        }
+        Relationships: []
+      }
       cfi_s1_opex_labour: {
         Row: {
           created_at: string | null
@@ -3604,6 +4425,108 @@ export type Database = {
           mc_out_pct?: number | null
           node_number?: number
           power_kw?: number | null
+          throughput_th?: number | null
+        }
+        Relationships: []
+      }
+      cfi_s1_process_nodes_detail: {
+        Row: {
+          anchor_spec: string | null
+          belt_length_m: number | null
+          belt_width_mm: number | null
+          capacity_m3: number | null
+          derate_pct: number | null
+          elevation_m: number | null
+          equipment_name: string
+          equipment_tag: string
+          extra_detail: string | null
+          gate_code: string | null
+          gate_color: string | null
+          gate_label: string | null
+          gate_text: string | null
+          guardrail_text: string | null
+          id: number
+          inclination_deg: number | null
+          instruments: string | null
+          is_parallel: boolean | null
+          line_code: string
+          manufacturer: string | null
+          material: string | null
+          mc_in_pct: number | null
+          mc_out_pct: number | null
+          mesh_aperture_mm: number | null
+          nameplate_th: number | null
+          node_number: number
+          noise_zone: boolean | null
+          pad_dimensions: string | null
+          power_kw: number | null
+          side_flow_text: string | null
+          throughput_th: number | null
+        }
+        Insert: {
+          anchor_spec?: string | null
+          belt_length_m?: number | null
+          belt_width_mm?: number | null
+          capacity_m3?: number | null
+          derate_pct?: number | null
+          elevation_m?: number | null
+          equipment_name: string
+          equipment_tag: string
+          extra_detail?: string | null
+          gate_code?: string | null
+          gate_color?: string | null
+          gate_label?: string | null
+          gate_text?: string | null
+          guardrail_text?: string | null
+          id?: number
+          inclination_deg?: number | null
+          instruments?: string | null
+          is_parallel?: boolean | null
+          line_code: string
+          manufacturer?: string | null
+          material?: string | null
+          mc_in_pct?: number | null
+          mc_out_pct?: number | null
+          mesh_aperture_mm?: number | null
+          nameplate_th?: number | null
+          node_number: number
+          noise_zone?: boolean | null
+          pad_dimensions?: string | null
+          power_kw?: number | null
+          side_flow_text?: string | null
+          throughput_th?: number | null
+        }
+        Update: {
+          anchor_spec?: string | null
+          belt_length_m?: number | null
+          belt_width_mm?: number | null
+          capacity_m3?: number | null
+          derate_pct?: number | null
+          elevation_m?: number | null
+          equipment_name?: string
+          equipment_tag?: string
+          extra_detail?: string | null
+          gate_code?: string | null
+          gate_color?: string | null
+          gate_label?: string | null
+          gate_text?: string | null
+          guardrail_text?: string | null
+          id?: number
+          inclination_deg?: number | null
+          instruments?: string | null
+          is_parallel?: boolean | null
+          line_code?: string
+          manufacturer?: string | null
+          material?: string | null
+          mc_in_pct?: number | null
+          mc_out_pct?: number | null
+          mesh_aperture_mm?: number | null
+          nameplate_th?: number | null
+          node_number?: number
+          noise_zone?: boolean | null
+          pad_dimensions?: string | null
+          power_kw?: number | null
+          side_flow_text?: string | null
           throughput_th?: number | null
         }
         Relationships: []
