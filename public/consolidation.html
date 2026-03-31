@@ -241,6 +241,110 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(64,215,197,.04)}
 </div>
 </details>
 
+<details class="sec" id="formulas">
+<summary class="sh"><span class="st"><span class="tag" style="background:#1A6B8A">∑</span> Formula Reference — All Calculators</span><span class="sc">6 modules · 40+ formulas</span></summary>
+<div class="sb">
+
+<div class="subh">Canonical Constants (LOCKED — never override)</div>
+<table><thead><tr><th>Constant</th><th>Value</th><th>Source File</th></tr></thead><tbody>
+<tr><td class="fn">EFB yield</td><td>FFB × 0.225 (22.5% FFB fresh weight)</td><td class="fd">CFI_EFB_DM_Calc.jsx · App.jsx</td></tr>
+<tr><td class="fn">OPDC yield</td><td>EFB_FW × 0.152 (15.2% EFB FW) 🔒</td><td class="fd">CFI_S1S2_Calculator.jsx · App.jsx</td></tr>
+<tr><td class="fn">POS yield</td><td>FFB × 0.015</td><td class="fd">App.jsx</td></tr>
+<tr><td class="fn">PMF yield</td><td>FFB × 0.145</td><td class="fd">App.jsx</td></tr>
+<tr><td class="fn">POME yield</td><td>FFB × 0.30 (liquid only)</td><td class="fd">App.jsx</td></tr>
+<tr><td class="fn">EFB moisture (canonical)</td><td>62.5% wet basis 🔒</td><td class="fd">CFI_EFB_DM_Calc.jsx</td></tr>
+<tr><td class="fn">OPDC MC floor</td><td>40% minimum — never below 🔒</td><td class="fd">App.jsx · CFI_S1S2_Calculator.jsx</td></tr>
+<tr><td class="fn">N conversion factor</td><td>× 4.67 (NOT 6.25) 🔒</td><td class="fd">App.jsx</td></tr>
+<tr><td class="fn">P₂O₅ conversion</td><td>P × 2.291</td><td class="fd">App.jsx</td></tr>
+<tr><td class="fn">K₂O conversion</td><td>K × 1.205</td><td class="fd">App.jsx</td></tr>
+<tr><td class="fn">Equipment derate</td><td>65% of nameplate capacity</td><td class="fd">CFI_S1S2_Calculator.jsx</td></tr>
+<tr><td class="fn">PKE cost</td><td>$160/t (purchased) · $0 PKSA (mill waste)</td><td class="fd">App.jsx</td></tr>
+<tr><td class="fn">BSF minimum days</td><td>5 days — never override 🔒</td><td class="fd">CFI_GH_Calculator.jsx</td></tr>
+</tbody></table>
+
+<div class="subh">EFB Dry Matter Calculator — CFI_EFB_DM_Calc.jsx</div>
+<table><thead><tr><th>Formula Name</th><th>Formula</th></tr></thead><tbody>
+<tr><td class="fn">Effective FFB rate</td><td>effFFB = FFB_tph × utilisation% ÷ 100</td></tr>
+<tr><td class="fn">EFB fresh weight (hourly)</td><td>efbFW = effFFB × EFB_yield% ÷ 100</td></tr>
+<tr><td class="fn">Dry matter fraction</td><td>dmFrac = (100 − MC%) ÷ 100</td></tr>
+<tr><td class="fn">EFB dry matter</td><td>efbDM = efbFW × dmFrac</td></tr>
+<tr><td class="fn">Water removed</td><td>waterDay = efbFW_day − efbDM_day</td></tr>
+<tr><td class="fn">EFB nitrogen (kg/day)</td><td>nDay = efbDM_day × 1000 × N% ÷ 100</td></tr>
+<tr><td class="fn">Compression table (any MC)</td><td>fw_atMC = efbDM ÷ ((100 − targetMC) ÷ 100)</td></tr>
+</tbody></table>
+
+<div class="subh">S1 Pre-Processing Engineering Calculator — CFI_S1S2_Calculator.jsx</div>
+<table><thead><tr><th>Formula Name</th><th>Formula</th></tr></thead><tbody>
+<tr><td class="fn">FFB daily throughput</td><td>ffbTpd = ffbTph × opsH</td></tr>
+<tr><td class="fn">EFB fresh weight (daily)</td><td>efbFresh = ffbTpd × efbRatio% ÷ 100</td></tr>
+<tr><td class="fn">EFB dry matter</td><td>efbDm = efbFresh × (1 − efbMC% ÷ 100)</td></tr>
+<tr><td class="fn">Press cake output</td><td>efbCake = efbDm ÷ (1 − pressMC% ÷ 100)</td></tr>
+<tr><td class="fn">Press throughput required</td><td>efbTph = efbCake ÷ 24</td></tr>
+<tr><td class="fn">Mixer capacity check</td><td>efbMixCap = mixers × batchSize × (1440 ÷ cycleMin)</td></tr>
+<tr><td class="fn">Mixer utilisation</td><td>efbMixUtil = efbFresh ÷ efbMixCap × 100</td></tr>
+<tr><td class="fn">Presses required</td><td>efbPresses = ceil(efbTph ÷ pressRate) + 1 spare</td></tr>
+<tr><td class="fn">Press utilisation</td><td>pressUtil = efbTph ÷ (presses × pressRate) × 100</td></tr>
+<tr><td class="fn">Bioconversion row A inventory</td><td>efbRowA = efbDm ÷ 0.45 (45% DM target)</td></tr>
+<tr><td class="fn">Feed hopper volume</td><td>efbHopper = (efbRowA ÷ 24 × bufferH) ÷ 0.40</td></tr>
+<tr><td class="fn">OPDC combined DM</td><td>combinedDm = opdcDm + pomeDm (if POME included)</td></tr>
+<tr><td class="fn">Lime dosing</td><td>limeKgDay = blendTpd × limeDose_kg/t</td></tr>
+<tr><td class="fn">PKSA application</td><td>pksa = freshWeight × pksaDose_kg/t</td></tr>
+</tbody></table>
+
+<div class="subh">Greenhouse / Bioconversion Calculator — CFI_GH_Calculator.jsx</div>
+<table><thead><tr><th>Formula Name</th><th>Formula</th></tr></thead><tbody>
+<tr><td class="fn">Greenhouse floor area</td><td>ghArea = ghWidth × ghLength</td></tr>
+<tr><td class="fn">Net bed area</td><td>bedArea = ghArea − (laneWidth × ghLength)</td></tr>
+<tr><td class="fn">S3 bed area</td><td>s3BedArea = bedArea × s3Fraction% ÷ 100</td></tr>
+<tr><td class="fn">Feed dry matter</td><td>feedDm = feedTpd × (1 − feedMC% ÷ 100)</td></tr>
+<tr><td class="fn">S3 inventory required</td><td>s3Inv = feedTpd × s3Days</td></tr>
+<tr><td class="fn">Bed volume needed</td><td>s3Vol = s3Inv ÷ bulkDensity</td></tr>
+<tr><td class="fn">Bed area needed</td><td>s3AreaNeed = s3Vol ÷ bedDepth</td></tr>
+<tr><td class="fn">Truck cycle time</td><td>cycleTime = (2 × haulDist ÷ truckSpeed) + tipTime</td></tr>
+<tr><td class="fn">Greenhouse structure cost</td><td>ghStructCost = ghArea × ghStruct_$/m²</td></tr>
+<tr><td class="fn">Slab 150mm cost</td><td>slab150Cost = bedArea × (mat_$/m² + lab_$/m²)</td></tr>
+</tbody></table>
+
+<div class="subh">NPK Value Dashboard — CFI_NPK_Value_Dashboard.jsx</div>
+<table><thead><tr><th>Formula Name</th><th>Formula</th></tr></thead><tbody>
+<tr><td class="fn">EFB NPK daily (kg)</td><td>efbN = efbDM × N%/100 × 1000 · same for P and K</td></tr>
+<tr><td class="fn">OPDC fresh weight</td><td>opdcFW = efbFW × OPDC_ratio (0.152) if included</td></tr>
+<tr><td class="fn">OPDC dry matter</td><td>opdcDM = opdcFW × (1 − opdcMC% ÷ 100)</td></tr>
+<tr><td class="fn">POME fresh weight</td><td>pomeFW = ffbDay × 0.30 × pomeInclPct% ÷ 100</td></tr>
+<tr><td class="fn">Blended raw NPK</td><td>rawN = efbN + opdcN + pomeN (same for P, K)</td></tr>
+<tr><td class="fn">Annual NPK (tonnes)</td><td>annN = rawN × daysYear ÷ 1000</td></tr>
+<tr><td class="fn">P₂O₅ equivalent</td><td>P2O5 = annP × 2.291</td></tr>
+<tr><td class="fn">K₂O equivalent</td><td>K2O = annK × 1.205</td></tr>
+</tbody></table>
+
+<div class="subh">Soil Calculator — CFI_Soil_Calculator_v4_PUBLISHED.jsx</div>
+<table><thead><tr><th>Formula Name</th><th>Formula</th></tr></thead><tbody>
+<tr><td class="fn">N fertiliser requirement</td><td>nReqHa = fertReq.n_perHa × agePhaseMult</td></tr>
+<tr><td class="fn">Frass N utilisation</td><td>tForN = nReqHa ÷ (FRASS_nKgT × nUtilFraction)</td></tr>
+<tr><td class="fn">Frass P utilisation</td><td>tForP = pReqHa ÷ (FRASS_p2o5KgT × pAvailFraction)</td></tr>
+<tr><td class="fn">Recommended frass rate</td><td>recommended = max(tForN, tForP, tForK) — governing nutrient</td></tr>
+<tr><td class="fn">N₂O direct emissions</td><td>n2o_direct = N_applied × EF1 × conv_N2O (IPCC)</td></tr>
+<tr><td class="fn">N₂O indirect emissions</td><td>n2o_indirect = N_leached × EF5 × conv_N2O</td></tr>
+<tr><td class="fn">CO₂e (AR5)</td><td>co2e = n2o × GWP_AR5 (265)</td></tr>
+<tr><td class="fn">Scope 3 (urea)</td><td>s3_n = N_applied × 2.088 kg CO₂e/kg N</td></tr>
+<tr><td class="fn">CFI GHG saving</td><td>cfiSaving = totalGHG_AR5 × cfiSavingPct ÷ 100</td></tr>
+</tbody></table>
+
+<div class="subh">CAPEX / OPEX Scaling — Engineering Logic</div>
+<table><thead><tr><th>Formula Name</th><th>Formula</th></tr></thead><tbody>
+<tr><td class="fn">CAPEX scaling (6/10 rule)</td><td>CAPEX = BaseCAPEX × (capacity ÷ baseCapacity)^0.7</td></tr>
+<tr><td class="fn">Base CAPEX reference</td><td>$2.8M @ 60 TPH FFB</td></tr>
+<tr><td class="fn">OPEX total</td><td>$18/t = Labour $8 + Electricity $6 + Maintenance $3 + Consumables $1</td></tr>
+<tr><td class="fn">Press CAPEX adder</td><td>(presses − 2) × $65,000 per extra press</td></tr>
+<tr><td class="fn">Blender CAPEX adder</td><td>2 × $45,000</td></tr>
+<tr><td class="fn">Hopper CAPEX adder</td><td>2 × $18,000 + $12,000 weigh system</td></tr>
+<tr><td class="fn">Hammer mill power</td><td>P (kW) = Throughput × Work_Index × SafetyFactor ÷ Efficiency</td></tr>
+<tr><td class="fn">Mass balance (EFB)</td><td>100t @ 65% MC → 34.3t @ 45% MC (press cake)</td></tr>
+</tbody></table>
+
+</div>
+</details>
+
 <div class="ft">CFI Deep Tech &middot; Master Consolidation &middot; Generated 2026-03-31 &middot; Supabase: lcpbtnipkvrmuwllymfw &middot; <a href="https://cfideeptech.vercel.app" style="color:var(--teal)">cfideeptech.vercel.app</a></div>
 </div>
 </body>
