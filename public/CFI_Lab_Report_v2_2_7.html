@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFI Lab Report — Stage Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#060C14;--bg2:#0D1B2A;--bg3:#122030;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --teal:#00C9B1;--amber:#F5A623;--green:#72DFA6;--red:#FF5C5C;--blue:#4A9EFF;
+  --text:#C8D8E8;--muted:#7E9EB4;--dim:rgba(255,255,255,0.04);
+  --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
+  --fs:13px;--fs-sm:11px;--fs-xs:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:var(--fs);min-height:100vh}
+.topbar{background:#080F1A;border-bottom:1px solid var(--border2);padding:10px 20px;display:flex;align-items:center;justify-content:space-between}
+.topbar-brand{font-family:var(--sans);font-size:15px;font-weight:600;color:var(--teal);letter-spacing:.06em}
+.topbar-sub{font-size:var(--fs-xs);color:var(--muted);margin-top:1px}
+.topbar-meta{font-size:var(--fs-xs);color:var(--muted);text-align:right;line-height:1.7}
+.topbar-meta span{color:var(--amber)}
+.stage-tabs{display:flex;gap:2px;padding:10px 20px 0;background:var(--bg2);border-bottom:1px solid var(--border)}
+.stage-tab{padding:7px 16px;font-family:var(--mono);font-size:var(--fs-sm);font-weight:500;color:var(--muted);cursor:pointer;border-radius:4px 4px 0 0;border:1px solid transparent;border-bottom:none;background:transparent;transition:color .15s;letter-spacing:.04em}
+.stage-tab:hover{color:var(--text)}
+.stage-tab.active{color:var(--teal);background:var(--bg);border-color:var(--border2);border-bottom-color:var(--bg)}
+.stage-tab .stage-prod{display:block;font-size:10px;color:var(--muted);font-weight:400;letter-spacing:.02em}
+.stream-bar{background:var(--bg);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:6px}
+.stream-label{font-size:var(--fs-xs);color:var(--muted);margin-right:6px;letter-spacing:.06em}
+.stream-btn{padding:5px 12px;font-family:var(--mono);font-size:var(--fs-sm);font-weight:500;cursor:pointer;border-radius:3px;border:1px solid var(--border2);background:var(--bg2);color:var(--muted);transition:all .15s;letter-spacing:.04em}
+.stream-btn:hover{color:var(--text);border-color:rgba(255,255,255,.2)}
+.stream-btn.active{background:rgba(0,201,177,.15);color:var(--teal);border-color:rgba(0,201,177,.5)}
+.stream-divider{color:var(--border2);font-size:16px;padding:0 4px;user-select:none}
+.stream-btn-new{border-style:dashed;color:var(--teal)}
+.stream-btn-new:hover{background:rgba(0,201,177,.1)}
+.main{display:flex;flex-direction:column;height:calc(100vh - 160px);overflow:hidden}
+/* PER-SECTION COLUMN HEADER */
+thead tr{border-bottom:1px solid var(--border2)}
+thead th{padding:6px 10px;font-size:var(--fs-xs);font-weight:600;letter-spacing:.08em;color:var(--muted);text-align:center;white-space:nowrap;text-transform:uppercase;background:#070E1C;border-bottom:2px solid var(--border2)}
+thead th.th-param{text-align:left;padding-left:22px}
+/* SHARED COLUMN WIDTHS */
+col.c-param{width:210px}col.c-unit{width:90px}col.c-result{width:110px}col.c-range{width:120px}
+col.c-sni{width:100px}col.c-status{width:105px}col.c-conf{width:135px}col.c-method{width:185px}col.c-edit{width:110px}
+.sections-col{flex:1;overflow-y:auto;padding:6px 0 20px}
+.sections-col::-webkit-scrollbar{width:4px}
+.sections-col::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.section-card{margin-bottom:3px}
+.section-head{display:flex;align-items:center;padding:7px 20px;background:var(--bg2);cursor:pointer;user-select:none;border-top:1px solid var(--border);border-bottom:1px solid transparent;transition:background .12s}
+.section-head:hover{background:#122030}
+.section-card.open .section-head{border-bottom-color:rgba(0,201,177,0.25);background:rgba(0,201,177,0.08)}
+.section-card.open .section-code{color:var(--amber)}
+.section-card.open .section-title{color:var(--amber)}
+.section-card.open .section-meta{color:var(--amber);opacity:0.7}
+.section-card.open .section-arrow{color:var(--amber)}
+.section-code{font-size:var(--fs-xs);font-weight:600;letter-spacing:.10em;color:var(--amber);width:36px;flex-shrink:0}
+.section-title{font-size:var(--fs);font-weight:600;color:var(--teal);margin-right:0;min-width:270px;flex-shrink:0}
+.section-meta{font-size:var(--fs-xs);color:var(--muted);margin-right:0;margin-left:10px;font-weight:700;flex:1}
+.section-btns{display:flex;align-items:center;gap:6px;flex-shrink:0;margin-left:auto}
+.section-arrow{color:var(--muted);font-size:var(--fs-sm);transition:transform .15s;width:14px;text-align:center;margin-left:10px}
+.section-card.open .section-arrow{transform:rotate(90deg)}
+.section-body{display:none}
+.section-card.open .section-body{display:block}
+.section-body table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:var(--fs)}
+tbody tr{border-bottom:1px solid var(--border)}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--dim)}
+tbody td{padding:6px 10px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:400;font-size:var(--fs)}
+tbody td.td-param{text-align:left;color:var(--text);padding-left:22px}
+.td-unit{color:var(--muted);font-size:var(--fs)}
+.td-result{color:var(--text);font-size:var(--fs)}
+.td-result.data-gap{color:var(--red);font-weight:600}
+.td-range{color:var(--muted);font-size:var(--fs)}
+.td-sni{color:var(--muted);font-size:var(--fs)}
+.td-method{color:var(--muted);font-size:var(--fs);text-align:left}
+thead th.th-method{text-align:left}
+.btn-upload-row{padding:5px 13px;font-family:var(--mono);font-size:13px;font-weight:700;background:var(--teal);color:#060C14;border:none;border-radius:3px;cursor:pointer;letter-spacing:.03em;white-space:nowrap;flex-shrink:0;transition:opacity .12s;margin-right:8px}
+.btn-upload-row:hover{opacity:.85}
+.status{display:inline-block;padding:2px 7px;border-radius:3px;font-size:var(--fs-xs);font-weight:600;letter-spacing:.05em;white-space:nowrap}
+.st-pass{background:rgba(114,223,166,.15);color:#72DFA6}
+.st-fail{background:rgba(255,92,92,.15);color:#FF5C5C}
+.st-pending{background:rgba(245,166,35,.12);color:#F5A623}
+.st-na{background:rgba(255,255,255,.06);color:var(--muted)}
+.st-warn{background:rgba(255,165,0,.12);color:#FFA500}
+.st-gap{background:rgba(255,92,92,.12);color:#FF5C5C}
+.st-base{background:rgba(90,122,144,.12);color:var(--muted)}
+.conf{display:inline-block;padding:2px 7px;border-radius:3px;font-size:var(--fs-xs);font-weight:500;white-space:nowrap}
+.conf-lab{background:rgba(74,158,255,.12);color:#4A9EFF}
+.conf-high{background:rgba(114,223,166,.10);color:#72DFA6}
+.conf-mod{background:rgba(245,166,35,.10);color:#F5A623}
+.conf-low{background:rgba(255,92,92,.10);color:#FF5C5C}
+/* EDIT VALUE — teal bg, amber bold text */
+.btn-edit{padding:4px 9px;font-family:var(--mono);font-size:var(--fs-xs);font-weight:700;background:rgba(0,201,177,.18);color:var(--amber);border:1px solid rgba(0,201,177,.45);border-radius:3px;cursor:pointer;letter-spacing:.03em;white-space:nowrap;transition:background .12s}
+.btn-edit:hover{background:rgba(0,201,177,.30)}
+/* UPLOAD STRIP */
+.upload-strip{background:#080F1A;border-top:1px solid var(--border2);padding:10px 20px;flex-shrink:0}
+.upload-strip-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.upload-strip-title{font-size:var(--fs-sm);font-weight:600;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.btn-upload{padding:5px 12px;font-family:var(--mono);font-size:var(--fs-sm);font-weight:600;background:rgba(0,201,177,.12);color:var(--teal);border:1px solid rgba(0,201,177,.35);border-radius:3px;cursor:pointer;letter-spacing:.04em;transition:background .12s}
+.btn-upload:hover{background:rgba(0,201,177,.2)}
+.thumb-row{display:flex;gap:8px;align-items:center}
+.thumb{width:52px;height:66px;border:1px solid var(--border2);border-radius:4px;background:var(--bg2);cursor:pointer;overflow:hidden;position:relative;transition:border-color .12s;flex-shrink:0}
+.thumb:hover{border-color:rgba(0,201,177,.5)}
+.thumb-inner{width:100%;height:100%;display:flex;flex-direction:column;padding:4px}
+.thumb-logo{font-size:7px;font-weight:600;color:var(--teal);letter-spacing:.05em;margin-bottom:2px}
+.thumb-lines{flex:1}
+.thumb-line{height:2px;border-radius:1px;margin-bottom:2px;background:rgba(255,255,255,.12)}
+.thumb-line.hl{background:rgba(0,201,177,.4)}
+.thumb-label{font-size:7px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2}
+.thumb-status{position:absolute;top:3px;right:3px;width:6px;height:6px;border-radius:50%;background:var(--green)}
+.thumb-upload-slot{width:52px;height:66px;border:1px dashed var(--muted);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;opacity:.5;transition:opacity .12s}
+.thumb-upload-slot:hover{opacity:.8}
+.thumb-upload-slot span{font-size:18px;color:var(--muted);line-height:1}
+.thumb-upload-slot p{font-size:8px;color:var(--muted);margin-top:3px}
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;width:660px;max-height:80vh;overflow:hidden;display:flex;flex-direction:column}
+.modal-head{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between}
+.modal-title{font-size:var(--fs);font-weight:600;color:var(--text)}
+.modal-sub{font-size:var(--fs-sm);color:var(--muted);margin-top:2px}
+.modal-close{background:transparent;border:none;color:var(--muted);font-size:16px;cursor:pointer;padding:0 4px;line-height:1}
+.modal-close:hover{color:var(--text)}
+.modal-body{overflow-y:auto;padding:12px 16px;flex:1}
+.modal-body::-webkit-scrollbar{width:4px}
+.modal-body::-webkit-scrollbar-thumb{background:var(--border2)}
+.report-preview{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:12px;margin-bottom:12px;line-height:2}
+.rp-row{display:flex;gap:8px;border-bottom:1px solid var(--border);padding:3px 0}
+.rp-row:last-child{border-bottom:none}
+.rp-key{width:140px;color:var(--muted);flex-shrink:0;font-size:var(--fs-sm)}
+.rp-val{color:var(--text);font-size:var(--fs-sm)}
+.ocr-log-title{font-size:var(--fs-sm);font-weight:600;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+.ocr-row{display:grid;grid-template-columns:160px 90px 90px 90px 60px;gap:0 8px;padding:4px 6px;border-bottom:1px solid var(--border);font-size:var(--fs-sm);align-items:center}
+.ocr-row:last-child{border-bottom:none}
+.ocr-row:hover{background:var(--dim)}
+.ocr-head{color:var(--muted);font-size:var(--fs-xs);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.ocr-param{color:var(--text)}
+.ocr-raw{color:var(--muted)}
+.ocr-parsed{color:var(--teal)}
+.ocr-act-placed{color:#72DFA6;font-size:var(--fs-xs);font-weight:600}
+.ocr-act-skip{color:var(--amber);font-size:var(--fs-xs);font-weight:600}
+.ocr-score{color:var(--muted);font-size:var(--fs-xs)}
+
+/* ── LAB colour (user-uploaded values) ── */
+:root { --lab:#C8E600; }
+.tr-user { background: rgba(200,230,0,.04) !important; }
+.tr-user:hover { background: rgba(200,230,0,.08) !important; }
+.user-param { color: var(--lab) !important; font-style: normal; }
+.user-tag { font-size:9px; font-weight:700; color:#060C14; background:var(--lab);
+  padding:1px 4px; border-radius:2px; margin-left:5px; vertical-align:middle; }
+.tr-user td { font-weight: 700 !important; }
+.tr-user .td-result { color: var(--lab) !important; }
+.tr-user .td-unit { color: rgba(200,230,0,.6) !important; }
+
+/* ── Unconfirmed row (CFI canonical — will italic in print) ── */
+/* tr-canonical: no italics — CFI reference rows display normally */
+
+/* ── Topbar buttons ── */
+.btn-file-report, .btn-upload-report-top {
+  padding:10px 22px; font-family:var(--mono); font-size:15px;
+  font-weight:700; background:rgba(0,201,177,0.15); color:var(--amber);
+  border:1px solid rgba(0,201,177,0.50); border-radius:4px; cursor:pointer;
+  letter-spacing:.04em; white-space:nowrap; transition:all .12s; }
+.btn-file-report:hover, .btn-upload-report-top:hover { opacity:.88; }
+.btn-print-full {
+  padding:10px 22px; font-family:var(--mono); font-size:15px;
+  font-weight:700; background:rgba(0,201,177,0.15); color:var(--amber);
+  border:1px solid rgba(0,201,177,0.50); border-radius:4px; cursor:pointer;
+  letter-spacing:.04em; white-space:nowrap; transition:all .12s; }
+.btn-print-full:hover { opacity:.88; }
+
+/* ── Print Section button ── */
+.btn-print-section { padding:5px 11px; font-family:var(--mono); font-size:13px;
+  font-weight:700; background:rgba(0,201,177,0.15); color:var(--amber);
+  border:1px solid rgba(0,201,177,0.50); border-radius:3px; cursor:pointer;
+  letter-spacing:.03em; white-space:nowrap; transition:all .12s; }
+.btn-print-section:hover { background:rgba(0,201,177,0.25); }
+
+/* ── Lab report badge ── */
+.lab-badge { font-size:9px; font-weight:700; color:var(--lab);
+  letter-spacing:.05em; margin-right:8px; flex-shrink:0; }
+
+/* ── Inline report thumbnail on section head ── */
+.section-thumb { width:28px; height:36px; border:1px solid rgba(200,230,0,.4);
+  border-radius:3px; background:#0A1520; cursor:pointer; flex-shrink:0;
+  display:flex; flex-direction:column; padding:3px; margin-right:4px;
+  transition:border-color .12s; }
+.section-thumb:hover { border-color:var(--lab); }
+.section-thumb-line { height:2px; border-radius:1px; margin-bottom:1px;
+  background:rgba(200,230,0,.3); }
+.section-thumb-line.hl { background:var(--lab); }
+
+/* ── File Report Modal ── */
+.upload-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.75);
+  z-index:200; align-items:center; justify-content:center; }
+.upload-modal.open { display:flex; }
+.upload-modal-box { background:var(--bg2); border:1px solid var(--border2);
+  border-radius:8px; width:680px; max-height:85vh; overflow:hidden;
+  display:flex; flex-direction:column; }
+.upload-modal-head { padding:14px 18px; border-bottom:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:flex-start; background:#091623; }
+.upload-modal-title { font-family:var(--sans); font-size:14px; font-weight:600; color:var(--teal); }
+.upload-modal-sub { font-size:var(--fs-xs); color:var(--muted); margin-top:3px; }
+.upload-modal-close { background:transparent; border:none; color:var(--muted);
+  font-size:18px; cursor:pointer; }
+.upload-modal-close:hover { color:var(--text); }
+.upload-modal-body { flex:1; overflow-y:auto; padding:18px; }
+.upload-zone { border:2px dashed rgba(0,201,177,.4); border-radius:6px;
+  padding:32px 20px; text-align:center; cursor:pointer; transition:all .15s;
+  background:rgba(0,201,177,.03); }
+.upload-zone:hover { border-color:var(--teal); background:rgba(0,201,177,.07); }
+.upload-zone-icon { font-size:32px; color:var(--teal); margin-bottom:10px; }
+.upload-zone-title { font-family:var(--sans); font-size:14px; font-weight:600;
+  color:var(--text); margin-bottom:4px; }
+.upload-zone-sub { font-size:var(--fs-xs); color:var(--muted); }
+.upload-divider { display:flex; align-items:center; gap:12px; margin:18px 0;
+  color:var(--muted); font-size:var(--fs-xs); }
+.upload-divider::before,.upload-divider::after { content:''; flex:1;
+  height:1px; background:var(--border2); }
+
+/* Filed report preview inside modal */
+.filed-report-preview { background:#fff; border-radius:4px; padding:20px;
+  color:#111; font-family:'IBM Plex Mono',monospace; font-size:11px;
+  line-height:1.6; }
+.frp-header { display:flex; justify-content:space-between; align-items:flex-start;
+  border-bottom:2px solid #111; padding-bottom:10px; margin-bottom:12px; }
+.frp-logo { font-family:'IBM Plex Sans',sans-serif; font-size:18px; font-weight:700;
+  color:#111; }
+.frp-logo-sub { font-size:9px; color:#555; letter-spacing:.05em; }
+.frp-meta { text-align:right; font-size:9px; color:#555; line-height:1.8; }
+.frp-table { width:100%; border-collapse:collapse; margin-top:8px; }
+.frp-table th { background:#e8e8e8; padding:4px 8px; font-size:9px; font-weight:700;
+  text-align:left; letter-spacing:.06em; border:1px solid #ccc; }
+.frp-table td { padding:4px 8px; font-size:10px; border:1px solid #ddd;
+  background:#fff; }
+.frp-table tr:nth-child(even) td { background:#f7f7f7; }
+.frp-section-head { background:#333; color:#fff; padding:3px 8px; font-size:9px;
+  font-weight:700; letter-spacing:.08em; }
+
+/* Print Section Modal */
+.print-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.75);
+  z-index:200; align-items:center; justify-content:center; }
+.print-modal.open { display:flex; }
+.print-modal-box { background:var(--bg2); border:1px solid var(--border2);
+  border-radius:8px; width:720px; max-height:88vh; overflow:hidden;
+  display:flex; flex-direction:column; }
+.print-preview { flex:1; overflow-y:auto; padding:0; }
+.print-note-bar { padding:10px 16px; border-top:1px solid var(--border);
+  display:flex; align-items:center; gap:10px; background:#091623; flex-shrink:0; }
+.print-note-input { flex:1; background:var(--bg); border:1px solid var(--border2);
+  border-radius:3px; padding:6px 10px; font-family:var(--mono); font-size:var(--fs-sm);
+  color:var(--text); outline:none; }
+.print-note-input::placeholder { color:var(--muted); }
+.btn-do-print { padding:6px 14px; font-family:var(--mono); font-size:var(--fs-sm);
+  font-weight:700; background:var(--teal); color:#060C14; border:none;
+  border-radius:3px; cursor:pointer; }
+
+/* ── PRINT STYLES ── */
+@media print {
+  body { background:#fff !important; color:#111 !important;
+    font-family:'IBM Plex Mono',monospace; font-size:10pt; }
+  .topbar,.stage-tabs,.stream-bar,.section-head .btn-upload-row,
+  .section-head .btn-print-section,.modal-overlay,.upload-modal,
+  .print-modal,#new-stream-prompt,.btn-edit { display:none !important; }
+  .main { height:auto !important; overflow:visible !important; }
+  .sections-col { overflow:visible !important; padding:0 !important; }
+  .section-card { margin-bottom:16pt !important; break-inside:avoid; }
+  .section-head { background:#eee !important; color:#111 !important;
+    border:1px solid #ccc !important; padding:6pt 10pt !important; }
+  .section-code { color:#444 !important; }
+  .section-title { color:#111 !important; font-size:11pt !important; }
+  .section-body { display:block !important; }
+  .section-body table { font-size:9pt !important; width:100% !important; }
+  thead th { background:#ddd !important; color:#111 !important;
+    border:1px solid #bbb !important; padding:4pt 6pt !important; }
+  tbody tr { border-bottom:1px solid #ddd !important; }
+  tbody tr:nth-child(even) { background:#f5f5f5 !important; }
+  tbody tr:nth-child(odd) { background:#fff !important; }
+  /* Unconfirmed rows: italic — CFI canonical not yet user-verified */
+  tbody tr.tr-canonical td { font-style:normal !important; color:#555 !important; }
+  /* User-uploaded rows: normal weight, grey (no lime in print) */
+  tbody tr.tr-user td { font-style:normal !important; color:#111 !important; font-weight:700 !important; }
+  .user-tag { display:none !important; }
+  /* Badges as plain text */
+  .status,.conf { background:none !important; border:none !important;
+    padding:0 !important; color:#111 !important; font-size:8pt !important; }
+  .td-result.data-gap { color:#555 !important; font-style:italic !important; }
+  .section-arrow,.lab-badge,.section-thumb { display:none !important; }
+  /* ── Print header / footer via @page ── */
+  @page {
+    margin: 18mm 14mm 18mm 14mm;
+    @top-left {
+      content: "CFI Deep Tech";
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 9pt;
+      font-weight: 700;
+      color: #111;
+    }
+    @top-center {
+      content: "Precision Engineering  —  Circular Nutrient Recovery in Agricultural Systems\A Applied Biology  —  Rebalancing Soil's Microbiome & Reducing Synthetic Fertiliser Use";
+      white-space: pre;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 7.5pt;
+      color: #555;
+      text-align: center;
+    }
+    @top-right {
+      content: "";
+    }
+    @bottom-left {
+      content: "© 2026 All Rights Reserved · Circular Fertiliser Industries";
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 7.5pt;
+      color: #888;
+    }
+    @bottom-center {
+      content: "Page " counter(page) " of " counter(pages);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 7.5pt;
+      color: #888;
+    }
+    @bottom-right {
+      content: "";
+    }
+  }
+  /* Fallback header/footer for browsers without @page named strings support */
+  body::before {
+    content: "CFI Deep Tech\A Precision Engineering — Circular Nutrient Recovery in Agricultural Systems\A Applied Biology — Rebalancing Soil's Microbiome & Reducing Synthetic Fertiliser Use";
+    white-space: pre;
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8pt;
+    color: #555;
+    text-align: center;
+    border-bottom: 1pt solid #ccc;
+    padding-bottom: 8pt;
+    margin-bottom: 14pt;
+  }
+  body::before .brand { font-weight: 700; }
+  body::after {
+    content: "© 2026 All Rights Reserved · Circular Fertiliser Industries";
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 7.5pt;
+    color: #888;
+    text-align: center;
+    border-top: 1pt solid #ccc;
+    padding-top: 6pt;
+    margin-top: 14pt;
+  }
+}
+
+.soil-btn{padding:3px 9px;font-family:var(--mono);font-size:10px;font-weight:600;
+  border-radius:3px;border:1px solid var(--border2);background:var(--bg);
+  color:var(--muted);cursor:pointer;transition:all .12s}
+.soil-btn:hover{color:var(--text);border-color:rgba(255,255,255,.2)}
+.soil-btn.active{background:rgba(0,201,177,.15);color:var(--teal);border-color:rgba(0,201,177,.5)}
+</style>
+</head>
+<body>
+
+<div class="topbar" style="align-items:center;padding:12px 20px;position:relative">
+  <div>
+    <div class="topbar-brand">CFI BIOCONVERSION — LAB ANALYSIS</div>
+    <div class="topbar-sub">60 TPH FFB Mill · Bogor, West Java · Indonesia</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;position:absolute;left:50%;transform:translateX(-50%)">
+    <button class="btn-file-report" onclick="openUploadModal()">&#8679; Upload Lab Report</button>
+    <button class="btn-print-full" onclick="printFullReport()">&#9113; Print Full Report</button>
+  </div>
+  <div class="topbar-meta"><span>S0 · EFB</span> — Raw Feedstock Baseline<br>Canonical data · March 2026</div>
+</div>
+
+<div class="stage-tabs">
+  <div class="stage-tab active" onclick="setStage(this,'S0')">S0 <span class="stage-prod">Raw Feedstock</span></div>
+  <div class="stage-tab" onclick="setStage(this,'S2')">S2 <span class="stage-prod">Compost</span></div>
+  <div class="stage-tab" onclick="setStage(this,'S3')">S3 <span class="stage-prod">Bio-Compost+</span></div>
+  <div class="stage-tab" onclick="setStage(this,'S4')">S4 <span class="stage-prod">BSF Frass</span></div>
+  <div class="stage-tab" onclick="setStage(this,'S5A')">S5A <span class="stage-prod">Bio-Fertiliser</span></div>
+  <div class="stage-tab" onclick="setStage(this,'S5B')">S5B <span class="stage-prod">Bio-Fertiliser+ Protein Inside</span></div>
+</div>
+
+<div class="stream-bar" id="stream-bar">
+  <span class="stream-label">STREAM</span>
+  <button class="stream-btn active" onclick="setStream(this,'known')">EFB</button>
+  <button class="stream-btn" onclick="setStream(this,'known')">OPDC / DC</button>
+  <button class="stream-btn" onclick="setStream(this,'known')">POS</button>
+  <button class="stream-btn" onclick="setStream(this,'known')">POME</button>
+  <span class="stream-divider">|</span>
+  <button class="stream-btn" onclick="setStream(this,'known')">PKE</button>
+  <button class="stream-btn" onclick="setStream(this,'known')">PKS</button>
+  <button class="stream-btn" onclick="setStream(this,'known')">PMF</button>
+  <button class="stream-btn" onclick="setStream(this,'known')">ASH</button>
+  <button class="stream-btn" onclick="setStream(this,'known')">OPF</button>
+  <button class="stream-btn" onclick="setStream(this,'known')">OPT</button>
+  <button class="stream-btn" onclick="setStream(this,'known')">BSF</button>
+  <span class="stream-divider">|</span>
+  <button class="stream-btn stream-btn-new" onclick="setStream(this,'new')">+ New Stream</button>
+</div>
+<!-- NEW STREAM UPLOAD PROMPT -->
+<div id="new-stream-prompt" style="display:none;background:#0A1220;border-bottom:1px solid rgba(0,201,177,.3);padding:12px 20px;">
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+    <span style="font-size:11px;font-weight:700;color:var(--teal);letter-spacing:.06em;text-transform:uppercase;">New Stream</span>
+    <input id="new-stream-name" type="text" placeholder="Stream name (e.g. PKE Blend, Biochar)" style="background:#0D1B2A;border:1px solid rgba(0,201,177,.4);border-radius:4px;padding:5px 10px;font-family:var(--mono);font-size:12px;color:var(--text);width:240px;outline:none;">
+    <span style="font-size:11px;color:var(--muted);">No data yet — upload a lab report to populate all parameters.</span>
+    <button onclick="confirmNewStream()" style="padding:5px 12px;background:var(--teal);color:#060C14;border:none;border-radius:3px;font-family:var(--mono);font-size:11px;font-weight:700;cursor:pointer;">Confirm + Show Parameters</button>
+    <button onclick="cancelNewStream()" style="padding:5px 10px;background:transparent;color:var(--muted);border:1px solid var(--border2);border-radius:3px;font-family:var(--mono);font-size:11px;cursor:pointer;">Cancel</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="sections-col">
+
+    <!-- ELE -->
+    <div class="section-card open">
+      <div class="section-head" onclick="toggleSection(this)">
+        <span class="section-code">ELE</span><span class="section-title">Elemental / Nutrient Analysis</span><span class="section-meta">16 parameters · % DM · mg/kg DM</span><div class="section-btns"><button class="btn-print-section" onclick="event.stopPropagation();printSection(this)">&#9113; Print Section</button><span class="lab-badge" style="display:none">&#9679; LAB REPORT DATA</span></div><span class="section-arrow">›</span>
+      </div>
+      <div class="section-body"><table>
+        <colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+        <thead><tr><th class="th-param">Parameter</th><th>Unit</th><th>Result</th><th>Range</th><th>SNI Limit</th><th>Status</th><th>Confidence</th><th class="th-method">Method</th><th></th></tr></thead><tbody>
+          <tr class="tr-canonical"><td class="td-param">Carbon (C)</td><td class="td-unit">% DM</td><td class="td-result">~45.6%</td><td class="td-range">42–48%</td><td class="td-sni">—</td><td><span class="status st-pending">PEND</span></td><td><span class="conf conf-mod">LDE-MODERATE</span></td><td class="td-method">CHNS Analyser</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Hydrogen (H) <span style="font-size:9px;color:var(--muted)">(energy)</span></td><td class="td-unit">% DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">CHNS-O analyser</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Nitrogen (N)</td><td class="td-unit">% DM</td><td class="td-result">0.76%</td><td class="td-range">0.5–1.2%</td><td class="td-sni">—</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">CHNS / Kjeldahl</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Sulphur (S)</td><td class="td-unit">% DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">ICP-OES / CHNS</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param" title="Energy characterisation — by difference">Oxygen (O) <span style="font-size:9px;color:var(--muted);font-style:normal">(energy)</span></td><td class="td-unit">% DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">By difference 100−C−H−N−S−Ash</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">C:N Ratio</td><td class="td-unit">ratio</td><td class="td-result">60</td><td class="td-range">55–70</td><td class="td-sni">max 25 (SNI)</td><td><span class="status st-na">NA</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">Calculated C÷N</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Phosphorus (P)</td><td class="td-unit">% DM</td><td class="td-result">0.06%</td><td class="td-range">0.03–0.10%</td><td class="td-sni">SNI required</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">ICP-OES</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Potassium (K)</td><td class="td-unit">% DM</td><td class="td-result">2.0%</td><td class="td-range">1.5–2.5%</td><td class="td-sni">SNI required</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">ICP-OES</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Calcium (Ca)</td><td class="td-unit">% DM</td><td class="td-result">0.30%</td><td class="td-range">0.15–0.50%</td><td class="td-sni">SNI required</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">ICP-OES</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Magnesium (Mg)</td><td class="td-unit">% DM</td><td class="td-result">0.18%</td><td class="td-range">0.10–0.30%</td><td class="td-sni">SNI required</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">ICP-OES</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Sodium (Na)</td><td class="td-unit">mg/kg DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">ICP-OES / flame photometry</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Boron (B)</td><td class="td-unit">mg/kg DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">ICP-OES / ICP-MS</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Molybdenum (Mo) ★</td><td class="td-unit">mg/kg DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">ICP-MS</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Chloride (Cl) ★</td><td class="td-unit">mg/kg DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Ion chromatography</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param" title="Near zero at S0 — relevant from S3 onwards">Nitrate-N (NO₃⁻-N) <span style="font-size:9px;color:var(--muted)">(S3+)</span></td><td class="td-unit">% DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">0.3–0.8% (S5A)</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Ion chromatography</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param" title="Near zero at S0 — relevant from S3 onwards">Ammonium-N (NH₄⁺-N) <span style="font-size:9px;color:var(--muted)">(S3+)</span></td><td class="td-unit">% DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">0.4–1.0% (S5A)</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Distillation</td><td><button class="btn-edit">Edit Value</button></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <!-- PRX -->
+    <div class="section-card">
+      <div class="section-head" onclick="toggleSection(this)">
+        <span class="section-code">PRX</span><span class="section-title">Nutritional / Proximate Analysis</span><span class="section-meta">9 parameters · % DM basis</span><div class="section-btns"><button class="btn-print-section" onclick="event.stopPropagation();printSection(this)">&#9113; Print Section</button><span class="lab-badge" style="display:none">&#9679; LAB REPORT DATA</span></div><span class="section-arrow">›</span>
+      </div>
+      <div class="section-body"><table>
+        <colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+        <thead><tr><th class="th-param">Parameter</th><th>Unit</th><th>Result</th><th>Range</th><th>SNI Limit</th><th>Status</th><th>Confidence</th><th class="th-method">Method</th><th></th></tr></thead><tbody>
+          <tr class="tr-canonical"><td class="td-param">Ash Content</td><td class="td-unit">% DM</td><td class="td-result">5.0%</td><td class="td-range">3–8%</td><td class="td-sni">—</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">AOAC 942.05 muffle furnace 550°C</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Crude Protein (N×6.25)</td><td class="td-unit">% DM</td><td class="td-result">4.75%</td><td class="td-range">3–7%</td><td class="td-sni">min 4%</td><td><span class="status st-warn">WARN</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">AOAC 984.13</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Ether Extract (Fat)</td><td class="td-unit">% DM</td><td class="td-result">3.5–5.0%</td><td class="td-range">2–7%</td><td class="td-sni">—</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-mod">LDE-MODERATE</span></td><td class="td-method">AOAC 920.39 Soxhlet</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">NFE (N-Free Extract)</td><td class="td-unit">% DM</td><td class="td-result">~28%</td><td class="td-range">20–35%</td><td class="td-sni">—</td><td><span class="status st-na">NA</span></td><td><span class="conf conf-mod">LDE-MODERATE</span></td><td class="td-method">NFE = 100−CP−EE−CF−Ash</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Organic Matter</td><td class="td-unit">% DM</td><td class="td-result">95%</td><td class="td-range">88–97%</td><td class="td-sni">min 25%</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">OM = 100−Ash</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Volatile Matter</td><td class="td-unit">% DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">TGA proximate / ASTM E872</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Fixed Carbon</td><td class="td-unit">% DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">FC = 100−Ash−VM−MC</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Crude Fibre (CF)</td><td class="td-unit">% DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">AOAC 978.10</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Chitin</td><td class="td-unit">% DM</td><td class="td-result">N/A — pre-BSF</td><td class="td-range">3–6% (S5B)</td><td class="td-sni">—</td><td><span class="status st-na">NA</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">Enzymatic / chemical</td><td><button class="btn-edit">Edit Value</button></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <!-- AV -->
+    <div class="section-card">
+      <div class="section-head" onclick="toggleSection(this)">
+        <span class="section-code">AV</span><span class="section-title">Agronomic Analysis</span><span class="section-meta">5 parameters · % DM · N · P₂O₅ · K₂O in % · converted from elemental analysis</span><div class="section-btns"><button class="btn-print-section" onclick="event.stopPropagation();printSection(this)">&#9113; Print Section</button><span class="lab-badge" style="display:none">&#9679; LAB REPORT DATA</span></div><span class="section-arrow">›</span>
+      </div>
+      <div class="section-body"><table>
+        <colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+        <thead><tr><th class="th-param">Parameter</th><th>Unit</th><th>Result</th><th>Range</th><th>SNI Limit</th><th>Status</th><th>Confidence</th><th class="th-method">Method</th><th></th></tr></thead><tbody>
+          <tr class="tr-canonical"><td class="td-param">Nitrogen (N)</td><td class="td-unit">% DM</td><td class="td-result">0.76%</td><td class="td-range">0.5–1.2%</td><td class="td-sni">—</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">From ELE section · Kjeldahl</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Phosphorus as P₂O₅</td><td class="td-unit">% DM</td><td class="td-result">0.14%</td><td class="td-range">0.07–0.23%</td><td class="td-sni">—</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">P%×2.291 · ICP-OES</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Potassium as K₂O</td><td class="td-unit">% DM</td><td class="td-result">2.41%</td><td class="td-range">1.81–3.01%</td><td class="td-sni">—</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">K%×1.205 · ICP-OES</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Total N + P₂O₅ + K₂O</td><td class="td-unit">% DM</td><td class="td-result">3.31%</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-na">NA</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">Sum of above three</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">N : P₂O₅ : K₂O</td><td class="td-unit">ratio</td><td class="td-result">5.6 : 1 : 17.7</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-na">NA</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">N% : P₂O₅% : K₂O%</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">K₂O : N Ratio</td><td class="td-unit">ratio</td><td class="td-result">3.17</td><td class="td-range">>1.5 = K-rich</td><td class="td-sni">—</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">K₂O% ÷ N%</td><td><button class="btn-edit">Edit Value</button></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <!-- AGV -->
+    <div class="section-card">
+      <div class="section-head" onclick="toggleSection(this)">
+        <span class="section-code">AGV</span><span class="section-title">Agronomic Value</span><span class="section-meta">$/t DM · N · P₂O₅ · K₂O · market price equivalent</span><div class="section-btns"><button class="btn-print-section" onclick="event.stopPropagation();printSection(this)">&#9113; Print Section</button><span class="lab-badge" style="display:none">&#9679; LAB REPORT DATA</span></div><span class="section-arrow">›</span>
+      </div>
+      <div class="section-body"><table>
+        <colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+        <thead><tr><th class="th-param">Parameter</th><th>Unit</th><th>Result</th><th>Range</th><th>SNI Limit</th><th>Status</th><th>Confidence</th><th class="th-method">Method</th><th></th></tr></thead><tbody>
+          <tr class="tr-canonical"><td class="td-param">N Value (urea equiv.)</td><td class="td-unit">$/t DM</td><td class="td-result">$5.78</td><td class="td-range">$4–8</td><td class="td-sni">—</td><td><span class="status st-na">NA</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">N% × $0.761/kg N</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">P₂O₅ Value (TSP equiv.)</td><td class="td-unit">$/t DM</td><td class="td-result">$1.64</td><td class="td-range">$1–3</td><td class="td-sni">—</td><td><span class="status st-na">NA</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">P%×2.291 = P₂O₅% · ×$1.196/kg P₂O₅</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">K₂O Value (MOP equiv.)</td><td class="td-unit">$/t DM</td><td class="td-result">$11.06</td><td class="td-range">$8–15</td><td class="td-sni">—</td><td><span class="status st-na">NA</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">K%×1.205 = K₂O% · ×$0.459/kg K₂O</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical" style="font-weight:700;border-top:1px solid rgba(255,255,255,.2)"><td class="td-param" style="font-weight:700">Total Agronomic Value</td><td class="td-unit" style="font-weight:700">$/t DM</td><td class="td-result" style="font-weight:700">$18.48</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-na">NA</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method" style="font-weight:700">Sum N + P₂O₅ + K₂O values</td><td><button class="btn-edit">Edit Value</button></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <!-- FIB -->
+    <div class="section-card">
+      <div class="section-head" onclick="toggleSection(this)">
+        <span class="section-code">FIB</span><span class="section-title">Fibre Fractions — Van Soest</span><span class="section-meta">5 parameters · % DM</span><div class="section-btns"><button class="btn-print-section" onclick="event.stopPropagation();printSection(this)">&#9113; Print Section</button><span class="lab-badge" style="display:none">&#9679; LAB REPORT DATA</span></div><span class="section-arrow">›</span>
+      </div>
+      <div class="section-body"><table>
+        <colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+        <thead><tr><th class="th-param">Parameter</th><th>Unit</th><th>Result</th><th>Range</th><th>SNI Limit</th><th>Status</th><th>Confidence</th><th class="th-method">Method</th><th></th></tr></thead><tbody>
+          <tr class="tr-canonical"><td class="td-param">NDF (Total Cell Wall)</td><td class="td-unit">% DM</td><td class="td-result">82%</td><td class="td-range">75–88%</td><td class="td-sni">—</td><td><span class="status st-na">NA</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">AOAC 2002.04</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">ADF (Lignin + Cellulose)</td><td class="td-unit">% DM</td><td class="td-result">62.8%</td><td class="td-range">55–70%</td><td class="td-sni">—</td><td><span class="status st-na">NA</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">AOAC 973.18</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">ADL (Lignin) ★</td><td class="td-unit">% DM</td><td class="td-result">22.0%</td><td class="td-range">18–26%</td><td class="td-sni">—</td><td><span class="status st-warn">WARN</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">Van Soest ADL · 72% H₂SO₄</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Cellulose (ADF−ADL)</td><td class="td-unit">% DM</td><td class="td-result">40.8%</td><td class="td-range">35–48%</td><td class="td-sni">—</td><td><span class="status st-na">NA</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">Van Soest ADF−ADL</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Hemicellulose (NDF−ADF)</td><td class="td-unit">% DM</td><td class="td-result">19.2%</td><td class="td-range">14–24%</td><td class="td-sni">—</td><td><span class="status st-na">NA</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">Van Soest NDF−ADF</td><td><button class="btn-edit">Edit Value</button></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <!-- PHY -->
+    <div class="section-card">
+      <div class="section-head" onclick="toggleSection(this)">
+        <span class="section-code">PHY</span><span class="section-title">Physical Properties</span><span class="section-meta">7 parameters</span><div class="section-btns"><button class="btn-print-section" onclick="event.stopPropagation();printSection(this)">&#9113; Print Section</button><span class="lab-badge" style="display:none">&#9679; LAB REPORT DATA</span></div><span class="section-arrow">›</span>
+      </div>
+      <div class="section-body"><table>
+        <colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+        <thead><tr><th class="th-param">Parameter</th><th>Unit</th><th>Result</th><th>Range</th><th>SNI Limit</th><th>Status</th><th>Confidence</th><th class="th-method">Method</th><th></th></tr></thead><tbody>
+          <tr class="tr-canonical"><td class="td-param">Moisture Content</td><td class="td-unit">% wb</td><td class="td-result">62.5%</td><td class="td-range">55–70%</td><td class="td-sni">SNI required</td><td><span class="status st-warn">WARN</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">AOAC 930.15 gravimetric 105°C</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Bulk Density</td><td class="td-unit">kg/m³</td><td class="td-result">100–150</td><td class="td-range">80–200</td><td class="td-sni">—</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-mod">LDE-MODERATE</span></td><td class="td-method">Bulk density cylinder method</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Particle Size</td><td class="td-unit">mm</td><td class="td-result">200–300 mm</td><td class="td-range">Whole bunches</td><td class="td-sni">—</td><td><span class="status st-na">NA</span></td><td><span class="conf conf-mod">LDE-MODERATE</span></td><td class="td-method">Sieve / visual</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">pH</td><td class="td-unit">—</td><td class="td-result">6.8–7.2</td><td class="td-range">6.0–8.0</td><td class="td-sni">SNI required</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-mod">LDE-MODERATE</span></td><td class="td-method">pH meter 1:10 suspension</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">EC (Electrical Conductivity)</td><td class="td-unit">dS/m</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Conductivity meter 1:5 suspension</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Water-Holding Capacity</td><td class="td-unit">% DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Gravimetric WHC method</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">HHV (Higher Heating Value)</td><td class="td-unit">MJ/kg DM</td><td class="td-result">18.9</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">Bomb calorimetry ASTM D5865</td><td><button class="btn-edit">Edit Value</button></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <!-- HMT -->
+    <div class="section-card">
+      <div class="section-head" onclick="toggleSection(this)">
+        <span class="section-code">HMT</span><span class="section-title">Heavy Metals</span><span class="section-meta">9 parameters · mg/kg DM · 5 SNI required</span><div class="section-btns"><button class="btn-print-section" onclick="event.stopPropagation();printSection(this)">&#9113; Print Section</button><span class="lab-badge" style="display:none">&#9679; LAB REPORT DATA</span></div><span class="section-arrow">›</span>
+      </div>
+      <div class="section-body"><table>
+        <colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+        <thead><tr><th class="th-param">Parameter</th><th>Unit</th><th>Result</th><th>Range</th><th>SNI Limit</th><th>Status</th><th>Confidence</th><th class="th-method">Method</th><th></th></tr></thead><tbody>
+          <tr class="tr-canonical"><td class="td-param">Iron (Fe)</td><td class="td-unit">mg/kg DM</td><td class="td-result">200–800</td><td class="td-range">100–1,200</td><td class="td-sni">—</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-mod">LDE-MODERATE</span></td><td class="td-method">ICP-OES</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Manganese (Mn)</td><td class="td-unit">mg/kg DM</td><td class="td-result">50–200</td><td class="td-range">20–400</td><td class="td-sni">—</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-mod">LDE-MODERATE</span></td><td class="td-method">ICP-OES</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Zinc (Zn)</td><td class="td-unit">mg/kg DM</td><td class="td-result">10–50</td><td class="td-range">5–100</td><td class="td-sni"><500 mg/kg</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-mod">LDE-MODERATE</span></td><td class="td-method">ICP-OES</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Copper (Cu)</td><td class="td-unit">mg/kg DM</td><td class="td-result">5–20</td><td class="td-range">2–50</td><td class="td-sni"><100 mg/kg</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-mod">LDE-MODERATE</span></td><td class="td-method">ICP-OES</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Nickel (Ni) ★</td><td class="td-unit">mg/kg DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">ICP-MS (AOAC 993.14)</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Cadmium (Cd) ★</td><td class="td-unit">mg/kg DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">ICP-MS</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Lead (Pb) ★</td><td class="td-unit">mg/kg DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">ICP-MS</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Arsenic (As) ★</td><td class="td-unit">mg/kg DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">ICP-MS</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Mercury (Hg) ★</td><td class="td-unit">mg/kg DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Cold vapour AAS / ICP-MS</td><td><button class="btn-edit">Edit Value</button></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <!-- BIO -->
+    <div class="section-card">
+      <div class="section-head" onclick="toggleSection(this)">
+        <span class="section-code">BIO</span><span class="section-title">Biological Activity</span><span class="section-meta">8 parameters · S0 = baseline</span><div class="section-btns"><button class="btn-print-section" onclick="event.stopPropagation();printSection(this)">&#9113; Print Section</button><span class="lab-badge" style="display:none">&#9679; LAB REPORT DATA</span></div><span class="section-arrow">›</span>
+      </div>
+      <div class="section-body"><table>
+        <colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+        <thead><tr><th class="th-param">Parameter</th><th>Unit</th><th>Result</th><th>Range</th><th>SNI Limit</th><th>Status</th><th>Confidence</th><th class="th-method">Method</th><th></th></tr></thead><tbody>
+          <tr class="tr-canonical"><td class="td-param">Total Microbial Count</td><td class="td-unit">CFU/g</td><td class="td-result">10⁵–10⁷</td><td class="td-range">Background</td><td class="td-sni">—</td><td><span class="status st-base">BASE</span></td><td><span class="conf conf-mod">LDE-MODERATE</span></td><td class="td-method">Plate count</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Cellulase Activity</td><td class="td-unit">U/g</td><td class="td-result"><1 U/g</td><td class="td-range"><1 U/g</td><td class="td-sni">—</td><td><span class="status st-base">BASE</span></td><td><span class="conf conf-mod">LDE-MODERATE</span></td><td class="td-method">DNS assay</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Xylanase Activity</td><td class="td-unit">U/g</td><td class="td-result"><1 U/g</td><td class="td-range"><1 U/g</td><td class="td-sni">—</td><td><span class="status st-base">BASE</span></td><td><span class="conf conf-mod">LDE-MODERATE</span></td><td class="td-method">DNS xylan assay</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">N-fixing bacteria (Azotobacter)</td><td class="td-unit">CFU/g</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Plate count</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">PSB (P-solubilising bacteria)</td><td class="td-unit">CFU/g</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Pikovskaya agar</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">BSF Gut Microbiome</td><td class="td-unit">CFU/g</td><td class="td-result">N/A — pre-BSF</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-na">NA</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">16S rRNA</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Microbial Biomass C</td><td class="td-unit">mg/kg</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Fumigation extraction</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Pathogen Screen</td><td class="td-unit">—</td><td class="td-result">NOT TESTED</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-pending">PEND</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">ISO 6579</td><td><button class="btn-edit">Edit Value</button></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <!-- SAV -->
+    <div class="section-card">
+      <div class="section-head" onclick="toggleSection(this)">
+        <span class="section-code">SAV</span><span class="section-title">Soil Amendment Properties</span><span class="section-meta">15 parameters · measured on material</span><div class="section-btns"><button class="btn-print-section" onclick="event.stopPropagation();printSection(this)">&#9113; Print Section</button><span class="lab-badge" style="display:none">&#9679; LAB REPORT DATA</span></div><span class="section-arrow">›</span>
+      </div>
+      <div class="section-body"><table>
+        <colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+        <thead><tr><th class="th-param">Parameter</th><th>Unit</th><th>Result</th><th>Range</th><th>SNI Limit</th><th>Status</th><th>Confidence</th><th class="th-method">Method</th><th></th></tr></thead><tbody>
+          <tr class="tr-canonical"><td class="td-param">Humic Acid</td><td class="td-unit">% DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Humic acid extraction (Kononova 1966)</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Fulvic Acid</td><td class="td-unit">% DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Fulvic fraction extraction</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">CEC (Cation Exchange Capacity)</td><td class="td-unit">cmol/kg</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Ammonium acetate method</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Humin</td><td class="td-unit">% DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Kononova 1966 — residue after HA+FA extraction</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">HA:FA Ratio</td><td class="td-unit">ratio</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">&gt;1 = stable</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Calculated — Humic Acid ÷ Fulvic Acid</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Total Organic Carbon (TOC)</td><td class="td-unit">% DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI 2803:2012 required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Walkley-Black / ISO 14235</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Liming Equivalent</td><td class="td-unit">kg CaCO₃/t DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Calculated from Ca content (ELE section)</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Buffer Capacity (pH)</td><td class="td-unit">—</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">pH titration method</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Available Silicon (Si)</td><td class="td-unit">mg/kg DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">ICP-OES — Si fraction</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Organic Matter (OM)</td><td class="td-unit">% DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI 2803:2012 required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Loss on ignition / OM = TOC × 1.724</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">NPK Oxide Equivalents</td><td class="td-unit">kg/t DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">Permentan 01/2020 required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Calculated — N · P₂O₅ (P×2.292) · K₂O (K×1.205)</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Cu Accumulation Risk @ 10 t/ha</td><td class="td-unit">mg/kg soil</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">&lt;0.5 mg/kg safe</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Calculated — HMT Cu × app rate ÷ soil mass (2×10⁶ kg/ha)</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Zn Accumulation Risk @ 10 t/ha</td><td class="td-unit">mg/kg soil</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">&lt;2.0 mg/kg safe</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Calculated — HMT Zn × app rate ÷ soil mass (2×10⁶ kg/ha)</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Soil CEC Change (projected)</td><td class="td-unit">cmol/kg</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Modelled — OM% applied × 0.015 cmol/kg per % OM</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Soil Bulk Density Change (projected)</td><td class="td-unit">kg/m³</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Modelled — BD reduction per t/ha OM applied</td><td><button class="btn-edit">Edit Value</button></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <!-- BSF -->
+    <div class="section-card">
+      <div class="section-head" onclick="toggleSection(this)">
+        <span class="section-code">BSF</span><span class="section-title">BSF Readiness Gates</span><span class="section-meta">6 gates — raw state</span><div class="section-btns"><button class="btn-print-section" onclick="event.stopPropagation();printSection(this)">&#9113; Print Section</button><span class="lab-badge" style="display:none">&#9679; LAB REPORT DATA</span></div><span class="section-arrow">›</span>
+      </div>
+      <div class="section-body"><table>
+        <colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+        <thead><tr><th class="th-param">Parameter</th><th>Unit</th><th>Result</th><th>Range</th><th>SNI Limit</th><th>Status</th><th>Confidence</th><th class="th-method">Method</th><th></th></tr></thead><tbody>
+          <tr class="tr-canonical"><td class="td-param">BSF Suitability</td><td class="td-unit">Gate</td><td class="td-result">NOT READY</td><td class="td-range">—</td><td class="td-sni">—</td><td><span class="status st-fail">FAIL</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">Multi-param check</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Lignin Barrier</td><td class="td-unit">Gate</td><td class="td-result">CRITICAL 22%</td><td class="td-range">ADL <15%</td><td class="td-sni">—</td><td><span class="status st-fail">FAIL</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">ADL %</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Moisture Gate</td><td class="td-unit">Gate</td><td class="td-result">High — press required</td><td class="td-range"><75% wb</td><td class="td-sni">—</td><td><span class="status st-warn">WARN</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">% wb</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Protein Gate (CP%)</td><td class="td-unit">Gate</td><td class="td-result">FAIL 4.75%</td><td class="td-range">≥8% DM</td><td class="td-sni">—</td><td><span class="status st-fail">FAIL</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">CP % DM</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">pH Gate</td><td class="td-unit">Gate</td><td class="td-result">PASS 6.8–7.2</td><td class="td-range">6.0–8.5</td><td class="td-sni">—</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-mod">LDE-MODERATE</span></td><td class="td-method">pH meter</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">C:N Gate</td><td class="td-unit">Gate</td><td class="td-result">FAIL 60</td><td class="td-range"><25 for BSF</td><td class="td-sni">—</td><td><span class="status st-fail">FAIL</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">Calculated</td><td><button class="btn-edit">Edit Value</button></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <!-- APP -->
+    <div class="section-card">
+      <div class="section-head" onclick="toggleSection(this)">
+        <span class="section-code">APP</span>
+        <span class="section-title">Application Advisory</span>
+        <span class="section-meta" id="app-meta">Ultisols — 5 advisory flags</span>
+        <div class="section-btns"><button class="btn-print-section" onclick="event.stopPropagation();printSection(this)">&#9113; Print Section</button><span class="lab-badge" style="display:none">&#9679; LAB REPORT DATA</span></div>
+        <span class="section-arrow">&#8250;</span>
+      </div>
+      <div class="section-body">
+        <div id="app-soil-selector" style="padding:10px 20px 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <span style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase">Soil Type</span>
+          <button class="soil-btn active" onclick="setSoil(this,'ultisol')">Ultisols</button>
+          <button class="soil-btn" onclick="setSoil(this,'oxisol')">Oxisols</button>
+          <button class="soil-btn" onclick="setSoil(this,'inceptisol')">Inceptisols</button>
+          <button class="soil-btn" onclick="setSoil(this,'histosol')">Histosols</button>
+          <button class="soil-btn" onclick="setSoil(this,'spodosol')">Spodosols</button>
+          <span style="font-size:10px;color:var(--muted);margin-left:8px">← set in S0 page · advisory flags update automatically</span>
+        </div>
+        <table style="margin-top:8px">
+          <colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+          <thead><tr><th class="th-param">Advisory Flag</th><th>Unit</th><th>Signal</th><th>Threshold</th><th>SNI</th><th>Status</th><th>Confidence</th><th class="th-method">Basis</th><th></th></tr></thead>
+          <tbody id="app-rows">
+            <!-- populated by setSoil() JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- REG -->
+    <div class="section-card">
+      <div class="section-head" onclick="toggleSection(this)">
+        <span class="section-code">REG</span><span class="section-title">Regulatory — SNI 2803:2012</span><span class="section-meta">18 parameters · organic fertiliser standard</span><div class="section-btns"><button class="btn-print-section" onclick="event.stopPropagation();printSection(this)">&#9113; Print Section</button><span class="lab-badge" style="display:none">&#9679; LAB REPORT DATA</span></div><span class="section-arrow">›</span>
+      </div>
+      <div class="section-body"><table>
+        <colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+        <thead><tr><th class="th-param">Parameter</th><th>Unit</th><th>Result</th><th>Range</th><th>SNI Limit</th><th>Status</th><th>Confidence</th><th class="th-method">Method</th><th></th></tr></thead><tbody>
+          <tr class="tr-canonical"><td class="td-param">Organic C</td><td class="td-unit">% DM</td><td class="td-result">~45.6%</td><td class="td-range">—</td><td class="td-sni">min 15%</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-mod">LDE-MODERATE</span></td><td class="td-method">CHNS</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Organic Matter</td><td class="td-unit">% DM</td><td class="td-result">95%</td><td class="td-range">—</td><td class="td-sni">min 25%</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">100−Ash</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Total N</td><td class="td-unit">% DM</td><td class="td-result">0.76%</td><td class="td-range">—</td><td class="td-sni">min 2%</td><td><span class="status st-fail">FAIL</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">Kjeldahl</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">C:N Ratio</td><td class="td-unit">ratio</td><td class="td-result">60</td><td class="td-range">—</td><td class="td-sni">max 25</td><td><span class="status st-fail">FAIL</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">Calculated</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Moisture</td><td class="td-unit">% wb</td><td class="td-result">62.5%</td><td class="td-range">—</td><td class="td-sni">max 25%</td><td><span class="status st-fail">FAIL</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">AOAC 930.15</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">pH</td><td class="td-unit">—</td><td class="td-result">6.8–7.2</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-mod">LDE-MODERATE</span></td><td class="td-method">pH meter</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">EC</td><td class="td-unit">dS/m</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Conductivity meter</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Sulphur (S)</td><td class="td-unit">% DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">ICP-OES / CHNS</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Potassium (K)</td><td class="td-unit">% DM</td><td class="td-result">2.0%</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-lab">LAB-CONFIRMED</span></td><td class="td-method">ICP-OES</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Calcium (Ca)</td><td class="td-unit">% DM</td><td class="td-result">0.30%</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">ICP-OES</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Magnesium (Mg)</td><td class="td-unit">% DM</td><td class="td-result">0.18%</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-pass">PASS</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">ICP-OES</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Molybdenum (Mo)</td><td class="td-unit">mg/kg DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">ICP-MS</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Chloride (Cl)</td><td class="td-unit">mg/kg DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">Ion chromatography</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Nickel (Ni)</td><td class="td-unit">mg/kg DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">ICP-MS</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Cadmium (Cd)</td><td class="td-unit">mg/kg DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">ICP-MS</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Lead (Pb)</td><td class="td-unit">mg/kg DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">ICP-MS</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Arsenic (As)</td><td class="td-unit">mg/kg DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">ICP-MS</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Mercury (Hg)</td><td class="td-unit">mg/kg DM</td><td class="td-result data-gap">DATA GAP</td><td class="td-range">—</td><td class="td-sni">SNI required</td><td><span class="status st-gap">GAP</span></td><td><span class="conf conf-low">LDE-LOW</span></td><td class="td-method">ICP-MS</td><td><button class="btn-edit">Edit Value</button></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <!-- LAR -->
+    <div class="section-card lar-section" style="display:none">
+      <div class="section-head" onclick="toggleSection(this)">
+        <span class="section-code">LAR</span><span class="section-title">Larval Biomass</span><span class="section-meta">4 parameters · S4 active rearing only</span><div class="section-btns"><button class="btn-print-section" onclick="event.stopPropagation();printSection(this)">&#9113; Print Section</button><span class="lab-badge" style="display:none">&#9679; LAB REPORT DATA</span></div><span class="section-arrow">›</span>
+      </div>
+      <div class="section-body"><table>
+        <colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+        <thead><tr><th class="th-param">Parameter</th><th>Unit</th><th>Result</th><th>Range</th><th>SNI Limit</th><th>Status</th><th>Confidence</th><th class="th-method">Method</th><th></th></tr></thead><tbody>
+          <tr class="tr-canonical"><td class="td-param">Larval Fresh Weight</td><td class="td-unit">g/kg DM</td><td class="td-result">—</td><td class="td-range">20–30 g (D14)</td><td class="td-sni">—</td><td><span class="status st-pending">PEND</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">Direct weighing</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Individual Larval Weight</td><td class="td-unit">mg</td><td class="td-result">—</td><td class="td-range">180–280 prepupae</td><td class="td-sni">—</td><td><span class="status st-pending">PEND</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">Individual weighing</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Feed Conversion Ratio</td><td class="td-unit">kg/kg</td><td class="td-result">—</td><td class="td-range">~3.5:1 (D14)</td><td class="td-sni">—</td><td><span class="status st-pending">PEND</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">FCR calculation</td><td><button class="btn-edit">Edit Value</button></td></tr>
+          <tr class="tr-canonical"><td class="td-param">Larval Length</td><td class="td-unit">mm</td><td class="td-result">—</td><td class="td-range">18–25 prepupae</td><td class="td-sni">—</td><td><span class="status st-pending">PEND</span></td><td><span class="conf conf-high">LDE-HIGH</span></td><td class="td-method">Physical measurement</td><td><button class="btn-edit">Edit Value</button></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+
+
+
+  </div><!-- /sections-col -->
+
+</div><!-- /main -->
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title">Cropnuts Ltd — CN-309819</div>
+        <div class="modal-sub">Marula Proteen · OCR test report · Filed S0 / EFB · March 2026</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="report-preview">
+        <div class="rp-row"><span class="rp-key">Lab Name</span><span class="rp-val">Cropnuts Ltd — Nairobi, Kenya</span></div>
+        <div class="rp-row"><span class="rp-key">Report No.</span><span class="rp-val">CN-309819</span></div>
+        <div class="rp-row"><span class="rp-key">Sample Name</span><span class="rp-val">Marula Proteen (OCR test)</span></div>
+        <div class="rp-row"><span class="rp-key">OCR Status</span><span class="rp-val" style="color:var(--green)">COMPLETE</span></div>
+        <div class="rp-row"><span class="rp-key">Rows Placed</span><span class="rp-val" style="color:var(--green)">8</span></div>
+        <div class="rp-row"><span class="rp-key">Rows Skipped</span><span class="rp-val" style="color:var(--amber)">3 (locked or no match)</span></div>
+      </div>
+      <div class="ocr-log-title">OCR Log</div>
+      <div class="ocr-row"><div class="ocr-head">Parameter</div><div class="ocr-head">Raw Text</div><div class="ocr-head">Parsed</div><div class="ocr-head">Action</div><div class="ocr-head">Score</div></div>
+      <div class="ocr-row"><div class="ocr-param">Moisture Content</div><div class="ocr-raw">62.5 %</div><div class="ocr-parsed">62.5%</div><div class="ocr-act-placed">PLACED</div><div class="ocr-score">0.97</div></div>
+      <div class="ocr-row"><div class="ocr-param">Crude Protein</div><div class="ocr-raw">CP 4.75%</div><div class="ocr-parsed">4.75%</div><div class="ocr-act-placed">PLACED</div><div class="ocr-score">0.94</div></div>
+      <div class="ocr-row"><div class="ocr-param">Ash Content</div><div class="ocr-raw">Ash 5.0%</div><div class="ocr-parsed">5.0%</div><div class="ocr-act-placed">PLACED</div><div class="ocr-score">0.99</div></div>
+      <div class="ocr-row"><div class="ocr-param">Nitrogen (N)</div><div class="ocr-raw">N 0.76%</div><div class="ocr-parsed">0.76%</div><div class="ocr-act-placed">PLACED</div><div class="ocr-score">0.96</div></div>
+      <div class="ocr-row"><div class="ocr-param">Potassium (K)</div><div class="ocr-raw">K 2.0%</div><div class="ocr-parsed">2.0%</div><div class="ocr-act-placed">PLACED</div><div class="ocr-score">0.95</div></div>
+      <div class="ocr-row"><div class="ocr-param">Phosphorus (P)</div><div class="ocr-raw">P 0.06%</div><div class="ocr-parsed">0.06%</div><div class="ocr-act-placed">PLACED</div><div class="ocr-score">0.93</div></div>
+      <div class="ocr-row"><div class="ocr-param">ADL (Lignin)</div><div class="ocr-raw">Lignin 22%</div><div class="ocr-parsed">22.0%</div><div class="ocr-act-placed">PLACED</div><div class="ocr-score">0.91</div></div>
+      <div class="ocr-row"><div class="ocr-param">NDF</div><div class="ocr-raw">NDF 82.1%</div><div class="ocr-parsed">82%</div><div class="ocr-act-placed">PLACED</div><div class="ocr-score">0.88</div></div>
+      <div class="ocr-row"><div class="ocr-param">BSF Suitability</div><div class="ocr-raw">—</div><div class="ocr-parsed">—</div><div class="ocr-act-skip">SKIPPED-LOCKED</div><div class="ocr-score">—</div></div>
+      <div class="ocr-row"><div class="ocr-param">CEC</div><div class="ocr-raw">—</div><div class="ocr-parsed">—</div><div class="ocr-act-skip">SKIPPED-NO-MATCH</div><div class="ocr-score">—</div></div>
+      <div class="ocr-row"><div class="ocr-param">Delivery State</div><div class="ocr-raw">—</div><div class="ocr-parsed">—</div><div class="ocr-act-skip">SKIPPED-NO-MATCH</div><div class="ocr-score">—</div></div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+function setStage(t,s){
+  document.querySelectorAll('.stage-tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  document.getElementById('stream-bar').style.display=(s==='S0')?'flex':'none';
+  document.querySelectorAll('.lar-section').forEach(el=>el.style.display=(s==='S4')?'block':'none');
+}
+function setStream(b, type) {
+  document.querySelectorAll('.stream-btn').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  const prompt = document.getElementById('new-stream-prompt');
+  if (type === 'new') {
+    prompt.style.display = 'block';
+    document.getElementById('new-stream-name').focus();
+  } else {
+    prompt.style.display = 'none';
+  }
+}
+function confirmNewStream() {
+  const name = document.getElementById('new-stream-name').value.trim();
+  if (!name) { document.getElementById('new-stream-name').focus(); return; }
+  document.getElementById('new-stream-prompt').style.display = 'none';
+  // In Lovable this will trigger upload modal + populate all sections with DATA GAP
+  alert('Stream "' + name + '" created.\nPlease upload a lab analysis report — all ' +
+    'parameters will be shown as DATA GAP until values are entered or OCR-populated.');
+}
+function cancelNewStream() {
+  document.getElementById('new-stream-prompt').style.display = 'none';
+  document.querySelector('.stream-btn.active')?.classList.remove('active');
+  document.querySelector('.stream-btn').classList.add('active');
+}
+function openModal(){document.getElementById('modal').classList.add('open')}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+function closeModalOutside(e){if(e.target===document.getElementById('modal'))closeModal()}
+
+</script>
+
+<!-- ── FILE LAB REPORT MODAL ──────────────────── -->
+<div class="upload-modal" id="uploadModal">
+  <div class="upload-modal-box">
+    <div class="upload-modal-head">
+      <div>
+        <div class="upload-modal-title">&#8679; Upload Lab Report</div>
+        <div class="upload-modal-sub">Upload a PDF — the system displays it in full and extracts values into each section automatically</div>
+      </div>
+      <button class="upload-modal-close" onclick="closeUploadModal()">&#10005;</button>
+    </div>
+    <div class="upload-modal-body">
+      <div class="upload-zone" onclick="simulateUpload()">
+        <div class="upload-zone-icon">&#8679;</div>
+        <div class="upload-zone-title">Drop your lab report PDF here, or click to browse</div>
+        <div class="upload-zone-sub">PDF · JPG · PNG &nbsp;·&nbsp; Max 50 MB &nbsp;·&nbsp; Any lab — Cropnuts, Eurofins, Sucofindo, Balai Tanah</div>
+      </div>
+      <div class="upload-divider">or view a filed report</div>
+
+      <!-- Filed report: black & white original -->
+      <div class="filed-report-preview">
+        <div class="frp-header">
+          <div>
+            <div class="frp-logo">CROPNUTS LTD</div>
+            <div class="frp-logo-sub">ANALYTICAL LABORATORY · NAIROBI, KENYA · www.cropnuts.com</div>
+          </div>
+          <div class="frp-meta">
+            Report No: CN-309819<br>
+            Sample: Marula Proteen<br>
+            Received: 12 Mar 2024<br>
+            Reported: 18 Mar 2024<br>
+            Client: CFI — Bogor
+          </div>
+        </div>
+        <table class="frp-table">
+          <tr><td colspan="4" class="frp-section-head">PROXIMATE ANALYSIS</td></tr>
+          <tr><th>Parameter</th><th>Result</th><th>Unit</th><th>Method</th></tr>
+          <tr><td>Moisture</td><td>62.5</td><td>% wb</td><td>AOAC 930.15</td></tr>
+          <tr><td>Crude Protein (N×6.25)</td><td>4.75</td><td>% DM</td><td>AOAC 984.13</td></tr>
+          <tr><td>Ether Extract (Fat)</td><td>4.10</td><td>% DM</td><td>AOAC 920.39</td></tr>
+          <tr><td>Crude Fibre</td><td>38.40</td><td>% DM</td><td>AOAC 978.10</td></tr>
+          <tr><td>Ash</td><td>5.00</td><td>% DM</td><td>AOAC 942.05</td></tr>
+          <tr><td colspan="4" class="frp-section-head">ELEMENTAL ANALYSIS</td></tr>
+          <tr><th>Parameter</th><th>Result</th><th>Unit</th><th>Method</th></tr>
+          <tr><td>Nitrogen (N)</td><td>0.76</td><td>% DM</td><td>Kjeldahl</td></tr>
+          <tr><td>Potassium (K)</td><td>2.00</td><td>% DM</td><td>ICP-OES</td></tr>
+          <tr><td>Phosphorus (P)</td><td>0.06</td><td>% DM</td><td>ICP-OES</td></tr>
+          <tr><td colspan="4" class="frp-section-head">FIBRE FRACTIONS (VAN SOEST)</td></tr>
+          <tr><th>Parameter</th><th>Result</th><th>Unit</th><th>Method</th></tr>
+          <tr><td>NDF</td><td>82.10</td><td>% DM</td><td>AOAC 2002.04</td></tr>
+          <tr><td>ADF</td><td>62.80</td><td>% DM</td><td>AOAC 973.18</td></tr>
+          <tr><td>Lignin (ADL)</td><td>22.00</td><td>% DM</td><td>72% H₂SO₄</td></tr>
+        </table>
+        <div style="margin-top:12px;font-size:9px;color:#777;border-top:1px solid #ccc;padding-top:6px">
+          Accredited laboratory · ISO/IEC 17025 · Results apply to sample as received only
+        </div>
+      </div>
+
+      <div style="margin-top:14px;display:flex;gap:8px;align-items:center">
+        <div style="flex:1;font-size:var(--fs-xs);color:var(--muted)">
+          <span style="color:var(--lab);font-weight:700">8 parameters extracted</span> · 3 skipped (no match) · Values inserted into ELE, PRX, FIB sections in <span style="color:var(--lab)">lime</span>
+        </div>
+        <button onclick="closeUploadModal()" style="padding:6px 14px;font-family:var(--mono);font-size:var(--fs-sm);font-weight:700;background:var(--teal);color:#060C14;border:none;border-radius:3px;cursor:pointer;">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PRINT SECTION MODAL ─────────────────────── -->
+<div class="print-modal" id="printModal">
+  <div class="print-modal-box">
+    <div class="upload-modal-head">
+      <div>
+        <div class="upload-modal-title">&#9113; Print Section Preview</div>
+        <div class="upload-modal-sub">Italic rows = CFI reference values &nbsp;·&nbsp; Normal rows = user-confirmed &nbsp;·&nbsp; Greyscale only</div>
+      </div>
+      <button class="upload-modal-close" onclick="closePrintModal()">&#10005;</button>
+    </div>
+    <div class="print-preview" id="printPreviewContent" style="padding:20px;background:#fff;color:#111;font-family:var(--mono);font-size:11px">
+      <!-- populated by JS -->
+    </div>
+    <div class="print-note-bar">
+      <input class="print-note-input" id="printNote" type="text" placeholder="Optional note for this section (e.g. Sample taken 14 March 2026 — pre-pressing EFB batch 4)">
+      <button class="btn-do-print" onclick="executePrint()">&#9113; Print</button>
+      <button onclick="closePrintModal()" style="padding:6px 12px;font-family:var(--mono);font-size:var(--fs-sm);background:transparent;color:var(--muted);border:1px solid var(--border2);border-radius:3px;cursor:pointer;">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleSection(h){h.parentElement.classList.toggle('open')}
+function setStage(t,s){
+  document.querySelectorAll('.stage-tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  document.getElementById('stream-bar').style.display=(s==='S0')?'flex':'none';
+  document.querySelectorAll('.lar-section').forEach(el=>el.style.display=(s==='S4')?'block':'none');
+}
+function setStream(b, type) {
+  document.querySelectorAll('.stream-btn').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  const prompt = document.getElementById('new-stream-prompt');
+  if (type === 'new') {
+    prompt.style.display = 'block';
+    document.getElementById('new-stream-name').focus();
+  } else {
+    prompt.style.display = 'none';
+  }
+}
+function confirmNewStream() {
+  const name = document.getElementById('new-stream-name').value.trim();
+  if (!name) { document.getElementById('new-stream-name').focus(); return; }
+  document.getElementById('new-stream-prompt').style.display = 'none';
+  alert('Stream "' + name + '" created.\nPlease file a lab report — all parameters will show as DATA GAP until values are entered or OCR-extracted.');
+}
+function cancelNewStream() {
+  document.getElementById('new-stream-prompt').style.display = 'none';
+  document.querySelector('.stream-btn.active')?.classList.remove('active');
+  document.querySelector('.stream-btn').classList.add('active');
+}
+function openModal(){document.getElementById('modal').classList.add('open')}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+function closeModalOutside(e){if(e.target===document.getElementById('modal'))closeModal()}
+
+// ── File Report Modal ──
+function openUploadModal() {
+  document.getElementById('uploadModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeUploadModal() {
+  document.getElementById('uploadModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('click', e => {
+  if (e.target === document.getElementById('uploadModal')) closeUploadModal();
+  if (e.target === document.getElementById('printModal')) closePrintModal();
+});
+function simulateUpload() {
+  alert('In production: file picker opens → PDF uploaded → OCR runs → values inserted in lime colour into matching sections.\n\nFor now, the Cropnuts CN-309819 demo report is shown below.');
+}
+
+// ── Print Section ──
+let _printSectionEl = null;
+function printSection(btn) {
+  const card = btn.closest('.section-card');
+  const code  = card.querySelector('.section-code').textContent;
+  const title = card.querySelector('.section-title').textContent;
+  const tbody = card.querySelector('tbody');
+  if (!tbody) return;
+
+  // Build greyscale print preview
+  let rows = '';
+  Array.from(tbody.querySelectorAll('tr')).forEach((tr, i) => {
+    const isUser      = tr.classList.contains('tr-user');
+    const isCanonical = tr.classList.contains('tr-canonical');
+    const bg  = i % 2 === 0 ? '#fff' : '#f5f5f5';
+    const style = isCanonical
+      ? `background:${bg};font-style:normal;color:#555`
+      : `background:${bg};font-style:normal;color:#111`;
+
+    const cells = Array.from(tr.querySelectorAll('td')).map((td, ci) => {
+      // Last cell (Edit button) — skip
+      if (ci === tr.cells.length - 1) return '<td style="width:60px"></td>';
+      // Status/conf badges — plain text
+      const badge = td.querySelector('.status,.conf');
+      const val   = badge ? '[' + badge.textContent.trim() + ']' : td.textContent.trim();
+      const align = (ci === 0) ? 'text-align:left;padding-left:8px' : 'text-align:center';
+      return `<td style="padding:4px 6px;border:1px solid #ddd;font-size:9pt;${align}">${val}</td>`;
+    }).join('');
+    rows += `<tr style="${style}">${cells}</tr>`;
+  });
+
+  const note = document.getElementById('printNote').value;
+  document.getElementById('printPreviewContent').innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #111;padding-bottom:8px;margin-bottom:12px">
+      <div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:14pt;font-weight:700;color:#111">CFI BIOCONVERSION — LAB ANALYSIS</div>
+        <div style="font-size:9pt;color:#555;margin-top:2px">60 TPH FFB Mill · Bogor, West Java · Indonesia</div>
+      </div>
+      <div style="text-align:right;font-size:9pt;color:#555;line-height:1.8">
+        <strong>S0 · EFB · Raw Feedstock</strong><br>March 2026
+      </div>
+    </div>
+    <div style="background:#ddd;padding:5px 8px;font-size:10pt;font-weight:700;margin-bottom:8px">${code} — ${title}</div>
+    <table style="width:100%;border-collapse:collapse;font-size:9pt">
+      <thead><tr style="background:#e0e0e0">
+        <th style="padding:4px 8px;text-align:left;border:1px solid #bbb;font-size:8pt">PARAMETER</th>
+        <th style="padding:4px 8px;text-align:center;border:1px solid #bbb;font-size:8pt">UNIT</th>
+        <th style="padding:4px 8px;text-align:center;border:1px solid #bbb;font-size:8pt">RESULT</th>
+        <th style="padding:4px 8px;text-align:center;border:1px solid #bbb;font-size:8pt">RANGE</th>
+        <th style="padding:4px 8px;text-align:center;border:1px solid #bbb;font-size:8pt">SNI LIMIT</th>
+        <th style="padding:4px 8px;text-align:center;border:1px solid #bbb;font-size:8pt">STATUS</th>
+        <th style="padding:4px 8px;text-align:center;border:1px solid #bbb;font-size:8pt">CONFIDENCE</th>
+        <th style="padding:4px 6px;text-align:left;border:1px solid #bbb;font-size:8pt">METHOD</th>
+        <th style="width:50px;border:1px solid #bbb"></th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div style="margin-top:16px;font-size:8pt;color:#777;border-top:1px solid #ccc;padding-top:8px">
+      Grey values = CFI reference data (not yet confirmed by lab analysis) &nbsp;·&nbsp; <strong>Bold values</strong> = user-confirmed or OCR-extracted from filed lab report
+      ${note ? '<br><strong>Note:</strong> ' + note : ''}
+    </div>
+  `;
+
+  _printSectionEl = card;
+  document.getElementById('printModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closePrintModal() {
+  document.getElementById('printModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function executePrint() {
+  const note  = document.getElementById('printNote').value;
+  const html  = document.getElementById('printPreviewContent').innerHTML;
+  const win   = window.open('', '_blank', 'width=900,height=700');
+  win.document.write(`<!DOCTYPE html><html><head>
+    <title>CFI Lab Report Section</title>
+    <style>
+      body{font-family:'IBM Plex Mono',monospace;font-size:10pt;color:#111;margin:20px}
+      @page{margin:15mm}
+    
+.soil-btn{padding:3px 9px;font-family:var(--mono);font-size:10px;font-weight:600;
+  border-radius:3px;border:1px solid var(--border2);background:var(--bg);
+  color:var(--muted);cursor:pointer;transition:all .12s}
+.soil-btn:hover{color:var(--text);border-color:rgba(255,255,255,.2)}
+.soil-btn.active{background:rgba(0,201,177,.15);color:var(--teal);border-color:rgba(0,201,177,.5)}
+</style>
+  </head><body>${html}</body></html>`);
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 400);
+}
+
+
+// ── Application Advisory — soil-specific ──────────────────────
+const SOIL_ADVISORY = {
+  ultisol: [
+    ['Primary Soil Target','—','Ultisols (24% of IDN palm)','Target match','—','pass','LDE-HIGH','CFI soil matrix model'],
+    ['P Fixation Risk','Flag','MODERATE — monitor P availability','P% < 0.1% triggers flag','—','warn','LDE-HIGH','Goethite/gibbsite binding in Ultisols — ICP-OES P%'],
+    ['K:N Ratio Signal','ratio','2.63 — K-rich','> 1.5 = K-dominant','—','pass','LDE-HIGH','Calculated K÷N from ELE section'],
+    ['Base Saturation','Flag','LOW 22% — leaching risk','> 35% preferred','—','warn','LDE-HIGH','Ultisol characteristic — acidic clay horizon'],
+    ['Recommended Rate','t/ha/yr','3–5 t/ha (S5A frass)','—','—','na','LDE-HIGH','CFI agronomic model'],
+  ],
+  oxisol: [
+    ['Primary Soil Target','—','Oxisols (8% of IDN palm)','Secondary target','—','pass','LDE-HIGH','CFI soil matrix model'],
+    ['P Fixation Risk','Flag','HIGH — severe Fe/Al oxide binding','P% < 0.1% critical','—','fail','LDE-HIGH','Fe₂O₃/Al₂O₃ in Oxisols strongly adsorb P'],
+    ['K:N Ratio Signal','ratio','2.63 — K-rich','> 1.5 = K-dominant','—','pass','LDE-HIGH','Calculated K÷N from ELE section'],
+    ['Low CEC','Flag','Very low CEC < 8 cmol/kg','—','—','warn','LDE-HIGH','Oxisol characteristic — weathered Al/Fe oxides'],
+    ['Recommended Rate','t/ha/yr','4–6 t/ha (S5A frass)','Higher rate for CEC building','—','na','LDE-HIGH','CFI agronomic model'],
+  ],
+  inceptisol: [
+    ['Primary Soil Target','—','Inceptisols (39% of IDN palm)','Best fertility match','—','pass','LDE-HIGH','CFI soil matrix model — highest productivity'],
+    ['P Fixation Risk','Flag','LOW — good P availability','P% acceptable','—','pass','LDE-HIGH','Higher pH Inceptisols retain P better'],
+    ['K:N Ratio Signal','ratio','2.63 — K-rich','> 1.5 = K-dominant','—','pass','LDE-HIGH','Calculated K÷N from ELE section'],
+    ['CEC','Flag','GOOD 15.4 cmol/kg','—','—','pass','LDE-HIGH','Best nutrient retention of palm soils'],
+    ['Recommended Rate','t/ha/yr','2–4 t/ha (S5A frass)','Lower rate — good base fertility','—','na','LDE-HIGH','CFI agronomic model'],
+  ],
+  histosol: [
+    ['Primary Soil Target','—','Histosols (7% of IDN palm)','Peat soils — high caution','—','warn','LDE-HIGH','CFI soil matrix model'],
+    ['N Application Flag','Flag','REDUCE N RATE BY 80%','Max 20% of standard N rate','—','fail','LDE-HIGH','Peat already releases N continuously — over-application causes toxicity + leaching'],
+    ['P Application','Flag','REDUCE P BY 70%','Peat has high P retention','—','warn','LDE-HIGH','Histosol organic matter binds P strongly'],
+    ['Drainage Requirement','Flag','DRAINAGE CRITICAL','Water table > 60cm required','—','warn','LDE-HIGH','Peat compaction + anaerobic N loss without drainage'],
+    ['pH','Flag','VERY ACID pH 3.8','Liming required before application','—','fail','LDE-HIGH','Histosol baseline pH — CFI product pH 6.8–7.2 helps but insufficient alone'],
+    ['Recommended Rate','t/ha/yr','1–2 t/ha MAXIMUM','Strictly limited — monitor','—','warn','LDE-HIGH','CFI agronomic model — peat oversaturation risk'],
+  ],
+  spodosol: [
+    ['Primary Soil Target','—','Spodosols (sandy, pH 4.77)','Low priority — poor fertility','—','warn','LDE-HIGH','CFI soil matrix model — 31% lower yield vs Ultisols'],
+    ['N Application','Flag','SPLIT APPLICATION required','Apply in 3–4 splits/yr','—','warn','LDE-HIGH','Sandy texture — rapid N leaching, no retention'],
+    ['K:N Ratio Signal','ratio','2.63 — K-rich','K leaches rapidly on sand','—','warn','LDE-HIGH','Spodosol low CEC cannot hold K — high leach risk'],
+    ['P Application','Flag','LOW P retention','P leaches on sandy profile','—','warn','LDE-HIGH','Spodosol N 0.06%, P 98ppm — near-zero native fertility'],
+    ['Recommended Rate','t/ha/yr','5–8 t/ha — high rate','Compensate for leaching','—','warn','LDE-HIGH','CFI agronomic model — high rate split application'],
+  ],
+};
+
+function setSoil(btn, soilType) {
+  document.querySelectorAll('.soil-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const rows = SOIL_ADVISORY[soilType] || [];
+  const SM = {pass:'st-pass',fail:'st-fail',warn:'st-warn',na:'st-na'};
+  const tbody = document.getElementById('app-rows');
+  tbody.innerHTML = rows.map(r => {
+    const stClass = SM[r[5]] || 'st-na';
+    return `<tr class="tr-canonical"><td class="td-param">${r[0]}</td>
+      <td class="td-unit">${r[1]}</td>
+      <td class="td-result">${r[2]}</td>
+      <td class="td-range">${r[3]}</td>
+      <td class="td-sni">${r[4]}</td>
+      <td><span class="status ${stClass}">${r[5].toUpperCase()}</span></td>
+      <td><span class="conf conf-high">${r[6]}</span></td>
+      <td class="td-method">${r[7]}</td>
+      <td><button class="btn-edit">Edit Value</button></td></tr>`;
+  }).join('');
+
+  // Update meta
+  const soilNames = {ultisol:'Ultisols',oxisol:'Oxisols',inceptisol:'Inceptisols',histosol:'Histosols',spodosol:'Spodosols'};
+  const metaEl = document.getElementById('app-meta');
+  if (metaEl) metaEl.textContent = soilNames[soilType] + ' — ' + rows.length + ' advisory flags';
+}
+
+// Init APP with Ultisol on load
+document.addEventListener('DOMContentLoaded', function() {
+  const defaultBtn = document.querySelector('.soil-btn.active');
+  if (defaultBtn) setSoil(defaultBtn, 'ultisol');
+});
+
+// ── Print Full Report ──
+function printFullReport() {
+  document.querySelectorAll('.section-card').forEach(c => c.classList.add('open'));
+  document.body.setAttribute('data-date', new Date().toLocaleDateString());
+  window.print();
+}
+</script>
+
+</body>
+</html>

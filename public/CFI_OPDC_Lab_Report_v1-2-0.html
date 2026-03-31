@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en" style="background:#060C14;color-scheme:dark;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFI Lab Report — OPDC (Oil Palm Decanter Cake) v1.2</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════
+   DESIGN TOKENS — single source of truth
+══════════════════════════════════════════════════════ */
+:root {
+  --bg:#060C14;--bg2:#0D1B2A;--bg3:#122030;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  /* Primary palette */
+  --teal:#00C9B1;          /* table/section UI */
+  --teal-bright:#40D7C5;   /* active states, metrics */
+  --teal-soft:#7EC8C0;     /* metric labels */
+  --amber:#F5A623;         /* table results, section open state */
+  --amber-soft:#D4934A;    /* metric numbers, badge */
+  --green:#72DFA6;--red:#FF5C5C;--blue:#4A9EFF;
+  --text:#C8D8E8;--muted:#7E9EB4;--dim:rgba(255,255,255,0.04);
+  /* Fonts — two zones: UI = DM Sans, Data = IBM Plex Mono */
+  --f-ui:'DM Sans',sans-serif;
+  --f-data:'IBM Plex Mono',monospace;
+  --mono:'IBM Plex Mono',monospace;   /* legacy alias */
+  --sans:'IBM Plex Sans',sans-serif;  /* legacy alias */
+  /* Button standard */
+  --btn-pad:4px 12px;
+  --btn-radius:3px;
+  /* Font sizes */
+  --fs:13px;--fs-sm:11px;--fs-xs:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#060C14!important;color:#C8D8E8!important;color-scheme:dark;}
+body{background:#060C14!important;color:#C8D8E8;font-family:var(--mono);font-size:var(--fs);min-height:100vh}
+table{background:#060C14;}
+tbody tr{background:#060C14;}
+tbody tr:hover{background:#0D1B2A!important;}
+thead th{background:#070E1C!important;color:#7E9EB4!important;}
+.section-body{background:#060C14;}
+.section-head{background:#0D1B2A!important;}
+.section-card.open .section-head{background:rgba(0,201,177,0.08)!important;}
+
+/* ── TOP HEADER BAR ─────────────────────────────────────── */
+.topbar{background:#080F1A;border-bottom:1px solid var(--border2);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;position:relative}
+.topbar-left{}
+.topbar-brand{font-family:var(--f-ui);font-size:15px;font-weight:700;color:var(--teal-bright);letter-spacing:.06em;text-transform:uppercase}
+.topbar-sub{font-family:var(--f-ui);font-size:var(--fs-xs);color:var(--muted);margin-top:2px}
+.topbar-actions{display:flex;align-items:center;gap:8px}
+.topbar-meta{font-family:var(--f-ui);font-size:var(--fs-xs);color:var(--muted);text-align:center;line-height:1.7;position:absolute;left:50%;transform:translateX(-50%)}
+.topbar-meta span{color:var(--amber-soft)}
+/* Action buttons — shared base */
+.btn-action{
+  display:flex;align-items:center;gap:6px;
+  padding:var(--btn-pad);
+  border-radius:var(--btn-radius);
+  border:1px solid;
+  font-family:var(--f-ui);font-size:var(--fs-sm);font-weight:600;
+  cursor:pointer;letter-spacing:.04em;white-space:nowrap;transition:all .15s;
+}
+.btn-upload{background:rgba(0,201,177,.12);color:var(--teal-bright);border-color:rgba(0,201,177,.35)}
+.btn-upload:hover{background:rgba(0,201,177,.22);border-color:rgba(0,201,177,.65)}
+.btn-print-full{background:rgba(212,147,74,.12);color:var(--amber-soft);border-color:rgba(212,147,74,.35)}
+.btn-print-full:hover{background:rgba(212,147,74,.22);border-color:rgba(212,147,74,.65)}
+
+
+
+/* ── STREAM BAR ───────────────────────────────────────────── */
+.stream-bar{background:transparent;border-bottom:1px solid rgba(64,215,197,0.12);padding:0;display:flex;align-items:stretch;width:100%}
+.stream-left{flex:1;display:flex;align-items:center;justify-content:center;padding:4px 0;flex-shrink:0;min-width:0;border:none;background:transparent}
+.stream-label{font-family:var(--f-ui);font-size:var(--fs-xs);font-weight:700;color:var(--amber-soft);letter-spacing:.10em;text-transform:uppercase;text-align:center}
+.stream-right{flex:8;display:flex;align-items:center;padding:4px 8px;gap:5px;flex-wrap:nowrap}
+/* All stream buttons — unified */
+.stream-btn, .btn-combined, .btn-new-stream{
+  padding:var(--btn-pad);
+  font-family:var(--f-ui);
+  font-size:var(--fs-sm);
+  font-weight:500;
+  cursor:pointer;
+  border-radius:var(--btn-radius);
+  transition:all .15s;
+  flex-shrink:0;
+  white-space:nowrap;
+  letter-spacing:.03em;
+}
+.stream-btn{border:1px solid rgba(168,189,208,0.10);background:transparent;color:rgba(168,189,208,0.55)}
+.stream-btn:hover{color:#A8BDD0;border-color:rgba(168,189,208,0.30)}
+.stream-btn.active{background:rgba(64,215,197,0.12);color:var(--teal-bright);border-color:rgba(64,215,197,0.40)}
+.btn-combined{border:1px solid rgba(64,215,197,0.40);background:rgba(64,215,197,0.12);color:var(--teal-bright);font-weight:600}
+.btn-combined:hover{background:rgba(64,215,197,0.20);border-color:rgba(64,215,197,0.60)}
+.btn-combined.active{background:rgba(64,215,197,0.22);color:var(--teal-bright);border-color:rgba(64,215,197,0.65)}
+.btn-new-stream{border:1px dashed rgba(168,189,208,0.18);background:transparent;color:rgba(168,189,208,0.45)}
+.btn-new-stream:hover{border-color:rgba(168,189,208,0.40);color:#A8BDD0}
+.stream-sep{width:1px;height:14px;background:rgba(168,189,208,0.15);margin:0 3px;flex-shrink:0}
+.stream-or-label{font-family:var(--f-ui);font-size:var(--fs-xs);font-weight:700;color:var(--amber-soft);letter-spacing:.08em;text-transform:uppercase;flex-shrink:0;white-space:nowrap;padding:0 4px}
+.stream-actions{display:flex;align-items:center;gap:6px;margin-left:auto;flex-shrink:0}
+
+/* ── METRICS STRIP ───────────────────────────────────────── */
+.metrics-strip{background:rgba(64,215,197,0.05);border-bottom:2px solid rgba(64,215,197,0.20);padding:0;display:flex;align-items:stretch;width:100%}
+.mf-badge, .mf{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;flex:1;min-width:0;padding:8px 6px;border-right:1px solid rgba(64,215,197,0.10)}
+/* Compact cells — single title+number+sub, less horizontal padding, narrower flex */
+.mf.mf-compact{flex:0.65;padding:8px 3px;}
+.mf-badge{background:rgba(64,215,197,0.15);border-right:1px solid rgba(64,215,197,0.28)!important}
+.mf-badge:last-child,.mf:last-of-type{border-right:none}
+.mf.extra{display:none}
+.metrics-strip.show8 .mf.extra{display:flex}
+/* Row 1 — label */
+.mf-title,.mf-col-key{font-family:var(--f-ui);font-size:12px;font-weight:600;color:var(--teal-soft);letter-spacing:.03em;line-height:1.2;margin-bottom:5px;white-space:nowrap}
+/* Badge label override */
+.mf-badge-label{font-family:var(--f-ui);font-size:14px;font-weight:700;color:var(--amber-soft);letter-spacing:.10em;text-transform:uppercase;line-height:1.2;margin-bottom:5px}
+/* Row 2 — number */
+.mf-num,.mf-col-num,.mf-npk-num{font-family:var(--f-ui);font-size:13px;font-weight:500;color:var(--amber-soft);letter-spacing:.01em;line-height:1.3;white-space:nowrap;text-align:center}
+/* Badge sub */
+.mf-badge-sub{font-family:var(--f-ui);font-size:12px;font-weight:400;color:var(--amber-soft);letter-spacing:.03em;white-space:nowrap;line-height:1.3;text-align:center}
+/* Row 3 — subtext */
+.mf-sub{font-family:var(--f-ui);font-size:10px;font-weight:400;color:rgba(126,200,192,0.35);letter-spacing:.02em;white-space:nowrap;line-height:1.2;margin-top:4px;text-align:center}
+/* Multi-col NPK */
+.mf-cols{display:flex;gap:14px;justify-content:center;align-items:flex-start;margin-bottom:4px}
+.mf-col{display:flex;flex-direction:column;align-items:center;gap:4px}
+/* NPK stacked left-label right-number */
+.mf-npk{display:flex;flex-direction:column;gap:3px;margin-bottom:3px;width:90%}
+.mf-npk-row{display:flex;align-items:baseline;gap:6px;width:100%}
+.mf-npk-key{font-family:var(--f-ui);font-size:12px;font-weight:600;color:var(--teal-soft);letter-spacing:.02em;text-align:left;flex:1}
+.mf-npk-unit{font-family:var(--f-ui);font-size:11px;font-weight:500;color:var(--amber-soft);width:14px}
+/* Toggle */
+.ms-toggle{flex-shrink:0;align-self:center;padding:var(--btn-pad);margin:0 8px;font-family:var(--f-ui);font-size:var(--fs-xs);font-weight:600;color:#A8BDD0;background:rgba(168,189,208,0.07);border:1px solid rgba(168,189,208,0.15);border-radius:var(--btn-radius);cursor:pointer;letter-spacing:.04em;white-space:nowrap;transition:all .15s}
+.ms-toggle:hover{color:#E8F0FE;border-color:rgba(168,189,208,0.30)}
+
+/* ── COMBINED VIEW ───────────────────────────────────────── */
+.mf-residues{display:flex;flex-direction:column;justify-content:center;align-items:center;flex:1;min-width:0;padding:6px 8px;border-right:1px solid rgba(64,215,197,0.28)!important;background:rgba(64,215,197,0.15)}
+.mf-residues-title{font-family:var(--f-ui);font-size:11px;font-weight:700;color:var(--amber-soft);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.mf-residues-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px 10px;width:100%}
+.mf-res-row{display:flex;align-items:baseline;gap:4px}
+.mf-res-name{font-family:var(--f-ui);font-size:10px;font-weight:600;color:var(--teal-soft);letter-spacing:.03em;flex:1}
+.mf-res-pct{font-family:var(--f-ui);font-size:10px;font-weight:500;color:var(--amber-soft)}
+.combined-banner{display:none;background:rgba(64,215,197,0.06);border-bottom:1px solid rgba(64,215,197,0.15);padding:5px 20px;font-family:var(--f-ui);font-size:var(--fs-xs);color:var(--teal-soft);letter-spacing:.03em}
+.combined-banner.visible{display:flex;align-items:center;gap:10px}
+.combined-banner strong{color:var(--teal-bright)}
+
+/* ── MAIN LAYOUT ─────────────────────────────────────────── */
+.main{display:flex;flex-direction:column;height:calc(100vh - 145px);overflow:hidden}
+.sections-col{flex:1;overflow-y:auto;padding:6px 0 20px}
+.sections-col::-webkit-scrollbar{width:4px}
+.sections-col::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* ── TABLE COLUMNS ───────────────────────────────────────── */
+col.c-param{width:210px}col.c-unit{width:80px}col.c-result{width:105px}col.c-range{width:110px}
+col.c-sni{width:95px}col.c-status{width:105px}col.c-conf{width:120px}col.c-method{width:200px}col.c-edit{width:55px}
+
+/* ── TABLE STYLES ────────────────────────────────────────── */
+thead tr{border-bottom:1px solid var(--border2)}
+thead th{padding:6px 10px;font-family:var(--f-ui);font-size:var(--fs-xs);font-weight:600;letter-spacing:.08em;color:var(--muted);text-align:center;white-space:nowrap;text-transform:uppercase;background:#070E1C;border-bottom:2px solid var(--border2)}
+thead th.th-param{text-align:left;padding-left:22px}
+/* Explicit center for all data columns */
+tbody td{padding:6px 10px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--f-data);font-size:var(--fs)}
+tbody td:first-child{text-align:left;padding-left:22px;font-weight:500;color:var(--teal);font-family:var(--f-ui)}
+tbody td.unit{color:var(--muted);font-style:italic;text-align:center}
+tbody td.result{font-weight:600;color:var(--amber);text-align:center}
+tbody td.range{color:var(--muted);text-align:center}
+tbody td.sni{color:var(--blue);font-size:var(--fs-xs);text-align:center}
+tbody td.status-pass{color:var(--green);font-weight:600;text-align:center}
+tbody td.status-fail{color:var(--red);font-weight:600;text-align:center}
+tbody td.status-borderline{color:var(--amber);font-weight:600;text-align:center}
+tbody td.status-gap{color:var(--muted);font-weight:600;font-style:italic;text-align:center}
+tbody td.conf{color:var(--muted);font-size:var(--fs-xs);text-align:center}
+tbody td.method{color:var(--muted);font-size:var(--fs-xs);white-space:normal;line-height:1.5;padding-top:7px;padding-bottom:7px;text-align:left;font-family:var(--f-ui)}
+tbody td.edit-cell{text-align:center;padding:4px 6px}
+tbody tr{border-bottom:1px solid var(--border)}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--dim)}
+
+/* ── SECTION CARDS ───────────────────────────────────────── */
+.section-card{margin-bottom:3px}
+.section-head{display:flex;align-items:center;padding:7px 20px;background:var(--bg2);cursor:pointer;user-select:none;border-top:1px solid var(--border);border-bottom:1px solid transparent;transition:background .12s}
+.section-head:hover{background:#122030}
+.section-card.open .section-head{border-bottom-color:rgba(0,201,177,0.25);background:rgba(0,201,177,0.08)}
+.section-card.open .section-code,.section-card.open .section-title,.section-card.open .section-meta,.section-card.open .section-arrow{color:var(--amber)}
+.section-card.open .section-meta{opacity:.7}
+.section-code{font-family:var(--f-data);font-size:var(--fs-xs);font-weight:600;letter-spacing:.10em;color:var(--amber);width:90px;flex-shrink:0}
+.section-title{font-family:var(--f-ui);font-size:var(--fs);font-weight:600;color:var(--teal);min-width:240px;flex-shrink:0}
+.section-meta{font-family:var(--f-ui);font-size:var(--fs-xs);color:var(--muted);margin-left:10px;font-weight:600;flex:1}
+.section-btns{display:flex;align-items:center;gap:6px;flex-shrink:0;margin-left:auto}
+/* Print section — same style as btn-upload (teal) */
+.btn-print-section{
+  display:flex;align-items:center;gap:5px;
+  padding:var(--btn-pad);
+  border-radius:var(--btn-radius);
+  border:1px solid rgba(64,215,197,0.35);
+  background:rgba(64,215,197,0.10);
+  color:var(--teal-bright);
+  font-family:var(--f-ui);font-size:var(--fs-xs);font-weight:600;
+  cursor:pointer;letter-spacing:.04em;transition:all .15s;white-space:nowrap;
+}
+.btn-print-section:hover{background:rgba(64,215,197,0.20);border-color:rgba(64,215,197,0.65)}
+.section-arrow{color:var(--muted);font-size:var(--fs-sm);transition:transform .15s;width:14px;text-align:center;margin-left:8px}
+.section-card.open .section-arrow{transform:rotate(90deg)}
+.section-body{display:none}
+.section-card.open .section-body{display:block}
+.section-body table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:var(--fs)}
+/* Edit button */
+.btn-edit{padding:3px 10px;border-radius:var(--btn-radius);border:1px solid var(--border2);background:var(--bg2);color:var(--muted);font-family:var(--f-ui);font-size:var(--fs-xs);font-weight:500;cursor:pointer;letter-spacing:.04em;transition:all .15s;white-space:nowrap}
+.btn-edit:hover{color:var(--teal-bright);border-color:rgba(64,215,197,.4);background:rgba(64,215,197,.08)}
+
+/* ── BSF SCORE BAR CHART ────────────────────────────────── */
+.bsf-bar-wrap{padding:8px 22px 10px;background:#060C14}
+.bsf-bar-title{font-size:var(--fs-xs);color:var(--muted);letter-spacing:.08em;margin-bottom:8px;font-weight:600}
+.bsf-gates{display:flex;gap:8px;margin-bottom:8px}
+.bsf-gate{flex:1;min-width:0}
+.bsf-gate-label{font-size:9px;color:var(--muted);letter-spacing:.04em;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bsf-gate-bar{height:6px;border-radius:3px;background:var(--border2);overflow:hidden}
+.bsf-gate-fill{height:100%;border-radius:3px;transition:width .4s}
+.bsf-gate-fill.pass{background:var(--green)}
+.bsf-gate-fill.warn{background:var(--amber)}
+.bsf-gate-fail{background:var(--red)}
+.bsf-gate-score{font-size:9px;color:var(--muted);margin-top:2px;text-align:right}
+.bsf-total-row{display:flex;align-items:center;gap:10px;margin-top:6px}
+.bsf-total-label{font-size:var(--fs-xs);color:var(--muted);letter-spacing:.06em;white-space:nowrap;font-weight:600}
+.bsf-total-track{flex:1;height:8px;background:var(--border2);border-radius:4px;overflow:hidden}
+.bsf-total-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#72DFA6,#00C9B1);transition:width .5s}
+.bsf-total-score{font-size:12px;font-weight:600;color:var(--green);white-space:nowrap}
+.bsf-total-verdict{font-size:var(--fs-xs);color:var(--green);letter-spacing:.06em;font-weight:600}
+
+@media print {
+  .topbar-actions,.btn-edit,.stream-bar .btn-new-stream{display:none!important}
+  .section-body{display:block!important}
+  body{background:#fff;color:#000}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════
+     TOP HEADER BAR
+══════════════════════════════════════════════════════ -->
+<div class="topbar" style="position:relative">
+  <div class="topbar-left">
+    <div class="topbar-brand">CFI Bioconversion — Lab Analysis</div>
+    <div class="topbar-sub">60 TPH FFB Mill · Bogor, West Java · Indonesia</div>
+  </div>
+  <div class="topbar-meta">
+    <div style="display:flex;gap:0;justify-content:center"><span style="display:inline-block;width:52px;text-align:left">Report</span><span style="margin-right:6px">:</span><span style="color:var(--amber)">OPDC v1.2 — 2026-03-24</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     STREAM BAR
+══════════════════════════════════════════════════════ -->
+<div class="stream-bar">
+  <div class="stream-left">
+    <span class="stream-label">Stream</span>
+  </div>
+  <div class="stream-right">
+    <button class="btn-combined active" onclick="setCombined(this)">Lab Analysis Combined</button>
+    <div class="stream-sep"></div>
+    <span class="stream-or-label">Individual →</span>
+    <button class="stream-btn" onclick="setStream(this,'EFB')">EFB</button>
+    <button class="stream-btn" onclick="setStream(this,'OPDC')">OPDC</button>
+    <button class="stream-btn" onclick="setStream(this,'POS')">POS</button>
+    <button class="stream-btn" onclick="setStream(this,'POME')">POME</button>
+    <div class="stream-sep"></div>
+    <button class="stream-btn" onclick="setStream(this,'PKE')">PKE</button>
+    <button class="stream-btn" onclick="setStream(this,'PKS')">PKS</button>
+    <button class="stream-btn" onclick="setStream(this,'PMF')">PMF</button>
+    <button class="stream-btn" onclick="setStream(this,'ASH')">ASH</button>
+    <button class="stream-btn" onclick="setStream(this,'OPF')">OPF</button>
+    <button class="stream-btn" onclick="setStream(this,'OPT')">OPT</button>
+    <button class="stream-btn" onclick="setStream(this,'BSF')">BSF</button>
+    <div class="stream-sep"></div>
+    <button class="btn-new-stream">+ New Stream</button>
+    <div class="stream-actions">
+      <div class="stream-sep"></div>
+      <button class="btn-action btn-upload" onclick="document.getElementById('fileUpload').click()">↑ Upload Lab Report</button>
+      <input type="file" id="fileUpload" style="display:none" accept=".csv,.xlsx,.pdf">
+      <button class="btn-action btn-print-full" onclick="window.print()">🖨 Print Full Report</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     COMBINED BANNER
+══════════════════════════════════════════════════════ -->
+<div class="combined-banner visible" id="combinedBanner">
+  <strong>Combined S0 Analysis</strong> · EFB + OPDC + POS · Values are DM-weighted blend averages · 60 TPH FFB Mill basis
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     METRICS STRIP
+══════════════════════════════════════════════════════ -->
+<div class="metrics-strip" id="metricsStrip">
+
+  <!-- BADGE — toggles between RESIDUES (combined) and OPDC (individual) -->
+  <div class="mf-residues" id="streamBadge">
+    <div class="mf-residues-title">Residues</div>
+    <div class="mf-residues-grid">
+      <div class="mf-res-row"><span class="mf-res-name">EFB</span><span class="mf-res-pct">55%</span></div>
+      <div class="mf-res-row"><span class="mf-res-name">OPDC</span><span class="mf-res-pct">30%</span></div>
+      <div class="mf-res-row"><span class="mf-res-name">POS</span><span class="mf-res-pct">15%</span></div>
+      <div class="mf-res-row"><span class="mf-res-name">60 TPH</span><span class="mf-res-pct">DM</span></div>
+    </div>
+  </div>
+
+  <!-- 1. DRY MATTER -->
+  <div class="mf mf-compact">
+    <div class="mf-title">Dry Matter</div>
+    <div class="mf-num" data-mkey="dm">30%</div>
+    <div class="mf-sub" data-mkey="dm-sub">% wb · press floor</div>
+  </div>
+
+  <!-- 2. CRUDE PROTEIN -->
+  <div class="mf mf-compact">
+    <div class="mf-title">Crude Protein</div>
+    <div class="mf-num" data-mkey="cp">14.5%</div>
+    <div class="mf-sub" data-mkey="cp-sub">DM · N×6.25</div>
+  </div>
+
+  <!-- 3. LIGNIN -->
+  <div class="mf mf-compact">
+    <div class="mf-title">Lignin ADL</div>
+    <div class="mf-num" data-mkey="lig">10.78%</div>
+    <div class="mf-sub" data-mkey="lig-sub">DM · BSF gate PASS</div>
+  </div>
+
+  <!-- 4. pH -->
+  <div class="mf mf-compact">
+    <div class="mf-title">pH</div>
+    <div class="mf-num" data-mkey="ph">4.40</div>
+    <div class="mf-sub" data-mkey="ph-sub">SNI 4–9 · lime needed</div>
+  </div>
+
+  <!-- 5. CEC -->
+  <div class="mf mf-compact">
+    <div class="mf-title">CEC</div>
+    <div class="mf-num" data-mkey="cec">DATA GAP</div>
+    <div class="mf-sub" data-mkey="cec-sub">cmol/kg · pending ICP</div>
+  </div>
+
+  <!-- 6. ELEMENTAL N / P / K — stacked rows like Per tonne DM -->
+  <div class="mf">
+    <div class="mf-npk">
+      <div class="mf-npk-row" style="justify-content:center;margin-bottom:4px;">
+        <span class="mf-title" style="margin-bottom:0">N · P · K</span>
+      </div>
+      <div class="mf-npk-row">
+        <span class="mf-npk-key">Nitrogen</span>
+        <span class="mf-npk-num" data-mkey="n">2.32</span>
+        <span class="mf-npk-unit">%</span>
+      </div>
+      <div class="mf-npk-row">
+        <span class="mf-npk-key">Phosphorus</span>
+        <span class="mf-npk-num" data-mkey="p">0.30</span>
+        <span class="mf-npk-unit">%</span>
+      </div>
+      <div class="mf-npk-row">
+        <span class="mf-npk-key">Potassium</span>
+        <span class="mf-npk-num" data-mkey="k">1.90</span>
+        <span class="mf-npk-unit">%</span>
+      </div>
+    </div>
+    <div class="mf-sub" data-mkey="ele-sub">% DM · ICP-OES</div>
+  </div>
+
+  <!-- 7. AGRONOMIC N / P₂O₅ / K₂O — stacked rows like Per tonne DM -->
+  <div class="mf">
+    <div class="mf-npk">
+      <div class="mf-npk-row" style="justify-content:center;margin-bottom:4px;">
+        <span class="mf-title" style="margin-bottom:0">N · P₂O₅ · K₂O</span>
+      </div>
+      <div class="mf-npk-row">
+        <span class="mf-npk-key">Nitrogen</span>
+        <span class="mf-npk-num" data-mkey="n2">2.32</span>
+        <span class="mf-npk-unit">%</span>
+      </div>
+      <div class="mf-npk-row">
+        <span class="mf-npk-key">P₂O₅</span>
+        <span class="mf-npk-num" data-mkey="p2">0.69</span>
+        <span class="mf-npk-unit">%</span>
+      </div>
+      <div class="mf-npk-row">
+        <span class="mf-npk-key">K₂O</span>
+        <span class="mf-npk-num" data-mkey="k2">2.29</span>
+        <span class="mf-npk-unit">%</span>
+      </div>
+    </div>
+    <div class="mf-sub" data-mkey="agr-sub">% DM</div>
+  </div>
+
+  <!-- 8. COMPARISON $ TO SYNTHETIC MINERALS -->
+  <div class="mf">
+    <div class="mf-title">Comparison $ to Synthetic Minerals</div>
+    <div class="mf-num" data-mkey="syn">$36.42</div>
+    <div class="mf-sub" data-mkey="syn-sub">/t DM · Urea · TSP · MOP</div>
+  </div>
+
+  <!-- 9. PER TONNE DM — N P K kg -->
+  <div class="mf">
+    <div class="mf-npk">
+      <div class="mf-npk-row" style="justify-content:center;margin-bottom:4px;">
+        <span class="mf-title" style="margin-bottom:0">Per tonne DM</span>
+      </div>
+      <div class="mf-npk-row">
+        <span class="mf-npk-key">Nitrogen</span>
+        <span class="mf-npk-num" data-mkey="nkg">23.2</span>
+        <span class="mf-npk-unit">kg</span>
+      </div>
+      <div class="mf-npk-row">
+        <span class="mf-npk-key">Phosphorus</span>
+        <span class="mf-npk-num" data-mkey="pkg">3.0</span>
+        <span class="mf-npk-unit">kg</span>
+      </div>
+      <div class="mf-npk-row">
+        <span class="mf-npk-key">Potassium</span>
+        <span class="mf-npk-num" data-mkey="kkg">19.0</span>
+        <span class="mf-npk-unit">kg</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXTRA 1: CELLULASE -->
+  <div class="mf extra">
+    <div class="mf-title">Cellulase</div>
+    <div class="mf-num">2–5 U/g</div>
+    <div class="mf-sub">DNS assay · S0 baseline</div>
+  </div>
+
+  <!-- EXTRA 2: XYLANASE -->
+  <div class="mf extra">
+    <div class="mf-title">Xylanase</div>
+    <div class="mf-num">1–3 U/g</div>
+    <div class="mf-sub">DNS xylan · S0 baseline</div>
+  </div>
+
+  <button class="ms-toggle" id="msToggle" onclick="toggleMetrics()">+ Cellulase · Xylanase</button>
+</div>
+<div class="main">
+<div class="sections-col">
+
+<!-- SECTION: A1-CHNS -->
+<div class="section-card">
+<div class="section-head" onclick="toggleSection(this)">
+  <div class="section-code">A1-CHNS</div>
+  <div class="section-title">CHNS-O Ultimate Analysis</div>
+  <div class="section-meta">6 parameters · % DM · mg/kg DM</div>
+  <div class="section-btns">
+    <button class="btn-print-section" onclick="printSection(event,'A1-CHNS')">🖨 Print Section</button>
+  </div>
+  <div class="section-arrow">▶</div>
+</div>
+<div class="section-body">
+<table>
+<colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+<thead><tr><th class="th-param">PARAMETER</th><th>UNIT</th><th>RESULT</th><th>RANGE</th><th>SNI LIMIT</th><th>STATUS</th><th>CONFIDENCE</th><th>METHOD</th><th class="th-edit"></th></tr></thead>
+<tbody>
+<tr><td>Carbon (C) — organic</td><td class="unit">% DM</td><td class="result">41.41%</td><td class="range">34–47%</td><td class="sni">min 15% SNI</td><td class="status-pass">PASS</td><td class="conf">LDE-HIGH</td><td class="method">ASTM D5373 / CHNS Analyser · Study: PODC combustion Malaysia 2023 C=41.41% · Walkley-Black may show lower (~34%) · True by CHNS 41–47%</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Hydrogen (H)</td><td class="unit">% DM</td><td class="result">5.92%</td><td class="range">5.5–6.5%</td><td class="sni">—</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-HIGH</td><td class="method">ASTM D5373 / CHNS Analyser · Study: PODC Malaysia 2023 H=5.92%</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Nitrogen (N)</td><td class="unit">% DM</td><td class="result">2.32–5.31%</td><td class="range">2.0–5.5%</td><td class="sni">min 2% SNI</td><td class="status-pass">PASS</td><td class="conf">LDE-HIGH</td><td class="method">AOAC 984.13 / Kjeldahl · Low: 2.32% (typical operating OPDC) · Mid: 2.9% (Thai study TKN) · High: 5.31% (Malaysia CHNS) · CFI canonical: 2.32%</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Sulphur (S)</td><td class="unit">% DM</td><td class="result">0.30%</td><td class="range">0.2–0.5%</td><td class="sni">SNI required</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-MODERATE</td><td class="method">ASTM D5373 / CHNS Analyser · ICP-OES · Malaysia study S=0.30%</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Oxygen (O) by difference</td><td class="unit">% DM</td><td class="result">47.06%</td><td class="range">40–50%</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-HIGH</td><td class="method">Derived: O = 100−C−H−N−S−Ash · Malaysia PODC: O=47.06% by difference</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>C:N Ratio</td><td class="unit">ratio</td><td class="result">17.8–20:1</td><td class="range">15–25:1</td><td class="sni">max 25 SNI</td><td class="status-pass">PASS</td><td class="conf">LDE-HIGH</td><td class="method">Derived: C%/N% DM-weighted · C=41.41%, N=2.32% → 17.8:1 (CFI typical) · Average operating: ~20:1 · SNI max 25 → PASS ✓</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- SECTION: A2-PRX -->
+<div class="section-card">
+<div class="section-head" onclick="toggleSection(this)">
+  <div class="section-code">A2-PRX</div>
+  <div class="section-title">Proximate Analysis</div>
+  <div class="section-meta">7 parameters · % DM · MJ/kg</div>
+  <div class="section-btns">
+    <button class="btn-print-section" onclick="printSection(event,'A2-PRX')">🖨 Print Section</button>
+  </div>
+  <div class="section-arrow">▶</div>
+</div>
+<div class="section-body">
+<table>
+<colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+<thead><tr><th class="th-param">PARAMETER</th><th>UNIT</th><th>RESULT</th><th>RANGE</th><th>SNI LIMIT</th><th>STATUS</th><th>CONFIDENCE</th><th>METHOD</th><th class="th-edit"></th></tr></thead>
+<tbody>
+<tr><td>Moisture Content (MC) — as-received</td><td class="unit">% wb</td><td class="result">70–80%</td><td class="range">55–85%</td><td class="sni">max 25% SNI</td><td class="status-fail">FAIL</td><td class="conf">LDE-HIGH</td><td class="method">AOAC 930.15 / Gravimetric 105°C · Fresh OPDC 70–80% wb · Post-press floor: 40% wb (CLASS A guardrail) · SNI max 25% → EXPECTED FAIL at S0</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Moisture (dry sample)</td><td class="unit">% wb</td><td class="result">5.55%</td><td class="range">2–8%</td><td class="sni">—</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-HIGH</td><td class="method">AOAC 930.15 / Gravimetric · Residual moisture post-drying · Malaysia combustion study MC=5.55%</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Ash Content</td><td class="unit">% DM</td><td class="result">19–28%</td><td class="range">15–35%</td><td class="sni">max 25% SNI</td><td class="status-borderline">BORDERLINE</td><td class="conf">LDE-HIGH</td><td class="method">AOAC 942.05 / LOI at 550°C · Low: 19% (Malaysia study) · High: 28% (CFI operational, sand contamination) · SNI max 25% → 28% FAILS, 19% PASSES</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Organic Matter (OM)</td><td class="unit">% DM</td><td class="result">72–85.9%</td><td class="range">65–90%</td><td class="sni">min 25% SNI</td><td class="status-pass">PASS</td><td class="conf">LDE-HIGH</td><td class="method">Derived: OM = 100 − Ash (AOAC 942.05) · SNI min 25% → PASS ✓</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Volatile Matter (VM)</td><td class="unit">% DM</td><td class="result">63.92–65%</td><td class="range">60–70%</td><td class="sni">—</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-HIGH</td><td class="method">ASTM E872-82 / TGA · Maniam 2013 VM=65% · Yusoff 2019 VM=63.92% · High VM = good biodegradability</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Fixed Carbon (FC)</td><td class="unit">% DM</td><td class="result">11.15%</td><td class="range">8–15%</td><td class="sni">—</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-MODERATE</td><td class="method">Derived: FC = 100−Ash−VM−MC · Yusoff 2019 FC=11.15%</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>HHV (Higher Heating Value)</td><td class="unit">MJ/kg DM</td><td class="result">17.40–17.96</td><td class="range">16–19</td><td class="sni">—</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-HIGH</td><td class="method">ASTM E711 / Adiabatic bomb calorimeter · Malaysia 2023: 17.40 MJ/kg · Malaysia 2013: 17.96 MJ/kg</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- SECTION: A3-NPK -->
+<div class="section-card">
+<div class="section-head" onclick="toggleSection(this)">
+  <div class="section-code">A3-NPK</div>
+  <div class="section-title">Macrominerals — Primary NPK</div>
+  <div class="section-meta">6 parameters · % DM</div>
+  <div class="section-btns">
+    <button class="btn-print-section" onclick="printSection(event,'A3-NPK')">🖨 Print Section</button>
+  </div>
+  <div class="section-arrow">▶</div>
+</div>
+<div class="section-body">
+<table>
+<colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+<thead><tr><th class="th-param">PARAMETER</th><th>UNIT</th><th>RESULT</th><th>RANGE</th><th>SNI LIMIT</th><th>STATUS</th><th>CONFIDENCE</th><th>METHOD</th><th class="th-edit"></th></tr></thead>
+<tbody>
+<tr><td>Nitrogen (N)</td><td class="unit">% DM</td><td class="result">2.32–2.90%</td><td class="range">2.0–5.5%</td><td class="sni">min 2% SNI</td><td class="status-pass">PASS</td><td class="conf">LDE-HIGH</td><td class="method">AOAC 984.13 / Kjeldahl · CFI canonical: 2.32% DM · Boukaew Thailand TKN: 2.9% · SNI min 2% → PASS ✓</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Phosphorus (P)</td><td class="unit">% DM</td><td class="result">0.22–0.60%</td><td class="range">0.15–0.80%</td><td class="sni">SNI required</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-HIGH</td><td class="method">APHA 3120B / ICP-OES · MPOB dried cake: 0.22% · High variant: 0.60%</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Potassium (K)</td><td class="unit">% DM</td><td class="result">1.20%</td><td class="range">0.8–2.0%</td><td class="sni">SNI required</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-HIGH</td><td class="method">APHA 3120B / ICP-OES · MPOB dried solid cake: 1.20% DM (12,000 ppm)</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Phosphorus as P₂O₅</td><td class="unit">% DM</td><td class="result">0.50–1.37%</td><td class="range">0.35–1.80%</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-HIGH</td><td class="method">Derived: P × 2.2914 · P 0.22% × 2.2914 = 0.50% P₂O₅ · P 0.60% × 2.2914 = 1.37% P₂O₅</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Potassium as K₂O</td><td class="unit">% DM</td><td class="result">1.45%</td><td class="range">0.96–2.41%</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-HIGH</td><td class="method">Derived: K × 1.2046 · K 1.20% × 1.2046 = 1.45% K₂O</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>N : P₂O₅ : K₂O (ratio)</td><td class="unit">ratio</td><td class="result">~1.6 : 0.35 : 1</td><td class="range">—</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-HIGH</td><td class="method">Derived: N-DOMINANT fertilizer profile · N 2.32%, P₂O₅ 0.50%, K₂O 1.45% → normalised to K₂O=1</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- SECTION: A4-MAC -->
+<div class="section-card">
+<div class="section-head" onclick="toggleSection(this)">
+  <div class="section-code">A4-MAC</div>
+  <div class="section-title">Macrominerals — Secondary (Ca, Mg, S, Na)</div>
+  <div class="section-meta">7 parameters · % DM · mg/kg</div>
+  <div class="section-btns">
+    <button class="btn-print-section" onclick="printSection(event,'A4-MAC')">🖨 Print Section</button>
+  </div>
+  <div class="section-arrow">▶</div>
+</div>
+<div class="section-body">
+<table>
+<colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+<thead><tr><th class="th-param">PARAMETER</th><th>UNIT</th><th>RESULT</th><th>RANGE</th><th>SNI LIMIT</th><th>STATUS</th><th>CONFIDENCE</th><th>METHOD</th><th class="th-edit"></th></tr></thead>
+<tbody>
+<tr><td>Calcium (Ca)</td><td class="unit">% DM</td><td class="result">0.73–1.50%</td><td class="range">0.70–1.60%</td><td class="sni">SNI required</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-HIGH</td><td class="method">APHA 3120B / ICP-OES · Yahya et al. 2010 Bioresource Technology 101(22):8736–41 — direct OPDC elemental Ca · Canonical: 1.20% DM · CORRECTED v1.1 (was 0.10–0.50% — EFB proxy underestimated 3×)</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Magnesium (Mg)</td><td class="unit">% DM</td><td class="result">0.72%</td><td class="range">0.33–0.80%</td><td class="sni">SNI required</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-MODERATE</td><td class="method">APHA 3120B / ICP-OES · MPOB Haron et al. 2008 MPOB TT No.412: MgO=1.20% → Mg elemental = MgO/1.658 = 0.724% · CORRECTED v1.1 (was 1.20% — MPOB oxide used raw without conversion)</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>CaO equivalent</td><td class="unit">% DM</td><td class="result">1.68%</td><td class="range">1.02–2.10%</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-HIGH</td><td class="method">Derived: Ca × 1.3995 · Ca 1.20% × 1.3995 = 1.679% CaO · CORRECTED v1.1</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>MgO equivalent</td><td class="unit">% DM</td><td class="result">1.19%</td><td class="range">0.55–1.33%</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-MODERATE</td><td class="method">Derived: Mg × 1.6581 · Mg 0.724% × 1.6581 = 1.200% MgO · Circular check matches MPOB TT No.412 ✓</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Liming Value (CaCO₃ equiv)</td><td class="unit">kg/t DM</td><td class="result">29.96</td><td class="range">18–37</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-HIGH</td><td class="method">Derived: Ca × 10 × 2.497 · Ca 1.20% × 10 × 2.497 = 29.96 kg CaCO₃/t DM · CORRECTED v1.1</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Sodium (Na)</td><td class="unit">% DM</td><td class="result">0.01–0.10%</td><td class="range">&lt;0.15%</td><td class="sni">SNI required</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-LOW</td><td class="method">APHA 3120B / ICP-OES · AES · Low Na expected; higher if process water has Na</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Chloride (Cl)</td><td class="unit">% DM</td><td class="result" style="color:#FF5C5C">DATA GAP</td><td class="range">—</td><td class="sni">SNI required</td><td class="status-gap">GAP</td><td class="conf">LDE-LOW</td><td class="method">ISO 10304-1 / Ion chromatography — P0 BLOCKER for SNI registration · Order: Balai Penelitian Tanah Bogor / Sucofindo Jakarta ($15–25)</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- SECTION: A5-TRC -->
+<div class="section-card">
+<div class="section-head" onclick="toggleSection(this)">
+  <div class="section-code">A5-TRC</div>
+  <div class="section-title">Trace Elements — Micronutrients</div>
+  <div class="section-meta">6 parameters · mg/kg DM</div>
+  <div class="section-btns">
+    <button class="btn-print-section" onclick="printSection(event,'A5-TRC')">🖨 Print Section</button>
+  </div>
+  <div class="section-arrow">▶</div>
+</div>
+<div class="section-body">
+<table>
+<colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+<thead><tr><th class="th-param">PARAMETER</th><th>UNIT</th><th>RESULT</th><th>RANGE</th><th>SNI LIMIT</th><th>STATUS</th><th>CONFIDENCE</th><th>METHOD</th><th class="th-edit"></th></tr></thead>
+<tbody>
+<tr><td>Iron (Fe)</td><td class="unit">mg/kg DM</td><td class="result">500–2,000</td><td class="range">200–4,000</td><td class="sni">SNI required</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-MODERATE</td><td class="method">APHA 3120B / ICP-OES EPA 3051A microwave digestion HNO₃ · Estimated from EFB parent × concentration factor 1.5–2.5×</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Manganese (Mn)</td><td class="unit">mg/kg DM</td><td class="result">80–300</td><td class="range">50–500</td><td class="sni">SNI required</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-MODERATE</td><td class="method">APHA 3120B / ICP-OES EPA 3051A · Estimated from EFB parent × concentration factor 1.5–2.0×</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Zinc (Zn)</td><td class="unit">mg/kg DM</td><td class="result">15–60</td><td class="range">10–100</td><td class="sni">SNI required</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-MODERATE</td><td class="method">APHA 3120B / ICP-OES EPA 3051A · Estimated from EFB parent × concentration factor 1.5–2.0×</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Copper (Cu)</td><td class="unit">mg/kg DM</td><td class="result">8–30</td><td class="range">5–50</td><td class="sni">SNI required</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-MODERATE</td><td class="method">APHA 3120B / ICP-OES EPA 3051A · Estimated from EFB parent × concentration factor 1.5–2.0×</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Boron (B)</td><td class="unit">mg/kg DM</td><td class="result">10–40</td><td class="range">5–80</td><td class="sni">SNI required</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-LOW</td><td class="method">APHA 3120B / ICP-OES · Azomethine-H colorimetric (alternative) · Estimated from EFB parent × 1.2–2.0×</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Molybdenum (Mo)</td><td class="unit">mg/kg DM</td><td class="result">&lt;LOD</td><td class="range">&lt;0.5–1.5</td><td class="sni">—</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-HIGH</td><td class="method">APHA 3120B / ICP-OES · Silva 2024 Brazil: Mo NOT detected in any OPDC sample (n=5 mills) · Mo detected ONLY in boiler ash (1.3–1.5 mg/kg)</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- SECTION: A6-HVY -->
+<div class="section-card">
+<div class="section-head" onclick="toggleSection(this)">
+  <div class="section-code">A6-HVY</div>
+  <div class="section-title">Heavy Metals — Contaminants</div>
+  <div class="section-meta">7 parameters · mg/kg DM</div>
+  <div class="section-btns">
+    <button class="btn-print-section" onclick="printSection(event,'A6-HVY')">🖨 Print Section</button>
+  </div>
+  <div class="section-arrow">▶</div>
+</div>
+<div class="section-body">
+<table>
+<colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+<thead><tr><th class="th-param">PARAMETER</th><th>UNIT</th><th>RESULT</th><th>RANGE</th><th>SNI LIMIT</th><th>STATUS</th><th>CONFIDENCE</th><th>METHOD</th><th class="th-edit"></th></tr></thead>
+<tbody>
+<tr><td>Cadmium (Cd)</td><td class="unit">mg/kg DM</td><td class="result">&lt;LOD–0.20</td><td class="range">&lt;0.5</td><td class="sni">max 3 SNI 2803</td><td class="status-pass">PASS</td><td class="conf">LDE-MODERATE</td><td class="method">EPA 6020B / ICP-MS microwave acid digestion HNO₃/HCl · Silva 2024 Brazil: Cd &lt;LOD in most OPDC · SNI 2803:2012 max 3 mg/kg → PASS ✓ · CORRECTED v1.1 (was max 2 mg/kg — wrong standard)</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Lead (Pb)</td><td class="unit">mg/kg DM</td><td class="result">&lt;LOD–2.0</td><td class="range">&lt;5</td><td class="sni">max 10 SNI 2803</td><td class="status-pass">PASS</td><td class="conf">LDE-MODERATE</td><td class="method">EPA 6020B / ICP-MS · Silva 2024 Brazil: Pb &lt;LOD in most OPDC · SNI 2803:2012 max 10 mg/kg → PASS ✓ · CORRECTED v1.1 (was max 50 mg/kg — SNI 2803 is stricter)</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Chromium (Cr)</td><td class="unit">mg/kg DM</td><td class="result">&lt;LOD–5.0</td><td class="range">&lt;10</td><td class="sni">SNI required</td><td class="status-pass">PASS</td><td class="conf">LDE-LOW</td><td class="method">EPA 6020B / ICP-MS · Silva 2024 Brazil: Cr &lt;LOD in OPDC · Background Cr typically &lt;5 mg/kg in palm materials</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Nickel (Ni)</td><td class="unit">mg/kg DM</td><td class="result">&lt;LOD–6.3</td><td class="range">&lt;10</td><td class="sni">max 50 SNI</td><td class="status-pass">PASS</td><td class="conf">LDE-HIGH</td><td class="method">EPA 6020B / ICP-MS · Silva 2024 Brazil: Ni detected in ONE sample at 6.3 mg/kg, &lt;LOD in others (n=5) · SNI max 50 mg/kg → PASS ✓</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Mercury (Hg)</td><td class="unit">mg/kg DM</td><td class="result">&lt;LOD</td><td class="range">&lt;0.1</td><td class="sni">max 0.5 SNI 2803</td><td class="status-pass">PASS</td><td class="conf">LDE-MODERATE</td><td class="method">EPA 6020B / ICP-MS · Cold vapour AAS (alternative) · Silva 2024: Hg &lt;LOD in OPDC · SNI 2803:2012 max 0.5 mg/kg → PASS ✓</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Arsenic (As)</td><td class="unit">mg/kg DM</td><td class="result">&lt;LOD</td><td class="range">&lt;1</td><td class="sni">max 10 SNI</td><td class="status-pass">PASS</td><td class="conf">LDE-MODERATE</td><td class="method">EPA 6020B / ICP-MS · Silva 2024: As &lt;LOD in OPDC · SNI max 10 mg/kg → PASS ✓</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Selenium (Se)</td><td class="unit">mg/kg DM</td><td class="result">&lt;LOD</td><td class="range">&lt;0.5</td><td class="sni">—</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-MODERATE</td><td class="method">EPA 6020B / ICP-MS · Silva 2024: Se &lt;LOD in OPDC · Palm biomass Se typically &lt;0.5 mg/kg</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- SECTION: A7-PHY -->
+<div class="section-card">
+<div class="section-head" onclick="toggleSection(this)">
+  <div class="section-code">A7-PHY</div>
+  <div class="section-title">Physicochemical Properties</div>
+  <div class="section-meta">7 parameters</div>
+  <div class="section-btns">
+    <button class="btn-print-section" onclick="printSection(event,'A7-PHY')">🖨 Print Section</button>
+  </div>
+  <div class="section-arrow">▶</div>
+</div>
+<div class="section-body">
+<table>
+<colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+<thead><tr><th class="th-param">PARAMETER</th><th>UNIT</th><th>RESULT</th><th>RANGE</th><th>SNI LIMIT</th><th>STATUS</th><th>CONFIDENCE</th><th>METHOD</th><th class="th-edit"></th></tr></thead>
+<tbody>
+<tr><td>pH (1:10 w/v water)</td><td class="unit">pH units</td><td class="result">4.40</td><td class="range">4.2–5.5</td><td class="sni">4–9 SNI</td><td class="status-pass">PASS</td><td class="conf">LDE-HIGH</td><td class="method">AOAC 981.12 / ISO 10390 · Potentiometric pH electrode 1:10 w/v · USM Penang: pH 4.40 ± 0.01 · SNI range 4–9 → PASS ✓</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Electrical Conductivity (EC)</td><td class="unit">mS/cm</td><td class="result">2.96</td><td class="range">2.0–4.0</td><td class="sni">max 4.0 SNI</td><td class="status-pass">PASS</td><td class="conf">LDE-HIGH</td><td class="method">ISO 11265 / Conductivity meter 1:10 w/v · USM Penang: EC 2.96 ± 0.02 mS/cm · SNI max 4.0 → PASS ✓</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Bulk Density (loose)</td><td class="unit">kg/m³</td><td class="result">600–900</td><td class="range">500–1,000</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-LOW</td><td class="method">ISO 60 / Cylinder method ASTM D5008 · Estimated from EFB parent (600–800 kg/m³) · OPDC wetter/denser → 600–900 kg/m³</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Particle Size Distribution</td><td class="unit">qualitative</td><td class="result">Fine fibrous + sludge</td><td class="range">—</td><td class="sni">—</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-HIGH</td><td class="method">Visual + sieve analysis · OPDC = pressed fiber matrix + colloidal solids · SEM: porous fibrous structure · Dominant particle size &lt;2 mm</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>WHC (Water Holding Capacity)</td><td class="unit">% db</td><td class="result">250–400</td><td class="range">200–500</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-MODERATE</td><td class="method">Gravimetric saturation method · High WHC due to fibrous structure</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Color</td><td class="unit">qualitative</td><td class="result">Dark brown to black</td><td class="range">—</td><td class="sni">—</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-HIGH</td><td class="method">Visual observation · Dark color from organic matter + oxidized palm oil residues</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Oil/Fat Content</td><td class="unit">% DM</td><td class="result">11.5–12.0%</td><td class="range">8–15%</td><td class="sni">—</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-HIGH</td><td class="method">AOAC 920.39 / Soxhlet hexane extraction · Maniam 2013: 11.5±0.18% oil DM · Residual palm oil adsorbed on fiber</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- SECTION: A8-FIB -->
+<div class="section-card">
+<div class="section-head" onclick="toggleSection(this)">
+  <div class="section-code">A8-FIB</div>
+  <div class="section-title">Fiber Analysis (Van Soest)</div>
+  <div class="section-meta">7 parameters · % DM · ✓ v1.1 Corrected</div>
+  <div class="section-btns">
+    <button class="btn-print-section" onclick="printSection(event,'A8-FIB')">🖨 Print Section</button>
+  </div>
+  <div class="section-arrow">▶</div>
+</div>
+<div class="section-body">
+<table>
+<colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+<thead><tr><th class="th-param">PARAMETER</th><th>UNIT</th><th>RESULT</th><th>RANGE</th><th>SNI LIMIT</th><th>STATUS</th><th>CONFIDENCE</th><th>METHOD</th><th class="th-edit"></th></tr></thead>
+<tbody>
+<tr><td>Crude Fiber</td><td class="unit">% DM</td><td class="result">35–50</td><td class="range">30–60</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-MODERATE</td><td class="method">AOAC 978.10 / Weende sequential acid-alkali digestion · Estimated from EFB parent; OPDC slightly lower due to partial extraction</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>NDF (Neutral Detergent Fiber)</td><td class="unit">% DM</td><td class="result">77.23%</td><td class="range">75–80%</td><td class="sni">—</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-HIGH</td><td class="method">AOAC 2002.04 / Van Soest · ISO 13906:2008 · Azizi et al. 2025 Animals 15(13):1966 DOI:10.3390/ani15131966 — direct OPDC Van Soest dataset · CORRECTED v1.1 (was 60–75%)</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>ADF (Acid Detergent Fiber)</td><td class="unit">% DM</td><td class="result">53.19%</td><td class="range">50–57%</td><td class="sni">—</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-HIGH</td><td class="method">AOAC 973.18 / Van Soest · ISO 13906:2008 · Azizi et al. 2025 same source · CORRECTED v1.1 (was 45–60%)</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>ADL (Acid Detergent Lignin)</td><td class="unit">% DM</td><td class="result">10.78%</td><td class="range">9–13%</td><td class="sni">—</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-HIGH</td><td class="method">AOAC 973.18 / Van Soest (72% H₂SO₄) · ISO 13906:2008 · Azizi et al. 2025 DOI:10.3390/ani15131966 · CORRECTED v1.1 (was 18–25% Klason EFB proxy — wrong method + wrong material) · BSF lignin gate: ADL 10.78% &lt;15% → PASS ✓</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Cellulose (calculated)</td><td class="unit">% DM</td><td class="result">42.41%</td><td class="range">40–45%</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-HIGH</td><td class="method">Derived: Cellulose = ADF − ADL (Van Soest only, not Klason) · 53.19 − 10.78 = 42.41% DM · CORRECTED v1.1 (was 22–35%)</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Hemicellulose (calculated)</td><td class="unit">% DM</td><td class="result">24.04%</td><td class="range">22–27%</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-HIGH</td><td class="method">Derived: Hemicellulose = NDF − ADF · 77.23 − 53.19 = 24.04% DM · CORRECTED v1.1 (was 10–20%)</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Lignin:Cellulose ratio</td><td class="unit">ratio</td><td class="result">0.254</td><td class="range">0.20–0.35</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-HIGH</td><td class="method">Derived: ADL / Cellulose · 10.78 / 42.41 = 0.254 · Low ratio = faster biodegradation, excellent BSF and composting substrate · CORRECTED v1.1 (was 0.51–1.14)</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- SECTION: A9-MIC -->
+<div class="section-card">
+<div class="section-head" onclick="toggleSection(this)">
+  <div class="section-code">A9-MIC</div>
+  <div class="section-title">Microbial Parameters</div>
+  <div class="section-meta">6 parameters · CFU/g · MPN/g</div>
+  <div class="section-btns">
+    <button class="btn-print-section" onclick="printSection(event,'A9-MIC')">🖨 Print Section</button>
+  </div>
+  <div class="section-arrow">▶</div>
+</div>
+<div class="section-body">
+<table>
+<colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+<thead><tr><th class="th-param">PARAMETER</th><th>UNIT</th><th>RESULT</th><th>RANGE</th><th>SNI LIMIT</th><th>STATUS</th><th>CONFIDENCE</th><th>METHOD</th><th class="th-edit"></th></tr></thead>
+<tbody>
+<tr><td>Total Bacterial Count</td><td class="unit">CFU/g DM</td><td class="result">10⁶–10⁸</td><td class="range">10⁵–10⁹</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-LOW</td><td class="method">ISO 4833 / Aerobic plate count · High microbial load expected (fermentation residue)</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>E. coli</td><td class="unit">MPN/g</td><td class="result">&lt;10</td><td class="range">&lt;100</td><td class="sni">max 10² SNI</td><td class="status-pass">EXPECTED-PASS</td><td class="conf">LDE-MODERATE</td><td class="method">ISO 16649-2 / MPN method ISO 7251 · Low E. coli expected (thermal process + acidic pH 4.4) · SNI max 10² MPN/g → EXPECTED PASS ✓</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Salmonella sp.</td><td class="unit">presence/25g</td><td class="result">Negative</td><td class="range">Negative</td><td class="sni">Negative SNI</td><td class="status-pass">EXPECTED-PASS</td><td class="conf">LDE-MODERATE</td><td class="method">ISO 6579-1 / Enrichment + selective plating · Salmonella unlikely (acidic pH 4.4 + thermal process) · SNI: Negative → EXPECTED PASS ✓</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Indigenous LAB</td><td class="unit">CFU/g DM</td><td class="result">10⁵–10⁷</td><td class="range">10⁴–10⁸</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-MODERATE</td><td class="method">MRS agar plate count · High LAB expected (acidic fermentation product, pH 4.4) · Beneficial for composting inoculation</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Yeast &amp; Mold</td><td class="unit">CFU/g DM</td><td class="result">10⁴–10⁶</td><td class="range">10³–10⁷</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-LOW</td><td class="method">ISO 21527 / Potato dextrose agar · Moderate fungal load expected · Storage conditions affect count</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>C:N for Microbial Activity</td><td class="unit">ratio</td><td class="result">17.8:1 (optimal)</td><td class="range">15–25:1</td><td class="sni">max 25 SNI</td><td class="status-pass">PASS</td><td class="conf">LDE-HIGH</td><td class="method">Derived: C:N = 17.8–20:1 — IDEAL for composting/BSF · Lower than EFB (55:1) → faster decomposition · Higher than POME (12:1) → better structure · SNI max 25 → PASS ✓</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- SECTION: A10-ASH -->
+<div class="section-card">
+<div class="section-head" onclick="toggleSection(this)">
+  <div class="section-code">A10-ASH</div>
+  <div class="section-title">Ash Mineral Composition (XRF)</div>
+  <div class="section-meta">6 parameters · % of ash</div>
+  <div class="section-btns">
+    <button class="btn-print-section" onclick="printSection(event,'A10-ASH')">🖨 Print Section</button>
+  </div>
+  <div class="section-arrow">▶</div>
+</div>
+<div class="section-body">
+<table>
+<colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+<thead><tr><th class="th-param">PARAMETER</th><th>UNIT</th><th>RESULT</th><th>RANGE</th><th>SNI LIMIT</th><th>STATUS</th><th>CONFIDENCE</th><th>METHOD</th><th class="th-edit"></th></tr></thead>
+<tbody>
+<tr><td>SiO₂ (Silica)</td><td class="unit">% ash</td><td class="result">31–36%</td><td class="range">25–45%</td><td class="sni">—</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-HIGH</td><td class="method">ISO 29581-2 / XRF fused bead · Rahim 2022: OPDC ash 600–900°C shows SiO₂ 31–36% · After alkaline extraction: SiO₂ purified to 76.95%</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>K₂O</td><td class="unit">% ash</td><td class="result">15–25%</td><td class="range">10–30%</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-MODERATE</td><td class="method">ISO 29581-2 / XRF · K-rich ash expected (1.20% K DM → ~6–10% K₂O in ash at 19% ash content)</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>CaO</td><td class="unit">% ash</td><td class="result">5–15%</td><td class="range">3–20%</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-LOW</td><td class="method">ISO 29581-2 / XRF · Ca 0.73–1.50% DM → CaO 1.02–2.10% DM → ~5–11% in ash</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>MgO</td><td class="unit">% ash</td><td class="result">8–12%</td><td class="range">5–15%</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-MODERATE</td><td class="method">ISO 29581-2 / XRF · Mg 0.724% DM → MgO 1.20% DM → ~6% in ash (19% ash)</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>P₂O₅</td><td class="unit">% ash</td><td class="result">2–4%</td><td class="range">1–6%</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-MODERATE</td><td class="method">ISO 29581-2 / XRF · P 0.22–0.60% DM → P₂O₅ 0.50–1.37% DM → ~2–7% in ash</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Fe₂O₃</td><td class="unit">% ash</td><td class="result">1–4%</td><td class="range">0.5–6%</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-LOW</td><td class="method">ISO 29581-2 / XRF · Fe 500–2000 mg/kg DM → Fe₂O₃ ~0.07–0.29% DM → ~0.4–1.5% in ash</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- SECTION: A11-SPE -->
+<div class="section-card">
+<div class="section-head" onclick="toggleSection(this)">
+  <div class="section-code">A11-SPE</div>
+  <div class="section-title">Application-Specific Parameters</div>
+  <div class="section-meta">7 parameters · qualitative + scores</div>
+  <div class="section-btns">
+    <button class="btn-print-section" onclick="printSection(event,'A11-SPE')">🖨 Print Section</button>
+  </div>
+  <div class="section-arrow">▶</div>
+</div>
+<div class="section-body">
+<table>
+<colgroup><col class="c-param"><col class="c-unit"><col class="c-result"><col class="c-range"><col class="c-sni"><col class="c-status"><col class="c-conf"><col class="c-method"><col class="c-edit"></colgroup>
+<thead><tr><th class="th-param">PARAMETER</th><th>UNIT</th><th>RESULT</th><th>RANGE</th><th>SNI LIMIT</th><th>STATUS</th><th>CONFIDENCE</th><th>METHOD</th><th class="th-edit"></th></tr></thead>
+<tbody>
+<tr><td colspan="9" style="padding:0;border-bottom:1px solid var(--border)">
+<div class="bsf-bar-wrap">
+  <div class="bsf-bar-title">BSF WEIGHTED SUITABILITY SCORE — OPDC S0 RAW STATE</div>
+  <div class="bsf-gates">
+    <div class="bsf-gate">
+      <div class="bsf-gate-label">LIGNIN ADL &lt;15%</div>
+      <div class="bsf-gate-bar"><div class="bsf-gate-fill pass" style="width:100%"></div></div>
+      <div class="bsf-gate-score">PASS · ×0.30 = 0.300</div>
+    </div>
+    <div class="bsf-gate">
+      <div class="bsf-gate-label">PROTEIN CP ≥8%</div>
+      <div class="bsf-gate-bar"><div class="bsf-gate-fill pass" style="width:100%"></div></div>
+      <div class="bsf-gate-score">PASS · ×0.25 = 0.250</div>
+    </div>
+    <div class="bsf-gate">
+      <div class="bsf-gate-label">C:N RATIO &lt;25</div>
+      <div class="bsf-gate-bar"><div class="bsf-gate-fill pass" style="width:100%"></div></div>
+      <div class="bsf-gate-score">PASS · ×0.20 = 0.200</div>
+    </div>
+    <div class="bsf-gate">
+      <div class="bsf-gate-label">MOISTURE &lt;75% wb</div>
+      <div class="bsf-gate-bar"><div class="bsf-gate-fill warn" style="width:50%"></div></div>
+      <div class="bsf-gate-score">WARN · ×0.15 = 0.075</div>
+    </div>
+    <div class="bsf-gate">
+      <div class="bsf-gate-label">pH 6.0–8.5</div>
+      <div class="bsf-gate-bar"><div class="bsf-gate-fill warn" style="width:50%"></div></div>
+      <div class="bsf-gate-score">WARN · ×0.10 = 0.050</div>
+    </div>
+  </div>
+  <div class="bsf-total-row">
+    <div class="bsf-total-label">TOTAL SCORE</div>
+    <div class="bsf-total-track"><div class="bsf-total-fill" style="width:87.5%"></div></div>
+    <div class="bsf-total-score">4.375 / 5.0</div>
+    <div class="bsf-total-verdict">● COMMERCIALLY VIABLE</div>
+  </div>
+</div>
+</td></tr>
+<tr><td>Composting Readiness</td><td class="unit">qualitative</td><td class="result">READY (C amendment)</td><td class="range">—</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-HIGH</td><td class="method">Expert assessment · C:N 17.8–20:1 NEAR-OPTIMAL · MC 70–80% HIGH → need drying / bulking agent · pH 4.4 → lime amendment advisable · Lignin 10.78% LOW → faster breakdown</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Anaerobic Digestion Potential</td><td class="unit">mL CH₄/g VS</td><td class="result">324–373</td><td class="range">250–400</td><td class="sni">—</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-HIGH</td><td class="method">VDI 4630 / BMP test ISO 11734 · Chanthong 2024: mono-digestion 324 mL CH₄/g VS · HTP190-EFB + 5% DC co-digestion: 373 mL CH₄/g VS (15% boost)</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Carbon Credits Eligibility</td><td class="unit">qualitative</td><td class="result">YES (methane avoidance)</td><td class="range">—</td><td class="sni">—</td><td class="status-pass">LAB-DERIVED</td><td class="conf">LDE-HIGH</td><td class="method">IPCC 2006 FOD method / VCS VM0042 · OPDC if ponded → CH₄ emissions (BMP 324–373 mL CH₄/g VS) · GWP CH₄=28 CO₂-eq · Diversion → 0.5–1.5 tCO₂-eq avoided per t OPDC DM</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>SNI 2803:2012 Compliance Status</td><td class="unit">qualitative</td><td class="result">PARTIAL — needs drying + Cl test</td><td class="range">—</td><td class="sni">—</td><td class="status-borderline">BORDERLINE</td><td class="conf">LDE-HIGH</td><td class="method">SNI 2803:2012 / Permentan 01/2020 · PASS: C-organic 41.41% ✓, N 2.32% ✓, C:N 17.85 ✓, pH 4.40 ✓, EC 2.96 ✓, heavy metals ✓ · FAIL: MC 70–80% &gt;25% wb (expected at S0) · BORDERLINE: Ash 19–28% (max 25%) · DATA GAP: Cl — order ISO 10304-1 ion chromatography · Post-drying: FULLY COMPLIANT once Cl confirmed</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Oil Recovery Potential</td><td class="unit">% DM</td><td class="result">8.5–11.5%</td><td class="range">7–13%</td><td class="sni">—</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-HIGH</td><td class="method">AOAC 920.39 / Soxhlet hexane extraction · Maniam 2013: 11.5±0.18% · RSM optimization (Ong 2021): 8.5–12% recoverable · Post-extraction OPDC = defatted cake (better for BSF/compost)</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+<tr><td>Silica Extraction Potential</td><td class="unit">% ash basis</td><td class="result">31–36% (purified 77%)</td><td class="range">25–80%</td><td class="sni">—</td><td class="status-pass">LAB-CONFIRMED</td><td class="conf">LDE-HIGH</td><td class="method">ISO 29581-2 XRF + alkaline extraction · Rahim 2022: Raw ash SiO₂ 31–36% → after NaOH extraction: 76.95% purity · Amorphous silica 9–30 nm · Application: rubber reinforcement, adsorbents, catalyst support</td><td class="edit-cell"><button class="btn-edit">Edit</button></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div><!-- end sections-col -->
+</div><!-- end main -->
+
+<script>
+function toggleMetrics() {
+  const strip = document.getElementById('metricsStrip');
+  const btn = document.getElementById('msToggle');
+  const showing8 = strip.classList.toggle('show8');
+  btn.textContent = showing8 ? '− Cellulase / Xylanase' : '+ Cellulase · Xylanase';
+}
+  head.parentElement.classList.toggle('open');
+}
+
+function printSection(event, code) {
+  event.stopPropagation();
+  const card = event.target.closest('.section-card');
+  const wasOpen = card.classList.contains('open');
+  card.classList.add('open');
+  const title = card.querySelector('.section-title').textContent;
+  const tableHTML = card.querySelector('.section-body').innerHTML;
+  const win = window.open('','_blank','width=1100,height=700');
+  win.document.write(`<!DOCTYPE html><html><head>
+    <title>CFI Lab Report — OPDC — ${code}</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+      body{font-family:'IBM Plex Mono',monospace;font-size:12px;padding:20px;color:#111;background:#fff}
+      h2{font-size:14px;margin-bottom:4px}
+      .meta{font-size:10px;color:#666;margin-bottom:12px}
+      table{width:100%;border-collapse:collapse;font-size:11px}
+      th{background:#f5f5f5;padding:6px 8px;text-align:left;border:1px solid #ddd;font-size:10px;text-transform:uppercase;letter-spacing:.06em}
+      td{padding:5px 8px;border:1px solid #ddd;vertical-align:top}
+      td:nth-child(3){font-weight:600}
+      .no-print{display:none}
+      @media print{body{padding:0}}
+    </style></head><body>
+    <h2>CFI BIOCONVERSION — LAB ANALYSIS · OPDC · ${code}: ${title}</h2>
+    <div class="meta">60 TPH FFB Mill · Bogor, West Java · Indonesia · Report Date: ${new Date().toISOString().split('T')[0]} · v1.2</div>
+    ${tableHTML}
+    <script>window.onload=()=>window.print()<\/script>
+  </body></html>`);
+  win.document.close();
+  if (!wasOpen) card.classList.remove('open');
+}
+
+// ── STREAM DATA ──────────────────────────────────────────
+const STREAM_DATA = {
+  COMBINED: {
+    badge: `<div class="mf-residues-title">Residues</div>
+      <div class="mf-residues-grid">
+        <div class="mf-res-row"><span class="mf-res-name">EFB</span><span class="mf-res-pct">55%</span></div>
+        <div class="mf-res-row"><span class="mf-res-name">OPDC</span><span class="mf-res-pct">30%</span></div>
+        <div class="mf-res-row"><span class="mf-res-name">POS</span><span class="mf-res-pct">15%</span></div>
+        <div class="mf-res-row"><span class="mf-res-name">60 TPH</span><span class="mf-res-pct">DM</span></div>
+      </div>`,
+    badgeClass: 'mf-residues',
+    banner: true,
+    metrics: {
+      dm:'~28%', dmSub:'% wb · blended',
+      cp:'8.14%', cpSub:'DM · EFB+OPDC blend',
+      n:'1.38%', p:'0.15%', k:'1.71%', eleSub:'% DM · blended',
+      n2:'1.38%', p2:'0.34%', k2:'2.06%', agrSub:'% DM',
+      syn:'$21.40', synSub:'/t DM · blended parity',
+      nKg:'13.8', pKg:'1.5', kKg:'17.1',
+      lig:'18.5%', ligSub:'DM · blended ADL',
+      ph:'5.5–6.5', phSub:'blended · S2 amendment',
+      cec:'DATA GAP', cecSub:'cmol/kg · S5A only'
+    }
+  },
+  EFB: {
+    badge: `<span class="mf-badge-label">EFB</span>
+      <span class="mf-badge-sub">Empty Fruit Bunches</span>
+      <div class="mf-sub">&nbsp;</div>`,
+    badgeClass: 'mf-badge',
+    banner: false,
+    metrics: {
+      dm:'37.5%', dmSub:'% wb · field',
+      cp:'4.75%', cpSub:'DM · N×6.25',
+      n:'0.76%', p:'0.06%', k:'2.0%', eleSub:'% DM · ICP-OES',
+      n2:'0.76%', p2:'0.14%', k2:'2.41%', agrSub:'% DM',
+      syn:'$18.48', synSub:'/t DM · Urea·TSP·MOP',
+      nKg:'7.6', pKg:'0.6', kKg:'20.0',
+      lig:'22.0%', ligSub:'DM · BSF gate FAIL',
+      ph:'6.8–7.2', phSub:'SNI 4–9 ✓',
+      cec:'DATA GAP', cecSub:'cmol/kg · pending'
+    }
+  },
+  OPDC: {
+    badge: `<span class="mf-badge-label">OPDC</span>
+      <span class="mf-badge-sub">Oil Palm Decanter Cake</span>
+      <div class="mf-sub">&nbsp;</div>`,
+    badgeClass: 'mf-badge',
+    banner: false,
+    metrics: {
+      dm:'30%', dmSub:'% wb · press floor',
+      cp:'14.5%', cpSub:'DM · N×6.25',
+      n:'2.32%', p:'0.30%', k:'1.90%', eleSub:'% DM · ICP-OES',
+      n2:'2.32%', p2:'0.69%', k2:'2.29%', agrSub:'% DM',
+      syn:'$36.42', synSub:'/t DM · Urea·TSP·MOP',
+      nKg:'23.2', pKg:'3.0', kKg:'19.0',
+      lig:'10.78%', ligSub:'DM · BSF gate PASS',
+      ph:'4.40', phSub:'SNI 4–9 · lime needed',
+      cec:'DATA GAP', cecSub:'cmol/kg · pending ICP'
+    }
+  },
+  POS: {
+    badge: `<span class="mf-badge-label">POS</span>
+      <span class="mf-badge-sub">Palm Oil Sludge</span>
+      <div class="mf-sub">&nbsp;</div>`,
+    badgeClass: 'mf-badge',
+    banner: false,
+    metrics: {
+      dm:'18%', dmSub:'% wb · centrifuge',
+      cp:'11.0%', cpSub:'DM · N×6.25',
+      n:'1.76%', p:'GAP', k:'GAP', eleSub:'% DM · ICP-OES',
+      n2:'1.76%', p2:'GAP', k2:'GAP', agrSub:'% DM · partial',
+      syn:'GAP', synSub:'/t DM · P+K pending',
+      nKg:'17.6', pKg:'GAP', kKg:'GAP',
+      lig:'7.6%', ligSub:'DM · BSF gate PASS',
+      ph:'4.5–5.5', phSub:'acidic · blend needed',
+      cec:'DATA GAP', cecSub:'cmol/kg · pending ICP'
+    }
+  }
+};
+
+function applyStream(key) {
+  const d = STREAM_DATA[key] || STREAM_DATA['OPDC'];
+  const badge = document.getElementById('streamBadge');
+  badge.className = d.badgeClass;
+  badge.innerHTML = d.badge;
+
+  const banner = document.getElementById('combinedBanner');
+  banner.className = 'combined-banner' + (d.banner ? ' visible' : '');
+
+  const m = d.metrics;
+  // Update all metric cells by data-key attributes
+  const set = (k, v) => { const el = document.querySelector(`[data-mkey="${k}"]`); if(el) el.textContent = v; };
+  set('dm', m.dm); set('dm-sub', m.dmSub);
+  set('cp', m.cp); set('cp-sub', m.cpSub);
+  set('n', m.n); set('p', m.p); set('k', m.k); set('ele-sub', m.eleSub);
+  set('n2', m.n2); set('p2', m.p2); set('k2', m.k2); set('agr-sub', m.agrSub);
+  set('syn', m.syn); set('syn-sub', m.synSub);
+  set('nkg', m.nKg); set('pkg', m.pKg); set('kkg', m.kKg);
+  set('lig', m.lig); set('lig-sub', m.ligSub);
+  set('ph', m.ph); set('ph-sub', m.phSub);
+  set('cec', m.cec); set('cec-sub', m.cecSub);
+}
+
+function setCombined(btn) {
+  document.querySelectorAll('.btn-combined,.stream-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyStream('COMBINED');
+}
+
+function setStream(btn, key) {
+  document.querySelectorAll('.btn-combined,.stream-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyStream(key);
+}
+
+// Open first section on load
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('.section-card').classList.add('open');
+  applyStream('COMBINED');
+});
+
+// Edit button handler
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('btn-edit')) {
+    const row = e.target.closest('tr');
+    const param = row.cells[0].textContent.trim();
+    const result = row.cells[2].textContent.trim();
+    const newVal = prompt(`Edit: ${param}\nCurrent: ${result}\nEnter new value:`, result);
+    if (newVal !== null && newVal !== result) {
+      row.cells[2].textContent = newVal;
+      row.cells[2].style.color = '#F5A623';
+      row.style.background = 'rgba(245,166,35,0.06)';
+    }
+  }
+});
+</script>
+</body>
+</html>

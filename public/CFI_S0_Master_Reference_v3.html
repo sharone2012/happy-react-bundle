@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFI S0 Master Reference v3</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;600;700&family=DM+Mono:wght@500;700&display=swap">
+<style>
+  :root {
+    --navy:        #0B1422;
+    --navyMid:     #153352;
+    --navyLt:      #1A3A5C;
+    --navyDk:      #070D16;
+    --teal:        #00C9B1;
+    --tealDk:      #009E8C;
+    --amber:       #F5A623;
+    --red:         #E84040;
+    --green:       #3DCB7A;
+    --blue:        #4A9EDB;
+    --white:       #F0F4F8;
+    --grey:        #8BA0B4;
+    --greyLt:      #C4D3E0;
+    --greyMd:      #A8B8C7;
+    --pastelGreen: #A8E6C1;
+    --border:      #1E6B8C;
+    --cardBg:      #162E45;
+    --inputBg:     #060C14;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--navyDk);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 0;
+  }
+
+  /* HEADER */
+  .doc-header {
+    background: var(--navy);
+    border-bottom: 2px solid var(--teal);
+    padding: 28px 40px 22px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .doc-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--teal);
+    margin-bottom: 4px;
+  }
+  .doc-subtitle {
+    font-size: 11px;
+    color: var(--grey);
+    letter-spacing: 0.05em;
+  }
+  .doc-meta {
+    display: flex;
+    gap: 16px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .meta-pill {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--greyMd);
+    background: var(--navyMid);
+    font-family: 'DM Mono', monospace;
+  }
+  .meta-pill.live { border-color: var(--teal); color: var(--teal); }
+  .meta-pill.warn { border-color: var(--amber); color: var(--amber); }
+
+  /* LAYOUT */
+  .doc-body {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: 100vh;
+  }
+
+  /* SIDEBAR NAV */
+  .sidebar {
+    background: var(--navy);
+    border-right: 1px solid var(--border);
+    padding: 20px 0;
+    position: sticky;
+    top: 73px;
+    height: calc(100vh - 73px);
+    overflow-y: auto;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .nav-group-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--grey);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 12px 16px 4px;
+  }
+  .nav-item {
+    display: block;
+    padding: 7px 16px;
+    font-size: 11px;
+    color: var(--greyMd);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all 0.12s;
+    cursor: pointer;
+  }
+  .nav-item:hover { color: var(--teal); border-left-color: var(--teal); background: rgba(0,201,177,0.06); }
+  .nav-item.active { color: var(--teal); border-left-color: var(--teal); }
+
+  /* CONTENT */
+  .content {
+    padding: 32px 40px 60px;
+    max-width: 1100px;
+  }
+
+  /* SECTION CARDS */
+  .section-card {
+    background: var(--cardBg);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .section-hdr {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    border-bottom: 0.5px solid var(--border);
+    background: var(--navy);
+  }
+  .section-letter {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 20px;
+    flex-shrink: 0;
+  }
+  .sl-teal { background: rgba(0,201,177,0.15); color: var(--teal); border: 1px solid var(--teal); }
+  .sl-amber { background: rgba(245,166,35,0.15); color: var(--amber); border: 1px solid var(--amber); }
+  .sl-red { background: rgba(232,64,64,0.15); color: var(--red); border: 1px solid var(--red); }
+  .sl-green { background: rgba(61,203,122,0.15); color: var(--green); border: 1px solid var(--green); }
+  .sl-blue { background: rgba(74,158,219,0.15); color: var(--blue); border: 1px solid var(--blue); }
+  .sl-grey { background: rgba(138,160,180,0.15); color: var(--grey); border: 1px solid var(--grey); }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--teal);
+    white-space: nowrap;
+  }
+  .section-title.amber { color: var(--amber); }
+  .section-title.red { color: var(--red); }
+  .section-badge {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-family: 'Syne', sans-serif;
+    flex-shrink: 0;
+  }
+  .badge-green { background: rgba(61,203,122,0.15); color: var(--green); border: 1px solid var(--green); }
+  .badge-amber { background: rgba(245,166,35,0.15); color: var(--amber); border: 1px solid var(--amber); }
+  .badge-red { background: rgba(232,64,64,0.15); color: var(--red); border: 1px solid var(--red); }
+  .badge-done { background: rgba(61,203,122,0.2); color: var(--green); border: 1px solid var(--green); }
+
+  .section-body { padding: 16px 18px; }
+  .section-intro {
+    font-size: 12px;
+    color: var(--greyMd);
+    margin-bottom: 14px;
+    line-height: 1.6;
+    padding: 8px 12px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 6px;
+    border-left: 3px solid var(--border);
+  }
+
+  /* TABLES */
+  .tbl-wrap { overflow-x: auto; margin-bottom: 14px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11.5px;
+  }
+  thead tr { background: rgba(0,0,0,0.3); }
+  thead th {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    color: var(--greyMd);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody tr { border-bottom: 0.5px solid rgba(30,107,140,0.3); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(0,201,177,0.03); }
+  tbody td {
+    padding: 7px 12px;
+    color: var(--greyLt);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  tbody td:first-child { color: var(--white); font-weight: 600; }
+  .total-row td {
+    background: rgba(168,230,193,0.1);
+    color: var(--pastelGreen) !important;
+    font-family: 'DM Mono', monospace;
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .blocked-row td { color: var(--red) !important; opacity: 0.8; }
+  .blocked-row td:first-child { color: var(--red) !important; }
+  .open-row td:first-child { color: var(--amber) !important; }
+  .done-row td:first-child { color: var(--green) !important; }
+
+  /* FIELD NUMBER BADGES */
+  .field-num {
+    display: inline-block;
+    background: var(--navyMid);
+    border: 1px solid var(--border);
+    color: var(--teal);
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 10px;
+    margin-right: 4px;
+  }
+
+  /* SUBSECTION HEADERS */
+  .sub-hdr {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--amber);
+    margin: 18px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(245,166,35,0.3);
+  }
+  .sub-hdr-teal {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--teal);
+    margin: 14px 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(0,201,177,0.2);
+  }
+
+  /* ALERT BOXES */
+  .alert {
+    padding: 9px 13px;
+    border-radius: 6px;
+    font-size: 11px;
+    margin: 10px 0;
+    line-height: 1.6;
+  }
+  .alert-red { background: rgba(232,64,64,0.1); border: 1.5px solid var(--border); color: var(--red); }
+  .alert-amber { background: rgba(245,166,35,0.1); border: 1.5px solid var(--border); color: var(--amber); }
+  .alert-green { background: rgba(61,203,122,0.1); border: 1.5px solid var(--border); color: var(--green); }
+  .alert-teal { background: rgba(0,201,177,0.08); border: 1.5px solid var(--border); color: var(--teal); }
+  .alert-info { background: rgba(74,158,219,0.1); border: 1.5px solid var(--border); color: var(--blue); }
+
+  /* CODE BLOCKS */
+  code {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--amber);
+  }
+  pre {
+    background: var(--inputBg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    margin: 10px 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--amber);
+    line-height: 1.7;
+  }
+
+  /* KPI ROW */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 12px 0; }
+  .kpi-card {
+    background: var(--navyMid);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+  }
+  .kpi-label { font-size: 9px; color: var(--grey); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .kpi-val { font-family: 'DM Mono', monospace; font-size: 18px; font-weight: 700; color: var(--amber); }
+  .kpi-unit { font-size: 9px; color: var(--grey); margin-top: 3px; }
+
+  /* COLOUR SWATCH */
+  .swatch-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 10px 0; }
+  .swatch {
+    border-radius: 6px;
+    padding: 10px 8px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .swatch-hex { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 700; }
+  .swatch-name { font-size: 9px; opacity: 0.8; margin-top: 2px; }
+
+  /* LOGIC BOX */
+  .logic-box {
+    background: var(--inputBg);
+    border-left: 3px solid var(--teal);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 11px;
+    color: var(--greyMd);
+    line-height: 1.7;
+  }
+  .logic-box strong { color: var(--white); }
+  .logic-box.amber-border { border-left-color: var(--amber); }
+  .logic-box.red-border { border-left-color: var(--red); }
+  .logic-box.green-border { border-left-color: var(--green); }
+
+  /* SOIL CARDS */
+  .soil-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0; }
+  .soil-card {
+    background: var(--navyMid);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .soil-name { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; color: var(--teal); margin-bottom: 4px; }
+  .soil-stat { font-size: 10px; color: var(--grey); line-height: 1.6; }
+  .soil-stat span { color: var(--greyLt); }
+
+  /* STREAM TOGGLE CARDS */
+  .stream-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0; }
+  .stream-card {
+    background: var(--navyMid);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .stream-name { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 700; color: var(--amber); margin-bottom: 3px; }
+  .stream-full { font-size: 10px; color: var(--greyMd); margin-bottom: 4px; }
+  .stream-status { font-size: 9px; font-weight: 600; padding: 2px 7px; border-radius: 10px; display: inline-block; }
+  .st-off { background: rgba(138,160,180,0.15); color: var(--grey); border: 1px solid var(--border); }
+  .st-liquid { background: rgba(74,158,219,0.15); color: var(--blue); border: 1px solid var(--blue); }
+  .st-purchased { background: rgba(232,64,64,0.15); color: var(--red); border: 1px solid var(--red); }
+
+  /* MIGRATION TABLE */
+  .migration-done {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(61,203,122,0.15);
+    border: 1px solid var(--green);
+    color: var(--green);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 20px;
+  }
+
+  /* TYPOGRAPHY DEMO */
+  .type-demo {
+    background: var(--inputBg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 10px 0;
+  }
+  .type-row { display: flex; align-items: baseline; gap: 16px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 0.5px solid rgba(30,107,140,0.3); }
+  .type-row:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
+  .type-label { font-size: 9px; color: var(--grey); width: 120px; flex-shrink: 0; }
+  .type-sample { }
+  .t-syne { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--teal); font-size: 18px; }
+  .t-sans { font-family: 'DM Sans', sans-serif; font-weight: 600; color: var(--greyLt); font-size: 13px; }
+  .t-sans-sm { font-family: 'DM Sans', sans-serif; font-weight: 400; color: var(--grey); font-size: 11px; }
+  .t-mono { font-family: 'DM Mono', monospace; font-weight: 700; color: var(--amber); font-size: 20px; }
+  .t-mono-sm { font-family: 'DM Mono', monospace; font-weight: 500; color: var(--greyMd); font-size: 11px; }
+
+  /* BUILD LIST */
+  .build-item {
+    display: grid;
+    grid-template-columns: 36px 80px 1fr 150px;
+    gap: 0;
+    align-items: start;
+    border-bottom: 0.5px solid rgba(30,107,140,0.3);
+    padding: 8px 0;
+    font-size: 11px;
+  }
+  .build-item:last-child { border-bottom: none; }
+  .build-num { font-family: 'DM Mono', monospace; color: var(--grey); font-size: 10px; padding: 2px 0; }
+  .status-pill {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+  .s-done { background: rgba(61,203,122,0.2); color: var(--green); }
+  .s-open { background: rgba(232,64,64,0.15); color: var(--red); }
+  .s-warn { background: rgba(245,166,35,0.15); color: var(--amber); }
+  .s-pending { background: rgba(74,158,219,0.15); color: var(--blue); }
+  .build-desc { color: var(--greyLt); padding: 0 12px; line-height: 1.5; }
+  .build-blocker { font-size: 10px; color: var(--grey); font-style: italic; }
+
+  /* FOOTER */
+  .doc-footer {
+    background: var(--navy);
+    border-top: 1px solid var(--border);
+    padding: 16px 40px;
+    font-size: 10px;
+    color: var(--grey);
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="doc-header">
+  <div class="doc-title">CFI Platform — S0 Site Configuration</div>
+  <div class="doc-subtitle">Master Reference v3 · All Agreed Decisions · The Professor UI</div>
+  <div class="doc-meta">
+    <span class="meta-pill live">The Professor · PIN: CFI2026</span>
+    <span class="meta-pill live">Design System v3 · Locked</span>
+    <span class="meta-pill live">Migration 16 · Applied ✓</span>
+    <span class="meta-pill warn">Migration 17 · cfi_sites · OPEN</span>
+    <span class="meta-pill">March 17 2026 · Sharon Perlstein CEO</span>
+    <span class="meta-pill">GUARDRAILS P1 › Anti-Hallucination P2 › Research 99 P3 › Personas P4 › Build Spec P5</span>
+  </div>
+</div>
+
+<div class="doc-body">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="nav-group-label">Access</div>
+  <a class="nav-item" href="#s1">1. The Professor Access Map</a>
+  <div class="nav-group-label">S0 Layout</div>
+  <a class="nav-item" href="#s2">2. Page Layout</a>
+  <div class="nav-group-label">Sections</div>
+  <a class="nav-item" href="#s3">3. Section A — Site Identity</a>
+  <a class="nav-item" href="#s4">4. Section B — Mill Capacity</a>
+  <a class="nav-item" href="#s5">5. Section C — Soil Origin</a>
+  <a class="nav-item" href="#s6">6. Section D — Residue Selection</a>
+  <a class="nav-item" href="#s7">7. Section D2 — Residue Mix</a>
+  <a class="nav-item" href="#s8">8. Section E — Carbon Credits</a>
+  <a class="nav-item" href="#s9">9. Section F — NPK + Soil Science</a>
+  <a class="nav-item" href="#s10">10. Section G — Blend Optimiser</a>
+  <a class="nav-item" href="#s11">11. Bottom Strip</a>
+  <div class="nav-group-label">Rules</div>
+  <a class="nav-item" href="#s12">12. Confirmation Gates</a>
+  <a class="nav-item" href="#s13">13. Active Guardrails</a>
+  <a class="nav-item" href="#s14">14. S0 Lab Report</a>
+  <div class="nav-group-label">Infrastructure</div>
+  <a class="nav-item" href="#s15">15. Migration 16</a>
+  <a class="nav-item" href="#s16">16. Build List</a>
+  <a class="nav-item" href="#s17">17. Design System v3</a>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="content">
+
+<!-- ══ 1. PROFESSOR ACCESS MAP ══════════════════════════════════════════ -->
+<div id="s1" class="section-card">
+  <div class="section-hdr">
+    <span class="section-letter sl-teal">1</span>
+    <span class="section-title">The Professor — Full Access Map</span>
+    <span class="section-badge badge-green">Sharon Only · PIN: CFI2026</span>
+  </div>
+  <div class="section-body">
+    <div class="section-intro">Internal science persona. Sharon only — not visible to regular users. Sees all science. Blocked from Project Finance, revenue, and admin.</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Module / Feature</th><th>Professor</th><th>Standard User</th></tr></thead>
+        <tbody>
+          <tr><td>S0–S6 all science stages</td><td style="color:var(--green)">Full</td><td style="color:var(--green)">Full</td></tr>
+          <tr><td>S0–S6 all lab reports</td><td style="color:var(--green)">Full</td><td style="color:var(--green)">Full</td></tr>
+          <tr><td>Biological library (organisms, enzymes, dosing)</td><td style="color:var(--green)">Full</td><td style="color:var(--grey)">Read only</td></tr>
+          <tr><td>Chemical library incl. S2 + S3 costs</td><td style="color:var(--green)">Full</td><td style="color:var(--grey)">Read only</td></tr>
+          <tr><td>Canonical lab data (all streams)</td><td style="color:var(--green)">Full</td><td style="color:var(--grey)">Read only</td></tr>
+          <tr><td>Soil profiles (CEC, pH, coefficients, all 5 types)</td><td style="color:var(--green)">Full</td><td style="color:var(--grey)">Read only</td></tr>
+          <tr><td>Soil health metrics (MBC, SOC, WHC, DHA, aggregate stability)</td><td style="color:var(--green)">Full</td><td style="color:var(--red)">No</td></tr>
+          <tr><td>Soil-specific CFI product response</td><td style="color:var(--green)">Full</td><td style="color:var(--grey)">Summary only</td></tr>
+          <tr><td>Carbon sequestration science (SOC trajectory, labile/recalcitrant)</td><td style="color:var(--green)">Full</td><td style="color:var(--red)">No</td></tr>
+          <tr><td>Emissions — CH₄, N₂O, lignin, transport CO₂, NH₃, VOCs, H₂S, dust</td><td style="color:var(--green)">Full</td><td style="color:var(--grey)">Summary only</td></tr>
+          <tr><td>Net emissions position (avoidance + removal minus process)</td><td style="color:var(--green)">Full</td><td style="color:var(--red)">No</td></tr>
+          <tr><td>CO₂e tonnes — quantity only (NO dollar value)</td><td style="color:var(--green)">Full</td><td style="color:var(--red)">No</td></tr>
+          <tr><td>Pollution counterfactual per residue (groundwater, toxic zone, metals)</td><td style="color:var(--green)">Full</td><td style="color:var(--red)">No</td></tr>
+          <tr><td>BSF product selling prices (meal $/t, oil $/t, chitin $/t)</td><td style="color:var(--green)">Full</td><td style="color:var(--red)">No</td></tr>
+          <tr><td>Equipment sizing — throughput, sq m facility, sq m greenhouse</td><td style="color:var(--green)">Full</td><td style="color:var(--grey)">Summary only</td></tr>
+          <tr><td>Equipment CAPEX figures ($)</td><td style="color:var(--green)">Full</td><td style="color:var(--red)">No</td></tr>
+          <tr><td>Scenario modelling — science basis</td><td style="color:var(--green)">Full</td><td style="color:var(--green)">Yes</td></tr>
+          <tr><td>Orchestration agent research outputs (findings only, not engine)</td><td style="color:var(--green)">Full</td><td style="color:var(--red)">No</td></tr>
+          <tr><td>Agronomic $ equivalent (NPK vs synthetic price parity)</td><td style="color:var(--green)">Full</td><td style="color:var(--green)">Yes</td></tr>
+          <tr><td>Weather data (monthly temp + rainfall, 12 months)</td><td style="color:var(--green)">Full</td><td style="color:var(--green)">Yes</td></tr>
+          <tr><td>ICP-OES lab results (all packages)</td><td style="color:var(--green)">Full</td><td style="color:var(--red)">No</td></tr>
+          <tr><td>Industry switcher (Agent 8 — palm vs sugarcane vs rice)</td><td style="color:var(--green)">Full</td><td style="color:var(--red)">No</td></tr>
+          <tr><td>Data gap flags · Confidence levels (LDE-HIGH/MEDIUM/LOW)</td><td style="color:var(--green)">Full</td><td style="color:var(--red)">No</td></tr>
+          <tr><td>C:N formula trace (DM-weighted breakdown)</td><td style="color:var(--green)">Full</td><td style="color:var(--grey)">Number only</td></tr>
+          <tr><td>N conversion factor selector (4.67 / 6.25)</td><td style="color:var(--green)">Full — can toggle</td><td style="color:var(--grey)">4.67 locked</td></tr>
+          <tr><td>NaOH toggle</td><td style="color:var(--amber)">Full — AMBER warning</td><td style="color:var(--red)">No</td></tr>
+          <tr><td>Bt / Provibio toggle</td><td style="color:var(--amber)">Full — AMBER + titre gate</td><td style="color:var(--red)">No</td></tr>
+          <tr><td>S2 and S3 chemical costs</td><td style="color:var(--green)">Full</td><td style="color:var(--red)">No</td></tr>
+          <tr class="blocked-row"><td>Project Finance tab</td><td>BLOCKED</td><td>BLOCKED</td></tr>
+          <tr class="blocked-row"><td>Carbon credit revenue ($)</td><td>BLOCKED</td><td>BLOCKED</td></tr>
+          <tr class="blocked-row"><td>VER methodology (ACM0022, VM0041)</td><td>BLOCKED</td><td>BLOCKED</td></tr>
+          <tr class="blocked-row"><td>Revenue projections / P&amp;L</td><td>BLOCKED</td><td>BLOCKED</td></tr>
+          <tr class="blocked-row"><td>Wages / labour costs</td><td>BLOCKED</td><td>BLOCKED</td></tr>
+          <tr class="blocked-row"><td>Engineering architecture drawings</td><td>BLOCKED</td><td>BLOCKED</td></tr>
+          <tr class="blocked-row"><td>Admin panel · Visitor registry</td><td>BLOCKED</td><td>BLOCKED</td></tr>
+          <tr class="blocked-row"><td>Other users' data and scenarios</td><td>BLOCKED</td><td>BLOCKED</td></tr>
+          <tr class="blocked-row"><td>Orchestration agent config / scheduling / run logs</td><td>BLOCKED</td><td>BLOCKED</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2. PAGE LAYOUT ════════════════════════════════════════════════════ -->
+<div id="s2" class="section-card">
+  <div class="section-hdr">
+    <span class="section-letter sl-amber">2</span>
+    <span class="section-title amber">S0 — Agreed Page Layout</span>
+  </div>
+  <div class="section-body">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Row</th><th>Grid</th><th>Left Card</th><th>Right Card</th></tr></thead>
+        <tbody>
+          <tr><td>Row 1</td><td><code>1fr 2fr</code></td><td>Section A — Site Identity</td><td>Section B — Mill Capacity</td></tr>
+          <tr><td>Row 2</td><td><code>1fr 1fr</code></td><td>Section C — FFB Soil Origin</td><td>Section D — Residue Selection</td></tr>
+          <tr><td>Row 3</td><td><code>1fr (full)</code></td><td>Section D2 — Residue Mix (KG/% toggle + CONFIRM STREAMS)</td><td>—</td></tr>
+          <tr><td>Row 4</td><td><code>1fr (full)</code></td><td>Section F — NPK Summary + Soil Science Reports</td><td>—</td></tr>
+          <tr><td>Row 5</td><td><code>1fr (full)</code></td><td>Section G — Blend Optimiser (PLACEHOLDER)</td><td>—</td></tr>
+          <tr><td>Bottom Strip</td><td><code>1fr (full)</code></td><td>Per-residue characteristic cards</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert alert-red">Section E (Carbon Credits) — REMOVED from S0 entirely. Moved to Project Finance tab.</div>
+  </div>
+</div>
+
+<!-- ══ 3. SECTION A ══════════════════════════════════════════════════════ -->
+<div id="s3" class="section-card">
+  <div class="section-hdr">
+    <span class="section-letter sl-teal">A</span>
+    <span class="section-title">Section A: Site Identity</span>
+    <span class="section-badge badge-amber">9 Fields · Auto-Save on Exit</span>
+  </div>
+  <div class="section-body">
+    <div class="section-intro">"A — Enter Your Site Details Below" · Teal, Syne 700, 18px. Auto-save to Supabase on page exit. Estate area auto-pulled. Weather auto-fetched. AI agent on new entries.</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Field</th><th>Type</th><th>Default</th><th>Req.</th><th>Behaviour / Notes</th></tr></thead>
+        <tbody>
+          <tr><td><span class="field-num">1</span></td><td>Plantation / Company Name</td><td style="color:var(--teal)">Smart Autocomplete + AI Agent</td><td>"I Will Enter Manually"</td><td style="color:var(--amber)">YES</td><td>Fuzzy match from cfi_mill_owners. "I will enter manually" always first. One-time toast confirmation. Agent caches for all future users.</td></tr>
+          <tr><td><span class="field-num">2</span></td><td>Estate Name</td><td style="color:var(--teal)">Autocomplete from company</td><td>Auto-pull if known</td><td style="color:var(--amber)">YES</td><td>Auto-pulls from DB when Plantation confirmed. Same toast logic as #1.</td></tr>
+          <tr><td><span class="field-num">3</span></td><td>Mill Name / Unit</td><td style="color:var(--teal)">Dropdown + manual</td><td>"I Will Enter Manually"</td><td style="color:var(--amber)">YES</td><td>cfi_mills_60tph — 105 mills pre-loaded. Manual entry saved under user ID.</td></tr>
+          <tr><td><span class="field-num">4</span></td><td>District / Kabupaten</td><td style="color:var(--blue)">Text Input</td><td>Auto-pull if mill known</td><td style="color:var(--amber)">YES</td><td>Gates siteOK flag downstream.</td></tr>
+          <tr><td><span class="field-num">5</span></td><td>Province</td><td style="color:var(--blue)">Dropdown</td><td>Auto-pull</td><td style="color:var(--grey)">NO</td><td>From cfi_province_soil_lookup (24 provinces). Triggers weather API.</td></tr>
+          <tr><td><span class="field-num">6</span></td><td>Total Estate Area (ha)</td><td style="color:var(--blue)">Number or Auto-Pull</td><td>Auto if known</td><td style="color:var(--grey)">NO</td><td>Auto-pulls from cfi_estates. Manual entry if not found.</td></tr>
+          <tr><td><span class="field-num">7</span></td><td>GPS Coordinates <em style="color:var(--grey)">(optional)</em></td><td style="color:var(--teal)">Lat/Long OR Text + AI Agent</td><td>—</td><td style="color:var(--grey)">OPTIONAL</td><td>Triggers soil agent → auto-highlights Section C soil type. Toast confirms.</td></tr>
+          <tr><td><span class="field-num">8</span></td><td>Monthly Temperature</td><td style="color:var(--green)">Auto-Fetched</td><td>Auto</td><td style="color:var(--grey)">Auto</td><td>12-month grid (not single average). Fires on province OR GPS confirmed.</td></tr>
+          <tr><td><span class="field-num">9</span></td><td>Monthly Rainfall</td><td style="color:var(--green)">Auto-Fetched</td><td>Auto</td><td style="color:var(--grey)">Auto</td><td>12-month grid. Feeds soil value, N leaching, ET calcs.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="logic-box">
+      <strong>Sitewide dropdown rule:</strong> "I will enter manually" is ALWAYS the first item in every dropdown across the entire platform.<br>
+      <strong>GPS agent:</strong> GPS confirmed → soil agent returns 1–3 likely soil types → popup: "We found these soil types in your area: [list]. Which applies?" → auto-highlights Section C.<br>
+      <strong>Status row:</strong> plantName + millName + district all filled → green "Site Data Complete". Otherwise → amber "Complete Required Fields."
+    </div>
+    <div class="sub-hdr-teal">Section A — Data Feed</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Field</th><th>Supabase Table</th><th>Column</th><th>Also Feeds Into</th><th>Trigger</th></tr></thead>
+        <tbody>
+          <tr><td>Plantation / Company Name</td><td><code>cfi_sites</code></td><td>company_name</td><td>report_builder, visitor_registry</td><td>On Lock</td></tr>
+          <tr><td>Estate Name</td><td><code>cfi_sites</code></td><td>estate_name</td><td>cfi_estates (if new)</td><td>On Lock</td></tr>
+          <tr><td>Mill Name / Unit</td><td><code>cfi_sites</code></td><td>mill_name</td><td>report_builder, change_log</td><td>On Lock</td></tr>
+          <tr><td>GPS Coordinates</td><td><code>cfi_sites</code></td><td>gps_lat, gps_lng</td><td>weather_cache, soil agent</td><td>On GPS entry</td></tr>
+          <tr><td>Monthly Temperature</td><td><code>weather_cache</code></td><td>temp_jan … temp_dec</td><td>S4 GH Calculator, value_index</td><td>Auto on location</td></tr>
+          <tr><td>Monthly Rainfall</td><td><code>weather_cache</code></td><td>rain_jan … rain_dec</td><td>soil value calc, N leach model</td><td>Auto on location</td></tr>
+          <tr><td>Session date</td><td><code>cfi_sites</code></td><td>session_date</td><td>Price agent (fertiliser CIF Indonesia)</td><td>On first field entry</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 4. SECTION B ══════════════════════════════════════════════════════ -->
+<div id="s4" class="section-card">
+  <div class="section-hdr">
+    <span class="section-letter sl-teal">B</span>
+    <span class="section-title">Section B: Mill Capacity</span>
+    <span class="section-badge badge-amber">CONFIRM MILL CAPACITY Gate · Monthly KPIs Only</span>
+  </div>
+  <div class="section-body">
+    <div class="section-intro">"B — Oil Palm Mill Fresh Fruit Bunch Processing Capacity" · 4 inputs · 1 gate · KPI outputs monthly only — no daily shown.</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Field</th><th>State Key</th><th>Default</th><th>Unit</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>FFB Processing</td><td><code>ffbCapacity</code></td><td style="color:var(--red)">No default — must enter</td><td>TPH</td><td>Label LEFT of 72px bold input. Forces user to enter.</td></tr>
+          <tr><td>Capacity Utilisation</td><td><code>utilisation</code></td><td style="color:var(--amber)">85%</td><td>%</td><td>Pre-fills. Requires re-confirm if changed.</td></tr>
+          <tr><td>Operating Hours</td><td><code>hrsDay</code></td><td style="color:var(--amber)">24</td><td>Hours / Day</td><td>Pre-fills. Requires re-confirm if changed.</td></tr>
+          <tr><td>Operating Days</td><td><code>daysMonth</code></td><td style="color:var(--amber)">30</td><td>Days / Month</td><td>Pre-fills. Requires re-confirm if changed.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert alert-amber">CONFIRM MILL CAPACITY gate — validates all 4 fields together. Hard block — nothing downstream computes until clicked. Changing any field after confirmation resets the gate.</div>
+    <div class="sub-hdr-teal">KPI Outputs (Monthly Only — No Daily Shown)</div>
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kpi-label">Monthly FFB</div><div class="kpi-val">36,720</div><div class="kpi-unit">t / month</div></div>
+      <div class="kpi-card"><div class="kpi-label">EFB Monthly</div><div class="kpi-val">8,262</div><div class="kpi-unit">t / month wet</div></div>
+      <div class="kpi-card"><div class="kpi-label">OPDC Monthly</div><div class="kpi-val">1,256</div><div class="kpi-unit">t / month wet</div></div>
+      <div class="kpi-card"><div class="kpi-label">Effective FFB</div><div class="kpi-val">51</div><div class="kpi-unit">TPH</div></div>
+    </div>
+    <div class="logic-box">
+      <strong>Scenario mode:</strong> Science scenarios only. Unlocks all 4 fields. Free-text name. Saves to cfi_scenarios. Does NOT show CAPEX, OPEX, wages, Project Finance, carbon credit revenue.<br>
+      <strong>Persistent context bar:</strong> Appears on every tab S0–S6 after CONFIRM. Baseline: "60 TPH · 85% · 24 Hrs · 30 Days ✓ Confirmed". Scenario: amber warning with scenario name + [Reset to Baseline].
+    </div>
+  </div>
+</div>
+
+<!-- ══ 5. SECTION C ══════════════════════════════════════════════════════ -->
+<div id="s5" class="section-card">
+  <div class="section-hdr">
+    <span class="section-letter sl-teal">C</span>
+    <span class="section-title">Section C: FFB Soil Origin</span>
+    <span class="section-badge badge-green">GPS Auto-Selects · Feeds Product Value Index</span>
+  </div>
+  <div class="section-body">
+    <div class="section-intro">CFI product value = soil × weather × agronomy. Not a flat price. Flows into every stage lab report. GPS agent auto-highlights matching soil type.</div>
+    <div class="soil-grid">
+      <div class="soil-card"><div class="soil-name">Inceptisols</div><div class="soil-stat">Coverage: <span>39%</span> · pH: <span>4.1</span> · CEC: <span>15.4</span><br>Best fertility. 40% less N, 50% less P.</div></div>
+      <div class="soil-card"><div class="soil-name">Ultisols</div><div class="soil-stat">Coverage: <span>24%</span> · pH: <span>4.5</span> · CEC: <span>8.2</span><br>Standard baseline. Default if no GPS.</div></div>
+      <div class="soil-card"><div class="soil-name">Oxisols</div><div class="soil-stat">Coverage: <span>8%</span> · pH: <span>4.4</span> · CEC: <span>Low</span><br>Fe/Al oxides. CFI P outperforms TSP.</div></div>
+      <div class="soil-card" style="border-color:var(--red)"><div class="soil-name" style="color:var(--red)">Histosols</div><div class="soil-stat">Coverage: <span>7%</span> · pH: <span>3.8</span> · C: <span>24.5%</span><br>Peat. 80% less N (LOCKED). 70% less P (LOCKED).</div></div>
+      <div class="soil-card"><div class="soil-name">Spodosols</div><div class="soil-stat">Coverage: <span>&lt;5%</span> · pH: <span>4.77</span> · CEC: <span>Very low</span><br>Sandy. 31% lower yield vs Ultisols.</div></div>
+      <div class="soil-card"><div class="soil-name">Andisols</div><div class="soil-stat">Coverage: <span>3%</span> · pH: <span>5.2</span> · CEC: <span>High</span><br>Volcanic, high WHC.</div></div>
+    </div>
+    <div class="alert alert-red">Histosols — Peat Soil: 80% less N and 70% less P needed. N over-application locked out. Hard rule — cannot be overridden.</div>
+    <div class="alert alert-amber">Oxisols — High Fe/Al oxide content. Synthetic phosphate rapidly fixed. CFI chelated P significantly outperforms TSP.</div>
+    <div class="alert alert-amber">Spodosols — Sandy, lowest fertility. CEC 2.0. CFI humate provides critical CEC improvement. 31% below Ultisols baseline.</div>
+    <div class="alert alert-green">Inceptisols — Best baseline fertility. Standard rates apply. 40% less N, 50% less P vs synthetic.</div>
+    <div class="sub-hdr-teal">Agronomy Management Tier</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Tier</th><th>Yield Baseline</th><th>CFI Value</th></tr></thead>
+        <tbody>
+          <tr><td>VGAM — Very Good Agronomy Management</td><td>100%</td><td>Baseline</td></tr>
+          <tr><td>GAM — Good Agronomy Management</td><td>85% of VGAM</td><td>Moderate uplift</td></tr>
+          <tr><td>Poor Management</td><td>65% of VGAM</td><td>High uplift</td></tr>
+          <tr><td>Abandoned / Degraded</td><td>40% of VGAM</td><td style="color:var(--teal)">Highest CFI uplift potential</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="logic-box">
+      <strong>Soil science detail panel (The Professor full access):</strong> MBC, SOC, WHC, bulk density, aggregate stability, available P/K, pH buffering, DHA, nematode suppression, earthworm density. All from cfi_soil_profiles + SoilBio data.
+    </div>
+  </div>
+</div>
+
+<!-- ══ 6. SECTION D ══════════════════════════════════════════════════════ -->
+<div id="s6" class="section-card">
+  <div class="section-hdr">
+    <span class="section-letter sl-teal">D</span>
+    <span class="section-title">Section D: Residue Selection</span>
+    <span class="section-badge badge-amber">All OFF by Default · User Selects · EFB Off → OPDC Auto-Off</span>
+  </div>
+  <div class="section-body">
+    <div class="section-intro">"D — Select Residues for CFI Processing" · ALL streams start OFF. Nothing is locked always-on. User selects what they have.</div>
+    <div class="stream-grid">
+      <div class="stream-card"><div class="stream-name">EFB</div><div class="stream-full">Empty Fruit Bunches</div><div class="stream-status st-off">OFF — User Toggles</div><div style="font-size:10px;color:var(--grey);margin-top:5px">Primary lignocellulosic stream. If EFB off → OPDC auto-deselects.</div></div>
+      <div class="stream-card"><div class="stream-name">OPDC</div><div class="stream-full">Oil Palm Decanter Cake</div><div class="stream-status st-off">OFF — User Toggles</div><div style="font-size:10px;color:var(--grey);margin-top:5px">15.2% EFB FW. Auto-deselects if EFB off. MC floor 40% LOCKED.</div></div>
+      <div class="stream-card"><div class="stream-name">POS</div><div class="stream-full">Palm Oil Sludge</div><div class="stream-status st-off">OFF — User Toggles</div><div style="font-size:10px;color:var(--grey);margin-top:5px">Mill exit / centrifuge — NOT POME. Fe gate governs inclusion.</div></div>
+      <div class="stream-card"><div class="stream-name">OPF</div><div class="stream-full">Oil Palm Fronds</div><div class="stream-status st-off">OFF — User Toggles</div><div style="font-size:10px;color:var(--grey);margin-top:5px">Pruning residue — seasonal. Not daily flow.</div></div>
+      <div class="stream-card"><div class="stream-name">OPT</div><div class="stream-full">Oil Palm Trunk</div><div class="stream-status st-off">OFF — User Toggles</div><div style="font-size:10px;color:var(--grey);margin-top:5px">Replanting cycles only. Very infrequent — high volume.</div></div>
+      <div class="stream-card" style="border-color:var(--blue)"><div class="stream-name" style="color:var(--blue)">POME</div><div class="stream-full">Palm Oil Mill Effluent</div><div class="stream-status st-liquid">LOCKED — Liquid Only</div><div style="font-size:10px;color:var(--grey);margin-top:5px">NOT a substrate input. Carbon credits / emissions only.</div></div>
+      <div class="stream-card" style="border-color:var(--red)"><div class="stream-name" style="color:var(--red)">PKE</div><div class="stream-full">Palm Kernel Expeller</div><div class="stream-status st-purchased">PURCHASED — $160/t</div><div style="font-size:10px;color:var(--grey);margin-top:5px">ONLY purchased input. zero_cost = false. Price agent recalculates.</div></div>
+      <div class="stream-card" style="border-style:dashed"><div class="stream-name" style="color:var(--grey)">Custom 1 + 2</div><div class="stream-full">User-Named Streams</div><div class="stream-status st-off">OFF — User Enters Name</div><div style="font-size:10px;color:var(--grey);margin-top:5px">Agent 8 searches for composition data on name entry.</div></div>
+    </div>
+    <div class="alert alert-teal">All stream selections auto-save to Supabase (cfi_sites table) on page exit. EFB off → OPDC auto-deselects. Everything can be off simultaneously.</div>
+  </div>
+</div>
+
+<!-- ══ 7. SECTION D2 ═════════════════════════════════════════════════════ -->
+<div id="s7" class="section-card">
+  <div class="section-hdr">
+    <span class="section-letter sl-teal">D2</span>
+    <span class="section-title">Section D2: Residue Mix</span>
+    <span class="section-badge badge-amber">KG / % Toggle · CONFIRM STREAMS Gate</span>
+  </div>
+  <div class="section-body">
+    <div class="section-intro">Full width. Only shows streams toggled ON in Section D. 1 tonne FFB = 100% anchor always visible. D2 mix IS the input — capture % section removed entirely.</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Element</th><th>Spec</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Mode Toggle</td><td>KG mode vs % mode</td><td>User switches at any time. Unit label and validation rule flip simultaneously.</td></tr>
+          <tr><td>% Mode</td><td>1 tonne = 100%. Must sum to 100%.</td><td>CONFIRM STREAMS hard-blocks if sum ≠ 100%.</td></tr>
+          <tr><td>KG Mode</td><td>Any total (500 kg, 2,000 kg).</td><td>CONFIRM STREAMS always passes. Shows total in tonnes.</td></tr>
+          <tr><td>Validation — % mode</td><td>Sum &lt; 100 → red inline error</td><td>"Stream allocation is X%. Y% unallocated." Hard block on CONFIRM.</td></tr>
+          <tr><td>Validation — KG mode</td><td>No block.</td><td>System uses KG values as exact blend weights for all lab analysis.</td></tr>
+          <tr><td>1t = 100% Anchor</td><td>Always visible regardless of mode.</td><td>Reference line locks user's mental model.</td></tr>
+          <tr><td>Blend C:N Preview</td><td>Live · DM-weighted · updates every keystroke</td><td>Green 15–25 · Amber 25–35 · Red outside. POS active → DATA GAP warning (not a hard block).</td></tr>
+          <tr class="total-row"><td>CONFIRM STREAMS Gate</td><td>% mode: blocked until 100% · KG mode: always active</td><td>On pass: saves all values, locks D2, unlocks S1–S6. Re-confirm rule: any edit resets gate.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 8. SECTION E ══════════════════════════════════════════════════════ -->
+<div id="s8" class="section-card">
+  <div class="section-hdr">
+    <span class="section-letter sl-red">E</span>
+    <span class="section-title red">Section E: Carbon Credits</span>
+    <span class="section-badge badge-red">Removed from S0 → Project Finance</span>
+  </div>
+  <div class="section-body">
+    <div class="alert alert-red">Carbon Credits removed from S0 entirely. Moved to new Project Finance page. CAPEX + OPEX + Carbon Credits + all financial modelling in Project Finance tab. Access: Sharon issues single-use codes. After 1 view → prompt to register.</div>
+  </div>
+</div>
+
+<!-- ══ 9. SECTION F ══════════════════════════════════════════════════════ -->
+<div id="s9" class="section-card">
+  <div class="section-hdr">
+    <span class="section-letter sl-amber">F</span>
+    <span class="section-title amber">Section F: NPK Summary and Soil Science Reports</span>
+    <span class="section-badge badge-green">Calculated Output · 2 Panels</span>
+  </div>
+  <div class="section-body">
+    <div class="section-intro">Full width. Shows only when streams confirmed AND soil type selected in Section C. F-LEFT: NPK per stream + agronomic equivalents. F-RIGHT: Soil science outputs — all dynamic from Section C soil selection.</div>
+
+    <div class="sub-hdr">F-LEFT — NPK Per Stream</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Output</th><th>Basis</th><th>Unit</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>N per stream</td><td>Per tonne FW as-received</td><td>kg N/t FW</td><td>Each stream shown separately — NOT combined</td></tr>
+          <tr><td>P per stream</td><td>Per tonne FW</td><td>kg P/t FW</td><td>Separate per stream</td></tr>
+          <tr><td>K per stream</td><td>Per tonne FW</td><td>kg K/t FW</td><td>Separate per stream</td></tr>
+          <tr><td>P₂O₅ equivalent</td><td>P × 2.291</td><td>kg P₂O₅/t FW</td><td>Agronomic oxide form</td></tr>
+          <tr><td>K₂O equivalent</td><td>K × 1.205</td><td>kg K₂O/t FW</td><td>Agronomic oxide form</td></tr>
+          <tr><td>Agronomic value (N)</td><td>N kg × Urea price (CIF Indonesia, live)</td><td>$/t FW</td><td>Price agent fires on session start</td></tr>
+          <tr><td>Agronomic value (P)</td><td>P₂O₅ kg × TSP price (CIF Indonesia, live)</td><td>$/t FW</td><td>Recalculates on each visit</td></tr>
+          <tr><td>Agronomic value (K)</td><td>K₂O kg × MOP price (CIF Indonesia, live)</td><td>$/t FW</td><td>Values per [session_date]</td></tr>
+          <tr><td>N conversion factor</td><td>4.67 (true protein)</td><td>—</td><td>6.25 shown only on nutrition label. Never used in calculations.</td></tr>
+          <tr class="total-row"><td>Blend C:N</td><td>DM-weighted element formula</td><td>Ratio</td><td>Never wet-weight averaged. Never hardcoded. Always shows formula trace.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert alert-amber">C:N alerts: &lt;15 = Red (below BSF optimum) · 15–25 = Green (optimal) · 25–35 = Amber (marginal) · &gt;35 = Red (EFB dominance)</div>
+
+    <div class="sub-hdr">F-RIGHT — Soil Science Reports (8 panels + TARV)</div>
+    <div class="logic-box">All F-RIGHT panels are dynamic — they read from the soil type selected in Section C. If no soil selected → "Select soil type in Section C to unlock soil science outputs." All data already exists in Supabase: cfi_soil_profiles (6 rows), cfi_soil_coefficients (6 rows), cfi_product_soil_response (18 rows). Section F just needs to be wired to read them.</div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Panel</th><th>What It Shows</th><th>Key Numbers</th><th>Source</th></tr></thead>
+        <tbody>
+          <tr><td>F-R1 — N Leaching</td><td>Synthetic vs CFI leaching rate by soil. N saved kg/ha/yr. $/ha/yr at estate scale.</td><td>34% N leaching reduction vs synthetic (Xia et al. 2021 meta-analysis, 249 field studies)</td><td>cfi_soil_profiles.n_leach_fract_baseline</td></tr>
+          <tr><td>F-R2 — P Fixation</td><td>% TSP fixed into insoluble forms. $ wasted per $100 TSP. CFI chelated P advantage.</td><td>Ultisols 75% P fixation. "Of every $100 TSP, $75 is unavailable to the plant."</td><td>cfi_soil_profiles.p_fix_fract_baseline</td></tr>
+          <tr><td>F-R3 — K Leaching</td><td>K₂O lost per soil type vs CFI. Histosol K priority note.</td><td>Spodosols 42% K loss. Histosols 48%. "K supply is the PRIMARY CFI value on peat soils."</td><td>cfi_soil_profiles.k_leach_fract_baseline</td></tr>
+          <tr><td>F-R4 — CEC Trajectory</td><td>CEC baseline vs Year 1 / 3 / 5 with CFI. Humic accumulation projection.</td><td>Ultisols 8.2 → 14–22 cmol/kg (+65–85%) over 5 years</td><td>cfi_soil_coefficients.cec_uplift_per_t_frass</td></tr>
+          <tr><td>F-R5 — SOC Trajectory</td><td>Soil Organic Carbon year 1 / 3 / 5. Lignin sequestration. Biogenic CO₂ note.</td><td>SOC +80–130% vs conventional. Recalcitrant ADL fraction resists decomposition 10–50+ years.</td><td>cfi_soil_coefficients.soc_change_per_t_dm</td></tr>
+          <tr><td>F-R6 — Soil Health Metrics</td><td>MBC, WHC, DHA, aggregate stability, nematode suppression, bulk density.</td><td>MBC +100–150% · WHC +25–50% · DHA +120–200% · Nematodes ↓60–80%</td><td>cfi_soil_profiles + SoilBio data</td></tr>
+          <tr><td>F-R7 — CFI vs Synthetic Cost</td><td>Synthetic programme $/ha/yr vs CFI at recommended dose. Estate scale savings.</td><td>Soil-type specific. At 1,000 ha: significant annual saving shown.</td><td>cfi_soil_profiles.fert_cost_per_ha + cfi_product_soil_response</td></tr>
+          <tr><td>F-R8 — Product Value Index</td><td>Soil × weather × agronomy composite. How much more CFI is worth on this estate vs Ultisol reference.</td><td>0 to 1 scale. Feeds all lab report value columns.</td><td>cfi_sites.product_value_index</td></tr>
+          <tr><td>F-R9 — Humic + Fulvic Acid</td><td>Humic acid 8–15% DM = $32–120/t DM. Fulvic 2–5% DM = $16–60/t DM. Chelation mechanism.</td><td>Commercial ag-grade humic $400–800/t · Fulvic $800–1,200/t</td><td>cfi_product_soil_response</td></tr>
+          <tr><td>F-R10 — Chitin + Nematode</td><td>S5B: chitin 3–6% DM. Nematode suppression ↓60–80%. Nematicide saving $15–45/ha/yr.</td><td>Estate scale (1,000 ha): $15,000–45,000/yr saved in pest control</td><td>cfi_organisms (BSF exoskeleton rows)</td></tr>
+          <tr><td>F-R11 — pH Bio-Liming</td><td>CFI product pH 7.5–8.5 neutralises acid soils. pH 3.8 → 5.0+. P availability 3× at pH &gt;5.0. Ag-lime saving $80/t.</td><td>Histosols field study North Sumatra 2025. CEC functional capacity doubles at pH &gt;5.0.</td><td>—</td></tr>
+          <tr><td>F-R12 — N Fixation</td><td>Azotobacter + Rhizobium fix 5–20 kg N/ha/yr from atmosphere. Free nitrogen value.</td><td>1,000 ha: $3,810–15,220/yr in effectively free N. "This is upside not captured in NPK price."</td><td>cfi_organisms (Azotobacter vinelandii, Rhizobium rows)</td></tr>
+          <tr><td>F-R13 — P Solubilisation</td><td>PSB gluconic/citric acid mobilises Fe/Al-P. 2–3× P bioavailability vs input substrate.</td><td>Ultisol/Oxisol: 60–90% applied P available vs 20–40% from TSP</td><td>Liu et al. Pedosphere 2008; Frontiers Plant Science 2025</td></tr>
+          <tr><td>F-R14 — Enzyme Activity</td><td>Cellulase 20–35 U/g vs standard compost 2–5 U/g (4–10× premium). Persists 3–6 months in soil.</td><td>Commercial enzyme products $200–500/t — CFI delivers as built-in feature</td><td>Plant & Soil Dec 2025; PMC10610594</td></tr>
+          <tr><td>F-R15 — BSF Gut Microbiome</td><td>10⁹–10¹⁰ CFU/g as living soil inoculant. Thousands of distinct species.</td><td>Commercial inoculants $50–200/ha/application. "Cannot be achieved with synthetics at any price."</td><td>Jeon H et al. Curr Microbiol</td></tr>
+          <tr><td>F-R16 — Slow-Release N</td><td>Organic N mineralises 3–6 months vs urea 6–8 weeks. 34% less leaching. Fewer split applications.</td><td>Slow-release premium: 15–25% above equivalent urea-N cost</td><td>Xia et al. 2021 meta-analysis</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sub-hdr">F-R17 — Complete Soil Health Metrics (CFI vs Conventional)</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Metric</th><th>Unit</th><th>Conventional</th><th>With CFI</th><th>Uplift</th><th>Mechanism</th></tr></thead>
+        <tbody>
+          <tr><td>CEC</td><td>cmol(+)/kg</td><td>8–12</td><td style="color:var(--teal)">14–22</td><td style="color:var(--green)">+65–85%</td><td>Humic/fulvic acids add permanent negative charges. OM increases colloidal surfaces.</td></tr>
+          <tr><td>SOC</td><td>% top 20 cm</td><td>0.8–1.5</td><td style="color:var(--teal)">1.8–3.2</td><td style="color:var(--green)">+80–130%</td><td>Stable humus from Streptomyces/white-rot lignin transformation. Recalcitrant chitin-C.</td></tr>
+          <tr><td>MBC</td><td>mg C/kg soil</td><td>150–250</td><td style="color:var(--teal)">350–600</td><td style="color:var(--green)">+100–150%</td><td>27-organism consortium pre-inoculated. Immediate microbial activity on application.</td></tr>
+          <tr><td>WHC</td><td>% volumetric</td><td>28–35</td><td style="color:var(--teal)">38–52</td><td style="color:var(--green)">+25–50%</td><td>EPS from Azotobacter/Bacillus forms hydrogel bridges. OM increases water adsorption.</td></tr>
+          <tr><td>Bulk Density</td><td>g/cm³</td><td>1.35–1.55</td><td style="color:var(--teal)">1.10–1.30</td><td style="color:var(--green)">↓15–25%</td><td>Lower density = better root penetration. OM + EPS disrupt compaction.</td></tr>
+          <tr><td>Aggregate Stability (MWD)</td><td>mm</td><td>0.8–1.5</td><td style="color:var(--teal)">1.8–3.2</td><td style="color:var(--green)">+80–120%</td><td>EPS glue micro-aggregates. Hyphal networks bridge macro-aggregates.</td></tr>
+          <tr><td>Available P (Olsen)</td><td>mg/kg</td><td>12–25</td><td style="color:var(--teal)">28–55</td><td style="color:var(--green)">+80–130%</td><td>PSB gluconic/citric acid mobilises Fe/Al-P. Frass P in plant-available form.</td></tr>
+          <tr><td>Available K (exchangeable)</td><td>cmol/kg</td><td>0.15–0.35</td><td style="color:var(--teal)">0.40–0.80</td><td style="color:var(--green)">+100–130%</td><td>PKSA K₂O + K-mobilising bacteria. K retained on CEC sites from humic acids.</td></tr>
+          <tr><td>pH Buffer Capacity</td><td>pH units</td><td>Low</td><td style="color:var(--teal)">Medium–High</td><td style="color:var(--green)">+2–3× buffer</td><td>Humic acids act as weak acids/bases. CaCO₃/MgO residuals buffer acid inputs.</td></tr>
+          <tr><td>DHA</td><td>μg TPF/g/24h</td><td>50–120</td><td style="color:var(--teal)">180–350</td><td style="color:var(--green)">+120–200%</td><td>Direct measure of soil metabolic activity. 27-organism consortium elevates microbial respiration.</td></tr>
+          <tr><td>Nematode Suppression</td><td>CFU pathogenic/g</td><td>High</td><td style="color:var(--teal)">Low–Medium</td><td style="color:var(--green)">↓60–80%</td><td>Bacillus (Iturin A), Trichoderma (chitinase), Pseudomonas (2,4-DAPG) suppress Meloidogyne spp.</td></tr>
+          <tr class="total-row"><td>Earthworm Density</td><td>count/m²</td><td>Baseline</td><td>+30–60%</td><td>Indicator</td><td>OM addition stimulates earthworm populations — long-term soil structure indicator.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sub-hdr">TARV — Total Agronomic Replacement Value Summary</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Component</th><th>$/t frass DM</th><th>Basis</th></tr></thead>
+        <tbody>
+          <tr><td>N replacement value</td><td style="color:var(--amber)">Calc</td><td>kg N × Urea CIF Indonesia</td></tr>
+          <tr><td>P replacement value</td><td style="color:var(--amber)">Calc</td><td>kg P₂O₅ × TSP CIF Indonesia</td></tr>
+          <tr><td>K replacement value</td><td style="color:var(--amber)">Calc</td><td>kg K₂O × MOP CIF Indonesia</td></tr>
+          <tr><td>Humic acid value</td><td>$32–120</td><td>8–15% DM × $400–800/t</td></tr>
+          <tr><td>Fulvic acid value</td><td>$16–60</td><td>2–5% DM × $800–1,200/t</td></tr>
+          <tr><td>Chitin value (S5B)</td><td>$5–30</td><td>3–6% DM × $150–500/t</td></tr>
+          <tr><td>Bio-liming value</td><td>Soil-type calc</td><td>Lime equivalent saving $/ha per tonne applied</td></tr>
+          <tr><td>N fixation value</td><td>$3.81–$15.22/ha</td><td>Per hectare, not per tonne</td></tr>
+          <tr><td>Slow-release premium</td><td>+15–25% on N</td><td>Applied to N component only</td></tr>
+          <tr><td>Enzyme activity premium</td><td style="color:var(--grey)">Informational</td><td>Not monetised — competitive differentiator</td></tr>
+          <tr><td>BSF microbiome premium</td><td style="color:var(--grey)">Informational</td><td>Not monetised — competitive differentiator</td></tr>
+          <tr class="total-row"><td>TARV — Total Agronomic Replacement Value</td><td>Calc</td><td>Sum of all monetisable components · $/t frass DM and $/t FW</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert alert-teal">TARV is NOT a selling price. It is the maximum value the product delivers to the estate if replacing all equivalent synthetic inputs. CFI product pricing is set by Sharon separately. TARV is an investment justification tool.</div>
+  </div>
+</div>
+
+<!-- ══ 10. SECTION G ════════════════════════════════════════════════════ -->
+<div id="s10" class="section-card">
+  <div class="section-hdr">
+    <span class="section-letter sl-grey">G</span>
+    <span class="section-title" style="color:var(--grey)">Section G: Blend Optimiser</span>
+    <span class="section-badge" style="background:rgba(138,160,180,0.15);color:var(--grey);border:1px solid var(--grey)">PLACEHOLDER — Do Not Touch</span>
+  </div>
+  <div class="section-body">
+    <div class="alert alert-amber">PRESERVE EXISTING LOGIC. Do NOT delete. Do NOT redesign yet. Snapshot entire current Blend Optimiser logic to Supabase before any redesign touches it. Placeholder until further notice.</div>
+  </div>
+</div>
+
+<!-- ══ 11. BOTTOM STRIP ══════════════════════════════════════════════════ -->
+<div id="s11" class="section-card">
+  <div class="section-hdr">
+    <span class="section-letter sl-amber">11</span>
+    <span class="section-title amber">S0 Bottom Strip — Residue Characteristic Cards</span>
+    <span class="section-badge badge-amber">Active Streams Only · EFB + OPDC Always Show</span>
+  </div>
+  <div class="section-body">
+    <div class="section-intro">Full width. One card per active stream. EFB first, OPDC second. Others in order enabled. POS / PKE / OPF / OPT / Custom only show when toggled ON in Section D.</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Column</th><th>Content</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>1 — Composition (DM basis)</td><td>Protein %, Lignin (ADL) %, Cellulose %, C:N ratio, Ash %, Cellulase accessibility</td><td>DM basis. From canonical_lab_data.</td></tr>
+          <tr><td>2 — Elemental Nutrients / t DM</td><td>N kg/t DM, P kg/t DM, K kg/t DM</td><td>Pure element — not oxide form.</td></tr>
+          <tr><td>3 — Agronomic Nutrients / t FW</td><td>N → Urea equiv ($), P → P₂O₅ equiv ($), K → K₂O equiv ($)</td><td>Live CIF Indonesia price. "1:1 mass parity — CFI nutrients function differently." + See More ↗ popup.</td></tr>
+          <tr><td>4 — Flags</td><td>Mechanical processing necessary, Moisture Content [value]%, Pre-treatment required, guardrail flags</td><td>Moisture Content spelled in full. PKSA not mentioned — "pre-treatment necessary".</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="logic-box">
+      <strong>POS "See More" = separate popup:</strong> What is POS, NOT POME, centrifuge origin, Fe gate table (4 levels), metals risks, equipment required, C:N DATA GAP.<br>
+      <strong>Bottom strip panels (3 only):</strong> Panel 14 — Soil Value (N · P · K per tonne, C:N, OM%, Ca+Mg) · Panel 15 — Process Readiness (Lignin % blend, ADL %, Protein % vs 8% floor, Moisture Content % pre-process). Panels 16, 17, 18 removed.
+    </div>
+  </div>
+</div>
+
+<!-- ══ 12. CONFIRMATION GATES ════════════════════════════════════════════ -->
+<div id="s12" class="section-card">
+  <div class="section-hdr">
+    <span class="section-letter sl-red">12</span>
+    <span class="section-title red">Two Confirmation Gates on S0</span>
+  </div>
+  <div class="section-body">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Gate</th><th>Trigger</th><th>Behaviour on Pass</th><th>Behaviour on Fail</th></tr></thead>
+        <tbody>
+          <tr><td>CONFIRM MILL CAPACITY</td><td>User clicks after Section B complete</td><td>Locks B values. Enables Sections C and D.</td><td>Hard block. Shows which fields are incomplete.</td></tr>
+          <tr><td>CONFIRM STREAMS</td><td>User clicks after D2 mix entered</td><td>Locks stream selection. Saves to Supabase. Unlocks S1–S6 pipeline.</td><td>% mode: "X% allocated, Y% unallocated." KG mode: always passes.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 13. GUARDRAILS ════════════════════════════════════════════════════ -->
+<div id="s13" class="section-card">
+  <div class="section-hdr">
+    <span class="section-letter sl-red">13</span>
+    <span class="section-title red">Active Guardrails in S0</span>
+    <span class="section-badge badge-red">CLASS A — Locked Forever</span>
+  </div>
+  <div class="section-body">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Guardrail</th><th>Rule</th><th>Display</th></tr></thead>
+        <tbody>
+          <tr><td>OPDC MC Floor</td><td>NEVER below 40% MC — pore damage kills BSF</td><td style="color:var(--red)">RED alert if OPDC MC &lt; 40%</td></tr>
+          <tr><td>5-Day Bio Minimum</td><td>Hard-coded. Never override.</td><td>Visible lock icon on S3 gate</td></tr>
+          <tr><td>NaOH</td><td>ALLOWED — AMBER warning mandatory everywhere</td><td style="color:var(--amber)">AMBER banner — sodium accumulation risk</td></tr>
+          <tr><td>Bt / Provibio</td><td>ALLOWED — AMBER warning + titre decay gate</td><td style="color:var(--amber)">AMBER — S3 only. Confirm &lt;10⁴ CFU/g before S4 loading</td></tr>
+          <tr><td>PKSA Cost</td><td>Always $0 — mill waste</td><td>Locked display. Not user-overridable.</td></tr>
+          <tr><td>Blend C:N</td><td>DM-weighted element formula. Never hardcoded.</td><td>Always shows formula trace</td></tr>
+          <tr><td>Feedipedia EE 29.2%</td><td style="color:var(--red)">PERMANENTLY REJECTED</td><td style="color:var(--red)">Never surfaces anywhere</td></tr>
+          <tr><td>Ishola 2023 OPDC O value</td><td style="color:var(--red)">PERMANENTLY REJECTED</td><td style="color:var(--red)">Never used</td></tr>
+          <tr><td>N Factor</td><td>4.67 true protein. 6.25 nutrition label only.</td><td>4.67 in all calculations. 6.25 label where required.</td></tr>
+          <tr><td>O Always by Difference</td><td>Formula-driven. Never hardcoded.</td><td>—</td></tr>
+          <tr><td>60:40 EFB:OPDC</td><td>Natural outcome. NEVER hardcoded.</td><td>All blend ratios formula-driven from FFB inputs</td></tr>
+          <tr><td>POME vs POS</td><td>POME = liquid to pond. POS = centrifuge discharge. NEVER conflated.</td><td>Labels always show full names</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 14. S0 LAB REPORT ════════════════════════════════════════════════ -->
+<div id="s14" class="section-card">
+  <div class="section-hdr">
+    <span class="section-letter sl-teal">14</span>
+    <span class="section-title">S0 Lab Report — 3-View Structure</span>
+    <span class="section-badge badge-green">Separate Page</span>
+  </div>
+  <div class="section-body">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>View</th><th>Report Type</th><th>Description</th><th>Basis</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Individual Stream Report</td><td>One tab per residue: MC, protein, lignin, NPK, C:N, ash</td><td>Per 1 tonne as-received</td></tr>
+          <tr><td>2</td><td>Combined Blend Report</td><td>All chosen residues weighted by D2 mix % or KG</td><td>User's specific blend</td></tr>
+          <tr><td>3</td><td>S0 Summary Strip</td><td>Compact read-only panel at base of S0</td><td>Auto-populated</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 15. MIGRATION 16 ══════════════════════════════════════════════════ -->
+<div id="s15" class="section-card">
+  <div class="section-hdr">
+    <span class="section-letter sl-green">15</span>
+    <span class="section-title" style="color:var(--green)">Migration 16 — Applied March 17 2026</span>
+    <span class="section-badge badge-done">✓ COMPLETE · Verified in Supabase</span>
+  </div>
+  <div class="section-body">
+    <div class="alert alert-green">All 3 migration versions confirmed in Supabase migrations table: 20260317105352 · 20260317105415 · 20260317105427</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Table</th><th>Action</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><code>cfi_industries</code></td><td>Created. 7 industries: Palm Oil (LIVE), Sugarcane, Rice, Cassava, Coffee, Coconut, Banana (placeholder).</td><td><span class="migration-done">✓ Live</span></td></tr>
+          <tr><td><code>cfi_feedstreams</code></td><td>Created. 7 palm streams live. 9 placeholder rows for other crops.</td><td><span class="migration-done">✓ Live</span></td></tr>
+          <tr><td><code>canonical_lab_data</code></td><td>Added <code>industry_id INT DEFAULT 1</code></td><td><span class="migration-done">✓ Done</span></td></tr>
+          <tr><td><code>cfi_soil_profiles</code></td><td>Added <code>industry_id INT DEFAULT 1</code></td><td><span class="migration-done">✓ Done</span></td></tr>
+          <tr><td><code>chemical_library</code></td><td>Added <code>industry_id INT DEFAULT 1</code></td><td><span class="migration-done">✓ Done</span></td></tr>
+          <tr><td><code>biological_library</code></td><td>Added <code>industry_id INT DEFAULT 1</code></td><td><span class="migration-done">✓ Done</span></td></tr>
+          <tr><td><code>equipment_catalogue</code></td><td>Added <code>industry_id INT DEFAULT 1</code></td><td><span class="migration-done">✓ Done</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert alert-amber">Next: Item 17 — Agent 8 skeleton (Industry Expansion Agent) · Item 18 — Industry switcher for The Professor · Both unblocked — Migration 16 is live.</div>
+  </div>
+</div>
+
+<!-- ══ 16. BUILD LIST ════════════════════════════════════════════════════ -->
+<div id="s16" class="section-card">
+  <div class="section-hdr">
+    <span class="section-letter sl-red">16</span>
+    <span class="section-title red">Master Build List — S0</span>
+    <span class="section-badge badge-red">28 Items · As of March 17 2026</span>
+  </div>
+  <div class="section-body">
+    <div style="padding: 4px 0;">
+      <div class="build-item"><span class="build-num">1</span><span class="status-pill s-done">✓ Done</span><span class="build-desc">Migration 16 — cfi_industries + cfi_feedstreams</span><span class="build-blocker">—</span></div>
+      <div class="build-item"><span class="build-num">2</span><span class="status-pill s-open">🔴 Critical</span><span class="build-desc"><strong>Migration 17 — cfi_sites table</strong> — CRITICAL — no S0 data saves without this</span><span class="build-blocker">Build next</span></div>
+      <div class="build-item"><span class="build-num">3</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">cfi_access_codes table — single-use codes</span><span class="build-blocker">—</span></div>
+      <div class="build-item"><span class="build-num">4</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">cfi_access_rules table — role per module</span><span class="build-blocker">—</span></div>
+      <div class="build-item"><span class="build-num">5</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">cfi_roles table</span><span class="build-blocker">—</span></div>
+      <div class="build-item"><span class="build-num">6</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">cfi_users table — Sharon approves only</span><span class="build-blocker">—</span></div>
+      <div class="build-item"><span class="build-num">7</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">cfi_scenarios table — locked, free-text name</span><span class="build-blocker">—</span></div>
+      <div class="build-item"><span class="build-num">8</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">Weather cache table</span><span class="build-blocker">—</span></div>
+      <div class="build-item"><span class="build-num">9</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">cfi_estates table (plantation/estate lookup for Section A)</span><span class="build-blocker">—</span></div>
+      <div class="build-item"><span class="build-num">10</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">Section A — correct 9 fields including weather/GPS</span><span class="build-blocker">Write Lovable prompt</span></div>
+      <div class="build-item"><span class="build-num">11</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">Section D — all streams deselectable, start OFF</span><span class="build-blocker">Write Lovable prompt</span></div>
+      <div class="build-item"><span class="build-num">12</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">Section D2 — KG/% toggle + CONFIRM STREAMS</span><span class="build-blocker">Awaiting D</span></div>
+      <div class="build-item"><span class="build-num">13</span><span class="status-pill s-warn">🟡 Partial</span><span class="build-desc">Section C — FFB Soil Origin rename + GPS agent wiring</span><span class="build-blocker">Needs rename + agent</span></div>
+      <div class="build-item"><span class="build-num">14</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">Section F — NPK Summary + Soil Science Reports</span><span class="build-blocker">Awaiting D2</span></div>
+      <div class="build-item"><span class="build-num">15</span><span class="status-pill s-done">✓ Exists</span><span class="build-desc">Section G — Blend Optimiser placeholder</span><span class="build-blocker">Do not touch</span></div>
+      <div class="build-item"><span class="build-num">16</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">Bottom strip — residue characteristic cards</span><span class="build-blocker">Awaiting D2</span></div>
+      <div class="build-item"><span class="build-num">17</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">Login / Register page</span><span class="build-blocker">—</span></div>
+      <div class="build-item"><span class="build-num">18</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">Persistent context bar (all tabs)</span><span class="build-blocker">Requires S0 Gates first</span></div>
+      <div class="build-item"><span class="build-num">19</span><span class="status-pill s-warn">🟡 Partial</span><span class="build-desc">Wire all S0 inputs to cfi_sites / mills table</span><span class="build-blocker">Priority before S0 build</span></div>
+      <div class="build-item"><span class="build-num">20</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">Price agent — live CIF Indonesia fertiliser prices</span><span class="build-blocker">—</span></div>
+      <div class="build-item"><span class="build-num">21</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">GPS / soil agent — auto-highlight soil from location</span><span class="build-blocker">—</span></div>
+      <div class="build-item"><span class="build-num">22</span><span class="status-pill s-pending">🔵 Pending</span><span class="build-desc">Agent 8 skeleton (Industry Expansion Agent)</span><span class="build-blocker">Migration 16 live — can build</span></div>
+      <div class="build-item"><span class="build-num">23</span><span class="status-pill s-pending">🔵 Pending</span><span class="build-desc">Industry switcher (The Professor)</span><span class="build-blocker">Migration 16 live — can build</span></div>
+      <div class="build-item"><span class="build-num">24</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">Engineer persona access rules</span><span class="build-blocker">Next persona session</span></div>
+      <div class="build-item"><span class="build-num">25</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">Finance persona access rules</span><span class="build-blocker">Next persona session</span></div>
+      <div class="build-item"><span class="build-num">26</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">Pollution counterfactual section per residue</span><span class="build-blocker">S0 lab report build</span></div>
+      <div class="build-item"><span class="build-num">27</span><span class="status-pill s-open">🔴 Open</span><span class="build-desc">5 missing emission types (transport CO₂, NH₃, VOCs, H₂S, dust)</span><span class="build-blocker">Emissions build</span></div>
+      <div class="build-item"><span class="build-num">28</span><span class="status-pill s-open">🔴 Priority</span><span class="build-desc"><strong>POS ICP-OES lab sampling</strong> — Fe result gates BSF inclusion decision</span><span class="build-blocker">WEEK 1 PRIORITY</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 17. DESIGN SYSTEM V3 ══════════════════════════════════════════════ -->
+<div id="s17" class="section-card">
+  <div class="section-hdr">
+    <span class="section-letter sl-teal">17</span>
+    <span class="section-title">Design System v3 — Locked Rules (All Sections Sitewide)</span>
+    <span class="section-badge badge-green">LOCKED · Apply Exactly As Specified</span>
+  </div>
+  <div class="section-body">
+    <div class="section-intro">Source: CFI_Design_System_v3_Lovable.md (in GitHub CFI_Project_Files/docs/). Applies to all JSX components, all stages S0–S6, all calculators, all tabs. Do not interpret or simplify.</div>
+
+    <div class="sub-hdr">Typography</div>
+    <div class="type-demo">
+      <div class="type-row"><span class="type-label">Syne 700 18px</span><span class="type-sample t-syne">Section A: Site Identity</span></div>
+      <div class="type-row"><span class="type-label">DM Sans 600 13px</span><span class="type-sample t-sans">Fresh Fruit Bunches</span></div>
+      <div class="type-row"><span class="type-label">DM Sans 400 11px</span><span class="type-sample t-sans-sm">Tonnes / Hour · Sub-labels and units</span></div>
+      <div class="type-row"><span class="type-label">DM Mono 700 20px</span><span class="type-sample t-mono">8,262</span></div>
+      <div class="type-row"><span class="type-label">DM Mono 500 11px</span><span class="type-sample t-mono-sm">EFB · OPDC · POS · NPK · 60 × 0.225 × 24</span></div>
+    </div>
+    <div class="logic-box">
+      <strong>Text Case:</strong> Title Case throughout — Every Letter Of Every Word Capitalised.<br>
+      <strong>Abbreviations stay uppercase:</strong> EFB, OPDC, POS, NPK, FFB, CPO, DM, BSF, CAPEX, OPEX, TPH.<br>
+      <strong>No emoji icons anywhere sitewide</strong> — text only.
+    </div>
+
+    <div class="sub-hdr">Colour Tokens</div>
+    <div class="swatch-grid">
+      <div class="swatch" style="background:#0B1422"><div class="swatch-hex" style="color:#F0F4F8">#0B1422</div><div class="swatch-name" style="color:#8BA0B4">navy</div></div>
+      <div class="swatch" style="background:#153352"><div class="swatch-hex" style="color:#F0F4F8">#153352</div><div class="swatch-name" style="color:#8BA0B4">navyMid · info/result bg</div></div>
+      <div class="swatch" style="background:#1A3A5C"><div class="swatch-hex" style="color:#F0F4F8">#1A3A5C</div><div class="swatch-name" style="color:#8BA0B4">navyLt · input bg</div></div>
+      <div class="swatch" style="background:#070D16"><div class="swatch-hex" style="color:#F0F4F8">#070D16</div><div class="swatch-name" style="color:#8BA0B4">navyDk · page bg</div></div>
+      <div class="swatch" style="background:#060C14"><div class="swatch-hex" style="color:#F0F4F8">#060C14</div><div class="swatch-name" style="color:#8BA0B4">inputBg · black zone</div></div>
+      <div class="swatch" style="background:#00C9B1"><div class="swatch-hex" style="color:#070D16">#00C9B1</div><div class="swatch-name" style="color:#070D16">teal · input titles</div></div>
+      <div class="swatch" style="background:#F5A623"><div class="swatch-hex" style="color:#070D16">#F5A623</div><div class="swatch-name" style="color:#070D16">amber · hero numbers</div></div>
+      <div class="swatch" style="background:#E84040"><div class="swatch-hex" style="color:#F0F4F8">#E84040</div><div class="swatch-name" style="color:#F0F4F8">red · alerts</div></div>
+      <div class="swatch" style="background:#3DCB7A"><div class="swatch-hex" style="color:#070D16">#3DCB7A</div><div class="swatch-name" style="color:#070D16">green · OK states</div></div>
+      <div class="swatch" style="background:#A8E6C1"><div class="swatch-hex" style="color:#070D16">#A8E6C1</div><div class="swatch-name" style="color:#070D16">pastelGreen · total rows</div></div>
+      <div class="swatch" style="background:#8BA0B4"><div class="swatch-hex" style="color:#070D16">#8BA0B4</div><div class="swatch-name" style="color:#070D16">grey · labels, subtext</div></div>
+      <div class="swatch" style="background:#1E6B8C"><div class="swatch-hex" style="color:#F0F4F8">#1E6B8C</div><div class="swatch-name" style="color:#F0F4F8">border · universal</div></div>
+    </div>
+
+    <div class="sub-hdr">Section Card Pattern (Universal)</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Zone</th><th>Background</th><th>Border / Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Outer container</td><td><code>#162E45</code></td><td>1px solid teal 20% opacity · border-radius 10px · The grey frame the user sees</td></tr>
+          <tr><td>Title bar</td><td>Outer frame (no separate bg)</td><td>Left border 3px solid teal · Padding 12px 16px · Title NEVER wraps</td></tr>
+          <tr><td>Input area (black inner zone)</td><td><code>#060C14</code></td><td>Margin 0 12px inside outer · Border-radius 8px · Padding 14px 16px · ALL user inputs here</td></tr>
+          <tr><td>Results area</td><td>Outer frame (no black bg)</td><td>Below black input area · Padding 10px 16px 14px · Calculated outputs here</td></tr>
+          <tr class="total-row"><td>Universal border — ALL sections</td><td colspan="2">1.5px solid #1E6B8C</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sub-hdr">Input Fields · Data Tables · Alert Banners</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Element</th><th>Background</th><th>Border</th><th>Text / Font</th></tr></thead>
+        <tbody>
+          <tr><td>Number input box</td><td><code>#153352</code></td><td>1.5px solid #1E6B8C</td><td>#F5A623 amber · DM Mono 600 14px</td></tr>
+          <tr><td>Text input</td><td><code>#142030</code></td><td>1px solid teal 40%</td><td>white · DM Sans 13px</td></tr>
+          <tr><td>Hero numbers</td><td>—</td><td>—</td><td>#F5A623 · DM Mono 700 20px</td></tr>
+          <tr><td>Table total row</td><td>rgba(168,230,193,0.1)</td><td>—</td><td>#A8E6C1 pastel green · DM Mono 700 14px</td></tr>
+          <tr><td>Alert banner</td><td>rgba(232,64,64,0.15)</td><td>1.5px solid #1E6B8C · radius 6px</td><td>#E84040 red · DM Sans 13px</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sub-hdr">Change Classification System</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>Type</th><th>Where Updated</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--red)">CLASS A</td><td>Hard constraints — LOCKED forever</td><td>Code + Brief + Workbook simultaneously</td><td>OPDC yield %, press MC floor, BSF gates, PKSA $0</td></tr>
+          <tr><td style="color:var(--amber)">CLASS B</td><td>Reference data</td><td>Admin Panel only</td><td>Synthetic fertiliser prices, lab values within ±20% canonical</td></tr>
+          <tr><td style="color:var(--teal)">CLASS C</td><td>Library entries</td><td>Admin Panel only</td><td>New organisms, new chemicals, new soil profiles</td></tr>
+          <tr><td style="color:var(--grey)">CLASS D</td><td>UI / logic adjustments</td><td>Code update</td><td>New tabs, component redesigns, layout changes</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert alert-amber">Data update protocol: Classify → Log → Apply → Verify. Delta &gt;20% from canonical triggers amber alert before accepting.</div>
+    <div class="alert alert-red">Never rewrite App.jsx in full. All Lovable changes via chat — one small change at a time. Sharon reviews: number every element, respond with number + change instruction.</div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<!-- FOOTER -->
+<div class="doc-footer">
+  <span>CFI Platform · Confidential · Sharon Perlstein CEO · March 17 2026</span>
+  <span>Source: 20+ threads + LAYOUT_OF_APP.docx + March 17 2026 session · Master Reference v3 · 17 sections</span>
+</div>
+
+</body>
+</html>

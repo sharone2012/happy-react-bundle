@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFI Platform — Complete Business Process Flow</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0B1422;color:#F0F4F8;padding:16px}
+.flow{padding:12px 0;display:flex;flex-direction:column;gap:0}
+.hdr{text-align:center;padding:4px 0 10px;font-size:14px;font-weight:600;color:#F0F4F8;letter-spacing:.03em}
+.legend{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}
+.leg{display:flex;align-items:center;gap:4px;font-size:11px;color:#8BA0B4}
+.dot{width:9px;height:9px;border-radius:50%}
+.row{display:grid;grid-template-columns:60px 1fr 1fr 1fr 1fr;gap:0;position:relative}
+.stage-col{display:flex;flex-direction:column;align-items:center;padding-top:6px}
+.stage-pill{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;border:1.5px solid}
+.s0c{background:#0d2f20;border-color:#00C9B1;color:#5EEADA}
+.s1c{background:#0d1e3a;border-color:#4A9EDB;color:#87c5f0}
+.s2c{background:#2a1a00;border-color:#F5A623;color:#FFD080}
+.s3c{background:#132500;border-color:#3DCB7A;color:#7de8aa}
+.s4c{background:#1a1040;border-color:#9B59B6;color:#c49fd6}
+.s5c{background:#2d0a1a;border-color:#E84040;color:#f08080}
+.s6c{background:#2d0a0a;border-color:#E84040;color:#f08080}
+.eng{background:#1a1a1a;border-color:#8BA0B4;color:#C4D3E0}
+.stage-name{font-size:9px;color:#8BA0B4;margin-top:4px;text-align:center;line-height:1.2;max-width:56px}
+.col-content{padding:4px 5px;border-left:0.5px solid #1E6B8C}
+.col-hdr{font-size:9px;font-weight:500;color:#8BA0B4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.chip{display:inline-flex;align-items:center;gap:3px;font-size:10px;padding:2px 5px;border-radius:3px;margin:1px 1px 1px 0;line-height:1.3;vertical-align:top}
+.u{background:#0d2f20;color:#5EEADA}
+.d{background:#0d1e3a;color:#87c5f0}
+.a{background:#2a1a00;color:#FFD080}
+.g{background:#132500;color:#7de8aa}
+.r{background:#1a1040;color:#c49fd6}
+.gate{background:#2d0808;color:#f08080;font-weight:500;border:1px solid #E84040}
+.sep{height:18px;display:flex;align-items:center;justify-content:center;position:relative}
+.sep::before{content:'';position:absolute;left:29px;top:0;width:2px;height:100%;background:#1E6B8C}
+.sep-label{font-size:9px;padding:2px 8px;border-radius:8px;border:1px solid #1E6B8C;background:#070D16;color:#8BA0B4;position:relative;z-index:1;margin-left:60px}
+.block{padding:7px 0;border-top:0.5px solid #1E6B8C}
+.blk-hdr{font-size:10px;font-weight:500;color:#F0F4F8;margin-bottom:4px;padding:0 5px}
+.blk-row{display:grid;grid-template-columns:60px 1fr 1fr 1fr 1fr;gap:0;padding:3px 0}
+.blk-dot{display:flex;align-items:flex-start;justify-content:center;padding-top:3px}
+.blk-circle{width:12px;height:12px;border-radius:50%;background:#1A3A5C;border:1px solid #8BA0B4;font-size:8px;display:flex;align-items:center;justify-content:center;color:#C4D3E0;font-weight:500}
+.db-box{margin:10px 0 0;background:#0B1422;border-radius:6px;padding:6px 8px;border:0.5px solid #1E6B8C}
+.db-hdr{font-size:9px;font-weight:500;color:#8BA0B4;margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
+.db-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:3px}
+.db-tbl{font-size:9px;padding:2px 5px;background:#153352;border-radius:3px;border:0.5px solid #1E6B8C;color:#8BA0B4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.col-w{width:100%;font-size:10px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="flow">
+<div class="hdr">CFI Platform &#8212; Complete Business Process Flow &middot; March 2026 &middot; Circular Fertiliser Industries &middot; CONFIDENTIAL</div>
+<div class="legend">
+  <div class="leg"><div class="dot" style="background:#1D9E75"></div>User input</div>
+  <div class="leg"><div class="dot" style="background:#378ADD"></div>Supabase read/write</div>
+  <div class="leg"><div class="dot" style="background:#BA7517"></div>Calculated</div>
+  <div class="leg"><div class="dot" style="background:#639922"></div>Output displayed</div>
+  <div class="leg"><div class="dot" style="background:#7F77DD"></div>Agent / API</div>
+  <div class="leg"><div class="dot" style="background:#E24B4A"></div>Gate / lock</div>
+</div>
+<div class="row" style="margin-bottom:4px">
+  <div></div>
+  <div class="col-content" style="border:none"><div class="col-hdr" style="font-size:10px">Inputs</div></div>
+  <div class="col-content" style="border:none"><div class="col-hdr" style="font-size:10px">Fires Automatically</div></div>
+  <div class="col-content" style="border:none"><div class="col-hdr" style="font-size:10px">Calculates &amp; Displays</div></div>
+  <div class="col-content" style="border:none"><div class="col-hdr" style="font-size:10px">Supabase Writes</div></div>
+</div>
+<div class="row">
+  <div class="stage-col"><div class="stage-pill eng" style="font-size:9px">REG</div><div class="stage-name">Login / Register</div></div>
+  <div class="col-content col-w"><span class="chip u">Email + password</span><span class="chip u">Company + role</span><span class="chip u">Access code</span><span class="chip u">Google OAuth</span></div>
+  <div class="col-content col-w"><span class="chip r">Validate access code</span><span class="chip r">Resolve role permissions</span><span class="chip r">Professor mode if Sharon PIN CFI2026</span></div>
+  <div class="col-content col-w"><span class="chip g">Module access map</span><span class="chip g">Session token (React state)</span></div>
+  <div class="col-content col-w"><span class="chip d">cfi_users</span><span class="chip d">cfi_access_codes</span><span class="chip d">cfi_roles</span><span class="chip d">cfi_access_rules</span></div>
+</div>
+<div class="sep"><div class="sep-label">S0 &#8212; Feedstock Configuration (gate &#8212; all downstream blocked until CONFIRM STREAMS)</div></div>
+<div class="row">
+  <div class="stage-col"><div class="stage-pill s0c">S0A</div><div class="stage-name">Site Identity</div></div>
+  <div class="col-content col-w"><span class="chip u">Company name (fuzzy match)</span><span class="chip u">Estate name</span><span class="chip u">Mill name (105 mills)</span><span class="chip u">District / Province</span><span class="chip u">GPS lat/lng (optional)</span><span class="chip u">Total estate area ha</span></div>
+  <div class="col-content col-w"><span class="chip d">105-mill dropdown cfi_mills_60tph</span><span class="chip d">Auto-fill district, province, GPS</span><span class="chip r">GPS &#8594; Soil Agent: 1&#8211;3 soil types &#8594; popup</span><span class="chip r">Province &#8594; Weather API: 12-month temp + rain</span><span class="chip r">Background: RSPO/BPS lookup for new names</span></div>
+  <div class="col-content col-w"><span class="chip g">Toast: "Is this [Company]? Yes/No"</span><span class="chip g">12-month temp grid (&#176;C)</span><span class="chip g">12-month rainfall grid (mm)</span><span class="chip g">Green status bar "Site Data Complete"</span><span class="chip g">Auto-highlight soil type in Section C</span></div>
+  <div class="col-content col-w"><span class="chip d">cfi_sites (company, estate, mill, district, province, gps)</span><span class="chip d">weather_cache (temp_jan&#8211;dec, rain_jan&#8211;dec)</span><span class="chip d">cfi_mill_owners (new entry if unknown)</span><span class="chip d">cfi_estates</span></div>
+</div>
+<div class="row" style="margin-top:2px">
+  <div class="stage-col"><div class="stage-pill s0c">S0B</div><div class="stage-name">Mill Capacity</div></div>
+  <div class="col-content col-w"><span class="chip u">FFB capacity t/hr &#8212; NO DEFAULT</span><span class="chip u">Utilisation % (default 85)</span><span class="chip u">Hrs/day (default 24)</span><span class="chip u">Days/month (default 30)</span></div>
+  <div class="col-content col-w"><span class="chip a">effFFB = capacity &times; utilisation/100</span><span class="chip a">Monthly FFB = effFFB &times; hrs &times; days</span><span class="chip a">EFB monthly = FFB &times; 0.225</span><span class="chip a">OPDC monthly = EFB &times; 0.152 (LOCKED)</span></div>
+  <div class="col-content col-w"><span class="chip g">Monthly FFB t/month</span><span class="chip g">EFB monthly t/month (amber hero)</span><span class="chip g">OPDC monthly t/month</span><span class="chip gate">CONFIRM MILL CAPACITY gate</span><span class="chip g">Persistent context bar all S0&#8211;S6 tabs</span></div>
+  <div class="col-content col-w"><span class="chip d">cfi_sites (ffb_capacity_tph, utilisation_pct, hrs, days, monthly_ffb_t, capacity_confirmed)</span></div>
+</div>
+<div class="row" style="margin-top:2px">
+  <div class="stage-col"><div class="stage-pill s0c">S0C</div><div class="stage-name">Soil Origin</div></div>
+  <div class="col-content col-w"><span class="chip u">Select soil type (6 cards)</span><span class="chip u">Agronomy tier (VGAM/GAM/Poor/Abandoned)</span><span class="chip r">Auto-highlighted from GPS soil agent</span></div>
+  <div class="col-content col-w"><span class="chip d">cfi_soil_profiles &#8594; pH, CEC, N/P/K leach fractions</span><span class="chip d">cfi_soil_coefficients &#8594; RF factors</span><span class="chip a">Product Value Index = soil &times; weather &times; agronomy</span></div>
+  <div class="col-content col-w"><span class="chip g">Soil alert banners (Histosol RED, Oxisol AMBER)</span><span class="chip g">Product Value Index 0&#8211;1</span><span class="chip g">Yield multiplier at selected tier</span></div>
+  <div class="col-content col-w"><span class="chip d">cfi_sites (soil_type, agronomy_tier, product_value_index)</span></div>
+</div>
+<div class="row" style="margin-top:2px">
+  <div class="stage-col"><div class="stage-pill s0c">S0D</div><div class="stage-name">Residue Selection</div></div>
+  <div class="col-content col-w"><span class="chip u">Toggle ON/OFF: EFB &middot; OPDC &middot; POS &middot; OPF &middot; OPT &middot; PKE &middot; Custom 1&amp;2 (all start OFF)</span><span class="chip u">POME locked &#8212; carbon credits only</span></div>
+  <div class="col-content col-w"><span class="chip a">EFB off &#8594; OPDC auto-deselects</span><span class="chip r">Custom stream &#8594; agent searches proximate analysis</span></div>
+  <div class="col-content col-w"><span class="chip g">Active stream toggle cards</span></div>
+  <div class="col-content col-w"><span class="chip d">cfi_sites (efb_enabled, opdc_enabled, pos_enabled, opf_enabled, opt_enabled, pke_enabled, custom labels)</span></div>
+</div>
+<div class="row" style="margin-top:2px">
+  <div class="stage-col"><div class="stage-pill s0c">S0D2</div><div class="stage-name">Residue Mix</div></div>
+  <div class="col-content col-w"><span class="chip u">KG mode or % mode toggle</span><span class="chip u">Amounts per active stream</span><span class="chip r">Price agent: live CIF Indonesia Urea &middot; TSP &middot; MOP</span></div>
+  <div class="col-content col-w"><span class="chip d">canonical_lab_data &#8594; MC%, N, P, K DM per stream</span><span class="chip a">N = N%DM &times; (1&#8722;MC/100)</span><span class="chip a">P&#8322;O&#8325; = P &times; 2.291 | K&#8322;O = K &times; 1.205</span><span class="chip a">Agronomic value = NPK &times; live CIF prices</span><span class="chip a">Blend C:N = DM-weighted element formula</span><span class="chip a">N factor: 6.25 LOCKED (Jones/AOAC 984.13)</span></div>
+  <div class="col-content col-w"><span class="chip g">NPK kg/t FW per stream</span><span class="chip g">$/t FW agronomic value</span><span class="chip g">Blend C:N with formula trace</span><span class="chip g">C:N alert: green 15&#8211;25 &middot; amber 25&#8211;35 &middot; red &lt;15 or &gt;35</span><span class="chip gate">CONFIRM STREAMS &#8594; unlocks S1&#8211;S6</span></div>
+  <div class="col-content col-w"><span class="chip d">cfi_sites (mix mode, stream %, streams_confirmed)</span><span class="chip d">cfi_fertiliser_prices (price agent writes)</span></div>
+</div>
+<div class="row" style="margin-top:2px">
+  <div class="stage-col"><div class="stage-pill s0c">S0F</div><div class="stage-name">NPK + 17 Soil Panels</div></div>
+  <div class="col-content col-w"><span class="chip d">cfi_soil_profiles (17 cols)</span><span class="chip d">cfi_soil_coefficients</span><span class="chip d">cfi_product_soil_response (18 rows)</span><span class="chip d">cfi_fertiliser_prices (live)</span></div>
+  <div class="col-content col-w"><span class="chip a">Daily NPK: N 582 &middot; P 197 &middot; K 930 kg/day LOCKED (60 TPH)</span><span class="chip a">$/day and $/month NPK replacement value</span><span class="chip a">N leaching saved vs synthetic (F-R1)</span><span class="chip a">CEC trajectory yr 1/3/5 (F-R4)</span><span class="chip a">TARV = NPK + humic + fulvic + chitin + bio-liming + slow-N</span></div>
+  <div class="col-content col-w"><span class="chip g">17 soil science panels F-R1 to F-R17</span><span class="chip g">TARV $/t frass DM and $/t FW</span><span class="chip g">Soil health: CEC +65%, MBC +100%, WHC +25%</span><span class="chip g">Soil Analysis Search button (Engine 1)</span><span class="chip g">Fertiliser Spend Analysis button (Engine 2)</span></div>
+  <div class="col-content col-w"><span class="chip d">All F panels read-only &#8212; no new writes</span></div>
+</div>
+<div class="sep"><div class="sep-label">S1 &#8212; Pre-Processing &middot; CFI_S1S2_Calculator.jsx</div></div>
+<div class="row">
+  <div class="stage-col"><div class="stage-pill s1c">S1</div><div class="stage-name">Pre-Processing</div></div>
+  <div class="col-content col-w"><span class="chip d">S0 confirmed: FFB, utilisation, hrs, days</span><span class="chip d">canonical_lab_data: EFB MC 62.5%, OPDC 70%, POS 82%</span><span class="chip u">OPDC post-press MC (field reading)</span></div>
+  <div class="col-content col-w"><span class="chip a">EFB t/hr = (effFFB &times; 0.225) &times; hrs/24</span><span class="chip a">OPDC t/hr = EFB &times; 0.152</span><span class="chip a">Shredder nameplate = EFB t/hr &divide; 0.65 (Asian derate LOCKED)</span><span class="chip a">EFB DM = WW &times; 0.375 &middot; OPDC DM = WW &times; 0.30</span><span class="chip gate">GUARDRAIL CLASS A: OPDC MC &#8805; 40% (Math.max clamp)</span></div>
+  <div class="col-content col-w"><span class="chip g">Throughput t/hr per stream</span><span class="chip g">Nameplate equipment sizes</span><span class="chip g">DM daily kg per stream</span><span class="chip g">RED alert if OPDC MC &lt; 40%</span></div>
+  <div class="col-content col-w"><span class="chip d">cfi_sites (s1_efb_throughput, s1_opdc_throughput, s1_pos_throughput)</span><span class="chip d">equipment_catalogue (read)</span></div>
+</div>
+<div class="sep"><div class="sep-label">S2 &#8212; Chemical Treatment &middot; CFI_S1S2_Calculator.jsx</div></div>
+<div class="row">
+  <div class="stage-col"><div class="stage-pill s2c">S2</div><div class="stage-name">Chemical Treatment</div></div>
+  <div class="col-content col-w"><span class="chip d">chemical_library: PKSA 6&#8211;10 kg/t &middot; pH 10&#8211;12 &middot; $0.00 LOCKED</span><span class="chip u">Mixing time 60&#8211;90 min</span><span class="chip u">pH reading post-PKSA</span><span class="chip u">NaOH toggle (Professor only)</span></div>
+  <div class="col-content col-w"><span class="chip a">PKSA daily = blend t/day &times; dose / 1000</span><span class="chip a">Lignin pre = (EFB DM&times;22% + OPDC DM&times;30.7%) / total DM</span><span class="chip a">Lignin post = pre &times; 0.675 (30&#8211;35% reduction)</span><span class="chip a">2 CO&#8322; turns: at 8&#8211;12hr and 16&#8211;20hr &#8594; pH 6.5&#8211;8.0</span></div>
+  <div class="col-content col-w"><span class="chip g">PKSA t/day</span><span class="chip g">Lignin % before/after</span><span class="chip g">24hr neutralisation schedule</span><span class="chip gate">pH gate: 6.5&#8211;8.0 before S3/S4 unlocks</span><span class="chip g">AMBER if NaOH enabled</span></div>
+  <div class="col-content col-w"><span class="chip d">cfi_sites (s2_pksa_dose, s2_naoh_enabled, s2_ph_post, s2_ph_confirmed)</span><span class="chip d">cfi_change_log (NaOH CLASS B immutable)</span></div>
+</div>
+<div class="sep"><div class="sep-label">S3 &#8212; Biological Treatment &middot; CFI_Bio_Database_Manager_v2.jsx + CFI_Treatment_Optimizer.jsx</div></div>
+<div class="row">
+  <div class="stage-col"><div class="stage-pill s3c">S3</div><div class="stage-name">Biological Treatment (27 organisms)</div></div>
+  <div class="col-content col-w"><span class="chip d">biological_library: 43 organisms &middot; doses &middot; BSF safety flags</span><span class="chip d">S2 gate: pH &#8804; 8.0 confirmed</span><span class="chip u">Organism selection</span><span class="chip u">Bt ICBB 6095 toggle (Professor only)</span></div>
+  <div class="col-content col-w"><span class="chip a">Inoculant dose = organism dose_g_kg &times; substrate kg</span><span class="chip a">Decomposition rate k (first-order kinetics)</span><span class="chip a">Protein uplift from microbial biomass</span><span class="chip gate">5-DAY MINIMUM: hard clock &#8212; cannot be bypassed</span><span class="chip gate">Bt gate: titre &#8804; 10&#8308; CFU/g before S4 loading</span></div>
+  <div class="col-content col-w"><span class="chip g">5-day countdown (always visible)</span><span class="chip g">Inoculant kg per organism</span><span class="chip g">Updated C:N post-inoculation</span><span class="chip g">AMBER: Bt conditional warning</span><span class="chip g">S4 locked until all gates pass</span></div>
+  <div class="col-content col-w"><span class="chip d">cfi_sites (s3_inoculation_date, s3_organisms_used, s3_bt_enabled, s3_5day_complete)</span><span class="chip d">cfi_change_log (Bt CLASS B immutable)</span></div>
+</div>
+<div class="sep"><div class="sep-label">S4 &#8212; BSF Rearing &middot; CFI_GH_Calculator.jsx</div></div>
+<div class="row">
+  <div class="stage-col"><div class="stage-pill s4c">S4</div><div class="stage-name">BSF Rearing (GH Calculator)</div></div>
+  <div class="col-content col-w"><span class="chip d">weather_cache: 12-month temp + rainfall</span><span class="chip d">S3 output: biology-ready substrate</span><span class="chip u">GH type: GH-A or GH-B</span><span class="chip gate">Wave 1: pH &#8804; 8.0 AND temp &#8804; 30&#176;C</span><span class="chip gate">Wave 2: substrate temp &lt; 50&#176;C</span></div>
+  <div class="col-content col-w"><span class="chip a">GH area = substrate vol / stocking density</span><span class="chip a">Temp correction factor per month vs optimal 29&#176;C</span><span class="chip a">Wave 1 = 14 days (adjusts with temp)</span><span class="chip a">FCR = substrate_kg / prepupae_kg (5&#8211;6:1)</span><span class="chip a">Prepupae = substrate DM / FCR</span><span class="chip a">Frass = substrate DM &#8722; prepupae DM</span></div>
+  <div class="col-content col-w"><span class="chip g">GH floor area m&#178;</span><span class="chip g">Sprinkler count + plumbing metres</span><span class="chip g">Monthly yield matrix Jan&#8211;Dec</span><span class="chip g">Annual prepupae + frass t/yr</span><span class="chip g">AMBER/RED if temp outside 26&#8211;32&#176;C</span></div>
+  <div class="col-content col-w"><span class="chip d">cfi_sites (s4_gh_area_m2, s4_wave1_date, s4_wave2_date)</span><span class="chip d">weather_cache (read-only)</span><span class="chip d">equipment_catalogue (read)</span></div>
+</div>
+<div class="sep"><div class="sep-label">S5 &#8212; Harvesting &amp; Separation &middot; CFI_Nutrient_Ledger.jsx</div></div>
+<div class="row">
+  <div class="stage-col"><div class="stage-pill s5c">S5</div><div class="stage-name">Harvesting S5A / S5B</div></div>
+  <div class="col-content col-w"><span class="chip d">S4 output: prepupae + frass volumes</span><span class="chip u">Pathway: S5A (larvae extracted) or S5B (whole frass)</span></div>
+  <div class="col-content col-w"><span class="chip a">S5A: prepupae sieved &#8594; BSF meal/oil/chitin pathway</span><span class="chip a">S5B: whole biomass &#8594; chitin 3&#8211;6% DM &middot; microbiome 10&#8313;&#8211;10&#185;&#8304; CFU/g</span><span class="chip a">NPK recalculated post-BSF gut processing</span><span class="chip a">Chitin N slow-release = chitin_kg &times; 6.5%</span></div>
+  <div class="col-content col-w"><span class="chip g">Prepupae kg/day (S5A)</span><span class="chip g">Frass DM kg/day</span><span class="chip g">Protein % and chitin % DM</span><span class="chip g">Nematicide saving $15&#8211;45/ha/yr</span></div>
+  <div class="col-content col-w"><span class="chip d">cfi_sites (s5_pathway, s5_prepupae_kg_day, s5_frass_kg_day)</span><span class="chip d">canonical_lab_data post-S5 (read-only)</span></div>
+</div>
+<div class="sep"><div class="sep-label">S6 &#8212; Products &amp; Valuation &middot; CFI_NPK_Value_Dashboard.jsx + CFI_AG_Management_Planning_Calculator.jsx</div></div>
+<div class="row">
+  <div class="stage-col"><div class="stage-pill s6c">S6</div><div class="stage-name">Products &amp; Valuation</div></div>
+  <div class="col-content col-w"><span class="chip d">S5 outputs: prepupae + frass</span><span class="chip d">cfi_pricing: BSF meal $800&#8211;1,200/t &middot; oil $400&#8211;600/t &middot; chitin $150&#8211;500/t</span><span class="chip d">cfi_fertiliser_prices: live CIF Urea/TSP/MOP</span></div>
+  <div class="col-content col-w"><span class="chip a">Annual frass t/yr = daily &times; daysMonth &times; 12</span><span class="chip a">Annual NPK t N/P/K /yr</span><span class="chip a">Synthetic NPK replacement $/yr</span><span class="chip a">Estate coverage = annual frass / application rate</span><span class="chip a">TARV = NPK + humic + fulvic + chitin + liming + slow-N</span></div>
+  <div class="col-content col-w"><span class="chip g">Frass DM daily t/day</span><span class="chip g">BSF meal/oil/chitin kg/day (S5A)</span><span class="chip g">Annual NPK tonnes delivered</span><span class="chip g">Synthetic replacement $/yr</span><span class="chip g">Estate ha covered</span><span class="chip g">Nutrient Ledger persistent ALL tabs: 6 nutrients &times; 3 columns</span></div>
+  <div class="col-content col-w"><span class="chip d">cfi_sites (s6_frass_dm_daily, s6_bsfm_daily, s6_bsfo_daily)</span><span class="chip d">cfi_pricing (read)</span><span class="chip d">cfi_fertiliser_prices (read)</span></div>
+</div>
+
+<div class="block">
+  <div class="blk-hdr">New Analytical Engines &#8212; March 2026 (parallel to main pipeline)</div>
+  <div class="blk-row">
+    <div class="blk-dot"><div class="blk-circle">1</div></div>
+    <div class="col-content col-w" style="grid-column:2/4"><span style="font-size:10px;font-weight:500;color:#F0F4F8">Soil Analysis Search &#8212; CFI Master Prompt v2.1 (button in S0 Section F)</span><br><span class="chip d">Inputs: GPS/province, crop age, management class, active residues (all auto from S0)</span><span class="chip r">GPS &#8594; GIS chain: BPN/BBSDLP &#8594; SoilGrids 250m &#8594; FAO fallback</span><span class="chip r">IPB University + WUR/ISRIC + G&#246;ttingen personas auto-activated</span><span class="chip r">Claude API + full v2.1 prompt + prior run context via prior_run_id FK</span></div>
+    <div class="col-content col-w" style="grid-column:4"><span class="chip g">Tables A&#8211;G inline with tabs</span><span class="chip g">Research score per run</span><span class="chip g">DATA GAP filter</span><span class="chip g">Export .md</span><span class="chip g">Gets smarter every run via search_cycle counter</span></div>
+    <div class="col-content col-w" style="grid-column:5"><span class="chip d">cfi_soil_analysis_runs (result_json JSONB, research_score, data_gap_count, personas_activated[], search_cycle, prior_run_id)</span></div>
+  </div>
+  <div class="blk-row" style="margin-top:6px">
+    <div class="blk-dot"><div class="blk-circle">2</div></div>
+    <div class="col-content col-w" style="grid-column:2/4"><span style="font-size:10px;font-weight:500;color:#F0F4F8">Fertiliser Spend Analysis &#8212; 10 Personas, Tables A&#8211;G + Sales Output</span><br><span class="chip d">Inputs: soil type, estate ha, crop age, management class, rainfall, active residues (all auto from S0)</span><span class="chip d">cfi_soil_coefficients: leaching fractions, P-fixation rates</span><span class="chip d">cfi_fertiliser_benchmark_summary: real competitor $/ha (from Agent 9)</span><span class="chip r">10 personas: Soil &middot; Fertiliser &middot; Palm Nutrition &middot; Plant Physiology &middot; Microbiology &middot; Agri Mgmt &middot; Finance &middot; Carbon/IPCC &middot; Weather &middot; Research</span></div>
+    <div class="col-content col-w" style="grid-column:4"><span class="chip g">Conventional spend $/ha/yr and $/estate/yr</span><span class="chip g">CFI replacement value $/ha/yr</span><span class="chip g">Net saving $/ha/yr + %</span><span class="chip g">Carbon credit $/ha/yr</span><span class="chip g">Total estate value $/estate/yr + payback years</span><span class="chip g">12-month rainfall-adjusted split schedule</span></div>
+    <div class="col-content col-w" style="grid-column:5"><span class="chip d">cfi_soil_analysis_runs</span><span class="chip d">cfi_fertiliser_benchmark_summary (competitor $/ha data)</span></div>
+  </div>
+  <div class="blk-row" style="margin-top:6px">
+    <div class="blk-dot"><div class="blk-circle">3</div></div>
+    <div class="col-content col-w" style="grid-column:2/4"><span style="font-size:10px;font-weight:500;color:#F0F4F8">Agent 9 &#8212; Competitor Fertiliser Benchmark (Mon+Thu 02:00 UTC automated)</span><br><span class="chip r">Fetches IDX/SGX annual report PDFs: DSNG &middot; AALI &middot; LSIP &middot; SIMP &middot; TAPG &middot; Bumitama &middot; IndoAgri &middot; First Resources &middot; GAR &middot; Wilmar &middot; Austindo</span><span class="chip r">Claude reads PDF &#8594; finds "biaya pupuk" in notes to financial statements</span><span class="chip a">fertiliser $/ha/yr = IDR mn &times; 1,000,000 &divide; mature_ha &divide; 16,000</span><span class="chip r">Confidence: LDE-HIGH (exact line) or LDE-MODERATE (derived)</span></div>
+    <div class="col-content col-w" style="grid-column:4"><span class="chip g">$/ha/yr per company per fiscal year</span><span class="chip g">YoY fertiliser cost change %</span><span class="chip g">Benchmark table in Engine 2 sales output</span></div>
+    <div class="col-content col-w" style="grid-column:5"><span class="chip d">cfi_plantation_companies (11 rows)</span><span class="chip d">cfi_competitor_fertiliser_benchmarks</span><span class="chip d">cfi_fertiliser_benchmark_summary</span><span class="chip d">cfi_agent_run_log (search_cycle++)</span></div>
+  </div>
+</div>
+
+<div class="db-box">
+  <div class="db-hdr">Complete Supabase Schema &#8212; 40+ tables public schema + 6 tables lab_analysis schema &middot; Project: lcpbtnipkvrmuwllymfw &middot; ap-northeast-1</div>
+  <div class="db-grid">
+    <div class="db-tbl">cfi_sites (main S0 table)</div><div class="db-tbl">cfi_mills_60tph (105)</div><div class="db-tbl">cfi_mills_all (1,272)</div><div class="db-tbl">cfi_mill_owners (32)</div><div class="db-tbl">cfi_estates</div><div class="db-tbl">cfi_province_soil_lookup (23)</div><div class="db-tbl">cfi_users / cfi_roles</div><div class="db-tbl">cfi_access_codes / rules</div><div class="db-tbl">cfi_scenarios</div><div class="db-tbl">weather_cache</div><div class="db-tbl">canonical_lab_data</div><div class="db-tbl">cfi_parameter_registry (44)</div><div class="db-tbl">cfi_residue_registry (10)</div><div class="db-tbl">biological_library (43 org)</div><div class="db-tbl">chemical_library</div><div class="db-tbl">equipment_catalogue</div><div class="db-tbl">cfi_soil_profiles (6 soils)</div><div class="db-tbl">cfi_soil_coefficients</div><div class="db-tbl">cfi_product_soil_response</div><div class="db-tbl">cfi_fertiliser_prices</div><div class="db-tbl">cfi_pricing (BSF products)</div><div class="db-tbl">cfi_industries (7)</div><div class="db-tbl">cfi_feedstreams (16)</div><div class="db-tbl">cfi_change_log (immutable)</div><div class="db-tbl">cfi_data_gaps</div><div class="db-tbl">cfi_conflict_log (immutable)</div><div class="db-tbl">cfi_orchestration_agents</div>
+    <div class="db-tbl" style="border-color:#00C9B1;color:#5EEADA">&#9733; cfi_soil_analysis_runs</div>
+    <div class="db-tbl" style="border-color:#00C9B1;color:#5EEADA">&#9733; cfi_plantation_companies</div>
+    <div class="db-tbl" style="border-color:#00C9B1;color:#5EEADA">&#9733; cfi_competitor_fertiliser_benchmarks</div>
+    <div class="db-tbl" style="border-color:#00C9B1;color:#5EEADA">&#9733; cfi_fertiliser_benchmark_summary</div>
+    <div class="db-tbl" style="border-color:#00C9B1;color:#5EEADA">&#9733; cfi_agent_run_log</div>
+    <div class="db-tbl">lab_analysis.cfi_file_catalogue (11)</div>
+  </div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFI S1 — Stream Data Tables + ASCII Process Flows</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@400;500;700&family=Syne:wght@700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #fff;
+  color: #111;
+  padding: 40px;
+  line-height: 1.6;
+}
+
+.header {
+  margin-bottom: 40px;
+  border-bottom: 3px solid #111;
+  padding-bottom: 20px;
+}
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: #666;
+  font-style: italic;
+}
+
+h2 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  margin: 40px 0 20px 0;
+  color: #111;
+}
+
+h3 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  margin: 30px 0 15px 0;
+  color: #111;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+}
+
+th {
+  background: #111;
+  color: #fff;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  border: 1px solid #111;
+}
+
+td {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+.data-gap {
+  color: #cc2222;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.locked {
+  background: #fffbea;
+  font-weight: 600;
+}
+
+.note {
+  font-size: 12px;
+  color: #666;
+  font-style: italic;
+  margin-top: 8px;
+}
+
+.ascii-container {
+  background: #fafafa;
+  border: 2px solid #111;
+  padding: 30px;
+  margin: 30px 0;
+  overflow-x: auto;
+}
+
+pre {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+  white-space: pre;
+  color: #111;
+}
+
+.gate-red {
+  color: #cc2222;
+  font-weight: 600;
+}
+
+.gate-amber {
+  color: #9a6000;
+  font-weight: 600;
+}
+
+.gate-blue {
+  color: #185FA5;
+  font-weight: 600;
+}
+
+.stream-label {
+  color: #40D7C5;
+  font-weight: 600;
+}
+
+.platform-label {
+  color: #666;
+  font-style: italic;
+}
+
+.toc {
+  background: #f5f5f5;
+  border-left: 4px solid #40D7C5;
+  padding: 20px;
+  margin-bottom: 40px;
+}
+
+.toc ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.toc li {
+  margin: 8px 0;
+}
+
+.toc a {
+  color: #111;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.toc a:hover {
+  color: #40D7C5;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>CFI Deep Tech — S1 Mechanical Processing</h1>
+  <div class="subtitle">Stream Data Tables + ASCII Process Flow Diagrams</div>
+  <div class="subtitle">60 TPH FFB Design Basis · Bogor, West Java, Indonesia</div>
+</div>
+
+<div class="toc">
+  <strong>Contents:</strong>
+  <ul>
+    <li><a href="#tables">§1 Stream Data Verification Tables</a></li>
+    <li><a href="#pos-ascii">§2 POS S1A — ASCII Process Flow</a></li>
+    <li><a href="#efb-ascii">§3 EFB S1C — ASCII Process Flow</a></li>
+    <li><a href="#opdc-ascii">§4 OPDC S1B — ASCII Process Flow</a></li>
+  </ul>
+</div>
+
+<h2 id="tables">§1 STREAM DATA VERIFICATION TABLES</h2>
+
+<p>These tables show all S1 process parameters with CLASS A locked values highlighted and data gaps marked in red.</p>
+
+<h3>Table 1A: EFB Stream (S1C Line — 20 t/h)</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Input State</th>
+      <th>Post-Press (Gate B.G2)</th>
+      <th>Post-Mill (Gate B.G1)</th>
+      <th>Unit</th>
+      <th>Lock</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="locked">
+      <td>Moisture Content</td>
+      <td>62.5%</td>
+      <td>45–50% (max 50%)</td>
+      <td>45–50%</td>
+      <td>% wb</td>
+      <td>CLASS A</td>
+    </tr>
+    <tr class="locked">
+      <td>Throughput</td>
+      <td>20 t/h</td>
+      <td>~14 t/h (post-water removal)</td>
+      <td>~14 t/h</td>
+      <td>t/h FW</td>
+      <td>CLASS A</td>
+    </tr>
+    <tr class="locked">
+      <td>Particle Size</td>
+      <td>Bale (compressed)</td>
+      <td>50–100mm post-shred</td>
+      <td>D90 ≤ 2mm</td>
+      <td>mm</td>
+      <td>CLASS A</td>
+    </tr>
+    <tr class="locked">
+      <td>Nitrogen (N)</td>
+      <td>0.76% DM</td>
+      <td>0.76% DM</td>
+      <td>0.76% DM</td>
+      <td>% DM</td>
+      <td>CLASS A</td>
+    </tr>
+    <tr class="locked">
+      <td>Lignin (ADL)</td>
+      <td>22.0% DM</td>
+      <td>22.0% DM</td>
+      <td>22.0% DM</td>
+      <td>% DM</td>
+      <td>CLASS A</td>
+    </tr>
+    <tr class="locked">
+      <td>Potassium (K)</td>
+      <td>2.0% DM</td>
+      <td>2.0% DM</td>
+      <td>2.0% DM</td>
+      <td>% DM</td>
+      <td>CLASS A</td>
+    </tr>
+    <tr class="locked">
+      <td>Phosphorus (P)</td>
+      <td>0.06% DM</td>
+      <td>0.06% DM</td>
+      <td>0.06% DM</td>
+      <td>% DM</td>
+      <td>CLASS A</td>
+    </tr>
+    <tr class="locked">
+      <td>C:N Ratio</td>
+      <td>60</td>
+      <td>60</td>
+      <td>60</td>
+      <td>ratio</td>
+      <td>CLASS A</td>
+    </tr>
+    <tr class="locked">
+      <td>Crude Protein</td>
+      <td>4.75% DM</td>
+      <td>4.75% DM</td>
+      <td>4.75% DM</td>
+      <td>% DM</td>
+      <td>CLASS A</td>
+    </tr>
+    <tr>
+      <td>Ash</td>
+      <td>5.0% DM</td>
+      <td>5.0% DM</td>
+      <td>5.0% DM</td>
+      <td>% DM</td>
+      <td>CLASS A</td>
+    </tr>
+    <tr>
+      <td>pH</td>
+      <td>5.75</td>
+      <td>5.75</td>
+      <td>5.75</td>
+      <td>pH</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <td>Bulk Density</td>
+      <td>140 kg/m³ (bale)</td>
+      <td class="data-gap">DATA GAP</td>
+      <td>~280 kg/m³ (est.)</td>
+      <td>kg/m³</td>
+      <td>B</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note">Gate B.G2 = OPDC press discharge MC floor 40% min · Gate B.G1 = particle size D90 ≤ 2mm</div>
+
+<h3>Table 1B: OPDC Stream (S1B Line — 5 t/h)</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Input State</th>
+      <th>Post-Press (Gate B.G2)</th>
+      <th>Post-24hr Dwell (Gate C.G2/G3)</th>
+      <th>Unit</th>
+      <th>Lock</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="locked">
+      <td>Moisture Content</td>
+      <td>70–75%</td>
+      <td>60–62% (floor 40%)</td>
+      <td>60–62%</td>
+      <td>% wb</td>
+      <td>CLASS A</td>
+    </tr>
+    <tr class="locked">
+      <td>Throughput</td>
+      <td>5 t/h</td>
+      <td>~3.5 t/h (post-water removal)</td>
+      <td>~3.5 t/h</td>
+      <td>t/h FW</td>
+      <td>CLASS A</td>
+    </tr>
+    <tr class="locked">
+      <td>Particle Size</td>
+      <td>Cake/chunks</td>
+      <td>50–100mm post-lump breaker</td>
+      <td>D90 ≤ 2mm</td>
+      <td>mm</td>
+      <td>CLASS A</td>
+    </tr>
+    <tr class="locked">
+      <td>Nitrogen (N)</td>
+      <td>2.32% DM</td>
+      <td>2.32% DM</td>
+      <td>2.32% DM</td>
+      <td>% DM</td>
+      <td>CLASS A</td>
+    </tr>
+    <tr>
+      <td>Lignin (ADL)</td>
+      <td>10.78% DM</td>
+      <td>10.78% DM</td>
+      <td>10.78% DM</td>
+      <td>% DM</td>
+      <td>B (corrected)</td>
+    </tr>
+    <tr class="locked">
+      <td>Potassium (K)</td>
+      <td>1.20% DM</td>
+      <td>1.20% DM</td>
+      <td>1.20% DM</td>
+      <td>% DM</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <td>Phosphorus (P)</td>
+      <td class="data-gap">DATA GAP</td>
+      <td class="data-gap">DATA GAP</td>
+      <td class="data-gap">DATA GAP</td>
+      <td>% DM</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>C:N Ratio</td>
+      <td>17.85</td>
+      <td>17.85</td>
+      <td>17.85</td>
+      <td>ratio</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <td>Crude Protein</td>
+      <td>14.5% DM</td>
+      <td>14.5% DM</td>
+      <td>14.5% DM</td>
+      <td>% DM</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <td>pH</td>
+      <td>4.40</td>
+      <td>4.40</td>
+      <td>8.0–9.0 (PKSA treatment)</td>
+      <td>pH</td>
+      <td>CLASS A (Gate C.G2/G3)</td>
+    </tr>
+    <tr>
+      <td>BSF Score</td>
+      <td>4.275/5.0 (Conditional Pass)</td>
+      <td>—</td>
+      <td>Post-PKSA: Pass expected</td>
+      <td>/ 5.0</td>
+      <td>B</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note">Gate B.G2 = press discharge MC ≥ 40% (CLASS A floor) · Gate C.G2/G3 = pH 8.0–9.0 before S2 transfer (24hr dwell with 2 turnings)</div>
+
+<h3>Table 1C: POS Stream (S1A Line — 1.5 t/h DM)</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Input State (Mill Exit)</th>
+      <th>Post-Dewater (Centrifuge)</th>
+      <th>Unit</th>
+      <th>Lock</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="locked">
+      <td>Moisture Content</td>
+      <td>82% wb</td>
+      <td>65% wb</td>
+      <td>% wb</td>
+      <td>CLASS A</td>
+    </tr>
+    <tr class="locked">
+      <td>Throughput</td>
+      <td>~30 t/day FW</td>
+      <td>~13.5 t/day FW (post-dewater)</td>
+      <td>t/day</td>
+      <td>CLASS A</td>
+    </tr>
+    <tr>
+      <td>Nitrogen (N)</td>
+      <td>1.76% DM</td>
+      <td>1.76% DM</td>
+      <td>% DM</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <td>Phosphorus (P)</td>
+      <td class="data-gap">DATA GAP</td>
+      <td class="data-gap">DATA GAP</td>
+      <td>% DM</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Potassium (K)</td>
+      <td class="data-gap">DATA GAP</td>
+      <td class="data-gap">DATA GAP</td>
+      <td>% DM</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Crude Protein</td>
+      <td>11% DM</td>
+      <td>11% DM</td>
+      <td>% DM</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <td>Ash</td>
+      <td>28% DM</td>
+      <td>28% DM</td>
+      <td>% DM</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <td>Ether Extract (residual CPO)</td>
+      <td>10% DM (range 5–20%)</td>
+      <td>10% DM</td>
+      <td>% DM</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <td>C:N Ratio</td>
+      <td class="data-gap">DATA GAP</td>
+      <td class="data-gap">DATA GAP</td>
+      <td>ratio</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Fe (ICP-OES required)</td>
+      <td>3,000–8,000 mg/kg DM (est.)</td>
+      <td>3,000–8,000 mg/kg DM (est.)</td>
+      <td>mg/kg DM</td>
+      <td><span class="gate-blue">ICP-OES Gate</span></td>
+    </tr>
+    <tr>
+      <td>Mn</td>
+      <td>100–475 mg/kg DM (est.)</td>
+      <td>100–475 mg/kg DM (est.)</td>
+      <td>mg/kg DM</td>
+      <td>B</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note">ICP-OES Gate: Fe result sets S2 inclusion rate — &lt;3,000→20% WW; 3,000–5,000→10–15%; 5,000–8,000→5–10%; &gt;8,000→CaCO₃ amendment required</div>
+
+<hr style="margin: 60px 0; border: none; border-top: 3px solid #111;">
+
+<h2 id="pos-ascii">§2 POS S1A — ASCII PROCESS FLOW</h2>
+
+<p><strong>Line designation:</strong> S1A · <strong>Stream:</strong> Palm Oil Sludge (POS) · <strong>Throughput:</strong> 1.5 t/h DM (~30 t/day FW input, ~13.5 t/day post-dewater) · <strong>Building:</strong> 12m × 18m × 6m</p>
+
+<div class="ascii-container">
+<pre>
+LEVEL     MACHINE NODE                                STREAM STATE                         GATES & NOTES
+═════     ════════════════════════════════════════    ══════════════════════════════════   ═════════════════════════════════════
+
+GL+0m     ┌──────────────────────────────────────┐
+          │  ① SLUDGE PIT                        │    82% MC · slurry · mill exit       <span class="gate-blue">● ICP-OES GATE (CFI-LAB-POME-001)</span>
+          │  (In-ground C30 concrete)            │    ~30 t/day FW                      Fe result sets S2 inclusion rate
+          │  Capacity: 50 m³                     │    Capture point: mill discharge     
+          └──────────────────────────────────────┘    NOT from pond (critical)           
+                         │                            
+                         │ gravity feed                                                  
+                         ▼                            
+GL+1.5m   ┌──────────────────────────────────────┐
+          │  ② ROTARY DRUM SCREEN                │    82% MC → 78% MC                   Removes coarse fibres, debris
+          │  Mesh: 2mm                           │    ~28 t/day FW                      Reject: ~2 t/day to POME pond
+          │  Manufacturer: TBC after RFQ         │    slurry (pre-centrifuge)           
+          └──────────────────────────────────────┘
+                         │
+                         │ pump transfer (slurry)
+                         ▼
+GL+3m     ┌──────────────────────────────────────┐
+          │  ③ DECANTER CENTRIFUGE               │    78% MC → 65% MC                   <span class="gate-blue">● CRITICAL DEWATERING NODE</span>
+          │  (3-phase solid-liquid separation)   │    ~13.5 t/day FW output             Manufacturer: Alfa Laval preferred
+          │  Model: DEC-SLD-101 (preferred)      │    6 t/day DM                        (RFQ range $80k–$150k)
+          │  Nameplate: 10 t/h (derated 6.5)     │    N: 102 kg/day                     
+          │  Power: 55 kW                        │    P: 24 kg/day (est.)               Press water → POME pond ONLY
+          └──────────────────────────────────────┘    K: 42 kg/day (est.)               (never to substrate)
+                         │
+                         │ screw conveyor
+                         ▼
+GL+3m     ┌──────────────────────────────────────┐
+          │  ④ BUFFER HOLDING TANK               │    65% MC · dewatered cake           24hr batch holding capacity
+          │  Capacity: 15 m³                     │    Ready for S2 transfer             
+          │  Material: Stainless 316L            │    Daily NPK: N 102 · P 24 · K 42    Transfer to S2 mixing pugmill
+          └──────────────────────────────────────┘
+                         │
+                         │ belt conveyor → S2
+                         ▼
+                    [TO S2 PKSA MIXING]
+
+
+SIDE FLOW — PRESS WATER DISCHARGE:
+══════════════════════════════════
+
+Centrifuge ③ → Press water (~14.5 t/day liquid, 92% MC) → POME pond treatment
+                                                           NEVER recirculated to substrate
+                                                           (hard guardrail: water contamination)
+
+
+KEY GUARDRAILS (POS S1A):
+═════════════════════════
+
+<span class="gate-blue">1. ICP-OES Fe Gate (CFI-LAB-POME-001):</span>
+   Fe &lt; 3,000 mg/kg DM      → S2 inclusion rate 20% WW
+   Fe 3,000–5,000 mg/kg DM  → S2 inclusion rate 10–15% WW
+   Fe 5,000–8,000 mg/kg DM  → S2 inclusion rate 5–10% WW
+   Fe &gt; 8,000 mg/kg DM      → CaCO₃ amendment required before S2
+
+<span class="gate-blue">2. Capture Point (CRITICAL):</span>
+   POS = mill exit sludge (centrifuge discharge or sludge pit)
+   POME ≠ POS (POME = liquid effluent to pond)
+   Never conflate — lower Fe/Mn, higher N/P, residual CPO 5–20% DM
+
+<span class="gate-red">3. Press Water Routing:</span>
+   All centrifuge press water → POME pond ONLY
+   Never recirculate to substrate (contamination risk)
+
+4. Heavy Metals:
+   Fe 3,000–8,000 mg/kg DM (typical range, no legal limit)
+   Mn 100–475 mg/kg DM (typical range)
+   SNI P0 blockers: Cd, Pb, As, Hg (require ICP-MS before registration)
+</pre>
+</div>
+
+<hr style="margin: 60px 0; border: none; border-top: 3px solid #111;">
+
+<h2 id="efb-ascii">§3 EFB S1C — ASCII PROCESS FLOW</h2>
+
+<p><strong>Line designation:</strong> S1C · <strong>Stream:</strong> Empty Fruit Bunch (EFB) · <strong>Throughput:</strong> 20 t/h FW input · <strong>Belt:</strong> 600mm · <strong>Building:</strong> 15m × 35m × 10m</p>
+
+<div class="ascii-container">
+<pre>
+LEVEL     MACHINE NODE                                STREAM STATE                         GATES & NOTES
+═════     ════════════════════════════════════════    ══════════════════════════════════   ═════════════════════════════════════
+
+GL+0m     ┌──────────────────────────────────────┐
+          │  ① HYDRAULIC FEEDER                  │    62.5% MC · bale (compressed)      Hydraulic ram de-baling
+          │  Capacity: 25 t/h                    │    20 t/h FW                         Manufacturer: TBC after RFQ
+          │  Power: 18 kW                        │    Particle: bale → loose fibre      
+          └──────────────────────────────────────┘
+                         │
+                         │ belt 600mm (20 t/h)
+                         ▼
+GL+2m     ┌──────────────────────────────────────┐
+          │  ② INCLINE CONVEYOR                  │    62.5% MC · loose fibre            30° incline to GL+6m
+          │  Belt: 600mm × 18m                   │    20 t/h FW                         Primary elevation
+          │  Power: 22 kW                        │                                      
+          └──────────────────────────────────────┘
+                         │
+                         ▼
+GL+6m     ┌──────────────────────────────────────┐
+          │  ③ TROMMEL SCREEN                    │    62.5% MC · fibre separation       Removes rocks, metal, coarse debris
+          │  Mesh: 50mm                          │    ~19 t/h (post-reject)             Reject: ~1 t/h to waste
+          │  Diameter: 2.5m × 6m                 │                                      
+          └──────────────────────────────────────┘
+                         │
+                         │ belt 600mm
+                         ▼
+GL+6m     ┌──────────────────────────────────────┐
+          │  ④ OVERBAND MAGNET                   │    62.5% MC · pre-press fibre        Ferrous metal removal (tramp iron)
+          │  Belt width: 600mm                   │    ~19 t/h                           Protects downstream equipment
+          │  Power: 3 kW                         │                                      
+          └──────────────────────────────────────┘
+                         │
+                         │ belt 600mm
+                         ▼
+GL+6m     ┌──────────────────────────────────────┐
+          │  ⑤ SCREW PRESS (PKSA dosing)         │    62.5% MC → 45–50% MC              <span class="gate-amber">● GATE B.G2 (MC FLOOR 50% MAX)</span>
+          │  Model: SP-200 (local fab)           │    ~14 t/h FW (post-press)           PKSA dosing: 6–10 kg/t EFB
+          │  Nameplate: 8 t/h (derated 5.2)      │    Press water: ~6 t/h → POME pond   pH 10–12 after PKSA addition
+          │  Power: 30 kW                        │                                      
+          └──────────────────────────────────────┘    PKSA addition inline during press  Water to POME pond ONLY
+                         │                                                               (never recirculate to substrate)
+                         │ belt 600mm
+                         ▼
+GL+6m     ┌──────────────────────────────────────┐
+          │  ⑥ PRIMARY SHREDDER                  │    45–50% MC · 50–100mm chunks       Coarse size reduction before mill
+          │  Type: Rotary knife shredder         │    ~14 t/h                           Manufacturer: TBC after RFQ
+          │  Power: 75 kW                        │                                      
+          └──────────────────────────────────────┘
+                         │
+                         │ belt 600mm
+                         ▼
+GL+6m     ┌──────────────────────────────────────┐
+          │  ⑦ HAMMER MILL                       │    45–50% MC · 50mm → 2mm target     <span class="gate-red">● SPRING ISOLATION (CRITICAL)</span>
+          │  Model: EFB-SM-120                   │    ~14 t/h                           <span class="gate-red">Never rigid anchor to slab</span>
+          │  Nameplate: 15 t/h (derated 9.75)    │                                      Vibration isolation mandatory
+          │  Power: 110 kW                       │                                      
+          │  Manufacturer: Zhengzhou Sinoder     │                                      
+          └──────────────────────────────────────┘
+                         │
+                         │ pneumatic transfer
+                         ▼
+GL+6m     ┌──────────────────────────────────────┐
+          │  ⑧ VIBRATING SCREEN                  │    45–50% MC · particle separation   <span class="gate-amber">● GATE B.G1 (D90 ≤ 2mm)</span>
+          │  Deck: 2mm mesh (double deck)        │    Undersize: ~13 t/h → buffer       Oversize reject loop active
+          │  Power: 11 kW                        │    Oversize: ~1 t/h → return ⑦       Target: D90 ≤ 2mm (CLASS A)
+          └──────────────────────────────────────┘
+                         │ undersize (D90 ≤ 2mm)
+                         │ 
+                         ▼
+          ┌──────────────────────────────────────┐    ◄── oversize return loop to hammer mill ⑦
+          │  Oversize return (belt 500mm)        │
+          └──────────────────────────────────────┘
+
+
+GL+6m     ┌──────────────────────────────────────┐
+          │  ⑨ BAGHOUSE DUST COLLECTOR           │    Exhaust air treatment            External east wall (both EFB+OPDC)
+          │  (External east wall)                │    Fabric filter baghouse            Manufacturer: TBC after RFQ
+          │  CFM: 15,000                         │    Emission compliance               
+          │  Power: 18 kW                        │    Captured dust → buffer bin        
+          └──────────────────────────────────────┘
+                         │ pneumatic
+                         ▼
+GL+6m     ┌──────────────────────────────────────┐
+          │  ⑩ BUFFER BIN (S1→S2 transfer)       │    45–50% MC · D90 ≤ 2mm             50 m³ capacity (~24hr dwell)
+          │  Capacity: 50 m³                     │    ~13 t/h → S2 PKSA mixing          Ready for S2 neutralisation
+          │  Material: Carbon steel + liner      │    N: 0.76% DM · K: 2.0% DM          pH 10–12 (from PKSA press dosing)
+          └──────────────────────────────────────┘    P: 0.06% DM · ADL: 22% DM          
+                         │
+                         │ screw conveyor → S2
+                         ▼
+                    [TO S2 NEUTRALISATION]
+
+
+SIDE FLOWS — EFB S1C:
+═════════════════════
+
+Press water (node ⑤): 62.5% → 45–50% MC = ~6 t/h water removed → POME pond ONLY
+                                                                  (never recirculate to substrate)
+
+Oversize reject loop: Vibrating screen ⑧ → oversize ~1 t/h → return to hammer mill ⑦
+                                                              (continuous recirculation until D90 ≤ 2mm achieved)
+
+Baghouse exhaust: Hammer mill ⑦ dust → baghouse ⑨ → captured fines to buffer bin ⑩
+
+
+KEY GUARDRAILS (EFB S1C):
+═════════════════════════
+
+<span class="gate-amber">1. Gate B.G2 (Press MC Floor):</span>
+   Post-press MC floor = 50% MAX (EFB line only)
+   OPDC line: MC floor = 40% MIN (CLASS A hard clamp — never below)
+   Math.max(40, reading) enforcement on OPDC
+
+<span class="gate-amber">2. Gate B.G1 (Particle Size Target):</span>
+   Target: D90 ≤ 2mm (CLASS A locked)
+   Vibrating screen ⑧ enforces via oversize reject loop to hammer mill ⑦
+   Continuous recirculation until spec achieved
+
+<span class="gate-red">3. Hammer Mill Isolation (CRITICAL):</span>
+   Spring isolation ONLY — never rigid anchor to concrete slab
+   Vibration protection mandatory (applies both EFB and OPDC lines)
+   Failure mode: structural cracking, equipment damage
+
+<span class="gate-red">4. Press Water Routing:</span>
+   All press water → POME pond ONLY
+   Never recirculate to substrate (contamination risk)
+
+5. PKSA Dosing (inline during press):
+   Rate: 6–10 kg/t EFB fresh weight
+   Target pH: 10–12 (neutralisation to pH 6.5–8.0 occurs in S2 via 24hr dwell + CO₂ carbonation)
+   60–90 min contact time in S2 mixing pugmill
+
+6. Asian Equipment Derate:
+   All nameplate capacities derated to 65% (hard rule across S1)
+   Example: Hammer mill nameplate 15 t/h → derated 9.75 t/h working capacity
+</pre>
+</div>
+
+<hr style="margin: 60px 0; border: none; border-top: 3px solid #111;">
+
+<h2 id="opdc-ascii">§4 OPDC S1B — ASCII PROCESS FLOW</h2>
+
+<p><strong>Line designation:</strong> S1B · <strong>Stream:</strong> Oil Palm Decanter Cake (OPDC) · <strong>Throughput:</strong> 5 t/h FW input · <strong>Belt:</strong> 500mm · <strong>Building:</strong> 15m × 35m × 10m</p>
+
+<div class="ascii-container">
+<pre>
+LEVEL     MACHINE NODE                                STREAM STATE                         GATES & NOTES
+═════     ════════════════════════════════════════    ══════════════════════════════════   ═════════════════════════════════════
+
+GL+0m     ┌──────────────────────────────────────┐
+          │  ① RECIPROCATING FEEDER              │    70–75% MC · cake/chunks           Anti-bridging mechanism
+          │  (Anti-bridging design)              │    5 t/h FW                          Prevents feed hopper blockage
+          │  Power: 7.5 kW                       │    From mill centrifuge discharge    Manufacturer: TBC after RFQ
+          └──────────────────────────────────────┘
+                         │
+                         │ belt 500mm (5 t/h)
+                         ▼
+GL+2m     ┌──────────────────────────────────────┐
+          │  ② INCLINE CONVEYOR                  │    70–75% MC · cake/chunks           30° incline to GL+6m
+          │  Belt: 500mm × 18m                   │    5 t/h FW                          Primary elevation
+          │  Power: 15 kW                        │                                      
+          └──────────────────────────────────────┘
+                         │
+                         ▼
+GL+6m     ┌──────────────────────────────────────┐
+          │  ③ TROMMEL SCREEN                    │    70–75% MC · cake separation       Removes metal, rocks, coarse debris
+          │  Mesh: 50mm                          │    ~4.8 t/h (post-reject)            Reject: ~0.2 t/h to waste
+          │  Diameter: 2.0m × 5m                 │                                      
+          └──────────────────────────────────────┘
+                         │
+                         │ belt 500mm
+                         ▼
+GL+6m     ┌──────────────────────────────────────┐
+          │  ④ OVERBAND MAGNET                   │    70–75% MC · pre-press cake        Ferrous metal removal (tramp iron)
+          │  Belt width: 500mm                   │    ~4.8 t/h                          Protects downstream equipment
+          │  Power: 3 kW                         │                                      
+          └──────────────────────────────────────┘
+                         │
+                         │ belt 500mm
+                         ▼
+GL+6m     ┌──────────────────────────────────────┐
+          │  ⑤ SCREW PRESS (PKSA dosing)         │    70–75% MC → 60–62% MC             <span class="gate-amber">● GATE B.G2 (MC FLOOR 40% MIN)</span>
+          │  Model: SP-200 (local fab)           │    ~3.5 t/h FW (post-press)          <span class="gate-red">CLASS A HARD CLAMP — NEVER BELOW</span>
+          │  Nameplate: 8 t/h (derated 5.2)      │    Press water: ~1.3 t/h → pond      Math.max(40, reading) enforcement
+          │  Power: 30 kW                        │                                      
+          └──────────────────────────────────────┘    PKSA dosing: 6–10 kg/t OPDC        OPDC press discharge pore damage
+                         │                            pH 10–12 after PKSA addition         if MC &lt; 40% → BSF colonisation fail
+                         │ belt 500mm
+                         ▼
+GL+6m     ┌──────────────────────────────────────┐
+          │  ⑥ LUMP BREAKER                      │    60–62% MC · cake → 50mm chunks    Initial size reduction pre-mill
+          │  Type: Twin-shaft cage breaker       │    ~3.5 t/h                          Manufacturer: TBC after RFQ
+          │  Power: 37 kW                        │                                      
+          └──────────────────────────────────────┘
+                         │
+                         │ belt 500mm
+                         ▼
+GL+6m     ┌──────────────────────────────────────┐
+          │  ⑦ HAMMER MILL                       │    60–62% MC · 50mm → 2mm target     <span class="gate-red">● SPRING ISOLATION (CRITICAL)</span>
+          │  Model: OPDC-SM-80                   │    ~3.5 t/h                          <span class="gate-red">Never rigid anchor to slab</span>
+          │  Nameplate: 12 t/h (derated 7.8)     │                                      Vibration isolation mandatory
+          │  Power: 90 kW                        │                                      
+          │  Manufacturer: Zhengzhou Sinoder     │                                      
+          └──────────────────────────────────────┘
+                         │
+                         │ pneumatic transfer
+                         ▼
+GL+6m     ┌──────────────────────────────────────┐
+          │  ⑧ VIBRATING SCREEN                  │    60–62% MC · particle separation   Oversize reject loop active
+          │  Deck: 2mm mesh (double deck)        │    Undersize: ~3.3 t/h → buffer      Target: D90 ≤ 2mm (CLASS A)
+          │  Power: 9 kW                         │    Oversize: ~0.2 t/h → return ⑦     
+          └──────────────────────────────────────┘
+                         │ undersize (D90 ≤ 2mm)
+                         │ 
+                         ▼
+          ┌──────────────────────────────────────┐    ◄── oversize return loop to hammer mill ⑦
+          │  Oversize return (belt 400mm)        │
+          └──────────────────────────────────────┘
+
+
+GL+6m     ┌──────────────────────────────────────┐
+          │  ⑨ BAGHOUSE DUST COLLECTOR           │    Exhaust air treatment            External east wall (shared EFB+OPDC)
+          │  (External east wall — shared)       │    Fabric filter baghouse            Manufacturer: TBC after RFQ
+          │  CFM: 15,000 (shared capacity)       │    Emission compliance               
+          │  Power: 18 kW                        │    Captured dust → buffer bin        
+          └──────────────────────────────────────┘
+                         │ pneumatic
+                         ▼
+GL+6m     ┌──────────────────────────────────────┐
+          │  ⑩ BUFFER BIN (24hr dwell)           │    60–62% MC · D90 ≤ 2mm             <span class="gate-amber">● GATE C.G2/G3 (pH 8.0–9.0)</span>
+          │  Capacity: 85 m³ (24hr + reserve)    │    24hr dwell with 2 turnings:       Neutralisation via CO₂ carbonation
+          │  Material: Carbon steel + liner      │    @ 8–12hr · @ 16–20hr              pH drop from 10–12 → 6.5–8.0
+          │  Turning mechanism: automated rake   │                                      
+          └──────────────────────────────────────┘    Post-dwell: pH 8.0–9.0 target      Ready for S2 BSF loading
+                         │                            (Gate C.G2/G3 enforcement)          
+                         │                                                               
+                         │ screw conveyor → S2        N: 2.32% DM · K: 1.20% DM          
+                         ▼                            ADL: 10.78% DM (corrected)          
+                    [TO S2 BSF LOADING]               BSF score: 4.275/5.0 → Pass expected
+
+
+SIDE FLOWS — OPDC S1B:
+══════════════════════
+
+Press water (node ⑤): 70–75% → 60–62% MC = ~1.3 t/h water removed → POME pond ONLY
+                                                                     (never recirculate to substrate)
+
+Oversize reject loop: Vibrating screen ⑧ → oversize ~0.2 t/h → return to hammer mill ⑦
+                                                                (continuous recirculation until D90 ≤ 2mm achieved)
+
+Baghouse exhaust: Hammer mill ⑦ dust → baghouse ⑨ (shared with EFB) → captured fines to buffer bin ⑩
+
+
+KEY GUARDRAILS (OPDC S1B):
+══════════════════════════
+
+<span class="gate-amber">1. Gate B.G2 (Press MC Floor — CRITICAL):</span>
+   OPDC press discharge MC floor = 40% MIN (CLASS A locked)
+   Math.max(40, reading) enforcement — NEVER ALLOW MC &lt; 40%
+   Failure mode: pore damage → BSF colonisation fail → S4 process collapse
+   
+   **Why 40% is non-negotiable:**
+   - OPDC cellular structure collapses below 40% MC
+   - Pore network damage prevents BSF larvae penetration in S4
+   - Larvae require 60–70% MC substrate with intact pore structure
+   - Once collapsed, pores cannot re-open via re-wetting
+
+<span class="gate-amber">2. Gate C.G2/G3 (pH Neutralisation — 24hr dwell):</span>
+   Target: pH 8.0–9.0 before S2 BSF transfer
+   Process: 24hr dwell with 2 automated turnings (@ 8–12hr, @ 16–20hr)
+   Mechanism: CO₂ carbonation (atmospheric uptake during turning)
+   Input pH: 10–12 (from PKSA addition at press node ⑤)
+   Output pH: 6.5–8.0 (final target range for BSF substrate)
+
+<span class="gate-red">3. Hammer Mill Isolation (CRITICAL):</span>
+   Spring isolation ONLY — never rigid anchor to concrete slab
+   Vibration protection mandatory (applies both EFB and OPDC lines)
+   Failure mode: structural cracking, equipment damage
+
+<span class="gate-red">4. Press Water Routing:</span>
+   All press water → POME pond ONLY
+   Never recirculate to substrate (contamination risk)
+
+5. PKSA Dosing (inline during press):
+   Rate: 6–10 kg/t OPDC fresh weight
+   Target pH: 10–12 (neutralisation to pH 6.5–8.0 occurs in buffer bin ⑩ via 24hr dwell)
+   60–90 min contact time during S1 pressing + S2 mixing
+
+6. Asian Equipment Derate:
+   All nameplate capacities derated to 65% (hard rule across S1)
+   Example: Hammer mill nameplate 12 t/h → derated 7.8 t/h working capacity
+
+7. BSF Substrate Readiness:
+   Post-24hr dwell: pH 8.0–9.0 · MC 60–62% · D90 ≤ 2mm · lignin reduced 30–35%
+   BSF score: 4.275/5.0 (Conditional Pass) → expected Pass post-PKSA treatment
+   Critical: pore structure intact (MC ≥ 40% enforcement prevents collapse)
+</pre>
+</div>
+
+<hr style="margin: 60px 0; border: none; border-top: 3px solid #111;">
+
+<div style="margin-top: 60px; padding: 20px; background: #f5f5f5; border-left: 4px solid #40D7C5;">
+  <strong>Document Status:</strong> PUBLISHED — Stream data tables complete · ASCII flows complete (POS S1A, EFB S1C, OPDC S1B) · All guardrails documented · Ready for engineering RFQ pack
+</div>
+
+</body>
+</html>

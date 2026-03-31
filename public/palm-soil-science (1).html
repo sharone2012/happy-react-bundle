@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Palm Soil Science — EFB · Microbes · BSF Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300..700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root,[data-theme="light"]{
+  --color-bg:#f5f3ef;--color-surface:#f9f8f5;--color-surface-2:#fcfbf9;
+  --color-surface-offset:#ede9e2;--color-surface-dynamic:#e2ddd5;
+  --color-divider:#d5d0c8;--color-border:#cbc6bc;
+  --color-text:#1e1c16;--color-text-muted:#6b6860;--color-text-faint:#b0ada6;
+  --color-text-inverse:#f5f3ef;
+  --color-primary:#2d7a3a;--color-primary-hover:#1e5e29;--color-primary-active:#164520;
+  --color-primary-highlight:#c8e0cc;
+  --color-accent:#b85c00;--color-gold:#c48a00;--color-blue:#0063a6;--color-teal:#017a6e;
+  --color-error:#9e1c1c;--color-warning:#a05a00;--color-success:#2d7a3a;--color-info:#0063a6;
+  --radius-sm:.375rem;--radius-md:.5rem;--radius-lg:.75rem;--radius-xl:1rem;--radius-full:9999px;
+  --shadow-sm:0 1px 3px oklch(.2 .02 90/.08);--shadow-md:0 4px 12px oklch(.2 .02 90/.1);--shadow-lg:0 12px 32px oklch(.2 .02 90/.14);
+  --transition:180ms cubic-bezier(.16,1,.3,1);
+  --content-narrow:640px;--content-default:960px;--content-wide:1280px;
+  --font-display:"Libre Baskerville",Georgia,serif;--font-body:"Inter","Helvetica Neue",sans-serif;
+  --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;
+  --text-xs:clamp(.75rem,.7rem + .25vw,.875rem);--text-sm:clamp(.875rem,.8rem + .35vw,1rem);
+  --text-base:clamp(1rem,.95rem + .25vw,1.125rem);--text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);--text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
+}
+[data-theme="dark"]{
+  --color-bg:#111410;--color-surface:#161914;--color-surface-2:#1b1e19;
+  --color-surface-offset:#1a1d18;--color-surface-dynamic:#252820;
+  --color-divider:#272b22;--color-border:#333729;
+  --color-text:#d4d8c8;--color-text-muted:#7a7d6e;--color-text-faint:#4a4d40;
+  --color-text-inverse:#111410;
+  --color-primary:#5ab86a;--color-primary-hover:#3d9e4e;--color-primary-active:#2d7a3a;
+  --color-primary-highlight:#1e3a22;
+  --color-accent:#e8913a;--color-gold:#e8b84a;--color-blue:#4da3e8;--color-teal:#40c4b4;
+  --color-error:#e85a5a;--color-warning:#e8913a;--color-success:#5ab86a;--color-info:#4da3e8;
+  --shadow-sm:0 1px 3px oklch(0 0 0/.25);--shadow-md:0 4px 12px oklch(0 0 0/.35);--shadow-lg:0 12px 32px oklch(0 0 0/.45);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth;scroll-padding-top:5rem}
+body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg);line-height:1.65}
+img,svg{display:block;max-width:100%;height:auto}
+button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
+a{color:var(--color-primary);text-decoration:none;transition:color var(--transition)}
+a:hover{color:var(--color-primary-hover)}
+h1,h2,h3,h4,h5,h6{text-wrap:balance;line-height:1.2;font-family:var(--font-display)}
+p,li{text-wrap:pretty;max-width:72ch}
+table{border-collapse:collapse;width:100%}
+:focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+.app{display:grid;grid-template-columns:260px 1fr;min-height:100dvh}
+@media(max-width:900px){.app{grid-template-columns:1fr}}
+.topbar{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:var(--space-3) var(--space-6);background:var(--color-surface);border-bottom:1px solid var(--color-border);position:sticky;top:0;z-index:100;gap:var(--space-4)}
+.topbar-logo{display:flex;align-items:center;gap:var(--space-3);font-family:var(--font-display);font-size:var(--text-lg);font-weight:700;color:var(--color-text)}
+.btn-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-md);transition:background var(--transition)}
+.btn-icon:hover{background:var(--color-surface-offset)}
+.sidebar{background:var(--color-surface);border-right:1px solid var(--color-border);padding:var(--space-4) 0;overflow-y:auto;position:sticky;top:56px;height:calc(100vh - 56px);grid-row:2}
+@media(max-width:900px){.sidebar{display:none;position:fixed;top:56px;left:0;width:280px;height:calc(100vh - 56px);z-index:90;box-shadow:var(--shadow-lg)}.sidebar.open{display:block}}
+.sidebar-section{padding:var(--space-3) var(--space-4) var(--space-1);font-size:var(--text-xs);font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-faint)}
+.sidebar-item{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2) var(--space-4);font-size:var(--text-sm);color:var(--color-text-muted);cursor:pointer;transition:all var(--transition);border-left:2px solid transparent}
+.sidebar-item:hover{background:var(--color-surface-offset);color:var(--color-text);border-left-color:var(--color-primary)}
+.sidebar-item.active{background:var(--color-primary-highlight);color:var(--color-primary);border-left-color:var(--color-primary);font-weight:500}
+.main{overflow-y:auto}
+.page{display:none;padding:var(--space-8) var(--space-10);max-width:var(--content-wide);animation:fadeIn .22s ease}
+.page.active{display:block}
+@media(max-width:900px){.page{padding:var(--space-5) var(--space-4)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.page-header{margin-bottom:var(--space-10)}
+.tag{display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-primary);margin-bottom:var(--space-3)}
+.page-header h1{font-size:var(--text-2xl);color:var(--color-text);margin-bottom:var(--space-4)}
+.page-header .lead{font-size:var(--text-base);color:var(--color-text-muted);max-width:70ch;line-height:1.75}
+.card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-6);box-shadow:var(--shadow-sm);transition:box-shadow var(--transition)}
+.card:hover{box-shadow:var(--shadow-md)}
+.card-title{font-family:var(--font-display);font-size:var(--text-lg);font-weight:700;margin-bottom:var(--space-3)}
+.card-sub{font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-4);line-height:1.65}
+.g2{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(400px,100%),1fr));gap:var(--space-6)}
+.g3{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));gap:var(--space-5)}
+.g4{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(200px,100%),1fr));gap:var(--space-4)}
+.section{margin-bottom:var(--space-12)}
+.section-title{font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;margin-bottom:var(--space-6);color:var(--color-text);display:flex;align-items:center;gap:var(--space-3)}
+.section-title::after{content:"";flex:1;height:1px;background:var(--color-divider)}
+.sub-title{font-size:var(--text-base);font-weight:600;margin-bottom:var(--space-4);color:var(--color-text);font-family:var(--font-display)}
+.prose p{margin-bottom:var(--space-4);color:var(--color-text-muted);line-height:1.75}
+.prose ul,.prose ol{padding-left:var(--space-6);margin-bottom:var(--space-4)}
+.prose li{margin-bottom:var(--space-2);color:var(--color-text-muted)}
+.prose strong{color:var(--color-text);font-weight:600}
+.tabs{display:flex;gap:2px;background:var(--color-surface-offset);border-radius:var(--radius-lg);padding:4px;margin-bottom:var(--space-6);flex-wrap:wrap}
+.tab-btn{flex:1;min-width:90px;padding:var(--space-2) var(--space-3);font-size:var(--text-sm);font-weight:500;color:var(--color-text-muted);border-radius:calc(var(--radius-lg) - 2px);transition:all var(--transition);white-space:nowrap;text-align:center}
+.tab-btn:hover{background:var(--color-surface);color:var(--color-text)}
+.tab-btn.active{background:var(--color-surface-2);color:var(--color-text);box-shadow:var(--shadow-sm);font-weight:600}
+.tab-content{display:none}.tab-content.active{display:block;animation:fadeIn .2s ease}
+.fbox{background:var(--color-surface-offset);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-5);margin:var(--space-5) 0}
+.fbox-title{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-primary);margin-bottom:var(--space-3);display:flex;justify-content:space-between;align-items:center}
+.fbox-eq{font-family:"Courier New",monospace;font-size:var(--text-base);color:var(--color-text);margin-bottom:var(--space-3);white-space:pre-wrap;overflow-x:auto}
+.fbox-vars{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.75;font-family:var(--font-body)}
+.dtable{border:1px solid var(--color-border);border-radius:var(--radius-lg);overflow:hidden;margin:var(--space-4) 0;overflow-x:auto}
+.dtable table{width:100%;min-width:500px}
+.dtable th{background:var(--color-surface-offset);padding:var(--space-3) var(--space-4);text-align:left;font-size:var(--text-sm);font-weight:600;color:var(--color-text);border-bottom:1px solid var(--color-border)}
+.dtable td{padding:var(--space-3) var(--space-4);font-size:var(--text-sm);color:var(--color-text-muted);border-bottom:1px solid var(--color-divider);font-variant-numeric:tabular-nums}
+.dtable tr:last-child td{border-bottom:none}
+.dtable tr:hover td{background:var(--color-surface-offset)}
+.badge{display:inline-flex;align-items:center;padding:2px var(--space-3);border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:600}
+.bg{background:var(--color-primary-highlight);color:var(--color-primary)}
+.ba{background:oklch(from var(--color-gold) l c h/.2);color:var(--color-gold)}
+.br{background:oklch(from var(--color-error) l c h/.15);color:var(--color-error)}
+.bb{background:oklch(from var(--color-blue) l c h/.15);color:var(--color-blue)}
+.bt{background:oklch(from var(--color-teal) l c h/.15);color:var(--color-teal)}
+.bgr{background:var(--color-surface-offset);color:var(--color-text-muted)}
+.stat-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-5);text-align:center}
+.sv{font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;color:var(--color-primary);font-variant-numeric:tabular-nums;margin-bottom:var(--space-1)}
+.sl{font-size:var(--text-xs);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.06em}
+.ss{font-size:var(--text-xs);color:var(--color-text-faint);margin-top:2px}
+.alert{border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);margin:var(--space-4) 0;font-size:var(--text-sm);border:1px solid transparent;line-height:1.65}
+.aw{background:oklch(from var(--color-warning) l c h/.08);border-color:oklch(from var(--color-warning) l c h/.3);color:var(--color-warning)}
+.ai{background:oklch(from var(--color-info) l c h/.08);border-color:oklch(from var(--color-info) l c h/.3);color:var(--color-info)}
+.as{background:oklch(from var(--color-success) l c h/.08);border-color:oklch(from var(--color-success) l c h/.3);color:var(--color-success)}
+.ae{background:oklch(from var(--color-error) l c h/.08);border-color:oklch(from var(--color-error) l c h/.3);color:var(--color-error)}
+.alert strong{font-weight:700}
+.pipeline{display:flex;align-items:stretch;margin:var(--space-6) 0;overflow-x:auto;gap:0}
+.pstep{flex:0 0 auto;width:160px;background:var(--color-surface);border:1px solid var(--color-border);padding:var(--space-4);text-align:center;position:relative}
+.pstep:first-child{border-radius:var(--radius-lg) 0 0 var(--radius-lg)}
+.pstep:last-child{border-radius:0 var(--radius-lg) var(--radius-lg) 0}
+.pstep:not(:last-child)::after{content:"▶";position:absolute;right:-10px;top:50%;transform:translateY(-50%);color:var(--color-primary);font-size:.75rem;z-index:1}
+.pstep:not(:first-child){border-left:none}
+.pi{font-size:1.5rem;margin-bottom:var(--space-2)}
+.pl{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--color-primary);margin-bottom:var(--space-1)}
+.pd{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.5}
+.tl{position:relative;padding-left:var(--space-8)}
+.tl::before{content:"";position:absolute;left:11px;top:0;bottom:0;width:2px;background:var(--color-divider)}
+.tl-item{position:relative;margin-bottom:var(--space-8)}
+.tl-dot{position:absolute;left:calc(-1*var(--space-8) + 7px);top:5px;width:10px;height:10px;border-radius:50%;background:var(--color-primary);border:2px solid var(--color-bg)}
+.tl-date{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-primary);margin-bottom:var(--space-2)}
+.tl-title{font-family:var(--font-display);font-size:var(--text-lg);font-weight:700;margin-bottom:var(--space-3);color:var(--color-text)}
+.tl-body{color:var(--color-text-muted);font-size:var(--text-sm);line-height:1.75}
+.calc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-bottom:var(--space-6)}
+.fg{display:flex;flex-direction:column;gap:var(--space-2)}
+.fl{font-size:var(--text-sm);font-weight:500;color:var(--color-text)}
+.fsel,.finp{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--color-text);width:100%;transition:border-color var(--transition)}
+.fsel:focus,.finp:focus{border-color:var(--color-primary);outline:none;box-shadow:0 0 0 3px oklch(from var(--color-primary) l c h/.12)}
+.btn-p{background:var(--color-primary);color:var(--color-text-inverse);padding:var(--space-3) var(--space-6);border-radius:var(--radius-md);font-size:var(--text-sm);font-weight:600;transition:background var(--transition);border:none;cursor:pointer}
+.btn-p:hover{background:var(--color-primary-hover)}
+.cout{background:var(--color-surface-offset);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-6)}
+.cout-title{font-size:var(--text-sm);font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-primary);margin-bottom:var(--space-5)}
+.crg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--space-4)}
+.cr{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-4);text-align:center}
+.crv{font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;color:var(--color-primary);font-variant-numeric:tabular-nums}
+.cru{font-size:var(--text-xs);color:var(--color-primary);opacity:.8}
+.crl{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
+.disc{font-size:var(--text-xs);color:var(--color-text-faint);margin-top:var(--space-4);padding:var(--space-3);background:var(--color-surface);border-radius:var(--radius-sm);border:1px solid var(--color-divider);line-height:1.6}
+.mcard{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-5);position:relative;overflow:hidden}
+.mcard::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--mc-color,var(--color-primary))}
+.mname{font-family:var(--font-display);font-size:var(--text-base);font-weight:700;margin-bottom:2px;color:var(--color-text)}
+.mtype{font-size:var(--text-xs);color:var(--color-text-faint);font-style:italic;margin-bottom:var(--space-3)}
+.mdesc{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.7}
+.defrow{display:flex;align-items:flex-start;gap:var(--space-3);padding:var(--space-3) 0;border-bottom:1px solid var(--color-divider)}
+.defrow:last-child{border-bottom:none}
+.dsym{width:30px;height:30px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:var(--text-sm);flex-shrink:0;background:var(--color-surface-offset)}
+.dname{font-weight:600;font-size:var(--text-sm);margin-bottom:2px;color:var(--color-text)}
+.dsymp{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.6}
+.dsoil{font-size:var(--text-xs);color:var(--color-primary);margin-top:2px}
+.chart-wrap{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-6);margin:var(--space-6) 0}
+.chart-title{font-size:var(--text-sm);font-weight:600;color:var(--color-text);margin-bottom:var(--space-4)}
+.menu-toggle{display:none}
+@media(max-width:900px){.menu-toggle{display:flex}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar" role="banner">
+  <div style="display:flex;align-items:center;gap:var(--space-3)">
+    <button class="btn-icon menu-toggle" id="menuToggle" aria-label="Toggle menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="topbar-logo">
+      <svg aria-label="logo" viewBox="0 0 32 32" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="16" cy="16" r="13" stroke="var(--color-primary)" stroke-width="1.5"/>
+        <path d="M16 26L16 13" stroke="var(--color-primary)" stroke-width="2"/>
+        <path d="M16 13 Q9 7 5 9" stroke="var(--color-accent)" stroke-width="1.5"/>
+        <path d="M16 13 Q23 7 27 9" stroke="var(--color-accent)" stroke-width="1.5"/>
+        <path d="M16 13 Q8 13 7 17" stroke="var(--color-primary)" stroke-width="1.5"/>
+        <path d="M16 13 Q24 13 25 17" stroke="var(--color-primary)" stroke-width="1.5"/>
+        <path d="M7 21 Q11 19 16 25 Q21 19 25 21" stroke="var(--color-teal)" stroke-width="1.5"/>
+      </svg>
+      Palm Soil Science
+    </div>
+  </div>
+  <button class="btn-icon" data-theme-toggle aria-label="Toggle theme">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+</header>
+
+<nav class="sidebar" id="sidebar" aria-label="Main navigation">
+  <div class="sidebar-section">Overview</div>
+  <div class="sidebar-item active" data-page="home">🏠 Home &amp; EFB Pipeline</div>
+  <div class="sidebar-section">Soil Profiles</div>
+  <div class="sidebar-item" data-page="ultisol">🟫 Ultisol</div>
+  <div class="sidebar-item" data-page="histosol">🟤 Histosol / Peat</div>
+  <div class="sidebar-item" data-page="spodosol">⬜ Spodosol / Entisol</div>
+  <div class="sidebar-item" data-page="inceptisol">🔵 Inceptisol (Acid Sulphate)</div>
+  <div class="sidebar-item" data-page="andisol">⚫ Andisol (Volcanic)</div>
+  <div class="sidebar-section">Tools &amp; Analysis</div>
+  <div class="sidebar-item" data-page="efb">🌿 EFB Applications</div>
+  <div class="sidebar-item" data-page="bsf">🦟 BSF Bioconversion</div>
+  <div class="sidebar-item" data-page="microbiome">🦠 Microbiome &amp; Biology</div>
+  <div class="sidebar-item" data-page="formulas">∑ Formula Library</div>
+  <div class="sidebar-item" data-page="calculator">🧮 Nutrient Calculator</div>
+  <div class="sidebar-item" data-page="palmages">🌱 Palm Age Stages</div>
+  <div class="sidebar-item" data-page="disease">⚠️ Disease &amp; Pathogens</div>
+  <div class="sidebar-item" data-page="carbon">🌍 Carbon &amp; Organic Matter</div>
+  <div class="sidebar-item" data-page="dris">📊 DRIS Diagnosis</div>
+</nav>
+
+<main class="main" role="main">
+
+<!-- HOME PAGE -->
+<section class="page active" id="page-home" aria-label="Home">
+  <div class="page-header">
+    <div class="tag">🌴 Palm Soil Science Reference</div>
+    <h1>EFB · Microbes · BSF — Complete Soil Diagnostic Platform</h1>
+    <p class="lead">A professor-grade reference synthesising soil chemistry, microbiology, fertiliser science, leaching/fixation dynamics, and palm agronomy — from nursery seedlings to senescent stands. All formulas are literature-verified; flagged values indicate data ranges requiring site-specific calibration.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">EFB Application Pipeline</div>
+    <div class="pipeline">
+      <div class="pstep"><div class="pi">🌾</div><div class="pl">FFB Milling</div><div class="pd">Empty Fruit Bunches separated at mill</div></div>
+      <div class="pstep"><div class="pi">🌿</div><div class="pl">EFB Output</div><div class="pd">~22% of FFB = EFB; ~67% moisture</div></div>
+      <div class="pstep"><div class="pi">🦟</div><div class="pl">BSF Pre-treat</div><div class="pd"><em>H. illucens</em> larvae digest EFB — N×4, P×6</div></div>
+      <div class="pstep"><div class="pi">🌡️</div><div class="pl">Composting</div><div class="pd">Windrow / POME-enhanced; 55–65°C peak</div></div>
+      <div class="pstep"><div class="pi">🌱</div><div class="pl">Field Apply</div><div class="pd">Inter-row mulch or circle application</div></div>
+      <div class="pstep"><div class="pi">📊</div><div class="pl">Soil Response</div><div class="pd">pH↑, CEC↑, BD↓, N mineralised</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Soil Groups at a Glance</div>
+    <div class="g3">
+      <div class="card" style="cursor:pointer" onclick="navigate('ultisol')">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:var(--space-3)">
+          <span class="badge bg">Ultisol</span><span class="badge br">High P Fix</span>
+        </div>
+        <div class="card-title">Ultisol (Red-Yellow Podzolic)</div>
+        <div class="card-sub">Dominant in SE Asia. Low pH (4.0–5.5), high Al³⁺, severe P fixation by Fe/Al oxides. Most oil palm area globally.</div>
+        <div style="font-size:var(--text-xs);color:var(--color-text-faint)">pH 4.0–5.5 · CEC 4–12 cmol/kg · P fix 80–95%</div>
+      </div>
+      <div class="card" style="cursor:pointer" onclick="navigate('histosol')">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:var(--space-3)">
+          <span class="badge ba">Histosol</span><span class="badge bb">Peat</span>
+        </div>
+        <div class="card-title">Histosol / Peat Soil</div>
+        <div class="card-sub">Tropical peatlands — Sarawak, Sumatra, Borneo. Very high OM (>65%), subsidence 2–4 cm/yr, Cu/Zn/B deficiencies.</div>
+        <div style="font-size:var(--text-xs);color:var(--color-text-faint)">pH 3.0–4.5 · CEC 80–200 cmol/kg · BD 0.1–0.3 g/cm³</div>
+      </div>
+      <div class="card" style="cursor:pointer" onclick="navigate('spodosol')">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:var(--space-3)">
+          <span class="badge bgr">Spodosol</span><span class="badge bt">Sandy</span>
+        </div>
+        <div class="card-title">Spodosol / Sandy Entisol</div>
+        <div class="card-sub">Coastal sands — extremely low CEC, rapid leaching of K/Mg/B. Split fertiliser critical. Poor water retention.</div>
+        <div style="font-size:var(--text-xs);color:var(--color-text-faint)">pH 4.5–6.0 · CEC 1–5 cmol/kg · WHC &lt;10%</div>
+      </div>
+      <div class="card" style="cursor:pointer" onclick="navigate('inceptisol')">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:var(--space-3)">
+          <span class="badge bb">Inceptisol</span><span class="badge br">Acid Sulphate</span>
+        </div>
+        <div class="card-title">Inceptisol (Acid Sulphate)</div>
+        <div class="card-sub">Coastal lowlands. Pyrite (FeS₂) oxidation → H₂SO₄ → pH crash to &lt;3.5, Al³⁺/Fe³⁺ toxicity. Drainage management critical.</div>
+        <div style="font-size:var(--text-xs);color:var(--color-text-faint)">pH 2.5–4.5 · Al³⁺ toxic · Fe²⁺ toxic at flood</div>
+      </div>
+      <div class="card" style="cursor:pointer" onclick="navigate('andisol')">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:var(--space-3)">
+          <span class="badge bgr">Andisol</span><span class="badge br">Max P Fix</span>
+        </div>
+        <div class="card-title">Andisol (Andosol)</div>
+        <div class="card-sub">Volcanic origin. Allophane + imogolite fix P at 90–99%. Variable charge CEC, high WHC. Exclusive P fertiliser strategy needed.</div>
+        <div style="font-size:var(--text-xs);color:var(--color-text-faint)">pH 5.0–7.0 · P fix 90–99% · WHC 40–80%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Soil Metrics — Quick Reference</div>
+    <div class="g4">
+      <div class="stat-card"><div class="sv">4.0–5.5</div><div class="sl">Ultisol pH</div><div class="ss">Optimum palm: 4.5–5.5</div></div>
+      <div class="stat-card"><div class="sv">80–95%</div><div class="sl">P Fixation</div><div class="ss">Fe/Al oxides in Ultisol</div></div>
+      <div class="stat-card"><div class="sv">2–4 cm</div><div class="sl">Peat Subsidence/yr</div><div class="ss">After drainage</div></div>
+      <div class="stat-card"><div class="sv">4×N, 6×P</div><div class="sl">BSF Enrichment</div><div class="ss">vs. raw EFB</div></div>
+      <div class="stat-card"><div class="sv">200–250</div><div class="sl">kg N/ha/yr</div><div class="ss">Mature palm demand</div></div>
+      <div class="stat-card"><div class="sv">22%</div><div class="sl">EFB of FFB</div><div class="ss">Average mill output</div></div>
+      <div class="stat-card"><div class="sv">55–65°C</div><div class="sl">Composting Peak</div><div class="ss">Pathogen kill temp</div></div>
+      <div class="stat-card"><div class="sv">3.5–4.5</div><div class="sl">Peat pH</div><div class="ss">Requires Ca²⁺ liming</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Space Context — EFB Treatments Prior to Microbes &amp; BSF</div>
+    <div class="card">
+      <div class="card-title">Research Framework</div>
+      <div class="prose">
+        <p>This platform was built to support research into <strong>pre-treatment of Empty Fruit Bunches (EFB)</strong> before microbial inoculant application and Black Soldier Fly (<em>Hermetia illucens</em>) bioconversion. The full agronomic chain is: Fresh Fruit Bunches → Mill → EFB → Pre-treatment (physical/chemical/biological) → BSF or Microbial Composting → Soil Amendment → Palm Nutrition.</p>
+        <p>The soil pages document how each treatment route interacts with soil mineralogy — P fixation kinetics, CEC dynamics, N cycling, metal toxicities, and leaching losses — across the 5 main oil palm soil types. The formulas library provides quantitative models for leaching fraction, fixation isotherms, and nutrient budgets. The calculator integrates these models for practical fertiliser scheduling.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ULTISOL PAGE -->
+<section class="page" id="page-ultisol" aria-label="Ultisol">
+  <div class="page-header">
+    <div class="tag">🟫 Soil Profile · Most Common Oil Palm Soil</div>
+    <h1>Ultisol — Red-Yellow Podzolic / Oxisol Family</h1>
+    <p class="lead">Ultisols cover ~8% of global land, dominating SE Asia oil palm regions (Peninsular Malaysia, Kalimantan, Sumatra). Characterised by an argillic B horizon, high Fe/Al oxide content, and severe P fixation. Understanding fixation chemistry and Al toxicity is essential for cost-effective fertilisation at all palm ages.</p>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" onclick="switchTab(this,'utab','utab-overview')" role="tab">Overview</button>
+    <button class="tab-btn" onclick="switchTab(this,'utab','utab-pfixation')" role="tab">P Fixation</button>
+    <button class="tab-btn" onclick="switchTab(this,'utab','utab-leaching')" role="tab">N &amp; K Leaching</button>
+    <button class="tab-btn" onclick="switchTab(this,'utab','utab-liming')" role="tab">Liming &amp; CEC</button>
+    <button class="tab-btn" onclick="switchTab(this,'utab','utab-efb')" role="tab">EFB Response</button>
+    <button class="tab-btn" onclick="switchTab(this,'utab','utab-fertil')" role="tab">Fertiliser Tables</button>
+  </div>
+
+  <!-- OVERVIEW TAB -->
+  <div class="tab-content active" id="utab-utab-overview">
+    <div class="g2">
+      <div>
+        <div class="sub-title">Diagnostic Properties</div>
+        <div class="dtable"><table>
+          <thead><tr><th>Property</th><th>Range</th><th>Implication</th></tr></thead>
+          <tbody>
+            <tr><td>pH (H₂O)</td><td>4.0–5.5</td><td>Al³⁺ mobile >4.8; Mn²⁺ toxic >5.0</td></tr>
+            <tr><td>CEC</td><td>4–12 cmol₊/kg</td><td>Low K/Mg retention; leaching risk</td></tr>
+            <tr><td>Base Saturation</td><td>&lt;35%</td><td>Diagnostic criterion for Ultisol</td></tr>
+            <tr><td>Al Saturation</td><td>40–80%</td><td>Root inhibition above 20% AlSat</td></tr>
+            <tr><td>Fe₂O₃</td><td>5–25%</td><td>P fixation sites; goethite + hematite</td></tr>
+            <tr><td>Clay %</td><td>30–60%</td><td>Kaolinite dominant; low swelling</td></tr>
+            <tr><td>Organic C</td><td>0.5–2.5%</td><td>Low; EFB/compost critical to build</td></tr>
+            <tr><td>Bulk Density</td><td>1.1–1.5 g/cm³</td><td>Compaction risk under trafficking</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div>
+        <div class="sub-title">Soil Profile Horizons</div>
+        <div class="tl">
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">A Horizon (0–20 cm)</div><div class="tl-title">Organic-enriched surface</div><div class="tl-body">pH 4.2–5.0; highest OM (1–3%); most microbial activity; EFB mulch builds this zone. K and NH₄⁺ concentrated here.</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">E Horizon (20–40 cm)</div><div class="tl-title">Eluviation zone</div><div class="tl-body">Pale; Fe/Al leached downward. Low CEC, low nutrients. Root zone boundary in dry periods.</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Bt Horizon (40–100 cm)</div><div class="tl-title">Argillic / Clay accumulation</div><div class="tl-body">Red-yellow; 35–60% clay; highest P fixation capacity; Fe/Al oxide concentration. Restricts deep drainage.</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">C Horizon (>100 cm)</div><div class="tl-title">Parent material</div><div class="tl-body">Partially weathered granite/sedimentary; K-feldspar source for slow K release. Impermeable at depth in some profiles.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="alert ai" style="margin-top:var(--space-6)"><strong>Al³⁺ Toxicity:</strong> Above 60% Al saturation, fine root elongation is severely inhibited — the primary cause of poor palm establishment on un-limed Ultisols. Target &lt;20% Al saturation post-liming.</div>
+  </div>
+
+  <!-- P FIXATION TAB -->
+  <div class="tab-content" id="utab-utab-pfixation">
+    <div class="fbox">
+      <div class="fbox-title">Langmuir Phosphorus Adsorption Isotherm <span class="badge bg">Equation 1</span></div>
+      <div class="fbox-eq">q = (q_max · K_L · C) / (1 + K_L · C)</div>
+      <div class="fbox-vars">
+        q = P adsorbed (mg P / kg soil) | q_max = maximum adsorption capacity (mg/kg) | K_L = Langmuir adsorption coefficient (L/mg) | C = P concentration in solution (mg P / L)
+        <br><strong>Typical Ultisol values:</strong> q_max = 400–1200 mg/kg · K_L = 0.05–0.80 L/mg
+      </div>
+    </div>
+    <div class="fbox">
+      <div class="fbox-title">Freundlich P Adsorption <span class="badge bg">Equation 2</span></div>
+      <div class="fbox-eq">q = K_f · C^(1/n)</div>
+      <div class="fbox-vars">K_f = Freundlich capacity factor | 1/n = adsorption intensity (typically 0.3–0.7 for tropical soils) | C = equilibrium P concentration (mg/L)
+        <br>Use Langmuir at low C (&lt;5 mg/L); Freundlich better at higher concentrations.
+      </div>
+    </div>
+    <div class="fbox">
+      <div class="fbox-title">Degree of P Saturation (DPS) — Leaching Threshold <span class="badge br">Equation 3</span></div>
+      <div class="fbox-eq">DPS (%) = [P_ox / (α · (Fe_ox + Al_ox))] × 100</div>
+      <div class="fbox-vars">P_ox, Fe_ox, Al_ox = oxalate-extractable P, Fe, Al (mmol/kg) | α = 0.5 (correction factor) | DPS &gt;25% → risk of P leaching to groundwater</div>
+    </div>
+    <div class="sub-title" style="margin-top:var(--space-6)">P Fixation Mechanisms in Ultisols</div>
+    <div class="prose">
+      <p>In Ultisols, P is immobilised by three mechanisms: <strong>(1) ligand exchange</strong> on Fe/Al oxide surfaces forming inner-sphere complexes with goethite (α-FeOOH) and gibbsite (Al(OH)₃); <strong>(2) precipitation</strong> as AlPO₄ (variscite) at pH &lt;5 and FePO₄·2H₂O (strengite) at pH 3–5; and <strong>(3) occlusion</strong> within oxide aggregates over time (irreversible fixation).</p>
+      <p>The reaction sequence for Al-phosphate precipitation is:</p>
+    </div>
+    <div class="fbox">
+      <div class="fbox-title">Al-Phosphate Precipitation <span class="badge br">Chemistry</span></div>
+      <div class="fbox-eq">Al³⁺ + H₂PO₄⁻ → AlPO₄↓ + 2H⁺  (variscite, K_sp = 10⁻²²·¹)
+Fe³⁺ + H₂PO₄⁻ → FePO₄↓ + 2H⁺  (strengite, K_sp = 10⁻²⁶·⁴)</div>
+      <div class="fbox-vars">Both reactions <strong>consume H⁺</strong> competitors — liming reduces Al³⁺/Fe³⁺ activity, dramatically reducing P fixation capacity. A 1-unit pH increase (4.5→5.5) reduces fixation capacity by 40–60%.</div>
+    </div>
+    <div class="alert aw"><strong>Practical implication:</strong> On Ultisols, broadcast TSP or DAP at pH &lt;4.5 results in &gt;90% of applied P fixed within 72 h. Always lime to pH 5.0–5.5 before P application, or use EFB compost (organic P = 30–50% of total P) to compete with fixation sites via humate chelation.</div>
+    <div class="chart-wrap">
+      <div class="chart-title">P Fixation vs. Soil pH — Ultisol</div>
+      <canvas id="chartPfix" height="200"></canvas>
+    </div>
+  </div>
+
+  <!-- N & K LEACHING TAB -->
+  <div class="tab-content" id="utab-utab-leaching">
+    <div class="fbox">
+      <div class="fbox-title">Leaching Fraction Model (van der Zee &amp; van Riemsdijk) <span class="badge bb">Equation 4</span></div>
+      <div class="fbox-eq">L_frac = Q_drainage / (Q_drainage + ET_crop)</div>
+      <div class="fbox-vars">L_frac = fraction of applied nutrient leached | Q_drainage = drainage flux (mm/yr) | ET_crop = evapotranspiration (mm/yr)
+        <br>For oil palm: ET_crop = 900–1400 mm/yr; Annual rainfall 1800–3500 mm; L_frac typically 0.15–0.55 in SE Asia Ultisols
+      </div>
+    </div>
+    <div class="fbox">
+      <div class="fbox-title">Nitrate Leaching Mass Balance <span class="badge br">Equation 5</span></div>
+      <div class="fbox-eq">L_N = N_app · L_frac · NUE_loss_factor
+N_leach (kg/ha) = N_input × (1 − NUE) × L_frac</div>
+      <div class="fbox-vars">N_leach = N leached (kg/ha) | N_input = N applied (kg/ha) | NUE = N use efficiency (0.35–0.60 for surface urea) | L_frac = leaching fraction
+        <br>Urea NUE on Ultisols = 35–55%; NBPT-coated urea = 55–65%; EFB N (slow-release) = 70–80%
+      </div>
+    </div>
+    <div class="fbox">
+      <div class="fbox-title">Ammonia Volatilisation (Urea) <span class="badge aw">Equation 6</span></div>
+      <div class="fbox-eq">%NH₃_lost = 100 × [1 − exp(−k_v · t)]
+k_v = f(pH, T, wind, soil moisture)
+At pH 5.5, T=28°C: k_v ≈ 0.03–0.08 day⁻¹</div>
+      <div class="fbox-vars">High N losses from urea on Ultisol when: pH &gt;6.0 (post-liming), soil dry/windy, or EFB mulch raises surface pH. Incorporation or split application reduces losses by 30–50%.</div>
+    </div>
+    <div class="sub-title">K and Mg Leaching on Ultisols</div>
+    <div class="prose">
+      <p>K⁺ leaching on Ultisols with CEC &lt;8 cmol/kg is substantial — 20–35% of applied MOP can be lost below 60 cm within one wet season. The selectivity coefficient for K vs Ca on kaolinite is low (K_K/Ca = 0.2–0.5), meaning K is easily displaced by Ca²⁺ during liming events. <strong>Mg²⁺</strong> is even more mobile — the Mg/K ratio in soil solution is a key diagnostic indicator of imbalance.</p>
+    </div>
+    <div class="dtable"><table>
+      <thead><tr><th>Nutrient</th><th>Leach Loss %</th><th>Loss Pathway</th><th>Mitigation</th></tr></thead>
+      <tbody>
+        <tr><td>NO₃⁻-N</td><td>15–40%</td><td>Drainage flux</td><td>Split urea; NBPT urease inhibitor; EFB slow-N</td></tr>
+        <tr><td>NH₄⁺-N</td><td>5–15%</td><td>Surface runoff &amp; volatilisation</td><td>Placement; liming to &lt;pH 5.8</td></tr>
+        <tr><td>K⁺</td><td>15–35%</td><td>Cation displacement</td><td>Split MOP; frond stacking in circle</td></tr>
+        <tr><td>Mg²⁺</td><td>20–45%</td><td>Low CEC retention</td><td>Dolomite; HGMS; kieserite</td></tr>
+        <tr><td>B (borate)</td><td>30–60%</td><td>Anion mobility</td><td>Solubor split; EFB compost</td></tr>
+        <tr><td>H₂PO₄⁻</td><td>&lt;3%</td><td>Fixation dominant</td><td>Excess P required on high-fix soils</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- LIMING TAB -->
+  <div class="tab-content" id="utab-utab-liming">
+    <div class="fbox">
+      <div class="fbox-title">Adams-Evans Lime Requirement (Adjusted for Tropics) <span class="badge bg">Equation 7</span></div>
+      <div class="fbox-eq">LR (t/ha) = [pH_target − pH_i] × SMP_buffer_factor × BD × D / 10</div>
+      <div class="fbox-vars">pH_target = 5.0–5.5 for oil palm | pH_i = initial pH | SMP_buffer_factor = 0.5–1.2 (depends on Al saturation &amp; OM) | BD = bulk density (g/cm³) | D = incorporation depth (cm)
+        <br>Typical application rate: 1.5–3.0 t Ground Magnesium Limestone (GML) /ha to raise pH by 1 unit on Ultisol with 5% OM.
+      </div>
+    </div>
+    <div class="fbox">
+      <div class="fbox-title">Al Saturation Calculation <span class="badge br">Equation 8</span></div>
+      <div class="fbox-eq">Al_sat (%) = [Al³⁺_cmol/kg / ECEC] × 100
+ECEC = Ca²⁺ + Mg²⁺ + K⁺ + Na⁺ + Al³⁺ (cmol₊/kg)
+Target: Al_sat &lt; 20% for palm root health</div>
+      <div class="fbox-vars">ECEC = effective CEC at field pH (not buffered to pH 7) | Al³⁺ by KCl extraction | Critical threshold: 20% (root elongation 50% inhibited), 60% (near-complete root inhibition)</div>
+    </div>
+    <div class="alert as"><strong>GML vs. Dolomite:</strong> Ground Magnesium Limestone (CaMg(CO₃)₂) is preferred for Ultisols to address both Ca and Mg deficiency. Pure calcite (CaCO₃) addresses Ca but may worsen Mg/K imbalance. Apply 2–4 t GML/ha at planting; 1–2 t/ha maintenance every 3–4 yrs.</div>
+    <div class="sub-title" style="margin-top:var(--space-5)">CEC Buffering Effect of EFB Compost</div>
+    <div class="prose">
+      <p>Addition of EFB compost at 25–50 t/ha increases CEC by 0.5–2.0 cmol/kg (per % increase in OM), attributable to carboxyl and phenolic functional groups of humic substances. This buffering effect reduces K⁺ and Mg²⁺ leaching by 15–25% in the season of application.</p>
+    </div>
+  </div>
+
+  <!-- EFB RESPONSE TAB -->
+  <div class="tab-content" id="utab-utab-efb">
+    <div class="sub-title">Biochemical Changes on Ultisol Following EFB Application</div>
+    <div class="g2">
+      <div>
+        <div class="dtable"><table>
+          <thead><tr><th>Parameter</th><th>Before EFB</th><th>1 yr post-EFB</th><th>3 yr post-EFB</th></tr></thead>
+          <tbody>
+            <tr><td>pH (H₂O)</td><td>4.2–4.6</td><td>4.5–4.9</td><td>4.8–5.3</td></tr>
+            <tr><td>Organic C (%)</td><td>0.8–1.2</td><td>1.4–2.0</td><td>2.0–3.0</td></tr>
+            <tr><td>CEC (cmol/kg)</td><td>4–7</td><td>6–10</td><td>8–14</td></tr>
+            <tr><td>Avail. P (mg/kg)</td><td>4–10</td><td>8–18</td><td>10–22</td></tr>
+            <tr><td>Exch. K (cmol/kg)</td><td>0.1–0.2</td><td>0.3–0.5</td><td>0.3–0.6</td></tr>
+            <tr><td>Bulk Density</td><td>1.2–1.4</td><td>1.0–1.25</td><td>0.95–1.15</td></tr>
+            <tr><td>Microbial Biomass C</td><td>150–300</td><td>350–600</td><td>500–900 mg/kg</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="prose">
+        <p><strong>EFB Nutrient Release Pattern on Ultisols:</strong> Raw EFB applied as mulch (30–60 t/ha) releases nutrients slowly: N over 6–12 months (net mineralisation lag 3–6 wk), K rapidly (1–4 wk as K is easily leached from fibrous material), and P slowly (organic P mineralisation rate 2–4%/yr).</p>
+        <p><strong>BSF-processed EFB</strong> (frass + residue) shows 3–5× faster N mineralisation and significantly higher available P due to phosphatase activity and reduced C:N ratio (from ~60 raw to ~12–18 BSF-processed).</p>
+        <p><strong>Key Interaction:</strong> EFB humic acids complex with Fe/Al oxides, blocking P fixation sites. Studies report 20–35% reduction in P fixation capacity after 3 consecutive years of EFB application.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FERTILISER TAB -->
+  <div class="tab-content" id="utab-utab-fertil">
+    <div class="sub-title">Standard Fertiliser Rates — Ultisol Oil Palm (kg/palm/yr)</div>
+    <div class="dtable"><table>
+      <thead><tr><th>Palm Stage</th><th>Age (yr)</th><th>N (Urea)</th><th>P₂O₅ (RP/TSP)</th><th>K₂O (MOP)</th><th>MgO</th><th>Liming</th><th>Splits/yr</th></tr></thead>
+      <tbody>
+        <tr><td>Pre-nursery</td><td>0–3 mo</td><td>2–4 g/pot/mo</td><td>1.5 g/pot</td><td>1.5 g/pot</td><td>0.5 g/pot</td><td>GML in media</td><td>Monthly</td></tr>
+        <tr><td>Nursery</td><td>3–12 mo</td><td>8–15 g/pot/mo</td><td>5 g/pot/mo</td><td>5 g/pot/mo</td><td>2 g/pot/mo</td><td>pH 5.5 target</td><td>Monthly</td></tr>
+        <tr><td>Immature Yr 1</td><td>12–24 mo</td><td>0.5–0.8</td><td>0.4–0.6 RP</td><td>0.5–0.8</td><td>0.1–0.2</td><td>2–3 t/ha GML</td><td>4–6</td></tr>
+        <tr><td>Immature Yr 2–3</td><td>24–48 mo</td><td>0.8–1.5</td><td>0.6–1.0 RP</td><td>0.8–1.5</td><td>0.2–0.4</td><td>1–2 t/ha</td><td>4</td></tr>
+        <tr><td>Young Mature</td><td>4–8 yr</td><td>1.5–2.0</td><td>0.8–1.2</td><td>1.5–2.2</td><td>0.4–0.6</td><td>1 t/ha/3yr</td><td>3–4</td></tr>
+        <tr><td>Peak Bearing</td><td>8–20 yr</td><td>2.0–2.8</td><td>1.0–1.8</td><td>2.0–3.0</td><td>0.5–0.8</td><td>Maintain pH</td><td>2–3</td></tr>
+        <tr><td>Mature</td><td>20–25 yr</td><td>1.8–2.5</td><td>0.8–1.4</td><td>1.8–2.5</td><td>0.4–0.7</td><td>1 t/ha/4yr</td><td>2</td></tr>
+        <tr><td>Senescent</td><td>&gt;25 yr</td><td>1.2–1.8</td><td>0.5–1.0</td><td>1.2–2.0</td><td>0.3–0.5</td><td>Pre-replant lime</td><td>2</td></tr>
+      </tbody>
+    </table></div>
+    <div class="alert aw"><strong>P correction for fixation:</strong> Rock Phosphate is preferred over TSP on Ultisols for long-term P investment — slow dissolution matches fixation dynamics better than soluble P. Apply RP at planting circle with GML (lime increases RP solubility by raising soil pH).</div>
+  </div>
+</section>
+
+<!-- HISTOSOL PAGE -->
+<section class="page" id="page-histosol" aria-label="Histosol Peat">
+  <div class="page-header">
+    <div class="tag">🟤 Soil Profile · Tropical Peatland</div>
+    <h1>Histosol — Tropical Peat Soil</h1>
+    <p class="lead">Tropical peatlands in SE Asia cover ~25 million ha; approximately 3.5 million ha are under oil palm. Extreme organic matter (&gt;65% OM), very low pH (3.0–4.5), severe micronutrient deficiencies (Cu, Zn, B), and post-drainage subsidence create unique management challenges not found in mineral soils.</p>
+  </div>
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" onclick="switchTab(this,'htab','htab-char')" role="tab">Characteristics</button>
+    <button class="tab-btn" onclick="switchTab(this,'htab','htab-chem')" role="tab">Chemistry</button>
+    <button class="tab-btn" onclick="switchTab(this,'htab','htab-sub')" role="tab">Subsidence</button>
+    <button class="tab-btn" onclick="switchTab(this,'htab','htab-nutr')" role="tab">Nutrition</button>
+    <button class="tab-btn" onclick="switchTab(this,'htab','htab-efb')" role="tab">EFB/BSF</button>
+  </div>
+  <div class="tab-content active" id="htab-htab-char">
+    <div class="g2">
+      <div>
+        <div class="sub-title">Diagnostic Properties</div>
+        <div class="dtable"><table>
+          <thead><tr><th>Property</th><th>Range</th></tr></thead>
+          <tbody>
+            <tr><td>pH</td><td>3.0–4.5</td></tr>
+            <tr><td>Organic Matter</td><td>65–98%</td></tr>
+            <tr><td>CEC</td><td>80–200 cmol/kg (pH dependent)</td></tr>
+            <tr><td>Bulk Density</td><td>0.1–0.3 g/cm³</td></tr>
+            <tr><td>N Total</td><td>1.0–2.5% (mostly recalcitrant)</td></tr>
+            <tr><td>Available P</td><td>&lt;5 mg/kg (very low)</td></tr>
+            <tr><td>Cu</td><td>0.1–0.5 mg/kg (deficient &lt;0.2)</td></tr>
+            <tr><td>Water Table</td><td>Must maintain 50–75 cm</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="prose">
+        <p><strong>Peat Classification by Decomposition:</strong> Fibric peat (least decomposed, Hemic), Sapric peat (most decomposed, highest CEC). Oil palm on sapric peat shows better establishment due to more stable bearing capacity.</p>
+        <p><strong>Water table management:</strong> Optimum water table = 50–75 cm. &lt;50 cm → subsidence accelerates. &gt;75 cm → waterlogging, Fe²⁺ toxicity, reduced root function.</p>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content" id="htab-htab-chem">
+    <div class="fbox">
+      <div class="fbox-title">Peat Oxidation / Carbon Loss <span class="badge br">Equation 9</span></div>
+      <div class="fbox-eq">CO₂ emission (t C/ha/yr) = k_ox · BD · D · (WT_drop)
+k_ox ≈ 0.04–0.09 yr⁻¹ for tropical peat</div>
+      <div class="fbox-vars">BD = bulk density | D = drained layer depth (cm) | WT_drop = water table drop from surface (cm) | Total C stock loss: typically 20–80 t CO₂-eq/ha/yr under drainage</div>
+    </div>
+    <div class="fbox">
+      <div class="fbox-title">N Mineralisation in Peat (Arrhenius Temperature Model) <span class="badge bg">Equation 10</span></div>
+      <div class="fbox-eq">k_N = k_ref · exp[-Ea/R · (1/T − 1/T_ref)]
+k_ref at 25°C ≈ 0.002–0.008 wk⁻¹ for peat</div>
+      <div class="fbox-vars">Ea = activation energy (~60–80 kJ/mol) | R = 8.314 J/mol/K | T = soil temp (K) | Net mineralisation in well-managed peat: 50–150 kg N/ha/yr</div>
+    </div>
+  </div>
+  <div class="tab-content" id="htab-htab-sub">
+    <div class="fbox">
+      <div class="fbox-title">Peat Subsidence Model (Wosten 1997 / Carlson 2015) <span class="badge br">Equation 11</span></div>
+      <div class="fbox-eq">S_annual (cm/yr) = a · (WT_depth − WT_opt) + b · BD + c
+Post-drainage: 2–4 cm/yr initially → 0.5–1.5 cm/yr after decade</div>
+      <div class="fbox-vars">WT_depth = water table depth (cm) | WT_opt = optimal WT (50–75 cm) | a, b, c = empirical site coefficients | Driven by: consolidation (physical), oxidation (biological), shrinkage (desiccation)</div>
+    </div>
+    <div class="alert ae"><strong>Subsidence consequence:</strong> After 25–30 yrs, peat surface may drop 0.5–1.5 m, flooding risk increases, and replanting on substandard peat depth (&lt;1 m residual) may be impractical.</div>
+  </div>
+  <div class="tab-content" id="htab-htab-nutr">
+    <div class="sub-title">Fertiliser Programme — Peat Soil Palm (kg/palm/yr)</div>
+    <div class="dtable"><table>
+      <thead><tr><th>Stage</th><th>N</th><th>P₂O₅</th><th>K₂O</th><th>MgO</th><th>Cu (kg/ha)</th><th>Zn (kg/ha)</th><th>B (kg/ha)</th><th>Ca (t/ha)</th></tr></thead>
+      <tbody>
+        <tr><td>Nursery</td><td>5–10 g/pot/mo</td><td>3 g/pot</td><td>5 g/pot</td><td>2 g/pot</td><td>0.5</td><td>0.5</td><td>0.2</td><td>GML in mix</td></tr>
+        <tr><td>Immature</td><td>0.3–0.6</td><td>0.3–0.5</td><td>0.6–1.2</td><td>0.2–0.4</td><td>1.0</td><td>0.5</td><td>0.4</td><td>1.0–2.0</td></tr>
+        <tr><td>Young Mature</td><td>0.8–1.5</td><td>0.5–0.8</td><td>1.5–2.5</td><td>0.4–0.6</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0.5–1.0</td></tr>
+        <tr><td>Mature</td><td>1.5–2.0</td><td>0.6–1.0</td><td>2.0–3.0</td><td>0.5–0.8</td><td>0.5</td><td>0.3</td><td>0.5</td><td>0.5</td></tr>
+      </tbody>
+    </table></div>
+    <div class="alert aw"><strong>Cu/Zn/B deficiency</strong> is the most economically significant micronutrient problem in peat. Cu is complexed by peat organic matter (stability constant log K ~12–15). Foliar Cu sulphate (0.1–0.3%) may outperform soil application.</div>
+  </div>
+  <div class="tab-content" id="htab-htab-efb">
+    <div class="prose">
+      <p><strong>EFB on Peat:</strong> EFB application at 30–60 t/ha contributes K, Ca, and Mg that peat soils are critically low in. However, the high C:N of EFB (~60:1 raw) can induce N immobilisation — BSF-processed EFB (C:N ~12:1) eliminates this problem.</p>
+      <p><strong>BSF frass on peat</strong> provides bioavailable N, chitin (promotes Trichoderma/Bacillus), and P. Studies show 20–35% improvement in palm frond N concentration within 6 months of BSF frass application vs. urea on peat soils.</p>
+    </div>
+    <div class="fbox">
+      <div class="fbox-title">C:N Ratio and Net N Mineralisation <span class="badge bg">Equation 12</span></div>
+      <div class="fbox-eq">Net N min. = N_organic × k_N
+If C:N &gt; 25 → N immobilisation (microbial uptake of soil N)
+If C:N &lt; 20 → Net mineralisation begins
+If C:N &lt; 12 → Rapid N release (BSF frass range)</div>
+      <div class="fbox-vars">k_N = mineralisation rate constant (0.002–0.05 wk⁻¹ depending on substrate quality) | BSF frass C:N = 8–14 | Raw EFB C:N = 50–75 | Composted EFB C:N = 15–25</div>
+    </div>
+  </div>
+</section>
+
+<!-- SPODOSOL PAGE -->
+<section class="page" id="page-spodosol" aria-label="Spodosol Sandy">
+  <div class="page-header">
+    <div class="tag">⬜ Soil Profile · Coastal Sandy</div>
+    <h1>Spodosol &amp; Sandy Entisol — Coastal Sandy Soils</h1>
+    <p class="lead">Sandy soils (Entisols, Spodosols) predominate in coastal areas of SE Asia oil palm regions. Extremely low CEC (1–5 cmol/kg), minimal clay, and high hydraulic conductivity result in rapid leaching of all mobile nutrients — N, K, Mg, B. Fertiliser management relies on high-frequency small splits and organic matter building.</p>
+  </div>
+  <div class="g2">
+    <div>
+      <div class="sub-title">Properties &amp; Chemistry</div>
+      <div class="dtable"><table>
+        <thead><tr><th>Property</th><th>Range</th><th>Impact</th></tr></thead>
+        <tbody>
+          <tr><td>pH</td><td>4.5–6.5</td><td>Variable; low buffering capacity</td></tr>
+          <tr><td>CEC</td><td>1–5 cmol/kg</td><td>Minimal K/Mg retention</td></tr>
+          <tr><td>Sand %</td><td>80–98%</td><td>Rapid drainage, WHC &lt;10%</td></tr>
+          <tr><td>Organic C</td><td>0.1–0.8%</td><td>Very low; OM additions critical</td></tr>
+          <tr><td>P fixation</td><td>Low–moderate</td><td>P leaches if DPS &gt;25%</td></tr>
+          <tr><td>K leach loss</td><td>30–55%</td><td>Weekly rainfall events flush K</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div>
+      <div class="fbox">
+        <div class="fbox-title">Water Holding Capacity (Sandy Soil) <span class="badge bb">Equation 13</span></div>
+        <div class="fbox-eq">WHC (%) = θ_FC − θ_PWP × 100
+Sandy: θ_FC ≈ 0.10–0.15, θ_PWP ≈ 0.04–0.06
+WHC ≈ 6–9% vs. clay loam 20–30%</div>
+        <div class="fbox-vars">θ_FC = volumetric water at field capacity | θ_PWP = water at permanent wilting point | EFB mulch on sandy soil increases WHC by 30–50% via hydrophilic organic matter</div>
+      </div>
+    </div>
+  </div>
+  <div class="sub-title" style="margin-top:var(--space-5)">Fertiliser Strategy — Sandy Soils</div>
+  <div class="alert ai"><strong>Rule of Sandy Soils:</strong> Split every application into ≥6 doses per year. Never apply &gt;0.5 kg K₂O/palm/split or &gt;200 g N/palm/application. EFB mulch (30–40 t/ha) + compost builds CEC over 3–5 years and is the most cost-effective long-term investment.</div>
+  <div class="dtable"><table>
+    <thead><tr><th>Stage</th><th>N</th><th>P₂O₅</th><th>K₂O</th><th>MgO</th><th>Splits</th></tr></thead>
+    <tbody>
+      <tr><td>Immature</td><td>0.5–0.8</td><td>0.3–0.5</td><td>0.5–0.8</td><td>0.1–0.2</td><td>6–8/yr</td></tr>
+      <tr><td>Young Mature</td><td>1.0–1.8</td><td>0.6–1.0</td><td>1.2–2.0</td><td>0.3–0.5</td><td>4–6/yr</td></tr>
+      <tr><td>Mature</td><td>1.8–2.5</td><td>0.8–1.4</td><td>2.0–3.0</td><td>0.5–0.8</td><td>4/yr</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- INCEPTISOL PAGE -->
+<section class="page" id="page-inceptisol" aria-label="Inceptisol Acid Sulphate">
+  <div class="page-header">
+    <div class="tag">🔵 Soil Profile · Acid Sulphate</div>
+    <h1>Inceptisol — Acid Sulphate &amp; Alluvial Soils</h1>
+    <p class="lead">Coastal lowland Inceptisols containing pyrite (FeS₂) present the most extreme pH challenge in oil palm agronomy. Drainage-induced oxidation of pyrite generates sulphuric acid, crashing pH to &lt;3.5 and releasing toxic Al³⁺ and Fe³⁺. Management requires precision water control and strategic liming.</p>
+  </div>
+  <div class="fbox">
+    <div class="fbox-title">Pyrite Oxidation Chemistry <span class="badge br">Equation 14</span></div>
+    <div class="fbox-eq">FeS₂ + 15/4 O₂ + 7/2 H₂O → Fe(OH)₃ + 2SO₄²⁻ + 4H⁺
+(Abiotic + Thiobacillus ferrooxidans-catalysed)
+Fe²⁺ oxidation: 4Fe²⁺ + O₂ + 10H₂O → 4Fe(OH)₃ + 8H⁺ (Ferrobacillus)</div>
+    <div class="fbox-vars">Each mole of FeS₂ oxidised generates 4 moles of H⁺ | At 1% FeS₂ content in soil, potential acidity = ~30 t H₂SO₄ equivalent/ha·m | Neutralisation requires >30 t/ha carbonate material</div>
+  </div>
+  <div class="g2">
+    <div class="prose">
+      <p><strong>Jarosite formation</strong> (KFe₃(SO₄)₂(OH)₆) acts as a temporary acid store — it accumulates at pH 3–4 and re-releases H⁺ and SO₄²⁻ upon disturbance. Yellow mottles in the profile are diagnostic for jarosite.</p>
+      <p><strong>Al/Fe toxicity thresholds</strong> for oil palm: Al³⁺ &gt;5 mg/L in soil solution → root inhibition. Fe²⁺ &gt;50 mg/L (flooded conditions) → orange/yellow leaflet tip necrosis (Leaf 17 diagnosis).</p>
+    </div>
+    <div>
+      <div class="dtable"><table>
+        <thead><tr><th>Property</th><th>Active Acid Sulphate</th><th>Potential Acid Sulphate</th></tr></thead>
+        <tbody>
+          <tr><td>pH</td><td>&lt;3.5</td><td>4.0–5.5 (undrained)</td></tr>
+          <tr><td>FeS₂ content</td><td>0–remnant</td><td>0.5–8%</td></tr>
+          <tr><td>SO₄²⁻</td><td>&gt;200 mg/kg</td><td>&lt;50 mg/kg</td></tr>
+          <tr><td>Jarosite</td><td>Present (yellow)</td><td>Absent</td></tr>
+          <tr><td>Liming need</td><td>5–30 t/ha</td><td>Pre-drain manage</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+  <div class="alert ae"><strong>Management principle:</strong> Prevent pyrite oxidation by maintaining water table above the pyritic layer. Once activated, neutralise with lime (10–30 t CaCO₃/ha). Seashell/marine lime is cost-effective in coastal areas. EFB compost improves soil buffering capacity and reduces Fe toxicity via organic complexation.</div>
+</section>
+
+<!-- ANDISOL PAGE -->
+<section class="page" id="page-andisol" aria-label="Andisol Volcanic">
+  <div class="page-header">
+    <div class="tag">⚫ Soil Profile · Volcanic Origin</div>
+    <h1>Andisol — Andosol (Volcanic Ash Soil)</h1>
+    <p class="lead">Andisols form on volcanic parent material (Sumatra, Java, Sulawesi, Philippines). Dominated by allophane, imogolite, and Al-humus complexes with variable-charge surfaces, they exhibit the highest P fixation capacity of all soils (90–99%), exceptional water-holding capacity, and high natural fertility for K, Ca, and Mg — but P availability is catastrophically low.</p>
+  </div>
+  <div class="fbox">
+    <div class="fbox-title">Allophane P Fixation — Ligand Exchange Mechanism <span class="badge br">Equation 15</span></div>
+    <div class="fbox-eq">Allophane-OH + H₂PO₄⁻ → Allophane-OPO₃H⁻ + H₂O
+(Inner-sphere surface complex — essentially irreversible at low pH)
+Phosphate retention (PR) test: PR = [P_added − P_in solution] / P_added × 100
+Andisol PR: 85–99% vs. Ultisol 60–90%</div>
+    <div class="fbox-vars">Allophane specific surface area: 700–1000 m²/g (vs. kaolinite 10–20 m²/g) | Imogolite provides additional reactive OH sites | Variable charge reverses with pH: pH &gt;7 → surface becomes negative → P desorption possible</div>
+  </div>
+  <div class="fbox">
+    <div class="fbox-title">Variable Charge CEC — Andisol <span class="badge bg">Equation 16</span></div>
+    <div class="fbox-eq">CEC_eff = CEC_permanent + CEC_variable
+CEC_variable = f(pH − pH_ZPC)
+At pH below pH_ZPC (≈pH 5–6): net + charge → anion retention
+At pH above pH_ZPC: net − charge → cation retention</div>
+    <div class="fbox-vars">pH_ZPC = zero point of charge | Liming above pH_ZPC increases CEC and reduces P fixation simultaneously — key management lever for Andisols</div>
+  </div>
+  <div class="alert ai"><strong>P Strategy on Andisols:</strong> Use soluble P + Na-humate/fulvate chelation, or citric acid-based bio-fertiliser (Aspergillus niger phosphate solubiliser). Organic P sources (EFB compost, BSF frass) perform better than inorganic P on Andisols due to lower fixation of organic-P forms. Apply at least 2× standard P rate and monitor leaf P quarterly.</div>
+</section>
+
+<!-- EFB PAGE -->
+<section class="page" id="page-efb" aria-label="EFB Applications">
+  <div class="page-header">
+    <div class="tag">🌿 Organic Amendments</div>
+    <h1>EFB — Empty Fruit Bunch Applications</h1>
+    <p class="lead">EFB is the largest solid by-product of the palm oil mill, representing ~22% of Fresh Fruit Bunch weight (wet basis). Proper pre-treatment and application can substitute 30–60% of inorganic K and provide significant N, Ca, Mg, and micronutrients. This page covers all EFB pathways, pre-treatments, and soil-type specific outcomes.</p>
+  </div>
+  <div class="section">
+    <div class="section-title">EFB Nutrient Composition</div>
+    <div class="dtable"><table>
+      <thead><tr><th>Parameter</th><th>Raw EFB (dry)</th><th>EFB Compost</th><th>BSF Frass</th><th>EFB Biochar</th></tr></thead>
+      <tbody>
+        <tr><td>C (%)</td><td>42–48</td><td>20–32</td><td>35–42</td><td>60–80</td></tr>
+        <tr><td>N (%)</td><td>0.6–1.2</td><td>1.5–2.5</td><td>3.0–6.0</td><td>0.4–0.8</td></tr>
+        <tr><td>P₂O₅ (%)</td><td>0.1–0.3</td><td>0.5–1.0</td><td>2.0–5.0</td><td>1.5–3.5</td></tr>
+        <tr><td>K₂O (%)</td><td>2.5–4.5</td><td>1.0–2.5</td><td>0.8–1.5</td><td>4.0–8.0</td></tr>
+        <tr><td>CaO (%)</td><td>0.5–0.8</td><td>0.8–1.5</td><td>2.0–5.0</td><td>5.0–10.0</td></tr>
+        <tr><td>MgO (%)</td><td>0.2–0.5</td><td>0.4–0.8</td><td>0.5–1.0</td><td>1.5–3.0</td></tr>
+        <tr><td>C:N ratio</td><td>50–75</td><td>12–25</td><td>8–14</td><td>80–200</td></tr>
+        <tr><td>pH</td><td>5.5–6.5</td><td>6.5–8.0</td><td>5.5–7.5</td><td>8.5–11.0</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="section">
+    <div class="section-title">Pre-Treatment Methods</div>
+    <div class="g3">
+      <div class="mcard" style="--mc-color:var(--color-primary)">
+        <div class="mname">Mechanical Shredding</div>
+        <div class="mtype">Physical pre-treatment</div>
+        <div class="mdesc">Shredding to &lt;5 cm particles increases surface area 3–5×, accelerating decomposition. Reduces composting time by 30–40%. Essential before BSF feeding or anaerobic digestion.</div>
+      </div>
+      <div class="mcard" style="--mc-color:var(--color-blue)">
+        <div class="mname">POME Drench</div>
+        <div class="mtype">Chemical/biological pre-soak</div>
+        <div class="mdesc">Palm Oil Mill Effluent (POME) soaking inoculates EFB with indigenous microbes, adds nutrients (BOD ~25,000 mg/L), and reduces pH. Accelerates windrow composting by 20–30%.</div>
+      </div>
+      <div class="mcard" style="--mc-color:var(--color-accent)">
+        <div class="mname">Alkali Pre-treatment</div>
+        <div class="mtype">NaOH / Ca(OH)₂ soak</div>
+        <div class="mdesc">NaOH 1–2% or Ca(OH)₂ at 50–55°C for 1–2 hrs. Hydrolyses lignocellulosic bonds, improving BSF larval digestibility by 40–60%. Increases lignin accessibility.</div>
+      </div>
+      <div class="mcard" style="--mc-color:var(--color-teal)">
+        <div class="mname">Laccase / Cellulase Enzyme</div>
+        <div class="mtype">Enzymatic pre-treatment</div>
+        <div class="mdesc">Trichoderma or Pleurotus enzyme cocktail breaks down lignin and cellulose. Pre-treatment for 5–7 days at 30–35°C. Improves C:N ratio and P availability for subsequent BSF conversion.</div>
+      </div>
+      <div class="mcard" style="--mc-color:var(--color-gold)">
+        <div class="mname">Steam Explosion</div>
+        <div class="mtype">Hydrothermal pre-treatment</div>
+        <div class="mdesc">High-pressure steam (180–210°C, 1–3 min) followed by rapid decompression. Maximum cell wall disruption. High capital cost — industrial-scale operations only.</div>
+      </div>
+      <div class="mcard" style="--mc-color:var(--color-primary)">
+        <div class="mname">Biochar Co-amendment</div>
+        <div class="mtype">Pyrolysis product addition</div>
+        <div class="mdesc">EFB biochar (300–500°C pyrolysis) added to soil at 5–20 t/ha raises pH, improves CEC (+2–4 cmol/kg), reduces N leaching by 15–25%, and provides long-term C sequestration.</div>
+      </div>
+    </div>
+  </div>
+  <div class="fbox">
+    <div class="fbox-title">Lignocellulose Hydrolysis (Cellulase Enzymatic) <span class="badge bg">Equation 17</span></div>
+    <div class="fbox-eq">(C₆H₁₀O₅)n + nH₂O → n·C₆H₁₂O₆  (cellulose → glucose via cellulase)
+Rate: V = (Vmax · [S]) / (Km + [S])  (Michaelis-Menten)
+EFB cellulose content: 38–44%; lignin 21–29%; hemicellulose 22–26%</div>
+    <div class="fbox-vars">Vmax = maximum reaction velocity | Km = substrate concentration at ½ Vmax | Pre-treatment increases accessibility S, effectively lowering apparent Km</div>
+  </div>
+</section>
+
+<!-- BSF PAGE -->
+<section class="page" id="page-bsf" aria-label="BSF Bioconversion">
+  <div class="page-header">
+    <div class="tag">🦟 Black Soldier Fly Bioconversion</div>
+    <h1>BSF (<i>Hermetia illucens</i>) — EFB Bioconversion to Frass</h1>
+    <p class="lead">Black Soldier Fly larvae are voracious degraders of organic substrates, converting EFB into a nutrient-dense frass amendment that outperforms raw EFB on most soil-crop metrics. The frass provides N, P, Ca (from chitin), and a diverse microbial inoculum. The residual biomass (prepupae) is a high-value animal feed (40–50% protein).</p>
+  </div>
+  <div class="section">
+    <div class="section-title">BSF Bioconversion Parameters</div>
+    <div class="g2">
+      <div class="dtable"><table>
+        <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Waste Reduction Ratio</td><td>40–60% mass reduction</td></tr>
+          <tr><td>Conversion Efficiency</td><td>15–20% substrate → biomass</td></tr>
+          <tr><td>Larval cycle duration</td><td>12–18 days (28–32°C)</td></tr>
+          <tr><td>Frass N (dry)</td><td>3.0–6.0%</td></tr>
+          <tr><td>Frass P₂O₅ (dry)</td><td>2.0–5.0%</td></tr>
+          <tr><td>Frass Ca (dry)</td><td>3.0–8.0%</td></tr>
+          <tr><td>Frass C:N ratio</td><td>8–14 : 1</td></tr>
+          <tr><td>Chitin in frass</td><td>3–10%</td></tr>
+          <tr><td>Pre-pupa protein</td><td>40–50% dry matter</td></tr>
+          <tr><td>Pre-pupa fat</td><td>25–35% dry matter</td></tr>
+        </tbody>
+      </table></div>
+      <div>
+        <div class="fbox">
+          <div class="fbox-title">BSF Waste Reduction Rate Model <span class="badge bg">Equation 18</span></div>
+          <div class="fbox-eq">WRR (%) = (W_initial − W_final) / W_initial × 100
+Frass_yield = W_initial × (1 − WRR/100) × (1 − moisture)
+Biomass_yield = W_substrate × FCR⁻¹
+FCR (feed conversion ratio) = 3–7 kg EFB / kg larva</div>
+          <div class="fbox-vars">WRR = waste reduction ratio | FCR = feed conversion ratio | Moisture of fresh frass: 60–75% | Dry frass fraction: 25–40% of fresh mass</div>
+        </div>
+        <div class="alert as"><strong>Soil Biology Effect:</strong> BSF frass contains diverse bacterial populations (Bacillus, Lactobacillus, Pseudomonas) and chitin that stimulates native soil chitinase-producing microbes, suppressing fungal root pathogens (Ganoderma) in the rhizosphere.</div>
+      </div>
+    </div>
+  </div>
+  <div class="fbox">
+    <div class="fbox-title">N Transformation — BSF Frass Applied to Soil <span class="badge bg">Equation 19</span></div>
+    <div class="fbox-eq">N_min(t) = N_total_frass × [1 − exp(−k_N · t)]
+k_N_frass ≈ 0.05–0.15 wk⁻¹ (vs. 0.01–0.04 for compost)
+80% of frass N mineralised within 8–12 weeks at 28°C</div>
+    <div class="fbox-vars">N_min = cumulative N mineralised | t = time (weeks) | Frass N much more labile than EFB N — behaves more like ammonium fertiliser than slow-release organic</div>
+  </div>
+</section>
+
+<!-- MICROBIOME PAGE -->
+<section class="page" id="page-microbiome" aria-label="Microbiome Biology">
+  <div class="page-header">
+    <div class="tag">🦠 Soil Microbiology</div>
+    <h1>Soil Microbiome — Microbiology of Palm Soils</h1>
+    <p class="lead">The soil microbiome drives all nutrient cycling, disease suppression, and organic matter decomposition. For oil palm, the key functional groups are: N-fixing bacteria, P-solubilisers, mycorrhizal fungi, Ganoderma antagonists, and organic matter decomposers. EFB and BSF frass dramatically shift microbiome composition and function.</p>
+  </div>
+  <div class="section">
+    <div class="section-title">Key Microbial Groups in Palm Rhizosphere</div>
+    <div class="g3">
+      <div class="mcard" style="--mc-color:var(--color-primary)">
+        <div class="mname">Azospirillum spp.</div>
+        <div class="mtype">Free-living N₂ fixation</div>
+        <div class="mdesc">Fixes 20–40 kg N/ha/yr in rhizosphere. Produces phytohormones (IAA, gibberellin) improving root architecture. EFB mulch increases Azospirillum populations 3–5× in Ultisol.</div>
+      </div>
+      <div class="mcard" style="--mc-color:var(--color-teal)">
+        <div class="mname">Bacillus megaterium</div>
+        <div class="mtype">P solubilisation</div>
+        <div class="mdesc">Produces gluconic acid and phosphatases. Solubilises AlPO₄, FePO₄, Ca₃(PO₄)₂. Significant on Ultisol and Andisol where P fixation is limiting. BSF frass enriches Bacillus community.</div>
+      </div>
+      <div class="mcard" style="--mc-color:var(--color-accent)">
+        <div class="mname">Glomus / Rhizophagus spp.</div>
+        <div class="mtype">Arbuscular Mycorrhizal Fungi</div>
+        <div class="mdesc">AMF extend P and Zn acquisition 3–10× beyond root depletion zone. Critical in nursery and immature phase. Damaged by high P fertiliser (phosphate suppresses spore germination at &gt;80 mg P/kg).</div>
+      </div>
+      <div class="mcard" style="--mc-color:var(--color-error)">
+        <div class="mname">Trichoderma harzianum</div>
+        <div class="mtype">Ganoderma antagonist</div>
+        <div class="mdesc">Hyperparasite of Ganoderma boninense mycelium. Produces chitinase, glucanase, and antibiotic peptaibols. EFB compost and BSF frass both amplify Trichoderma populations. Apply at circle during planting.</div>
+      </div>
+      <div class="mcard" style="--mc-color:var(--color-blue)">
+        <div class="mname">Pseudomonas fluorescens</div>
+        <div class="mtype">PGPR / Biocontrol</div>
+        <div class="mdesc">Produces siderophores (chelates Fe, denying it to pathogens), HCN, and 2,4-DAPG antibiotic. Enhances Fe nutrition on alkaline/peat soils. Sensitive to acidic conditions (&lt;pH 4.5) — lime first.</div>
+      </div>
+      <div class="mcard" style="--mc-color:var(--color-gold)">
+        <div class="mname">Ganoderma boninense</div>
+        <div class="mtype">Primary Pathogen — BSR</div>
+        <div class="mdesc">Causes Basal Stem Rot — the most destructive oil palm disease. White-rot basidiomycete. Survives on root residues for decades. See Disease page for full management protocol.</div>
+      </div>
+    </div>
+  </div>
+  <div class="fbox">
+    <div class="fbox-title">N Cycling — Key Biochemical Equations <span class="badge bg">N Cycle</span></div>
+    <div class="fbox-eq">Nitrification:  NH₄⁺ + 1.5O₂ → NO₂⁻ + H₂O + 2H⁺  (Nitrosomonas)
+                NO₂⁻ + 0.5O₂ → NO₃⁻                     (Nitrobacter)
+Denitrification: NO₃⁻ → NO₂⁻ → NO → N₂O → N₂            (Pseudomonas, Paracoccus)
+N₂ Fixation:    N₂ + 8H⁺ + 8e⁻ + 16ATP → 2NH₃ + H₂ + 16ADP (Nitrogenase enzyme)
+Mineralisation: R-NH₂ + H₂O → R-OH + NH₃  (aminisation → ammonification)</div>
+    <div class="fbox-vars">Denitrification loss: 5–25% of soil NO₃⁻ under saturated/anaerobic conditions | Key for peat soils and poorly drained Inceptisols | EFB mulch creates microsites for N₂-fixation and DNRA (dissimilatory NO₃ reduction to NH₄⁺)</div>
+  </div>
+</section>
+
+<!-- FORMULAS PAGE -->
+<section class="page" id="page-formulas" aria-label="Formula Library">
+  <div class="page-header">
+    <div class="tag">∑ Reference · Literature-Verified</div>
+    <h1>Soil Chemistry Formula Library</h1>
+    <p class="lead">All equations below are sourced from peer-reviewed literature and standard soil science texts. Empirical constants are given as ranges reflecting site-to-site variability. Apply with site-specific calibration — values flagged ⚠️ require local measurement for accuracy.</p>
+  </div>
+  <div class="g2">
+    <div>
+      <div class="fbox">
+        <div class="fbox-title">1. CEC Calculation &amp; Prediction <span class="badge bg">CEC</span></div>
+        <div class="fbox-eq">CEC (cmol/kg) = Σ(Ca²⁺ + Mg²⁺ + K⁺ + Na⁺ + Al³⁺ + H⁺)
+Prediction: CEC = 2.5×(%OM) + 0.57×(%Clay)
+Tropical: CEC = 3.0×(%OM) + 0.15×(%Clay) (kaolinite)</div>
+        <div class="fbox-vars">Units: cmol₊/kg (= meq/100g) | Method: NH₄OAc pH 7 or BaCl₂ (ECEC) | Kaolinite clay contributes 3–15 cmol/kg; smectite 80–150 cmol/kg</div>
+      </div>
+      <div class="fbox">
+        <div class="fbox-title">2. Base Saturation &amp; Acid Saturation <span class="badge bg">pH/Al</span></div>
+        <div class="fbox-eq">BS (%) = [(Ca + Mg + K + Na) / CEC] × 100
+AlSat (%) = [Al / ECEC] × 100
+Target: BS &gt;40%, AlSat &lt;20% for oil palm</div>
+        <div class="fbox-vars">Ultisol criterion: BS &lt;35% | Al toxicity onset: AlSat &gt;20% | Critical root growth: AlSat &gt;60% | Liming reduces Al by: Al³⁺ + 3OH⁻ → Al(OH)₃↓</div>
+      </div>
+      <div class="fbox">
+        <div class="fbox-title">3. ROTH-C Soil Organic Carbon Decay <span class="badge ba">SOC</span></div>
+        <div class="fbox-eq">dC/dt = I − k · C · f(T) · f(θ)
+k = decomposition constant (0.005–0.5 yr⁻¹)
+f(T) = exp[E_a/R · (1/T_ref − 1/T)]
+f(θ) = 1.0 at optimal moisture; 0.2–0.5 under drought</div>
+        <div class="fbox-vars">I = annual C input (t C/ha/yr) | k = pool-specific rate (DPM k=10, RPM k=0.3, HUM k=0.02, IOM k=0) | EFB at 30t/ha ≈ 14 t C input/yr | Steady-state SOC when I = k·C·f(T)·f(θ)</div>
+      </div>
+      <div class="fbox">
+        <div class="fbox-title">4. Henderson-Hasselbalch pH Buffering <span class="badge bb">pH</span></div>
+        <div class="fbox-eq">pH = pKa + log([A⁻] / [HA])
+Soil buffering capacity: dH⁺/dpH
+Carbonate system: H₂CO₃ ⇌ HCO₃⁻ + H⁺ (pKa=6.35)
+Phosphate: H₂PO₄⁻ ⇌ HPO₄²⁻ + H⁺ (pKa=7.21)
+Organic acids: various pKa 3.5–6.5</div>
+        <div class="fbox-vars">Soil buffering resists pH change from fertiliser acidification | Organic-rich soils buffer better (higher OM → more carboxyl/phenol groups) | Peat: very high buffer capacity at pH 3.5–5.5</div>
+      </div>
+    </div>
+    <div>
+      <div class="fbox">
+        <div class="fbox-title">5. Cation Exchange Selectivity (Gaines-Thomas) <span class="badge bt">Ions</span></div>
+        <div class="fbox-eq">K_K/Ca = [(K⁺_ads · Ca²⁺_sol^0.5)] / [(Ca²⁺_ads^0.5 · K⁺_sol)]
+Typical K/Ca selectivity coeff: 0.2–0.4 (kaolinite)
+Optimal K/Mg ratio in soil solution: 2.3–4.5 (Mg in cmol/L basis)</div>
+        <div class="fbox-vars">Low K/Ca selectivity means K is easily displaced by Ca during liming | Critical K/Mg balance for palm: leaf ratio K:Mg = 8–16 (ideal ~12) | Imbalance causes Dry Basal Rot (K def) or interveinal chlorosis (Mg def)</div>
+      </div>
+      <div class="fbox">
+        <div class="fbox-title">6. N₂O Emission from Fertiliser <span class="badge br">GHG</span></div>
+        <div class="fbox-eq">N₂O (kg/ha) = N_applied × EF₁ × 44/28
+EF₁ (IPCC Tier 1) = 0.01 (1% of N as N₂O)
+Tropical direct: 0.003–0.030 (0.3–3%)
+Indirect (leaching): N_leach × 0.0075</div>
+        <div class="fbox-vars">Higher EF on peat, flooded soils, and post-liming (pH 6–7 peak N₂O) | EFB compost reduces EF vs. urea (microbiome regulation of nitrification) | Key for ESG / carbon accounting</div>
+      </div>
+      <div class="fbox">
+        <div class="fbox-title">7. Water Balance / Leaching Estimation <span class="badge bb">Water</span></div>
+        <div class="fbox-eq">Deep drainage (mm) = Rainfall − ET₀ − Runoff − ΔSoil_storage
+ET₀ (Penman-Monteith): ET₀ = [Δ(Rn−G) + ρa·cp·(es−ea)/ra] / [λ(Δ+γ(1+rs/ra))]
+Oil palm Kc: 0.9–1.1; ET_palm ≈ 900–1400 mm/yr</div>
+        <div class="fbox-vars">Δ = slope of vapour pressure curve | Rn = net radiation | G = soil heat flux | ra/rs = aerodynamic/surface resistance | Leaching_risk when Rainfall&gt;2000mm and CEC&lt;10 cmol/kg</div>
+      </div>
+      <div class="fbox">
+        <div class="fbox-title">8. DRIS Nutritional Diagnosis Ratio <span class="badge ba">DRIS</span></div>
+        <div class="fbox-eq">I_N = f[(N/P, cv_N/P)] + f[(N/K, cv_N/K)] + ...
+f[X] = (X − x̄_norm)/sd_norm when X &gt; x̄
+f[X] = 1000·(X − x̄_norm)/(x̄_norm) when X &lt; x̄
+NBI (Nutrient Balance Index) = Σ|I_i| / n nutrients</div>
+        <div class="fbox-vars">DRIS index &gt;+20 = luxury consumption | &lt;-20 = deficiency | NBI &gt;50 = overall nutritional imbalance | MPOB norms for leaf 17: N 2.6–2.9%, P 0.15–0.19%, K 0.9–1.2%, Mg 0.25–0.35%, Ca 0.5–0.75%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR PAGE -->
+<section class="page" id="page-calculator" aria-label="Nutrient Calculator">
+  <div class="page-header">
+    <div class="tag">🧮 Interactive Tool</div>
+    <h1>Palm Nutrient Calculator</h1>
+    <p class="lead">Enter site and palm parameters to generate a fertiliser recommendation adjusted for soil type, fixation, leaching, and EFB/BSF substitution. Output is indicative — validate against leaf analysis (Leaf 17) using DRIS or CND methods. All calculations use published agronomic models.</p>
+  </div>
+  <div class="calc-grid">
+    <div class="fg"><label class="fl" for="c_soil">Soil Type</label>
+      <select class="fsel" id="c_soil">
+        <option value="ultisol">Ultisol (Red-Yellow Podzolic)</option>
+        <option value="histosol">Histosol (Peat)</option>
+        <option value="spodosol">Spodosol / Sandy Entisol</option>
+        <option value="inceptisol">Inceptisol (Acid Sulphate)</option>
+        <option value="andisol">Andisol (Volcanic)</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl" for="c_age">Palm Age (years)</label>
+      <input type="number" class="finp" id="c_age" min="0" max="40" value="8" step="0.5">
+    </div>
+    <div class="fg"><label class="fl" for="c_ffb">Target FFB Yield (t/ha/yr)</label>
+      <input type="number" class="finp" id="c_ffb" min="5" max="40" value="22" step="1">
+    </div>
+    <div class="fg"><label class="fl" for="c_rain">Annual Rainfall (mm)</label>
+      <input type="number" class="finp" id="c_rain" min="800" max="4500" value="2200" step="100">
+    </div>
+    <div class="fg"><label class="fl" for="c_density">Palm Density (palms/ha)</label>
+      <input type="number" class="finp" id="c_density" min="100" max="160" value="136" step="1">
+    </div>
+    <div class="fg"><label class="fl" for="c_efb">EFB applied? (t fresh/ha/yr)</label>
+      <input type="number" class="finp" id="c_efb" min="0" max="80" value="40" step="5">
+    </div>
+    <div class="fg"><label class="fl" for="c_bsf">BSF-processed EFB? (t fresh/ha/yr)</label>
+      <input type="number" class="finp" id="c_bsf" min="0" max="40" value="0" step="5">
+    </div>
+    <div class="fg"><label class="fl" for="c_ph">Current Soil pH</label>
+      <input type="number" class="finp" id="c_ph" min="2.5" max="7.5" value="4.5" step="0.1">
+    </div>
+  </div>
+  <button class="btn-p" onclick="calcNutrients()">Calculate Recommendation</button>
+  <div class="cout" id="calcOutput" style="display:none;margin-top:var(--space-8)">
+    <div class="cout-title">Fertiliser Recommendation</div>
+    <div class="crg" id="calcResults"></div>
+    <div id="calcNotes" style="margin-top:var(--space-5);font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.75"></div>
+    <div class="disc">⚠️ <strong>Anti-hallucination disclaimer:</strong> These values are calculated from published MPOB/IOPRI/CIRAD agronomic models and are presented as indicative ranges. They MUST be validated against Leaf 17 analysis, soil analysis, and local yield response trials. Site-specific calibration is mandatory for commercial application. No liability is accepted for nutritional decisions made solely on this output.</div>
+  </div>
+</section>
+
+<!-- PALM AGES PAGE -->
+<section class="page" id="page-palmages" aria-label="Palm Age Stages">
+  <div class="page-header">
+    <div class="tag">🌱 Developmental Stages</div>
+    <h1>Palm Age Stages — Nutrition at Every Growth Phase</h1>
+    <p class="lead">Oil palm has distinctly different nutritional demands across its 25–30 year productive life. From the delicate pre-nursery germination stage through peak bearing to senescence, both nutrient quantities and the most critical nutrients shift substantially. EFB and BSF frass integration varies by stage.</p>
+  </div>
+  <div class="tl">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">Stage 1: Pre-Nursery (0–3 months)</div>
+      <div class="tl-title">Germination &amp; First Leaf</div>
+      <div class="tl-body">Seeds germinated in heated chambers (38–40°C for 60–80 days). First leaves emerge from seed nutrient reserves — no fertiliser applied until leaf 3–4 stage. Pre-nursery media: 3:1 topsoil:sand + 10% EFB compost + GML for pH 5.5. Key risk: damping-off from Pythium/Fusarium — Trichoderma + Bacillus biopriming recommended. BSF frass added to media at 0.5–1% by weight improves seedling vigour via IAA and cytokinin content.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">Stage 2: Nursery (3–12 months)</div>
+      <div class="tl-title">Polybag Establishment</div>
+      <div class="tl-body">Key nutrients: N (leaflet elongation), P (root system), K (general physiology). Critical to avoid luxury N → weak, disease-susceptible seedlings. Apply balanced NPK monthly; BSF frass at 1–2 t/ha equivalent excellent P/Ca source. Mycorrhizal inoculation critical — do not apply high P (&gt;200 ppm) as it suppresses AMF colonisation. Monitor for frond yellowing (Mg or N deficiency), orange spotting (Fe/Mn at wrong pH), brown leaf tips (K deficiency or salt damage). Target Leaf 4 analysis: N 3.0–3.5%, P 0.20–0.25%, K 1.5–2.5%.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">Stage 3: Field Immature Yr 1–2 (12–36 months)</div>
+      <div class="tl-title">Vegetative Establishment</div>
+      <div class="tl-body">Post-transplant establishment — root system development paramount. Apply EFB mulch 30–60 t/ha in circle (reduces weed competition, maintains moisture, builds pH). First fertiliser application 4–6 weeks after field planting. Liming (GML 2–3 t/ha) critical on Ultisols. Split N into 4–6 applications to reduce leaching. Phosphate Solubilising Bacteria (PSB) inoculant with RP (Rock Phosphate) replaces costly TSP. Watch for Ganoderma inoculum from old stand residues — remove all root debris. BSF frass circle application replaces 30–50% of inorganic NPK.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">Stage 4: Young Mature (3–7 years)</div>
+      <div class="tl-title">First Crop — Production Build-up</div>
+      <div class="tl-body">First crop at ~30 months after field planting. Nutrient demand rises sharply as canopy closes and bunch production increases. K₂O demand becomes dominant (fruit bunch K export = 30–50 kg K₂O/t FFB). EFB mulch returns mill K to field — key K cycling strategy. P fixation challenge peaks as root system explores Bt horizon. Magnesium deficiency common post-liming (K/Mg antagonism). Annual Leaf 17 analysis mandatory to guide rates. BSF frass replaces up to 60% of inorganic P and 40% of K.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">Stage 5: Peak Bearing (8–18 years)</div>
+      <div class="tl-title">Maximum Yield (25–30+ t FFB/ha)</div>
+      <div class="tl-body">Highest nutrient demand — N 200–250 kg/ha/yr, K₂O 250–350 kg/ha/yr, P₂O₅ 50–100 kg/ha/yr (more on Andisol). Frond pruning management affects nutrient return: fronds contain 30% of palm's K. Stacking fronds in rows/circles returns K but can harbour rats. EFB mulch at 40–60 t/ha reduces inorganic fertiliser by 30–40% at peak. Ganoderma BSR risk peaks — monitor root collar monthly. Intensive Leaf 17 analysis every 6 months. DRIS diagnosis recommended to identify priority limiting nutrient.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">Stage 6: Mature (18–25 years)</div>
+      <div class="tl-title">Declining Canopy, Maintaining Yield</div>
+      <div class="tl-body">Canopy height (~12–15 m) makes fertiliser circle application challenging. Mechanisation important. Yield gradually declines from ~24–26 t to 18–20 t FFB/ha. Reduce N slightly as vegetative growth slows. Maintain K and P rates. Soil organic matter should be building if EFB programme consistent — soil health supporting more efficient nutrient use. Ganoderma incidence highest in this period. Replanting planning begins at ~22–23 yrs.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">Stage 7: Senescent (&gt;25 years) &amp; Replanting</div>
+      <div class="tl-title">Pre-Replant Management</div>
+      <div class="tl-body">Reduce fertiliser 30–40% — yield too low for full nutrition to be economic. Apply pre-replant lime (2–4 t GML/ha). Shred all palm material (chipping trunks) — returns 200–300 kg K + substantial N, P. DO NOT push chipped material into windrows over Ganoderma-infected root systems — spread evenly. Allow 6–12 months decomposition before replanting. Apply Trichoderma + Bacillus as inoculant to break Ganoderma cycle. BSF conversion of shredded trunk material is an emerging option for nutrient recovery before field return.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DISEASE PAGE -->
+<section class="page" id="page-disease" aria-label="Disease Pathogens">
+  <div class="page-header">
+    <div class="tag">⚠️ Plant Pathology</div>
+    <h1>Soil-Related Disease &amp; Pathogens</h1>
+    <p class="lead">Oil palm diseases with soil-mediated components are responsible for &gt;30% of productive yield loss globally. The link between soil health, microbiome composition, and disease pressure is well-established. EFB compost and BSF frass applications measurably reduce pathogen pressure through microbiome-mediated suppression.</p>
+  </div>
+  <div class="section">
+    <div class="section-title">Primary Soil-Borne Diseases</div>
+    <div class="g2">
+      <div>
+        <div class="sub-title">Basal Stem Rot (BSR)</div>
+        <div class="mcard" style="--mc-color:var(--color-error);margin-bottom:var(--space-4)">
+          <div class="mname">Ganoderma boninense (Ganoderma zonatum)</div>
+          <div class="mtype">White-rot basidiomycete</div>
+          <div class="mdesc"><strong>Economic impact:</strong> &gt;US$500M/yr in SE Asia. Infection through root contact with infected material or stumps. Bracket fungus visible externally (reddish-brown conks). Internal wood rot invisible until collapse. Incidence 80–90% by stand age 20+ yrs in susceptible blocks.</div>
+        </div>
+        <div class="dtable"><table>
+          <thead><tr><th>Stage</th><th>Symptom</th><th>Soil Connection</th></tr></thead>
+          <tbody>
+            <tr><td>Early</td><td>Chlorosis upper leaves; slower frond production</td><td>Root rot reduces N/water uptake</td></tr>
+            <tr><td>Mid</td><td>Spear leaf unopened; older fronds hanging</td><td>Vascular blockage from fungal hyphae</td></tr>
+            <tr><td>Advanced</td><td>Conk at stem base; internal brown rot</td><td>Soil inoculum high; spread to neighbours</td></tr>
+            <tr><td>Fatal</td><td>Crown collapse; sudden death</td><td>Complete root &amp; stem destruction</td></tr>
+          </tbody>
+        </table></div>
+        <div class="alert as" style="margin-top:var(--space-4)"><strong>EFB/BSF mitigation:</strong> Trichoderma harzianum in EFB compost reduces Ganoderma colony expansion by 60–80% in laboratory bioassay and 30–50% in field trials. Apply Trichoderma-enriched compost at 5–10 kg/palm at base annually.</div>
+      </div>
+      <div>
+        <div class="sub-title">Other Soil-Mediated Diseases</div>
+        <div class="tl">
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--color-warning)"></div>
+            <div class="tl-date">Crown Disease (Fusarium oxysporum)</div>
+            <div class="tl-title">Nursery &amp; Young Palms</div>
+            <div class="tl-body">Root rot on waterlogged or acidic (pH &lt;4.2) Ultisol. Reduce Al saturation, improve drainage. Trichoderma + Bacillus biopriming of nursery media.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--color-warning)"></div>
+            <div class="tl-date">Sudden Wilt (Phytophthora palmivora)</div>
+            <div class="tl-title">All Ages — Waterlogged Soils</div>
+            <div class="tl-body">Oomycete in saturated Inceptisol, peat. Water management primary control. Phosphite fungicide systemic — doubles as P fertiliser on deficient soils.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--color-blue)"></div>
+            <div class="tl-date">Red Ring Nematode (Bursaphelenchus cocophilus)</div>
+            <div class="tl-title">Vectored by weevil, all ages</div>
+            <div class="tl-body">Soil health (OM, moisture) affects weevil vector populations. High N application without balanced K/Mg increases weevil attractiveness. EFB mulch disrupts weevil movement in circle.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--color-error)"></div>
+            <div class="tl-date">Dry Basal Rot (K / Mg deficiency + secondary pathogens)</div>
+            <div class="tl-title">Nutritional disease manifestation</div>
+            <div class="tl-body">Occurs on leaching Sandy Entisol or Peat when K deficiency is severe. Looks similar to BSR but non-pathogenic origin — leaf analysis diagnostic. BSF frass provides K and Mg to prevent.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CARBON PAGE -->
+<section class="page" id="page-carbon" aria-label="Carbon Organic Matter">
+  <div class="page-header">
+    <div class="tag">🌍 Soil Carbon Science</div>
+    <h1>Soil Carbon &amp; Organic Matter</h1>
+    <p class="lead">Soil organic matter (SOM) is the central driver of soil health — governing CEC, water retention, nutrient cycling, structural stability, and disease suppression. In oil palm systems, SOM depletion under continuous mineral fertilisation is a major long-term sustainability issue reversed by EFB and BSF frass programs.</p>
+  </div>
+  <div class="g2">
+    <div>
+      <div class="sub-title">SOC Fractions &amp; Turnover</div>
+      <div class="dtable"><table>
+        <thead><tr><th>Fraction</th><th>Turnover</th><th>Function</th><th>Stabilised by</th></tr></thead>
+        <tbody>
+          <tr><td>Labile C (POM)</td><td>1–3 yrs</td><td>Microbial energy; N mineralisation</td><td>Aggregate protection</td></tr>
+          <tr><td>Active humus</td><td>5–15 yrs</td><td>CEC, pH buffering</td><td>Fe/Al complexation</td></tr>
+          <tr><td>Slow humus</td><td>20–50 yrs</td><td>Long-term fertility</td><td>Organo-mineral associations</td></tr>
+          <tr><td>Passive (stable)</td><td>100–3000 yrs</td><td>C sequestration</td><td>Occlusion in aggregates</td></tr>
+          <tr><td>Biochar C</td><td>100–1000 yrs</td><td>Pore structure, CEC</td><td>Aromatic recalcitrance</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div>
+      <div class="fbox">
+        <div class="fbox-title">Soil Organic C — Key Relationships <span class="badge bg">SOC</span></div>
+        <div class="fbox-eq">SOM (%) ≈ SOC (%) × 1.724  (Van Bemmelen factor)
+CEC_organic = 2.5 × %OM  (cmol/kg, approximate)
+N_pool = SOC × (1/C:N_humus) × 0.03  (annual N supply)
+Bulk Density vs OM: BD ≈ 1.65 − 0.30 × ln(%OM)</div>
+        <div class="fbox-vars">Van Bemmelen factor assumes 58% C in SOM | CEC relationship strongest in tropical kaolinitic soils | BD decline with OM is critical for root penetration resistance (BD &gt;1.4 restricts roots)</div>
+      </div>
+    </div>
+  </div>
+  <div class="fbox">
+    <div class="fbox-title">EFB Carbon Balance — Annual Application 40 t/ha <span class="badge bt">Carbon Budget</span></div>
+    <div class="fbox-eq">EFB (40 t fresh, 67% moisture) = 13.2 t dry matter
+C input = 13.2 × 0.45 = 5.9 t C/ha
+CO₂ from decomposition (yr 1) = 5.9 × 0.65 = 3.8 t CO₂-C
+Stable SOC addition = 5.9 × 0.35 = 2.1 t C/ha
+After 5 yrs: cumulative SOC gain ≈ 6–10 t C/ha</div>
+    <div class="fbox-vars">Decomposition fraction varies by climate and soil: 50–75% in yr 1 for tropical Ultisol | Stable fraction influenced by organo-mineral association with Fe/Al oxides | Net positive if EFB C input &gt; natural SOC loss from tillage/management</div>
+  </div>
+  <div class="chart-wrap">
+    <div class="chart-title">Soil Organic Carbon % — Palm Stand Age Under Different Management Regimes</div>
+    <canvas id="chartSOC" height="220"></canvas>
+  </div>
+</section>
+
+<!-- DRIS PAGE -->
+<section class="page" id="page-dris" aria-label="DRIS Diagnosis">
+  <div class="page-header">
+    <div class="tag">📊 Nutritional Diagnosis</div>
+    <h1>DRIS / CND Nutritional Diagnosis</h1>
+    <p class="lead">The Diagnosis and Recommendation Integrated System (DRIS) and Compositional Nutrient Diagnosis (CND) are the gold-standard methods for identifying which nutrient most limits oil palm yield. They use leaf nutrient ratios compared to a high-yield reference population, avoiding the limitations of single-nutrient critical value interpretation.</p>
+  </div>
+  <div class="g2">
+    <div>
+      <div class="sub-title">Leaf 17 Norms — Mature Oil Palm (MPOB Reference)</div>
+      <div class="dtable"><table>
+        <thead><tr><th>Nutrient</th><th>Deficient</th><th>Low</th><th>Optimal</th><th>High</th><th>Toxic</th></tr></thead>
+        <tbody>
+          <tr><td>N (%)</td><td>&lt;2.4</td><td>2.4–2.6</td><td>2.6–2.9</td><td>2.9–3.2</td><td>&gt;3.2</td></tr>
+          <tr><td>P (%)</td><td>&lt;0.13</td><td>0.13–0.15</td><td>0.15–0.19</td><td>0.19–0.22</td><td>&gt;0.22</td></tr>
+          <tr><td>K (%)</td><td>&lt;0.75</td><td>0.75–0.90</td><td>0.90–1.20</td><td>1.20–1.50</td><td>&gt;1.50</td></tr>
+          <tr><td>Mg (%)</td><td>&lt;0.18</td><td>0.18–0.25</td><td>0.25–0.35</td><td>0.35–0.45</td><td>&gt;0.45</td></tr>
+          <tr><td>Ca (%)</td><td>&lt;0.40</td><td>0.40–0.50</td><td>0.50–0.75</td><td>0.75–0.90</td><td>&gt;0.90</td></tr>
+          <tr><td>B (ppm)</td><td>&lt;8</td><td>8–12</td><td>12–25</td><td>25–35</td><td>&gt;35</td></tr>
+          <tr><td>Cu (ppm)</td><td>&lt;4</td><td>4–6</td><td>6–15</td><td>15–20</td><td>&gt;20</td></tr>
+          <tr><td>Zn (ppm)</td><td>&lt;10</td><td>10–14</td><td>14–25</td><td>25–35</td><td>&gt;35</td></tr>
+          <tr><td>Mn (ppm)</td><td>&lt;40</td><td>40–80</td><td>80–250</td><td>250–400</td><td>&gt;400</td></tr>
+          <tr><td>Fe (ppm)</td><td>&lt;50</td><td>50–80</td><td>80–200</td><td>200–350</td><td>&gt;350</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div>
+      <div class="sub-title">DRIS Diagnosis Tool</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);margin-bottom:var(--space-4)">
+        <div class="fg"><label class="fl">N (%) Leaf 17</label><input type="number" class="finp" id="d_N" value="2.55" step="0.01"></div>
+        <div class="fg"><label class="fl">P (%) Leaf 17</label><input type="number" class="finp" id="d_P" value="0.14" step="0.01"></div>
+        <div class="fg"><label class="fl">K (%) Leaf 17</label><input type="number" class="finp" id="d_K" value="0.88" step="0.01"></div>
+        <div class="fg"><label class="fl">Mg (%) Leaf 17</label><input type="number" class="finp" id="d_Mg" value="0.28" step="0.01"></div>
+        <div class="fg"><label class="fl">Ca (%) Leaf 17</label><input type="number" class="finp" id="d_Ca" value="0.55" step="0.01"></div>
+        <div class="fg"><label class="fl">B (ppm) Leaf 17</label><input type="number" class="finp" id="d_B" value="11" step="1"></div>
+      </div>
+      <button class="btn-p" onclick="runDRIS()">Run DRIS Diagnosis</button>
+      <div id="drisOutput" style="margin-top:var(--space-4)"></div>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+// Theme toggle
+(function(){
+  const t=document.querySelector('[data-theme-toggle]');
+  const r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  const sunSVG='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  const moonSVG='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  if(t){
+    t.innerHTML=d==='dark'?sunSVG:moonSVG;
+    t.addEventListener('click',()=>{
+      d=d==='dark'?'light':'dark';
+      r.setAttribute('data-theme',d);
+      t.innerHTML=d==='dark'?sunSVG:moonSVG;
+    });
+  }
+})();
+
+// Navigation
+function navigate(pageId){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
+  const page=document.getElementById('page-'+pageId);
+  if(page) page.classList.add('active');
+  const items=document.querySelectorAll('.sidebar-item');
+  items.forEach(i=>{if(i.dataset.page===pageId)i.classList.add('active')});
+  document.querySelector('.main').scrollTop=0;
+  if(window.innerWidth<=900){
+    document.getElementById('sidebar').classList.remove('open');
+  }
+}
+document.querySelectorAll('.sidebar-item').forEach(item=>{
+  item.addEventListener('click',()=>navigate(item.dataset.page));
+});
+document.getElementById('menuToggle').addEventListener('click',()=>{
+  document.getElementById('sidebar').classList.toggle('open');
+});
+
+// Tab system
+function switchTab(btn,group,contentId){
+  const container=btn.closest('.page');
+  container.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  container.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  const el=document.getElementById(group+'-'+contentId);
+  if(el)el.classList.add('active');
+}
+
+// Nutrient Calculator
+function calcNutrients(){
+  const soil=document.getElementById('c_soil').value;
+  const age=parseFloat(document.getElementById('c_age').value)||8;
+  const ffb=parseFloat(document.getElementById('c_ffb').value)||22;
+  const rain=parseFloat(document.getElementById('c_rain').value)||2200;
+  const density=parseFloat(document.getElementById('c_density').value)||136;
+  const efb=parseFloat(document.getElementById('c_efb').value)||0;
+  const bsf=parseFloat(document.getElementById('c_bsf').value)||0;
+  const pH=parseFloat(document.getElementById('c_ph').value)||4.5;
+
+  // Base N demand (kg/palm/yr) by FFB
+  let baseN = 0.5 + (ffb / density) * 0.8;
+  let baseP = 0.15 + (ffb / density) * 0.25;
+  let baseK = 1.0 + (ffb / density) * 1.1;
+  let baseMg = 0.15 + (ffb / density) * 0.22;
+  let baseGML = 0;
+  let splitN = 4;
+
+  // Age adjustments
+  if(age<1){baseN*=0.3;baseP*=0.3;baseK*=0.3;baseMg*=0.3;splitN=6;}
+  else if(age<3){baseN*=0.5;baseP*=0.5;baseK*=0.5;baseMg*=0.5;splitN=6;}
+  else if(age<6){baseN*=0.7;baseP*=0.7;baseK*=0.7;baseMg*=0.7;splitN=4;}
+  else if(age>20){baseN*=0.85;baseP*=0.85;baseK*=0.85;baseMg*=0.85;splitN=2;}
+
+  // Soil type multipliers
+  const soilFactors={
+    ultisol:{N:1.2,P:1.8,K:1.3,Mg:1.4,Liming:2.5,note:'High P fixation: Rock Phosphate + GML recommended. Split K×4+.'},
+    histosol:{N:0.7,P:1.5,K:1.6,Mg:1.3,Liming:1.5,note:'Peat soils: add Cu 0.5–1 kg/ha, Zn 0.5 kg/ha, B 0.5 kg/ha. Water table management critical.'},
+    spodosol:{N:1.3,P:1.1,K:1.6,Mg:1.6,Liming:1.0,note:'Sandy soil: minimum 6 splits/yr. EFB mulch essential to build CEC and WHC.'},
+    inceptisol:{N:1.0,P:1.2,K:1.2,Mg:1.2,Liming:8.0,note:'Acid sulphate: high liming demand. Water table management critical. Monitor Al/Fe toxicity.'},
+    andisol:{N:1.0,P:2.5,K:1.1,Mg:1.0,Liming:0.5,note:'Volcanic soil: extreme P fixation. Use soluble P + PSB inoculant. Raise pH above pZPC.'}
+  };
+  const sf=soilFactors[soil]||soilFactors.ultisol;
+
+  // Leaching corrections
+  const Lfrac=Math.min(0.55,Math.max(0.1,(rain-900)/6000));
+  const N_leach_correction=1+(Lfrac*0.6);
+  const K_leach_correction=1+(Lfrac*0.5);
+
+  // Liming
+  if(pH<4.5) baseGML=sf.Liming;
+  else if(pH<5.0) baseGML=sf.Liming*0.5;
+  else baseGML=0;
+
+  // EFB credit (dry matter: 33% of fresh)
+  const efbDry=efb*0.33;
+  const N_efb=efbDry*0.008/density;
+  const P_efb=efbDry*0.002/density;
+  const K_efb=efbDry*0.035/density;
+  const Mg_efb=efbDry*0.003/density;
+
+  // BSF credit (dry matter: 25% of fresh)
+  const bsfDry=bsf*0.25;
+  const N_bsf=bsfDry*0.045/density;
+  const P_bsf=bsfDry*0.030/density;
+  const K_bsf=bsfDry*0.012/density;
+  const Mg_bsf=bsfDry*0.008/density;
+
+  // Final rates
+  const N_final=Math.max(0,(baseN*sf.N*N_leach_correction)-(N_efb+N_bsf));
+  const P_final=Math.max(0,(baseP*sf.P)-(P_efb+P_bsf));
+  const K_final=Math.max(0,(baseK*sf.K*K_leach_correction)-(K_efb+K_bsf));
+  const Mg_final=Math.max(0,(baseMg*sf.Mg)-(Mg_efb+Mg_bsf));
+
+  const N_ha=(N_final*density).toFixed(1);
+  const P_ha=(P_final*density).toFixed(1);
+  const K_ha=(K_final*density).toFixed(1);
+  const Mg_ha=(Mg_final*density).toFixed(1);
+
+  document.getElementById('calcResults').innerHTML=`
+    <div class="cr"><div class="crv">${N_final.toFixed(2)}</div><div class="cru">kg N/palm/yr</div><div class="crl">${N_ha} kg N/ha</div></div>
+    <div class="cr"><div class="crv">${P_final.toFixed(2)}</div><div class="cru">kg P₂O₅/palm/yr</div><div class="crl">${P_ha} kg/ha</div></div>
+    <div class="cr"><div class="crv">${K_final.toFixed(2)}</div><div class="cru">kg K₂O/palm/yr</div><div class="crl">${K_ha} kg/ha</div></div>
+    <div class="cr"><div class="crv">${Mg_final.toFixed(2)}</div><div class="cru">kg MgO/palm/yr</div><div class="crl">${Mg_ha} kg/ha</div></div>
+    <div class="cr"><div class="crv">${baseGML.toFixed(1)}</div><div class="cru">t GML/ha</div><div class="crl">Lime (if pH &lt; 5.0)</div></div>
+    <div class="cr"><div class="crv">${splitN}</div><div class="cru">splits/year</div><div class="crl">N applications</div></div>
+  `;
+  document.getElementById('calcNotes').innerHTML=`
+    <strong>Site notes:</strong> ${sf.note}<br>
+    <strong>Leaching fraction:</strong> ${(Lfrac*100).toFixed(0)}% (based on ${rain}mm rainfall)<br>
+    <strong>EFB credit applied:</strong> N ${(N_efb+N_bsf).toFixed(2)} + P ${(P_efb+P_bsf).toFixed(2)} + K ${(K_efb+K_bsf).toFixed(2)} kg/palm/yr<br>
+    <strong>Suggested N source:</strong> ${pH>5.5?'Urea (pH stable)':'Ammonium sulphate (avoid urea near-limestone)'}
+  `;
+  document.getElementById('calcOutput').style.display='block';
+}
+
+// DRIS Diagnosis
+function runDRIS(){
+  const N=parseFloat(document.getElementById('d_N').value);
+  const P=parseFloat(document.getElementById('d_P').value);
+  const K=parseFloat(document.getElementById('d_K').value);
+  const Mg=parseFloat(document.getElementById('d_Mg').value);
+  const Ca=parseFloat(document.getElementById('d_Ca').value);
+  const B=parseFloat(document.getElementById('d_B').value);
+
+  const norms={N:{lo:2.6,hi:2.9},P:{lo:0.15,hi:0.19},K:{lo:0.90,hi:1.20},Mg:{lo:0.25,hi:0.35},Ca:{lo:0.50,hi:0.75},B:{lo:12,hi:25}};
+  const vals={N,P,K,Mg,Ca,B};
+  let html='<div class="dtable"><table><thead><tr><th>Nutrient</th><th>Value</th><th>Optimal Range</th><th>Status</th><th>Priority</th></tr></thead><tbody>';
+  let defList=[];
+  Object.keys(vals).forEach((key,i)=>{
+    const v=vals[key];const n=norms[key];
+    let status,badge,pri=0;
+    if(v<n.lo){status='Deficient';badge='<span class="badge br">↓ DEFICIENT</span>';pri=-(n.lo-v)/n.lo*100;}
+    else if(v>n.hi){status='Excess';badge='<span class="badge ba">↑ EXCESS</span>';}
+    else{status='Optimal';badge='<span class="badge bg">✓ OPTIMAL</span>';}
+    if(v<n.lo) defList.push({key,pri});
+    html+=`<tr><td>${key}</td><td>${v}</td><td>${n.lo}–${n.hi}</td><td>${badge}</td><td style="font-variant-numeric:tabular-nums">${v<n.lo?Math.abs(pri).toFixed(0)+'% below':v>n.hi?'Excess':'-'}</td></tr>`;
+  });
+  html+='</tbody></table></div>';
+  defList.sort((a,b)=>a.pri-b.pri);
+  if(defList.length){
+    html+=`<div class="alert ae" style="margin-top:var(--space-4)"><strong>Priority correction:</strong> ${defList[0].key} is the most limiting nutrient. Address this first before other nutrients — correcting secondary deficiencies while primary remains limiting has low response.</div>`;
+  } else {
+    html+='<div class="alert as" style="margin-top:var(--space-4)"><strong>All monitored nutrients are within optimal range.</strong> If yield remains sub-optimal, consider micronutrients (B, Cu, Zn, Mn), soil pH, compaction, or water stress as limiting factors.</div>';
+  }
+  document.getElementById('drisOutput').innerHTML=html;
+}
+
+// Charts
+document.addEventListener('DOMContentLoaded', ()=>{
+  // P fixation vs pH chart
+  const pfixCtx=document.getElementById('chartPfix');
+  if(pfixCtx){
+    new Chart(pfixCtx,{type:'line',data:{
+      labels:['3.5','4.0','4.5','5.0','5.5','6.0','6.5','7.0'],
+      datasets:[
+        {label:'Ultisol P Fixation %',data:[98,95,90,80,65,50,42,38],borderColor:'#c84040',backgroundColor:'rgba(200,64,64,0.1)',tension:0.4,fill:true},
+        {label:'Andisol P Fixation %',data:[99,98,97,95,92,88,82,78],borderColor:'#9060c8',backgroundColor:'rgba(144,96,200,0.1)',tension:0.4,fill:true},
+        {label:'Histosol P Fixation %',data:[85,80,72,62,50,40,35,30],borderColor:'#c88040',backgroundColor:'rgba(200,128,64,0.08)',tension:0.4,fill:true}
+      ]
+    },options:{responsive:true,plugins:{legend:{position:'top'}},scales:{y:{min:20,max:100,title:{display:true,text:'P Fixed (%)'}},x:{title:{display:true,text:'Soil pH'}}}}});
+  }
+
+  // SOC chart
+  const socCtx=document.getElementById('chartSOC');
+  if(socCtx){
+    new Chart(socCtx,{type:'line',data:{
+      labels:['0','3','6','9','12','15','18','21','25'],
+      datasets:[
+        {label:'No EFB (mineral only)',data:[1.8,1.5,1.3,1.1,1.0,0.9,0.85,0.8,0.75],borderColor:'#c84040',tension:0.4,fill:false},
+        {label:'EFB mulch 40 t/ha/yr',data:[1.8,2.1,2.5,2.8,3.1,3.2,3.3,3.35,3.4],borderColor:'#2d7a3a',tension:0.4,fill:false},
+        {label:'BSF frass + EFB compost',data:[1.8,2.3,2.8,3.2,3.6,3.8,4.0,4.1,4.2],borderColor:'#0063a6',tension:0.4,fill:false}
+      ]
+    },options:{responsive:true,plugins:{legend:{position:'top'}},scales:{y:{title:{display:true,text:'SOC (%)'}},x:{title:{display:true,text:'Stand Age (years)'}}}}});
+  }
+});
+</script>
+</body>
+</html>

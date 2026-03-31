@@ -3,11 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CFI Master Consolidation</title>
+<title>CFI Deep Tech - Master Consolidation</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=EB+Garamond:wght@600;700&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#060C14;--bg2:#0D1520;--card:#111B27;--bdr:#1E2D3D;--teal:#40D7C5;--amber:#F5A623;--green:#00A249;--blue:#4A90D9;--txt:#E8ECF1;--dim:#8899AA;--muted:#5A6B7C}
+<style>*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#060C14;--bg2:#0D1520;--card:#111B27;--bdr:#1E2D3D;--teal:#40D7C5;--amber:#F5A623;--green:#00A249;--blue:#4A90D9;--purple:#9B59F5;--txt:#E8ECF1;--dim:#8899AA;--muted:#5A6B7C}
 body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;line-height:1.6}
 .c{max-width:1200px;margin:0 auto;padding:20px}
 .hdr{text-align:center;padding:48px 20px 32px;border-bottom:1px solid var(--bdr)}
@@ -17,176 +16,232 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;line
 .tk{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;padding:24px 20px;border-bottom:1px solid var(--bdr)}
 .ti{background:var(--card);border:1px solid var(--bdr);border-radius:8px;padding:10px 18px;text-align:center;min-width:130px}
 .tn{font-size:1.5rem;font-weight:700;color:var(--teal)}.tl{font-size:.72rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
-.sec{margin:16px 0;border:1px solid var(--bdr);border-radius:12px;overflow:hidden;background:var(--bg2)}
-.sh{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;cursor:pointer;user-select:none}
-.sh:hover{background:var(--card)}
-.st{font-size:1.15rem;font-weight:700;display:flex;align-items:center;gap:10px}
-.tag{font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.5px;color:#fff}
-.sc{font-size:.8rem;color:var(--dim)}.chv{color:var(--dim);transition:transform .3s}.chv.o{transform:rotate(180deg)}
-.sb{display:none;padding:0 24px 20px}.sb.o{display:block}
-.subh{font-size:.82rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.5px;margin:18px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--bdr)}
-table{width:100%;border-collapse:collapse;font-size:.84rem}
-th{text-align:left;padding:8px 10px;color:var(--dim);font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr)}
-td{padding:8px 10px;border-bottom:1px solid rgba(30,45,61,.5);vertical-align:top}
+.sec{margin:12px 0;border:1px solid var(--bdr);border-radius:12px;overflow:hidden;background:var(--bg2)}
+summary.sh{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;cursor:pointer;user-select:none;list-style:none}
+summary.sh::-webkit-details-marker{display:none}
+summary.sh:hover{background:var(--card)}
+.st{font-size:1.1rem;font-weight:700;display:flex;align-items:center;gap:10px}
+.tag{font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:5px;text-transform:uppercase;letter-spacing:.5px;color:#fff}
+.sc{font-size:.8rem;color:var(--dim)}
+.sb{padding:0 24px 20px}
+.subh{font-size:.78rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.5px;margin:18px 0 8px;padding-bottom:5px;border-bottom:1px solid var(--bdr)}
+table{width:100%;border-collapse:collapse;font-size:.84rem;margin-bottom:4px}
+th{text-align:left;padding:7px 10px;color:var(--dim);font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr)}
+td{padding:7px 10px;border-bottom:1px solid rgba(30,45,61,.5);vertical-align:top}
 tr:last-child td{border-bottom:none}tr:hover td{background:rgba(64,215,197,.04)}
 .fn{font-weight:600;word-break:break-all}.fd{color:var(--dim);font-size:.8rem}
-.b{display:inline-block;font-size:.63rem;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:.5px;text-transform:uppercase;margin-right:5px}
-.bg{background:var(--green);color:#fff}.bb{background:var(--blue);color:#fff}.ba{background:var(--amber);color:#000}.bt{background:var(--teal);color:#000}
-.rp{display:inline-block;background:rgba(64,215,197,.12);color:var(--teal);font-size:.7rem;font-weight:600;padding:2px 7px;border-radius:4px;margin-left:4px}
-.ph{text-align:center;padding:40px;color:var(--muted);font-style:italic}
+.b{display:inline-block;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:4px;letter-spacing:.5px;text-transform:uppercase;margin-right:4px}
+.bg{background:#00A249;color:#fff}.bb{background:#4A90D9;color:#fff}.ba{background:#F5A623;color:#000}.bv{background:#9B59F5;color:#fff}.bn{background:#40D7C5;color:#000}
+.fl{color:var(--teal);text-decoration:none;font-weight:600;word-break:break-all}
+.fl:hover{text-decoration:underline}.ext{font-size:.7rem;opacity:.7}
+.supabase-link{color:var(--amber)}
+.rp{display:inline-block;background:rgba(64,215,197,.12);color:var(--teal);font-size:.68rem;font-weight:600;padding:2px 6px;border-radius:4px;margin-left:4px}
 .ft{text-align:center;padding:32px 20px;color:var(--muted);font-size:.75rem;border-top:1px solid var(--bdr);margin-top:24px}
-@media(max-width:768px){.c{padding:12px}.brand{font-size:2rem}.sh{padding:12px 16px}.sb{padding:0 12px 16px}table{font-size:.78rem}}
-</style>
+.note{font-size:.78rem;color:var(--muted);text-align:center;padding:10px 0 16px}
+@media(max-width:768px){.c{padding:12px}.brand{font-size:2rem}summary.sh{padding:12px 16px}.sb{padding:0 12px 16px}table{font-size:.78rem}}</style>
 </head>
 <body>
 <div class="c">
-<div class="hdr"><div class="brand">CFI Deep Tech</div><div class="sub">Master Consolidation — Engineering Asset Inventory</div><div class="line"></div></div>
+<div class="hdr">
+  <div class="brand">CFI Deep Tech</div>
+  <div class="sub">Master Consolidation &middot; Engineering Asset Inventory</div>
+  <div class="line"></div>
+</div>
 <div class="tk">
-<div class="ti"><div class="tn">17</div><div class="tl">React Components</div></div>
-<div class="ti"><div class="tn">5</div><div class="tl">Excel / Python</div></div>
-<div class="ti"><div class="tn">30</div><div class="tl">HTML Designs</div></div>
-<div class="ti"><div class="tn">12</div><div class="tl">Live Data Tables</div></div>
-<div class="ti"><div class="tn">100+</div><div class="tl">Supabase Tables</div></div>
+  <div class="ti"><div class="tn">18</div><div class="tl">React Components</div></div>
+  <div class="ti"><div class="tn">5</div><div class="tl">Excel / Python</div></div>
+  <div class="ti"><div class="tn">34+</div><div class="tl">HTML Designs</div></div>
+  <div class="ti"><div class="tn">831</div><div class="tl">Residue Data Rows</div></div>
+  <div class="ti"><div class="tn">100+</div><div class="tl">Supabase Tables</div></div>
 </div>
-<div id="app"></div>
-<div class="ft">CFI Deep Tech — Master Consolidation &bull; Generated 2026-03-31 &bull; Supabase Project lcpbtnipkvrmuwllymfw</div>
+<div class="note">
+  <span style="color:var(--teal)">Teal links</span> = live on Vercel &middot;
+  <span style="color:var(--amber)">Amber links</span> = served via Supabase &middot;
+  Last updated: 2026-03-31
 </div>
-<script>
-const D=[
-{id:"s0",tag:"S0",color:"#2A8F83",title:"Mill Configuration & Feedstock",groups:[
-{h:"React Components",cols:["Source","File","Details"],rows:[
-["bg","Lovable","src/CFI_S0_Page.jsx","~800 lines — Main S0 orchestrator, feedstock data, soil profiles"],
-["bg","Lovable","src/components/CFI_S0_SectionAB.jsx","724 lines — Company/estate/mill cascade + soil RPC + weather"],
-["bg","Lovable","src/components/CFI_S0_SectionC.jsx","255 lines — Mill results with stream calculations"],
-["bg","Lovable","src/components/CFI_S0_SectionD.jsx","306 lines — Stream selection & blend config"],
-["bg","Lovable","src/CFI_S0_Redesign.jsx","Redesigned S0 version"]]},
-{h:"Mega Exports",cols:["Source","File","Details"],rows:[
-["bg","Lovable","CFI_Project_Files/jsx/5_STATE_MANAGEMENT.jsx","160KB — S0 page + redesign + hooks"]]},
-{h:"Supabase Tables",cols:["Source","Table","Details"],rows:[
-["ba","Supabase","cfi_mills_all","All Indonesian palm oil mills <rp>1,272 rows</rp>"],
-["ba","Supabase","cfi_estates","Estate / plantation data <rp>286 rows</rp>"],
-["ba","Supabase","cfi_sites","Site records <rp>310 rows</rp>"],
-["ba","Supabase","cfi_feedstreams","Feedstream definitions <rp>68 rows</rp>"],
-["ba","Supabase","cfi_feedstock_values","Economic / nutrient values per stream <rp>554 rows</rp>"]]}
-]},
-{id:"s1",tag:"S1",color:"#40D7C5",title:"Pre-Processing Engineering",open:true,groups:[
-{h:"React Components",cols:["Source","File","Details"],rows:[
-["bg","Lovable","src/components/S1EngineeringComplete.tsx <best>","829 lines — Full 24-node, 3-line engineering (EFB/OPDC/POS), CAPEX/OPEX/greenhouses/9 guardrails"],
-["bg","Lovable","src/components/S1SpecPanel.jsx","229 lines — Compact spec panel with guardrail badges"]]},
-{h:"HTML Designs — Floor Plans",cols:["Source","File","Details"],rows:[
-["ba","Supabase","CFI_S1_FloorPlan_v2.html","60KB — Complete layout 2,800 m²"],
-["ba","Supabase","CFI_S1_EFB_FloorPlan.html","42KB — EFB preprocessing"],
-["ba","Supabase","CFI_S1_OPDC_FloorPlan.html","43KB — OPDC preprocessing"],
-["ba","Supabase","CFI_S1_ARCH_FloorPlan.html","42KB — Architectural"]]},
-{h:"HTML Designs — Process Flows",cols:["Source","File","Details"],rows:[
-["ba","Supabase","CFI_S1_ASCII_FLOWS_COMPLETE.html","30KB — All 3 lines combined"],
-["ba","Supabase","CFI_S1_EFB_ASCII_v2.html","14KB — EFB line"],
-["ba","Supabase","CFI_S1_OPDC_ASCII_v2.html","14KB — OPDC line"],
-["ba","Supabase","CFI_S1_POS_ASCII_v1.html","10KB — POS line"]]},
-{h:"HTML Designs — Building & Architecture",cols:["Source","File","Details"],rows:[
-["ba","Supabase","CFI_S1_Building_Architecture_v4.html","64KB — Full building architecture"],
-["ba","Supabase","CFI_S1_ARCH_Elevation.html","12KB — Elevation drawings"]]},
-{h:"HTML Designs — Dashboards & Navigation",cols:["Source","File","Details"],rows:[
-["ba","Supabase","CFI_S1_CAPEX_OPEX_Wireframe.html","18KB — Cost wireframe"],
-["ba","Supabase","CFI_S1_Combined_v2.html","27KB — Combined view"],
-["ba","Supabase","CFI_S1_INDEX.html","16KB — Index page"],
-["ba","Supabase","CFI_S1_DESIGN_GALLERY.html","17KB — Design gallery"]]},
-{h:"Live Engineering Tables",cols:["Source","Table","Details"],rows:[
-["ba","Supabase","cfi_s1_process_nodes","S1A EFB (10), S1B OPDC (10), S1C POS (4) <rp>24 rows</rp>"],
-["ba","Supabase","cfi_equipment_capex_epc","Equipment costs, Indonesian suppliers <rp>18 rows</rp>"],
-["ba","Supabase","cfi_building_capex","A1-A8 packages, Indo vs Western rates <rp>41 rows</rp>"],
-["ba","Supabase","cfi_s1_opex_labour","7 headcount across 5 roles <rp>5 rows</rp>"],
-["ba","Supabase","cfi_electricity_opex","All stages confirmed costs <rp>11 rows</rp>"],
-["ba","Supabase","cfi_s1_opex_maintenance","PM, repairs, consumables <rp>10 rows</rp>"],
-["ba","Supabase","cfi_s1_opex_other","Admin, depreciation, insurance <rp>10 rows</rp>"],
-["ba","Supabase","cfi_engineering_categories","Floor, Building, Machinery, ASCII, CAPEX <rp>13 rows</rp>"],
-["ba","Supabase","cfi_design_elements","All 13 S1 designs, status=APPROVED <rp>13 rows</rp>"],
-["ba","Supabase","cfi_design_logic","Engineering formulas <rp>10 rows</rp>"],
-["ba","Supabase","cfi_greenhouse_design","4 greenhouses + store + shade <rp>6 rows</rp>"],
-["ba","Supabase","cfi_floor_plans","Floor plan metadata <rp>4 rows</rp>"]]},
-{h:"Excel Models & Python Builders",cols:["Source","File","Details"],rows:[
-["bb","GitHub","CFI_MASTER_MODEL_20TABS.xlsx","20-tab master engineering model"],
-["bb","GitHub","CFI_MASTER_MODEL_COMPLETE.xlsx","Complete version with all calculations"],
-["bb","GitHub","build_cfi_20tabs.py","Python builder for 20-tab model"],
-["bb","GitHub","build_cfi_enhanced.py","Enhanced Python builder"],
-["bb","GitHub","WORKBOOK_REBUILD_SUMMARY.md","Rebuild documentation"]]}
-]},
-{id:"s2",tag:"S2",color:"#5A6B7C",title:"Composting & Maturation",placeholder:"S2 engineering design has not yet started. This stage will cover composting, maturation, and blending processes."},
-{id:"s3",tag:"S3",color:"#F5A623",title:"Biological Treatment",groups:[
-{h:"HTML Designs",cols:["Source","File","Details"],rows:[
-["ba","Supabase","CFI_S3_v9_WITH_HEADER.html","79KB — S3 Biological design (full page)"]]},
-{h:"React Components",cols:["Source","File","Details"],rows:[
-["bg","Lovable","src/CFI_Treatment_Optimizer.jsx","Chemical treatment optimizer"]]},
-{h:"Supabase Tables",cols:["Source","Table","Details"],rows:[
-["ba","Supabase","biological_library","Organism database <rp>43 rows</rp>"],
-["ba","Supabase","chemical_library","Chemical treatment library <rp>65 rows</rp>"]]}
-]},
-{id:"calc",tag:"CALC",color:"#4A90D9",title:"Calculators & Tools",groups:[
-{h:"React Components",cols:["Source","File","Details"],rows:[
-["bg","Lovable","src/CFI_ValueCalculator.jsx","NPK value calculations"],
-["bg","Lovable","src/CFI_EFB_DM_Calc.jsx","EFB dry matter calculator"],
-["bg","Lovable","src/CFI_OPDC_DM_Calc.jsx","OPDC dry matter calculator"],
-["bg","Lovable","src/CFI_NPK_Value_Dashboard.jsx","NPK dashboard"],
-["bg","Lovable","src/CFI_AG_Management_Planning_Calculator.jsx","Agronomy management planning"]]},
-{h:"HTML Designs",cols:["Source","File","Details"],rows:[
-["ba","Supabase","Value_Calculator.html","28KB — Value calculator"]]},
-{h:"Supabase Tables",cols:["Source","Table","Details"],rows:[
-["ba","Supabase","equipment_catalogue","Equipment catalog <rp>70 rows</rp>"],
-["ba","Supabase","cfi_fertiliser_prices","CIF fertiliser prices (auto-updated) <rp>9 rows</rp>"]]}
-]},
-{id:"soil",tag:"SOIL",color:"#8B6914",title:"Soil Science",groups:[
-{h:"React Components",cols:["Source","File","Details"],rows:[
-["bg","Lovable","src/CFI_SoilBio_Viz_v3.jsx","Soil biology visualization"],
-["bg","Lovable","src/components/CFI_Soil_Science_Module.jsx","Soil science module"],
-["bg","Lovable","src/components/CFI_SoilAcidity_ProfileCard.jsx","Soil acidity profile cards"]]},
-{h:"HTML Designs",cols:["Source","File","Details"],rows:[
-["ba","Supabase","CFI_Residue_Soil_Nutrient_Analysis.html","9KB — Residue analysis"],
-["ba","Supabase","CFI_SoilScience_Mockup_v2.html","1KB — Soil science mockup"],
-["ba","Supabase","SOIL_ACIDITY_LOOKUP_VISUAL_EXAMPLE.html","7KB — Soil acidity lookup"]]},
-{h:"Supabase Tables",cols:["Source","Table","Details"],rows:[
-["ba","Supabase","cfi_soil_acidity_grid","GPS soil acidity lookup <rp>35,894 rows</rp>"],
-["ba","Supabase","canonical_lab_data","Master lab reference values <rp>1,025 rows</rp>"],
-["ba","Supabase","cfi_residue_analysis","Full residue lab database S0-S6 <rp>831 rows</rp>"]]}
-]},
-{id:"plat",tag:"PLATFORM",color:"#6C3483",title:"Platform, Infrastructure & Mega Exports",groups:[
-{h:"HTML Designs — Platform",cols:["Source","File","Details"],rows:[
-["ba","Supabase","CFI_Database_Structure.html","31KB — Database structure documentation"],
-["ba","Supabase","cfi_platform_process_flow.html","24KB — Platform process flow"],
-["ba","Supabase","CFI_OPDC_Lab_Report_v1-2-0.html","20KB — OPDC lab report"],
-["ba","Supabase","CFI_Colour_v6.html","2KB — Colour system"]]},
-{h:"HTML Designs — Headers",cols:["Source","File","Details"],rows:[
-["ba","Supabase","HEADER.html","6KB — Header design"],
-["ba","Supabase","FINAL_HEADER.html","4KB — Final header"],
-["ba","Supabase","CFI_Header_Preview.html","5KB — Header preview"]]},
-{h:"React Components",cols:["Source","File","Details"],rows:[
-["bg","Lovable","src/components/CFI_PriceRefreshBadge.jsx","Fertiliser price refresh badge"]]},
-{h:"Mega Exports — JSX / SQL / Docs",cols:["Source","File","Details"],rows:[
-["bg","Lovable","CFI_Project_Files/jsx/","21 JSX — incl. CFI_FULL_BUILD_v25.jsx (421KB), CFI_Soil_Calculator_v4 (150KB), CFI_Bio_Database_Manager_v2 (78KB)"],
-["bg","Lovable","CFI_Project_Files/sql/","7 SQL migrations — POS Patch, OPF/OPT Fix, Biologicals, Soil Profiles, Coefficients, Product Soil Response"],
-["bg","Lovable","CFI_Project_Files/docs/","18 docs — Prompts, architecture guides, S1 engineering plans, Lovable project brief"],
-["bg","Lovable","CFI_Project_Files/outputs/","1 JSX — CFI_Bio_Database_Manager_v3.jsx"]]},
-{h:"Numbered Mega Exports",cols:["Source","File","Details"],rows:[
-["bg","Lovable","1_App.jsx","377KB — Full App.jsx routing + page structure"],
-["bg","Lovable","1_SiteSetup.jsx","121KB — Complete SiteSetup page"],
-["bg","Lovable","2_CALCULATOR_LOGIC.jsx","784KB — ALL calculators combined"],
-["bg","Lovable","3_SUPABASE_INTEGRATION.jsx","357KB — Supabase client + all data components"],
-["bg","Lovable","4_DESIGN_SYSTEM.jsx","20KB — CSS variables, Tailwind, colour tokens"]]}
-]}
-];
-function countAssets(s){if(s.placeholder)return"Not yet started";let n=0;(s.groups||[]).forEach(g=>n+=g.rows.length);return n+" assets"}
-function render(){const app=document.getElementById("app");let h="";D.forEach(s=>{const open=s.open?" o":"";
-h+=`<div class="sec"><div class="sh" onclick="tog(this)"><div class="st"><span class="tag" style="background:${s.color};${['#40D7C5','#F5A623'].includes(s.color)?'color:#000':''}">${s.tag}</span>${esc(s.title)}</div><div style="display:flex;align-items:center;gap:12px"><span class="sc">${countAssets(s)}</span><span class="chv${open}">&#9660;</span></div></div><div class="sb${open}">`;
-if(s.placeholder){h+=`<div class="ph">${esc(s.placeholder)}</div>`}else{(s.groups||[]).forEach(g=>{
-h+=`<div class="subh">${esc(g.h)}</div><table><tr>${g.cols.map(c=>`<th>${esc(c)}</th>`).join("")}</tr>`;
-g.rows.forEach(r=>{const bc=r[0],src=r[1],name=r[2],det=r[3];
-let fnHtml=name.replace("<best>",` <span class="b bt">Best-in-Class</span>`);
-let detHtml=det.replace(/<rp>/g,'<span class="rp">').replace(/<\/rp>/g,"</span>");
-h+=`<tr><td><span class="b ${bc}">${esc(src)}</span></td><td class="fn">${fnHtml}</td><td class="fd">${detHtml}</td></tr>`});
-h+=`</table>`})}
-h+=`</div></div>`});app.innerHTML=h}
-function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
-function tog(el){const b=el.nextElementSibling,c=el.querySelector(".chv");b.classList.toggle("o");c.classList.toggle("o")}
-render();
-</script>
+<details class="sec" id="s0" open>
+<summary class="sh"><span class="st"><span class="tag" style="background:#2A8F83">S0</span> Mill Configuration & Feedstock</span><span class="sc">6 assets assets</span></summary>
+<div class="sb"><div class="subh">React Components</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b bg">Lovable</span> <span class="fn">src/CFI_S0_Page.jsx</span></td><td class="fd">~800 lines - Main S0 orchestrator, feedstock data, soil profiles</td></tr>
+<tr><td><span class="b bg">Lovable</span> <span class="fn">src/components/CFI_S0_SectionAB.jsx</span></td><td class="fd">724 lines - Company/estate/mill cascade + soil RPC + weather</td></tr>
+<tr><td><span class="b bg">Lovable</span> <span class="fn">src/components/CFI_S0_SectionC.jsx</span></td><td class="fd">255 lines - Mill results with stream calculations</td></tr>
+<tr><td><span class="b bg">Lovable</span> <span class="fn">src/components/CFI_S0_SectionD.jsx</span></td><td class="fd">306 lines - Stream selection & blend config</td></tr>
+<tr><td><span class="b bv">Vercel</span> <a href="https://cfideeptech.vercel.app/CFI_S0_Master_Reference_v3.html" target="_blank" class="fl">CFI_S0_Master_Reference_v3.html <span class="ext">&#8599;</span></a></td><td class="fd">S0 master reference design</td></tr>
+</tbody></table>
+<div class="subh">Supabase Tables</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_mills_all</span></td><td class="fd">All Indonesian palm oil mills <span class='rp'>1,272 rows</span></td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_estates</span></td><td class="fd">Estate / plantation data <span class='rp'>286 rows</span></td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_sites</span></td><td class="fd">Site records <span class='rp'>310 rows</span></td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_feedstreams</span></td><td class="fd">Feedstream definitions <span class='rp'>68 rows</span></td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_feedstock_values</span></td><td class="fd">Economic / nutrient values per stream <span class='rp'>554 rows</span></td></tr>
+</tbody></table>
+</div>
+</details>
+
+<details class="sec" id="s1" open>
+<summary class="sh"><span class="st"><span class="tag" style="background:#40D7C5">S1</span> Pre-Processing Engineering</span><span class="sc">33 assets assets</span></summary>
+<div class="sb"><div class="subh">React Components</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b bg">Lovable</span> <span class="fn">src/components/S1EngineeringComplete.tsx</span></td><td class="fd">829 lines - Full 24-node, 3-line engineering (EFB/OPDC/POS), CAPEX/OPEX</td></tr>
+<tr><td><span class="b bg">Lovable</span> <span class="fn">src/components/S1SpecPanel.jsx</span></td><td class="fd">229 lines - Compact spec panel with guardrail badges</td></tr>
+</tbody></table>
+<div class="subh">HTML Designs - Floor Plans</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S1_FloorPlan_v2.html" target="_blank" class="fl supabase-link">CFI_S1_FloorPlan_v2.html <span class="ext">&#8599;</span></a></td><td class="fd">60KB - Complete layout 2,800 m2</td></tr>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S1_EFB_FloorPlan.html" target="_blank" class="fl supabase-link">CFI_S1_EFB_FloorPlan.html <span class="ext">&#8599;</span></a></td><td class="fd">42KB - EFB preprocessing</td></tr>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S1_OPDC_FloorPlan.html" target="_blank" class="fl supabase-link">CFI_S1_OPDC_FloorPlan.html <span class="ext">&#8599;</span></a></td><td class="fd">43KB - OPDC preprocessing</td></tr>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S1_ARCH_FloorPlan.html" target="_blank" class="fl supabase-link">CFI_S1_ARCH_FloorPlan.html <span class="ext">&#8599;</span></a></td><td class="fd">42KB - Architectural</td></tr>
+</tbody></table>
+<div class="subh">HTML Designs - Process Flows (ASCII)</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b bv">Vercel</span> <a href="https://cfideeptech.vercel.app/CFI_S1_ASCII_FLOWS_COMPLETE.html" target="_blank" class="fl">CFI_S1_ASCII_FLOWS_COMPLETE.html <span class="ext">&#8599;</span></a></td><td class="fd">All 3 lines combined - 30KB</td></tr>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S1_EFB_ASCII_v2.html" target="_blank" class="fl supabase-link">CFI_S1_EFB_ASCII_v2.html <span class="ext">&#8599;</span></a></td><td class="fd">EFB line - 12KB</td></tr>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S1_OPDC_ASCII_v2.html" target="_blank" class="fl supabase-link">CFI_S1_OPDC_ASCII_v2.html <span class="ext">&#8599;</span></a></td><td class="fd">OPDC line - 14KB</td></tr>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S1_POS_ASCII_v1.html" target="_blank" class="fl supabase-link">CFI_S1_POS_ASCII_v1.html <span class="ext">&#8599;</span></a></td><td class="fd">POS line - 10KB</td></tr>
+</tbody></table>
+<div class="subh">HTML Designs - Process Engineering Pages (Section 14)</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b bb">GitHub</span> <a href="https://cfideeptech.vercel.app/CFI_S1_POS_Process_Engineering_Ascii.html" target="_blank" class="fl">CFI_S1_POS_Process_Engineering_Ascii.html <span class="ext">&#8599;</span></a></td><td class="fd">14.2 POS Process Engineering - DM Sans</td></tr>
+<tr><td><span class="b bb">GitHub</span> <a href="https://cfideeptech.vercel.app/CFI_S1_EFB_Process_Engineering_Ascii.html" target="_blank" class="fl">CFI_S1_EFB_Process_Engineering_Ascii.html <span class="ext">&#8599;</span></a></td><td class="fd">14.3 EFB Process Engineering - DM Sans</td></tr>
+<tr><td><span class="b bb">GitHub</span> <a href="https://cfideeptech.vercel.app/CFI_S1_OPDC_Process_Engineering_Ascii.html" target="_blank" class="fl">CFI_S1_OPDC_Process_Engineering_Ascii.html <span class="ext">&#8599;</span></a></td><td class="fd">14.4 OPDC Process Engineering - DM Sans</td></tr>
+</tbody></table>
+<div class="subh">HTML Designs - Building & Architecture</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S1_Building_Architecture_v4.html" target="_blank" class="fl supabase-link">CFI_S1_Building_Architecture_v4.html <span class="ext">&#8599;</span></a></td><td class="fd">64KB - Full building architecture</td></tr>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S1_ARCH_Elevation.html" target="_blank" class="fl supabase-link">CFI_S1_ARCH_Elevation.html <span class="ext">&#8599;</span></a></td><td class="fd">12KB - Elevation drawings</td></tr>
+</tbody></table>
+<div class="subh">HTML Designs - Site & Infrastructure</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S1_SITE_MASTER_PLAN.html" target="_blank" class="fl supabase-link">CFI_S1_SITE_MASTER_PLAN.html <span class="ext">&#8599;</span></a></td><td class="fd">24KB - Site master plan</td></tr>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S1_TRUCK_RECEIVING.html" target="_blank" class="fl supabase-link">CFI_S1_TRUCK_RECEIVING.html <span class="ext">&#8599;</span></a></td><td class="fd">13KB - Truck receiving area</td></tr>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S1_CONVEYOR_ROUTES.html" target="_blank" class="fl supabase-link">CFI_S1_CONVEYOR_ROUTES.html <span class="ext">&#8599;</span></a></td><td class="fd">22KB - Conveyor routes</td></tr>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S1_CONVEYOR_GALLERY.html" target="_blank" class="fl supabase-link">CFI_S1_CONVEYOR_GALLERY.html <span class="ext">&#8599;</span></a></td><td class="fd">8KB - Conveyor gallery</td></tr>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S1_GREENHOUSE_DETAIL.html" target="_blank" class="fl supabase-link">CFI_S1_GREENHOUSE_DETAIL.html <span class="ext">&#8599;</span></a></td><td class="fd">13KB - Greenhouse detail</td></tr>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S1_NEUTRALISATION_BAYS.html" target="_blank" class="fl supabase-link">CFI_S1_NEUTRALISATION_BAYS.html <span class="ext">&#8599;</span></a></td><td class="fd">12KB - Neutralisation bays</td></tr>
+</tbody></table>
+<div class="subh">HTML Designs - Dashboards & Navigation</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S1_CAPEX_OPEX_Wireframe.html" target="_blank" class="fl supabase-link">CFI_S1_CAPEX_OPEX_Wireframe.html <span class="ext">&#8599;</span></a></td><td class="fd">18KB - Cost wireframe</td></tr>
+<tr><td><span class="b bv">Vercel</span> <a href="https://cfideeptech.vercel.app/CFI_S1_Combined_v2.html" target="_blank" class="fl">CFI_S1_Combined_v2.html <span class="ext">&#8599;</span></a></td><td class="fd">27KB - Combined S1 view</td></tr>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S1_INDEX.html" target="_blank" class="fl supabase-link">CFI_S1_INDEX.html <span class="ext">&#8599;</span></a></td><td class="fd">16KB - S1 index page</td></tr>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S1_DESIGN_GALLERY.html" target="_blank" class="fl supabase-link">CFI_S1_DESIGN_GALLERY.html <span class="ext">&#8599;</span></a></td><td class="fd">17KB - Design gallery</td></tr>
+</tbody></table>
+<div class="subh">Live Engineering Tables</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_s1_process_nodes</span></td><td class="fd">S1A EFB (10), S1B OPDC (10), S1C POS (4) <span class='rp'>24 rows</span></td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_equipment_capex_epc</span></td><td class="fd">Equipment costs, Indonesian suppliers <span class='rp'>18 rows</span></td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_building_capex</span></td><td class="fd">A1-A8 packages, Indo vs Western rates <span class='rp'>41 rows</span></td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_s1_opex_labour</span></td><td class="fd">7 headcount across 5 roles <span class='rp'>5 rows</span></td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_electricity_opex</span></td><td class="fd">All stages confirmed costs <span class='rp'>11 rows</span></td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_s1_opex_maintenance</span></td><td class="fd">PM, repairs, consumables <span class='rp'>10 rows</span></td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_greenhouse_design</span></td><td class="fd">Greenhouse specifications</td></tr>
+</tbody></table>
+</div>
+</details>
+
+<details class="sec" id="s2">
+<summary class="sh"><span class="st"><span class="tag" style="background:#E67E22">S2</span> Blending & Granulation</span><span class="sc">1 asset assets</span></summary>
+<div class="sb"><div class="subh">HTML Designs</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S2_MIXING_AREA.html" target="_blank" class="fl supabase-link">CFI_S2_MIXING_AREA.html <span class="ext">&#8599;</span></a></td><td class="fd">79KB - S2 mixing area design</td></tr>
+</tbody></table>
+</div>
+</details>
+
+<details class="sec" id="s3">
+<summary class="sh"><span class="st"><span class="tag" style="background:#8E44AD">S3</span> Biological Treatment</span><span class="sc">9 assets assets</span></summary>
+<div class="sb"><div class="subh">HTML Designs</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_S3_v9_WITH_HEADER.html" target="_blank" class="fl supabase-link">CFI_S3_v9_WITH_HEADER.html <span class="ext">&#8599;</span></a></td><td class="fd">S3 biological treatment v9 with header</td></tr>
+<tr><td><span class="b bv">Vercel</span> <a href="https://cfideeptech.vercel.app/S3_Apple_UX_v2.html" target="_blank" class="fl">S3_Apple_UX_v2.html <span class="ext">&#8599;</span></a></td><td class="fd">S3 Apple UX design v2</td></tr>
+<tr><td><span class="b bv">Vercel</span> <a href="https://cfideeptech.vercel.app/S3_MASTER_v2.html" target="_blank" class="fl">S3_MASTER_v2.html <span class="ext">&#8599;</span></a></td><td class="fd">S3 master design v2</td></tr>
+</tbody></table>
+<div class="subh">Supabase Tables</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">s3_capex</span></td><td class="fd">Stage 3 capital costs</td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">s3_opex_monthly</span></td><td class="fd">Monthly operating costs</td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">s3_npk_contribution</span></td><td class="fd">NPK outputs by organism</td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">s3_nine_org_dosing</span></td><td class="fd">9-organism dosing matrix</td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">biological_library</span></td><td class="fd">Organism reference library</td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_microbial_strains</span></td><td class="fd">Microbial strain database</td></tr>
+</tbody></table>
+</div>
+</details>
+
+<details class="sec" id="lab">
+<summary class="sh"><span class="st"><span class="tag" style="background:#C0392B">LAB</span> Laboratory Analysis & Reports</span><span class="sc">7 assets assets</span></summary>
+<div class="sb"><div class="subh">HTML Lab Reports</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b bv">Vercel</span> <a href="https://cfideeptech.vercel.app/CFI_Residue_Lab_Reports.html" target="_blank" class="fl">CFI_Residue_Lab_Reports.html <span class="ext">&#8599;</span></a></td><td class="fd">NEW - 10 residues (ASH/EFB/OPDC/OPF/OPT/PKE/PKSA/PMF/POME/POS) - 831 rows - tabbed</td></tr>
+<tr><td><span class="b bv">Vercel</span> <a href="https://cfideeptech.vercel.app/CFI_OPDC_Lab_Report_v1-2-0.html" target="_blank" class="fl">CFI_OPDC_Lab_Report_v1-2-0.html <span class="ext">&#8599;</span></a></td><td class="fd">OPDC single-residue detailed report v1.2.0</td></tr>
+<tr><td><span class="b bv">Vercel</span> <a href="https://cfideeptech.vercel.app/CFI_Lab_Report_v2_2_7.html" target="_blank" class="fl">CFI_Lab_Report_v2_2_7.html <span class="ext">&#8599;</span></a></td><td class="fd">Lab report design template v2.2.7</td></tr>
+<tr><td><span class="b bv">Vercel</span> <a href="https://cfideeptech.vercel.app/CFI_OPF_DeepTech_Report.html" target="_blank" class="fl">CFI_OPF_DeepTech_Report.html <span class="ext">&#8599;</span></a></td><td class="fd">OPF deep tech analysis report</td></tr>
+<tr><td><span class="b bv">Vercel</span> <a href="https://cfideeptech.vercel.app/CFI_Residue_Soil_Nutrient_Analysis.html" target="_blank" class="fl">CFI_Residue_Soil_Nutrient_Analysis.html <span class="ext">&#8599;</span></a></td><td class="fd">Residue soil and nutrient combined analysis</td></tr>
+</tbody></table>
+<div class="subh">Supabase Tables</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_residue_analysis</span></td><td class="fd">10 residue types - last updated 2026-03-23 <span class='rp'>831 rows</span></td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">canonical_lab_data</span></td><td class="fd">Master lab reference values <span class='rp'>1,025 rows</span></td></tr>
+</tbody></table>
+</div>
+</details>
+
+<details class="sec" id="calc">
+<summary class="sh"><span class="st"><span class="tag" style="background:#2980B9">CALC</span> Calculators & Tools</span><span class="sc">5 assets assets</span></summary>
+<div class="sb"><div class="subh">HTML Calculators</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b bv">Vercel</span> <a href="https://cfideeptech.vercel.app/Value_Calculator.html" target="_blank" class="fl">Value_Calculator.html <span class="ext">&#8599;</span></a></td><td class="fd">CFI value and NPK calculator</td></tr>
+<tr><td><span class="b bg">Lovable</span> <span class="fn">src/CFI_ValueCalculator.jsx</span></td><td class="fd">NPK value calculations React component</td></tr>
+<tr><td><span class="b bg">Lovable</span> <span class="fn">src/CFI_EFB_DM_Calc.jsx</span></td><td class="fd">EFB dry matter calculator</td></tr>
+<tr><td><span class="b bg">Lovable</span> <span class="fn">src/CFI_AG_Calc.jsx</span></td><td class="fd">Agronomic calculator</td></tr>
+<tr><td><span class="b bb">GitHub</span> <span class="fn">calculators/CFI_AG_Management_Calculator_v1.jsx</span></td><td class="fd">Agricultural management calculator v1</td></tr>
+</tbody></table>
+</div>
+</details>
+
+<details class="sec" id="soil">
+<summary class="sh"><span class="st"><span class="tag" style="background:#27AE60">SOIL</span> Soil Science</span><span class="sc">10 assets assets</span></summary>
+<div class="sb"><div class="subh">HTML Designs</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b bv">Vercel</span> <a href="https://cfideeptech.vercel.app/CFI_SoilScience_Merged_v1.html" target="_blank" class="fl">CFI_SoilScience_Merged_v1.html <span class="ext">&#8599;</span></a></td><td class="fd">Merged soil science report v1</td></tr>
+<tr><td><span class="b bv">Vercel</span> <a href="https://cfideeptech.vercel.app/CFI_SoilScience_Mockup_v2.html" target="_blank" class="fl">CFI_SoilScience_Mockup_v2.html <span class="ext">&#8599;</span></a></td><td class="fd">Soil science mockup v2</td></tr>
+<tr><td><span class="b bv">Vercel</span> <a href="https://cfideeptech.vercel.app/SOIL_ACIDITY_LOOKUP_VISUAL_EXAMPLE.html" target="_blank" class="fl">SOIL_ACIDITY_LOOKUP_VISUAL_EXAMPLE.html <span class="ext">&#8599;</span></a></td><td class="fd">Soil acidity lookup visual example</td></tr>
+<tr><td><span class="b bv">Vercel</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=palm-soil-science (1).html" target="_blank" class="fl supabase-link">palm-soil-science (1).html <span class="ext">&#8599;</span></a></td><td class="fd">Palm soil science reference</td></tr>
+</tbody></table>
+<div class="subh">Supabase Tables</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_soil_profiles</span></td><td class="fd">Soil profile reference data</td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_soil_acidity_classes</span></td><td class="fd">Acidity classification</td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_soil_acidity_grid</span></td><td class="fd">Grid-based acidity mapping</td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_province_soil_lookup</span></td><td class="fd">Province-level soil data</td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_soil_amendments</span></td><td class="fd">Amendment recommendations</td></tr>
+<tr><td><span class="b ba">Supabase</span> <span class="fn">cfi_soil_microbiome</span></td><td class="fd">Soil microbiome database</td></tr>
+</tbody></table>
+</div>
+</details>
+
+<details class="sec" id="plat">
+<summary class="sh"><span class="st"><span class="tag" style="background:#7F8C8D">PLAT</span> Platform & Infrastructure</span><span class="sc">8 assets assets</span></summary>
+<div class="sb"><div class="subh">HTML Designs</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b bv">Vercel</span> <a href="https://cfideeptech.vercel.app/CFI_Database_Structure.html" target="_blank" class="fl">CFI_Database_Structure.html <span class="ext">&#8599;</span></a></td><td class="fd">Database structure visualization</td></tr>
+<tr><td><span class="b bv">Vercel</span> <a href="https://cfideeptech.vercel.app/cfi_platform_process_flow.html" target="_blank" class="fl">cfi_platform_process_flow.html <span class="ext">&#8599;</span></a></td><td class="fd">Platform process flow diagram</td></tr>
+<tr><td><span class="b bv">Vercel</span> <a href="https://cfideeptech.vercel.app/CFI_Colour_v6.html" target="_blank" class="fl">CFI_Colour_v6.html <span class="ext">&#8599;</span></a></td><td class="fd">Colour system v6 - brand guidelines</td></tr>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=HEADER.html" target="_blank" class="fl supabase-link">HEADER.html <span class="ext">&#8599;</span></a></td><td class="fd">Standard CFI header component</td></tr>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=FINAL_HEADER.html" target="_blank" class="fl supabase-link">FINAL_HEADER.html <span class="ext">&#8599;</span></a></td><td class="fd">Final header design</td></tr>
+<tr><td><span class="b ba">Supabase</span> <a href="https://lcpbtnipkvrmuwllymfw.supabase.co/functions/v1/serve-html?file=CFI_Header_Preview.html" target="_blank" class="fl supabase-link">CFI_Header_Preview.html <span class="ext">&#8599;</span></a></td><td class="fd">Header preview</td></tr>
+</tbody></table>
+<div class="subh">Mega Exports (Lovable)</div>
+<table><thead><tr><th>Source / File</th><th>Details</th></tr></thead><tbody>
+<tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_Project_Files/jsx/CFI_FULL_BUILD_v25.jsx</span></td><td class="fd">421KB - Full app build</td></tr>
+<tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_Project_Files/jsx/CFI_S1S2_Calculations.jsx</span></td><td class="fd">S1/S2 calculations export</td></tr>
+</tbody></table>
+</div>
+</details>
+
+<div class="ft">CFI Deep Tech &middot; Master Consolidation &middot; Generated 2026-03-31 &middot; Supabase: lcpbtnipkvrmuwllymfw &middot; <a href="https://cfideeptech.vercel.app" style="color:var(--teal)">cfideeptech.vercel.app</a></div>
+</div>
 </body>
 </html>
