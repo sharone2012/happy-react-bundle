@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFI S1 Neutralisation Bays &amp; Limestone Dosing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#070D16;--bg2:#0C1520;--bg3:#111B2A;--border:#1A2740;
+    --text:#F0F4F8;--text2:#8A9BB5;--teal:#40D7C5;--amber:#F5A623;--red:#E84040;
+    --green:#3ECF8E;
+  }
+  html{font-size:15px}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.6;padding:0 0 4rem}
+  code,pre,.mono{font-family:'DM Mono',monospace}
+
+  /* TOP BAR */
+  .top-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 32px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:90}
+  .top-bar .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0}
+  .top-bar span{font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:var(--text2);font-weight:500}
+
+  .container{max-width:1280px;margin:0 auto;padding:2rem 32px}
+
+  /* SECTION HEADERS */
+  .section{margin-bottom:3rem}
+  .section-label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:600;margin-bottom:6px}
+  .section-title{font-size:1.35rem;font-weight:700;margin-bottom:1.2rem;color:var(--text)}
+  .section-rule{width:60px;height:2px;background:var(--teal);margin-bottom:1.6rem;border-radius:2px}
+
+  /* SVG PLAN */
+  .svg-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:24px;overflow-x:auto}
+  .svg-wrap svg{display:block;margin:0 auto}
+
+  /* ASCII FLOW */
+  .ascii-box{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:28px 32px;overflow-x:auto}
+  .ascii-box pre{font-size:.78rem;line-height:1.65;color:var(--text2);white-space:pre;tab-size:2}
+  .ascii-box pre .hl-teal{color:var(--teal)}
+  .ascii-box pre .hl-amber{color:var(--amber)}
+  .ascii-box pre .hl-red{color:var(--red)}
+  .ascii-box pre .hl-green{color:var(--green)}
+
+  /* TABLES */
+  .tbl-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:.88rem}
+  thead th{background:var(--bg3);text-align:left;padding:10px 14px;font-weight:600;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);border-bottom:1px solid var(--border)}
+  tbody td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+  tbody tr:hover{background:rgba(64,215,197,.04)}
+
+  .badge{display:inline-block;padding:2px 10px;border-radius:4px;font-size:.72rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+  .badge-critical{background:rgba(232,64,64,.15);color:var(--red)}
+  .badge-high{background:rgba(245,166,35,.15);color:var(--amber)}
+  .badge-standard{background:rgba(64,215,197,.12);color:var(--teal)}
+
+  /* COST TABLE */
+  .cost-table tbody td:last-child{font-family:'DM Mono',monospace;text-align:right;color:var(--teal);font-weight:500}
+  .cost-table tfoot td{padding:12px 14px;font-weight:700;border-top:2px solid var(--teal)}
+  .cost-table tfoot td:last-child{font-family:'DM Mono',monospace;text-align:right;color:var(--amber);font-size:1.05rem}
+
+  /* RESPONSIVE */
+  @media(max-width:800px){
+    .container{padding:1.5rem 16px}
+    .top-bar{padding:12px 16px}
+    .ascii-box{padding:16px}
+    .ascii-box pre{font-size:.65rem}
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="dot"></div>
+  <span>CFI &middot; S1/S2 &middot; Neutralisation Bays &amp; Limestone Dosing &middot; Rev 01 &middot; Mar 2026</span>
+</div>
+
+<div class="container">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: SVG LAYOUT PLAN                                    -->
+<!-- ============================================================ -->
+<div class="section">
+  <div class="section-label">Section 1</div>
+  <div class="section-title">SVG Layout Plan &mdash; Neutralisation Bay Area</div>
+  <div class="section-rule"></div>
+  <div class="svg-wrap">
+    <svg viewBox="0 0 960 720" width="960" height="720" xmlns="http://www.w3.org/2000/svg" font-family="'DM Sans',sans-serif">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#40D7C5"/>
+        </marker>
+        <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#F5A623"/>
+        </marker>
+        <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <rect width="8" height="8" fill="#111B2A"/>
+          <line x1="0" y1="0" x2="0" y2="8" stroke="#1A2740" stroke-width="1.5"/>
+        </pattern>
+        <pattern id="concrete" width="6" height="6" patternUnits="userSpaceOnUse">
+          <rect width="6" height="6" fill="#151F30"/>
+          <circle cx="2" cy="2" r=".6" fill="#1E2E48" opacity=".6"/>
+          <circle cx="5" cy="5" r=".4" fill="#1E2E48" opacity=".4"/>
+        </pattern>
+        <pattern id="lime-pat" width="10" height="10" patternUnits="userSpaceOnUse">
+          <rect width="10" height="10" fill="#1A2218"/>
+          <circle cx="5" cy="5" r="1.5" fill="#2A3A22" opacity=".5"/>
+        </pattern>
+      </defs>
+
+      <!-- Background grid -->
+      <rect width="960" height="720" fill="#0A1018" rx="6"/>
+      <g stroke="#111B2A" stroke-width=".5" opacity=".5">
+        <line x1="0" y1="0" x2="0" y2="720"/><line x1="60" y1="0" x2="60" y2="720"/>
+        <line x1="120" y1="0" x2="120" y2="720"/><line x1="180" y1="0" x2="180" y2="720"/>
+        <line x1="240" y1="0" x2="240" y2="720"/><line x1="300" y1="0" x2="300" y2="720"/>
+        <line x1="360" y1="0" x2="360" y2="720"/><line x1="420" y1="0" x2="420" y2="720"/>
+        <line x1="480" y1="0" x2="480" y2="720"/><line x1="540" y1="0" x2="540" y2="720"/>
+        <line x1="600" y1="0" x2="600" y2="720"/><line x1="660" y1="0" x2="660" y2="720"/>
+        <line x1="720" y1="0" x2="720" y2="720"/><line x1="780" y1="0" x2="780" y2="720"/>
+        <line x1="840" y1="0" x2="840" y2="720"/><line x1="900" y1="0" x2="900" y2="720"/>
+        <line x1="960" y1="0" x2="960" y2="720"/>
+        <line y1="0" x1="0" y2="0" x2="960"/><line y1="60" x1="0" y2="60" x2="960"/>
+        <line y1="120" x1="0" y2="120" x2="960"/><line y1="180" x1="0" y2="180" x2="960"/>
+        <line y1="240" x1="0" y2="240" x2="960"/><line y1="300" x1="0" y2="300" x2="960"/>
+        <line y1="360" x1="0" y2="360" x2="960"/><line y1="420" x1="0" y2="420" x2="960"/>
+        <line y1="480" x1="0" y2="480" x2="960"/><line y1="540" x1="0" y2="540" x2="960"/>
+        <line y1="600" x1="0" y2="600" x2="960"/><line y1="660" x1="0" y2="660" x2="960"/>
+        <line y1="720" x1="0" y2="720" x2="960"/>
+      </g>
+
+      <!-- TITLE -->
+      <text x="480" y="30" text-anchor="middle" fill="#8A9BB5" font-size="11" letter-spacing=".1em" text-transform="uppercase">PLAN VIEW &mdash; NEUTRALISATION BAY AREA</text>
+
+      <!-- ===== BUFFER BINS (top) ===== -->
+      <rect x="120" y="50" width="160" height="70" rx="4" fill="url(#hatch)" stroke="#2A3E5E" stroke-width="1.5"/>
+      <text x="200" y="72" text-anchor="middle" fill="#F0F4F8" font-size="11" font-weight="600">BIN-EFB-201</text>
+      <text x="200" y="88" text-anchor="middle" fill="#8A9BB5" font-size="9">50 m&#xB3; &middot; MC 47.5% &middot; pH ~5.1</text>
+      <text x="200" y="104" text-anchor="middle" fill="#8A9BB5" font-size="9">EFB Buffer</text>
+
+      <rect x="580" y="50" width="200" height="70" rx="4" fill="url(#hatch)" stroke="#2A3E5E" stroke-width="1.5"/>
+      <text x="680" y="72" text-anchor="middle" fill="#F0F4F8" font-size="11" font-weight="600">BIN-OPDC-301</text>
+      <text x="680" y="88" text-anchor="middle" fill="#8A9BB5" font-size="9">85 m&#xB3;+Rake &middot; MC 61% &middot; pH ~4.8</text>
+      <text x="680" y="104" text-anchor="middle" fill="#8A9BB5" font-size="9">OPDC Buffer</text>
+
+      <!-- Arrows from bins down -->
+      <line x1="200" y1="120" x2="200" y2="155" stroke="#40D7C5" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="680" y1="120" x2="680" y2="155" stroke="#40D7C5" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+      <!-- ===== LIMESTONE STORAGE ===== -->
+      <rect x="140" y="160" width="620" height="80" rx="5" fill="#1A2218" stroke="#40D7C5" stroke-width="1.5" stroke-dasharray="6 3"/>
+      <text x="450" y="183" text-anchor="middle" fill="#40D7C5" font-size="12" font-weight="700">S-LIME-01 &mdash; LIMESTONE STORAGE &amp; DOSING</text>
+      <text x="450" y="200" text-anchor="middle" fill="#8A9BB5" font-size="9.5">CaCO&#x2083; Manual Dosing &middot; Covered Storage &middot; Bag Discharge &middot; Scales</text>
+      <text x="450" y="215" text-anchor="middle" fill="#8A9BB5" font-size="9">$6,000 &middot; Supplier: Local, Bogor &middot; Elec: $39.83/mo</text>
+      <!-- Limestone bags icon -->
+      <rect x="160" y="195" width="24" height="30" rx="2" fill="#2A3A22" stroke="#3A5A32" stroke-width="1"/>
+      <rect x="190" y="198" width="24" height="27" rx="2" fill="#2A3A22" stroke="#3A5A32" stroke-width="1"/>
+      <text x="186" y="232" text-anchor="middle" fill="#5A7A52" font-size="7">CaCO&#x2083;</text>
+
+      <!-- Arrow from limestone to bays -->
+      <line x1="320" y1="240" x2="320" y2="285" stroke="#F5A623" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-amber)"/>
+      <line x1="620" y1="240" x2="620" y2="285" stroke="#F5A623" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-amber)"/>
+      <text x="265" y="268" fill="#F5A623" font-size="8" opacity=".8">Limestone dosing</text>
+      <text x="565" y="268" fill="#F5A623" font-size="8" opacity=".8">Limestone dosing</text>
+
+      <!-- ===== NEUTRALISATION BAYS ===== -->
+      <!-- NB-401 -->
+      <rect x="160" y="290" width="260" height="150" rx="4" fill="url(#concrete)" stroke="#40D7C5" stroke-width="2"/>
+      <text x="290" y="315" text-anchor="middle" fill="#F0F4F8" font-size="13" font-weight="700">NB-401</text>
+      <text x="290" y="332" text-anchor="middle" fill="#40D7C5" font-size="10" font-weight="500">NEUTRALISATION BAY 1</text>
+      <text x="290" y="350" text-anchor="middle" fill="#8A9BB5" font-size="9">Concrete &middot; $13,000</text>
+      <!-- Material inside bay -->
+      <rect x="180" y="360" width="220" height="50" rx="3" fill="#1E2518" opacity=".7"/>
+      <text x="290" y="380" text-anchor="middle" fill="#6A8A55" font-size="8">OPDC + CaCO&#x2083; Material</text>
+      <text x="290" y="395" text-anchor="middle" fill="#6A8A55" font-size="8">Dwell &#x2265; 24 hrs</text>
+      <!-- pH monitor -->
+      <circle cx="395" cy="340" r="12" fill="none" stroke="#E84040" stroke-width="1.5"/>
+      <text x="395" y="344" text-anchor="middle" fill="#E84040" font-size="8" font-weight="700">pH</text>
+      <text x="395" y="365" text-anchor="middle" fill="#E84040" font-size="7">8.0-9.0</text>
+      <text x="395" y="376" text-anchor="middle" fill="#8A9BB5" font-size="6">@8hr monitor</text>
+
+      <!-- NB-402 -->
+      <rect x="500" y="290" width="260" height="150" rx="4" fill="url(#concrete)" stroke="#40D7C5" stroke-width="2"/>
+      <text x="630" y="315" text-anchor="middle" fill="#F0F4F8" font-size="13" font-weight="700">NB-402</text>
+      <text x="630" y="332" text-anchor="middle" fill="#40D7C5" font-size="10" font-weight="500">NEUTRALISATION BAY 2</text>
+      <text x="630" y="350" text-anchor="middle" fill="#8A9BB5" font-size="9">Concrete &middot; $13,000</text>
+      <!-- Material inside bay -->
+      <rect x="520" y="360" width="220" height="50" rx="3" fill="#1E2518" opacity=".7"/>
+      <text x="630" y="380" text-anchor="middle" fill="#6A8A55" font-size="8">OPDC + CaCO&#x2083; Material</text>
+      <text x="630" y="395" text-anchor="middle" fill="#6A8A55" font-size="8">Dwell &#x2265; 24 hrs</text>
+      <!-- pH monitor -->
+      <circle cx="735" cy="340" r="12" fill="none" stroke="#E84040" stroke-width="1.5"/>
+      <text x="735" y="344" text-anchor="middle" fill="#E84040" font-size="8" font-weight="700">pH</text>
+      <text x="735" y="365" text-anchor="middle" fill="#E84040" font-size="7">8.0-9.0</text>
+      <text x="735" y="376" text-anchor="middle" fill="#8A9BB5" font-size="6">@8hr monitor</text>
+
+      <!-- ===== LOADER TURNING AREA ===== -->
+      <rect x="160" y="460" width="600" height="100" rx="6" fill="#0E1622" stroke="#F5A623" stroke-width="1.5" stroke-dasharray="8 4"/>
+      <text x="460" y="485" text-anchor="middle" fill="#F5A623" font-size="11" font-weight="600">LOADER TURNING AREA</text>
+
+      <!-- DUTY loader -->
+      <g transform="translate(280,498)">
+        <rect x="-40" y="-16" width="80" height="32" rx="4" fill="#1C2A18" stroke="#3ECF8E" stroke-width="1.5"/>
+        <text x="0" y="-2" text-anchor="middle" fill="#3ECF8E" font-size="8" font-weight="700">V-LOADER-ROW-A-01</text>
+        <text x="0" y="10" text-anchor="middle" fill="#8A9BB5" font-size="7">DUTY &middot; $85k</text>
+      </g>
+      <!-- Turning path arc -->
+      <path d="M320,498 Q 460,540 600,498" fill="none" stroke="#F5A623" stroke-width="1" stroke-dasharray="3 3" opacity=".6"/>
+      <text x="460" y="542" text-anchor="middle" fill="#F5A623" font-size="7" opacity=".7">Turning path</text>
+
+      <!-- STANDBY loader (parked) -->
+      <g transform="translate(680,498)">
+        <rect x="-40" y="-16" width="80" height="32" rx="4" fill="#1C1C18" stroke="#8A9BB5" stroke-width="1" stroke-dasharray="4 2"/>
+        <text x="0" y="-2" text-anchor="middle" fill="#8A9BB5" font-size="8" font-weight="600">V-LOADER-ROW-A-02</text>
+        <text x="0" y="10" text-anchor="middle" fill="#666" font-size="7">STANDBY &middot; $85k</text>
+      </g>
+      <text x="680" y="537" text-anchor="middle" fill="#666" font-size="7">Parked position</text>
+
+      <!-- Arrows from bays to loader area -->
+      <line x1="290" y1="440" x2="290" y2="457" stroke="#40D7C5" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="630" y1="440" x2="630" y2="457" stroke="#40D7C5" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+      <!-- ===== CONVEYOR TO S2 ===== -->
+      <line x1="460" y1="560" x2="460" y2="600" stroke="#40D7C5" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <rect x="360" y="605" width="200" height="40" rx="4" fill="#0E1622" stroke="#2A3E5E" stroke-width="1.5"/>
+      <text x="460" y="622" text-anchor="middle" fill="#8A9BB5" font-size="10">Conveyor Gallery (25m x 4m)</text>
+      <text x="460" y="636" text-anchor="middle" fill="#8A9BB5" font-size="8">To S2</text>
+
+      <line x1="460" y1="645" x2="460" y2="680" stroke="#40D7C5" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <rect x="370" y="682" width="180" height="30" rx="4" fill="#122218" stroke="#3ECF8E" stroke-width="1.5"/>
+      <text x="460" y="702" text-anchor="middle" fill="#3ECF8E" font-size="10" font-weight="600">S2 GREENHOUSE INTAKE</text>
+
+      <!-- LEGEND -->
+      <g transform="translate(20,630)">
+        <text x="0" y="0" fill="#8A9BB5" font-size="8" font-weight="600" letter-spacing=".08em">LEGEND</text>
+        <circle cx="6" cy="14" r="4" fill="none" stroke="#E84040" stroke-width="1.2"/>
+        <text x="14" y="17" fill="#8A9BB5" font-size="7">pH Monitor</text>
+        <line x1="0" y1="28" x2="18" y2="28" stroke="#F5A623" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="22" y="31" fill="#8A9BB5" font-size="7">Limestone Route</text>
+        <line x1="0" y1="42" x2="18" y2="42" stroke="#40D7C5" stroke-width="1.5"/>
+        <text x="22" y="45" fill="#8A9BB5" font-size="7">Material Flow</text>
+        <rect x="0" y="52" width="18" height="10" rx="2" fill="none" stroke="#8A9BB5" stroke-width="1" stroke-dasharray="4 2"/>
+        <text x="22" y="60" fill="#8A9BB5" font-size="7">Standby Equipment</text>
+      </g>
+
+      <!-- Loader specs callout -->
+      <g transform="translate(780,460)">
+        <rect x="0" y="0" width="160" height="80" rx="4" fill="#0E1622" stroke="#1A2740" stroke-width="1"/>
+        <text x="80" y="16" text-anchor="middle" fill="#F5A623" font-size="8" font-weight="600">LOADER SPEC</text>
+        <text x="10" y="30" fill="#8A9BB5" font-size="7">Volvo L25H Elec / Cat 906M</text>
+        <text x="10" y="42" fill="#8A9BB5" font-size="7">5,400 - 6,500 kg</text>
+        <text x="10" y="54" fill="#8A9BB5" font-size="7">Bucket 1.5 - 2.0 m&#xB3;</text>
+        <text x="10" y="66" fill="#8A9BB5" font-size="7">Volvo CE / PT Hexindo</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: NEUTRALISATION PROCESS (ASCII)                     -->
+<!-- ============================================================ -->
+<div class="section">
+  <div class="section-label">Section 2</div>
+  <div class="section-title">Neutralisation Process Flow</div>
+  <div class="section-rule"></div>
+  <div class="ascii-box">
+<pre>
+  <span class="hl-teal">FROM S1 BUFFER BINS</span>
+  ┌─────────────────────────┐    ┌─────────────────────────┐
+  │ <span class="hl-teal">BIN-EFB-201</span>             │    │ <span class="hl-teal">BIN-OPDC-301</span>            │
+  │ 50m&#xB3; &middot; MC 47.5%         │    │ 85m&#xB3;+Rake &middot; MC 61%      │
+  │ pH ~5.1                 │    │ pH ~4.8                  │
+  └──────────┬──────────────┘    └──────────┬──────────────┘
+             │                               │
+             ▼                               ▼
+  <span class="hl-amber">╔══════════════════════════════════════════════════════════╗</span>
+  <span class="hl-amber">║</span>  <span class="hl-amber">S-LIME-01  LIMESTONE STORAGE &amp; DOSING</span>                  <span class="hl-amber">║</span>
+  <span class="hl-amber">║</span>  CaCO&#x2083; manual dosing &middot; Covered storage &middot; Bag discharge  <span class="hl-amber">║</span>
+  <span class="hl-amber">║</span>  Scales for measurement &middot; $6,000                        <span class="hl-amber">║</span>
+  <span class="hl-amber">║</span>  Electricity: $39.83/mo (loader is diesel)              <span class="hl-amber">║</span>
+  <span class="hl-amber">╚═══════════════════════╤═════════════════════════════════╝</span>
+                          │
+        ┌─────────────────┴─────────────────┐
+        ▼                                   ▼
+  ┌─────────────────────┐    ┌─────────────────────┐
+  │  <span class="hl-teal">NB-401</span>             │    │  <span class="hl-teal">NB-402</span>             │
+  │  NEUTRALISATION     │    │  NEUTRALISATION     │
+  │  BAY 1              │    │  BAY 2              │
+  │  Concrete &middot; $13,000 │    │  Concrete &middot; $13,000 │
+  │                     │    │                     │
+  │  <span class="hl-red">&#x2605; GATE: pH target</span>  │    │  <span class="hl-red">&#x2605; GATE: pH target</span>  │
+  │  <span class="hl-red">8.0&#x2013;9.0</span>            │    │  <span class="hl-red">8.0&#x2013;9.0</span>            │
+  │  <span class="hl-red">&#x2605; Dwell: &#x2265; 24 hrs</span>  │    │  <span class="hl-red">&#x2605; Dwell: &#x2265; 24 hrs</span>  │
+  │  Monitor pH @ 8hr   │    │  Monitor pH @ 8hr   │
+  └──────────┬──────────┘    └──────────┬──────────┘
+             │                          │
+  <span class="hl-green">╔══════════╧══════════════════════════╧═══════════════════╗</span>
+  <span class="hl-green">║</span>  <span class="hl-green">V-LOADER-ROW-A-01 (DUTY)</span>                               <span class="hl-green">║</span>
+  <span class="hl-green">║</span>  Volvo L25H Electric / Cat 906M &middot; 5,400&#x2013;6,500 kg       <span class="hl-green">║</span>
+  <span class="hl-green">║</span>  Bucket 1.5&#x2013;2.0 m&#xB3; &middot; $85,000                           <span class="hl-green">║</span>
+  <span class="hl-green">║</span>  TURNS at T+8&#x2013;12h and T+16&#x2013;20h per bay                 <span class="hl-green">║</span>
+  <span class="hl-green">║</span>  V-LOADER-ROW-A-02 (STANDBY) &middot; $85,000                 <span class="hl-green">║</span>
+  <span class="hl-green">╚═════════════════════════╤═══════════════════════════════╝</span>
+                            │
+                            ▼
+              CONVEYOR GALLERY (25m &#xD7; 4m)
+                            │
+                            ▼
+                  <span class="hl-green">S2 GREENHOUSE INTAKE</span>
+</pre>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: GUARDRAILS TABLE                                   -->
+<!-- ============================================================ -->
+<div class="section">
+  <div class="section-label">Section 3</div>
+  <div class="section-title">Guardrails &mdash; Critical Quality Gates</div>
+  <div class="section-rule"></div>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:36%">Parameter</th>
+          <th style="width:28%">Target / Limit</th>
+          <th style="width:18%">Severity</th>
+          <th style="width:18%">Frequency</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>pH (post-24 hr dwell)</td>
+          <td style="color:var(--teal);font-weight:600">8.0 &ndash; 9.0</td>
+          <td><span class="badge badge-critical">CRITICAL</span></td>
+          <td>Every 8 hours</td>
+        </tr>
+        <tr>
+          <td>Dwell time in neutralisation bay</td>
+          <td style="color:var(--teal);font-weight:600">&ge; 24 hours</td>
+          <td><span class="badge badge-critical">CRITICAL</span></td>
+          <td>Per batch</td>
+        </tr>
+        <tr>
+          <td>pH monitoring interval</td>
+          <td>Every 8 hours</td>
+          <td><span class="badge badge-standard">STANDARD</span></td>
+          <td>Continuous</td>
+        </tr>
+        <tr>
+          <td>Fe concentration (POS only)</td>
+          <td style="color:var(--amber);font-weight:600">&lt; 3,000 mg/kg DM</td>
+          <td><span class="badge badge-high">HIGH</span></td>
+          <td>Per batch</td>
+        </tr>
+        <tr>
+          <td>Cr concentration</td>
+          <td style="color:var(--red);font-weight:600">&le; 20 mg/kg</td>
+          <td><span class="badge badge-critical">CRITICAL</span></td>
+          <td>Per batch</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: COST SUMMARY                                       -->
+<!-- ============================================================ -->
+<div class="section">
+  <div class="section-label">Section 4</div>
+  <div class="section-title">Cost Summary &mdash; Neutralisation Bay Area</div>
+  <div class="section-rule"></div>
+  <div class="tbl-wrap">
+    <table class="cost-table">
+      <thead>
+        <tr>
+          <th style="width:20%">Tag</th>
+          <th>Description</th>
+          <th style="width:22%;text-align:right">Cost (USD)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:var(--teal);font-weight:600" class="mono">NB-401</td>
+          <td>Neutralisation Bay 1 &mdash; Concrete bay</td>
+          <td>$13,000</td>
+        </tr>
+        <tr>
+          <td style="color:var(--teal);font-weight:600" class="mono">NB-402</td>
+          <td>Neutralisation Bay 2 &mdash; Concrete bay</td>
+          <td>$13,000</td>
+        </tr>
+        <tr>
+          <td style="color:var(--amber);font-weight:600" class="mono">S-LIME-01</td>
+          <td>Limestone Storage &amp; Dosing Station &mdash; Covered storage, bag discharge, scales</td>
+          <td>$6,000</td>
+        </tr>
+        <tr>
+          <td style="color:var(--green);font-weight:600" class="mono">V-LOADER-ROW-A-01</td>
+          <td>Wheel Loader DUTY &mdash; Volvo L25H Electric / Cat 906M, 5,400&ndash;6,500 kg, bucket 1.5&ndash;2.0 m&sup3;</td>
+          <td>$85,000</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text2);font-weight:600" class="mono">V-LOADER-ROW-A-02</td>
+          <td>Wheel Loader STANDBY &mdash; Same spec as DUTY</td>
+          <td>$85,000</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2">TOTAL &mdash; Neutralisation Bay Area</td>
+          <td>$202,000</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+</div><!-- /container -->
+</body>
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFI S2 Mixing &amp; Chemical Treatment (PKSA)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #070D16;
+    --text: #F0F4F8;
+    --teal: #40D7C5;
+    --amber: #F5A623;
+    --card-bg: #0E1A2B;
+    --border: #1C2E45;
+    --dim: #7A8BA0;
+    --red: #E84855;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.6;
+    padding: 0;
+  }
+
+  /* TOP BAR */
+  .top-bar {
+    background: linear-gradient(90deg, #0E1A2B 0%, #132238 100%);
+    border-bottom: 2px solid var(--teal);
+    padding: 14px 32px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    color: var(--teal);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .top-bar .dot { color: var(--amber); }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--teal);
+    letter-spacing: 0.5px;
+  }
+  h2 .num { color: var(--amber); margin-right: 8px; font-family: 'DM Mono', monospace; }
+
+  .section-desc {
+    color: var(--dim);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .section { margin-bottom: 48px; }
+
+  /* SVG LAYOUT */
+  .svg-wrap {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    overflow-x: auto;
+  }
+
+  /* ASCII BLOCK */
+  .ascii-wrap {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    overflow-x: auto;
+  }
+  .ascii-wrap pre {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--text);
+    white-space: pre;
+  }
+
+  /* TABLE */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .data-table th {
+    text-align: left;
+    padding: 10px 14px;
+    background: #0A1525;
+    color: var(--teal);
+    font-weight: 500;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--teal);
+  }
+  .data-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tbody tr:hover { background: rgba(64, 215, 197, 0.04); }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  .badge--confirmed { background: rgba(64, 215, 197, 0.15); color: var(--teal); }
+  .badge--rfq { background: rgba(245, 166, 35, 0.15); color: var(--amber); }
+  .badge--gap { background: rgba(232, 72, 85, 0.15); color: var(--red); }
+
+  /* COST SUMMARY */
+  .cost-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .cost-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .cost-card .label {
+    font-size: 12px;
+    color: var(--dim);
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .cost-card .value {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--teal);
+  }
+  .cost-card .sub {
+    font-size: 13px;
+    color: var(--dim);
+    margin-top: 4px;
+  }
+  .cost-card.amber .value { color: var(--amber); }
+  .cost-card.highlight {
+    border-color: var(--teal);
+    background: linear-gradient(135deg, rgba(64,215,197,0.06) 0%, var(--card-bg) 100%);
+  }
+
+  .rfq-note {
+    display: inline-block;
+    background: rgba(245,166,35,0.12);
+    border: 1px solid rgba(245,166,35,0.3);
+    color: var(--amber);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 4px;
+    margin-top: 16px;
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  CFI <span class="dot">&middot;</span> S2 <span class="dot">&middot;</span> MIXING &amp; CHEMICAL TREATMENT (PKSA) <span class="dot">&middot;</span> Rev 01 <span class="dot">&middot;</span> Mar 2026
+</div>
+
+<div class="container">
+
+  <!-- SECTION 1: SVG LAYOUT -->
+  <div class="section">
+    <h2><span class="num">01</span>S2 Plan View &mdash; Mixing &amp; Chemical Treatment</h2>
+    <p class="section-desc">Two parallel treatment lines: S2A (EFB) and S2B (OPDC). Material flows from neutralisation bays through mixers and belt presses to S3.</p>
+    <div class="svg-wrap">
+      <svg viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg" font-family="'DM Sans', sans-serif" style="width:100%;height:auto;">
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#40D7C5"/>
+          </marker>
+          <marker id="arrow-amber" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#F5A623"/>
+          </marker>
+        </defs>
+
+        <!-- FROM NEUTRALISATION BAYS -->
+        <text x="550" y="30" text-anchor="middle" fill="#7A8BA0" font-size="13" font-family="'DM Mono', monospace" letter-spacing="1">FROM NEUTRALISATION BAYS</text>
+        <line x1="300" y1="38" x2="300" y2="65" stroke="#40D7C5" stroke-width="2" marker-end="url(#arrow)"/>
+        <line x1="800" y1="38" x2="800" y2="65" stroke="#40D7C5" stroke-width="2" marker-end="url(#arrow)"/>
+
+        <!-- ===== S2A BLOCK ===== -->
+        <rect x="50" y="70" width="520" height="340" rx="6" fill="#0E1A2B" stroke="#1C2E45" stroke-width="1.5"/>
+        <text x="70" y="98" fill="#40D7C5" font-size="15" font-weight="700">S2A EFB &mdash; PKSA Chemical Treatment</text>
+        <text x="70" y="118" fill="#7A8BA0" font-size="11" font-family="'DM Mono', monospace">155 kW total &middot; $9,069/mo electricity</text>
+
+        <!-- Mixer Row 1 -->
+        <g>
+          <rect x="80" y="140" width="110" height="56" rx="4" fill="#0A1525" stroke="#40D7C5" stroke-width="1"/>
+          <text x="135" y="163" text-anchor="middle" fill="#F0F4F8" font-size="12" font-weight="500">MIX-1</text>
+          <text x="135" y="183" text-anchor="middle" fill="#40D7C5" font-size="11" font-family="'DM Mono', monospace">18.5 kW</text>
+        </g>
+        <g>
+          <rect x="210" y="140" width="110" height="56" rx="4" fill="#0A1525" stroke="#40D7C5" stroke-width="1"/>
+          <text x="265" y="163" text-anchor="middle" fill="#F0F4F8" font-size="12" font-weight="500">MIX-2</text>
+          <text x="265" y="183" text-anchor="middle" fill="#40D7C5" font-size="11" font-family="'DM Mono', monospace">18.5 kW</text>
+        </g>
+        <g>
+          <rect x="340" y="140" width="110" height="56" rx="4" fill="#0A1525" stroke="#40D7C5" stroke-width="1"/>
+          <text x="395" y="163" text-anchor="middle" fill="#F0F4F8" font-size="12" font-weight="500">MIX-3</text>
+          <text x="395" y="183" text-anchor="middle" fill="#40D7C5" font-size="11" font-family="'DM Mono', monospace">18.5 kW</text>
+        </g>
+
+        <!-- Mixer Row 2 -->
+        <g>
+          <rect x="80" y="212" width="110" height="56" rx="4" fill="#0A1525" stroke="#40D7C5" stroke-width="1"/>
+          <text x="135" y="235" text-anchor="middle" fill="#F0F4F8" font-size="12" font-weight="500">MIX-4</text>
+          <text x="135" y="255" text-anchor="middle" fill="#40D7C5" font-size="11" font-family="'DM Mono', monospace">18.5 kW</text>
+        </g>
+        <g>
+          <rect x="210" y="212" width="110" height="56" rx="4" fill="#0A1525" stroke="#40D7C5" stroke-width="1"/>
+          <text x="265" y="235" text-anchor="middle" fill="#F0F4F8" font-size="12" font-weight="500">MIX-5</text>
+          <text x="265" y="255" text-anchor="middle" fill="#40D7C5" font-size="11" font-family="'DM Mono', monospace">18.5 kW</text>
+        </g>
+        <g>
+          <rect x="340" y="212" width="110" height="56" rx="4" fill="#0A1525" stroke="#40D7C5" stroke-width="1"/>
+          <text x="395" y="235" text-anchor="middle" fill="#F0F4F8" font-size="12" font-weight="500">MIX-6</text>
+          <text x="395" y="255" text-anchor="middle" fill="#40D7C5" font-size="11" font-family="'DM Mono', monospace">18.5 kW</text>
+        </g>
+
+        <!-- Mixer annotation -->
+        <text x="490" y="175" fill="#7A8BA0" font-size="11" font-family="'DM Mono', monospace">6 x Mixers</text>
+        <text x="490" y="191" fill="#7A8BA0" font-size="11" font-family="'DM Mono', monospace">18.5 kW ea</text>
+        <text x="490" y="207" fill="#40D7C5" font-size="11" font-family="'DM Mono', monospace">111 kW</text>
+
+        <!-- Flow lines from mixers to belt presses -->
+        <line x1="135" y1="268" x2="135" y2="290" stroke="#40D7C5" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="265" y1="268" x2="265" y2="290" stroke="#40D7C5" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="395" y1="268" x2="395" y2="290" stroke="#40D7C5" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="135" y1="290" x2="395" y2="290" stroke="#40D7C5" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="265" y1="290" x2="265" y2="310" stroke="#40D7C5" stroke-width="2" marker-end="url(#arrow)"/>
+
+        <!-- Belt Presses S2A -->
+        <g>
+          <rect x="120" y="315" width="180" height="44" rx="4" fill="#0A1525" stroke="#F5A623" stroke-width="1"/>
+          <text x="210" y="338" text-anchor="middle" fill="#F0F4F8" font-size="12" font-weight="500">BELT PRESS 1</text>
+          <text x="210" y="353" text-anchor="middle" fill="#F5A623" font-size="11" font-family="'DM Mono', monospace">22 kW</text>
+        </g>
+        <g>
+          <rect x="320" y="315" width="180" height="44" rx="4" fill="#0A1525" stroke="#F5A623" stroke-width="1"/>
+          <text x="410" y="338" text-anchor="middle" fill="#F0F4F8" font-size="12" font-weight="500">BELT PRESS 2</text>
+          <text x="410" y="353" text-anchor="middle" fill="#F5A623" font-size="11" font-family="'DM Mono', monospace">22 kW</text>
+        </g>
+
+        <!-- Belt press annotation -->
+        <text x="490" y="325" fill="#7A8BA0" font-size="11" font-family="'DM Mono', monospace">2 x Belt Press</text>
+        <text x="490" y="341" fill="#7A8BA0" font-size="11" font-family="'DM Mono', monospace">22 kW ea</text>
+        <text x="490" y="357" fill="#F5A623" font-size="11" font-family="'DM Mono', monospace">44 kW</text>
+
+        <!-- RFQ note S2A -->
+        <text x="70" y="396" fill="#F5A623" font-size="10" font-family="'DM Mono', monospace">RFQ REQUIRED -- Equipment costs not yet in database</text>
+
+        <!-- Flow out S2A -->
+        <line x1="310" y1="410" x2="310" y2="440" stroke="#40D7C5" stroke-width="2" marker-end="url(#arrow)"/>
+        <text x="310" y="460" text-anchor="middle" fill="#40D7C5" font-size="13" font-weight="700" font-family="'DM Mono', monospace">S2A OUTPUT → S3</text>
+
+        <!-- ===== S2B BLOCK ===== -->
+        <rect x="620" y="70" width="440" height="340" rx="6" fill="#0E1A2B" stroke="#1C2E45" stroke-width="1.5"/>
+        <text x="640" y="98" fill="#40D7C5" font-size="15" font-weight="700">S2B OPDC &mdash; PKSA Chemical Treatment</text>
+        <text x="640" y="118" fill="#7A8BA0" font-size="11" font-family="'DM Mono', monospace">48.5 kW total &middot; $3,126/mo electricity</text>
+
+        <!-- S2B Mixers -->
+        <g>
+          <rect x="660" y="140" width="130" height="56" rx="4" fill="#0A1525" stroke="#40D7C5" stroke-width="1"/>
+          <text x="725" y="163" text-anchor="middle" fill="#F0F4F8" font-size="12" font-weight="500">MIX-1</text>
+          <text x="725" y="183" text-anchor="middle" fill="#40D7C5" font-size="11" font-family="'DM Mono', monospace">15 kW</text>
+        </g>
+        <g>
+          <rect x="810" y="140" width="130" height="56" rx="4" fill="#0A1525" stroke="#40D7C5" stroke-width="1"/>
+          <text x="875" y="163" text-anchor="middle" fill="#F0F4F8" font-size="12" font-weight="500">MIX-2</text>
+          <text x="875" y="183" text-anchor="middle" fill="#40D7C5" font-size="11" font-family="'DM Mono', monospace">15 kW</text>
+        </g>
+
+        <!-- S2B Mixer annotation -->
+        <text x="960" y="160" fill="#7A8BA0" font-size="11" font-family="'DM Mono', monospace">2 x Mixers</text>
+        <text x="960" y="176" fill="#7A8BA0" font-size="11" font-family="'DM Mono', monospace">15 kW ea</text>
+        <text x="960" y="192" fill="#40D7C5" font-size="11" font-family="'DM Mono', monospace">30 kW</text>
+
+        <!-- Flow lines S2B -->
+        <line x1="725" y1="196" x2="725" y2="218" stroke="#40D7C5" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="875" y1="196" x2="875" y2="218" stroke="#40D7C5" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="725" y1="218" x2="875" y2="218" stroke="#40D7C5" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="800" y1="218" x2="800" y2="245" stroke="#40D7C5" stroke-width="2" marker-end="url(#arrow)"/>
+
+        <!-- Belt Press S2B -->
+        <g>
+          <rect x="700" y="250" width="200" height="50" rx="4" fill="#0A1525" stroke="#F5A623" stroke-width="1"/>
+          <text x="800" y="275" text-anchor="middle" fill="#F0F4F8" font-size="12" font-weight="500">BELT PRESS</text>
+          <text x="800" y="291" text-anchor="middle" fill="#F5A623" font-size="11" font-family="'DM Mono', monospace">18.5 kW</text>
+        </g>
+
+        <text x="920" y="272" fill="#7A8BA0" font-size="11" font-family="'DM Mono', monospace">1 x Belt Press</text>
+        <text x="920" y="288" fill="#F5A623" font-size="11" font-family="'DM Mono', monospace">18.5 kW</text>
+
+        <!-- RFQ note S2B -->
+        <text x="640" y="336" fill="#F5A623" font-size="10" font-family="'DM Mono', monospace">RFQ REQUIRED -- Equipment costs not yet in database</text>
+
+        <!-- Flow out S2B -->
+        <line x1="800" y1="350" x2="800" y2="440" stroke="#40D7C5" stroke-width="2" marker-end="url(#arrow)"/>
+        <text x="800" y="460" text-anchor="middle" fill="#40D7C5" font-size="13" font-weight="700" font-family="'DM Mono', monospace">S2B OUTPUT → S3</text>
+
+        <!-- Steelwork note -->
+        <rect x="50" y="490" width="300" height="36" rx="4" fill="rgba(245,166,35,0.08)" stroke="rgba(245,166,35,0.3)" stroke-width="1"/>
+        <text x="65" y="513" fill="#F5A623" font-size="11" font-family="'DM Mono', monospace">Mixer Platform Steelwork: $8,800</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- SECTION 2: ASCII PROCESS FLOW -->
+  <div class="section">
+    <h2><span class="num">02</span>Process Flow Diagram</h2>
+    <p class="section-desc">ASCII schematic of the two treatment lines with equipment ratings.</p>
+    <div class="ascii-wrap">
+<pre>
+  FROM NEUTRALISATION BAYS
+  ┌───────────────────────────────┐
+  │ <span style="color:#40D7C5;font-weight:700">S2A — EFB PKSA TREATMENT</span>     │
+  │                               │
+  │  ┌─────┐ ┌─────┐ ┌─────┐    │
+  │  │MIX-1│ │MIX-2│ │MIX-3│    │    6 × Mixers
+  │  │18.5 │ │18.5 │ │18.5 │    │    18.5 kW each
+  │  │ kW  │ │ kW  │ │ kW  │    │    Total: <span style="color:#40D7C5">111 kW</span>
+  │  └──┬──┘ └──┬──┘ └──┬──┘    │
+  │  ┌─────┐ ┌─────┐ ┌─────┐    │
+  │  │MIX-4│ │MIX-5│ │MIX-6│    │
+  │  │18.5 │ │18.5 │ │18.5 │    │
+  │  │ kW  │ │ kW  │ │ kW  │    │
+  │  └──┬──┘ └──┬──┘ └──┬──┘    │
+  │     └────────┼────────┘      │
+  │              ▼               │
+  │  ┌──────────────────────┐    │
+  │  │ BELT PRESS 1 · <span style="color:#F5A623">22 kW</span>│    │    2 × Belt Presses
+  │  │ BELT PRESS 2 · <span style="color:#F5A623">22 kW</span>│    │    22 kW each
+  │  └──────────┬───────────┘    │    Total: <span style="color:#F5A623">44 kW</span>
+  │             │                │
+  └─────────────┼────────────────┘
+                ▼
+         <span style="color:#40D7C5;font-weight:700">S2A OUTPUT → S3</span>
+
+  ┌───────────────────────────────┐
+  │ <span style="color:#40D7C5;font-weight:700">S2B — OPDC PKSA TREATMENT</span>    │
+  │                               │
+  │  ┌─────┐ ┌─────┐             │    2 × Mixers
+  │  │MIX-1│ │MIX-2│             │    15 kW each
+  │  │15kW │ │15kW │             │    Total: <span style="color:#40D7C5">30 kW</span>
+  │  └──┬──┘ └──┬──┘             │
+  │     └────┬───┘               │
+  │          ▼                   │
+  │  ┌──────────────────────┐    │    1 × Belt Press
+  │  │ BELT PRESS · <span style="color:#F5A623">18.5 kW</span>│    │    18.5 kW
+  │  └──────────┬───────────┘    │
+  │             │                │
+  └─────────────┼────────────────┘
+                ▼
+         <span style="color:#40D7C5;font-weight:700">S2B OUTPUT → S3</span>
+</pre>
+    </div>
+  </div>
+
+  <!-- SECTION 3: DATA STATUS TABLE -->
+  <div class="section">
+    <h2><span class="num">03</span>Data Status</h2>
+    <p class="section-desc">Known parameters and outstanding data gaps for S2 mixing area.</p>
+    <div class="svg-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Status</th>
+            <th>Data Available</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>S2A Mixer count</td>
+            <td><span class="badge badge--confirmed">CONFIRMED</span></td>
+            <td>6 &times; 18.5 kW</td>
+          </tr>
+          <tr>
+            <td>S2A Belt press count</td>
+            <td><span class="badge badge--confirmed">CONFIRMED</span></td>
+            <td>2 &times; 22 kW</td>
+          </tr>
+          <tr>
+            <td>S2B Mixer count</td>
+            <td><span class="badge badge--confirmed">CONFIRMED</span></td>
+            <td>2 &times; 15 kW</td>
+          </tr>
+          <tr>
+            <td>S2B Belt press count</td>
+            <td><span class="badge badge--confirmed">CONFIRMED</span></td>
+            <td>1 &times; 18.5 kW</td>
+          </tr>
+          <tr>
+            <td>S2A Electricity</td>
+            <td><span class="badge badge--confirmed">CONFIRMED</span></td>
+            <td>$9,069/mo</td>
+          </tr>
+          <tr>
+            <td>S2B Electricity</td>
+            <td><span class="badge badge--confirmed">CONFIRMED</span></td>
+            <td>$3,126/mo</td>
+          </tr>
+          <tr>
+            <td>Mixer platform steel</td>
+            <td><span class="badge badge--confirmed">CONFIRMED</span></td>
+            <td>$8,800</td>
+          </tr>
+          <tr>
+            <td>Equipment CAPEX</td>
+            <td><span class="badge badge--rfq">RFQ REQUIRED</span></td>
+            <td>No data yet</td>
+          </tr>
+          <tr>
+            <td>Mixer dimensions</td>
+            <td><span class="badge badge--gap">DATA GAP</span></td>
+            <td>Unknown</td>
+          </tr>
+          <tr>
+            <td>Belt press specs</td>
+            <td><span class="badge badge--gap">DATA GAP</span></td>
+            <td>Unknown</td>
+          </tr>
+          <tr>
+            <td>Suppliers</td>
+            <td><span class="badge badge--gap">DATA GAP</span></td>
+            <td>Unknown</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 4: COST SUMMARY -->
+  <div class="section">
+    <h2><span class="num">04</span>Cost Summary</h2>
+    <p class="section-desc">Known costs for the S2 mixing and chemical treatment area.</p>
+    <div class="cost-grid">
+      <div class="cost-card">
+        <div class="label">S2A Electricity</div>
+        <div class="value">$9,069<span style="font-size:14px;color:#7A8BA0">/mo</span></div>
+        <div class="sub">$108,822/yr</div>
+      </div>
+      <div class="cost-card">
+        <div class="label">S2B Electricity</div>
+        <div class="value">$3,126<span style="font-size:14px;color:#7A8BA0">/mo</span></div>
+        <div class="sub">$37,512/yr</div>
+      </div>
+      <div class="cost-card">
+        <div class="label">Mixer Platform Steelwork</div>
+        <div class="value">$8,800</div>
+        <div class="sub">Building CAPEX item A3</div>
+      </div>
+      <div class="cost-card amber">
+        <div class="label">Equipment CAPEX</div>
+        <div class="value">RFQ</div>
+        <div class="sub">Awaiting supplier quotes</div>
+      </div>
+      <div class="cost-card highlight">
+        <div class="label">Total Known</div>
+        <div class="value">$146,335<span style="font-size:14px;color:#7A8BA0">/yr</span></div>
+        <div class="sub">+ $8,800 one-off steelwork</div>
+      </div>
+    </div>
+    <div class="rfq-note">RFQ REQUIRED &mdash; Equipment CAPEX for mixers and belt presses not yet in database</div>
+  </div>
+
+</div>
+
+</body>
+</html>

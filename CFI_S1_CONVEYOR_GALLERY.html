@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFI S1-S2 Conveyor Gallery</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #070D16;
+    --text: #F0F4F8;
+    --teal: #40D7C5;
+    --amber: #F5A623;
+    --card-bg: #0E1824;
+    --border: #1A2940;
+    --dim: #6B7D93;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.6;
+    padding: 0 0 60px 0;
+  }
+  .mono { font-family: 'DM Mono', monospace; }
+
+  /* TOP BAR */
+  .top-bar {
+    background: linear-gradient(90deg, #0E1824 0%, #12202F 50%, #0E1824 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    color: var(--dim);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .top-bar .hl { color: var(--teal); font-weight: 600; }
+  .top-bar .sep { color: var(--border); margin: 0 4px; }
+
+  /* SECTIONS */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .section {
+    margin-top: 40px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .section-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-header .badge {
+    background: var(--teal);
+    color: var(--bg);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+  .section-header h2 {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .section-body { padding: 24px; }
+  .svg-wrap {
+    width: 100%;
+    overflow-x: auto;
+    display: flex;
+    justify-content: center;
+  }
+  .svg-wrap svg { max-width: 100%; height: auto; }
+
+  /* ASCII */
+  .ascii-block {
+    background: #060B12;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px 28px;
+    overflow-x: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--text);
+    white-space: pre;
+  }
+  .ascii-block .a-teal { color: var(--teal); }
+  .ascii-block .a-amber { color: var(--amber); }
+
+  /* TABLE */
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .spec-table th, .spec-table td {
+    text-align: left;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .spec-table th {
+    color: var(--dim);
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+  .spec-table td:first-child { color: var(--text); font-weight: 500; }
+  .spec-table td:last-child { color: var(--teal); font-family: 'DM Mono', monospace; font-size: 13px; }
+  .spec-table tr:last-child td { border-bottom: none; }
+  .spec-table tr:hover td { background: rgba(64, 215, 197, 0.03); }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <span class="hl">CFI</span>
+  <span class="sep">&middot;</span>
+  <span>S1&#8594;S2</span>
+  <span class="sep">&middot;</span>
+  <span class="hl">CONVEYOR GALLERY</span>
+  <span class="sep">&middot;</span>
+  <span>25m &times; 4m &times; 3m</span>
+  <span class="sep">&middot;</span>
+  <span>Rev 01</span>
+  <span class="sep">&middot;</span>
+  <span>Mar 2026</span>
+</div>
+
+<div class="container">
+
+<!-- SECTION 1: PLAN VIEW -->
+<div class="section">
+  <div class="section-header">
+    <span class="badge">01</span>
+    <h2>Plan View &mdash; Top-Down</h2>
+  </div>
+  <div class="section-body">
+    <div class="svg-wrap">
+      <svg viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg" font-family="'DM Sans', sans-serif">
+        <!-- S1 Building -->
+        <rect x="20" y="60" width="120" height="200" rx="4" fill="#12202F" stroke="#40D7C5" stroke-width="1.5"/>
+        <text x="80" y="40" text-anchor="middle" fill="#40D7C5" font-size="12" font-weight="600">FROM S1 BUILDING</text>
+        <text x="80" y="130" text-anchor="middle" fill="#F0F4F8" font-size="11" font-weight="600">S1 MAIN</text>
+        <text x="80" y="148" text-anchor="middle" fill="#6B7D93" font-size="10">BIN-EFB-201</text>
+        <text x="80" y="163" text-anchor="middle" fill="#6B7D93" font-size="10">50m&#xB3;</text>
+        <text x="80" y="185" text-anchor="middle" fill="#6B7D93" font-size="10">BIN-OPDC-301</text>
+        <text x="80" y="200" text-anchor="middle" fill="#6B7D93" font-size="10">85m&#xB3;+Rake</text>
+        <text x="80" y="222" text-anchor="middle" fill="#6B7D93" font-size="10">POS Buffer</text>
+        <text x="80" y="237" text-anchor="middle" fill="#6B7D93" font-size="10">15m&#xB3;</text>
+
+        <!-- Gallery Structure -->
+        <rect x="160" y="75" width="560" height="170" rx="3" fill="#0A1520" stroke="#1A2940" stroke-width="1.5" stroke-dasharray="6,3"/>
+        <!-- Roof hatching -->
+        <line x1="160" y1="75" x2="180" y2="95" stroke="#1A2940" stroke-width="0.5"/>
+        <line x1="200" y1="75" x2="220" y2="95" stroke="#1A2940" stroke-width="0.5"/>
+        <line x1="240" y1="75" x2="260" y2="95" stroke="#1A2940" stroke-width="0.5"/>
+        <line x1="280" y1="75" x2="300" y2="95" stroke="#1A2940" stroke-width="0.5"/>
+        <line x1="320" y1="75" x2="340" y2="95" stroke="#1A2940" stroke-width="0.5"/>
+        <line x1="360" y1="75" x2="380" y2="95" stroke="#1A2940" stroke-width="0.5"/>
+        <line x1="400" y1="75" x2="420" y2="95" stroke="#1A2940" stroke-width="0.5"/>
+        <line x1="440" y1="75" x2="460" y2="95" stroke="#1A2940" stroke-width="0.5"/>
+        <line x1="480" y1="75" x2="500" y2="95" stroke="#1A2940" stroke-width="0.5"/>
+        <line x1="520" y1="75" x2="540" y2="95" stroke="#1A2940" stroke-width="0.5"/>
+        <line x1="560" y1="75" x2="580" y2="95" stroke="#1A2940" stroke-width="0.5"/>
+        <line x1="600" y1="75" x2="620" y2="95" stroke="#1A2940" stroke-width="0.5"/>
+        <line x1="640" y1="75" x2="660" y2="95" stroke="#1A2940" stroke-width="0.5"/>
+        <line x1="680" y1="75" x2="700" y2="95" stroke="#1A2940" stroke-width="0.5"/>
+
+        <text x="440" y="68" text-anchor="middle" fill="#6B7D93" font-size="10" font-style="italic">COVERED GALLERY &mdash; 25m &times; 4m &mdash; Steelwork $15,400</text>
+
+        <!-- Walking Path -->
+        <rect x="170" y="83" width="540" height="22" rx="2" fill="none" stroke="#2A3D55" stroke-width="1" stroke-dasharray="4,2"/>
+        <text x="440" y="98" text-anchor="middle" fill="#2A3D55" font-size="8">MAINTENANCE WALKWAY (800mm)</text>
+
+        <!-- EFB Belt -->
+        <rect x="170" y="112" width="540" height="24" rx="2" fill="rgba(64,215,197,0.08)" stroke="#40D7C5" stroke-width="1"/>
+        <line x1="170" y1="124" x2="710" y2="124" stroke="#40D7C5" stroke-width="1.5" stroke-dasharray="8,4"/>
+        <text x="440" y="128" text-anchor="middle" fill="#40D7C5" font-size="10" font-weight="500">EFB Belt (600mm) from BIN-EFB-201</text>
+        <!-- Arrow -->
+        <polygon points="710,124 700,118 700,130" fill="#40D7C5"/>
+
+        <!-- OPDC Belt -->
+        <rect x="170" y="146" width="540" height="24" rx="2" fill="rgba(245,166,35,0.06)" stroke="#F5A623" stroke-width="1"/>
+        <line x1="170" y1="158" x2="710" y2="158" stroke="#F5A623" stroke-width="1.5" stroke-dasharray="8,4"/>
+        <text x="440" y="162" text-anchor="middle" fill="#F5A623" font-size="10" font-weight="500">OPDC Belt (500mm) from BIN-OPDC-301</text>
+        <polygon points="710,158 700,152 700,164" fill="#F5A623"/>
+
+        <!-- POS Belt -->
+        <rect x="170" y="180" width="540" height="24" rx="2" fill="rgba(240,244,248,0.04)" stroke="#8899AA" stroke-width="1"/>
+        <line x1="170" y1="192" x2="710" y2="192" stroke="#8899AA" stroke-width="1.5" stroke-dasharray="8,4"/>
+        <text x="440" y="196" text-anchor="middle" fill="#8899AA" font-size="10" font-weight="500">POS Belt (300mm) from POS Buffer</text>
+        <polygon points="710,192 700,186 700,198" fill="#8899AA"/>
+
+        <!-- Drain Channel -->
+        <rect x="170" y="212" width="540" height="12" rx="1" fill="none" stroke="#1A2940" stroke-width="1" stroke-dasharray="2,2"/>
+        <text x="440" y="221" text-anchor="middle" fill="#1A2940" font-size="7">DRAIN CHANNEL</text>
+
+        <!-- Support steelwork columns -->
+        <rect x="250" y="80" width="4" height="160" fill="#1A2940" rx="1"/>
+        <rect x="370" y="80" width="4" height="160" fill="#1A2940" rx="1"/>
+        <rect x="490" y="80" width="4" height="160" fill="#1A2940" rx="1"/>
+        <rect x="610" y="80" width="4" height="160" fill="#1A2940" rx="1"/>
+
+        <!-- S2 Greenhouse -->
+        <rect x="740" y="60" width="140" height="200" rx="4" fill="#12202F" stroke="#F5A623" stroke-width="1.5"/>
+        <text x="810" y="40" text-anchor="middle" fill="#F5A623" font-size="12" font-weight="600">TO S2 GREENHOUSE INTAKE</text>
+        <text x="810" y="130" text-anchor="middle" fill="#F0F4F8" font-size="11" font-weight="600">S2 GREENHOUSE</text>
+        <text x="810" y="148" text-anchor="middle" fill="#6B7D93" font-size="10">S2A EFB Intake</text>
+        <text x="810" y="168" text-anchor="middle" fill="#6B7D93" font-size="10">S2B OPDC Intake</text>
+        <text x="810" y="188" text-anchor="middle" fill="#6B7D93" font-size="10">S2 POS Intake</text>
+
+        <!-- Elevation Note -->
+        <text x="440" y="275" text-anchor="middle" fill="#6B7D93" font-size="11">Elevation: +0.5m above grade</text>
+
+        <!-- Dimension: 25m length -->
+        <line x1="160" y1="295" x2="720" y2="295" stroke="#6B7D93" stroke-width="0.8"/>
+        <line x1="160" y1="289" x2="160" y2="301" stroke="#6B7D93" stroke-width="0.8"/>
+        <line x1="720" y1="289" x2="720" y2="301" stroke="#6B7D93" stroke-width="0.8"/>
+        <text x="440" y="310" text-anchor="middle" fill="#F0F4F8" font-size="11" font-family="'DM Mono', monospace">25 m</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2: CROSS SECTION -->
+<div class="section">
+  <div class="section-header">
+    <span class="badge">02</span>
+    <h2>Cross-Section &mdash; 4m Wide &times; 3m Tall</h2>
+  </div>
+  <div class="section-body">
+    <div class="svg-wrap">
+      <svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" font-family="'DM Sans', sans-serif">
+        <!-- Ground level -->
+        <rect x="50" y="350" width="600" height="40" rx="0" fill="#0A1218" stroke="#1A2940" stroke-width="1"/>
+        <text x="350" y="378" text-anchor="middle" fill="#6B7D93" font-size="10">GROUND LEVEL (0.0m)</text>
+
+        <!-- Floor slab +0.5m -->
+        <rect x="130" y="330" width="440" height="20" rx="0" fill="#16232F" stroke="#1A2940" stroke-width="1.5"/>
+        <text x="350" y="344" text-anchor="middle" fill="#6B7D93" font-size="9">FLOOR SLAB (+0.5m)</text>
+
+        <!-- Drain channel -->
+        <rect x="310" y="340" width="80" height="10" rx="0" fill="#0A1218" stroke="#1A2940" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="350" y="362" text-anchor="middle" fill="#1A2940" font-size="8">DRAIN</text>
+
+        <!-- Left wall / steelwork -->
+        <rect x="130" y="60" width="8" height="270" fill="#1A2940"/>
+        <!-- Right wall / steelwork -->
+        <rect x="562" y="60" width="8" height="270" fill="#1A2940"/>
+
+        <!-- Roof -->
+        <path d="M120,60 L350,30 L580,60" fill="none" stroke="#40D7C5" stroke-width="2"/>
+        <path d="M120,60 L580,60" fill="none" stroke="#40D7C5" stroke-width="1.5"/>
+        <!-- Corrugated roof lines -->
+        <path d="M140,58 L150,55 L160,58 L170,55 L180,58 L190,55 L200,58 L210,55 L220,58 L230,55 L240,58 L250,55 L260,58 L270,55 L280,58 L290,55 L300,58 L310,55 L320,58 L330,55 L340,58 L350,55 L360,58 L370,55 L380,58 L390,55 L400,58 L410,55 L420,58 L430,55 L440,58 L450,55 L460,58 L470,55 L480,58 L490,55 L500,58 L510,55 L520,58 L530,55 L540,58 L550,55 L560,58" fill="none" stroke="#40D7C5" stroke-width="0.8" opacity="0.5"/>
+        <text x="350" y="22" text-anchor="middle" fill="#40D7C5" font-size="11" font-weight="500">STEEL / CORRUGATED ROOF</text>
+
+        <!-- Cross beams -->
+        <rect x="138" y="65" width="424" height="6" rx="1" fill="#1A2940"/>
+        <rect x="138" y="85" width="424" height="4" rx="1" fill="#152030" opacity="0.6"/>
+
+        <!-- Support frame verticals -->
+        <rect x="200" y="71" width="5" height="259" fill="#1A2940" opacity="0.5"/>
+        <rect x="350" y="71" width="5" height="259" fill="#1A2940" opacity="0.5"/>
+        <rect x="500" y="71" width="5" height="259" fill="#1A2940" opacity="0.5"/>
+
+        <!-- Walking path (left side) -->
+        <rect x="145" y="300" width="60" height="30" rx="2" fill="rgba(64,215,197,0.06)" stroke="#40D7C5" stroke-width="1" stroke-dasharray="4,2"/>
+        <text x="175" y="320" text-anchor="middle" fill="#40D7C5" font-size="8" font-weight="500">WALKWAY</text>
+        <text x="175" y="296" text-anchor="middle" fill="#40D7C5" font-size="8">800mm</text>
+
+        <!-- EFB Belt (600mm) -->
+        <g>
+          <rect x="225" y="290" width="80" height="40" rx="2" fill="none" stroke="#2A3D55" stroke-width="1"/>
+          <!-- Belt rollers -->
+          <circle cx="245" cy="310" r="8" fill="none" stroke="#40D7C5" stroke-width="1.5"/>
+          <circle cx="285" cy="310" r="8" fill="none" stroke="#40D7C5" stroke-width="1.5"/>
+          <line x1="245" y1="302" x2="285" y2="302" stroke="#40D7C5" stroke-width="1.5"/>
+          <text x="265" y="280" text-anchor="middle" fill="#40D7C5" font-size="10" font-weight="500">EFB</text>
+          <text x="265" y="268" text-anchor="middle" fill="#6B7D93" font-size="9">600mm</text>
+          <!-- Support legs -->
+          <rect x="240" y="310" width="4" height="20" fill="#1A2940"/>
+          <rect x="280" y="310" width="4" height="20" fill="#1A2940"/>
+        </g>
+
+        <!-- OPDC Belt (500mm) -->
+        <g>
+          <rect x="330" y="290" width="70" height="40" rx="2" fill="none" stroke="#2A3D55" stroke-width="1"/>
+          <circle cx="348" cy="310" r="8" fill="none" stroke="#F5A623" stroke-width="1.5"/>
+          <circle cx="382" cy="310" r="8" fill="none" stroke="#F5A623" stroke-width="1.5"/>
+          <line x1="348" y1="302" x2="382" y2="302" stroke="#F5A623" stroke-width="1.5"/>
+          <text x="365" y="280" text-anchor="middle" fill="#F5A623" font-size="10" font-weight="500">OPDC</text>
+          <text x="365" y="268" text-anchor="middle" fill="#6B7D93" font-size="9">500mm</text>
+          <rect x="343" y="310" width="4" height="20" fill="#1A2940"/>
+          <rect x="377" y="310" width="4" height="20" fill="#1A2940"/>
+        </g>
+
+        <!-- POS Belt (300mm) -->
+        <g>
+          <rect x="425" y="295" width="50" height="35" rx="2" fill="none" stroke="#2A3D55" stroke-width="1"/>
+          <circle cx="438" cy="312" r="7" fill="none" stroke="#8899AA" stroke-width="1.5"/>
+          <circle cx="462" cy="312" r="7" fill="none" stroke="#8899AA" stroke-width="1.5"/>
+          <line x1="438" y1="305" x2="462" y2="305" stroke="#8899AA" stroke-width="1.5"/>
+          <text x="450" y="286" text-anchor="middle" fill="#8899AA" font-size="10" font-weight="500">POS</text>
+          <text x="450" y="274" text-anchor="middle" fill="#6B7D93" font-size="9">300mm</text>
+          <rect x="434" y="312" width="3" height="18" fill="#1A2940"/>
+          <rect x="458" y="312" width="3" height="18" fill="#1A2940"/>
+        </g>
+
+        <!-- Right side clearance -->
+        <rect x="495" y="300" width="60" height="30" rx="2" fill="rgba(245,166,35,0.04)" stroke="#2A3D55" stroke-width="1" stroke-dasharray="4,2"/>
+        <text x="525" y="318" text-anchor="middle" fill="#6B7D93" font-size="8">CLEARANCE</text>
+
+        <!-- DIMENSION: Width 4m -->
+        <line x1="130" y1="395" x2="570" y2="395" stroke="#F0F4F8" stroke-width="0.8"/>
+        <line x1="130" y1="389" x2="130" y2="401" stroke="#F0F4F8" stroke-width="0.8"/>
+        <line x1="570" y1="389" x2="570" y2="401" stroke="#F0F4F8" stroke-width="0.8"/>
+        <text x="350" y="412" text-anchor="middle" fill="#F0F4F8" font-size="12" font-family="'DM Mono', monospace">4.0 m width</text>
+
+        <!-- DIMENSION: Height 3m -->
+        <line x1="620" y1="60" x2="620" y2="330" stroke="#F0F4F8" stroke-width="0.8"/>
+        <line x1="614" y1="60" x2="626" y2="60" stroke="#F0F4F8" stroke-width="0.8"/>
+        <line x1="614" y1="330" x2="626" y2="330" stroke="#F0F4F8" stroke-width="0.8"/>
+        <text x="645" y="200" text-anchor="middle" fill="#F0F4F8" font-size="12" font-family="'DM Mono', monospace" transform="rotate(90 645 200)">3.0 m height</text>
+
+        <!-- DIMENSION: +0.5m elevation -->
+        <line x1="90" y1="330" x2="90" y2="350" stroke="#F5A623" stroke-width="0.8"/>
+        <line x1="84" y1="330" x2="96" y2="330" stroke="#F5A623" stroke-width="0.8"/>
+        <line x1="84" y1="350" x2="96" y2="350" stroke="#F5A623" stroke-width="0.8"/>
+        <text x="80" y="343" text-anchor="end" fill="#F5A623" font-size="9" font-family="'DM Mono', monospace">+0.5m</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3: LONGITUDINAL SECTION -->
+<div class="section">
+  <div class="section-header">
+    <span class="badge">03</span>
+    <h2>Longitudinal Section &mdash; Side View (25m)</h2>
+  </div>
+  <div class="section-body">
+    <div class="svg-wrap">
+      <svg viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" font-family="'DM Sans', sans-serif">
+        <!-- Ground level -->
+        <rect x="30" y="300" width="840" height="30" fill="#0A1218" stroke="#1A2940" stroke-width="1"/>
+        <text x="450" y="322" text-anchor="middle" fill="#6B7D93" font-size="10">GROUND LEVEL (0.0m)</text>
+
+        <!-- S1 Building (left, tall) -->
+        <rect x="40" y="60" width="100" height="240" rx="3" fill="#12202F" stroke="#40D7C5" stroke-width="1.5"/>
+        <text x="90" y="90" text-anchor="middle" fill="#40D7C5" font-size="11" font-weight="600">S1 BUILDING</text>
+        <text x="90" y="110" text-anchor="middle" fill="#6B7D93" font-size="9">Buffer Bins</text>
+        <text x="90" y="125" text-anchor="middle" fill="#6B7D93" font-size="9">Elev. ~6m</text>
+
+        <!-- Bin outlets at ~6m level -->
+        <rect x="115" y="120" width="25" height="12" rx="2" fill="#40D7C5" opacity="0.3" stroke="#40D7C5" stroke-width="0.8"/>
+        <rect x="115" y="140" width="25" height="12" rx="2" fill="#F5A623" opacity="0.3" stroke="#F5A623" stroke-width="0.8"/>
+        <rect x="115" y="160" width="25" height="12" rx="2" fill="#8899AA" opacity="0.3" stroke="#8899AA" stroke-width="0.8"/>
+
+        <!-- S2 Greenhouse (right, lower) -->
+        <rect x="760" y="180" width="100" height="120" rx="3" fill="#12202F" stroke="#F5A623" stroke-width="1.5"/>
+        <text x="810" y="210" text-anchor="middle" fill="#F5A623" font-size="11" font-weight="600">S2 GREEN-</text>
+        <text x="810" y="225" text-anchor="middle" fill="#F5A623" font-size="11" font-weight="600">HOUSE</text>
+        <text x="810" y="245" text-anchor="middle" fill="#6B7D93" font-size="9">Intake Level</text>
+        <text x="810" y="260" text-anchor="middle" fill="#6B7D93" font-size="9">Elev. ~2m</text>
+
+        <!-- Intake points -->
+        <rect x="760" y="215" width="10" height="40" rx="2" fill="#40D7C5" opacity="0.2"/>
+
+        <!-- Gallery roof line (inclined) -->
+        <line x1="140" y1="130" x2="760" y2="215" stroke="#40D7C5" stroke-width="2"/>
+        <!-- Gallery floor line (inclined) -->
+        <line x1="140" y1="175" x2="760" y2="260" stroke="#1A2940" stroke-width="1.5"/>
+
+        <!-- Gallery walls fill -->
+        <polygon points="140,130 760,215 760,260 140,175" fill="rgba(14,24,36,0.8)" stroke="none"/>
+
+        <!-- Support columns -->
+        <g>
+          <rect x="245" y="142" width="5" height="162" fill="#1A2940" rx="1"/>
+          <rect x="245" y="296" width="20" height="4" fill="#1A2940" rx="1"/>
+          <text x="255" y="310" text-anchor="middle" fill="#6B7D93" font-size="8">COL 1</text>
+        </g>
+        <g>
+          <rect x="370" y="157" width="5" height="147" fill="#1A2940" rx="1"/>
+          <rect x="370" y="296" width="20" height="4" fill="#1A2940" rx="1"/>
+          <text x="380" y="310" text-anchor="middle" fill="#6B7D93" font-size="8">COL 2</text>
+        </g>
+        <g>
+          <rect x="495" y="172" width="5" height="132" fill="#1A2940" rx="1"/>
+          <rect x="495" y="296" width="20" height="4" fill="#1A2940" rx="1"/>
+          <text x="505" y="310" text-anchor="middle" fill="#6B7D93" font-size="8">COL 3</text>
+        </g>
+        <g>
+          <rect x="620" y="187" width="5" height="117" fill="#1A2940" rx="1"/>
+          <rect x="620" y="296" width="20" height="4" fill="#1A2940" rx="1"/>
+          <text x="630" y="310" text-anchor="middle" fill="#6B7D93" font-size="8">COL 4</text>
+        </g>
+
+        <!-- Conveyor belts inside gallery -->
+        <line x1="145" y1="155" x2="755" y2="240" stroke="#40D7C5" stroke-width="1.2" stroke-dasharray="6,3"/>
+        <line x1="145" y1="160" x2="755" y2="245" stroke="#F5A623" stroke-width="1.2" stroke-dasharray="6,3"/>
+        <line x1="145" y1="165" x2="755" y2="250" stroke="#8899AA" stroke-width="1.2" stroke-dasharray="6,3"/>
+
+        <!-- Belt Legend -->
+        <line x1="300" y1="50" x2="330" y2="50" stroke="#40D7C5" stroke-width="2"/>
+        <text x="335" y="54" fill="#40D7C5" font-size="10">EFB Belt</text>
+        <line x1="420" y1="50" x2="450" y2="50" stroke="#F5A623" stroke-width="2"/>
+        <text x="455" y="54" fill="#F5A623" font-size="10">OPDC Belt</text>
+        <line x1="540" y1="50" x2="570" y2="50" stroke="#8899AA" stroke-width="2"/>
+        <text x="575" y="54" fill="#8899AA" font-size="10">POS Belt</text>
+
+        <!-- Elevation annotations S1 side -->
+        <line x1="30" y1="130" x2="30" y2="300" stroke="#40D7C5" stroke-width="0.6"/>
+        <line x1="24" y1="130" x2="36" y2="130" stroke="#40D7C5" stroke-width="0.6"/>
+        <line x1="24" y1="300" x2="36" y2="300" stroke="#40D7C5" stroke-width="0.6"/>
+        <text x="22" y="220" text-anchor="end" fill="#40D7C5" font-size="9" font-family="'DM Mono', monospace" transform="rotate(-90 22 220)">~6m</text>
+
+        <!-- Elevation annotations S2 side -->
+        <line x1="870" y1="215" x2="870" y2="300" stroke="#F5A623" stroke-width="0.6"/>
+        <line x1="864" y1="215" x2="876" y2="215" stroke="#F5A623" stroke-width="0.6"/>
+        <line x1="864" y1="300" x2="876" y2="300" stroke="#F5A623" stroke-width="0.6"/>
+        <text x="880" y="262" fill="#F5A623" font-size="9" font-family="'DM Mono', monospace">~2m</text>
+
+        <!-- Total Length dimension -->
+        <line x1="140" y1="345" x2="760" y2="345" stroke="#F0F4F8" stroke-width="0.8"/>
+        <line x1="140" y1="339" x2="140" y2="351" stroke="#F0F4F8" stroke-width="0.8"/>
+        <line x1="760" y1="339" x2="760" y2="351" stroke="#F0F4F8" stroke-width="0.8"/>
+        <text x="450" y="358" text-anchor="middle" fill="#F0F4F8" font-size="12" font-family="'DM Mono', monospace">25 m total length</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: ASCII FLOW -->
+<div class="section">
+  <div class="section-header">
+    <span class="badge">04</span>
+    <h2>Process Flow Diagram</h2>
+  </div>
+  <div class="section-body">
+    <div class="ascii-block">  <span class="a-teal">S1 MAIN BUILDING</span>                                <span class="a-amber">S2 GREENHOUSE BLOCK</span>
+  ┌──────────────┐                                ┌──────────────────┐
+  │              │                                │                  │
+  │ BIN-EFB-201 ├─── <span class="a-teal">EFB Belt</span> ─────────────────→ │ S2A EFB Intake   │
+  │ 50m³        │                                │                  │
+  │              │     CONVEYOR GALLERY            │                  │
+  │ BIN-OPDC-301├─── <span class="a-amber">OPDC Belt</span> ────────────────→ │ S2B OPDC Intake  │
+  │ 85m³+Rake   │     25m × 4m × 3m              │                  │
+  │              │     Covered · +0.5m elevation  │                  │
+  │ POS Buffer  ├─── POS Belt ─────────────────→ │ S2 POS Intake    │
+  │ 15m³        │                                │                  │
+  └──────────────┘                                └──────────────────┘</div>
+  </div>
+</div>
+
+<!-- SECTION 5: SPECIFICATIONS TABLE -->
+<div class="section">
+  <div class="section-header">
+    <span class="badge">05</span>
+    <h2>Gallery Specifications</h2>
+  </div>
+  <div class="section-body" style="padding:0;">
+    <table class="spec-table">
+      <thead>
+        <tr><th>Item</th><th>Value</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Length</td><td>25 m</td></tr>
+        <tr><td>Width</td><td>4 m</td></tr>
+        <tr><td>Height</td><td>3 m</td></tr>
+        <tr><td>Floor Area</td><td>100 m²</td></tr>
+        <tr><td>Elevation</td><td>+0.5 m above grade</td></tr>
+        <tr><td>Conveyor Support Steelwork</td><td>$15,400</td></tr>
+        <tr><td>EFB Belt Width</td><td>600 mm</td></tr>
+        <tr><td>OPDC Belt Width</td><td>500 mm</td></tr>
+        <tr><td>POS Belt Width</td><td>300 mm</td></tr>
+        <tr><td>Roof Type</td><td>Steel / corrugated covered</td></tr>
+        <tr><td>Maintenance Access</td><td>800 mm walkway</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</div><!-- /container -->
+</body>
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFI S1 Truck Receiving &amp; Residue Drop-Off</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #070D16;
+    --text: #F0F4F8;
+    --teal: #40D7C5;
+    --amber: #F5A623;
+    --surface: #0F1923;
+    --border: #1C2A3A;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Cross-nav strip */
+  .cross-nav {
+    background: #0A1018;
+    border-bottom: 1px solid var(--border);
+    padding: 10px 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .cross-nav a {
+    color: var(--teal);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .cross-nav a:hover {
+    color: var(--amber);
+  }
+  .cross-nav .sep {
+    color: #2A3A4A;
+  }
+  .cross-nav .current {
+    color: var(--text);
+    opacity: 0.5;
+  }
+
+  /* Top bar */
+  .top-bar {
+    background: linear-gradient(135deg, #0D1520, #111D2B);
+    border-bottom: 2px solid var(--teal);
+    padding: 20px 32px;
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    color: var(--teal);
+    text-transform: uppercase;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px;
+  }
+
+  /* Section titles */
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title .label {
+    color: var(--teal);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    background: rgba(64, 215, 197, 0.1);
+    border: 1px solid rgba(64, 215, 197, 0.25);
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+
+  /* ASCII diagram section */
+  .ascii-section {
+    background: #F0F4F8;
+    color: #111;
+    border-radius: 8px;
+    padding: 28px 32px;
+    margin-bottom: 40px;
+    overflow-x: auto;
+  }
+  .ascii-section pre {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 1.45;
+    white-space: pre;
+    color: #111;
+  }
+
+  /* Cost table */
+  .table-wrap {
+    margin-bottom: 40px;
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  thead th {
+    background: #111D2B;
+    color: var(--teal);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 2px solid var(--teal);
+  }
+  tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tbody tr:nth-child(even) {
+    background: rgba(255,255,255,0.02);
+  }
+  tbody tr:hover {
+    background: rgba(64, 215, 197, 0.04);
+  }
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+  .tag-cell {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--amber);
+    font-weight: 500;
+  }
+  .cost-cell {
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .total-row td {
+    font-weight: 700;
+    border-top: 2px solid var(--amber);
+    background: rgba(245, 166, 35, 0.06);
+    color: var(--amber);
+    font-size: 15px;
+  }
+  .supplier-cell {
+    font-size: 13px;
+    opacity: 0.7;
+  }
+
+  /* Key specs */
+  .specs-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px 32px;
+  }
+  .specs-section ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 40px;
+  }
+  .specs-section li {
+    position: relative;
+    padding-left: 20px;
+    font-size: 15px;
+  }
+  .specs-section li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--teal);
+    font-family: 'DM Mono', monospace;
+    font-weight: 700;
+  }
+  .specs-section li strong {
+    color: var(--amber);
+  }
+
+  .section-gap {
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 700px) {
+    .container { padding: 20px 16px; }
+    .top-bar { font-size: 11px; padding: 14px 16px; }
+    .specs-section ul { grid-template-columns: 1fr; }
+    .ascii-section { padding: 16px; }
+    .ascii-section pre { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Cross-nav strip -->
+<nav class="cross-nav">
+  <a href="CFI_S1_INDEX.html">S1 INDEX</a>
+  <span class="sep">/</span>
+  <span class="current">Truck Receiving</span>
+</nav>
+
+<!-- Top bar -->
+<header class="top-bar">
+  CFI &middot; S1 &middot; Truck Receiving &amp; Residue Drop-Off &middot; 216 m&sup2; &middot; Rev 01 &middot; Mar 2026
+</header>
+
+<div class="container">
+
+  <!-- SECTION 1: ASCII Process Flow -->
+  <div class="section-gap">
+    <div class="section-title">
+      <span class="label">01</span>
+      Process Flow Diagram
+    </div>
+    <div class="ascii-section">
+<pre>
+            TRUCK APPROACH (North)
+       &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;         &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+       &#9474; TR-101   &#9474;         &#9474; TR-102   &#9474;
+       &#9474; EFB RAMP &#9474;         &#9474;OPDC RAMP &#9474;
+       &#9474; $5,000   &#9474;         &#9474; $5,000   &#9474;
+       &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;         &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+            &#9474;                     &#9474;
+       &#9484;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+       &#9474; TR-EFB-101     &#9474;  &#9474; TR-OPDC-101    &#9474;
+       &#9474; Receiving Bay  &#9474;  &#9474; Receiving Bay  &#9474;
+       &#9474; 10m &#215; 5m       &#9474;  &#9474; Concrete bay   &#9474;
+       &#9474; $8,000         &#9474;  &#9474; $5,000         &#9474;
+       &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+            &#9474;                     &#9474;
+       &#9484;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+       &#9474; RH-EFB-101     &#9474;  &#9474; RH-OPDC-101   &#9474;
+       &#9474; Hydraulic      &#9474;  &#9474; Reciprocating  &#9474;
+       &#9474; Feeder 20 t/h  &#9474;  &#9474; Feeder 5 t/h   &#9474;
+       &#9474; $15,000        &#9474;  &#9474; $10,000        &#9474;
+       &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+            &#9474;                     &#9474;
+       &#9484;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+       &#9474; CV-EFB-101     &#9474;  &#9474; CV-OPDC-101   &#9474;
+       &#9474; Apron Conv     &#9474;  &#9474; Feed Conv      &#9474;
+       &#9474; 15m &middot; 20 t/h   &#9474;  &#9474; 10m            &#9474;
+       &#9474; $18,000        &#9474;  &#9474; $8,000         &#9474;
+       &#9492;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+            &#9474;                     &#9474;
+            &#9660;                     &#9660;
+       TO S1 EFB LINE       TO S1 OPDC LINE
+</pre>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Cost Summary Table -->
+  <div class="section-gap">
+    <div class="section-title">
+      <span class="label">02</span>
+      Cost Summary
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Tag</th>
+            <th>Equipment</th>
+            <th>Specs</th>
+            <th style="text-align:right">Cost USD</th>
+            <th>Supplier</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tag-cell">TR-101</td>
+            <td>EFB Truck Ramp</td>
+            <td>Concrete</td>
+            <td class="cost-cell">$5,000</td>
+            <td class="supplier-cell">&mdash;</td>
+          </tr>
+          <tr>
+            <td class="tag-cell">TR-102</td>
+            <td>OPDC Truck Ramp</td>
+            <td>Concrete</td>
+            <td class="cost-cell">$5,000</td>
+            <td class="supplier-cell">&mdash;</td>
+          </tr>
+          <tr>
+            <td class="tag-cell">TR-EFB-101</td>
+            <td>EFB Receiving Bay</td>
+            <td>10m &times; 5m concrete + side walls</td>
+            <td class="cost-cell">$8,000</td>
+            <td class="supplier-cell">PT Hans Jaya Utama</td>
+          </tr>
+          <tr>
+            <td class="tag-cell">TR-OPDC-101</td>
+            <td>OPDC Receiving Bay</td>
+            <td>Concrete bay</td>
+            <td class="cost-cell">$5,000</td>
+            <td class="supplier-cell">PT Hans Jaya Utama</td>
+          </tr>
+          <tr>
+            <td class="tag-cell">&mdash;</td>
+            <td>Truck Bay Roof</td>
+            <td>Steel roof structure</td>
+            <td class="cost-cell">$18,000</td>
+            <td class="supplier-cell">&mdash;</td>
+          </tr>
+          <tr>
+            <td class="tag-cell">&mdash;</td>
+            <td>Roller Doors (&times;2)</td>
+            <td>Truck access doors</td>
+            <td class="cost-cell">$8,000</td>
+            <td class="supplier-cell">&mdash;</td>
+          </tr>
+          <tr>
+            <td class="tag-cell">RH-EFB-101</td>
+            <td>Hydraulic Feeder</td>
+            <td>Floor-level pusher, 20 t/h</td>
+            <td class="cost-cell">$15,000</td>
+            <td class="supplier-cell">PT Jayatech Palmindo, Medan</td>
+          </tr>
+          <tr>
+            <td class="tag-cell">RH-OPDC-101</td>
+            <td>Reciprocating Feeder</td>
+            <td>Pusher, 5 t/h</td>
+            <td class="cost-cell">$10,000</td>
+            <td class="supplier-cell">Local fabricator, Bogor</td>
+          </tr>
+          <tr>
+            <td class="tag-cell">CV-EFB-101</td>
+            <td>Apron Conveyor</td>
+            <td>Heavy-duty, 15m, 20 t/h</td>
+            <td class="cost-cell">$18,000</td>
+            <td class="supplier-cell">PT Sinar Surya Lestari</td>
+          </tr>
+          <tr>
+            <td class="tag-cell">CV-OPDC-101</td>
+            <td>Feed Conveyor</td>
+            <td>Belt/screw, 10m</td>
+            <td class="cost-cell">$8,000</td>
+            <td class="supplier-cell">PT Sinar Surya Lestari</td>
+          </tr>
+          <tr class="total-row">
+            <td class="tag-cell" style="color:var(--amber)">TOTAL</td>
+            <td></td>
+            <td></td>
+            <td class="cost-cell">$100,000</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Key Specs -->
+  <div>
+    <div class="section-title">
+      <span class="label">03</span>
+      Key Specifications
+    </div>
+    <div class="specs-section">
+      <ul>
+        <li>Truck bay dimensions: <strong>18m &times; 12m &times; 4m</strong> height = 216 m&sup2;</li>
+        <li>2 truck ramps, 2 roller doors</li>
+        <li>EFB throughput: <strong>20 t/h</strong></li>
+        <li>OPDC throughput: <strong>5 t/h</strong></li>
+        <li>Total receiving area CAPEX: <strong>$100,000</strong></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

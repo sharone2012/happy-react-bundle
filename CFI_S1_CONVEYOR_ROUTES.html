@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFI S1 Conveyor Routes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #070D16;
+    --bg-card: #0E1620;
+    --bg-card-alt: #131D2A;
+    --text: #F0F4F8;
+    --text-dim: #8A9BB5;
+    --teal: #40D7C5;
+    --teal-dim: rgba(64, 215, 197, 0.15);
+    --amber: #F5A623;
+    --amber-dim: rgba(245, 166, 35, 0.15);
+    --border: #1E2D3D;
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    padding: 0;
+    min-height: 100vh;
+  }
+
+  /* TOP BAR */
+  .top-bar {
+    background: linear-gradient(90deg, #0E1620 0%, #131D2A 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .top-bar-title {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+  }
+  .top-bar-title span.hl { color: var(--teal); }
+  .top-bar-title span.sep { color: #2A3B4D; margin: 0 6px; }
+
+  /* MAIN */
+  .main { max-width: 1400px; margin: 0 auto; padding: 32px 24px 64px; }
+
+  /* SECTION HEADERS */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: var(--text);
+  }
+  .section { margin-bottom: 48px; }
+
+  /* SVG DIAGRAM */
+  .diagram-wrapper {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    overflow-x: auto;
+  }
+  .diagram-wrapper svg { display: block; margin: 0 auto; }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: var(--bg-card-alt);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .legend-swatch {
+    width: 24px;
+    height: 4px;
+    border-radius: 2px;
+  }
+
+  /* ASCII SECTION */
+  .ascii-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    overflow-x: auto;
+  }
+  .ascii-block pre {
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--text-dim);
+    white-space: pre;
+  }
+  .ascii-block pre .elev { color: var(--teal); font-weight: 500; }
+  .ascii-block pre .equip { color: var(--text); font-weight: 500; }
+  .ascii-block pre .cv-teal { color: var(--teal); }
+  .ascii-block pre .cv-amber { color: var(--amber); }
+
+  /* TABLE */
+  .cost-table-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  thead th {
+    background: var(--bg-card-alt);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: rgba(64, 215, 197, 0.03); }
+  .tag-teal { color: var(--teal); font-family: var(--mono); font-weight: 500; font-size: 13px; }
+  .tag-amber { color: var(--amber); font-family: var(--mono); font-weight: 500; font-size: 13px; }
+  .cost { font-family: var(--mono); font-weight: 500; color: var(--text); }
+  .dim { color: var(--text-dim); }
+  .route-arrow { color: var(--teal); margin: 0 4px; }
+
+  /* TOTALS ROW */
+  .totals-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .total-card {
+    flex: 1;
+    min-width: 200px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+  }
+  .total-card.highlight {
+    border-color: var(--teal);
+    background: var(--teal-dim);
+  }
+  .total-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+  .total-value {
+    font-size: 24px;
+    font-weight: 700;
+    font-family: var(--mono);
+  }
+
+  /* SHARED INFO */
+  .shared-info {
+    margin-top: 16px;
+    padding: 16px 20px;
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  .shared-info strong { color: var(--text); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="top-bar-title">
+    <span class="hl">CFI</span><span class="sep">&middot;</span>S1<span class="sep">&middot;</span>CONVEYOR ROUTES<span class="sep">&middot;</span>5 Conveyors + Gallery<span class="sep">&middot;</span>Rev 01<span class="sep">&middot;</span>Mar 2026
+  </div>
+</div>
+
+<div class="main">
+
+<!-- SECTION 1: SVG ROUTE DIAGRAM -->
+<div class="section">
+  <div class="section-label">Section 1</div>
+  <div class="section-title">Conveyor Route Diagram</div>
+  <div class="diagram-wrapper">
+    <svg viewBox="0 0 1200 620" width="1200" height="620" xmlns="http://www.w3.org/2000/svg" font-family="'DM Mono', monospace">
+      <defs>
+        <marker id="arrow-teal" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#40D7C5"/>
+        </marker>
+        <marker id="arrow-amber" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#F5A623"/>
+        </marker>
+        <marker id="arrow-return" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#40D7C5"/>
+        </marker>
+        <filter id="glow-teal">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feFlood flood-color="#40D7C5" flood-opacity="0.3"/>
+          <feComposite in2="blur" operator="in"/>
+          <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="glow-amber">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feFlood flood-color="#F5A623" flood-opacity="0.3"/>
+          <feComposite in2="blur" operator="in"/>
+          <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- Background grid -->
+      <g stroke="#1E2D3D" stroke-width="0.5" opacity="0.4">
+        <line x1="0" y1="100" x2="1200" y2="100"/>
+        <line x1="0" y1="200" x2="1200" y2="200"/>
+        <line x1="0" y1="300" x2="1200" y2="300"/>
+        <line x1="0" y1="400" x2="1200" y2="400"/>
+        <line x1="0" y1="500" x2="1200" y2="500"/>
+      </g>
+
+      <!-- Elevation labels -->
+      <text x="20" y="508" fill="#8A9BB5" font-size="11" opacity="0.7">+0m</text>
+      <text x="20" y="408" fill="#8A9BB5" font-size="11" opacity="0.7">+2m</text>
+      <text x="20" y="308" fill="#8A9BB5" font-size="11" opacity="0.7">+4m</text>
+      <text x="20" y="208" fill="#8A9BB5" font-size="11" opacity="0.7">+6m</text>
+      <text x="20" y="108" fill="#8A9BB5" font-size="11" opacity="0.7">+8m</text>
+
+      <!-- ====== EFB LINE (teal) ====== -->
+
+      <!-- RH-EFB-101 Feeder @ 0m -->
+      <rect x="80" y="478" rx="6" ry="6" width="120" height="44" fill="#0E1620" stroke="#40D7C5" stroke-width="1.5"/>
+      <text x="140" y="496" text-anchor="middle" fill="#40D7C5" font-size="11" font-weight="500">RH-EFB-101</text>
+      <text x="140" y="512" text-anchor="middle" fill="#8A9BB5" font-size="10">Feeder (0m)</text>
+
+      <!-- CV-EFB-101: Apron Conveyor INCLINE  0m -> 4m -->
+      <line x1="200" y1="490" x2="340" y2="300" stroke="#40D7C5" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow-teal)" filter="url(#glow-teal)"/>
+      <rect x="220" y="370" rx="4" ry="4" width="130" height="48" fill="#070D16" fill-opacity="0.85" stroke="#40D7C5" stroke-width="0.5"/>
+      <text x="285" y="386" text-anchor="middle" fill="#40D7C5" font-size="10" font-weight="500">CV-EFB-101</text>
+      <text x="285" y="399" text-anchor="middle" fill="#8A9BB5" font-size="9">Apron | 15m | INCLINE</text>
+      <text x="285" y="412" text-anchor="middle" fill="#F0F4F8" font-size="10" font-weight="500">$18,000</text>
+
+      <!-- SH-EFB-101 Shredder @ 4m -->
+      <rect x="330" y="272" rx="6" ry="6" width="120" height="44" fill="#0E1620" stroke="#40D7C5" stroke-width="1.5"/>
+      <text x="390" y="290" text-anchor="middle" fill="#40D7C5" font-size="11" font-weight="500">SH-EFB-101</text>
+      <text x="390" y="306" text-anchor="middle" fill="#8A9BB5" font-size="10">Shredder (4m)</text>
+
+      <!-- CV-EFB-102: Shredder Discharge Belt 10m -->
+      <line x1="450" y1="294" x2="580" y2="200" stroke="#40D7C5" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow-teal)" filter="url(#glow-teal)"/>
+      <rect x="470" y="222" rx="4" ry="4" width="130" height="48" fill="#070D16" fill-opacity="0.85" stroke="#40D7C5" stroke-width="0.5"/>
+      <text x="535" y="238" text-anchor="middle" fill="#40D7C5" font-size="10" font-weight="500">CV-EFB-102</text>
+      <text x="535" y="251" text-anchor="middle" fill="#8A9BB5" font-size="9">Belt | 10m</text>
+      <text x="535" y="264" text-anchor="middle" fill="#F0F4F8" font-size="10" font-weight="500">$8,000</text>
+
+      <!-- ML-EFB-101 Hammer Mill @ 6m -->
+      <rect x="570" y="172" rx="6" ry="6" width="130" height="44" fill="#0E1620" stroke="#40D7C5" stroke-width="1.5"/>
+      <text x="635" y="190" text-anchor="middle" fill="#40D7C5" font-size="11" font-weight="500">ML-EFB-101</text>
+      <text x="635" y="206" text-anchor="middle" fill="#8A9BB5" font-size="10">Hammer Mill (6m)</text>
+
+      <!-- Arrow from Hammer Mill to Screen -->
+      <line x1="700" y1="194" x2="760" y2="194" stroke="#2A3B4D" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrow-teal)"/>
+      <text x="730" y="186" text-anchor="middle" fill="#8A9BB5" font-size="9">output</text>
+
+      <!-- SC-EFB-101 Vibrating Screen @ 6m -->
+      <rect x="760" y="172" rx="6" ry="6" width="140" height="44" fill="#0E1620" stroke="#40D7C5" stroke-width="1.5"/>
+      <text x="830" y="190" text-anchor="middle" fill="#40D7C5" font-size="11" font-weight="500">SC-EFB-101</text>
+      <text x="830" y="206" text-anchor="middle" fill="#8A9BB5" font-size="10">Vibrating Screen (6m)</text>
+
+      <!-- CV-EFB-103: Screen Undersize Screw to Buffer Bin -->
+      <line x1="900" y1="194" x2="1040" y2="194" stroke="#40D7C5" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow-teal)" filter="url(#glow-teal)"/>
+      <rect x="930" y="140" rx="4" ry="4" width="130" height="48" fill="#070D16" fill-opacity="0.85" stroke="#40D7C5" stroke-width="0.5"/>
+      <text x="995" y="156" text-anchor="middle" fill="#40D7C5" font-size="10" font-weight="500">CV-EFB-103</text>
+      <text x="995" y="169" text-anchor="middle" fill="#8A9BB5" font-size="9">Screw | 8m</text>
+      <text x="995" y="182" text-anchor="middle" fill="#F0F4F8" font-size="10" font-weight="500">$10,000</text>
+
+      <!-- BIN-EFB-201 Buffer Bin @ 6m -->
+      <rect x="1040" y="172" rx="6" ry="6" width="130" height="44" fill="#0E1620" stroke="#40D7C5" stroke-width="1.5"/>
+      <text x="1105" y="190" text-anchor="middle" fill="#40D7C5" font-size="11" font-weight="500">BIN-EFB-201</text>
+      <text x="1105" y="206" text-anchor="middle" fill="#8A9BB5" font-size="10">Buffer Bin 50m3 (6m)</text>
+
+      <!-- CV-EFB-104: Screen Oversize Return (loop back to Hammer Mill) -->
+      <path d="M 830 216 L 830 280 C 830 300, 800 310, 750 310 L 660 310 C 640 310, 635 300, 635 280 L 635 216"
+            stroke="#40D7C5" stroke-width="2.5" fill="none" stroke-dasharray="8,4" marker-end="url(#arrow-return)" filter="url(#glow-teal)"/>
+      <rect x="680" y="290" rx="4" ry="4" width="130" height="48" fill="#070D16" fill-opacity="0.85" stroke="#40D7C5" stroke-width="0.5"/>
+      <text x="745" y="306" text-anchor="middle" fill="#40D7C5" font-size="10" font-weight="500">CV-EFB-104</text>
+      <text x="745" y="319" text-anchor="middle" fill="#8A9BB5" font-size="9">Oversize Return</text>
+      <text x="745" y="332" text-anchor="middle" fill="#F0F4F8" font-size="10" font-weight="500">$8,000</text>
+
+      <!-- ====== OPDC LINE (amber) ====== -->
+
+      <!-- RH-OPDC-101 Feeder @ 0m -->
+      <rect x="80" y="548" rx="6" ry="6" width="130" height="44" fill="#0E1620" stroke="#F5A623" stroke-width="1.5"/>
+      <text x="145" y="566" text-anchor="middle" fill="#F5A623" font-size="11" font-weight="500">RH-OPDC-101</text>
+      <text x="145" y="582" text-anchor="middle" fill="#8A9BB5" font-size="10">OPDC Feeder (0m)</text>
+
+      <!-- CV-OPDC-101: Feed Conveyor INCLINE 0m -> 2m -->
+      <line x1="210" y1="560" x2="340" y2="400" stroke="#F5A623" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow-amber)" filter="url(#glow-amber)"/>
+      <rect x="230" y="458" rx="4" ry="4" width="135" height="48" fill="#070D16" fill-opacity="0.85" stroke="#F5A623" stroke-width="0.5"/>
+      <text x="297" y="474" text-anchor="middle" fill="#F5A623" font-size="10" font-weight="500">CV-OPDC-101</text>
+      <text x="297" y="487" text-anchor="middle" fill="#8A9BB5" font-size="9">Belt/Screw | 10m | INCLINE</text>
+      <text x="297" y="500" text-anchor="middle" fill="#F0F4F8" font-size="10" font-weight="500">$8,000</text>
+
+      <!-- OPDC Processing @ 2m -->
+      <rect x="330" y="378" rx="6" ry="6" width="140" height="44" fill="#0E1620" stroke="#F5A623" stroke-width="1.5"/>
+      <text x="400" y="396" text-anchor="middle" fill="#F5A623" font-size="11" font-weight="500">OPDC Processing</text>
+      <text x="400" y="412" text-anchor="middle" fill="#8A9BB5" font-size="10">Elevation 2m</text>
+
+      <!-- ====== CONVEYOR GALLERY ====== -->
+      <rect x="570" y="430" rx="8" ry="8" width="280" height="52" fill="none" stroke="#2A3B4D" stroke-width="1.5" stroke-dasharray="6,4"/>
+      <text x="710" y="453" text-anchor="middle" fill="#8A9BB5" font-size="11" font-weight="500">CONVEYOR GALLERY</text>
+      <text x="710" y="470" text-anchor="middle" fill="#2A3B4D" font-size="10">25m x 4m x 3m covered  |  S1 &rarr; S2</text>
+
+      <!-- Steelwork note -->
+      <rect x="570" y="498" rx="6" ry="6" width="280" height="34" fill="rgba(64,215,197,0.05)" stroke="#1E2D3D" stroke-width="1"/>
+      <text x="710" y="520" text-anchor="middle" fill="#8A9BB5" font-size="10">Support Steelwork &mdash; $15,400 (A3 building_capex)</text>
+
+      <!-- Title in SVG -->
+      <text x="600" y="40" text-anchor="middle" fill="#F0F4F8" font-size="16" font-weight="600" font-family="'DM Sans', sans-serif">CFI S1 Facility &mdash; Conveyor Route Schematic</text>
+      <text x="600" y="60" text-anchor="middle" fill="#8A9BB5" font-size="11">Showing all 5 conveyors with elevation changes and material flow direction</text>
+    </svg>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#40D7C5"></div>
+      EFB Line (4 conveyors)
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#F5A623"></div>
+      OPDC Line (1 conveyor)
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#2A3B4D"></div>
+      Conveyor Gallery / Steelwork
+    </div>
+    <div class="legend-item">
+      <svg width="24" height="12"><line x1="0" y1="6" x2="20" y2="6" stroke="#40D7C5" stroke-width="2" stroke-dasharray="4,3"/></svg>
+      Oversize Return Loop
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2: ASCII ELEVATION PROFILE -->
+<div class="section">
+  <div class="section-label">Section 2</div>
+  <div class="section-title">EFB Line Elevation Profile (Side View)</div>
+  <div class="ascii-block">
+    <pre>
+                                                   <span class="cv-teal">CV-103 (8m screw)</span>
+  <span class="elev">+6m</span> <span class="dim">----------------------------------------------</span> <span class="equip">Hammer Mill</span> <span class="dim">----</span> <span class="equip">Screen</span> <span class="dim">-----------&gt;</span> <span class="equip">Buffer Bin</span>
+                                                <span class="dim">/</span>              <span class="dim">\</span>
+  <span class="elev">+4m</span> <span class="dim">---</span> <span class="equip">Shredder</span> <span class="dim">-----------------------------</span>              <span class="cv-teal">CV-104 (oversize return)</span>
+                <span class="dim">\</span>
+                 <span class="cv-teal">CV-102 (10m belt)</span>
+  <span class="elev">+2m</span> <span class="dim">---</span>
+           <span class="dim">\</span>
+            <span class="cv-teal">CV-101 (15m apron incline)</span>
+  <span class="elev">+0m</span> <span class="dim">---</span> <span class="equip">Feeder (RH-EFB-101)</span>
+
+
+  <span class="dim">--- OPDC Line (separate) ---</span>
+
+  <span class="elev">+2m</span> <span class="dim">---</span> <span class="equip">OPDC Processing</span>
+           <span class="dim">\</span>
+            <span class="cv-amber">CV-OPDC-101 (10m belt/screw incline)</span>
+  <span class="elev">+0m</span> <span class="dim">---</span> <span class="equip">Feeder (RH-OPDC-101)</span>
+</pre>
+  </div>
+</div>
+
+<!-- SECTION 3: COST SUMMARY TABLE -->
+<div class="section">
+  <div class="section-label">Section 3</div>
+  <div class="section-title">Conveyor Cost Summary</div>
+  <div class="cost-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Tag</th>
+          <th>Type</th>
+          <th>Length</th>
+          <th>From &rarr; To</th>
+          <th>Supplier</th>
+          <th style="text-align:right">Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag-teal">CV-EFB-101</span></td>
+          <td>Apron Conveyor</td>
+          <td>15m</td>
+          <td>RH-EFB-101 Feeder (0m) <span class="route-arrow">&rarr;</span> SH-EFB-101 Shredder (4m)</td>
+          <td class="dim">PT Sinar Surya Lestari, Jakarta</td>
+          <td style="text-align:right"><span class="cost">$18,000</span></td>
+        </tr>
+        <tr>
+          <td><span class="tag-teal">CV-EFB-102</span></td>
+          <td>Belt Conveyor</td>
+          <td>10m</td>
+          <td>SH-EFB-101 Shredder <span class="route-arrow">&rarr;</span> ML-EFB-101 Hammer Mill</td>
+          <td class="dim">PT Sinar Surya Lestari</td>
+          <td style="text-align:right"><span class="cost">$8,000</span></td>
+        </tr>
+        <tr>
+          <td><span class="tag-teal">CV-EFB-103</span></td>
+          <td>Screw Conveyor</td>
+          <td>8m</td>
+          <td>SC-EFB-101 Vibrating Screen <span class="route-arrow">&rarr;</span> BIN-EFB-201 Buffer Bin 50m&sup3;</td>
+          <td class="dim">Local fabricator, Bogor</td>
+          <td style="text-align:right"><span class="cost">$10,000</span></td>
+        </tr>
+        <tr>
+          <td><span class="tag-teal">CV-EFB-104</span></td>
+          <td>Belt Conveyor (Return)</td>
+          <td>8m</td>
+          <td>SC-EFB-101 Screen oversize <span class="route-arrow">&rarr;</span> ML-EFB-101 Hammer Mill</td>
+          <td class="dim">Local fabricator, Bogor</td>
+          <td style="text-align:right"><span class="cost">$8,000</span></td>
+        </tr>
+        <tr>
+          <td><span class="tag-amber">CV-OPDC-101</span></td>
+          <td>Belt / Screw Conveyor</td>
+          <td>10m</td>
+          <td>RH-OPDC-101 Feeder (0m) <span class="route-arrow">&rarr;</span> OPDC Processing (2m)</td>
+          <td class="dim">PT Sinar Surya Lestari</td>
+          <td style="text-align:right"><span class="cost">$8,000</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Cost Totals -->
+  <div class="totals-row">
+    <div class="total-card">
+      <div class="total-label">Equipment (5 Conveyors)</div>
+      <div class="total-value" style="color: var(--teal);">$52,000</div>
+    </div>
+    <div class="total-card">
+      <div class="total-label">Support Steelwork (A3)</div>
+      <div class="total-value" style="color: var(--text-dim);">$15,400</div>
+    </div>
+    <div class="total-card highlight">
+      <div class="total-label">Total Conveyor System</div>
+      <div class="total-value" style="color: var(--teal);">$67,400</div>
+    </div>
+  </div>
+
+  <!-- Shared Infrastructure -->
+  <div class="shared-info">
+    <strong>Shared Infrastructure:</strong> Conveyor Support Steelwork &mdash; $15,400 (building_capex line A3)<br>
+    <strong>Conveyor Gallery:</strong> 25m &times; 4m &times; 3m covered walkway connecting S1 building to S2 greenhouses
+  </div>
+</div>
+
+</div><!-- .main -->
+</body>
+</html>
