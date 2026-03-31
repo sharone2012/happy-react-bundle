@@ -7,92 +7,34 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=DM+Mono:wght@400;500&family=Syne:wght@700&display=swap');
 
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: white;
-  padding: 20px;
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-.container {
-  width: 1280px;
-  margin: 0 auto;
-  border: 3px solid #111;
-  padding: 24px;
-  background: white;
-}
-
-.header {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 24px;
-  border-bottom: 2px solid #111;
-  padding-bottom: 12px;
-  margin-bottom: 24px;
-}
-
-.section-num {
-  color: #185FA5;
-  margin-right: 8px;
-}
-
-.flow-section {
-  margin-bottom: 32px;
-}
-
-.node {
-  margin-bottom: 16px;
-}
-
-.node-header {
-  font-weight: 700;
-  color: #111;
-  margin-bottom: 4px;
-}
-
-.node-body {
-  margin-left: 20px;
-  color: #333;
-}
-
-.stream-state {
-  color: #185FA5;
-  font-weight: 500;
-}
-
-.parallel-note {
-  color: #9a6000;
-  font-style: italic;
-  margin-left: 20px;
-}
-
-.gate {
-  color: #cc2222;
-  font-weight: 500;
-}
-
-.legend {
-  margin-top: 32px;
-  padding: 16px;
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  font-size: 12px;
-}
-
-.legend-title {
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.legend-item {
-  margin-bottom: 4px;
-  color: #666;
-}
+body { font-family: 'DM Sans', sans-serif; background: white; padding: 20px; font-size: 13px; line-height: 1.6; }
+.container { width: 1280px; margin: 0 auto; border: 3px solid #111; padding: 24px; background: white; }
+.header { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 24px; border-bottom: 2px solid #111; padding-bottom: 12px; margin-bottom: 24px; }
+.section-num { color: #185FA5; margin-right: 8px; }
+.flow-section { margin-bottom: 32px; }
+.node { margin-bottom: 16px; }
+.node-header { font-weight: 700; color: #111; margin-bottom: 4px; }
+.node-body { margin-left: 20px; color: #333; }
+.stream-state { color: #185FA5; font-weight: 500; }
+.parallel-note { color: #9a6000; font-style: italic; margin-left: 20px; }
+.gate { color: #cc2222; font-weight: 500; }
+.calc-section { margin-top: 36px; border-top: 2px solid #111; padding-top: 24px; }
+.calc-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; margin-bottom: 16px; color: #111; }
+.calc-subtitle { font-weight: 700; font-size: 13px; color: #185FA5; margin: 20px 0 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+.formula-box { background: #f0f5fb; border-left: 4px solid #185FA5; padding: 10px 14px; margin-bottom: 14px; font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.9; }
+.formula-label { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #555; margin-top: 8px; }
+table.calc-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 8px; }
+table.calc-table th { background: #111; color: white; padding: 6px 10px; text-align: center; font-weight: 600; font-size: 11px; }
+table.calc-table td { border: 1px solid #ccc; padding: 5px 10px; text-align: center; color: #333; }
+table.calc-table tr.design-row td { background: #e8f0fb; font-weight: 700; color: #185FA5; }
+table.calc-table td.row-label { text-align: left; font-weight: 600; color: #111; background: #f5f5f5; }
+.note-inline { font-size: 11px; color: #666; font-style: italic; margin: 4px 0 14px; }
+.legend { margin-top: 32px; padding: 16px; background: #f9f9f9; border: 1px solid #ddd; font-size: 12px; }
+.legend-title { font-weight: 700; margin-bottom: 8px; }
+.legend-item { margin-bottom: 4px; color: #666; }
 </style>
 </head>
 <body>
-
 <div class="container">
   <div class="header"><span class="section-num">§14.4</span> OPDC S1B — Ascii Process Flow</div>
 
@@ -106,41 +48,35 @@ body {
         OUT: Gravity feed → CVB-OPDC-01 ②
       </div>
     </div>
-
     <div class="node">
       <div class="node-header">② CVB-OPDC-01 — Drag Chain Conveyor</div>
       <div class="node-body">
         IN: OPDC from hopper ①<br>
         <span class="stream-state">Stream: 5 t/h · 70–75% MC</span><br>
-        Transport: 10m × 500mm belt · 5.5kW motor · VFD controlled<br>
-        Elevation: +2.5m lift to shredder feed<br>
+        Transport: 10m × 500mm belt · 5.5kW motor · VFD controlled · Elevation: +2.5m<br>
         OUT: Discharge → OSD-01 ③
       </div>
     </div>
-
     <div class="node">
       <div class="node-header">③ OSD-01 — Primary Shredder</div>
       <div class="node-body">
         IN: OPDC cake from conveyor ②<br>
         <span class="stream-state">Stream: 5 t/h · 70–75% MC · cake lumps</span><br>
         Process: Twin-shaft low-speed shredder · 2×22kW motors · 15–25 RPM<br>
-        Action: Reduce to ~80–120mm fragments<br>
+        Action: Reduce to ~80–120mm fragments · No moisture change<br>
         <span class="stream-state">OUT Stream: 5 t/h · 70–75% MC · fragments</span><br>
         OUT: → CVB-OPDC-02 ④
       </div>
     </div>
-
     <div class="node">
       <div class="node-header">④ CVB-OPDC-02 — Incline Belt Conveyor</div>
       <div class="node-body">
         IN: Shredded fragments from OSD-01 ③<br>
         <span class="stream-state">Stream: 5 t/h · 70–75% MC · fragments</span><br>
-        Transport: 7m × 500mm cleated belt · 4kW · 30° incline<br>
-        Elevation: +3.5m lift to buffer bin<br>
+        Transport: 7m × 500mm cleated belt · 4kW · 30° incline · Elevation: +3.5m<br>
         OUT: Top discharge → BIN-OPDC-01 ⑤
       </div>
     </div>
-
     <div class="node">
       <div class="node-header">⑤ BIN-OPDC-01 — Buffer Bin</div>
       <div class="node-body">
@@ -151,51 +87,47 @@ body {
         OUT: Gravity + screw → OLB-01 ⑥
       </div>
     </div>
-
     <div class="node">
       <div class="node-header">⑥ OLB-01 — Lump Breaker</div>
       <div class="node-body">
         IN: Fragments from buffer bin ⑤<br>
         <span class="stream-state">Stream: 5 t/h · 70–75% MC · fragments</span><br>
         Process: Twin-roller lump breaker · 7.5kW · 25–40mm gap<br>
-        Action: Break fragments to ~25–40mm pieces<br>
+        Action: Break fragments to ~25–40mm pieces · No moisture change<br>
         <span class="stream-state">OUT Stream: 5 t/h · 70–75% MC · smaller pieces</span><br>
         OUT: Chute → OHM-01 ⑦
       </div>
     </div>
-
     <div class="node">
       <div class="node-header">⑦ OHM-01 — Hammer Mill</div>
       <div class="node-body">
         IN: Pieces from lump breaker ⑥ + oversize return from screen ⑧<br>
-        <span class="stream-state">Stream: 5 t/h primary + recycle · 70–75% MC</span><br>
+        <span class="stream-state">Stream: 5 t/h primary + ~0.5 t/h recycle · 70–75% MC</span><br>
         Process: High-speed hammer mill · 22kW nameplate (14kW @ 65% Asian derate)<br>
         Screen: 2.0mm perforated · rotor 500mm Ø · 1200–1500 RPM<br>
         <span class="gate">Isolation: Spring mounts only — never rigid anchor</span><br>
         Action: Reduce to D90 ≤2mm<br>
-        <span class="stream-state">OUT Stream: 5 t/h · 70–75% MC · D90 ≤2mm powder</span><br>
-        OUT: Screen undersize → OSC-01 ⑧<br>
-        <span class="gate">Oversize return: loops back to ⑦ hammer mill for re-milling</span>
+        <span class="stream-state">OUT Stream: ~5 t/h · 70–75% MC · D90 ≤2mm</span><br>
+        OUT: → OSC-01 ⑧<br>
+        <span class="gate">Oversize return: loops back to ⑦ — NEVER to ⑥ or ③</span>
       </div>
       <div class="parallel-note">
         ║ Parallel Unit: ODC-01 Baghouse — duct-fed dust collection from ⑦<br>
         ║ Not inline — runs parallel to main flow
       </div>
     </div>
-
     <div class="node">
       <div class="node-header">⑧ OSC-01 — Vibrating Screen</div>
       <div class="node-body">
         IN: Hammer mill discharge ⑦<br>
-        <span class="stream-state">Stream: 5 t/h · 70–75% MC · mixed particle sizes</span><br>
+        <span class="stream-state">Stream: ~5.5 t/h (incl. recycle) · 70–75% MC · mixed sizes</span><br>
         Process: Linear vibrating screen · 2×1.1kW motors · 2.0mm mesh<br>
         Split: Undersize (D90 ≤2mm) → OPR-01 ⑨<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Oversize (&gt;2mm) → Return to OHM-01 ⑦ for re-milling<br>
-        <span class="stream-state">Undersize Stream: ~4.5 t/h · 70–75% MC · D90 ≤2mm</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Oversize (&gt;2mm) → Return to OHM-01 ⑦ (~10% recycle fraction)<br>
+        <span class="stream-state">Undersize net: ~4.5 t/h · 70–75% MC · D90 ≤2mm</span><br>
         OUT: Undersize → OPR-01 ⑨
       </div>
     </div>
-
     <div class="node">
       <div class="node-header">⑨ OPR-01 — Screw Press</div>
       <div class="node-body">
@@ -204,20 +136,18 @@ body {
         Process: Twin-screw dewatering press · 11kW<br>
         Action: Dewater 70–75% → 60–62% MC<br>
         <span class="gate">Gate C.G1 Class A: Press floor MC ≥40% — Math.max(40, reading) enforced</span><br>
-        Split: Cake (solids) → BIN-OPDC-301 ⑩<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Filtrate (water) → POME pond<br>
-        <span class="stream-state">Cake Stream: ~3.5 t/h · 60–62% MC · D90 ≤2mm</span><br>
+        Split: Cake → BIN-OPDC-301 ⑩ | Filtrate → POME pond<br>
+        <span class="stream-state">Cake Stream: ~3.21 t/h · 61% MC (mid of 60–62%)</span><br>
         OUT: Cake → BIN-OPDC-301 ⑩ | Filtrate → POME pond
       </div>
     </div>
-
     <div class="node">
       <div class="node-header">⑩ BIN-OPDC-301 — S2 Buffer Bin</div>
       <div class="node-body">
         IN: Press cake from OPR-01 ⑨<br>
-        <span class="stream-state">Stream: ~3.5 t/h · 60–62% MC · D90 ≤2mm</span><br>
-        Storage: 15 m³ concrete or carbon steel bin (6–10 t @ 45–55% MC)<br>
-        <span class="gate">Gate C.G1: MC ≥40% Class A floor enforced</span><br>
+        <span class="stream-state">Stream: ~3.21 t/h · 61% MC · D90 ≤2mm</span><br>
+        Storage: 15 m³ concrete or carbon steel bin (6–10 t @ 45–65% MC)<br>
+        <span class="gate">Gate C.G1: MC ≥40% Class A floor enforced (Math.max hardcode)</span><br>
         <span class="gate">Gate C.G2/G3: pH 8.0–9.0 + dwell ≥24hrs before S2 transfer</span><br>
         Status: S2 Feed Ready after pH neutralisation — amber marker<br>
         OUT: To Stage 2 biological inoculation
@@ -225,22 +155,380 @@ body {
     </div>
   </div>
 
+  <!-- ═══ MASS BALANCE & CALCULATIONS ═══ -->
+  <div class="calc-section">
+    <div class="calc-title">Mass Balance &amp; Process Calculations — OPDC S1B</div>
+
+    <div class="calc-subtitle">Core Formulas</div>
+    <div class="formula-box">
+      <div class="formula-label">Dry Matter</div>
+      DM (t/h) = FW_in × (1 − MC_in / 100)
+      <div class="formula-label">Cake Output at Target MC</div>
+      FW_cake = DM / (1 − MC_cake / 100)
+      <div class="formula-label">Water Removed → POME Pond</div>
+      Water_removed = FW_press_feed − FW_cake
+      <div class="formula-label">Mass Yield (press cake / press feed)</div>
+      Yield (%) = (FW_cake / FW_press_feed) × 100
+      <div class="formula-label">Gate C.G1 Floor</div>
+      MC_out = Math.max(40%, measured_MC)  ← hardcoded BSF pore protection
+      <div class="formula-label">Screen Recycle (estimated 10%)</div>
+      Net press feed ≈ 0.90 × FW hammer mill input
+    </div>
+
+    <div class="calc-subtitle">Design Basis — Step-by-Step Mass Balance (5 t/h feed)</div>
+    <p class="note-inline">Design: 5 t/h FW input · MC_in = 72.5% (mid of 70–75%) · Cake target MC = 61% (mid of 60–62%)</p>
+    <table class="calc-table">
+      <thead>
+        <tr>
+          <th>Step</th>
+          <th>Equipment</th>
+          <th>FW In (t/h)</th>
+          <th>MC (%)</th>
+          <th>DM (t/h)</th>
+          <th>FW Out (t/h)</th>
+          <th>MC Out (%)</th>
+          <th>Water Removed (t/h)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label">Feed → Shredder</td>
+          <td>①–③</td>
+          <td>5.00</td>
+          <td>72.5%</td>
+          <td>1.375</td>
+          <td>5.00</td>
+          <td>72.5%</td>
+          <td>0 (size only)</td>
+        </tr>
+        <tr>
+          <td class="row-label">Shredder → Hammer Mill</td>
+          <td>③–⑦</td>
+          <td>5.00</td>
+          <td>72.5%</td>
+          <td>1.375</td>
+          <td>5.00</td>
+          <td>72.5%</td>
+          <td>0 (size only)</td>
+        </tr>
+        <tr>
+          <td class="row-label">Screen net to Press</td>
+          <td>⑧→⑨</td>
+          <td>5.00</td>
+          <td>72.5%</td>
+          <td>1.375</td>
+          <td>4.50</td>
+          <td>72.5%</td>
+          <td>0 (10% → recycle)</td>
+        </tr>
+        <tr class="design-row">
+          <td class="row-label">Press Cake Out ★</td>
+          <td>⑨→⑩</td>
+          <td>4.50</td>
+          <td>72.5%</td>
+          <td>1.238</td>
+          <td>3.174</td>
+          <td>61%</td>
+          <td>1.326</td>
+        </tr>
+        <tr>
+          <td class="row-label">Filtrate → POME</td>
+          <td>⑨</td>
+          <td>—</td>
+          <td>—</td>
+          <td>~0</td>
+          <td>1.326</td>
+          <td>—</td>
+          <td>1.326 total</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note-inline">★ Press yield = 70.5% FW basis (3.174 / 4.50) · Overall line yield = 63.5% (3.174 / 5.00)</p>
+
+    <div class="calc-subtitle">Sensitivity Matrix A — Input MC Variation at Fixed 5 t/h Feed</div>
+    <p class="note-inline">FW_in = 5 t/h · Cake target = 61% MC (Gate C.G1 floor = 40% MC minimum) · DM = FW × (1 − MC_in/100)</p>
+    <table class="calc-table">
+      <thead>
+        <tr>
+          <th>MC In (%)</th>
+          <th>DM (t/h)</th>
+          <th>Press Feed (t/h)</th>
+          <th>Cake @61% MC (t/h)</th>
+          <th>Cake @62% MC (t/h)</th>
+          <th>Filtrate to POME (t/h)</th>
+          <th>Gate C.G1 Floor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>65%</td>
+          <td>1.750</td>
+          <td>4.50</td>
+          <td>4.487</td>
+          <td>4.605</td>
+          <td>0.013</td>
+          <td style="color:green;font-weight:700">OK (&gt;40%)</td>
+        </tr>
+        <tr>
+          <td>68%</td>
+          <td>1.600</td>
+          <td>4.50</td>
+          <td>4.103</td>
+          <td>4.211</td>
+          <td>0.397</td>
+          <td style="color:green;font-weight:700">OK (&gt;40%)</td>
+        </tr>
+        <tr>
+          <td>70%</td>
+          <td>1.500</td>
+          <td>4.50</td>
+          <td>3.846</td>
+          <td>3.947</td>
+          <td>0.654</td>
+          <td style="color:green;font-weight:700">OK (&gt;40%)</td>
+        </tr>
+        <tr class="design-row">
+          <td>72.5% ★</td>
+          <td>1.375</td>
+          <td>4.50</td>
+          <td>3.526</td>
+          <td>3.618</td>
+          <td>0.974</td>
+          <td style="color:green;font-weight:700">OK (&gt;40%)</td>
+        </tr>
+        <tr>
+          <td>75%</td>
+          <td>1.250</td>
+          <td>4.50</td>
+          <td>3.205</td>
+          <td>3.289</td>
+          <td>1.295</td>
+          <td style="color:green;font-weight:700">OK (&gt;40%)</td>
+        </tr>
+        <tr>
+          <td>80%</td>
+          <td>1.000</td>
+          <td>4.50</td>
+          <td>2.564</td>
+          <td>2.632</td>
+          <td>1.936</td>
+          <td style="color:#cc7700;font-weight:700">Monitor press</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note-inline">★ Design basis mid · At ≥75% MC, press must remove ≥14 MC pts — high demand, verify OPR-01 press pressure</p>
+
+    <div class="calc-subtitle">Sensitivity Matrix B — Throughput Variation at Fixed 72.5% MC</div>
+    <p class="note-inline">MC_in = 72.5% · Cake target = 61% MC · OHM-01 derated capacity ≈ 14kW (22kW × 65%)</p>
+    <table class="calc-table">
+      <thead>
+        <tr>
+          <th>FW Input (t/h)</th>
+          <th>DM (t/h)</th>
+          <th>Press Feed (t/h)</th>
+          <th>Cake Out @61% (t/h)</th>
+          <th>Filtrate to POME (t/h)</th>
+          <th>Mill Load %</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2.5</td>
+          <td>0.688</td>
+          <td>2.25</td>
+          <td>1.763</td>
+          <td>0.487</td>
+          <td>33%</td>
+          <td>OK</td>
+        </tr>
+        <tr>
+          <td>3.5</td>
+          <td>0.963</td>
+          <td>3.15</td>
+          <td>2.469</td>
+          <td>0.681</td>
+          <td>46%</td>
+          <td>OK</td>
+        </tr>
+        <tr class="design-row">
+          <td>5.0 ★</td>
+          <td>1.375</td>
+          <td>4.50</td>
+          <td>3.526</td>
+          <td>0.974</td>
+          <td>65%</td>
+          <td>OK — design</td>
+        </tr>
+        <tr>
+          <td>7.0</td>
+          <td>1.925</td>
+          <td>6.30</td>
+          <td>4.936</td>
+          <td>1.364</td>
+          <td>92%</td>
+          <td>Near ceiling — monitor</td>
+        </tr>
+        <tr>
+          <td>8.5</td>
+          <td>2.338</td>
+          <td>7.65</td>
+          <td>5.994</td>
+          <td>1.656</td>
+          <td>112% ⚠</td>
+          <td>Overload — reduce feed</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note-inline">★ Design basis · OHM-01 ceiling ≈ 7.5 t/h FW at 72.5% MC · Above this: D90 &gt;2mm risk + Gate C.G1 compliance harder</p>
+
+    <div class="calc-subtitle">Combined Matrix — Cake Output (t/h) by MC In × Throughput</div>
+    <p class="note-inline">FW_cake = (FW_in × 0.90) × (1 − MC_in/100) / (1 − 0.61) · 10% recycle · cake MC = 61%</p>
+    <table class="calc-table">
+      <thead>
+        <tr>
+          <th>MC In ↓ · FW In →</th>
+          <th>2.5 t/h</th>
+          <th>3.5 t/h</th>
+          <th>5.0 t/h ★</th>
+          <th>7.0 t/h</th>
+          <th>8.5 t/h</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label">65% MC</td>
+          <td>2.244</td>
+          <td>3.141</td>
+          <td>4.487</td>
+          <td>6.282</td>
+          <td>7.628</td>
+        </tr>
+        <tr>
+          <td class="row-label">68% MC</td>
+          <td>2.051</td>
+          <td>2.872</td>
+          <td>4.103</td>
+          <td>5.744</td>
+          <td>6.975</td>
+        </tr>
+        <tr>
+          <td class="row-label">70% MC</td>
+          <td>1.923</td>
+          <td>2.692</td>
+          <td>3.846</td>
+          <td>5.385</td>
+          <td>6.538</td>
+        </tr>
+        <tr class="design-row">
+          <td class="row-label">72.5% MC ★</td>
+          <td>1.763</td>
+          <td>2.469</td>
+          <td>3.526</td>
+          <td>4.936</td>
+          <td>5.994</td>
+        </tr>
+        <tr>
+          <td class="row-label">75% MC</td>
+          <td>1.603</td>
+          <td>2.244</td>
+          <td>3.205</td>
+          <td>4.487</td>
+          <td>5.449</td>
+        </tr>
+        <tr>
+          <td class="row-label">80% MC</td>
+          <td>1.282</td>
+          <td>1.795</td>
+          <td>2.564</td>
+          <td>3.590</td>
+          <td>4.359</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note-inline">★ Design cell · All t/h FW at press discharge · 10% screen recycle applied · Gate C.G1 floor = 40% MC minimum regardless of press reading</p>
+
+    <div class="calc-subtitle">Gate C.G1 — Class A MC Floor + Gate C.G2/G3 pH/Dwell Compliance</div>
+    <p class="note-inline">OPDC has two sequential gate requirements before S2 transfer. Gate C.G1 is a hard floor; Gates C.G2/G3 are timed checks.</p>
+    <table class="calc-table">
+      <thead>
+        <tr>
+          <th>Gate</th>
+          <th>Parameter</th>
+          <th>Requirement</th>
+          <th>Measured Value</th>
+          <th>Enforced Value</th>
+          <th>Status</th>
+          <th>Action if Fail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label">C.G1 Class A</td>
+          <td>MC Floor</td>
+          <td>≥ 40%</td>
+          <td>61% (design)</td>
+          <td>Math.max(40, 61) = 61%</td>
+          <td style="color:green;font-weight:700">PASS</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="row-label">C.G1 Class A</td>
+          <td>MC Floor</td>
+          <td>≥ 40%</td>
+          <td>35% (over-pressed)</td>
+          <td>Math.max(40, 35) = 40%</td>
+          <td style="color:#cc7700;font-weight:700">FLOORED</td>
+          <td>Add moisture to 40% before S2</td>
+        </tr>
+        <tr class="design-row">
+          <td class="row-label">C.G2</td>
+          <td>pH</td>
+          <td>8.0 – 9.0</td>
+          <td>pH 8.5 (design)</td>
+          <td>8.5</td>
+          <td style="color:green;font-weight:700">PASS</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="row-label">C.G2</td>
+          <td>pH</td>
+          <td>8.0 – 9.0</td>
+          <td>pH 7.2</td>
+          <td>7.2</td>
+          <td style="color:#cc2222;font-weight:700">FAIL</td>
+          <td>Add lime · retest after 4hr</td>
+        </tr>
+        <tr>
+          <td class="row-label">C.G3</td>
+          <td>Dwell time</td>
+          <td>≥ 24 hrs</td>
+          <td>—</td>
+          <td>—</td>
+          <td style="color:#185FA5;font-weight:700">TIMED</td>
+          <td>Hold in BIN-OPDC-301 until 24hr elapsed</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note-inline">C.G1 Class A floor protects BSF substrate pore structure from over-dewatering. C.G2/G3 ensure alkalinity and microbial conditioning.</p>
+  </div>
+
   <div class="legend">
     <div class="legend-title">Legend &amp; Key Corrections</div>
     <div class="legend-item"><strong>MC =</strong> Moisture Content (wet basis %)</div>
+    <div class="legend-item"><strong>FW =</strong> Fresh Weight (as-received wet mass)</div>
+    <div class="legend-item"><strong>DM =</strong> Dry Matter = FW × (1 − MC/100)</div>
     <div class="legend-item"><strong>D90 =</strong> 90th percentile particle diameter ≤2mm target</div>
     <div class="legend-item"><strong>VFD =</strong> Variable Frequency Drive</div>
-    <div class="legend-item"><strong>Asian derate =</strong> 65% of nameplate capacity (OHM-01 runs 14kW not 22kW)</div>
-    <div class="legend-item"><strong>Gate C.G1 Class A =</strong> Press floor MC ≥40% — Math.max(40, reading) hardcoded enforcement to prevent BSF pore damage</div>
-    <div class="legend-item"><strong>Gate C.G2/G3 =</strong> pH 8.0–9.0 + dwell ≥24hrs before S2 transfer</div>
-    <div class="legend-item"><strong>Oversize return =</strong> OSC-01 ⑧ screen rejects loop back to OHM-01 ⑦ for re-milling — NEVER to OLB-01 ⑥ or OSD-01 ③</div>
-    <div class="legend-item"><strong>ODC-01 Baghouse =</strong> Parallel unit duct-fed from OHM-01 ⑦ — NOT inline in main flow</div>
-    <div class="legend-item"><strong>Filtrate routing =</strong> All press water + wash water → POME pond ONLY — never to substrate</div>
+    <div class="legend-item"><strong>Asian derate =</strong> 65% of nameplate · OHM-01 runs 14kW not 22kW</div>
+    <div class="legend-item"><strong>Gate C.G1 Class A =</strong> Press floor MC ≥40% — Math.max(40, reading) hardcoded to prevent BSF pore damage from over-drying</div>
+    <div class="legend-item"><strong>Gate C.G2/G3 =</strong> pH 8.0–9.0 + dwell ≥24hrs + 2 turnings before S2 transfer</div>
+    <div class="legend-item"><strong>Oversize return =</strong> OSC-01 ⑧ rejects → OHM-01 ⑦ only — NEVER to OLB-01 ⑥ or OSD-01 ③</div>
+    <div class="legend-item"><strong>ODC-01 Baghouse =</strong> Parallel unit duct-fed from OHM-01 ⑦ — NOT inline</div>
     <div class="legend-item"><strong>BIN-OPDC-301 material =</strong> Concrete or carbon steel (not stainless steel)</div>
-    <div class="legend-item"><strong>Oversize legend =</strong> Oversize returns back into OHM-01 ⑦ for re-milling (not back to lump breaker)</div>
+    <div class="legend-item"><strong>Filtrate routing =</strong> All press water → POME pond ONLY — never to substrate</div>
+    <div class="legend-item"><strong>Calc assumption =</strong> DM conserved through all mechanical steps · moisture change only at press · 10% screen recycle estimated</div>
   </div>
-
 </div>
-
 </body>
 </html>
