@@ -2565,21 +2565,26 @@ export default function CFI() {
                       {label:"Building Floor Plan",href:"CFI_S1_FloorPlan_v2.html"},
                     ]},
                     {heading:"Machine Line Floor Plans",items:[
-                      {label:"EFB Line Floor Plan",href:"CFI_S1_Combined_v2.html#efb"},
-                      {label:"OPDC Line Floor Plan",href:"CFI_S1_Combined_v2.html#opdc"},
+                      {label:"EFB Line Floor Plan",href:"/s1-floor-efb",internal:true},
+                      {label:"OPDC Line Floor Plan",href:"/s1-floor-opdc",internal:true},
+                      {label:"POS Line Floor Plan",href:"/s1-floor-pos",internal:true},
+                    ]},
+                    {heading:"S0 Exit Stage",items:[
+                      {label:"Residue Selector",href:"/s0-residue-select",internal:true},
+                      {label:"Combined Floor Plans",href:"/s1-combined",internal:true},
                       {label:"Greenhouse Design",href:"CFI_S1_Greenhouse_Plan.html"},
                     ]},
                     {heading:"ASCII Process Flows",items:[
-                      {label:"EFB ASCII Flow",href:"CFI_S1_EFB_ASCII_v2.html"},
-                      {label:"OPDC ASCII Flow",href:"CFI_S1_OPDC_ASCII_v2.html"},
-                      {label:"POS ASCII Flow",href:"CFI_S1_POS_ASCII_v1.html"},
+                      {label:"EFB ASCII Flow",href:"/s1-efb-ascii",internal:true},
+                      {label:"OPDC ASCII Flow",href:"/s1-opdc-ascii",internal:true},
+                      {label:"POS ASCII Flow",href:"/s1-pos-ascii",internal:true},
                     ]},
                   ].map((row,ri)=>(
                     <div key={ri} style={{marginBottom:10}}>
                       <div style={{fontFamily:"'DM Sans', sans-serif",fontSize:10,fontWeight:700,color:"#8BA0B4",letterSpacing:"0.04em",marginBottom:6,textTransform:"uppercase"}}>{row.heading}</div>
                       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
                         {row.items.map((btn,i)=>(
-                          <a key={i} href={btn.href} target="_blank" rel="noopener noreferrer" style={{
+                          <a key={i} href={btn.href} {...(btn.internal ? {} : {target:"_blank",rel:"noopener noreferrer"})} style={{
                             display:"block",background:"#0C1E33",border:"1px solid rgba(139,160,180,0.18)",borderRadius:6,
                             padding:"12px 14px",textDecoration:"none",color:"#FFFFFF",fontFamily:"'DM Sans', sans-serif",
                             fontSize:12,fontWeight:700,textAlign:"center",cursor:"pointer",transition:"color 0.15s, border-color 0.15s",
