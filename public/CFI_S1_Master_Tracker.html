@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFI S1 Master Tracker — Full Audit 29 March 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: #0B1422; color: #e0e0e0; padding: 20px; }
+  .container { max-width: 910px; margin: 0 auto; position: relative; }
+
+  /* ── Close button ── */
+  .close-btn {
+    position: fixed; top: 12px; right: 16px; z-index: 999;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: #1a2a3a; border: 1px solid #333; color: #999;
+    font-family: 'DM Sans', sans-serif; font-size: 18px; font-weight: 700;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .close-btn:hover { background: #E84040; color: #fff; border-color: #E84040; }
+
+  h1 { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 22px; color: #40D7C5; margin-bottom: 4px; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #888; margin-bottom: 20px; }
+  h2 { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 16px; color: #F5A623; margin: 24px 0 10px 0; border-bottom: 1px solid #1a2a3a; padding-bottom: 6px; }
+  h3 { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 14px; color: #40D7C5; margin: 14px 0 6px 0; }
+
+  .alert-box { background: #2a1a1a; border: 2px solid #E84040; border-radius: 8px; padding: 14px; margin-bottom: 16px; }
+  .alert-box h3 { color: #E84040; margin-top: 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 6px 0 14px 0; font-size: 12px; font-family: 'DM Sans', sans-serif; }
+  th { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 10px; color: #888; text-align: left; padding: 5px 8px; border-bottom: 1px solid #1a2a3a; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { font-family: 'DM Sans', sans-serif; padding: 5px 8px; border-bottom: 1px solid #0f1a28; vertical-align: top; }
+  tr:hover { background: #111d2e; }
+
+  .done { color: #3DCB7A; } .done::before { content: "✅ "; }
+  .partial { color: #F5A623; } .partial::before { content: "🟡 "; }
+  .missing { color: #E84040; } .missing::before { content: "❌ "; }
+  .stub { color: #888; } .stub::before { content: "⬜ "; }
+
+  .badge { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 9px; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+  .b-done { background: #1a3a2a; color: #3DCB7A; border: 1px solid #3DCB7A; }
+  .b-partial { background: #3a2a1a; color: #F5A623; border: 1px solid #F5A623; }
+  .b-gap { background: #2a1a1a; color: #E84040; border: 1px solid #E84040; }
+  .b-info { background: #1a1a2a; color: #6eb5ff; border: 1px solid #4a8fd4; }
+
+  .mono { font-family: 'DM Sans', sans-serif; font-weight: 500; color: #40D7C5; font-size: 11px; }
+  .note { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #999; line-height: 1.5; }
+  .section { background: #111d2e; border: 1px solid #1a2a3a; border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  ul { margin: 4px 0 8px 18px; }
+  li { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #bbb; margin-bottom: 3px; line-height: 1.4; }
+  li strong { color: #fff; }
+  .divider { border: 0; border-top: 2px solid #F5A623; margin: 28px 0; }
+  code { font-family: 'DM Sans', sans-serif; font-weight: 500; background: #0a1520; padding: 1px 4px; border-radius: 3px; font-size: 11px; }
+</style>
+</head>
+<body>
+
+<button class="close-btn" onclick="window.close(); window.history.back();">&times;</button>
+
+<div class="container">
+
+<h1>CFI S1 Pre-Processing — Master Tracker</h1>
+<p class="subtitle">Full audit: 29 March 2026 · Lovable: happy-react-bundle · Supabase: lcpbtnipkvrmuwllymfw (ap-northeast-1)</p>
+
+<!-- ==================== STATUS BAR ==================== -->
+<div style="background:#1a3a2a; border:1px solid #3DCB7A; border-radius:8px; padding:12px; margin-bottom:16px;">
+<p style="font-size:12px; color:#3DCB7A; font-weight:700;">Lovable fix instructions ready: LOVABLE_FIX_S1_CAPEX_OPEX.md — paste into Lovable chat to deploy all fixes.</p>
+</div>
+
+<!-- ==================== SECTION A: WHAT'S DONE ==================== -->
+<h2>A. S1 Completed</h2>
+
+<table>
+<tr><th>#</th><th>Item</th><th>Route / Location</th><th>Status</th></tr>
+<tr><td>1</td><td class="done">S1 Index page — Master Hub</td><td class="mono">/s1-index</td><td><span class="badge b-done">LIVE</span></td></tr>
+<tr><td>2</td><td class="done">EFB ASCII Process Flow (10 nodes)</td><td class="mono">/s1-efb-ascii</td><td><span class="badge b-done">LIVE</span></td></tr>
+<tr><td>3</td><td class="done">OPDC ASCII Process Flow (10 nodes)</td><td class="mono">/s1-opdc-ascii</td><td><span class="badge b-done">LIVE</span></td></tr>
+<tr><td>4</td><td class="done">POS ASCII Process Flow (4 nodes)</td><td class="mono">/s1-pos-ascii</td><td><span class="badge b-done">LIVE</span></td></tr>
+<tr><td>5</td><td class="done">S1 CapEx/OpEx Dashboard</td><td class="mono">/s1-capex-opex</td><td><span class="badge b-done">LIVE</span> <span class="badge b-partial">ISSUES</span></td></tr>
+<tr><td>6</td><td class="done">RFQ Pack PDF (22-page engineering)</td><td class="mono">Supabase Storage + edge fn</td><td><span class="badge b-done">DEPLOYED</span></td></tr>
+<tr><td>7</td><td class="done">Combined Floor Plan HTML (3 lines)</td><td class="mono">CFI_S1_Combined_v2.html (not deployed)</td><td><span class="badge b-done">BUILT</span> <span class="badge b-partial">NOT DEPLOYED</span></td></tr>
+<tr><td>8</td><td class="done">24 equipment nodes in Supabase</td><td class="mono">cfi_s1_process_nodes (24 rows)</td><td><span class="badge b-done">DB</span></td></tr>
+<tr><td>9</td><td class="done">S2 PKSA system (mixer + 2 bays)</td><td class="mono">cfi_equipment_capex_epc (Shared/S2)</td><td><span class="badge b-done">DB</span></td></tr>
+<tr><td>10</td><td class="done">Building CAPEX — 41 line items (A1–A8)</td><td class="mono">cfi_building_capex (41 rows)</td><td><span class="badge b-done">DB</span></td></tr>
+<tr><td>11</td><td class="done">Equipment CAPEX — 18 items (EFB, OPDC, Shared)</td><td class="mono">cfi_equipment_capex_epc (18 rows)</td><td><span class="badge b-done">DB</span></td></tr>
+<tr><td>12</td><td class="done">Electricity OpEx — S1/S2/S3 confirmed</td><td class="mono">cfi_electricity_opex (rows 1–8)</td><td><span class="badge b-done">DB</span></td></tr>
+<tr><td>13</td><td class="done">S1 OpEx Labour (5 roles)</td><td class="mono">cfi_s1_opex_labour (5 rows)</td><td><span class="badge b-done">DB</span></td></tr>
+<tr><td>14</td><td class="done">S1 OpEx Maintenance (10 items)</td><td class="mono">cfi_s1_opex_maintenance (10 rows)</td><td><span class="badge b-done">DB</span></td></tr>
+<tr><td>15</td><td class="done">S1 OpEx Other (10 items)</td><td class="mono">cfi_s1_opex_other (10 rows)</td><td><span class="badge b-done">DB</span></td></tr>
+<tr><td>16</td><td class="done">Greenhouse design specs (4 GH + store + shade)</td><td class="mono">cfi_greenhouse_design (6 rows)</td><td><span class="badge b-done">DB</span></td></tr>
+<tr><td>17</td><td class="done">Greenhouse site layout</td><td class="mono">cfi_greenhouse_site (1 row)</td><td><span class="badge b-done">DB</span></td></tr>
+<tr><td>18</td><td class="done">S3 Biological CapEx (9 items, $82K)</td><td class="mono">s3_capex (9 rows)</td><td><span class="badge b-done">DB</span></td></tr>
+<tr><td>19</td><td class="done">S3 Monthly OpEx (37 line items)</td><td class="mono">s3_opex_monthly (37 rows)</td><td><span class="badge b-done">DB</span></td></tr>
+<tr><td>20</td><td class="done">9 Hard Guardrails on S1 Index</td><td class="mono">/s1-index (bottom)</td><td><span class="badge b-done">LIVE</span></td></tr>
+<tr><td>21</td><td class="done">Canonical Values Reference</td><td class="mono">/s1-index (mid-page)</td><td><span class="badge b-done">LIVE</span></td></tr>
+</table>
+
+<!-- ==================== SECTION B: NOT FINISHED ==================== -->
+<hr class="divider">
+<h2>B. S1 Not Finished — Action Items</h2>
+
+<table>
+<tr><th>#</th><th>Priority</th><th>Item</th><th>Details</th><th>Status</th></tr>
+
+<tr>
+  <td>B1</td><td><span class="badge b-partial">MED</span></td>
+  <td><strong>Lovable instructions written — paste into Lovable chat</strong></td>
+  <td>LOVABLE_FIX_S1_CAPEX_OPEX.md ready. Fixes: Column 3, Monthly OpEx $37,957/mo, wire cards, wire buttons, fonts, width. Paste into Lovable chat to deploy.</td>
+  <td class="partial">Instructions ready — needs manual paste</td>
+</tr>
+
+<tr>
+  <td>B2</td><td><span class="badge b-partial">MED</span></td>
+  <td><strong>Upload Greenhouse Cost file</strong></td>
+  <td>Sharon has greenhouse costs to upload. Goes into Financials alongside S1/S2/S3 costs. Supabase has structural specs but NO cost table yet.</td>
+  <td class="partial">Waiting for Sharon upload</td>
+</tr>
+
+<tr>
+  <td>B3</td><td><span class="badge b-done">DONE</span></td>
+  <td><strong>Update S1 Combined Floor Plan header</strong></td>
+  <td>Header updated: Mill Size 60 t/h, Utilisation 85%, 20hr/day, Bogor West Java. Throughput row: EFB 300 t/day, OPDC 45 t/day, POS 30 t/day. All fonts DM Sans. File: ALL_HTMLS/CFI_S1_Combined_v2.html</td>
+  <td class="done">Done</td>
+</tr>
+
+<tr>
+  <td>B4</td><td><span class="badge b-gap">HIGH</span></td>
+  <td><strong>Deploy Combined Floor Plan as Lovable route</strong></td>
+  <td>Convert CFI_S1_Combined_v2.html to JSX component, add route (/s1-floor-plan or /s1-combined), link from Index + CapEx drawing cards</td>
+  <td class="missing">Not deployed</td>
+</tr>
+
+<tr>
+  <td>B5</td><td><span class="badge b-partial">MED</span></td>
+  <td><strong>Option C: Expandable engineering specs on ASCII pages</strong></td>
+  <td>Lovable instructions written: LOVABLE_ASCII_ENGINEERING_SPECS.md. Adds collapsible spec panel below each ASCII flow with all 24 nodes, CAPEX, electricity, guardrail badges, breadcrumb nav. Paste into Lovable chat.</td>
+  <td class="partial">Instructions ready — needs manual paste</td>
+</tr>
+
+<tr>
+  <td>B6</td><td><span class="badge b-partial">MED</span></td>
+  <td><strong>Fix CapEx page Column 3 (Equipment CAPEX)</strong></td>
+  <td>Right column shows "COLUMN 3" label but content truncated. Equipment total $233,000 in hero but line items not visible. Also: POS equipment CAPEX missing from DB (only decanter listed, $80,000–$150,000 RFQ range).</td>
+  <td class="partial">Partially visible</td>
+</tr>
+
+<tr>
+  <td>B7</td><td><span class="badge b-partial">MED</span></td>
+  <td><strong>Wire 9 design drawing stub cards</strong></td>
+  <td>CapEx page shows: Site Master Plan, Building Architecture, Building Floor Plan, Greenhouse Design, EFB Floor Plan, OPDC Floor Plan, EFB/OPDC/POS ASCII Flow — all clickable but do nothing.</td>
+  <td class="stub">Stubs — no navigation</td>
+</tr>
+
+<tr>
+  <td>B8</td><td><span class="badge b-partial">MED</span></td>
+  <td><strong>Wire "Site Plan" + "Architecture" top buttons</strong></td>
+  <td>Two buttons at top-right of /s1-capex-opex are non-functional stubs.</td>
+  <td class="stub">Stubs</td>
+</tr>
+
+<tr>
+  <td>B9</td><td><span class="badge b-partial">MED</span></td>
+  <td><strong>Fill Monthly OpEx on CapEx page</strong></td>
+  <td>Hero KPI shows "(DATA GAP)". Supabase HAS the data: cfi_s1_opex_labour (5), cfi_s1_opex_maintenance (10), cfi_s1_opex_other (10), cfi_electricity_opex (S1A/B/C confirmed). Just needs wiring.</td>
+  <td class="partial">Data exists, not wired to UI</td>
+</tr>
+
+<tr>
+  <td>B10</td><td><span class="badge b-partial">MED</span></td>
+  <td><strong>Update S1 Index header (mill size + site config)</strong></td>
+  <td>Lovable instructions written: LOVABLE_S1_INDEX_HEADER.md. Adds mill size bar, 3 throughput cards, clickable breadcrumb, 6 quick-nav cards with live stats. Paste into Lovable chat.</td>
+  <td class="partial">Instructions ready — needs manual paste</td>
+</tr>
+
+<tr>
+  <td>B11</td><td><span class="badge b-partial">MED</span></td>
+  <td><strong>POS equipment CAPEX — missing from DB</strong></td>
+  <td>cfi_equipment_capex_epc has EFB (10 items, $184,000) + OPDC (5 items, $38,000) but POS line only has 1 item (decanter, RFQ $80,000–$150,000). Filter press, conditioning mixer, pump, etc. not costed.</td>
+  <td class="missing">Data gap in Supabase</td>
+</tr>
+
+<tr>
+  <td>B12</td><td><span class="badge b-info">LOW</span></td>
+  <td><strong>Deploy S1/S2 Calculator as Lovable route</strong></td>
+  <td>CFI_S1S2_Calculator.jsx exists in project knowledge. Decide route or integrate into CapEx page.</td>
+  <td class="stub">JSX exists, no route</td>
+</tr>
+
+<tr>
+  <td>B13</td><td><span class="badge b-info">LOW</span></td>
+  <td><strong>S4/S5/S6 Electricity — DATA GAP</strong></td>
+  <td>cfi_electricity_opex rows 9–11 show "DATA GAP" for BSF Greenhouses, Frass Drying, BSF Processing. Equipment not yet specified.</td>
+  <td class="missing">Equipment specs needed first</td>
+</tr>
+
+</table>
+
+<!-- ==================== SECTION C: SUPABASE FILE AUDIT ==================== -->
+<hr class="divider">
+<h2>C. Supabase Inventory</h2>
+
+<div class="grid2">
+<div class="section">
+<h3>Storage Bucket: documents</h3>
+<table>
+<tr><th>File</th><th>Size</th><th>Type</th></tr>
+<tr><td class="mono">CFI_S1_Engineering_Complete.pdf</td><td>120 KB</td><td>application/pdf</td></tr>
+</table>
+<p class="note"><strong>Missing from storage:</strong> Floor plan HTML/PDFs, architecture drawings, individual ASCII flow PDFs, greenhouse design docs, CAPEX wireframe. Currently only the RFQ Pack PDF is stored.</p>
+</div>
+
+<div class="section">
+<h3>Financial Tables Summary</h3>
+<table>
+<tr><th>Table</th><th>Rows</th><th>Status</th></tr>
+<tr><td class="mono">cfi_building_capex</td><td>41</td><td><span class="badge b-done">A1–A8 complete</span></td></tr>
+<tr><td class="mono">cfi_equipment_capex_epc</td><td>18</td><td><span class="badge b-partial">POS missing</span></td></tr>
+<tr><td class="mono">cfi_electricity_opex</td><td>11</td><td><span class="badge b-partial">S4/5/6 gap</span></td></tr>
+<tr><td class="mono">cfi_s1_opex_labour</td><td>5</td><td><span class="badge b-done">Complete</span></td></tr>
+<tr><td class="mono">cfi_s1_opex_maintenance</td><td>10</td><td><span class="badge b-done">Complete</span></td></tr>
+<tr><td class="mono">cfi_s1_opex_other</td><td>10</td><td><span class="badge b-done">Complete</span></td></tr>
+<tr><td class="mono">cfi_greenhouse_design</td><td>6</td><td><span class="badge b-done">4 GH + store + shade</span></td></tr>
+<tr><td class="mono">cfi_greenhouse_site</td><td>1</td><td><span class="badge b-done">Site layout</span></td></tr>
+<tr><td class="mono">s3_capex</td><td>9</td><td><span class="badge b-done">$82,000 total</span></td></tr>
+<tr><td class="mono">s3_opex_monthly</td><td>37</td><td><span class="badge b-done">Complete</span></td></tr>
+<tr><td class="mono">cfi_s1_process_nodes</td><td>24</td><td><span class="badge b-done">S1A:10 S1B:10 S1C:4</span></td></tr>
+</table>
+</div>
+</div>
+
+<!-- ==================== SECTION D: CROSS-STAGE FINANCIALS MAP ==================== -->
+<hr class="divider">
+<h2>D. Cross-Stage Financials Map (Where CAPEX Wireframe + Greenhouse Costs Fit)</h2>
+
+<div class="section">
+<h3>Financials Dashboard — What We Need</h3>
+<p class="note" style="margin-bottom:10px;">
+Your CAPEX wireframe and greenhouse cost file feed into a unified Financials view that aggregates costs across all stages.
+Here's what exists and what's missing:
+</p>
+
+<table>
+<tr><th>Stage</th><th>Building CAPEX</th><th>Equipment CAPEX</th><th>Monthly OpEx</th><th>Electricity</th></tr>
+<tr>
+  <td><strong>S1 Pre-Processing</strong></td>
+  <td><span class="badge b-done">$883,000 base (41 items)</span></td>
+  <td><span class="badge b-partial">$222,000 (EFB+OPDC) — POS gap</span></td>
+  <td><span class="badge b-done">Labour 5 + Maint 10 + Other 10</span></td>
+  <td><span class="badge b-done">S1A $1,806/mo + S1B $6,651 + S1C $14,191</span></td>
+</tr>
+<tr>
+  <td><strong>S2 Chemical</strong></td>
+  <td><span class="badge b-info">Included in S1 building</span></td>
+  <td><span class="badge b-partial">Loaders $176,000 — mixer/press gap</span></td>
+  <td><span class="badge b-gap">Not in DB</span></td>
+  <td><span class="badge b-done">S2A $9,069/mo + S2B $3,126</span></td>
+</tr>
+<tr>
+  <td><strong>S3 Biological</strong></td>
+  <td><span class="badge b-info">Greenhouse separate</span></td>
+  <td><span class="badge b-done">$82,970 (9 items)</span></td>
+  <td><span class="badge b-done">37 line items</span></td>
+  <td><span class="badge b-done">$634/mo</span></td>
+</tr>
+<tr>
+  <td><strong>S4 BSF Greenhouses</strong></td>
+  <td><span class="badge b-partial">Structure specs in DB — NO COSTS</span></td>
+  <td><span class="badge b-gap">Not in DB</span></td>
+  <td><span class="badge b-gap">Not in DB</span></td>
+  <td><span class="badge b-gap">DATA GAP</span></td>
+</tr>
+<tr>
+  <td><strong>S5 Frass Drying</strong></td>
+  <td><span class="badge b-gap">Not in DB</span></td>
+  <td><span class="badge b-gap">Not in DB</span></td>
+  <td><span class="badge b-gap">Not in DB</span></td>
+  <td><span class="badge b-gap">DATA GAP</span></td>
+</tr>
+<tr>
+  <td><strong>S6 BSF Processing</strong></td>
+  <td><span class="badge b-gap">Not in DB</span></td>
+  <td><span class="badge b-gap">Not in DB</span></td>
+  <td><span class="badge b-gap">Not in DB</span></td>
+  <td><span class="badge b-gap">DATA GAP</span></td>
+</tr>
+</table>
+
+<h3 style="margin-top:14px;">Where Your Files Go:</h3>
+<ul>
+<li><strong>CFI_S1_CAPEX_OPEX_Wireframe.html</strong> — (1) Upgrades /s1-capex-opex Lovable page layout, (2) Feeds S1 column of Financials dashboard</li>
+<li><strong>Greenhouse cost file</strong> (to upload) — (1) New table or extension of cfi_greenhouse_design with costs, (2) Feeds S4 row of Financials dashboard</li>
+<li><strong>S2 PKSA equipment costs</strong> — Currently partial (loaders only). Need mixer + neutralisation bay equipment to complete S2 column</li>
+</ul>
+</div>
+
+<!-- ==================== SECTION E: PAGE & LINK MAP ==================== -->
+<hr class="divider">
+<h2>E. S1 Page and Link Map</h2>
+
+<div class="section">
+<table>
+<tr><th>Route</th><th>Page Title</th><th>Links To</th><th>Linked From</th><th>Status</th></tr>
+<tr>
+  <td class="mono">/s1-index</td><td>S1 Master Index</td>
+  <td>/s1-efb-ascii, /s1-opdc-ascii, /s1-pos-ascii, /s1-capex-opex, RFQ PDF (edge fn)</td>
+  <td>Home / nav</td>
+  <td><span class="badge b-done">LIVE</span></td>
+</tr>
+<tr>
+  <td class="mono">/s1-efb-ascii</td><td>EFB Line S1C ASCII Flow</td>
+  <td>Back to S1 Master Index</td>
+  <td>/s1-index card, /s1-capex-opex card</td>
+  <td><span class="badge b-done">LIVE</span></td>
+</tr>
+<tr>
+  <td class="mono">/s1-opdc-ascii</td><td>OPDC Line S1B ASCII Flow</td>
+  <td>Back to S1 Master Index</td>
+  <td>/s1-index card, /s1-capex-opex card</td>
+  <td><span class="badge b-done">LIVE</span></td>
+</tr>
+<tr>
+  <td class="mono">/s1-pos-ascii</td><td>POS Line S1A ASCII Flow</td>
+  <td>Back to S1 Master Index, Home</td>
+  <td>/s1-index card, /s1-capex-opex card</td>
+  <td><span class="badge b-done">LIVE</span></td>
+</tr>
+<tr>
+  <td class="mono">/s1-capex-opex</td><td>CapEx / OpEx / Facility</td>
+  <td>Back to S1 Master Index; Breadcrumb: CFI Platform > S0 > S1; 9 drawing cards (stubs); Site Plan + Architecture buttons (stubs)</td>
+  <td>/s1-index cards</td>
+  <td><span class="badge b-done">LIVE</span> <span class="badge b-partial">STUBS</span></td>
+</tr>
+<tr>
+  <td class="mono">/s1-combined</td><td>Combined Floor Plan</td>
+  <td>—</td>
+  <td>Should link from /s1-index + /s1-capex-opex</td>
+  <td><span class="badge b-gap">BLANK</span></td>
+</tr>
+<tr>
+  <td class="mono">/s1-floor-plan</td><td>Floor Plan (alt route)</td>
+  <td>—</td>
+  <td>—</td>
+  <td><span class="badge b-gap">BLANK</span></td>
+</tr>
+<tr>
+  <td class="mono">/s1-engineering</td><td>Engineering Specs</td>
+  <td>—</td>
+  <td>—</td>
+  <td><span class="badge b-gap">BLANK</span></td>
+</tr>
+</table>
+</div>
+
+<!-- ==================== SECTION F: 4 INTERACTIVE VIEWS ==================== -->
+<hr class="divider">
+<h2>F. The 4 Interactive Views — Status</h2>
+
+<div class="grid2">
+<div class="section">
+<h3>1. Floor Plan View</h3>
+<p class="note"><span class="badge b-partial">BUILT NOT DEPLOYED</span></p>
+<p class="note">CFI_S1_Combined_v2.html exists with EFB, OPDC, POS line layouts as tabbed view. Needs: header update (B3), deploy to Lovable route (B4), link from CapEx "Site Plan" button and drawing cards.</p>
+</div>
+<div class="section">
+<h3>2. Architectural View</h3>
+<p class="note"><span class="badge b-gap">NOT STARTED</span></p>
+<p class="note">No architectural view exists yet. "Architecture" button on CapEx page is a stub. Building specs are in cfi_building_capex (A1–A8). Floor, Elevation, Section, 3D views mentioned in design card text but not built.</p>
+</div>
+<div class="section">
+<h3>3. ASCII View</h3>
+<p class="note"><span class="badge b-done">COMPLETE</span></p>
+<p class="note">All 3 lines live: /s1-efb-ascii (10 nodes), /s1-opdc-ascii (10 nodes), /s1-pos-ascii (4 nodes). Full legends, gates, handoffs. Expandable eng specs (Option C) is the remaining enhancement (B5).</p>
+</div>
+<div class="section">
+<h3>4. Financial View</h3>
+<p class="note"><span class="badge b-partial">PARTIALLY LIVE</span></p>
+<p class="note">/s1-capex-opex has Building CAPEX ($1,374,610) and hero KPIs. Missing: Equipment CAPEX column truncated (B6), Monthly OpEx not wired despite data in DB (B9), POS equipment costs (B11). Cross-stage financials dashboard not yet built.</p>
+</div>
+</div>
+
+<p style="margin-top: 20px; font-family: 'DM Sans', sans-serif; font-size: 10px; color: #444; text-align: center;">
+CFI Deep Tech · S1 Master Tracker · Generated 29 March 2026 · Claude audit
+</p>
+
+</div>
+</body>
+</html>
