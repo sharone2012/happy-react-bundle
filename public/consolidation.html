@@ -56,8 +56,8 @@ tr:hover td{background:rgba(64,215,197,.03)}
 /* FILE NAME — 12px */
 .fn{font-size:12px;font-weight:600;word-break:break-all;color:var(--txt)}
 
-/* DESCRIPTION — 11px lighter */
-.fd{font-size:11px;color:var(--light);line-height:1.5}
+/* DESCRIPTION — 11px white */
+.fd{font-size:11px;color:#fff;line-height:1.5}
 
 /* BADGES */
 .b{display:inline-block;font-size:.58rem;font-weight:700;padding:1px 6px;border-radius:3px;letter-spacing:.4px;text-transform:uppercase;margin-right:4px;vertical-align:middle}
@@ -119,7 +119,7 @@ tr:hover td{background:rgba(64,215,197,.03)}
 <div class="legend">
   <span><span class="dot" style="background:#4A90D9"></span> Vercel (live)</span>
   <span><span class="dot" style="background:#F5A623"></span> Supabase (served)</span>
-  <span><span class="dot" style="background:#4CAF50"></span> Lovable / src</span>
+  <span><span class="dot" style="background:#4CAF50"></span> Git / src (Lovable → GitHub → Vercel SPA)</span>
   <span><span class="dot" style="background:#9B59F5"></span> GitHub / standalone</span>
   <span><span class="dot" style="background:#8BB"></span> Local / OneDrive</span>
   <span><span class="dot" style="background:#E74C3C"></span> Deprecated</span>
@@ -139,13 +139,13 @@ tr:hover td{background:rgba(64,215,197,.03)}
 
   <div class="subh">React Components — src/</div>
   <table><thead><tr><th>File</th><th>Description</th></tr></thead><tbody>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_S0_Page.jsx</span></td><td class="fd">~800 lines — main S0 orchestrator, feedstock data, soil profiles</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_S0_Redesign.jsx</span></td><td class="fd">S0 redesign iteration</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">components/CFI_S0_SectionAB.jsx</span></td><td class="fd">724 lines — company/estate/mill cascade, soil RPC, weather</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">components/CFI_S0_SectionC.jsx</span></td><td class="fd">255 lines — mill results, stream calculations</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">components/CFI_S0_SectionC_MillResults.jsx</span></td><td class="fd">Mill results panel component</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">components/CFI_S0_SectionD.jsx</span></td><td class="fd">306 lines — stream selection, blend config</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">pages/S0ResidueSelector.jsx</span></td><td class="fd">S0 residue selector page</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_S0_Page.jsx</span></td><td class="fd">~800 lines — main S0 orchestrator, feedstock data, soil profiles</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_S0_Redesign.jsx</span></td><td class="fd">S0 redesign iteration</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">components/CFI_S0_SectionAB.jsx</span></td><td class="fd">724 lines — company/estate/mill cascade, soil RPC, weather</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">components/CFI_S0_SectionC.jsx</span></td><td class="fd">255 lines — mill results, stream calculations</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">components/CFI_S0_SectionC_MillResults.jsx</span></td><td class="fd">Mill results panel component</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">components/CFI_S0_SectionD.jsx</span></td><td class="fd">306 lines — stream selection, blend config</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">pages/S0ResidueSelector.jsx</span></td><td class="fd">S0 residue selector page</td></tr>
   </tbody></table>
 
   <div class="subh">HTML</div>
@@ -177,28 +177,28 @@ tr:hover td{background:rgba(64,215,197,.03)}
 
   <div class="subh">React Components — src/</div>
   <table><thead><tr><th>File</th><th>Description</th></tr></thead><tbody>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">components/S1EngineeringComplete.jsx</span></td><td class="fd">829 lines — full 24-node, 3-line engineering (EFB/OPDC/POS), CAPEX/OPEX</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">components/S1SpecPanel.jsx</span></td><td class="fd">229 lines — compact spec panel with guardrail badges</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_S1S2_Calculator.jsx</span></td><td class="fd">S1/S2 combined engineering calculations</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_EFB_DM_Calc.jsx</span></td><td class="fd">EFB dry matter calculator — canonical constants</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_OPDC_DM_Calc.jsx</span></td><td class="fd">OPDC dry matter calculator</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_POS_DM_v4.jsx</span></td><td class="fd">POS dry matter calculator v4</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_POME_DM_Calculator_v3.jsx</span></td><td class="fd">POME dry matter calculator v3</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_NPK_Value_Dashboard.jsx</span></td><td class="fd">NPK value dashboard, blended stream output</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_GH_Calculator.jsx</span></td><td class="fd">Greenhouse / bioconversion calculator (BSF, beds, haul)</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_Nutrient_Ledger.jsx</span></td><td class="fd">Nutrient ledger, multi-stream reconciliation</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">components/S1EngineeringComplete.jsx</span></td><td class="fd">829 lines — full 24-node, 3-line engineering (EFB/OPDC/POS), CAPEX/OPEX</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">components/S1SpecPanel.jsx</span></td><td class="fd">229 lines — compact spec panel with guardrail badges</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_S1S2_Calculator.jsx</span></td><td class="fd">S1/S2 combined engineering calculations</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_EFB_DM_Calc.jsx</span></td><td class="fd">EFB dry matter calculator — canonical constants</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_OPDC_DM_Calc.jsx</span></td><td class="fd">OPDC dry matter calculator</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_POS_DM_v4.jsx</span></td><td class="fd">POS dry matter calculator v4</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_POME_DM_Calculator_v3.jsx</span></td><td class="fd">POME dry matter calculator v3</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_NPK_Value_Dashboard.jsx</span></td><td class="fd">NPK value dashboard, blended stream output</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_GH_Calculator.jsx</span></td><td class="fd">Greenhouse / bioconversion calculator (BSF, beds, haul)</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_Nutrient_Ledger.jsx</span></td><td class="fd">Nutrient ledger, multi-stream reconciliation</td></tr>
   </tbody></table>
 
   <div class="subh">Page Components — src/pages/</div>
   <table><thead><tr><th>File</th><th>Description</th></tr></thead><tbody>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">S1Engineering.jsx</span></td><td class="fd">S1 engineering main page</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">S1CapexOpex.jsx</span></td><td class="fd">S1 CAPEX / OPEX page</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">S1Combined.jsx</span></td><td class="fd">S1 combined view page</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">S1Index.jsx</span></td><td class="fd">S1 index / navigation page</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">S1EfbAscii.jsx + S1EfbSpec.jsx</span></td><td class="fd">EFB ASCII flow page + EFB spec detail</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">S1OpdcAscii.jsx + S1OpdcSpec.jsx</span></td><td class="fd">OPDC ASCII flow page + OPDC spec detail</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">S1PosAscii.jsx + S1PosSpec.jsx</span></td><td class="fd">POS ASCII flow page + POS spec detail</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">S1FloorPlanEfb.jsx / Opdc.jsx / Pos.jsx</span></td><td class="fd">Floor plan page components per stream</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">S1Engineering.jsx</span></td><td class="fd">S1 engineering main page</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">S1CapexOpex.jsx</span></td><td class="fd">S1 CAPEX / OPEX page</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">S1Combined.jsx</span></td><td class="fd">S1 combined view page</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">S1Index.jsx</span></td><td class="fd">S1 index / navigation page</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">S1EfbAscii.jsx + S1EfbSpec.jsx</span></td><td class="fd">EFB ASCII flow page + EFB spec detail</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">S1OpdcAscii.jsx + S1OpdcSpec.jsx</span></td><td class="fd">OPDC ASCII flow page + OPDC spec detail</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">S1PosAscii.jsx + S1PosSpec.jsx</span></td><td class="fd">POS ASCII flow page + POS spec detail</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">S1FloorPlanEfb.jsx / Opdc.jsx / Pos.jsx</span></td><td class="fd">Floor plan page components per stream</td></tr>
   </tbody></table>
 
   <div class="subh">HTML — Process Engineering (§14) <span class="new-badge">NEW 2026-04-01</span></div>
@@ -293,7 +293,7 @@ tr:hover td{background:rgba(64,215,197,.03)}
   </tbody></table>
   <div class="subh">React Components</div>
   <table><thead><tr><th>File</th><th>Description</th></tr></thead><tbody>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_S1S2_Calculator.jsx</span></td><td class="fd">S1/S2 shared calculations (also in S1)</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_S1S2_Calculator.jsx</span></td><td class="fd">S1/S2 shared calculations (also in S1)</td></tr>
   </tbody></table>
 </div>
 </details>
@@ -310,12 +310,12 @@ tr:hover td{background:rgba(64,215,197,.03)}
 
   <div class="subh">React Components — src/</div>
   <table><thead><tr><th>File</th><th>Description</th></tr></thead><tbody>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">pages/S3.jsx</span></td><td class="fd">S3 main page</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">pages/S3ABioLibrary.jsx</span></td><td class="fd">Biological library browser</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">pages/S3Landing.jsx</span></td><td class="fd">S3 landing / entry page</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_Bio_Database_Manager_v2.jsx</span></td><td class="fd">Bio database manager — current version</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_Treatment_Optimizer.jsx</span></td><td class="fd">Treatment optimizer for dosing &amp; ratios</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_SoilBio_Viz_v3.jsx</span></td><td class="fd">Soil biology visualization v3</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">pages/S3.jsx</span></td><td class="fd">S3 main page</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">pages/S3ABioLibrary.jsx</span></td><td class="fd">Biological library browser</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">pages/S3Landing.jsx</span></td><td class="fd">S3 landing / entry page</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_Bio_Database_Manager_v2.jsx</span></td><td class="fd">Bio database manager — current version</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_Treatment_Optimizer.jsx</span></td><td class="fd">Treatment optimizer for dosing &amp; ratios</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_SoilBio_Viz_v3.jsx</span></td><td class="fd">Soil biology visualization v3</td></tr>
     <tr><td><span class="b bl">Local</span> <span class="fn">BioProcessing.jsx</span></td><td class="fd">S3 bio-processing component (OneDrive)</td></tr>
     <tr><td><span class="b bl">Local</span> <span class="fn">S3Biological.jsx / S3_Biological_AppleUX.jsx</span></td><td class="fd">S3 biological treatment components (OneDrive)</td></tr>
     <tr><td class="dep"><span class="b br">Deprecated</span> <span class="fn">CFI_Bio_Database_Manager.jsx</span></td><td class="fd dep">v1 — superseded by v2</td></tr>
@@ -363,9 +363,9 @@ tr:hover td{background:rgba(64,215,197,.03)}
 
   <div class="subh">React Components — Lab Display (grouped)</div>
   <table><thead><tr><th>File</th><th>Description</th></tr></thead><tbody>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">pages/LabAnalysisV2.jsx</span></td><td class="fd">Lab analysis page v2 — current</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_Final_Lab_Display.jsx</span></td><td class="fd">Final lab display component</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_Stage_Lab_Display_v2.jsx</span></td><td class="fd">Stage lab display v2 — current</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">pages/LabAnalysisV2.jsx</span></td><td class="fd">Lab analysis page v2 — current</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_Final_Lab_Display.jsx</span></td><td class="fd">Final lab display component</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_Stage_Lab_Display_v2.jsx</span></td><td class="fd">Stage lab display v2 — current</td></tr>
     <tr><td class="dep"><span class="b br">Deprecated</span> <span class="fn">pages/LabAnalysis.jsx</span></td><td class="fd dep">v1 — superseded by LabAnalysisV2</td></tr>
     <tr><td class="dep"><span class="b br">Deprecated</span> <span class="fn">CFI_Stage_Lab_Display.jsx</span></td><td class="fd dep">v1 — superseded by v2</td></tr>
   </tbody></table>
@@ -396,17 +396,17 @@ tr:hover td{background:rgba(64,215,197,.03)}
 
   <div class="subh">React Components</div>
   <table><thead><tr><th>File</th><th>Description</th></tr></thead><tbody>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">components/CFI_ValueCalculator.jsx</span></td><td class="fd">NPK value calculations React component</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_EFB_DM_Calc.jsx</span></td><td class="fd">EFB dry matter calculator — canonical constants</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_OPDC_DM_Calc.jsx</span></td><td class="fd">OPDC dry matter calculator</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_POS_DM_v4.jsx</span></td><td class="fd">POS dry matter v4</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_POME_DM_Calculator_v3.jsx</span></td><td class="fd">POME dry matter calculator v3</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_GH_Calculator.jsx</span></td><td class="fd">Greenhouse / BSF bioconversion calculator</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_NPK_Value_Dashboard.jsx</span></td><td class="fd">NPK value dashboard</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_AG_Management_Planning_Calculator.jsx</span></td><td class="fd">AG management planning calculator</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">components/CFI_ValueCalculator.jsx</span></td><td class="fd">NPK value calculations React component</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_EFB_DM_Calc.jsx</span></td><td class="fd">EFB dry matter calculator — canonical constants</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_OPDC_DM_Calc.jsx</span></td><td class="fd">OPDC dry matter calculator</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_POS_DM_v4.jsx</span></td><td class="fd">POS dry matter v4</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_POME_DM_Calculator_v3.jsx</span></td><td class="fd">POME dry matter calculator v3</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_GH_Calculator.jsx</span></td><td class="fd">Greenhouse / BSF bioconversion calculator</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_NPK_Value_Dashboard.jsx</span></td><td class="fd">NPK value dashboard</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_AG_Management_Planning_Calculator.jsx</span></td><td class="fd">AG management planning calculator</td></tr>
     <tr><td><span class="b bl">Local</span> <span class="fn">CFI_AG_Management_Calculator_v1.jsx</span></td><td class="fd">Agricultural management calculator v1 (OneDrive)</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_Data_Upload_Pipeline.jsx</span></td><td class="fd">Data upload / ETL pipeline component</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">pages/SiteSetup.jsx</span></td><td class="fd">Site setup / configuration page</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_Data_Upload_Pipeline.jsx</span></td><td class="fd">Data upload / ETL pipeline component</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">pages/SiteSetup.jsx</span></td><td class="fd">Site setup / configuration page</td></tr>
   </tbody></table>
 
 </div>
@@ -432,11 +432,11 @@ tr:hover td{background:rgba(64,215,197,.03)}
 
   <div class="subh">React Components</div>
   <table><thead><tr><th>File</th><th>Description</th></tr></thead><tbody>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_Soil_Calculator_v4_PUBLISHED.jsx</span></td><td class="fd">Published soil calculator v4 — GHG, frass rates, NPK requirements</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_SoilAcidity_Lookup.jsx</span></td><td class="fd">Soil acidity lookup tool</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">components/CFI_SoilAcidity_ProfileCard.jsx</span></td><td class="fd">Soil acidity profile card component</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">components/CFI_Soil_Science_Module.jsx</span></td><td class="fd">Soil science module component</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_SoilBio_Viz_v3.jsx</span></td><td class="fd">Soil biology visualization v3</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_Soil_Calculator_v4_PUBLISHED.jsx</span></td><td class="fd">Published soil calculator v4 — GHG, frass rates, NPK requirements</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_SoilAcidity_Lookup.jsx</span></td><td class="fd">Soil acidity lookup tool</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">components/CFI_SoilAcidity_ProfileCard.jsx</span></td><td class="fd">Soil acidity profile card component</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">components/CFI_Soil_Science_Module.jsx</span></td><td class="fd">Soil science module component</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_SoilBio_Viz_v3.jsx</span></td><td class="fd">Soil biology visualization v3</td></tr>
   </tbody></table>
 
   <div class="subh">Supabase Tables</div>
@@ -474,17 +474,17 @@ tr:hover td{background:rgba(64,215,197,.03)}
 
   <div class="subh">React Components — Shared / UI</div>
   <table><thead><tr><th>File</th><th>Description</th></tr></thead><tbody>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">App.jsx</span></td><td class="fd">Root app component — canonical constants, routing</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">components/CFI_PriceRefreshBadge.jsx</span></td><td class="fd">Price refresh status badge</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">components/CFI_SourceRegistry_Button.jsx</span></td><td class="fd">Source registry toggle button</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">components/NavLink.tsx</span></td><td class="fd">Navigation link component</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">components/UnitInput.jsx</span></td><td class="fd">Reusable unit input component</td></tr>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">pages/Index.tsx</span></td><td class="fd">App entry page / home</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">App.jsx</span></td><td class="fd">Root app component — canonical constants, routing</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">components/CFI_PriceRefreshBadge.jsx</span></td><td class="fd">Price refresh status badge</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">components/CFI_SourceRegistry_Button.jsx</span></td><td class="fd">Source registry toggle button</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">components/NavLink.tsx</span></td><td class="fd">Navigation link component</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">components/UnitInput.jsx</span></td><td class="fd">Reusable unit input component</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">pages/Index.tsx</span></td><td class="fd">App entry page / home</td></tr>
   </tbody></table>
 
   <div class="subh">Mega Exports</div>
   <table><thead><tr><th>File</th><th>Description</th></tr></thead><tbody>
-    <tr><td><span class="b bg">Lovable</span> <span class="fn">CFI_Project_Files/jsx/CFI_FULL_BUILD_v25.jsx</span></td><td class="fd">421KB — full app build snapshot</td></tr>
+    <tr><td><span class="b bg">Git/src</span> <span class="fn">CFI_Project_Files/jsx/CFI_FULL_BUILD_v25.jsx</span></td><td class="fd">421KB — full app build snapshot</td></tr>
     <tr><td><span class="b bl">Local</span> <span class="fn">S1_Engineering_Complete.jsx</span></td><td class="fd">S1 engineering complete export (OneDrive)</td></tr>
     <tr><td class="dep"><span class="b br">Deprecated</span> <span class="fn">CFI_v23_FIXED.jsx</span></td><td class="fd dep">Old v23 fixed build — superseded by v25</td></tr>
   </tbody></table>
