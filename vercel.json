@@ -1,6 +1,6 @@
 {
   "rewrites": [
     { "source": "/s3", "destination": "/s3.html" },
-    { "source": "/(.*)", "destination": "/" }
+    { "source": "/((?!.*\\.html$).*)", "destination": "/" }
   ]
 }
