@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import {
   C, Fnt, S1_CSS, S0Header, S1Breadcrumb, LineHero,
   CollapsibleSection, Pre, SubstrateFlowStrip,
+  NodeCard, BuildingDiagram, TickerBar,
 } from "../components/S1Shared.jsx";
 
 /*
@@ -63,6 +64,18 @@ const POS_EQUIP = [
   { code: 'DEC-SLD-101', name: 'POS 3-Phase Decanter', cost: 'RFQ $80K–$150K' },
 ];
 
+// ── EXPANDABLE FLOOR NODES ──
+const FLOOR_NODES = [
+  { id: 1, tag: 'PIT-POS-01', name: 'POS Sludge Hopper', specs: [['Type','At-grade hopper (not in-ground)'],['Capacity','8 m³'],['Material','Epoxy-coated RC concrete'],['Dimensions','3.5m L × 2.5m W × 2.0m H'],['Walls','60° sloped · 150mm drain'],['Pump','Submersible progressive cavity']], footer: 'Receives mill decanter discharge — no in-ground pit (groundwater risk)' },
+  { id: 2, tag: 'T-SLD-101', name: 'POS Buffer Tank', specs: [['Type','Agitated buffer tank · sealed dome'],['Capacity','5–8 m³'],['Material','SS304'],['Agitator','3.7 kW low-speed'],['Feed Pump','0.75 kW progressive cavity'],['Throughput','1.25 t/h @ 82% MC']], footer: 'Homogenises sludge before screening — sealed to prevent VOC release' },
+  { id: 3, tag: 'SCR-POS-01', name: 'POS Rotary Drum Screen', gate: { label: 'ICP-OES Fe GATE', bg: 'rgba(59,130,246,.1)', color: '#3B82F6' }, specs: [['Type','Rotary drum screen'],['Material','SS316L'],['Aperture','2mm wedge wire'],['Throughput','1.25 t/h'],['Motor','3.7 kW'],['Reject','Fibre + shell → EFB line recirculate']], footer: 'ICP-OES Fe gate checkpoint — protocol CFI-LAB-POME-001', warning: 'Fe thresholds: <3,000 mg/kg → CaCO₃ 20% w/w · 3,000–5,000 → 10–15% · 5,000–8,000 → 5–10% · >8,000 → protocol review required' },
+  { id: 4, tag: 'MIX-POS-01', name: 'POS Conditioning Mixer', specs: [['Type','Batch conditioning mixer'],['Material','SS304'],['Capacity','500L batch'],['Motor','2.2 kW'],['CaCO₃ Dosing','5–20% w/w (based on Fe result)'],['pH Target','4.4 → 5.5–6.0'],['Residence','15–20 min per batch']], footer: 'CaCO₃ dose calculated from ICP-OES Fe result' },
+  { id: 5, tag: 'FP-POS-01', name: 'POS Filter Press', specs: [['Type','Plate-and-frame filter press'],['Plates','40 × 800mm chambers (or 25 × 630mm)'],['Throughput','~0.56 t/h cake output'],['MC Reduction','82% → 65–70%'],['Cycle','45+15 min (press + discharge)'],['Motor','11–15 kW hydraulic']], footer: 'Dewatered POS cake to S2 conditioning mixer · Filtrate → mill effluent' },
+];
+
+// ── BUILDING ──
+const BUILDING = { name: 'Building A7 — Utility Building (POS)', width: '12m', length: '18m', height: '6m', area: '216 m²' };
+
 export default function S1Pos() {
   return (
     <>
@@ -79,6 +92,15 @@ export default function S1Pos() {
           { text: 'CaCO₃ Dosing', cls: 'bdg-a' },
         ]}
       />
+      <TickerBar items={[
+        { label: 'Daily In', val: '~30 t', color: C.amber },
+        { label: 'Daily Out', val: '~13.5 t', color: C.teal },
+        { label: 'MC In', val: '82%', color: C.amber },
+        { label: 'MC Out', val: '65–70%', color: C.teal },
+        { label: 'Form', val: 'Liquid/Semi', color: '#3B82F6' },
+        { label: 'Power', val: '62 kW' },
+        { label: 'Elec/mo', val: '$1,806', color: C.amber },
+      ]} />
       <S1Breadcrumb activeLine="POS Line" />
 
       <div style={{ marginTop: 10 }}>
@@ -262,6 +284,109 @@ export default function S1Pos() {
           </div>
           <div style={{ marginTop: 10, fontFamily: Fnt.dm, fontSize: 11, color: C.grey }}>
             Monthly electricity: $1,806/mo · 19,747 kWh · PLN I-3 tariff IDR 1,444.70/kWh
+          </div>
+        </CollapsibleSection>
+
+        {/* SECTION 5: EXPANDABLE EQUIPMENT NODES */}
+        <CollapsibleSection title="Expandable Equipment Nodes — 5 Units" number="5" accent={ACCENT} defaultOpen={false}>
+          <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, marginBottom: 12 }}>
+            Click any node to expand full specs, motor data, and gate conditions. POS is a liquid/semi line — no dry conveyors.
+          </div>
+          {FLOOR_NODES.map((node) => (
+            <NodeCard key={node.id} node={node} accent={ACCENT} />
+          ))}
+        </CollapsibleSection>
+
+        {/* SECTION 6: BUILDING DIMENSIONS */}
+        <CollapsibleSection title="Building Dimensions" number="6" accent={ACCENT} defaultOpen={false}>
+          <BuildingDiagram building={BUILDING} accent={ACCENT} />
+          <div style={{ marginTop: 12, fontFamily: Fnt.dm, fontSize: 11, color: C.grey, lineHeight: 1.7 }}>
+            Compact utility building housing sludge processing. All equipment at-grade or low elevation (&lt;3m).
+            No belt conveyors — liquid/slurry transfer via progressive cavity pumps and gravity feed.
+            Bunded floor with 150mm containment kerb. Acid-resistant epoxy coating throughout.
+          </div>
+        </CollapsibleSection>
+
+        {/* SECTION 7: ICP-OES FE GATE PROTOCOL, MIXING & S2 GREENHOUSE HANDOFF */}
+        <CollapsibleSection title="CaCO₃ Conditioning, Mixing & S2 Greenhouse Handoff" number="7" accent={ACCENT} defaultOpen={false}>
+          <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, marginBottom: 16, lineHeight: 1.7 }}>
+            POS is the only residue that requires ICP-OES laboratory analysis before processing.
+            The Fe (iron) content determines the CaCO₃ dosing rate. After conditioning and filter pressing,
+            the dewatered cake joins the combined S2 mixing stream with EFB and OPDC.
+          </div>
+
+          <div style={{ padding: '14px 18px', background: 'rgba(59,130,246,.06)', border: `1px solid rgba(59,130,246,.25)`, borderRadius: 6, marginBottom: 16 }}>
+            <div style={{ fontFamily: Fnt.syne, fontSize: 12, fontWeight: 700, color: '#3B82F6', marginBottom: 8 }}>ICP-OES Fe Gate Protocol — CFI-LAB-POME-001</div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 8 }}>
+              {[
+                { range: 'Fe < 3,000 mg/kg', dose: 'CaCO₃ at 20% w/w', status: 'Standard', color: '#3B82F6' },
+                { range: 'Fe 3,000–5,000', dose: 'CaCO₃ at 10–15% w/w', status: 'Moderate', color: C.amber },
+                { range: 'Fe 5,000–8,000', dose: 'CaCO₃ at 5–10% w/w', status: 'Reduced', color: C.amber },
+                { range: 'Fe > 8,000', dose: 'Protocol review', status: 'Hold', color: C.red },
+              ].map((tier, i) => (
+                <div key={i} style={{ background: C.navyField, border: `1px solid ${C.bdrIdle}`, borderLeft: `3px solid ${tier.color}`, borderRadius: 4, padding: '8px 12px' }}>
+                  <div style={{ fontFamily: Fnt.mono, fontSize: 11, fontWeight: 700, color: tier.color }}>{tier.range}</div>
+                  <div style={{ fontFamily: Fnt.dm, fontSize: 10, color: C.white, marginTop: 2 }}>{tier.dose}</div>
+                  <div style={{ fontFamily: Fnt.dm, fontSize: 9, color: C.grey, marginTop: 2 }}>{tier.status}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <Pre accent={ACCENT}>{`
+  ┌─────────────────────────────────────────────────────────────────────────────────┐
+  │  S1 → S2 MIXING & NEUTRALISATION FLOW  (POS Contribution)                     │
+  └─────────────────────────────────────────────────────────────────────────────────┘
+
+  FP-POS-01 ─────────────┐
+  (POS conditioned cake   │    ┌──────────────────────┐    ┌──────────────────────┐
+   65–70% MC              │───▶│  MIX-S2-01           │───▶│  PKSA-S2-01          │
+   pH 5.5–6.0             │    │  S2 Substrate Mixer  │    │  PKSA Neutralisation │
+   CaCO₃ conditioned)     │    │  Ribbon/paddle type   │    │  Tank                │
+                          │    │  SS304 · 5 m³ batch  │    │  pH 4.5 → 7.0–7.5   │
+  + EFB milled fibre ────┤    │  15 kW · VFD         │    │  PKSA dose 2–5% w/w  │
+  + OPDC dried cake ──────┘    │  3-stream metering   │    │  Residence: 20 min   │
+                               └──────────────────────┘    └──────────────────────┘
+                                                                    │
+                                                                    ▼
+                                                     ┌──────────────────────────────┐
+                                                     │  S2 COMPOSTING GREENHOUSE    │
+                                                     │  Covered windrow system      │
+                                                     │  28-day thermophilic cycle   │
+                                                     │  Target: 55–65°C core temp   │
+                                                     │  Blended C:N 25–30:1         │
+                                                     │  MC 55–60% · pH 7.0–7.5     │
+                                                     └──────────────────────────────┘
+          `}</Pre>
+
+          <div style={{ marginTop: 16, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 10 }}>
+            {[
+              { label: 'POS Contribution', val: '~13.5 t/day', note: '65–70% MC · CaCO₃ conditioned cake · Mineral boost', color: '#3B82F6' },
+              { label: 'Fe Gate Status', val: 'ICP-OES', note: 'Lab result determines CaCO₃ dose before processing', color: '#3B82F6' },
+              { label: 'CaCO₃ Dose Range', val: '5–20% w/w', note: 'Inversely proportional to Fe content', color: C.amber },
+              { label: 'pH After CaCO₃', val: '5.5–6.0', note: 'Up from 4.4 raw · Further neutralised by PKSA in S2', color: C.green },
+              { label: 'Filtrate Disposal', val: 'POME Return', note: 'Filter press filtrate returns to mill effluent system', color: C.grey },
+              { label: 'Greenhouse Temp', val: '55–65°C', note: 'Core temp during 28-day composting cycle', color: C.amber },
+            ].map((item, i) => (
+              <div key={i} style={{ background: C.navyField, border: `1px solid ${C.bdrIdle}`, borderLeft: `3px solid ${item.color}`, borderRadius: 6, padding: '12px 14px' }}>
+                <div style={{ fontFamily: Fnt.dm, fontSize: 10, fontWeight: 700, color: C.grey, textTransform: 'uppercase', marginBottom: 4 }}>{item.label}</div>
+                <div style={{ fontFamily: Fnt.mono, fontSize: 16, fontWeight: 700, color: item.color, marginBottom: 4 }}>{item.val}</div>
+                <div style={{ fontFamily: Fnt.dm, fontSize: 10, color: C.grey, lineHeight: 1.5 }}>{item.note}</div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ marginTop: 16, padding: '12px 16px', background: 'rgba(0,162,73,.06)', border: `1px solid rgba(0,162,73,.25)`, borderRadius: 6 }}>
+            <div style={{ fontFamily: Fnt.syne, fontSize: 12, fontWeight: 700, color: C.green, marginBottom: 6 }}>S2 Greenhouse Transfer Protocol</div>
+            <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, lineHeight: 1.7 }}>
+              1. POS cake exits filter press and is transported to S2 mixer (wheelbarrow or screw conveyor)<br/>
+              2. Metered with EFB fibre (carbon source) and OPDC cake (nitrogen source)<br/>
+              3. PKSA dosed at 2–5% w/w for final pH neutralisation (target 7.0–7.5)<br/>
+              4. Blended substrate formed into covered windrows (2.5m W × 1.5m H)<br/>
+              5. 28-day thermophilic composting (55–65°C core temp)<br/>
+              6. Windrow turned every 5–7 days · Forced-air aeration floor<br/>
+              7. Compost maturity test at Day 28 → release to S3 Biological (BSF colonisation)
+            </div>
           </div>
         </CollapsibleSection>
       </div>

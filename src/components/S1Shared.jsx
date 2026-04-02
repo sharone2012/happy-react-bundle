@@ -250,6 +250,144 @@ export function Pre({ children, accent = C.teal }) {
   );
 }
 
+// ── NODE CARD (expandable equipment card from floor plan pages) ──
+export function NodeCard({ node, accent = C.teal }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div
+      onClick={() => setExpanded(!expanded)}
+      style={{
+        background: C.navyCard,
+        border: `1px solid ${expanded ? C.tealBdr : C.bdrIdle}`,
+        borderLeft: `4px solid ${expanded ? accent : C.bdrCalc}`,
+        borderRadius: 6, padding: '14px 18px', marginBottom: 8,
+        cursor: 'pointer', transition: 'all .15s',
+        boxShadow: expanded ? '0 2px 12px rgba(64,215,197,.10)' : 'none',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{
+          width: 30, height: 30, borderRadius: 6,
+          background: accent, color: C.navy,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontFamily: Fnt.mono, fontSize: 11, fontWeight: 700, flexShrink: 0,
+        }}>{node.id}</div>
+        <div style={{ fontFamily: Fnt.mono, fontSize: 12, fontWeight: 700, color: C.amber, minWidth: 100 }}>{node.tag}</div>
+        <div style={{ flex: 1, fontFamily: Fnt.syne, fontSize: 13, fontWeight: 600, color: C.white }}>{node.name}</div>
+        {node.gate && <span style={{ fontFamily: Fnt.mono, fontSize: 9, fontWeight: 700, padding: '2px 8px', borderRadius: 4, background: node.gate.bg, color: node.gate.color, border: `1px solid ${node.gate.color}` }}>{node.gate.label}</span>}
+        <span style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey }}>{expanded ? '▲' : '▼'}</span>
+      </div>
+      {expanded && (
+        <div style={{ marginTop: 12 }}>
+          <div style={{
+            display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '6px 14px',
+            background: C.navyField, padding: 14, borderRadius: 6, fontSize: 12,
+            border: `1px solid ${C.bdrIdle}`,
+          }}>
+            {node.specs.map(([label, value], i) => (
+              <div key={i} style={{ display: 'contents' }}>
+                <span style={{ fontFamily: Fnt.dm, color: C.grey, fontWeight: 600, fontSize: 11 }}>{label}</span>
+                <span style={{ fontFamily: Fnt.mono, fontWeight: 500, color: C.white, fontSize: 11 }}>{value}</span>
+              </div>
+            ))}
+          </div>
+          {node.footer && (
+            <div style={{ marginTop: 10, paddingTop: 8, borderTop: `1px solid ${C.bdrCalc}`, fontFamily: Fnt.dm, fontSize: 11, color: C.greyLt }}>{node.footer}</div>
+          )}
+          {node.warning && (
+            <div style={{ marginTop: 8, padding: '8px 12px', background: 'rgba(232,64,64,.07)', border: '1px solid rgba(232,64,64,.3)', borderRadius: 5, fontFamily: Fnt.dm, fontSize: 10, color: C.red, lineHeight: 1.6 }}>{node.warning}</div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── BUILDING DIAGRAM ──
+export function BuildingDiagram({ building, accent = C.teal }) {
+  return (
+    <div style={{ padding: '24px 0' }}>
+      <div style={{ textAlign: 'center', marginBottom: 8 }}>
+        <div style={{ fontFamily: Fnt.dm, fontSize: 11, fontWeight: 600, color: accent }}>Width</div>
+        <div style={{ height: 2, background: C.bdrCalc, margin: '4px auto', maxWidth: 400, position: 'relative' }}>
+          <div style={{ position: 'absolute', left: 0, top: -4, width: 2, height: 10, background: C.tealBdr }} />
+          <div style={{ position: 'absolute', right: 0, top: -4, width: 2, height: 10, background: C.tealBdr }} />
+        </div>
+        <div style={{ fontFamily: Fnt.mono, fontSize: 13, fontWeight: 700, color: accent }}>{building.width}</div>
+      </div>
+      <div style={{
+        border: `2px solid ${C.tealBdr}`, background: C.tealDim,
+        padding: 24, position: 'relative', maxWidth: 400, margin: '0 auto', borderRadius: 6,
+      }}>
+        <div style={{
+          position: 'absolute', right: -60, top: 0, bottom: 0,
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <div style={{ width: 2, flex: 1, background: C.bdrCalc, position: 'relative' }}>
+            <div style={{ position: 'absolute', top: 0, left: -4, width: 10, height: 2, background: C.tealBdr }} />
+            <div style={{ position: 'absolute', bottom: 0, left: -4, width: 10, height: 2, background: C.tealBdr }} />
+          </div>
+          <div style={{ fontFamily: Fnt.dm, fontSize: 11, fontWeight: 600, color: accent, writingMode: 'vertical-rl', transform: 'rotate(180deg)', margin: '8px 0' }}>Length</div>
+          <div style={{ fontFamily: Fnt.mono, fontSize: 13, fontWeight: 700, color: accent, writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>{building.length}</div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontFamily: Fnt.syne, fontSize: 14, fontWeight: 700, color: C.white, marginBottom: 4 }}>{building.name}</div>
+          <div style={{ fontFamily: Fnt.dm, fontSize: 12, color: C.grey }}>S1 Mechanical Equipment Layout</div>
+          <div style={{ fontFamily: Fnt.mono, fontSize: 12, color: C.grey, marginTop: 4 }}>Area: {building.area} · Height: {building.height}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── TICKER BAR ──
+export function TickerBar({ items }) {
+  return (
+    <div style={{
+      borderBottom: `1px solid ${C.bdrIdle}`, padding: '8px 24px',
+      display: 'flex', gap: 0, overflowX: 'auto', background: C.navyMid,
+    }}>
+      {items.map((k, i) => (
+        <div key={i} style={{
+          display: 'flex', alignItems: 'center', gap: 8, padding: '0 16px',
+          borderRight: i < items.length - 1 ? `1px solid ${C.bdrCalc}` : 'none', whiteSpace: 'nowrap',
+        }}>
+          <span style={{ fontSize: 10, fontWeight: 700, color: C.grey, textTransform: 'uppercase', letterSpacing: '.06em', fontFamily: Fnt.dm }}>{k.label}</span>
+          <span style={{ fontFamily: Fnt.mono, fontSize: 14, fontWeight: 700, color: k.color || C.teal }}>{k.val}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── CONVEYOR TABLE ──
+export function ConveyorTable({ conveyors, accent = C.teal }) {
+  return (
+    <div style={{ overflowX: 'auto' }}>
+      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11 }}>
+        <thead>
+          <tr style={{ background: 'rgba(0,0,0,.3)' }}>
+            {['Code', 'Type', 'Length', 'Power', 'Route'].map(h => (
+              <th key={h} style={{ padding: '8px 10px', textAlign: 'left', fontFamily: Fnt.mono, fontSize: 10, fontWeight: 700, color: C.grey, textTransform: 'uppercase', borderBottom: `1px solid ${C.bdrIdle}` }}>{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {conveyors.map((cv, i) => (
+            <tr key={i} style={{ borderBottom: `1px solid rgba(30,107,140,.15)` }}>
+              <td style={{ padding: '6px 10px', fontFamily: Fnt.mono, fontSize: 11, fontWeight: 700, color: accent }}>{cv.code}</td>
+              <td style={{ padding: '6px 10px', fontFamily: Fnt.dm, fontSize: 11, color: C.white }}>{cv.type}</td>
+              <td style={{ padding: '6px 10px', fontFamily: Fnt.mono, fontSize: 11, color: C.amber }}>{cv.length}</td>
+              <td style={{ padding: '6px 10px', fontFamily: Fnt.mono, fontSize: 11, color: C.teal }}>{cv.power}</td>
+              <td style={{ padding: '6px 10px', fontFamily: Fnt.dm, fontSize: 10, color: C.grey }}>{cv.route}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 // ── LINE HERO BANNER ──
 export function LineHero({ name, throughput, power, nodes, accent, badges = [] }) {
   return (
