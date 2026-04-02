@@ -2,41 +2,52 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 
 /*
  * ═══════════════════════════════════════════════════════════════
- * CFI Deep Tech — S3 · Apple UX
+ * CFI Deep Tech — S3 · Biological Inoculation Stage
  * ═══════════════════════════════════════════════════════════════
- * 1:1 replica of S3_Apple_UX_v18_1.html
- * Modifications per Sharon 30 Mar 2026:
- *   - Header: white/light background, CFI logo on top
- *   - Removed "CFI Deep Tech | Sinar Mas…" info row
- *   - Starts at Substrate Flow
- *   - ALL text + numbers in DM Sans (no Syne, no DM Mono)
- *   - Teal matched to logo: #40D7C5
- *   - All guardrails, data, organisms preserved 1:1
+ * Design system: S0-aligned dark navy theme
  * ═══════════════════════════════════════════════════════════════
  */
 
-// ── COLOUR TOKENS (logo teal) ──
+// ── S0 DESIGN TOKENS ──
+const C = {
+  navy:      '#060C14',
+  navyMid:   '#0A1628',
+  navyCard:  '#111E33',
+  navyField: '#142030',
+  navyDeep:  '#0C1E33',
+  teal:      '#40D7C5',
+  tealDim:   'rgba(64,215,197,0.12)',
+  tealBdr:   'rgba(64,215,197,0.60)',
+  amber:     '#F5A623',
+  amberDim:  'rgba(245,166,35,0.14)',
+  green:     '#00A249',
+  greenDim:  'rgba(0,162,73,0.13)',
+  red:       '#E84040',
+  redDim:    'rgba(232,64,64,0.13)',
+  grey:      '#A8BDD0',
+  greyLt:    'rgba(168,189,208,0.75)',
+  white:     '#E8F0FE',
+  bdrIdle:   'rgba(255,255,255,0.06)',
+  bdrCalc:   'rgba(139,160,180,0.18)',
+};
+// Back-compat aliases used in data + styles below
 const T = {
-  navy:    "#060C14",
-  navyM:   "#0B1827",
-  navyL:   "#0D1E30",
-  navyLL:  "#112236",
-  border:  "#1E4060",
-  borderT: "rgba(64,215,197,.25)",
-  teal:    "#40D7C5",
-  teal2:   "rgba(64,215,197,.12)",
-  amber:   "#F5A623",
-  green:   "#3DCB7A",
-  red:     "#E84040",
-  blue:    "#60A5FA",
-  violet:  "#A78BFA",
-  grey:    "#8BA0B4",
-  greyL:   "#C4D3E0",
-  white:   "#EAF3F8",
+  navy: C.navy, navyM: C.navyMid, navyL: C.navyCard, navyLL: C.navyField,
+  border: 'rgba(64,215,197,0.25)', borderT: C.tealBdr,
+  teal: C.teal, teal2: C.tealDim,
+  amber: C.amber, green: C.green, red: C.red,
+  blue: '#60A5FA', violet: '#A78BFA',
+  grey: C.grey, greyL: C.white, white: C.white,
 };
 
-// ── FONT (DM Sans only) ──
-const F = "'DM Sans', sans-serif";
+// ── S0 FONT TOKENS ──
+const Fnt = {
+  syne:  "'Syne', sans-serif",
+  dm:    "'DM Sans', sans-serif",
+  mono:  "'DM Mono', monospace",
+  brand: "'EB Garamond', serif",
+};
+const F = Fnt.dm;
 
 // ── WAVE DEFINITIONS ──
 const WAVES = [
@@ -184,27 +195,19 @@ export default function S3() {
 
   // ── STYLES ──
   const s = {
-    page: { background: T.navy, color: T.greyL, fontFamily: F, fontSize: 13, lineHeight: 1.5, minHeight: "100vh" },
-    // HEADER — white/light, logo on top
-    header: { position: "sticky", top: 0, zIndex: 100, background: "#FFFFFF", borderBottom: `1px solid #E0E0E0`, padding: "0 24px", display: "flex", alignItems: "center", height: 56, gap: 16 },
-    logo: { display: "flex", alignItems: "center", gap: 10 },
-    logoMark: { width: 36, height: 36, borderRadius: 8, background: `linear-gradient(135deg, ${T.teal}, #0B1827)`, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontFamily: F, fontWeight: 800, fontSize: 16, letterSpacing: "-.02em" },
-    logoText: { fontFamily: F, fontSize: 18, fontWeight: 800, color: "#0B1827", letterSpacing: "-.01em" },
-    logoSpan: { color: T.teal },
-    stageNav: { display: "flex", gap: 2, marginLeft: "auto" },
-    stageBtn: (active) => ({ fontFamily: F, fontSize: 10, fontWeight: 700, padding: "4px 10px", borderRadius: 4, border: `1px solid ${active ? T.teal : "#D0D0D0"}`, color: active ? "#fff" : "#888", background: active ? T.teal : "transparent", cursor: "pointer", transition: "all .12s" }),
+    page: { background: C.navy, color: C.white, fontFamily: F, fontSize: 13, lineHeight: 1.5, minHeight: "100vh" },
     // TICKER
     ticker: { background: "rgba(6,12,20,.95)", borderBottom: `1px solid ${T.border}`, padding: "6px 24px", display: "flex", gap: 0, overflowX: "auto" },
     tick: { display: "flex", alignItems: "center", gap: 6, padding: "0 16px", borderRight: `1px solid ${T.border}`, whiteSpace: "nowrap" },
-    tickLbl: { fontSize: 9, fontWeight: 700, color: T.grey, textTransform: "uppercase", letterSpacing: ".06em", fontFamily: F },
-    tickVal: (c) => ({ fontFamily: F, fontSize: 13, fontWeight: 700, color: c }),
+    tickLbl: { fontSize: 9, fontWeight: 700, color: C.grey, textTransform: "uppercase", letterSpacing: ".06em", fontFamily: Fnt.dm },
+    tickVal: (c) => ({ fontFamily: Fnt.mono, fontSize: 13, fontWeight: 700, color: c }),
     // SUBSTRATE STRIP LABEL
     stripLabel: { background: T.navyLL, borderBottom: `1px solid ${T.borderT}`, padding: "6px 24px", fontFamily: F, fontSize: 10, fontWeight: 700, color: T.teal, textTransform: "uppercase", letterSpacing: ".1em", display: "flex", alignItems: "center", gap: 12 },
     stripLabelSub: { fontFamily: F, fontWeight: 400, textTransform: "none", letterSpacing: 0, fontSize: 10, color: T.grey },
     // SUBSTRATE GRID
     rdWrapper: { display: "grid", gridTemplateColumns: "64px repeat(4,1fr) 64px 66px repeat(4,1fr)", width: "100%", borderBottom: `2px solid rgba(64,215,197,0.22)`, background: T.navy },
     rdLabel: (side) => ({ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", background: T.navyM, borderRight: side === "in" ? `1px solid rgba(64,215,197,0.25)` : "none", borderLeft: side === "out" ? `1px solid rgba(64,215,197,0.25)` : "none", padding: "0 10px", width: 64, writingMode: "vertical-rl", textOrientation: "mixed", transform: "rotate(180deg)", whiteSpace: "nowrap", cursor: "default" }),
-    rdLabelWord: { fontFamily: F, fontSize: 16, fontWeight: 700, color: T.amber, letterSpacing: ".04em" },
+    rdLabelWord: { fontFamily: Fnt.syne, fontSize: 16, fontWeight: 700, color: C.amber, letterSpacing: ".04em" },
     rdField: (isActive) => ({ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "18px 8px", cursor: "pointer", transition: "background .15s", position: "relative", background: isActive ? "rgba(64,215,197,0.08)" : "transparent" }),
     rdTitle: { fontFamily: F, fontSize: 10, fontWeight: 700, color: T.grey, textTransform: "uppercase", letterSpacing: ".5px", marginBottom: 5, whiteSpace: "nowrap" },
     rdNum: (c) => ({ fontFamily: F, fontSize: 14, fontWeight: 700, color: c || T.amber, lineHeight: 1.2, whiteSpace: "nowrap" }),
@@ -214,14 +217,14 @@ export default function S3() {
     rdNoteSrc: { marginTop: 5, fontSize: 10, color: T.grey, fontFamily: F },
     // SECTION
     section: { padding: "20px 24px" },
-    sectionTitle: { fontFamily: F, fontSize: 13, fontWeight: 700, color: T.teal, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 4 },
-    sectionSub: { fontSize: 11, color: T.grey, marginBottom: 14 },
+    sectionTitle: { fontFamily: Fnt.syne, fontSize: 15, fontWeight: 700, color: C.teal, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 4 },
+    sectionSub: { fontSize: 11, color: C.grey, marginBottom: 14 },
     // GOAL ROW
     goalRow: { display: "grid", gridTemplateColumns: "repeat(7,1fr)", gap: 8 },
     goal: (isSel) => ({ background: isSel ? "rgba(64,215,197,.08)" : T.navyL, border: `${isSel ? 2 : 1.5}px solid ${isSel ? T.teal : T.border}`, borderRadius: 10, padding: "14px 10px", cursor: "pointer", transition: "all .15s", position: "relative", overflow: "hidden", textAlign: "center" }),
     goalBar: { content: "", position: "absolute", top: 0, left: 0, right: 0, height: 3, background: T.teal },
-    goalName: (isSel) => ({ fontFamily: F, fontSize: 11, fontWeight: 700, color: isSel ? T.teal : T.greyL, marginBottom: 6, lineHeight: 1.3 }),
-    goalDelta: (c) => ({ fontFamily: F, fontSize: 13, fontWeight: 700, color: c || T.green, marginBottom: 5 }),
+    goalName: (isSel) => ({ fontFamily: Fnt.syne, fontSize: 11, fontWeight: 700, color: isSel ? C.teal : C.white, marginBottom: 6, lineHeight: 1.3 }),
+    goalDelta: (c) => ({ fontFamily: Fnt.mono, fontSize: 13, fontWeight: 700, color: c || C.green, marginBottom: 5 }),
     goalOrgs: { fontSize: 9, color: T.grey, lineHeight: 1.4 },
     // SOIL BAR
     soilBtn: (active) => ({ background: active ? "rgba(64,215,197,.10)" : T.navyL, border: `1px solid ${active ? "rgba(64,215,197,.55)" : "rgba(139,160,180,.18)"}`, color: active ? T.teal : T.grey, fontFamily: F, fontSize: 10, fontWeight: 700, padding: "4px 10px", borderRadius: 4, cursor: "pointer", transition: "all .15s" }),
@@ -251,22 +254,22 @@ export default function S3() {
     obPill: (c, bdr, bg) => ({ fontSize: 10, fontWeight: 700, padding: "3px 8px", borderRadius: 5, border: `1.5px solid ${bdr}`, fontFamily: F, letterSpacing: ".01em", whiteSpace: "nowrap", color: c, background: bg }),
     // KPI
     kpiGrid: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10 },
-    kpiCard: { background: T.navyL, border: `1.5px solid ${T.border}`, borderRadius: 8, padding: "12px 14px", display: "flex", flexDirection: "column", gap: 4 },
-    kpiHdr: { fontFamily: F, fontSize: 10, fontWeight: 700, color: T.teal, textTransform: "uppercase", letterSpacing: ".06em", borderBottom: `1px solid rgba(64,215,197,.2)`, paddingBottom: 5, marginBottom: 2 },
-    kpiVal: (c) => ({ fontFamily: F, fontSize: 22, fontWeight: 700, color: c || T.greyL, lineHeight: 1.1 }),
-    kpiUnit: { fontFamily: F, fontSize: 9, color: T.grey },
+    kpiCard: { background: C.navyCard, border: `1.5px solid rgba(0,201,177,0.13)`, borderRadius: 11, padding: "12px 14px", display: "flex", flexDirection: "column", gap: 4 },
+    kpiHdr: { fontFamily: Fnt.syne, fontSize: 10, fontWeight: 700, color: C.teal, textTransform: "uppercase", letterSpacing: ".06em", borderBottom: `1px solid rgba(64,215,197,.12)`, paddingBottom: 5, marginBottom: 2 },
+    kpiVal: (c) => ({ fontFamily: Fnt.mono, fontSize: 22, fontWeight: 700, color: c || C.amber, lineHeight: 1.1 }),
+    kpiUnit: { fontFamily: Fnt.dm, fontSize: 9, color: C.grey },
     // RESULTS BAR
-    resultsBar: { position: "sticky", bottom: 0, zIndex: 90, background: T.navyM, borderTop: `2px solid ${T.borderT}`, padding: "10px 24px", display: "flex", alignItems: "center", gap: 16, boxShadow: "0 -8px 32px rgba(0,0,0,.5)" },
+    resultsBar: { position: "sticky", bottom: 0, zIndex: 90, background: C.navyMid, borderTop: `2px solid ${C.tealBdr}`, padding: "10px 24px", display: "flex", alignItems: "center", gap: 16, boxShadow: "0 -8px 32px rgba(0,0,0,.5)" },
     rbItem: { display: "flex", flexDirection: "column", gap: 1 },
-    rbLbl: { fontSize: 9, fontWeight: 700, color: T.grey, textTransform: "uppercase", letterSpacing: ".05em" },
-    rbVal: (c) => ({ fontFamily: F, fontSize: 14, fontWeight: 700, color: c }),
-    rbDivider: { width: 1, height: 30, background: T.border },
-    rbBtn: (disabled) => ({ marginLeft: "auto", fontSize: 12, fontWeight: 700, padding: "9px 24px", borderRadius: 7, border: "none", background: disabled ? T.border : T.teal, color: disabled ? T.grey : T.navy, cursor: disabled ? "not-allowed" : "pointer", transition: "all .15s", whiteSpace: "nowrap", fontFamily: F }),
+    rbLbl: { fontSize: 9, fontWeight: 700, color: C.grey, textTransform: "uppercase", letterSpacing: ".05em", fontFamily: Fnt.dm },
+    rbVal: (c) => ({ fontFamily: Fnt.mono, fontSize: 14, fontWeight: 700, color: c }),
+    rbDivider: { width: 1, height: 30, background: C.bdrCalc },
+    rbBtn: (disabled) => ({ marginLeft: "auto", fontSize: 12, fontWeight: 700, padding: "9px 24px", borderRadius: 7, border: "none", background: disabled ? C.bdrCalc : C.teal, color: disabled ? C.grey : C.navy, cursor: disabled ? "not-allowed" : "pointer", transition: "all .15s", whiteSpace: "nowrap", fontFamily: Fnt.syne }),
     // MODAL
     modalBg: { position: "fixed", inset: 0, zIndex: 500, background: "rgba(0,0,0,.7)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 },
-    modal: { background: T.navyL, border: `1.5px solid ${T.borderT}`, borderRadius: 12, width: "100%", maxWidth: 580, maxHeight: "90vh", display: "flex", flexDirection: "column" },
-    modalHdr: { background: T.navyM, borderBottom: `1.5px solid ${T.border}`, padding: "14px 52px 14px 18px", position: "relative", borderRadius: "12px 12px 0 0", flexShrink: 0 },
-    modalName: { fontFamily: F, fontSize: 15, fontWeight: 700, color: T.teal, lineHeight: 1.3 },
+    modal: { background: C.navyCard, border: `1.5px solid ${C.tealBdr}`, borderRadius: 12, width: "100%", maxWidth: 580, maxHeight: "90vh", display: "flex", flexDirection: "column" },
+    modalHdr: { background: C.navyMid, borderBottom: `1.5px solid rgba(64,215,197,0.12)`, padding: "14px 52px 14px 18px", position: "relative", borderRadius: "12px 12px 0 0", flexShrink: 0 },
+    modalName: { fontFamily: Fnt.syne, fontSize: 15, fontWeight: 700, color: C.teal, lineHeight: 1.3 },
     modalIcbb: { fontSize: 10, color: T.grey, fontFamily: F, marginTop: 2 },
     modalClose: { position: "absolute", top: 14, right: 16, display: "flex", alignItems: "center", gap: 5, fontSize: 10, fontWeight: 700, fontFamily: F, color: T.grey, border: `1px solid rgba(168,189,208,.25)`, borderRadius: 5, padding: "4px 10px", cursor: "pointer", background: T.navyM, zIndex: 10 },
     modalBody: { overflowY: "auto", padding: 0, flex: 1 },
@@ -277,7 +280,7 @@ export default function S3() {
     msSource: { fontSize: 10, color: T.grey, fontFamily: F },
     outcomeRow: { display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: "5px 0", borderBottom: `1px solid rgba(30,64,96,.4)` },
     orLbl: { fontSize: 10, color: T.grey },
-    orVal: { fontFamily: F, fontSize: 12, fontWeight: 700, color: T.green },
+    orVal: { fontFamily: Fnt.mono, fontSize: 12, fontWeight: 700, color: C.green },
     codeLine: { background: "#000", border: `1px solid ${T.border}`, borderRadius: 5, padding: "8px 12px", fontFamily: F, fontSize: 10, color: T.teal, lineHeight: 1.7, marginTop: 6 },
     warnBanner: { background: "rgba(245,166,35,.07)", border: "1px solid rgba(245,166,35,.3)", borderRadius: 5, padding: "8px 12px", fontSize: 10, color: T.amber, lineHeight: 1.6, marginTop: 8 },
     errBanner: { background: "rgba(232,64,64,.07)", border: "1px solid rgba(232,64,64,.3)", borderRadius: 5, padding: "8px 12px", fontSize: 10, color: T.red, lineHeight: 1.6, marginTop: 8 },
@@ -285,13 +288,13 @@ export default function S3() {
     mfCost: { fontSize: 10, color: T.grey },
     mfBtn: (isSel) => ({ marginLeft: "auto", fontSize: 11, fontWeight: 700, fontFamily: F, padding: "7px 20px", borderRadius: 6, border: isSel ? `1.5px solid ${T.red}` : "none", cursor: "pointer", transition: "all .12s", background: isSel ? "rgba(232,64,64,.15)" : T.green, color: isSel ? T.red : T.navy }),
     // PROTOCOL PANEL
-    protoPanel: (open) => ({ display: open ? "block" : "none", borderTop: `2px solid ${T.teal}`, background: T.navyM, padding: "20px 24px" }),
+    protoPanel: (open) => ({ display: open ? "block" : "none", borderTop: `2px solid ${C.teal}`, background: C.navyMid, padding: "20px 24px" }),
     protoGrid: { display: "grid", gridTemplateColumns: "1fr 280px", gap: 20 },
     protoTable: { width: "100%", borderCollapse: "collapse", fontSize: 11 },
     protoTh: { fontSize: 9, fontWeight: 700, color: T.grey, textTransform: "uppercase", letterSpacing: ".04em", padding: "6px 10px", textAlign: "left", borderBottom: `1px solid ${T.border}`, background: "rgba(0,0,0,.3)" },
     protoTd: { padding: "6px 10px", borderBottom: "1px solid rgba(30,64,96,.3)", color: T.greyL },
     outflowCard: { background: "rgba(0,0,0,.3)", border: `1.5px solid ${T.border}`, borderRadius: 8, padding: 14 },
-    ocTitle: { fontSize: 10, fontWeight: 700, color: T.teal, textTransform: "uppercase", letterSpacing: ".06em", marginBottom: 10 },
+    ocTitle: { fontFamily: Fnt.syne, fontSize: 10, fontWeight: 700, color: C.teal, textTransform: "uppercase", letterSpacing: ".06em", marginBottom: 10 },
     ocRow: { display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: "5px 0", borderBottom: "1px solid rgba(30,64,96,.25)" },
     ocLbl: { fontSize: 10, color: T.grey },
     ocVal: { fontFamily: F, fontSize: 11, fontWeight: 700, color: T.teal },
@@ -349,18 +352,37 @@ export default function S3() {
   // ═══════════════════════════════════════════
   return (
     <>
-      {/* ── HEADER (white, logo on top — above entire page) ── */}
-      <header style={s.header}>
-        <div style={s.logo}>
-          <div style={s.logoMark}>CFI</div>
-          <div style={s.logoText}>CFI <span style={s.logoSpan}>Deep Tech</span></div>
+      {/* ── S0-STYLE HEADER ── */}
+      <div style={{ background:C.navyMid, display:'flex', alignItems:'center', padding:'0 28px', height:80, gap:18, position:'sticky', top:0, zIndex:100 }}>
+        <div style={{ display:'flex', alignItems:'center', flexShrink:0, maxWidth:340 }}>
+          <div>
+            <div style={{ display:'flex', alignItems:'baseline' }}>
+              <span style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:26, color:'#FFF', letterSpacing:'0.02em', whiteSpace:'nowrap' }}>CFI</span>
+              <span style={{ fontFamily:Fnt.brand, fontSize:22, color:'rgba(255,255,255,0.25)', margin:'0 8px' }}>·</span>
+              <span style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:20, color:C.teal, letterSpacing:'0.10em', whiteSpace:'nowrap' }}>DEEP TECH</span>
+            </div>
+            <div style={{ fontSize:11, color:C.teal, marginTop:4, fontFamily:Fnt.dm, whiteSpace:'nowrap' }}>Soil Microbiome Engineering &amp; Biofertiliser Production for Closed‑Loop Nutrient Recycling</div>
+          </div>
         </div>
-        <nav style={s.stageNav}>
-          {["S0","S1","S2","S3","S4","S5","S6"].map((st) => (
-            <button key={st} style={s.stageBtn(st === "S3")}>{st}</button>
+        <div style={{ display:'flex', gap:4, marginLeft:'auto', alignItems:'center', flexShrink:0 }}>
+          {['S0','S1','S2','S3','S4','S5','S6','CAPEX','Σ'].map((st,i)=>(
+            <div key={st} style={{ background:i===3?C.teal:'rgba(168,189,208,0.09)', border:`1px solid ${i===3?C.teal:'rgba(168,189,208,0.18)'}`, borderRadius:4, padding:'3px 9px', fontFamily:Fnt.mono, fontSize:11, fontWeight:700, color:i===3?C.navy:C.grey, cursor:'pointer', whiteSpace:'nowrap' }}>{st}</div>
           ))}
-        </nav>
-      </header>
+        </div>
+      </div>
+
+      {/* ── TAB BAR ── */}
+      <div style={{ background:C.navyMid, borderBottom:'2px solid rgba(64,215,197,0.20)', display:'flex', justifyContent:'center', alignItems:'flex-end', gap:2, padding:'12px 24px 0' }}>
+        {['Site Setup','Pre-Processing','Pre-Treatment','Biologicals','BSF','Biofertiliser / Other','Emissions','Financials','Summary'].map((t,i)=>(
+          <div key={t} style={{ padding:'8px 18px', cursor:'pointer', borderRadius:'6px 6px 0 0', background:i===3?C.teal:'transparent', color:i===3?C.navy:C.teal, fontSize:12, fontWeight:700, fontFamily:Fnt.mono, border:`1px solid ${i===3?C.teal:'transparent'}`, borderBottom:'none', whiteSpace:'nowrap' }}>{t}</div>
+        ))}
+      </div>
+
+      {/* ── SUB-TAB ── */}
+      <div style={{ background:C.navyMid, borderBottom:'1px solid rgba(255,255,255,0.04)', padding:'0 28px', display:'flex', alignItems:'center', gap:12, height:44 }}>
+        <div style={{ background:C.teal, borderRadius:5, width:22, height:22, display:'flex', alignItems:'center', justifyContent:'center', fontFamily:Fnt.syne, fontWeight:800, fontSize:11, color:C.navy }}>S3</div>
+        <span style={{ fontSize:11, color:C.greyLt }}>Biological Inoculation · Organism Selection · Protocol Design · BSF Handoff Gate</span>
+      </div>
 
       <div style={s.page}>
 

@@ -2,8 +2,19 @@ import { useNavigate } from "react-router-dom";
 import { Download } from "lucide-react";
 import { toast } from "sonner";
 
-const F = "'DM Sans', sans-serif";
-const FH = "'EB Garamond', serif";
+const C = {
+  navy: '#060C14', navyMid: '#0A1628', navyCard: '#111E33', navyField: '#142030',
+  teal: '#40D7C5', tealDim: 'rgba(64,215,197,0.12)', tealBdr: 'rgba(64,215,197,0.60)',
+  amber: '#F5A623', amberDim: 'rgba(245,166,35,0.14)',
+  green: '#00A249', greenDim: 'rgba(0,162,73,0.13)',
+  red: '#E84040', redDim: 'rgba(232,64,64,0.13)',
+  grey: '#A8BDD0', greyLt: 'rgba(168,189,208,0.75)', white: '#E8F0FE',
+  bdrIdle: 'rgba(255,255,255,0.06)', bdrCalc: 'rgba(139,160,180,0.18)',
+};
+const Fnt = {
+  syne: "'Syne', sans-serif", dm: "'DM Sans', sans-serif",
+  mono: "'DM Mono', monospace", brand: "'EB Garamond', serif",
+};
 
 const navCards = [
   { title: "CapEx / OpEx / Facility", desc: "Building CAPEX $1.37M \u00b7 Equipment $398K \u00b7 OpEx $37,957/mo", route: "/s1-capex-opex", live: true },
@@ -20,8 +31,8 @@ const navCards = [
 ];
 
 const streams = [
-  { name: "EFB", color: "#40D7C5", fresh: "300 t/day", dm: "112 t/day", mc: "62.5%" },
-  { name: "OPDC", color: "#F5A623", fresh: "45 t/day", dm: "13.5 t/day", mc: "70%" },
+  { name: "EFB", color: C.teal, fresh: "300 t/day", dm: "112 t/day", mc: "62.5%" },
+  { name: "OPDC", color: C.amber, fresh: "45 t/day", dm: "13.5 t/day", mc: "70%" },
   { name: "POS", color: "#3B82F6", fresh: "30 t/day", dm: "6 t/day", mc: "82%" },
 ];
 
@@ -52,70 +63,62 @@ export default function S1Index() {
   const navigate = useNavigate();
 
   return (
-    <div style={{ fontFamily: F, color: "#111", minHeight: "100vh", background: "#F1F5F9" }}>
-      {/* ═══ PERSISTENT CFI GLOBAL HEADER ═══ */}
-      <div style={{
-        height: 83, background: "#0A1628",
-        borderBottom: "1px solid rgba(51, 212, 188, 0.15)",
-        display: "flex", alignItems: "center", padding: "0 32px",
-        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-      }}>
-        <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
-          <span style={{ fontFamily: FH, fontSize: 26, fontWeight: 700, color: "#FFFFFF", letterSpacing: "0.06em" }}>CFI</span>
-          <span style={{ fontFamily: FH, fontSize: 26, fontWeight: 700, color: "#33D4BC", letterSpacing: "0.06em", marginLeft: 10 }}>Deep Tech</span>
+    <div style={{ fontFamily: Fnt.dm, color: C.white, minHeight: "100vh", background: C.navy }}>
+      {/* ═══ S0 GLOBAL HEADER ═══ */}
+      <div style={{ background:C.navyMid, display:'flex', alignItems:'center', padding:'0 28px', height:80, gap:18, position:'sticky', top:0, zIndex:100 }}>
+        <div style={{ display:'flex', alignItems:'center', flexShrink:0, maxWidth:340 }}>
+          <div>
+            <div style={{ display:'flex', alignItems:'baseline' }}>
+              <span style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:26, color:'#FFF', letterSpacing:'0.02em' }}>CFI</span>
+              <span style={{ fontFamily:Fnt.brand, fontSize:22, color:'rgba(255,255,255,0.25)', margin:'0 8px' }}>·</span>
+              <span style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:20, color:C.teal, letterSpacing:'0.10em' }}>DEEP TECH</span>
+            </div>
+            <div style={{ fontSize:11, color:C.teal, marginTop:4, fontFamily:Fnt.dm }}>Soil Microbiome Engineering &amp; Biofertiliser Production for Closed‑Loop Nutrient Recycling</div>
+          </div>
         </div>
-        <div style={{ width: 3, height: 44, background: "#33D4BC", margin: "0 20px 0 14px" }} />
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 4, height: 44 }}>
-          <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, lineHeight: 1.3, whiteSpace: "nowrap", display: "flex" }}>
-            <span style={{ color: "#FFFFFF", minWidth: 150, display: "inline-block" }}>Precision Engineering</span>
-            <span style={{ color: "#33D4BC" }}>Circular Nutrient Recovery in Agricultural Systems</span>
-          </div>
-          <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, lineHeight: 1.3, whiteSpace: "nowrap", display: "flex" }}>
-            <span style={{ color: "#FFFFFF", minWidth: 150, display: "inline-block" }}>Applied Biology</span>
-            <span style={{ color: "#33D4BC" }}>Rebalancing Soil&apos;s Microbiome &amp; Reducing Synthetic Fertiliser Use</span>
-          </div>
+        <div style={{ display:'flex', gap:4, marginLeft:'auto', alignItems:'center', flexShrink:0 }}>
+          {['S0','S1','S2','S3','S4','S5','S6','CAPEX','\u03A3'].map((s,i)=>(
+            <div key={s} style={{ background:i===1?C.teal:'rgba(168,189,208,0.09)', border:`1px solid ${i===1?C.teal:'rgba(168,189,208,0.18)'}`, borderRadius:4, padding:'3px 9px', fontFamily:Fnt.mono, fontSize:11, fontWeight:700, color:i===1?C.navy:C.grey, cursor:'pointer' }}>{s}</div>
+          ))}
         </div>
       </div>
-
-      {/* Spacer */}
-      <div style={{ height: 83 }} />
 
       {/* ═══ PAGE CONTENT ═══ */}
       <div style={{ maxWidth: 1000, margin: "0 auto", padding: "24px 20px 60px" }}>
 
         {/* ── Breadcrumb ── */}
-        <div style={{ fontSize: 13, fontFamily: F, marginBottom: 20 }}>
-          <a href="/" style={{ color: "#64748B", textDecoration: "none" }}
-            onMouseEnter={e => e.currentTarget.style.color = "#00C9B1"}
-            onMouseLeave={e => e.currentTarget.style.color = "#64748B"}>CFI Platform</a>
-          <span style={{ color: "#94A3B8", margin: "0 8px" }}>›</span>
-          <span style={{ color: "#0B1422", fontWeight: 700 }}>S1 Pre-Processing</span>
+        <div style={{ fontSize: 13, fontFamily: Fnt.dm, marginBottom: 20 }}>
+          <a href="/" style={{ color: C.grey, textDecoration: "none" }}
+            onMouseEnter={e => e.currentTarget.style.color = C.teal}
+            onMouseLeave={e => e.currentTarget.style.color = C.grey}>CFI Platform</a>
+          <span style={{ color: 'rgba(168,189,208,0.4)', margin: "0 8px" }}>/</span>
+          <span style={{ color: C.white, fontWeight: 700 }}>S1 Pre-Processing</span>
         </div>
 
         {/* ── Page Title ── */}
-        <h1 style={{ fontFamily: F, fontSize: 28, fontWeight: 700, color: "#0B1422", margin: "0 0 12px" }}>
+        <h1 style={{ fontFamily: Fnt.syne, fontSize: 28, fontWeight: 700, color: C.white, margin: "0 0 12px" }}>
           S1 Pre-Processing
         </h1>
 
         {/* ── Subtitle Bar ── */}
         <div style={{
-          background: "#F1F5F9", borderRadius: 6, padding: "12px 20px",
+          background: C.navyCard, borderRadius: 6, padding: "12px 20px",
           display: "flex", justifyContent: "space-between", alignItems: "center",
           flexWrap: "wrap", gap: 8, marginBottom: 20,
-          border: "1px solid #E2E8F0",
+          border: `1px solid ${C.bdrIdle}`,
         }}>
-          <div style={{ fontFamily: F, fontSize: 14, fontWeight: 500, color: "#334155", display: "flex", flexWrap: "wrap", gap: 4 }}>
-            <span>Mill Size: <strong style={{ fontWeight: 700 }}>60 ton/hour</strong></span>
-            <span style={{ color: "#94A3B8" }}>·</span>
-            <span>Utilisation: <strong style={{ fontWeight: 700 }}>85%</strong></span>
-            <span style={{ color: "#94A3B8" }}>·</span>
-            <span>Operating: <strong style={{ fontWeight: 700 }}>20 hr/day · 30 days/mo</strong></span>
+          <div style={{ fontFamily: Fnt.dm, fontSize: 14, fontWeight: 500, color: C.greyLt, display: "flex", flexWrap: "wrap", gap: 4 }}>
+            <span>Mill Size: <strong style={{ fontWeight: 700, color: C.white }}>60 ton/hour</strong></span>
+            <span style={{ color: 'rgba(168,189,208,0.4)' }}>&middot;</span>
+            <span>Utilisation: <strong style={{ fontWeight: 700, color: C.white }}>85%</strong></span>
+            <span style={{ color: 'rgba(168,189,208,0.4)' }}>&middot;</span>
+            <span>Operating: <strong style={{ fontWeight: 700, color: C.white }}>20 hr/day &middot; 30 days/mo</strong></span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{ fontFamily: F, fontSize: 14, fontWeight: 400, color: "#64748B" }}>Bogor, West Java</span>
+            <span style={{ fontFamily: Fnt.dm, fontSize: 14, fontWeight: 400, color: C.grey }}>Bogor, West Java</span>
             <span style={{
-              fontFamily: F, fontSize: 11, fontWeight: 600, color: "#00C9B1",
-              background: "#ECFDF5", padding: "2px 8px", borderRadius: 4,
+              fontFamily: Fnt.mono, fontSize: 11, fontWeight: 600, color: C.teal,
+              background: C.tealDim, padding: "2px 8px", borderRadius: 4,
             }}>Reference Site</span>
           </div>
         </div>
@@ -124,10 +127,10 @@ export default function S1Index() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14, marginBottom: 28 }}>
           {streams.map(s => (
             <div key={s.name} style={{
-              background: "#fff", border: "1px solid #E2E8F0", borderRadius: 8, padding: 16,
+              background: C.navyCard, border: `1px solid ${C.bdrIdle}`, borderRadius: 8, padding: 16,
               borderLeft: `4px solid ${s.color}`,
             }}>
-              <div style={{ fontFamily: F, fontSize: 14, fontWeight: 700, color: "#0B1422", marginBottom: 10 }}>{s.name}</div>
+              <div style={{ fontFamily: Fnt.syne, fontSize: 14, fontWeight: 700, color: C.white, marginBottom: 10 }}>{s.name}</div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6 }}>
                 {[
                   ["DAILY FRESH", s.fresh],
@@ -135,8 +138,8 @@ export default function S1Index() {
                   ["MC", s.mc],
                 ].map(([label, val]) => (
                   <div key={label}>
-                    <div style={{ fontFamily: F, fontSize: 11, fontWeight: 500, color: "#94A3B8", textTransform: "uppercase", letterSpacing: ".04em" }}>{label}</div>
-                    <div style={{ fontFamily: F, fontSize: 13, fontWeight: 400, color: "#0B1422", marginTop: 2 }}>{val}</div>
+                    <div style={{ fontFamily: Fnt.dm, fontSize: 11, fontWeight: 500, color: C.grey, textTransform: "uppercase", letterSpacing: ".04em" }}>{label}</div>
+                    <div style={{ fontFamily: Fnt.mono, fontSize: 13, fontWeight: 400, color: C.white, marginTop: 2 }}>{val}</div>
                   </div>
                 ))}
               </div>
@@ -154,46 +157,46 @@ export default function S1Index() {
                 else toast("Coming soon", { duration: 2000 });
               }}
               style={{
-                background: "#fff", border: "1px solid #E2E8F0", borderRadius: 8, padding: 20,
+                background: C.navyCard, border: `1px solid ${C.bdrIdle}`, borderRadius: 8, padding: 20,
                 cursor: card.live ? "pointer" : "default",
-                opacity: card.live ? 1 : 0.7,
+                opacity: card.live ? 1 : 0.5,
                 display: "flex", justifyContent: "space-between", alignItems: "center",
                 transition: "border-color 0.15s, box-shadow 0.15s",
               }}
-              onMouseEnter={e => { if (card.live) { e.currentTarget.style.borderColor = "#00C9B1"; e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,201,177,0.1)"; } }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = "#E2E8F0"; e.currentTarget.style.boxShadow = "none"; }}
+              onMouseEnter={e => { if (card.live) { e.currentTarget.style.borderColor = C.tealBdr; e.currentTarget.style.boxShadow = `0 2px 12px ${C.tealDim}`; } }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = C.bdrIdle; e.currentTarget.style.boxShadow = "none"; }}
             >
               <div>
-                <div style={{ fontFamily: F, fontSize: 16, fontWeight: 700, color: "#0B1422" }}>{card.title}</div>
-                <div style={{ fontFamily: F, fontSize: 13, fontWeight: 400, color: "#64748B", marginTop: 4 }}>{card.desc}</div>
+                <div style={{ fontFamily: Fnt.syne, fontSize: 16, fontWeight: 700, color: C.white }}>{card.title}</div>
+                <div style={{ fontFamily: Fnt.dm, fontSize: 13, fontWeight: 400, color: C.grey, marginTop: 4 }}>{card.desc}</div>
               </div>
-              <span style={{ fontSize: 18, color: "#94A3B8", flexShrink: 0, marginLeft: 12 }}>›</span>
+              <span style={{ fontSize: 18, color: C.grey, flexShrink: 0, marginLeft: 12 }}>&rsaquo;</span>
             </div>
           ))}
         </div>
 
         {/* ═══ CANONICAL VALUES REFERENCE ═══ */}
-        <div style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: 8, padding: 20, marginBottom: 14 }}>
-          <div style={{ fontFamily: F, fontSize: 14, fontWeight: 700, color: "#0B1422", marginBottom: 12 }}>Canonical Values Reference</div>
+        <div style={{ background: C.navyCard, border: `1px solid ${C.bdrIdle}`, borderRadius: 8, padding: 20, marginBottom: 14 }}>
+          <div style={{ fontFamily: Fnt.syne, fontSize: 14, fontWeight: 700, color: C.white, marginBottom: 12 }}>Canonical Values Reference</div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 10 }}>
             {canonicalValues.map((cv, i) => (
-              <div key={i} style={{ border: "1px solid #F1F5F9", borderRadius: 4, padding: "8px 10px", background: "#FAFAFA" }}>
-                <div style={{ fontFamily: F, fontSize: 10, color: "#94A3B8" }}>{cv.label}</div>
-                <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, color: "#0B1422", marginTop: 2 }}>{cv.value}</div>
+              <div key={i} style={{ border: `1px solid ${C.bdrCalc}`, borderRadius: 4, padding: "8px 10px", background: C.navyField }}>
+                <div style={{ fontFamily: Fnt.dm, fontSize: 10, color: C.grey }}>{cv.label}</div>
+                <div style={{ fontFamily: Fnt.mono, fontSize: 12, fontWeight: 700, color: C.white, marginTop: 2 }}>{cv.value}</div>
               </div>
             ))}
           </div>
         </div>
 
         {/* ═══ RFQ PACK ═══ */}
-        <div style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: 8, padding: 20, marginBottom: 14 }}>
-          <div style={{ border: "1.5px solid rgba(51,212,188,0.3)", borderRadius: 6, padding: "20px 24px", background: "#f8fcfb" }}>
+        <div style={{ background: C.navyCard, border: `1px solid ${C.bdrIdle}`, borderRadius: 8, padding: 20, marginBottom: 14 }}>
+          <div style={{ border: `1.5px solid ${C.tealBdr}`, borderRadius: 6, padding: "20px 24px", background: C.navyField }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-              <Download size={18} color="#33D4BC" />
-              <div style={{ fontFamily: F, fontSize: 10, fontWeight: 700, color: "#33D4BC", textTransform: "uppercase", letterSpacing: "0.06em" }}>Engineering Specs</div>
+              <Download size={18} color={C.teal} />
+              <div style={{ fontFamily: Fnt.mono, fontSize: 10, fontWeight: 700, color: C.teal, textTransform: "uppercase", letterSpacing: "0.06em" }}>Engineering Specs</div>
             </div>
-            <div style={{ fontFamily: F, fontSize: 18, fontWeight: 700, color: "#0B1422", marginBottom: 6 }}>S1 Complete Engineering Specs — RFQ Pack</div>
-            <div style={{ fontFamily: F, fontSize: 12, color: "#64748B", lineHeight: 1.5, marginBottom: 16 }}>
+            <div style={{ fontFamily: Fnt.syne, fontSize: 18, fontWeight: 700, color: C.white, marginBottom: 6 }}>S1 Complete Engineering Specs — RFQ Pack</div>
+            <div style={{ fontFamily: Fnt.dm, fontSize: 12, color: C.grey, lineHeight: 1.5, marginBottom: 16 }}>
               22-page complete engineering documentation for all 3 processing lines (EFB, OPDC, POS). Ready for RFQ pack assembly and contractor bidding.
             </div>
             <div style={{ display: "flex", gap: 10 }}>
@@ -201,14 +204,14 @@ export default function S1Index() {
                 href="https://lcpbtnipkvrmuwllymfw.supabase.co/storage/v1/object/public/documents/CFI_S1_Engineering_Complete.pdf"
                 target="_blank" rel="noopener noreferrer"
                 style={{
-                  fontFamily: F, fontSize: 12, fontWeight: 700, padding: "8px 20px",
-                  background: "#33D4BC", color: "#0A1628", borderRadius: 4, textDecoration: "none",
+                  fontFamily: Fnt.mono, fontSize: 12, fontWeight: 700, padding: "8px 20px",
+                  background: C.teal, color: C.navy, borderRadius: 4, textDecoration: "none",
                   display: "inline-flex", alignItems: "center", gap: 6,
                 }}
                 onMouseEnter={e => e.currentTarget.style.opacity = 0.85}
                 onMouseLeave={e => e.currentTarget.style.opacity = 1}
               >
-                <Download size={14} /> View PDF →
+                <Download size={14} /> View PDF &rarr;
               </a>
               <a
                 href="https://lcpbtnipkvrmuwllymfw.supabase.co/storage/v1/object/public/documents/CFI_S1_Engineering_Complete.pdf"
@@ -219,9 +222,9 @@ export default function S1Index() {
                   if (w) { w.onload = () => { w.print(); }; }
                 }}
                 style={{
-                  fontFamily: F, fontSize: 12, fontWeight: 700, padding: "8px 20px",
-                  background: "transparent", color: "#33D4BC", borderRadius: 4, textDecoration: "none",
-                  border: "1.5px solid #33D4BC", display: "inline-flex", alignItems: "center", gap: 6,
+                  fontFamily: Fnt.mono, fontSize: 12, fontWeight: 700, padding: "8px 20px",
+                  background: "transparent", color: C.teal, borderRadius: 4, textDecoration: "none",
+                  border: `1.5px solid ${C.tealBdr}`, display: "inline-flex", alignItems: "center", gap: 6,
                 }}
                 onMouseEnter={e => e.currentTarget.style.opacity = 0.85}
                 onMouseLeave={e => e.currentTarget.style.opacity = 1}
@@ -233,11 +236,11 @@ export default function S1Index() {
         </div>
 
         {/* ═══ GUARDRAILS ═══ */}
-        <div style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: 8, padding: "16px 20px" }}>
-          <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, color: "#cc2222", marginBottom: 8 }}>9 Hard Guardrails</div>
+        <div style={{ background: C.navyCard, border: `1px solid ${C.redDim}`, borderRadius: 8, padding: "16px 20px" }}>
+          <div style={{ fontFamily: Fnt.syne, fontSize: 12, fontWeight: 700, color: C.red, marginBottom: 8 }}>9 Hard Guardrails</div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "4px 16px" }}>
             {guardrails.map((g, i) => (
-              <div key={i} style={{ fontFamily: F, fontSize: 10, color: "#8b0000", lineHeight: 1.6 }}>⚠ {g}</div>
+              <div key={i} style={{ fontFamily: Fnt.mono, fontSize: 10, color: C.red, lineHeight: 1.6 }}>{g}</div>
             ))}
           </div>
         </div>

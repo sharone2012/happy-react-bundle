@@ -572,27 +572,23 @@ export default function S1CapexOpex() {
       <style>{`@keyframes cfi-pulse { 0%{opacity:1} 50%{opacity:0.3} 100%{opacity:1} }`}</style>
 
       {/* ── GLOBAL HEADER ── */}
-      <div style={{
-        background: "#0A1628", height: 83, display: "flex", alignItems: "center", padding: "0 32px",
-        borderBottom: "1px solid rgba(51, 212, 188, 0.15)", position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-      }}>
-        <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
-          <span style={{ fontFamily: FH, fontSize: 26, fontWeight: 700, color: "#FFFFFF", letterSpacing: "0.06em" }}>CFI</span>
-          <span style={{ fontFamily: FH, fontSize: 26, fontWeight: 700, color: "#33D4BC", letterSpacing: "0.06em", marginLeft: 10 }}>Deep Tech</span>
+      <div style={{ background:'#0A1628', display:'flex', alignItems:'center', padding:'0 28px', height:80, gap:18, position:'sticky', top:0, zIndex:100 }}>
+        <div style={{ display:'flex', alignItems:'center', flexShrink:0, maxWidth:340 }}>
+          <div>
+            <div style={{ display:'flex', alignItems:'baseline' }}>
+              <span style={{ fontFamily:"'EB Garamond', serif", fontWeight:700, fontSize:26, color:'#FFF', letterSpacing:'0.02em' }}>CFI</span>
+              <span style={{ fontFamily:"'EB Garamond', serif", fontSize:22, color:'rgba(255,255,255,0.25)', margin:'0 8px' }}>·</span>
+              <span style={{ fontFamily:"'EB Garamond', serif", fontWeight:700, fontSize:20, color:'#40D7C5', letterSpacing:'0.10em' }}>DEEP TECH</span>
+            </div>
+            <div style={{ fontSize:11, color:'#40D7C5', marginTop:4, fontFamily:"'DM Sans', sans-serif" }}>Soil Microbiome Engineering &amp; Biofertiliser Production for Closed‑Loop Nutrient Recycling</div>
+          </div>
         </div>
-        <div style={{ width: 3, height: 44, background: "#33D4BC", margin: "0 20px 0 14px" }} />
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 4, height: 44 }}>
-          <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, lineHeight: 1.3, whiteSpace: "nowrap", display: "flex" }}>
-            <span style={{ color: "#FFFFFF", minWidth: 150, display: "inline-block" }}>Precision Engineering</span>
-            <span style={{ color: "#33D4BC" }}>Circular Nutrient Recovery in Agricultural Systems</span>
-          </div>
-          <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, lineHeight: 1.3, whiteSpace: "nowrap", display: "flex" }}>
-            <span style={{ color: "#FFFFFF", minWidth: 150, display: "inline-block" }}>Applied Biology</span>
-            <span style={{ color: "#33D4BC" }}>Rebalancing Soil&apos;s Microbiome &amp; Reducing Synthetic Fertiliser Use</span>
-          </div>
+        <div style={{ display:'flex', gap:4, marginLeft:'auto', alignItems:'center', flexShrink:0 }}>
+          {['S0','S1','S2','S3','S4','S5','S6','CAPEX','Σ'].map((s,i)=>(
+            <div key={s} style={{ background:i===1?'#40D7C5':'rgba(168,189,208,0.09)', border:`1px solid ${i===1?'#40D7C5':'rgba(168,189,208,0.18)'}`, borderRadius:4, padding:'3px 9px', fontFamily:"'DM Mono', monospace", fontSize:11, fontWeight:700, color:i===1?'#060C14':'#A8BDD0', cursor:'pointer' }}>{s}</div>
+          ))}
         </div>
       </div>
-      <div style={{ height: 83 }} />
 
       {/* ── Back to S1 Master ── */}
       <div style={{ background: C.s1, padding: "8px 20px", fontFamily: F, borderBottom: "1px solid rgba(30,107,140,0.15)" }}>
