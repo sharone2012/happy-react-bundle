@@ -500,7 +500,26 @@ export default function S1Opdc() {
             Monthly electricity: $6,651/mo · 72,742 kWh · PLN I-3 tariff IDR 1,444.70/kWh
           </div>
         </CollapsibleSection>
-      </div>
+        {/* 1-PAGER LINK */}
+        <div style={{ marginTop: 24, display: 'flex', justifyContent: 'flex-end' }}>
+          <a
+            href="/CFI_S1_OPDC_Processing_Line_1Pager.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              padding: '10px 22px', borderRadius: 6,
+              border: `1.5px solid ${ACCENT}`,
+              background: 'transparent', color: ACCENT,
+              fontFamily: Fnt.dm, fontSize: 13, fontWeight: 700,
+              textDecoration: 'none', letterSpacing: '.02em',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = ACCENT; e.currentTarget.style.color = C.navy; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = ACCENT; }}
+          >
+            📄 View OPDC Processing Line 1-Pager
+          </a>
+        </div>      </div>
     </>
   );
 }

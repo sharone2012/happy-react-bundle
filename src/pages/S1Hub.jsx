@@ -245,6 +245,27 @@ export default function S1Hub() {
             </div>
           ))}
         </div>
+
+        {/* 1-PAGER LINK */}
+        <div style={{ marginTop: 28, display: 'flex', justifyContent: 'flex-end' }}>
+          <a
+            href="/CFI_S0_Residue_Selector.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              padding: '10px 22px', borderRadius: 6,
+              border: `1.5px solid ${C.teal}`,
+              background: 'transparent', color: C.teal,
+              fontFamily: Fnt.dm, fontSize: 13, fontWeight: 700,
+              textDecoration: 'none', letterSpacing: '.02em',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = C.teal; e.currentTarget.style.color = C.navy; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = C.teal; }}
+          >
+            📄 View S0 Residue Selector 1-Pager
+          </a>
+        </div>
       </div>
     </>
   );

@@ -541,6 +541,27 @@ export default function S1Efb() {
             </div>
           </div>
         </CollapsibleSection>
+
+        {/* 1-PAGER LINK */}
+        <div style={{ marginTop: 24, display: 'flex', justifyContent: 'flex-end' }}>
+          <a
+            href="/CFI_S1_EFB_Processing_Line_1Pager.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              padding: '10px 22px', borderRadius: 6,
+              border: `1.5px solid ${ACCENT}`,
+              background: 'transparent', color: ACCENT,
+              fontFamily: Fnt.dm, fontSize: 13, fontWeight: 700,
+              textDecoration: 'none', letterSpacing: '.02em',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = ACCENT; e.currentTarget.style.color = C.navy; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = ACCENT; }}
+          >
+            📄 View EFB Processing Line 1-Pager
+          </a>
+        </div>
       </div>
     </>
   );

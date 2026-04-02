@@ -120,6 +120,27 @@ export default function S0ResidueSelector() {
         ))}
       </div>
 
+      {/* 1-PAGER LINK */}
+      <div style={{ marginTop: 32, display: 'flex', justifyContent: 'center' }}>
+        <a
+          href="/CFI_S0_Residue_Selector.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8,
+            padding: '10px 24px', borderRadius: 6,
+            border: '1.5px solid #40D7C5',
+            background: 'transparent', color: '#40D7C5',
+            fontFamily: F, fontSize: 13, fontWeight: 700,
+            textDecoration: 'none', letterSpacing: '.02em',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.background = '#40D7C5'; e.currentTarget.style.color = '#0B1422'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#40D7C5'; }}
+        >
+          📄 View S0 Residue Selector 1-Pager
+        </a>
+      </div>
+
       {/* Footer */}
       <div style={{
         marginTop: 48, textAlign: "center", fontSize: 11, color: "#4A5A6A",
