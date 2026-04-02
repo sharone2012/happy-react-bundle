@@ -283,10 +283,10 @@ export function SubstrateFlowStrip({ stageLabel, inflows, outflows }) {
     rdWrapper: { display: 'grid', gridTemplateColumns: '64px repeat(4,1fr) 64px 66px repeat(4,1fr)', width: '100%', borderBottom: '2px solid rgba(64,215,197,0.22)', background: C.navy },
     rdLabel: (side) => ({ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', background: C.navyMid, borderRight: side === 'in' ? '1px solid rgba(64,215,197,0.25)' : 'none', borderLeft: side === 'out' ? '1px solid rgba(64,215,197,0.25)' : 'none', padding: '0 10px', width: 64, writingMode: 'vertical-rl', textOrientation: 'mixed', transform: 'rotate(180deg)', whiteSpace: 'nowrap', cursor: 'default' }),
     rdLabelWord: { fontFamily: Fnt.syne, fontSize: 16, fontWeight: 700, color: C.amber, letterSpacing: '.04em' },
-    rdField: (isActive) => ({ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '18px 8px', cursor: 'pointer', transition: 'background .15s', position: 'relative', background: isActive ? 'rgba(64,215,197,0.08)' : 'transparent' }),
-    rdTitle: { fontFamily: F, fontSize: 10, fontWeight: 700, color: C.grey, textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: 5, whiteSpace: 'nowrap' },
+    rdField: (isActive) => ({ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '9px 4px', cursor: 'pointer', transition: 'background .15s', position: 'relative', background: isActive ? 'rgba(64,215,197,0.08)' : 'transparent' }),
+    rdTitle: { fontFamily: F, fontSize: 10, fontWeight: 700, color: C.grey, textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: 3, whiteSpace: 'nowrap' },
     rdNum: (c) => ({ fontFamily: F, fontSize: 14, fontWeight: 700, color: c || C.amber, lineHeight: 1.2, whiteSpace: 'nowrap' }),
-    rdUnit: { fontFamily: F, fontSize: 10, color: C.grey, marginTop: 3, whiteSpace: 'nowrap' },
+    rdUnit: { fontFamily: F, fontSize: 10, color: C.grey, marginTop: 2, whiteSpace: 'nowrap' },
     rdArrow: { display: 'flex', alignItems: 'center', justifyContent: 'center', background: C.navy, fontFamily: F, fontSize: 99, fontWeight: 900, color: C.teal, lineHeight: 1 },
   };
 
@@ -314,9 +314,9 @@ export function SubstrateFlowStrip({ stageLabel, inflows, outflows }) {
           {item.npk.map((row) => (
             <div key={row.key} style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
               {isOut && <Arrow dir={row.dir} color={row.dir === 'eq' ? C.grey : C.green} />}
-              <span style={{ fontFamily: F, fontSize: 10, fontWeight: 700, color: C.teal, width: 10 }}>{row.key}</span>
-              <span style={{ fontFamily: F, fontSize: isOut ? 12 : 11, fontWeight: 700, color: isOut ? C.teal : (row.val === '—' ? C.border : C.amber) }}>{row.val}</span>
-              <span style={{ fontFamily: F, fontSize: 9, color: C.grey }}>% DM</span>
+              <span style={{ fontFamily: F, fontSize: 11, fontWeight: 700, color: C.teal, width: 12 }}>{row.key}</span>
+              <span style={{ fontFamily: F, fontSize: 14, fontWeight: 700, color: isOut ? C.teal : (row.val === '—' ? C.border : C.amber) }}>{row.val}</span>
+              <span style={{ fontFamily: F, fontSize: 10, color: C.grey }}>% DM</span>
             </div>
           ))}
         </div>
