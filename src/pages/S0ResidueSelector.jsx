@@ -10,7 +10,7 @@ const F = "'DM Sans', sans-serif";
  * 1-Pager (PL1P).
  *
  * Wiring rules:
- * - Each residue card links to: /s1-floor-[residue]
+ * - Each residue card links to: /s1/[residue]
  * - Adding a new residue = add a new card + create the floor plan page
  * - The residue name flows from S0 into S1 via sessionStorage
  *
@@ -26,21 +26,21 @@ const RESIDUES = [
     name: "Oil Palm Decanter Cake",
     form: "Paste form \u00b7 70\u201375% MC",
     specs: "10 machines \u00b7 5 t/h \u00b7 500mm belt\nBuilding: 18m \u00d7 36m \u00d7 10m\nInstalled: ~206 kW\nClass A: Screw press MC \u2265 40%\nGuardrails: noise zone, flex mount, 24hr dwell",
-    route: "/s1-floor-opdc",
+    route: "/s1/opdc",
   },
   {
     code: "EFB",
     name: "Empty Fruit Bunch",
     form: "Fibre form \u00b7 65\u201370% MC",
     specs: "10 machines \u00b7 8 t/h \u00b7 600mm belt\nBuilding: 18m \u00d7 40m \u00d7 12m\nInstalled: ~212 kW\nClass A: Screw press MC \u2265 45%\nGuardrails: noise zone, flex mount, 24hr dwell",
-    route: "/s1-floor-efb",
+    route: "/s1/efb",
   },
   {
     code: "POS",
     name: "Palm Oil Sludge",
     form: "Liquid/semi form \u00b7 80\u201385% MC",
     specs: "10 machines \u00b7 6 m\u00b3/h liquid in\nBuilding: 12m \u00d7 30m \u00d7 8m\nInstalled: ~113 kW\nClass A: Decanter centrifuge MC \u2265 35%\nGuardrails: flex mount, lime dosing, 24hr dwell",
-    route: "/s1-floor-pos",
+    route: "/s1/pos",
   },
 ];
 
