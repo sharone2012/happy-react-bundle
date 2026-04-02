@@ -1,22 +1,37 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import S1SpecPanel from "../components/S1SpecPanel";
 
-const F = "'DM Sans', sans-serif";
-const FH = "'EB Garamond', serif";
+const C = {
+  navy: '#060C14', navyMid: '#0A1628', navyCard: '#111E33', navyField: '#142030',
+  teal: '#40D7C5', tealDim: 'rgba(64,215,197,0.12)', tealBdr: 'rgba(64,215,197,0.60)',
+  amber: '#F5A623', amberDim: 'rgba(245,166,35,0.14)',
+  green: '#00A249', greenDim: 'rgba(0,162,73,0.13)',
+  red: '#E84040', redDim: 'rgba(232,64,64,0.13)',
+  grey: '#A8BDD0', greyLt: 'rgba(168,189,208,0.75)', white: '#E8F0FE',
+  bdrIdle: 'rgba(255,255,255,0.06)', bdrCalc: 'rgba(139,160,180,0.18)',
+};
+const Fnt = {
+  syne: "'Syne', sans-serif", dm: "'DM Sans', sans-serif",
+  mono: "'DM Mono', monospace", brand: "'EB Garamond', serif",
+};
+
+const F = Fnt.dm;
+const FH = Fnt.brand;
 
 function Pre({ children, className, style = {} }) {
   const classStyles = {
-    side: { color: "#999" },
-    noise: { background: "rgba(204,34,34,.05)", color: "#cc2222" },
-    classA: { background: "rgba(204,34,34,.07)", color: "#8b0000", border: "none" },
-    "classA-sub": { background: "rgba(204,34,34,.07)", color: "#cc2222" },
-    "gate-amber": { background: "rgba(200,134,10,.07)", color: "#7a4800" },
-    "gate-red": { background: "rgba(204,34,34,.06)", color: "#8b0000" },
-    final: { background: "#2A1800", color: "#F5A623" },
+    side: { color: "rgba(168,189,208,0.5)" },
+    noise: { background: C.redDim, color: C.red },
+    classA: { background: C.redDim, color: C.red, border: "none" },
+    "classA-sub": { background: C.redDim, color: "#FF6B6B" },
+    "gate-amber": { background: C.amberDim, color: C.amber },
+    "gate-red": { background: C.redDim, color: C.red },
+    final: { background: C.navyMid, color: C.amber },
   };
   return (
     <pre style={{
-      fontFamily: F, fontSize: 11, lineHeight: 1.7, color: "#111",
+      fontFamily: F, fontSize: 11, lineHeight: 1.7, color: C.amber,
       margin: 0, padding: 0, background: "none", whiteSpace: "pre",
       ...(className ? classStyles[className] || {} : {}), ...style,
     }}>{children}</pre>
@@ -24,53 +39,47 @@ function Pre({ children, className, style = {} }) {
 }
 
 export default function S1OpdcAscii() {
+  const navigate = useNavigate();
   return (
-    <div style={{ background: "#f0f0f0", fontFamily: F, minHeight: "100vh" }}>
-      {/* ═══ PERSISTENT CFI GLOBAL HEADER ═══ */}
-      <div style={{
-        height: 83, background: "#0A1628",
-        borderBottom: "1px solid rgba(51, 212, 188, 0.15)",
-        display: "flex", alignItems: "center", padding: "0 32px",
-        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-      }}>
-        <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
-          <span style={{ fontFamily: FH, fontSize: 26, fontWeight: 700, color: "#FFFFFF", letterSpacing: "0.06em" }}>CFI</span>
-          <span style={{ fontFamily: FH, fontSize: 26, fontWeight: 700, color: "#33D4BC", letterSpacing: "0.06em", marginLeft: 10 }}>Deep Tech</span>
+    <div style={{ background: C.navy, fontFamily: F, minHeight: "100vh" }}>
+      {/* ═══ S0 GLOBAL HEADER (S1 highlighted) ═══ */}
+      <div style={{ background: C.navyMid, display:'flex', alignItems:'center', padding:'0 28px', height:80, gap:18, position:'sticky', top:0, zIndex:100 }}>
+        <div style={{ display:'flex', alignItems:'center', flexShrink:0, maxWidth:340 }}>
+          <div>
+            <div style={{ display:'flex', alignItems:'baseline' }}>
+              <span style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:26, color:'#FFF', letterSpacing:'0.02em' }}>CFI</span>
+              <span style={{ fontFamily:Fnt.brand, fontSize:22, color:'rgba(255,255,255,0.25)', margin:'0 8px' }}>·</span>
+              <span style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:20, color:C.teal, letterSpacing:'0.10em' }}>DEEP TECH</span>
+            </div>
+            <div style={{ fontSize:11, color:C.teal, marginTop:4, fontFamily:Fnt.dm }}>Soil Microbiome Engineering &amp; Biofertiliser Production for Closed‑Loop Nutrient Recycling</div>
+          </div>
         </div>
-        <div style={{ width: 3, height: 44, background: "#33D4BC", margin: "0 20px 0 14px" }} />
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 4, height: 44 }}>
-          <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, lineHeight: 1.3, whiteSpace: "nowrap", display: "flex" }}>
-            <span style={{ color: "#FFFFFF", minWidth: 150, display: "inline-block" }}>Precision Engineering</span>
-            <span style={{ color: "#33D4BC" }}>Circular Nutrient Recovery in Agricultural Systems</span>
-          </div>
-          <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, lineHeight: 1.3, whiteSpace: "nowrap", display: "flex" }}>
-            <span style={{ color: "#FFFFFF", minWidth: 150, display: "inline-block" }}>Applied Biology</span>
-            <span style={{ color: "#33D4BC" }}>Rebalancing Soil&apos;s Microbiome &amp; Reducing Synthetic Fertiliser Use</span>
-          </div>
+        <div style={{ display:'flex', gap:4, marginLeft:'auto', alignItems:'center', flexShrink:0 }}>
+          {['S0','S1','S2','S3','S4','S5','S6','CAPEX','\u03A3'].map((s,i)=>(
+            <div key={s} style={{ background:i===1?C.teal:'rgba(168,189,208,0.09)', border:`1px solid ${i===1?C.teal:'rgba(168,189,208,0.18)'}`, borderRadius:4, padding:'3px 9px', fontFamily:Fnt.mono, fontSize:11, fontWeight:700, color:i===1?C.navy:C.grey, cursor:'pointer' }}>{s}</div>
+          ))}
         </div>
       </div>
 
-      {/* Spacer */}
-      <div style={{ height: 83 }} />
-
       {/* ── Breadcrumb + Back ── */}
-      <div style={{ background: "#060C14", padding: "8px 32px", fontFamily: F }}>
+      <div style={{ background: C.navy, padding: "8px 32px", fontFamily: F, borderBottom: `1px solid ${C.bdrIdle}` }}>
         <div style={{ fontSize: 12, fontFamily: F, marginBottom: 4 }}>
-          <a href="/" style={{ color: "#8BA0B4", textDecoration: "none" }}>CFI Platform</a>
-          <span style={{ color: "#3a4a5a", margin: "0 6px" }}>›</span>
-          <a href="/s1-capex-opex" style={{ color: "#8BA0B4", textDecoration: "none" }}>S1 Pre-Processing</a>
-          <span style={{ color: "#3a4a5a", margin: "0 6px" }}>›</span>
-          <span style={{ color: "#fff", fontWeight: 700 }}>OPDC ASCII Flow</span>
+          <a href="/" style={{ color: C.grey, textDecoration: "none" }}>CFI Platform</a>
+          <span style={{ color: "rgba(168,189,208,0.3)", margin: "0 6px" }}>&rsaquo;</span>
+          <a href="/s1-capex-opex" style={{ color: C.grey, textDecoration: "none" }}>S1 Pre-Processing</a>
+          <span style={{ color: "rgba(168,189,208,0.3)", margin: "0 6px" }}>&rsaquo;</span>
+          <span style={{ color: C.white, fontWeight: 700 }}>OPDC ASCII Flow</span>
         </div>
-        <a href="/s1-capex-opex" style={{ color: "#00C9B1", fontSize: 14, fontWeight: 500, textDecoration: "none", fontFamily: F }} onMouseEnter={e => e.currentTarget.style.opacity = 0.7} onMouseLeave={e => e.currentTarget.style.opacity = 1}>← Back to CapEx / OpEx</a>
+        <a href="/s1-capex-opex" style={{ color: C.teal, fontSize: 14, fontWeight: 500, textDecoration: "none", fontFamily: F }} onMouseEnter={e => e.currentTarget.style.opacity = 0.7} onMouseLeave={e => e.currentTarget.style.opacity = 1}>&larr; Back to CapEx / OpEx</a>
       </div>
 
       <div style={{ display: "flex", justifyContent: "center", padding: "24px 0" }}>
-      <div style={{ background: "#fff", border: "3px solid #111", width: 1000 }}>
+      <div style={{ background: C.navyCard, border: `1px solid rgba(245,166,35,0.5)`, borderRadius: 6, width: 1000 }}>
         {/* topbar */}
         <div style={{
-          background: "#2A1800", color: "#F5A623", padding: "8px 12px", fontSize: 10,
+          background: C.navyMid, color: C.amber, padding: "8px 12px", fontSize: 10,
           display: "flex", justifyContent: "space-between", fontFamily: F,
+          borderBottom: `1px solid rgba(245,166,35,0.5)`, borderRadius: "6px 6px 0 0",
         }}>
           <span>CFI S1B — OPDC LINE · ASCII PROCESS FLOW</span>
           <span>60 TPH FFB Mill · 5 t/h · 500mm belt · Bogor, West Java · March 2026 · CFI-S1-OPDC-ASCII-001 Rev 01</span>
@@ -79,8 +88,8 @@ export default function S1OpdcAscii() {
         <div style={{ display: "flex" }}>
           {/* elevation axis */}
           <div style={{
-            width: 76, flexShrink: 0, borderRight: "1px solid #ddd",
-            padding: "0 8px 0 4px", fontSize: 9, color: "#888", textAlign: "right",
+            width: 76, flexShrink: 0, borderRight: `1px solid ${C.bdrCalc}`,
+            padding: "0 8px 0 4px", fontSize: 9, color: C.grey, textAlign: "right",
             fontFamily: F, lineHeight: 1.7,
           }}>
             <div style={{ paddingTop: 68 }}>+1.0m</div>
@@ -131,7 +140,7 @@ export default function S1OpdcAscii() {
   ║`}</Pre>
 <Pre className="classA-sub">{`  ║  [CLASS A GATE]  MC floor ≥ 40% LOCKED · Math.max(40, reading) · NON-NEGOTIABLE  ║
   ║  Pore damage above 40% MC kills BSF colonisation — cannot recover downstream    ║`}</Pre>
-<Pre className="side" style={{ background: "rgba(204,34,34,.07)" }}>{`  ║  Filtrate ────────────────────────────────────────────────────────────────────────▶ POME pond ONLY · never to substrate`}</Pre>
+<Pre className="side" style={{ background: C.redDim }}>{`  ║  Filtrate ────────────────────────────────────────────────────────────────────────▶ POME pond ONLY · never to substrate`}</Pre>
 <Pre className="classA">{`  ╚═════════════════════════════╦═════════════════════════════════════════════════════╝
                                 ║  OB-03 · 8m level belt · 3.0kW
                                 ▼`}</Pre>
@@ -183,9 +192,9 @@ export default function S1OpdcAscii() {
   │  SPRING ISOLATION ONLY — never rigid-anchor to slab                               │
   │  IN : ≤35% MC  ·  5 t/h derated                                                  │
   │  OUT: target D90 ≤ 2mm                                                             │`}</Pre>
-<pre style={{ fontFamily: F, fontSize: 11, lineHeight: 1.7, color: "#111", margin: 0, background: "rgba(204,34,34,.06)", whiteSpace: "pre" }}>{`                 │ PASS ≤ 2mm              │ OVERSIZE > 2mm
+<pre style={{ fontFamily: F, fontSize: 11, lineHeight: 1.7, color: C.red, margin: 0, background: C.redDim, whiteSpace: "pre" }}>{`                 │ PASS ≤ 2mm              │ OVERSIZE > 2mm
                  │ → vibrating screen      │ return conveyor`}</pre>
-<Pre className="side" style={{ background: "rgba(204,34,34,.06)" }}>{`                 │                         └────────────────────────────────────────────▶ ↩ return to OHM-01 (re-mill)`}</Pre>
+<Pre className="side" style={{ background: C.redDim }}>{`                 │                         └────────────────────────────────────────────▶ ↩ return to OHM-01 (re-mill)`}</Pre>
 <Pre className="gate-red">{`  └─────────────────────────────┬─────────────────────────────────────────────────────┘
                                 │
                                 ▼`}</Pre>
@@ -217,18 +226,18 @@ export default function S1OpdcAscii() {
 
             {/* legend */}
             <div style={{
-              marginTop: 14, borderTop: "1px solid #ddd", paddingTop: 10,
-              fontSize: 10, color: "#666", lineHeight: 1.9, fontFamily: F,
+              marginTop: 14, borderTop: `1px solid ${C.bdrCalc}`, paddingTop: 10,
+              fontSize: 10, color: C.grey, lineHeight: 1.9, fontFamily: F,
             }}>
-              <strong>Legend</strong><br />
+              <strong style={{ color: C.white }}>Legend</strong><br />
               ┌───┐  Process unit / vessel<br />
-              ╔═══╗  Critical CLASS A gate — hard limit, non-negotiable (double-border red)<br />
-              ═════  S2 discharge / final handoff (amber on dark bg)<br />
+              <span style={{ color: C.red }}>╔═══╗  Critical CLASS A gate — hard limit, non-negotiable (double-border red)</span><br />
+              <span style={{ color: C.amber }}>═════  S2 discharge / final handoff (amber on dark bg)</span><br />
               ─────  Primary OPDC solid flow path · 500mm belt<br />
-              <span style={{ color: "#999" }}>──▶  Side stream — filtrate to POME pond · metal to waste skip · oversize return</span><br />
-              <span style={{ color: "#cc2222" }}>░░░  Noise zone boundary — 82+ dBA — PPE required</span><br />
-              <span style={{ color: "#7a4800" }}>[AMBER GATE]  MC ≤ 35% target / 24hr dwell check</span><br />
-              <span style={{ color: "#8b0000" }}>[CLASS A]  MC ≥ 40% LOCKED — non-negotiable hard limit</span>
+              <span style={{ color: "rgba(168,189,208,0.5)" }}>──▶  Side stream — filtrate to POME pond · metal to waste skip · oversize return</span><br />
+              <span style={{ color: C.red }}>░░░  Noise zone boundary — 82+ dBA — PPE required</span><br />
+              <span style={{ color: C.amber }}>[AMBER GATE]  MC ≤ 35% target / 24hr dwell check</span><br />
+              <span style={{ color: C.red }}>[CLASS A]  MC ≥ 40% LOCKED — non-negotiable hard limit</span>
             </div>
           </div>
         </div>
