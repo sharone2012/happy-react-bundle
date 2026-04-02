@@ -50,16 +50,99 @@ const EQUIPMENT = [
   { code: 'BIN-OPDC-301', name: 'Buffer Tank 15m\u00b3', tph: '0.56 tph', mcIn: '65%', mcOut: '65%', elev: '3m', kw: '0 kW', cost: '\u2014', supplier: '\u2014' },
 ];
 
-// ── FLOOR PLAN NODES (8 nodes) ──
+// ── FLOOR PLAN NODES (5 nodes — from HTML 1-pager) ──
 const FLOOR_NODES = [
-  { id: 1, tag: "POS-PIT-01", name: "Sludge Receiver Hopper", specs: [["Type", "At-grade hopper (not in-ground)"], ["Volume", "15 m\u00b3"], ["Dimensions", "3.5m L \u00d7 2.5m W \u00d7 2.0m H \u00b7 lip EL +0.8\u20131.0m"], ["Material", "Reinforced concrete C30 \u00b7 epoxy-coated (oil-resistant)"], ["Walls", "60\u00b0 sloped (anti-bridging)"], ["Drainage", "150mm bottom valve \u2192 leachate/POME system"], ["Inputs", "Gravity feed \u00b7 truck tip \u00b7 bed ramps to EL +1.2m"]], footer: "Receives mill decanter discharge" },
-  { id: 2, tag: "PMP-POS-01", name: "Progressive Cavity Pump", specs: [["Type", "Progressive cavity pump"], ["Power", "0.75 kW"], ["Pipe", "DN100"], ["Drive", "VFD controlled"]], footer: "Pipe to sludge buffer tank" },
-  { id: 3, tag: "T-SLD-101", name: "Sludge Buffer Tank", specs: [["Type", "Agitated buffer tank \u00b7 sealed dome"], ["Volume", "5\u20138 m\u00b3 working"], ["Material", "SS304 stainless steel"], ["Geometry", "\u00d82.2m \u00d7 1.8\u20132.2m"], ["Agitator", "3.7 kW \u00b7 top-entry"], ["Vent", "Sealed dome \u2192 biofilter (odour control)"], ["Instruments", "Temp \u00b7 pH \u00b7 Fe meter"]], footer: "Homogenises sludge before screening \u00b7 POS is high-lipid acid-forming" },
-  { id: 4, tag: "SCR-POS-01", name: "Rotary Drum Screen", specs: [["Type", "Rotary drum screen"], ["Power", "1.5 kW"], ["Material", "SS316L drum"], ["Aperture", "2 mm"], ["Throughput", "1.5 t/h"], ["Rejects", "Fibre + shell \u2192 EFB composting line"]], footer: "ICP-OES Fe gate checkpoint \u2014 protocol CFI-LAB-POME-001", gate: { label: "ICP-OES Fe GATE", bg: "rgba(59,130,246,.1)", color: "#3B82F6" } },
-  { id: 5, tag: "DCN-POS-01", name: "Decanter Centrifuge", specs: [["Type", "3-phase decanter centrifuge"], ["Power", "11 kW"], ["Bowl", "SS316L \u00b7 \u00d8500mm"], ["Throughput", "1.5 t/h"], ["MC In", "82%"], ["MC Out", "65%"], ["Centrate", "\u2192 POME pond \u00b7 NEVER to substrate"], ["Supplier", "Alfa Laval preferred"]], footer: "ICP-OES Fe test determines S2 inclusion rate \u00b7 Protocol CFI-LAB-POME-001", gate: { label: "ICP-OES Fe GATE", bg: "rgba(59,130,246,.1)", color: "#3B82F6" } },
-  { id: 6, tag: "MIX-POS-01", name: "Conditioning Mixer", specs: [["Type", "SS304 paddle mixer"], ["Power", "2.2 kW"], ["Batch size", "500L"], ["CaCO\u2083 dosing", "Based on Fe gate result"], ["pH target", "Raise from 4.4 \u2192 5.5\u20136.0"], ["Residence", "15\u201320 min per batch"]], footer: "CaCO\u2083 dose: Fe <3000 \u2192 20% w/w \u00b7 Fe 3000-5000 \u2192 10-15% \u00b7 Fe 5000-8000 \u2192 5-10% \u00b7 Fe >8000 \u2192 review" },
-  { id: 7, tag: "FP-POS-01", name: "Chamber Filter Press", specs: [["Type", "Chamber filter press"], ["Power", "15 kW hydraulic"], ["Plates", "630mm \u00d7 630mm \u00b7 25 chambers"], ["MC reduction", "82% \u2192 65\u201370%"], ["Cycle", "45\u201360 min per batch"], ["Filtrate", "\u2192 POME system"]], footer: "Dewatered POS cake to S2 conditioning" },
-  { id: 8, tag: "BUF-POS-01", name: "Buffer Holding Tank", specs: [["Type", "HDPE / SS316L tank"], ["Volume", "5 m\u00b3"], ["Agitator", "1.1 kW"], ["Inputs", "Decanted/filtered cake @ 65% MC"], ["Instruments", "Temp \u00b7 pH \u00b7 Fe meter"]], footer: "Fe-gated inclusion \u2014 metered flow to S2 via PMP-POS-02 transfer pump 0.75kW DN80" },
+  {
+    id: 1,
+    tag: 'POS-PIT-01',
+    name: 'Sludge Receiver Hopper',
+    imgLabel: 'Sludge Receiver Hopper',
+    imgSub: 'At-grade \u00b7 epoxy-lined concrete',
+    svg: '<svg width="108" height="108" viewBox="0 0 86 86" xmlns="http://www.w3.org/2000/svg"><line x1="2" y1="18" x2="84" y2="18" stroke="#3B82F6" stroke-width="1.5"/><polygon points="8,18 78,18 68,58 18,58" fill="#1a2a3d" stroke="#3B82F6" stroke-width="1.3"/><line x1="8" y1="26" x2="18" y2="18" stroke="#3B82F6" stroke-width="0.9" opacity=".5"/><line x1="22" y1="34" x2="38" y2="18" stroke="#3B82F6" stroke-width="0.9" opacity=".5"/><line x1="38" y1="42" x2="60" y2="18" stroke="#3B82F6" stroke-width="0.9" opacity=".5"/><line x1="56" y1="50" x2="78" y2="26" stroke="#3B82F6" stroke-width="0.9" opacity=".5"/><text x="43" y="45" font-family="DM Mono" font-size="7" fill="#A8BDD0" text-anchor="middle">60\u00b0 walls</text><rect x="30" y="58" width="26" height="6" fill="#3B82F6" rx="1"/><text x="43" y="72" font-family="DM Mono" font-size="7.5" fill="#A8BDD0" text-anchor="middle">15 m\u00b3 \u00b7 at-grade</text><text x="43" y="82" font-family="DM Mono" font-size="7" fill="#F5A623" text-anchor="middle">lip EL +0.8\u20131.0m</text></svg>',
+    classA: false, noise: false, dwell: false,
+    specs: [
+      ['Location', 'At-grade \u00b7 EL 0.0m slab', 'Material', 'Reinforced concrete C30'],
+      ['Volume', '15 m\u00b3', 'Wall angle', '60\u00b0 sloped (anti-bridging)'],
+      ['Dimensions', 'L 3.5m \u00d7 W 2.5m \u00d7 H 2.0m', 'Lining', 'Epoxy (oil-resistant)'],
+      ['Drainage', '150mm bottom valve \u2192 POME', 'Moisture in', '82%'],
+      ['Inputs', 'Gravity feed \u00b7 truck tip', 'Throughput', '1.5 t/h'],
+    ],
+    note: 'Truck bed ramps to EL +1.2m above lip',
+    conn: 'PMP-POS-01 \u00b7 progressive cavity pump \u00b7 0.75 kW \u00b7 DN100 \u00b7 VFD \u00b7 pipe to buffer tank',
+  },
+  {
+    id: 2,
+    tag: 'T-SLD-101',
+    name: 'Sludge Buffer Tank',
+    imgLabel: 'Sludge Buffer Tank',
+    imgSub: 'SS304 \u00b7 sealed dome \u00b7 biofilter vent',
+    svg: '<svg width="108" height="108" viewBox="0 0 86 86" xmlns="http://www.w3.org/2000/svg"><ellipse cx="43" cy="10" rx="22" ry="6" fill="#1a2a3d" stroke="#3B82F6" stroke-width="1.3"/><rect x="21" y="10" width="44" height="52" fill="#1a2a3d" stroke="#3B82F6" stroke-width="1.3"/><ellipse cx="43" cy="62" rx="22" ry="6" fill="#152334" stroke="#3B82F6" stroke-width="1.3"/><text x="43" y="38" font-family="DM Mono" font-size="7.5" fill="#A8BDD0" text-anchor="middle">SS304</text><text x="43" y="48" font-family="DM Mono" font-size="7" fill="#F5A623" text-anchor="middle">sealed dome</text><line x1="43" y1="4" x2="58" y2="4" stroke="#3B82F6" stroke-width="1.1"/><line x1="58" y1="4" x2="58" y2="14" stroke="#3B82F6" stroke-width="1.1"/><text x="62" y="11" font-family="DM Mono" font-size="7" fill="#A8BDD0">\u2192 biofilter</text><line x1="21" y1="26" x2="10" y2="26" stroke="#3B82F6" stroke-width="1.1"/><circle cx="8" cy="26" r="3.5" fill="none" stroke="#3B82F6" stroke-width="1.1"/><text x="8" y="36" font-family="DM Mono" font-size="7" fill="#A8BDD0" text-anchor="middle">pH</text><text x="43" y="78" font-family="DM Mono" font-size="7.5" fill="#A8BDD0" text-anchor="middle">5\u20138 m\u00b3 \u00b7 3.7 kW agitator</text></svg>',
+    classA: false, noise: false, dwell: false,
+    specs: [
+      ['Location', 'EL 0.0m \u00b7 ground', 'Material', 'SS304 stainless steel'],
+      ['Volume', '5\u20138 m\u00b3 working', 'Geometry', '\u00d82.2m \u00d7 1.8\u20132.2m'],
+      ['Agitator', '3.7 kW \u00b7 top-entry', 'Moisture in', '82%'],
+      ['Vent', 'Sealed dome \u2192 biofilter', 'Instruments', 'Temp \u00b7 pH \u00b7 Fe meter'],
+      ['Manufacturer', 'TBC after RFQ', 'Power', '\u2014'],
+    ],
+    note: 'POS is high-lipid acid-forming \u2014 odour control via biofilter',
+    conn: 'Feed pump \u00b7 0.75 kW \u00b7 DN100 \u00b7 pipe to rotary drum screen',
+  },
+  {
+    id: 3,
+    tag: 'SCR-POS-01',
+    name: 'Rotary Drum Screen',
+    imgLabel: 'Rotary Drum Screen',
+    imgSub: '2 mm aperture',
+    svg: '<svg width="108" height="108" viewBox="0 0 86 86" xmlns="http://www.w3.org/2000/svg"><ellipse cx="14" cy="43" rx="9" ry="22" fill="#1a2a3d" stroke="#3B82F6" stroke-width="1.3"/><rect x="14" y="21" width="58" height="44" fill="#1a2a3d" stroke="#3B82F6" stroke-width="1.3"/><ellipse cx="72" cy="43" rx="9" ry="22" fill="#152334" stroke="#3B82F6" stroke-width="1.3"/><circle cx="28" cy="31" r="2.3" fill="none" stroke="#A8BDD0" stroke-width="1"/><circle cx="43" cy="31" r="2.3" fill="none" stroke="#A8BDD0" stroke-width="1"/><circle cx="58" cy="31" r="2.3" fill="none" stroke="#A8BDD0" stroke-width="1"/><circle cx="28" cy="43" r="2.3" fill="none" stroke="#A8BDD0" stroke-width="1"/><circle cx="43" cy="43" r="2.3" fill="none" stroke="#A8BDD0" stroke-width="1"/><circle cx="58" cy="43" r="2.3" fill="none" stroke="#A8BDD0" stroke-width="1"/><circle cx="28" cy="55" r="2.3" fill="none" stroke="#A8BDD0" stroke-width="1"/><circle cx="43" cy="55" r="2.3" fill="none" stroke="#A8BDD0" stroke-width="1"/><circle cx="58" cy="55" r="2.3" fill="none" stroke="#A8BDD0" stroke-width="1"/><rect x="23" y="67" width="11" height="8" fill="#3B82F6" rx="2"/><rect x="62" y="67" width="11" height="8" fill="#3B82F6" rx="2"/></svg>',
+    classA: false, noise: false, dwell: false,
+    specs: [
+      ['Location', '+0.5m platform', 'Power', '1.5 kW'],
+      ['Aperture', '2 mm', 'Function', 'Gross solids removal'],
+      ['Inputs', 'POS slurry', 'Moisture in', '82%'],
+      ['Rejects to', 'EFB composting line', 'Throughput', '1.5 t/h'],
+      ['Material', 'SS316L drum', 'Manufacturer', 'TBC after RFQ'],
+    ],
+    gate: { label: 'ICP-OES Fe GATE', bg: 'rgba(59,130,246,.1)', color: '#3B82F6' },
+    conn: 'Feed pump \u00b7 0.75 kW \u00b7 DN100 \u00b7 pipe to decanter centrifuge',
+  },
+  {
+    id: 4,
+    tag: 'DCN-POS-01',
+    name: 'Decanter Centrifuge',
+    imgLabel: 'Decanter Centrifuge',
+    imgSub: 'Horizontal centrifuge',
+    svg: '<svg width="108" height="108" viewBox="0 0 86 86" xmlns="http://www.w3.org/2000/svg"><ellipse cx="18" cy="55" rx="11" ry="22" fill="#1a2a3d" stroke="#3B82F6" stroke-width="1.5"/><rect x="18" y="33" width="44" height="44" fill="#1a2a3d" stroke="#3B82F6" stroke-width="1.5"/><polygon points="62,33 62,77 78,55" fill="#152334" stroke="#3B82F6" stroke-width="1.5"/><line x1="78" y1="55" x2="84" y2="55" stroke="#3B82F6" stroke-width="1.5"/><line x1="43" y1="77" x2="43" y2="83" stroke="#A8BDD0" stroke-width="1" stroke-dasharray="2,2"/><rect x="4" y="9" width="72" height="18" fill="#3B82F6" rx="2"/><text x="40" y="21" font-family="DM Mono" font-size="10.5" fill="#fff" text-anchor="middle" font-weight="700">ICP-OES Fe gate</text></svg>',
+    classA: false, noise: false, dwell: false,
+    specs: [
+      ['Location', '+2.5m platform', 'Power', '11 kW'],
+      ['Bowl material', 'SS316L', 'Bowl \u00d8', '500 mm'],
+      ['Moisture in', '82%', 'Moisture out', '65%'],
+      ['Throughput', '1.5 t/h', 'Centrate to', 'POME pond'],
+      ['Manufacturer', 'Alfa Laval preferred', 'Model', 'TBC after RFQ'],
+    ],
+    warning: 'ICP-OES Fe test determines S2 inclusion rate \u00b7 Protocol CFI-LAB-POME-001',
+    gate: { label: 'ICP-OES Fe GATE', bg: 'rgba(59,130,246,.1)', color: '#3B82F6' },
+    conn: 'Transfer belt \u00b7 0.75 kW \u00b7 decanted cake \u00b7 65% MC \u00b7 to buffer tank',
+  },
+  {
+    id: 5,
+    tag: 'BUF-POS-01',
+    name: 'Buffer Holding Tank',
+    imgLabel: 'Buffer Holding Tank',
+    imgSub: 'Agitator + pH probe',
+    svg: '<svg width="108" height="108" viewBox="0 0 86 86" xmlns="http://www.w3.org/2000/svg"><rect x="23" y="8" width="40" height="50" fill="#1a2a3d" stroke="#3B82F6" stroke-width="1.3" rx="1"/><polygon points="23,58 63,58 54,72 32,72" fill="#152334" stroke="#3B82F6" stroke-width="1.3"/><rect x="25" y="22" width="36" height="36" fill="rgba(59,130,246,0.05)"/><line x1="43" y1="8" x2="43" y2="56" stroke="#A8BDD0" stroke-width="1.1"/><line x1="30" y1="44" x2="56" y2="50" stroke="#A8BDD0" stroke-width="1.1"/><line x1="30" y1="50" x2="56" y2="44" stroke="#A8BDD0" stroke-width="1.1"/><line x1="23" y1="26" x2="11" y2="26" stroke="#3B82F6" stroke-width="1.1"/><circle cx="9" cy="26" r="4.5" fill="none" stroke="#3B82F6" stroke-width="1.1"/><text x="9" y="38" font-family="DM Mono" font-size="7" fill="#A8BDD0" text-anchor="middle">pH</text></svg>',
+    classA: false, noise: false, dwell: false,
+    specs: [
+      ['Location', '+1.0m platform', 'Material', 'HDPE / SS316L'],
+      ['Volume', '5 m\u00b3', 'Agitator', '1.1 kW'],
+      ['Inputs', 'Decanted cake', 'Moisture in', '65%'],
+      ['Instruments', 'Temp \u00b7 pH \u00b7 Fe meter', 'Throughput', '1.5 t/h'],
+      ['Manufacturer', 'TBC after RFQ', 'Capacity', 'Fe-gated inclusion'],
+    ],
+    note: 'Fe-gated inclusion \u2014 metered flow to S2',
+    conn: 'PMP-POS-02 \u00b7 transfer pump \u00b7 0.75 kW \u00b7 DN80 \u00b7 metered flow to S2',
+  },
 ];
 
 const BUILDING = { name: "Building A7 \u2014 Utility Building (Pos)", width: "12m", length: "18m", height: "6m", area: "216 m\u00b2" };
@@ -214,7 +297,7 @@ export default function S1Pos() {
         </CollapsibleSection>
 
         {/* SECTION 3: EXPANDABLE EQUIPMENT NODES */}
-        <CollapsibleSection title="Expandable Equipment Nodes — 8 Units" number="3" accent={ACCENT} defaultOpen={false}>
+        <CollapsibleSection title="Expandable Equipment Nodes — 5 Units" number="3" accent={ACCENT} defaultOpen={false}>
           {FLOOR_NODES.map(node => (
             <NodeCard key={node.id} node={node} accent={ACCENT} />
           ))}
