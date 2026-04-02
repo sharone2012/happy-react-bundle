@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import {
   C, Fnt, S1_CSS, S0Header, S1Breadcrumb, LineHero,
   CollapsibleSection, Pre, SubstrateFlowStrip,
+  NodeCard, BuildingDiagram, ConveyorTable, TickerBar,
 } from "../components/S1Shared.jsx";
 
 /*
@@ -84,6 +85,33 @@ const EFB_EQUIP = [
   { code: 'BIN-EFB-201', name: 'EFB Buffer Storage Bin', cost: '$25,000' },
 ];
 
+// ── EXPANDABLE FLOOR NODES (for NodeCard) ──
+const FLOOR_NODES = [
+  { id: 1, tag: 'RCV-EFB-01', name: 'EFB Receiving Hopper', specs: [['Type','Steel hopper with hydraulic gate'],['Capacity','50 m³ · ~20 t'],['Material','Carbon steel + epoxy'],['Sidewalls','60° sloped'],['Discharge','Drag chain to CVB-EFB-01']], footer: 'Truck tipping bay — 3-axle or 4-axle trucks' },
+  { id: 2, tag: 'CVB-EFB-01', name: 'EFB Drag Chain Conveyor', specs: [['Type','Heavy-duty drag chain'],['Size','12m × 600mm'],['Chain','100mm pitch'],['Motor','7.5 kW · VFD'],['Elevation','+0.0 → +2.5m']], footer: 'Elevates to shredder feed hopper' },
+  { id: 3, tag: 'ESD-01', name: 'EFB Primary Shredder', specs: [['Type','Twin-shaft low-speed shredder'],['Throughput','20 t/h @ 62.5% MC'],['Blades','30–40 per shaft'],['Output','100–150mm fragments'],['Motor','2×37 kW (74 kW) · VFD']], footer: 'Shredded EFB drops to CVB-EFB-02', warning: 'Noise zone — hearing protection required within 10m radius' },
+  { id: 4, tag: 'CVB-EFB-02', name: 'Shredder Discharge Conveyor', specs: [['Type','Belt conveyor with cleated belt'],['Size','8m × 600mm'],['Incline','15°'],['Motor','3.7 kW']], footer: 'Feeds ETR-EFB-01 trommel screen' },
+  { id: 5, tag: 'ETR-EFB-01', name: 'EFB Trommel Screen', specs: [['Type','Rotary trommel screen'],['Size','Ø1500mm × 4000mm'],['Aperture','50mm perforations'],['Throughput','20 t/h'],['Motor','5.5 kW geared']], footer: 'Oversize → return to shredder · Undersize → screw press' },
+  { id: 6, tag: 'ESP-EFB-01', name: 'EFB Screw Press', gate: { label: 'GATE B.G2 · MC ≤ 50%', bg: 'rgba(245,166,35,.1)', color: C.amber }, specs: [['Type','Single-screw dewatering press'],['Throughput','20 t/h'],['MC Reduction','62.5% → 55%'],['Pressure','3–5 bar'],['Screen','Wedge wire 0.5mm'],['Motor','15 kW · VFD']], footer: 'PKSA injection point — pressed liquor to S2 filtrate', warning: 'CLASS A GATE — MC must be ≤ 50% before shredder release. Non-negotiable. Pore damage above threshold kills BSF colonisation.' },
+  { id: 7, tag: 'EHM-EFB-01', name: 'EFB Hammer Mill', specs: [['Type','Hammer mill with 2mm screen'],['Throughput','13 t/h (55% MC)'],['Hammers','24 swing hammers'],['Speed','1500 RPM'],['Motor','110 kW direct']], footer: 'Requires spring-isolated foundation', warning: 'Noise zone — 85+ dBA · PPE required · Spring isolation mounting ONLY' },
+  { id: 8, tag: 'EVS-EFB-01', name: 'EFB Vibrating Screen', specs: [['Type','Single-deck vibrating screen'],['Throughput','13 t/h'],['Mesh','2mm aperture'],['Motor','2.2 kW vibratory']], footer: 'Oversize return loop to EHM-EFB-01 hammer mill' },
+  { id: 9, tag: 'EDC-EFB-01', name: 'EFB Baghouse Dust Collector', specs: [['Type','Pulse-jet baghouse'],['Airflow','5000 m³/h'],['Filter Area','50 m²'],['Emission','<50 mg/Nm³'],['Media','Polyester bags'],['Motor','7.5 kW fan']], footer: 'Serves hammer mill + vibrating screen zone · Outside east wall' },
+  { id: 10, tag: 'BIN-EFB-201', name: 'EFB Buffer Storage Bin', specs: [['Type','Steel buffer bin with live-bottom'],['Capacity','80 m³ · ~32 t @ 55% MC'],['Buffer','8 hours'],['Anti-bridging','Pneumatic vibrators'],['Motor','2×3.7 kW screw discharge']], footer: 'Feeds S2 Chemical Treatment at controlled rate' },
+];
+
+// ── BUILDING ──
+const BUILDING = { name: 'Building A5 — EFB Processing Hall', width: '30m', length: '60m', height: '12m', area: '1,800 m²' };
+
+// ── CONVEYORS ──
+const CONVEYORS = [
+  { code: 'CVB-EFB-01', type: 'Drag chain', length: '12m', power: '7.5 kW', route: 'Hopper → Shredder feed' },
+  { code: 'CVB-EFB-02', type: 'Cleated belt 600mm', length: '8m', power: '3.7 kW', route: 'Shredder → Trommel' },
+  { code: 'CVB-EFB-03', type: 'Belt 600mm', length: '6m', power: '2.2 kW', route: 'Trommel → Screw Press' },
+  { code: 'CVB-EFB-04', type: 'Belt 600mm', length: '5m', power: '2.2 kW', route: 'Press → Hammer Mill' },
+  { code: 'CVB-EFB-05', type: 'Screw conveyor', length: '4m', power: '1.5 kW', route: 'Screen → Buffer Bin' },
+  { code: 'CVB-EFB-06', type: 'Screw discharge', length: '3m', power: '3.7 kW', route: 'Buffer Bin → S2 Mixer' },
+];
+
 export default function S1Efb() {
   return (
     <>
@@ -97,6 +125,15 @@ export default function S1Efb() {
         accent={ACCENT}
         badges={[{ text: 'GATE B.G2 · MC ≤ 50%', cls: 'bdg-a' }]}
       />
+      <TickerBar items={[
+        { label: 'Daily In', val: '~300 t', color: C.amber },
+        { label: 'Daily Out', val: '~195 t', color: C.teal },
+        { label: 'MC In', val: '62.5%', color: C.amber },
+        { label: 'MC Out', val: '45–50%', color: C.teal },
+        { label: 'Belt', val: '600mm' },
+        { label: 'Power', val: '298 kW' },
+        { label: 'Elec/mo', val: '$14,191', color: C.amber },
+      ]} />
       <S1Breadcrumb activeLine="EFB Line" />
 
       <div style={{ marginTop: 10 }}>
@@ -264,6 +301,96 @@ export default function S1Efb() {
           </div>
           <div style={{ marginTop: 10, fontFamily: Fnt.dm, fontSize: 11, color: C.grey }}>
             Monthly electricity: $14,191/mo · 155,199 kWh · PLN I-3 tariff IDR 1,444.70/kWh
+          </div>
+        </CollapsibleSection>
+
+        {/* SECTION 5: EXPANDABLE EQUIPMENT NODES */}
+        <CollapsibleSection title="Expandable Equipment Nodes — 10 Machines" number="5" accent={ACCENT} defaultOpen={false}>
+          <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, marginBottom: 12 }}>
+            Click any node to expand full specs, motor data, and gate conditions.
+          </div>
+          {FLOOR_NODES.map((node) => (
+            <NodeCard key={node.id} node={node} accent={ACCENT} />
+          ))}
+        </CollapsibleSection>
+
+        {/* SECTION 6: BUILDING DIMENSIONS & CONVEYOR SYSTEM */}
+        <CollapsibleSection title="Building Dimensions & Conveyor Routing" number="6" accent={ACCENT} defaultOpen={false}>
+          <BuildingDiagram building={BUILDING} accent={ACCENT} />
+          <div style={{ marginTop: 20 }}>
+            <div style={{ fontFamily: Fnt.syne, fontSize: 13, fontWeight: 700, color: C.white, marginBottom: 10 }}>Conveyor System — 6 Segments</div>
+            <ConveyorTable conveyors={CONVEYORS} accent={ACCENT} />
+            <div style={{ marginTop: 12, fontFamily: Fnt.dm, fontSize: 11, color: C.grey }}>
+              Total conveyor power: ~20.8 kW · All belt 600mm standard · Cleated on inclines &gt; 12°
+            </div>
+          </div>
+        </CollapsibleSection>
+
+        {/* SECTION 7: MIXING, PKSA NEUTRALISATION & S2 GREENHOUSE HANDOFF */}
+        <CollapsibleSection title="Mixing, PKSA Neutralisation & S2 Greenhouse Handoff" number="7" accent={ACCENT} defaultOpen={false}>
+          <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, marginBottom: 16, lineHeight: 1.7 }}>
+            After mechanical pre-processing, the milled EFB fibre exits S1 and enters the S2 mixing and conditioning stage.
+            Three residue streams converge into a single combined substrate for composting and BSF colonisation.
+          </div>
+
+          <Pre accent={ACCENT}>{`
+  ┌─────────────────────────────────────────────────────────────────────────────────┐
+  │  S1 → S2 MIXING & NEUTRALISATION FLOW                                         │
+  └─────────────────────────────────────────────────────────────────────────────────┘
+
+  BIN-EFB-201 ─────┐
+  (Milled EFB       │    ┌──────────────────────┐    ┌──────────────────────┐
+   45–50% MC        │───▶│  MIX-S2-01           │───▶│  PKSA-S2-01          │
+   D90 ≤ 2mm)       │    │  S2 Substrate Mixer  │    │  PKSA Neutralisation │
+                    │    │  Ribbon/paddle type   │    │  Tank                │
+  BIN-OPDC-301 ────┤    │  SS304 · 5 m³ batch  │    │  CaO/MgO from PKS   │
+  (Dried OPDC       │───▶│  15 kW · VFD         │    │  Ash dosing          │
+   ≤35% MC          │    │  3-stream metering   │    │  pH 4.5 → 7.0–7.5   │
+   D90 ≤ 3mm)       │    │                      │    │  Residence: 20 min   │
+                    │    └──────────────────────┘    └──────────────────────┘
+  FP-POS-01 ───────┘                                         │
+  (POS conditioned        PKSA = Palm Kernel Shell Ash        │
+   cake 65–70% MC         Natural calcium/magnesium source    ▼
+   pH 5.5–6.0)
+                                                ┌──────────────────────────────┐
+                                                │  S2 COMPOSTING GREENHOUSE    │
+                                                │  Covered windrow system      │
+                                                │  28-day thermophilic cycle   │
+                                                │  Target: 55–65°C core temp   │
+                                                │  pH 7.0–7.5 · MC 55–60%     │
+                                                │  C:N 25–30:1 (blended)       │
+                                                │  Aeration: forced air floor  │
+                                                └──────────────────────────────┘
+          `}</Pre>
+
+          <div style={{ marginTop: 16, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 10 }}>
+            {[
+              { label: 'EFB Contribution', val: '~195 t/day', note: '45–50% MC · D90 ≤ 2mm · Carbon source (C:N 60)', color: C.teal },
+              { label: 'OPDC Contribution', val: '~50 t/day', note: '≤35% MC · D90 ≤ 3mm · Nitrogen source (C:N 20)', color: C.amber },
+              { label: 'POS Contribution', val: '~13.5 t/day', note: '65–70% MC · Conditioned cake · Mineral boost', color: '#3B82F6' },
+              { label: 'PKSA Dose', val: '2–5% w/w', note: 'Palm Kernel Shell Ash · pH neutralisation · Ca + Mg', color: C.green },
+              { label: 'Blended C:N', val: '25–30:1', note: 'Target for optimal thermophilic composting', color: C.teal },
+              { label: 'Greenhouse Temp', val: '55–65°C', note: 'Core temp during 28-day composting cycle', color: C.amber },
+            ].map((item, i) => (
+              <div key={i} style={{ background: C.navyField, border: `1px solid ${C.bdrIdle}`, borderLeft: `3px solid ${item.color}`, borderRadius: 6, padding: '12px 14px' }}>
+                <div style={{ fontFamily: Fnt.dm, fontSize: 10, fontWeight: 700, color: C.grey, textTransform: 'uppercase', marginBottom: 4 }}>{item.label}</div>
+                <div style={{ fontFamily: Fnt.mono, fontSize: 16, fontWeight: 700, color: item.color, marginBottom: 4 }}>{item.val}</div>
+                <div style={{ fontFamily: Fnt.dm, fontSize: 10, color: C.grey, lineHeight: 1.5 }}>{item.note}</div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ marginTop: 16, padding: '12px 16px', background: 'rgba(0,162,73,.06)', border: `1px solid rgba(0,162,73,.25)`, borderRadius: 6 }}>
+            <div style={{ fontFamily: Fnt.syne, fontSize: 12, fontWeight: 700, color: C.green, marginBottom: 6 }}>S2 Greenhouse Transfer Protocol</div>
+            <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, lineHeight: 1.7 }}>
+              1. Blended substrate discharged from PKSA tank via screw conveyor to covered windrow bay<br/>
+              2. Windrow formed: 2.5m wide × 1.5m high × variable length<br/>
+              3. Forced-air aeration floor activates on temperature differential controller<br/>
+              4. Day 0–7: Mesophilic phase (35–45°C) · Day 7–28: Thermophilic phase (55–65°C)<br/>
+              5. Windrow turned every 5–7 days by mechanical turner<br/>
+              6. pH monitored: target 7.0–7.5 post-PKSA neutralisation<br/>
+              7. Compost maturity test at Day 28 → release to S3 Biological (BSF colonisation)
+            </div>
           </div>
         </CollapsibleSection>
       </div>
