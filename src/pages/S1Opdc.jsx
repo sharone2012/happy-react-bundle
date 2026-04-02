@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import {
   C, Fnt, S1_CSS, S0Header, S1Breadcrumb, LineHero,
-  CollapsibleSection, Pre, SubstrateFlowStrip,
-  NodeCard, BuildingDiagram, ConveyorTable, TickerBar,
+  CollapsibleSection, Pre, SubstrateFlowStrip, NodeCard, BuildingDiagram, TickerBar, ConveyorTable,
 } from "../components/S1Shared.jsx";
 
 /*
@@ -57,20 +56,6 @@ const EQUIPMENT = [
   { code: 'BIN-OPDC-24HR', name: 'Buffer Bin 85m³ + Rake', tph: '3.3 tph', mcIn: '61%', mcOut: '61%', elev: '6m', kw: '5.5 kW', cost: '$15,000', supplier: 'C.G2/G3: pH 8.0–9.0' },
 ];
 
-// ── FLOOR PLAN NODES ──
-const NODES = [
-  { code: 'RCV-OPDC-01', name: 'Opdc Receiving Bay', type: 'Concrete receiving bay with push-wall', spec: '25 m³ · ~12 t · Reinforced concrete + epoxy floor', motor: 'Wheel loader', footer: 'Wheel loader feeds RH-OPDC-101' },
-  { code: 'RH-OPDC-101', name: 'Opdc Reciprocating Feeder', type: 'Hydraulic reciprocating feeder', spec: '5 t/h OPDC (70% MC) · 600mm stroke · 800mm width', motor: '5.5 kW hydraulic', footer: 'Meters OPDC onto belt conveyor' },
-  { code: 'CV-OPDC-101', name: 'Opdc Belt Conveyor', type: 'Enclosed belt conveyor', spec: '15m × 500mm · 12° incline · 5 t/h', motor: '3.7 kW', footer: 'To OPR-01 screw press' },
-  { code: 'OPR-01', name: 'Opdc Screw Press', type: 'Twin-screw dewatering press', spec: '5 t/h · 70% → 60% MC · 5–8 bar · Wedge wire 0.75mm', motor: '22 kW · VFD', footer: 'Class A gate — moisture sample before release' },
-  { code: 'OTR-01', name: 'Opdc Trommel Screen', type: 'Rotary trommel', spec: 'Ø1200mm × 3000mm · 30mm perforations · 3.3 t/h', motor: '4 kW geared', footer: 'Removes oversized contaminants' },
-  { code: 'ODR-01', name: 'Opdc Rotary Dryer', type: 'Direct-fired rotary drum dryer', spec: '3.3 t/h · 60% → 45% MC · Ø1500mm × 8000mm · PKS fuel', motor: '15 kW + 7.5 kW fan', footer: 'Reduces MC for hammer mill processing' },
-  { code: 'OHM-01', name: 'Opdc Hammer Mill', type: 'Hammer mill with 3mm screen', spec: '3.3 t/h (45% MC) · 18 hammers · 1500 RPM', motor: '75 kW direct', footer: 'Noise zone — 85+ dBA · PPE required' },
-  { code: 'OVS-01', name: 'Opdc Vibrating Screen', type: 'Single-deck vibrating screen', spec: '3.3 t/h · 3mm mesh · Oversize return to HM', motor: '1.5 kW vibratory', footer: 'Oversize loop to OHM-01' },
-  { code: 'ODC-01', name: 'Opdc Dust Collector', type: 'Pulse-jet baghouse', spec: '3500 m³/h · 35 m² filter · <50 mg/Nm³', motor: '5.5 kW fan', footer: 'Serves dryer + hammer mill zone' },
-  { code: 'BIN-OPDC-301', name: 'Opdc Product Bin', type: 'Steel product bin with 24-hour dwell', spec: '40 m³ · ~18 t · Moisture barrier · Screw discharge to S2', motor: '—', footer: '24hr dwell gate — holds product before S2 release' },
-];
-
 // ── CAPEX ──
 const OPDC_EQUIP = [
   { code: 'TR-OPDC-101', name: 'OPDC Receiving Bay', cost: '$5,000' },
@@ -81,28 +66,43 @@ const OPDC_EQUIP = [
 
 // ── EXPANDABLE FLOOR NODES ──
 const FLOOR_NODES = [
-  { id: 1, tag: 'RCV-OPDC-01', name: 'OPDC Receiving Bay', specs: [['Type','Concrete bay with push-wall'],['Capacity','25 m³ · ~12 t'],['Material','Reinforced concrete + epoxy floor'],['Feed','Wheel loader to reciprocating feeder']], footer: 'Anti-bridging: OPDC paste form requires auger-assist or vibrator' },
-  { id: 2, tag: 'RH-OPDC-101', name: 'OPDC Reciprocating Feeder', specs: [['Type','Hydraulic reciprocating feeder'],['Throughput','5 t/h OPDC (70% MC)'],['Stroke','600mm · 800mm width'],['Motor','5.5 kW hydraulic'],['Material','SS304 contact surfaces']], footer: 'Meters OPDC onto belt conveyor at controlled rate' },
-  { id: 3, tag: 'CV-OPDC-101', name: 'OPDC Belt Conveyor', specs: [['Type','Enclosed belt conveyor'],['Size','15m × 500mm'],['Incline','12°'],['Motor','3.7 kW']], footer: 'Enclosed to prevent paste dripping · To screw press' },
-  { id: 4, tag: 'OPR-01', name: 'OPDC Screw Press', gate: { label: 'CLASS A · MC ≥ 40%', bg: 'rgba(232,64,64,.1)', color: C.red }, specs: [['Type','Twin-screw dewatering press'],['Throughput','5 t/h'],['MC Reduction','70% → 60%'],['Pressure','5–8 bar'],['Screen','Wedge wire 0.75mm'],['Motor','22 kW · VFD']], footer: 'Class A gate — moisture sample before release', warning: 'CRITICAL: MC floor ≥ 40% LOCKED. Math.max(40, reading). Non-negotiable. Pore damage above 40% kills BSF colonisation.' },
-  { id: 5, tag: 'OTR-01', name: 'OPDC Trommel Screen', specs: [['Type','Rotary trommel'],['Size','Ø1200mm × 3000mm'],['Aperture','30mm perforations'],['Throughput','3.3 t/h'],['Motor','4 kW geared']], footer: 'Removes oversized contaminants — stones, metal, fibre clumps' },
-  { id: 6, tag: 'ODR-01', name: 'OPDC Rotary Dryer', specs: [['Type','Direct-fired rotary drum dryer'],['Throughput','3.3 t/h'],['MC Reduction','60% → 45%'],['Size','Ø1500mm × 8000mm'],['Fuel','PKS (palm kernel shell)'],['Motor','15 kW + 7.5 kW fan']], footer: 'PKS fuel from mill — zero external fuel cost' },
-  { id: 7, tag: 'OHM-01', name: 'OPDC Hammer Mill', specs: [['Type','Hammer mill with 3mm screen'],['Throughput','3.3 t/h (45% MC)'],['Hammers','18 swing hammers'],['Speed','1500 RPM'],['Motor','75 kW direct']], footer: 'Spring-isolated foundation required', warning: 'Noise zone — 85+ dBA · PPE required within 10m radius' },
-  { id: 8, tag: 'OVS-01', name: 'OPDC Vibrating Screen', specs: [['Type','Single-deck vibrating screen'],['Throughput','3.3 t/h'],['Mesh','3mm aperture'],['Motor','1.5 kW vibratory']], footer: 'Oversize return loop to OHM-01 hammer mill' },
-  { id: 9, tag: 'ODC-01', name: 'OPDC Dust Collector', specs: [['Type','Pulse-jet baghouse'],['Airflow','3500 m³/h'],['Filter Area','35 m²'],['Emission','<50 mg/Nm³'],['Motor','5.5 kW fan']], footer: 'Serves dryer + hammer mill zone' },
-  { id: 10, tag: 'BIN-OPDC-301', name: 'OPDC Product Bin (24hr Dwell)', gate: { label: '24HR DWELL GATE', bg: 'rgba(245,166,35,.1)', color: C.amber }, specs: [['Type','Steel product bin with moisture barrier'],['Capacity','40 m³ · ~18 t'],['Dwell','≥ 24 hours mandatory'],['pH Target','8.0–9.0 post-dwell'],['Discharge','Screw to S2 mixer']], footer: '24hr dwell gate — holds product before S2 release. pH must stabilise to 8.0–9.0.' },
+  { id: 1, tag: "RCV-OPDC-01", name: "Opdc Receiving Bay", specs: [["Type", "Concrete receiving bay with push-wall"], ["Volume", "25 m\u00b3 (~12 t)"], ["Material", "Reinforced concrete + epoxy floor"], ["Discharge", "Front-end loader to feeder"]], footer: "Wheel loader feeds RH-OPDC-101" },
+  { id: 2, tag: "RH-OPDC-101", name: "Opdc Reciprocating Feeder", specs: [["Type", "Hydraulic reciprocating feeder"], ["Motor", "5.5 kW hydraulic"], ["Throughput", "5 t/h OPDC (70% MC)"], ["Stroke", "600mm"], ["Width", "800mm"], ["Material", "Carbon steel \u00b7 anti-bridging cone + pusher plate"]], footer: "Meters OPDC onto belt conveyor" },
+  { id: 3, tag: "CV-OPDC-101", name: "Opdc Belt Conveyor", specs: [["Type", "Enclosed belt conveyor"], ["Length", "15 m"], ["Width", "500 mm"], ["Motor", "3.7 kW \u00b7 3-phase"], ["Throughput", "5 t/h"], ["Incline", "12\u00b0"]], footer: "To OPR-01 screw press" },
+  { id: 4, tag: "OPR-01", name: "Opdc Screw Press", specs: [["Type", "Twin-screw dewatering press"], ["Motor", "22 kW \u00b7 VFD"], ["Throughput", "5 t/h @ 70% MC in \u2192 60% MC out"], ["Pressure", "5\u20138 bar"], ["Screen", "Wedge wire 0.75mm"], ["Filtrate", "\u2192 POME pond \u00b7 never to substrate"]], footer: "Class A gate \u2014 moisture sample before release", gate: { label: "CLASS A \u00b7 MC \u2265 40%", bg: "rgba(232,64,64,.1)", color: "#E84040" }, warning: "MC floor \u2265 40% LOCKED \u00b7 Math.max(40, reading) \u00b7 NON-NEGOTIABLE \u2014 Pore damage above 40% kills BSF colonisation" },
+  { id: 5, tag: "OTR-01", name: "Opdc Trommel Screen", specs: [["Type", "Rotary trommel"], ["Diameter", "1200 mm"], ["Length", "3000 mm"], ["Motor", "4 kW \u00b7 geared"], ["Screen", "30mm perforations"], ["Throughput", "3.3 t/h (post-press)"]], footer: "Removes oversized contaminants" },
+  { id: 6, tag: "ODR-01", name: "Opdc Rotary Dryer", specs: [["Type", "Direct-fired rotary drum dryer"], ["Motor", "15 kW drum + 7.5 kW fan"], ["Throughput", "3.3 t/h @ 60% MC in \u2192 45% MC out"], ["Diameter", "1500 mm"], ["Length", "8000 mm"], ["Fuel", "Palm kernel shell (PKS)"]], footer: "Reduces MC for hammer mill processing", gate: { label: "AMBER \u00b7 MC \u2264 35%", bg: "rgba(245,166,35,.1)", color: "#F5A623" } },
+  { id: 7, tag: "OHM-01", name: "Opdc Hammer Mill", specs: [["Type", "Hammer mill with 3mm screen"], ["Motor", "75 kW \u00b7 direct drive"], ["Throughput", "3.3 t/h (45% MC)"], ["Hammer tips", "18 swing hammers"], ["Screen", "3mm perforated plate"], ["Speed", "1500 RPM"]], footer: "Noise zone \u2014 85+ dBA \u00b7 PPE required", warning: "Spring isolation only \u2014 never rigid-anchor to slab" },
+  { id: 8, tag: "OVS-01", name: "Opdc Vibrating Screen", specs: [["Type", "Single-deck vibrating screen"], ["Motor", "1.5 kW vibratory"], ["Screen", "3mm mesh"], ["Throughput", "3.3 t/h milled OPDC"], ["Oversize", "Return to hammer mill"], ["Undersize", "To product bin"]], footer: "Oversize loop to OHM-01" },
+  { id: 9, tag: "ODC-01", name: "Opdc Dust Collector", specs: [["Type", "Pulse-jet baghouse"], ["Air volume", "3500 m\u00b3/h"], ["Motor", "5.5 kW fan"], ["Filter area", "35 m\u00b2"], ["Emission", "<50 mg/Nm\u00b3"]], footer: "Serves dryer + hammer mill zone" },
+  { id: 10, tag: "BIN-OPDC-301", name: "Opdc Product Bin \u2014 24hr Dwell", specs: [["Type", "Steel product bin"], ["Volume", "40 m\u00b3 (~18 t)"], ["Material", "Carbon steel + moisture barrier"], ["Dwell time", "24 hours minimum"], ["Discharge", "Screw conveyor to S2"], ["pH target", "8.0\u20139.0 post-dwell"], ["Instruments", "pH probe \u00b7 monitor every 8hrs"]], footer: "24hr dwell gate \u2014 holds product before S2 release", gate: { label: "24HR DWELL \u00b7 pH 8.0\u20139.0", bg: "rgba(245,166,35,.1)", color: "#F5A623" } },
 ];
 
 // ── BUILDING ──
-const BUILDING = { name: 'Building A6 — OPDC Processing Hall', width: '18m', length: '36m', height: '10m', area: '648 m²' };
+const BUILDING = { name: "Building A6 \u2014 Opdc Processing Hall", width: "18m", length: "36m", height: "10m", area: "648 m\u00b2" };
 
 // ── CONVEYORS ──
 const CONVEYORS = [
-  { code: 'CV-OPDC-101', type: 'Enclosed belt 500mm', length: '15m', power: '3.7 kW', route: 'Feeder → Screw Press' },
-  { code: 'CV-OPDC-201', type: 'Belt 500mm', length: '8m', power: '2.2 kW', route: 'Lump Breaker → Trommel' },
-  { code: 'CV-OPDC-301', type: 'Belt 500mm', length: '6m', power: '2.2 kW', route: 'Dryer → Hammer Mill' },
-  { code: 'CV-OPDC-401', type: 'Screw conveyor', length: '4m', power: '1.5 kW', route: 'Screen → Product Bin' },
-  { code: 'CV-OPDC-501', type: 'Screw discharge', length: '3m', power: '2.2 kW', route: 'Product Bin → S2 Mixer' },
+  { code: 'CV-OPDC-101', type: 'Incline Feed', length: '15m \u00b7 12\u00b0', power: '3.7 kW', route: '\u00b10.0 \u2192 +3.0m \u00b7 500mm belt' },
+  { code: 'OB-02', type: 'Level Belt', length: '8m', power: '\u2014', route: '\u2192 Trommel Screen' },
+  { code: 'OB-03', type: 'Level Belt', length: '8m', power: '\u2014', route: '\u2192 Overband Magnet' },
+  { code: 'OB-04', type: 'Level Belt', length: '10m', power: '\u2014', route: '\u2192 Screw Press' },
+  { code: 'OB-05', type: 'Level Belt', length: '10m', power: '\u2014', route: '\u2192 Lump Breaker' },
+  { code: 'OB-06', type: 'Level Belt', length: '8m', power: '\u2014', route: '\u2192 Hammer Mill' },
+  { code: 'OB-07/08', type: 'Oversize Return', length: 'variable', power: '\u2014', route: 'Recirculation loop' },
+  { code: 'OB-08', type: 'Decline Belt', length: '8m \u00b7 -5\u00b0', power: '2.2 kW', route: '\u2192 Buffer Bin' },
+  { code: 'BC-11', type: 'Gallery Belt', length: '10m + 25m covered', power: '3.0 kW', route: '\u2192 Conveyor Gallery \u2192 S2 Greenhouse' },
+];
+
+// ── TICKER ──
+const TICKER = [
+  { label: 'Throughput In', val: '5 t/h', color: '#40D7C5' },
+  { label: 'Throughput Out', val: '3.3 t/h', color: '#40D7C5' },
+  { label: 'MC In', val: '70%', color: '#E8F0FE' },
+  { label: 'MC Out', val: '45%', color: '#E8F0FE' },
+  { label: 'Installed Power', val: '~206 kW', color: '#F5A623' },
+  { label: 'Daily Input', val: '~75 t', color: '#00A249' },
+  { label: 'Daily Output', val: '~50 t', color: '#00A249' },
 ];
 
 export default function S1Opdc() {
@@ -121,15 +121,6 @@ export default function S1Opdc() {
           { text: '24HR DWELL GATE', cls: 'bdg-a' },
         ]}
       />
-      <TickerBar items={[
-        { label: 'Daily In', val: '~75 t', color: C.amber },
-        { label: 'Daily Out', val: '~50 t', color: C.teal },
-        { label: 'MC In', val: '70–75%', color: C.amber },
-        { label: 'MC Out', val: '≤35%', color: C.teal },
-        { label: 'Belt', val: '500mm' },
-        { label: 'Power', val: '206 kW' },
-        { label: 'Elec/mo', val: '$6,651', color: C.amber },
-      ]} />
       <S1Breadcrumb activeLine="OPDC Line" />
 
       <div style={{ marginTop: 10 }}>
@@ -139,6 +130,8 @@ export default function S1Opdc() {
           outflows={OUTFLOWS}
         />
       </div>
+
+      <TickerBar items={TICKER} />
 
       <div className="content">
         {/* SECTION 1: ASCII PROCESS FLOW */}
@@ -232,46 +225,75 @@ export default function S1Opdc() {
           </div>
         </CollapsibleSection>
 
-        {/* SECTION 3: FLOOR PLAN & DIMENSIONS */}
-        <CollapsibleSection title="Floor Plan & Equipment Layout" number="3" accent={ACCENT} defaultOpen={false}>
-          <div style={{ background: C.navy, border: `1.5px solid ${C.bdrIdle}`, borderRadius: 8, padding: '20px', marginBottom: 16, textAlign: 'center' }}>
-            <div style={{ fontFamily: Fnt.syne, fontSize: 14, fontWeight: 700, color: ACCENT, marginBottom: 8 }}>Building A6 — Opdc Processing Hall</div>
-            <div style={{ fontFamily: Fnt.mono, fontSize: 13, color: C.amber }}>18m × 36m × 10m H = 648 m²</div>
+        {/* SECTION 3: EXPANDABLE EQUIPMENT NODES */}
+        <CollapsibleSection title="Expandable Equipment Nodes — 10 Machines" number="3" accent={ACCENT} defaultOpen={false}>
+          <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, marginBottom: 12 }}>
+            Click any node to expand full specs, motor data, and gate conditions. Anti-bridging handling throughout (paste form).
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 10 }}>
-            {NODES.map((n, i) => (
-              <div key={i} style={{ background: C.navyField, border: `1.5px solid ${C.bdrIdle}`, borderLeft: `3px solid ${ACCENT}`, borderRadius: 8, padding: '14px 16px' }}>
-                <div style={{ fontFamily: Fnt.mono, fontSize: 11, fontWeight: 700, color: ACCENT, marginBottom: 4 }}>{n.code}</div>
-                <div style={{ fontFamily: Fnt.syne, fontSize: 12, fontWeight: 700, color: C.white, marginBottom: 6 }}>{n.name}</div>
-                <div style={{ fontFamily: Fnt.dm, fontSize: 10, color: C.grey, lineHeight: 1.5, marginBottom: 4 }}>{n.type}</div>
-                <div style={{ fontFamily: Fnt.dm, fontSize: 10, color: C.greyMd, lineHeight: 1.5 }}>{n.spec}</div>
-                <div style={{ fontFamily: Fnt.mono, fontSize: 10, color: C.teal, marginTop: 4 }}>{n.motor}</div>
-                <div style={{ fontFamily: Fnt.dm, fontSize: 9, color: C.grey, marginTop: 6, fontStyle: 'italic' }}>{n.footer}</div>
+          {FLOOR_NODES.map((node) => (
+            <NodeCard key={node.id} node={node} accent={ACCENT} />
+          ))}
+        </CollapsibleSection>
+
+        {/* SECTION 4: BUILDING DIMENSIONS & FLOOR PLAN */}
+        <CollapsibleSection title="Building Dimensions & Floor Plan" number="4" accent={ACCENT} defaultOpen={false}>
+          <BuildingDiagram building={BUILDING} accent={ACCENT} />
+        </CollapsibleSection>
+
+        {/* SECTION 5: CONVEYOR SYSTEM */}
+        <CollapsibleSection title="Conveyor System" number="5" accent={ACCENT} defaultOpen={false}>
+          <ConveyorTable conveyors={CONVEYORS} accent={ACCENT} />
+        </CollapsibleSection>
+
+        {/* SECTION 6: MIXING, NEUTRALISATION & S2 HANDOFF */}
+        <CollapsibleSection title="Mixing, Neutralisation & S2 Handoff" number="6" accent={ACCENT} defaultOpen={false}>
+          <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, marginBottom: 16, lineHeight: 1.7 }}>
+            After the mandatory 24-hour dwell in BIN-OPDC-301, dried OPDC cake (pH 8.0-9.0) is discharged via screw conveyor
+            into the conveyor gallery (BC-11: 25m covered, 4m wide) for transfer to the S2 composting greenhouse.
+            PKSA (Palm Kernel Shell Ash) is dosed at 2-5% w/w during the S2 mixing stage to neutralise pH from ~8.0 down to 6.5-7.5,
+            the optimal range for BSF colonisation and thermophilic composting.
+          </div>
+
+          <div style={{ marginTop: 8, padding: '12px 16px', background: 'rgba(232,64,64,.06)', border: '1px solid rgba(232,64,64,.25)', borderRadius: 6, marginBottom: 16 }}>
+            <div style={{ fontFamily: Fnt.syne, fontSize: 12, fontWeight: 700, color: '#E84040', marginBottom: 6 }}>CLASS A Gate Rule</div>
+            <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, lineHeight: 1.7 }}>
+              The CLASS A moisture gate at OPR-01 (Screw Press) enforces an absolute moisture floor of MC {'\u2265'} 40%.
+              The control logic is <span style={{ fontFamily: Fnt.mono, color: '#E84040' }}>Math.max(40, reading)</span> — if the press
+              produces output below 40% MC, the system clamps to 40%. This is NON-NEGOTIABLE. Over-drying destroys pore structure
+              and kills BSF colonisation capacity. The screw press filtrate routes to the POME pond and never contacts the substrate stream.
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 10, marginBottom: 16 }}>
+            {[
+              { label: '24hr Dwell', val: '{"\u2265"}24 hrs', note: 'BIN-OPDC-301 holds product until pH stabilises to 8.0-9.0', color: C.amber },
+              { label: 'PKSA Neutralisation', val: 'pH 8 {"\u2192"} 6.5-7.5', note: 'Palm Kernel Shell Ash dosed at 2-5% w/w during S2 mixing', color: C.green },
+              { label: 'Conveyor Gallery', val: '25m {"\u00d7"} 4m', note: 'BC-11 covered gallery belt from Building A6 to S2 greenhouse', color: C.teal },
+              { label: 'S2 Transfer', val: '~50 t/day', note: 'Dried/milled OPDC cake metered into S2 substrate mixer', color: C.amber },
+            ].map((item, i) => (
+              <div key={i} style={{ background: C.navyField, border: `1px solid ${C.bdrIdle}`, borderLeft: `3px solid ${item.color}`, borderRadius: 6, padding: '12px 14px' }}>
+                <div style={{ fontFamily: Fnt.dm, fontSize: 10, fontWeight: 700, color: C.grey, textTransform: 'uppercase', marginBottom: 4 }}>{item.label}</div>
+                <div style={{ fontFamily: Fnt.mono, fontSize: 16, fontWeight: 700, color: item.color, marginBottom: 4 }}>{item.val}</div>
+                <div style={{ fontFamily: Fnt.dm, fontSize: 10, color: C.grey, lineHeight: 1.5 }}>{item.note}</div>
               </div>
             ))}
           </div>
-          <div style={{ marginTop: 16 }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <tbody>
-                {[
-                  ['Throughput', '5 t/h @ 70% MC', '3.3 t/h @ 45% MC'],
-                  ['Source', 'Mill decanter cake', 'Dried/milled cake to S2'],
-                  ['Daily Input', '~75 t fresh', '~50 t processed'],
-                  ['Installed Power', '~206 kW total', '—'],
-                ].map((row, i) => (
-                  <tr key={i} style={{ borderBottom: `1px solid ${C.bdrIdle}` }}>
-                    <td style={{ padding: '8px 12px', fontFamily: Fnt.dm, fontSize: 11, fontWeight: 700, color: C.grey }}>{row[0]}</td>
-                    <td style={{ padding: '8px 12px', fontFamily: Fnt.mono, fontSize: 12, color: C.teal }}>{row[1]}</td>
-                    <td style={{ padding: '8px 12px', fontFamily: Fnt.mono, fontSize: 12, color: C.amber }}>{row[2]}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+
+          <div style={{ padding: '12px 16px', background: 'rgba(0,162,73,.06)', border: `1px solid rgba(0,162,73,.25)`, borderRadius: 6 }}>
+            <div style={{ fontFamily: Fnt.syne, fontSize: 12, fontWeight: 700, color: C.green, marginBottom: 6 }}>S2 Greenhouse Transfer Protocol</div>
+            <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, lineHeight: 1.7 }}>
+              1. OPDC cake exits 24hr dwell bin (BIN-OPDC-301) via screw discharge at pH 8.0-9.0<br/>
+              2. Conveyor gallery BC-11 (25m covered, 4m wide) transfers cake to S2 greenhouse<br/>
+              3. Metered with EFB fibre and POS cake in S2 mixer to achieve blended C:N 25-30:1<br/>
+              4. PKSA dosed at 2-5% w/w for pH neutralisation (pH 8.0 down to 6.5-7.5)<br/>
+              5. Blended substrate formed into covered windrows for 28-day thermophilic composting<br/>
+              6. Target core temperature: 55-65{'\u00b0'}C with forced-air aeration floor
+            </div>
           </div>
         </CollapsibleSection>
 
-        {/* SECTION 4: CAPEX BREAKDOWN */}
-        <CollapsibleSection title="Equipment CAPEX — OPDC Line" number="4" accent={ACCENT} defaultOpen={false}>
+        {/* SECTION 7: EQUIPMENT CAPEX */}
+        <CollapsibleSection title="Equipment CAPEX — OPDC Line" number="7" accent={ACCENT} defaultOpen={false}>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ background: 'rgba(0,0,0,.3)' }}>
@@ -296,92 +318,6 @@ export default function S1Opdc() {
           </div>
           <div style={{ marginTop: 10, fontFamily: Fnt.dm, fontSize: 11, color: C.grey }}>
             Monthly electricity: $6,651/mo · 72,742 kWh · PLN I-3 tariff IDR 1,444.70/kWh
-          </div>
-        </CollapsibleSection>
-
-        {/* SECTION 5: EXPANDABLE EQUIPMENT NODES */}
-        <CollapsibleSection title="Expandable Equipment Nodes — 10 Machines" number="5" accent={ACCENT} defaultOpen={false}>
-          <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, marginBottom: 12 }}>
-            Click any node to expand full specs, motor data, and gate conditions. Anti-bridging handling throughout (paste form).
-          </div>
-          {FLOOR_NODES.map((node) => (
-            <NodeCard key={node.id} node={node} accent={ACCENT} />
-          ))}
-        </CollapsibleSection>
-
-        {/* SECTION 6: BUILDING DIMENSIONS & CONVEYOR SYSTEM */}
-        <CollapsibleSection title="Building Dimensions & Conveyor Routing" number="6" accent={ACCENT} defaultOpen={false}>
-          <BuildingDiagram building={BUILDING} accent={ACCENT} />
-          <div style={{ marginTop: 20 }}>
-            <div style={{ fontFamily: Fnt.syne, fontSize: 13, fontWeight: 700, color: C.white, marginBottom: 10 }}>Conveyor System — 5 Segments</div>
-            <ConveyorTable conveyors={CONVEYORS} accent={ACCENT} />
-            <div style={{ marginTop: 12, fontFamily: Fnt.dm, fontSize: 11, color: C.grey }}>
-              Total conveyor power: ~11.8 kW · All belt 500mm standard · Enclosed on paste sections
-            </div>
-          </div>
-        </CollapsibleSection>
-
-        {/* SECTION 7: MIXING, PKSA NEUTRALISATION & S2 GREENHOUSE HANDOFF */}
-        <CollapsibleSection title="Mixing, PKSA Neutralisation & S2 Greenhouse Handoff" number="7" accent={ACCENT} defaultOpen={false}>
-          <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, marginBottom: 16, lineHeight: 1.7 }}>
-            After 24-hour dwell and pH stabilisation, dried OPDC cake exits S1 and feeds into the S2 combined mixing stage.
-            OPDC provides the nitrogen-rich component (C:N 20:1) to balance EFB's high-carbon fibre (C:N 60:1).
-          </div>
-
-          <Pre accent={ACCENT}>{`
-  ┌─────────────────────────────────────────────────────────────────────────────────┐
-  │  S1 → S2 MIXING & NEUTRALISATION FLOW  (OPDC Contribution)                    │
-  └─────────────────────────────────────────────────────────────────────────────────┘
-
-  BIN-OPDC-301 ──────────┐
-  (Dried OPDC cake        │    ┌──────────────────────┐    ┌──────────────────────┐
-   ≤35% MC · D90 ≤ 3mm   │───▶│  MIX-S2-01           │───▶│  PKSA-S2-01          │
-   pH 8.0–9.0             │    │  S2 Substrate Mixer  │    │  PKSA Neutralisation │
-   24hr dwell completed)  │    │  Ribbon/paddle type   │    │  Tank                │
-                          │    │  SS304 · 5 m³ batch  │    │  pH 4.5 → 7.0–7.5   │
-  + EFB milled fibre ────┤    │  15 kW · VFD         │    │  PKSA dose 2–5% w/w  │
-  + POS conditioned cake ─┘    │  3-stream metering   │    │  Residence: 20 min   │
-                               └──────────────────────┘    └──────────────────────┘
-                                                                    │
-                                                                    ▼
-                                                     ┌──────────────────────────────┐
-                                                     │  S2 COMPOSTING GREENHOUSE    │
-                                                     │  Covered windrow system      │
-                                                     │  28-day thermophilic cycle   │
-                                                     │  Target: 55–65°C core temp   │
-                                                     │  Blended C:N 25–30:1         │
-                                                     │  MC 55–60% · pH 7.0–7.5     │
-                                                     └──────────────────────────────┘
-          `}</Pre>
-
-          <div style={{ marginTop: 16, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 10 }}>
-            {[
-              { label: 'OPDC Contribution', val: '~50 t/day', note: '≤35% MC · D90 ≤ 3mm · Nitrogen source (C:N 20)', color: C.amber },
-              { label: 'Dwell Requirement', val: '≥24 hrs', note: 'pH must stabilise to 8.0–9.0 before release', color: C.amber },
-              { label: 'CLASS A Gate', val: 'MC ≥ 40%', note: 'Non-negotiable moisture floor at screw press', color: C.red },
-              { label: 'PKSA Dose', val: '2–5% w/w', note: 'Palm Kernel Shell Ash · pH neutralisation · Ca + Mg', color: C.green },
-              { label: 'Blended Role', val: 'N Source', note: 'OPDC C:N 20 balances EFB C:N 60 → target 25–30', color: C.teal },
-              { label: 'Greenhouse Temp', val: '55–65°C', note: 'Core temp during 28-day composting cycle', color: C.amber },
-            ].map((item, i) => (
-              <div key={i} style={{ background: C.navyField, border: `1px solid ${C.bdrIdle}`, borderLeft: `3px solid ${item.color}`, borderRadius: 6, padding: '12px 14px' }}>
-                <div style={{ fontFamily: Fnt.dm, fontSize: 10, fontWeight: 700, color: C.grey, textTransform: 'uppercase', marginBottom: 4 }}>{item.label}</div>
-                <div style={{ fontFamily: Fnt.mono, fontSize: 16, fontWeight: 700, color: item.color, marginBottom: 4 }}>{item.val}</div>
-                <div style={{ fontFamily: Fnt.dm, fontSize: 10, color: C.grey, lineHeight: 1.5 }}>{item.note}</div>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ marginTop: 16, padding: '12px 16px', background: 'rgba(0,162,73,.06)', border: `1px solid rgba(0,162,73,.25)`, borderRadius: 6 }}>
-            <div style={{ fontFamily: Fnt.syne, fontSize: 12, fontWeight: 700, color: C.green, marginBottom: 6 }}>S2 Greenhouse Transfer Protocol</div>
-            <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, lineHeight: 1.7 }}>
-              1. OPDC cake exits 24hr dwell bin via screw discharge to S2 mixer<br/>
-              2. Metered with EFB fibre and POS cake to achieve C:N 25–30:1<br/>
-              3. PKSA dosed at 2–5% w/w for pH neutralisation (target 7.0–7.5)<br/>
-              4. Blended substrate formed into covered windrows<br/>
-              5. 28-day thermophilic composting cycle (55–65°C core)<br/>
-              6. Windrow turned every 5–7 days · Forced-air aeration floor<br/>
-              7. Compost maturity test at Day 28 → release to S3 Biological (BSF)
-            </div>
           </div>
         </CollapsibleSection>
       </div>
