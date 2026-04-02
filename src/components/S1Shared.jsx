@@ -250,55 +250,81 @@ export function Pre({ children, accent = C.teal }) {
   );
 }
 
-// ── NODE CARD (expandable equipment card from floor plan pages) ──
+// ── NODE CARD (floor-plan style: SVG illustration left + spec table right + connector) ──
 export function NodeCard({ node, accent = C.teal }) {
-  const [expanded, setExpanded] = useState(false);
   return (
-    <div
-      onClick={() => setExpanded(!expanded)}
-      style={{
-        background: C.navyCard,
-        border: `1px solid ${expanded ? C.tealBdr : C.bdrIdle}`,
-        borderLeft: `4px solid ${expanded ? accent : C.bdrCalc}`,
-        borderRadius: 6, padding: '14px 18px', marginBottom: 8,
-        cursor: 'pointer', transition: 'all .15s',
-        boxShadow: expanded ? '0 2px 12px rgba(64,215,197,.10)' : 'none',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+    <div style={{ marginBottom: 0 }}>
+      <div style={{ display: 'flex', gap: 0, alignItems: 'stretch' }}>
+        {/* LEFT: SVG illustration panel */}
         <div style={{
-          width: 30, height: 30, borderRadius: 6,
-          background: accent, color: C.navy,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontFamily: Fnt.mono, fontSize: 11, fontWeight: 700, flexShrink: 0,
-        }}>{node.id}</div>
-        <div style={{ fontFamily: Fnt.mono, fontSize: 12, fontWeight: 700, color: C.amber, minWidth: 100 }}>{node.tag}</div>
-        <div style={{ flex: 1, fontFamily: Fnt.syne, fontSize: 13, fontWeight: 600, color: C.white }}>{node.name}</div>
-        {node.gate && <span style={{ fontFamily: Fnt.mono, fontSize: 9, fontWeight: 700, padding: '2px 8px', borderRadius: 4, background: node.gate.bg, color: node.gate.color, border: `1px solid ${node.gate.color}` }}>{node.gate.label}</span>}
-        <span style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey }}>{expanded ? '▲' : '▼'}</span>
-      </div>
-      {expanded && (
-        <div style={{ marginTop: 12 }}>
-          <div style={{
-            display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '6px 14px',
-            background: C.navyField, padding: 14, borderRadius: 6, fontSize: 12,
-            border: `1px solid ${C.bdrIdle}`,
-          }}>
-            {node.specs.map(([label, value], i) => (
-              <div key={i} style={{ display: 'contents' }}>
-                <span style={{ fontFamily: Fnt.dm, color: C.grey, fontWeight: 600, fontSize: 11 }}>{label}</span>
-                <span style={{ fontFamily: Fnt.mono, fontWeight: 500, color: C.white, fontSize: 11 }}>{value}</span>
-              </div>
-            ))}
+          width: 160, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center',
+          background: C.navyField, border: `1.5px solid ${C.bdrCalc}`, borderRadius: '4px 0 0 4px', overflow: 'hidden',
+        }}>
+          <div style={{ width: '100%', padding: '4px 4px 2px', borderBottom: `1px solid ${C.bdrCalc}`, background: 'rgba(0,0,0,.2)', textAlign: 'center', fontFamily: Fnt.dm, fontSize: 10, fontWeight: 700, color: C.white, lineHeight: 1.2 }}>
+            {node.imgLabel || node.name}
           </div>
-          {node.footer && (
-            <div style={{ marginTop: 10, paddingTop: 8, borderTop: `1px solid ${C.bdrCalc}`, fontFamily: Fnt.dm, fontSize: 11, color: C.greyLt }}>{node.footer}</div>
-          )}
-          {node.warning && (
-            <div style={{ marginTop: 8, padding: '8px 12px', background: 'rgba(232,64,64,.07)', border: '1px solid rgba(232,64,64,.3)', borderRadius: 5, fontFamily: Fnt.dm, fontSize: 10, color: C.red, lineHeight: 1.6 }}>{node.warning}</div>
+          <div style={{
+            flex: 1, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 4, minHeight: 100,
+            ...(node.noise ? { border: '2px dashed rgba(245,166,35,.4)', background: 'rgba(245,166,35,.03)' } : {}),
+            ...(node.classA ? { border: `2px solid ${C.red}`, background: 'rgba(232,64,64,.04)' } : {}),
+            ...(node.dwell ? { border: `2px solid ${C.amber}`, background: 'rgba(245,166,35,.04)' } : {}),
+          }}>
+            {node.svg ? <div dangerouslySetInnerHTML={{ __html: node.svg }} /> : (
+              <div style={{ fontFamily: Fnt.mono, fontSize: 28, color: C.bdrCalc, opacity: 0.5 }}>{node.id}</div>
+            )}
+          </div>
+          <div style={{ width: '100%', padding: '2px 4px 4px', borderTop: `1px solid ${C.bdrCalc}`, background: 'rgba(0,0,0,.2)', textAlign: 'center', fontFamily: Fnt.dm, fontSize: 10, color: C.grey }}>
+            {node.imgSub || ''}
+          </div>
+        </div>
+
+        {/* RIGHT: Spec data panel */}
+        <div style={{ flex: 1, border: `1.5px solid ${C.bdrCalc}`, borderLeft: 'none', borderRadius: '0 4px 4px 0', display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+          {/* Header row: number badge + tag */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 10px', borderBottom: `1px solid ${C.bdrIdle}` }}>
+            <span style={{ background: accent, color: C.navy, fontSize: 12, fontWeight: 700, padding: '2px 7px', borderRadius: 2, fontFamily: Fnt.dm, flexShrink: 0 }}>{node.id}</span>
+            <span style={{ fontFamily: Fnt.mono, fontSize: 12, fontWeight: 700, color: C.amber }}>{node.tag}</span>
+            {node.gate && <span style={{ marginLeft: 'auto', fontFamily: Fnt.mono, fontSize: 9, fontWeight: 700, padding: '2px 8px', borderRadius: 3, background: node.gate.bg, color: node.gate.color, border: `1px solid ${node.gate.color}` }}>{node.gate.label}</span>}
+          </div>
+          {/* Equipment name */}
+          <div style={{ padding: '4px 10px', borderBottom: `1px solid ${C.bdrIdle}`, fontFamily: Fnt.syne, fontSize: 12, fontWeight: 700, color: C.white }}>
+            {node.name}
+          </div>
+          {/* 2-column spec table */}
+          <table style={{ width: '100%', borderCollapse: 'collapse', flex: 1 }}>
+            <tbody>
+              {node.specs.map(([lA, vA, lB, vB], i) => (
+                <tr key={i} style={{ borderBottom: `1px solid ${C.bdrIdle}` }}>
+                  <td style={{ padding: '3px 10px', fontFamily: Fnt.dm, fontSize: 11, color: C.grey, whiteSpace: 'nowrap', width: '1%' }}>{lA}</td>
+                  <td style={{ padding: '3px 10px', fontFamily: Fnt.dm, fontSize: 11, fontWeight: 700, color: C.white, whiteSpace: 'nowrap' }}>{vA}</td>
+                  {lB !== undefined && <>
+                    <td style={{ borderLeft: `1px solid ${C.bdrIdle}`, padding: 0, width: 1 }}></td>
+                    <td style={{ padding: '3px 10px', fontFamily: Fnt.dm, fontSize: 11, color: C.grey, whiteSpace: 'nowrap', width: '1%' }}>{lB}</td>
+                    <td style={{ padding: '3px 10px', fontFamily: Fnt.dm, fontSize: 11, fontWeight: 700, color: C.white, whiteSpace: 'nowrap' }}>{vB}</td>
+                  </>}
+                </tr>
+              ))}
+              {node.note && (
+                <tr style={{ borderBottom: `1px solid ${C.bdrIdle}` }}>
+                  <td style={{ padding: '3px 10px', fontFamily: Fnt.dm, fontSize: 11, color: C.grey }}>Note</td>
+                  <td colSpan={4} style={{ padding: '3px 10px', fontFamily: Fnt.dm, fontSize: 11, fontWeight: 700, color: C.white }}>{node.note}</td>
+                </tr>
+              )}
+              {node.warning && (
+                <tr style={{ background: 'rgba(232,64,64,.06)' }}>
+                  <td colSpan={5} style={{ padding: '3px 10px', fontFamily: Fnt.dm, fontSize: 11, fontWeight: 700, color: C.red, fontStyle: 'italic' }}>{node.warning}</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+          {/* Connector */}
+          {node.conn && (
+            <div style={{ padding: '3px 10px 4px', borderTop: `1px dashed ${C.bdrCalc}`, fontFamily: Fnt.dm, fontSize: 11, color: C.grey, display: 'flex', alignItems: 'center', gap: 5, marginTop: 'auto' }}>
+              <span style={{ color: C.bdrCalc, fontSize: 11 }}>▾</span> {node.conn}
+            </div>
           )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
