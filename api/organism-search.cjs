@@ -1,17 +1,13 @@
 /**
- * Vercel Serverless Function — POST /api/organism-search
- * Fuzzy search ATCC / DSMZ / NRRL databases via Claude
+ * POST /api/organism-search
+ * AI-powered organism search — disabled in this deployment.
  */
-const Anthropic = require('@anthropic-ai/sdk');
-
-const anthropic = new Anthropic.default({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
-
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+
+  return res.status(503).json({ error: 'AI search feature is not available in this deployment.' });
 
   const { query } = req.body || {};
 

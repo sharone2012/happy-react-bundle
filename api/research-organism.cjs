@@ -1,14 +1,8 @@
 /**
- * Vercel Serverless Function — POST /api/research-organism
- * Execute master-prompt research workflow via Claude, writing results
- * back for organism onboarding with 13-professor expert panel.
+ * POST /api/research-organism
+ * AI-powered organism research — disabled in this deployment.
  */
-const Anthropic = require('@anthropic-ai/sdk');
 const { createClient } = require('@supabase/supabase-js');
-
-const anthropic = new Anthropic.default({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -19,6 +13,12 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+
+  return res.status(503).json({ error: 'AI research feature is not available in this deployment.' });
+};
+
+// ── stub export satisfies module loader ──
+void supabase;
 
   const { organism_name, common_name, category, atcc_id, dsmz_id } = req.body || {};
 
