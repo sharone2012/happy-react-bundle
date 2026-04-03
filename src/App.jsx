@@ -9,8 +9,8 @@ import CFI_SoilAcidity_ProfileCard from "@/components/CFI_SoilAcidity_ProfileCar
 
 
 // ─── SUPABASE LIVE CONNECTION ─────────────────────────────────────────────────
-const SUPA_URL = "https://lcpbtnipkvrmuwllymfw.supabase.co";
-const SUPA_KEY = "sb_publishable_xJ9N0RaYXbY07m8DvtG_zQ_-m8Zzm23";
+const SUPA_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPA_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
 function supaFetch(table) {
   return fetch(SUPA_URL + "/rest/v1/" + table + "?order=last_updated.desc&limit=200", {
