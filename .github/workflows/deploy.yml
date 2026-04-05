@@ -31,11 +31,10 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          if [ -z "${{ secrets.EC2_SSH_KEY }}" ]; then echo "SSH Key is empty"; exit 1; fi
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/deploy_key
+          echo '${{ secrets.EC2_SSH_KEY }}' > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          if [ -z "${{ secrets.EC2_HOST }}" ]; then echo "Host IP is empty"; exit 1; fi
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+          if [ ! -s ~/.ssh/deploy_key ]; then echo "Failed to write deploy_key"; exit 1; fi
+          ssh-keyscan -v -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
       - name: Sync built frontend
         run: |
