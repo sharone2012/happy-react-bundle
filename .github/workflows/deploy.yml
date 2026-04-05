@@ -33,7 +33,10 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.EC2_SSH_KEY }}" | base64 -d > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null && echo "Key is VALID" || echo "Key is INVALID"
+          echo "=== Public key fingerprint ==="
+          ssh-keygen -l -f ~/.ssh/deploy_key
+          echo "=== Public key (add this to EC2 authorized_keys if missing) ==="
+          ssh-keygen -y -f ~/.ssh/deploy_key
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -o BatchMode=yes \
             ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "echo SSH_OK"
