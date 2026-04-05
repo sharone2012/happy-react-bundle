@@ -648,6 +648,92 @@ export default function S1Hub() {
           ))}
         </div>
 
+        {/* ── FLOOR PLAN PRINT BUTTONS ── */}
+        <div style={{ marginTop: 20, marginBottom: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+            <div style={{ width: 3, height: 14, borderRadius: 2, background: C.teal, flexShrink: 0 }} />
+            <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 13, color: C.teal, textTransform: 'uppercase', letterSpacing: '.06em' }}>
+              Floor Plan Print / PDF
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            <button
+              onClick={() => window.open('/s1-floor-plan-print?line=all&print', '_blank')}
+              style={{
+                padding: '8px 18px',
+                background: 'rgba(0,137,123,.12)',
+                border: '1.5px solid rgba(0,137,123,.45)',
+                borderRadius: 7,
+                fontFamily: Fnt.dm,
+                fontSize: 13,
+                fontWeight: 700,
+                color: C.teal,
+                cursor: 'pointer',
+                letterSpacing: '.02em',
+              }}
+            >
+              &#128196; All Residues Combined
+            </button>
+            {site?.efb_enabled && (
+              <button
+                onClick={() => window.open('/s1-floor-plan-print?line=efb&print', '_blank')}
+                style={{
+                  padding: '8px 18px',
+                  background: `${C.teal}14`,
+                  border: `1.5px solid ${C.teal}55`,
+                  borderRadius: 7,
+                  fontFamily: Fnt.dm,
+                  fontSize: 13,
+                  fontWeight: 700,
+                  color: C.teal,
+                  cursor: 'pointer',
+                  letterSpacing: '.02em',
+                }}
+              >
+                EFB Line
+              </button>
+            )}
+            {site?.opdc_enabled && (
+              <button
+                onClick={() => window.open('/s1-floor-plan-print?line=opdc&print', '_blank')}
+                style={{
+                  padding: '8px 18px',
+                  background: `${C.amber}14`,
+                  border: `1.5px solid ${C.amber}55`,
+                  borderRadius: 7,
+                  fontFamily: Fnt.dm,
+                  fontSize: 13,
+                  fontWeight: 700,
+                  color: C.amber,
+                  cursor: 'pointer',
+                  letterSpacing: '.02em',
+                }}
+              >
+                OPDC Line
+              </button>
+            )}
+            {site?.pos_enabled && (
+              <button
+                onClick={() => window.open('/s1-floor-plan-print?line=pos&print', '_blank')}
+                style={{
+                  padding: '8px 18px',
+                  background: 'rgba(59,130,246,.12)',
+                  border: '1.5px solid rgba(59,130,246,.4)',
+                  borderRadius: 7,
+                  fontFamily: Fnt.dm,
+                  fontSize: 13,
+                  fontWeight: 700,
+                  color: '#3B82F6',
+                  cursor: 'pointer',
+                  letterSpacing: '.02em',
+                }}
+              >
+                POS Line
+              </button>
+            )}
+          </div>
+        </div>
+
         {/* GUARDRAILS */}
         <div className="sec-title st-red" style={{ marginTop: 32 }}>9 Hard Guardrails — S1 Processing</div>
         <div className="guardrail-grid">

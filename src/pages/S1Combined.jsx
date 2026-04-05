@@ -339,6 +339,24 @@ export default function S1Combined() {
           <div style={{ textAlign: "right" }}>
             <div style={{ fontFamily: F, fontSize: 14, fontWeight: 500, color: "#E2E8F0" }}>Mill Size: 60 ton/hour</div>
             <div style={{ fontFamily: F, fontSize: 13, color: "#94A3B8", marginTop: 2 }}>EFB 20→13 t/h | OPDC 5→3.3 t/h | POS 1.25→0.56 t/h</div>
+            <button
+              onClick={() => window.open(`/s1-floor-plan-print?line=${activeTab}&print`, '_blank')}
+              style={{
+                marginTop: 10,
+                padding: "7px 16px",
+                background: "rgba(64,215,197,.12)",
+                border: "1.5px solid rgba(64,215,197,.4)",
+                borderRadius: 6,
+                fontFamily: F,
+                fontSize: 12,
+                fontWeight: 700,
+                color: "#40D7C5",
+                cursor: "pointer",
+                letterSpacing: ".02em",
+              }}
+            >
+              &#128196; Print {tabs.find(t => t.id === activeTab)?.label || "Line"} — PDF
+            </button>
           </div>
         </div>
       </div>
