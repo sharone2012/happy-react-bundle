@@ -31,35 +31,38 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
+          # فك تشفير المفتاح
           echo "${{ secrets.EC2_SSH_KEY }}" | base64 -d > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          head -n 1 ~/.ssh/deploy_key
+          
+          # إضافة الهوست للمفاتيح المعروفة
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+          # إعداد ملف SSH Config لإجبار rsync على استخدام المفتاح الصحيح
+          echo "Host target-server" > ~/.ssh/config
+          echo "    HostName ${{ secrets.EC2_HOST }}" >> ~/.ssh/config
+          echo "    User ${{ secrets.EC2_USER }}" >> ~/.ssh/config
+          echo "    IdentityFile ~/.ssh/deploy_key" >> ~/.ssh/config
+          echo "    StrictHostKeyChecking no" >> ~/.ssh/config
 
       - name: Sync built frontend
         run: |
-          rsync -az --delete \
-            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
-            dist/ \
-            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/app/dist/
+          # نستخدم 'target-server' المعرف في الـ config أعلاه
+          rsync -az --delete dist/ target-server:~/app/dist/
 
       - name: Sync server files
         run: |
-          rsync -az \
-            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
-            server.cjs ecosystem.config.cjs nginx.conf package.json package-lock.json \
-            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/app/
-
+          # دمج الملفات في أمر واحد لتسريع العملية
+          rsync -az server.cjs ecosystem.config.cjs nginx.conf package.json package-lock.json target-server:~/app/
+          
           if [ -d "api" ]; then
-            rsync -az \
-              -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
-              api/ \
-              ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/app/api/
+            rsync -az api/ target-server:~/app/api/
           fi
 
       - name: Install prod deps & restart API
         run: |
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
+          # الاتصال باستخدام الاسم المختصر target-server
+          ssh target-server << 'ENDSSH'
             set -e
             cd ~/app
             
