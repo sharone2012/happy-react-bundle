@@ -11,6 +11,7 @@ import S1Opdc from "./pages/S1Opdc.jsx";
 import S1Pos from "./pages/S1Pos.jsx";
 import S1Combined from "./pages/S1Combined.jsx";
 import S1Engineering from "./pages/S1Engineering";
+import S1EngineeringPrint from "./pages/S1EngineeringPrint.jsx";
 import S1Financials from "./pages/S1Financials";
 import S0ResidueSelector from "./pages/S0ResidueSelector.jsx";
 import CFI_AG_Management_Planning_Calculator from "./CFI_AG_Management_Planning_Calculator.jsx";
@@ -32,6 +33,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/s1/pos" element={<S1Pos />} />
         <Route path="/s1-combined" element={<S1Combined />} />
         <Route path="/s1-engineering" element={<S1Engineering />} />
+        <Route path="/s1-engineering-print" element={<S1EngineeringPrint />} />
         <Route path="/s0-residue-select" element={<S0ResidueSelector />} />
 
         {/* S1 redirects from old paths */}

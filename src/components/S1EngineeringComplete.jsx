@@ -324,6 +324,12 @@ export default function S1_Engineering() {
             <span style={s.tagline}>60 TPH FFB Mill \u00b7 Bogor, West Java</span>
           </div>
           <div style={{ flex: 1 }} />
+          <button
+            onClick={() => window.open('/s1-engineering-print?print', '_blank')}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 16px', background: T.tealL, border: `1px solid ${T.teal}`, borderRadius: 5, color: T.teal, fontFamily: F, fontSize: 12, fontWeight: 700, cursor: 'pointer', letterSpacing: '.02em' }}
+          >
+            &#128196; Complete Engineering — PDF
+          </button>
           <span style={{ fontFamily: F, fontSize: 11, color: T.grey }}>S1 Rev 01 \u00b7 March 2026</span>
         </div>
 

@@ -593,6 +593,23 @@ export default function S1Hub() {
             >
               All Residues Combined
             </button>
+            <button
+              onClick={() => window.open('/s1-engineering-print?print', '_blank')}
+              style={{
+                padding: '8px 18px',
+                background: 'rgba(0,137,123,.1)',
+                border: '1.5px solid rgba(0,137,123,.4)',
+                borderRadius: 7,
+                fontFamily: Fnt.dm,
+                fontSize: 13,
+                fontWeight: 700,
+                color: C.teal,
+                cursor: 'pointer',
+                letterSpacing: '.02em',
+              }}
+            >
+              &#128196; Complete Engineering — Print / PDF
+            </button>
           </div>
         </div>
       )}
