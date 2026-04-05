@@ -31,10 +31,10 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          echo '${{ secrets.EC2_SSH_KEY }}' > ~/.ssh/deploy_key
+          echo "${{ secrets.EC2_SSH_KEY }}" | base64 -d > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          if [ ! -s ~/.ssh/deploy_key ]; then echo "Failed to write deploy_key"; exit 1; fi
-          ssh-keyscan -v -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+          head -n 1 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
       - name: Sync built frontend
         run: |
