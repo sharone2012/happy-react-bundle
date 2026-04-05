@@ -1,5 +1,5 @@
 /**
- * Vercel Serverless Function — POST /api/insert-organism
+ * Express API route — POST /api/insert-organism
  * Insert organism into biological_library + cfi_soil_organism_performance.
  * All records are set is_approved = false pending Sharon approval.
  */
