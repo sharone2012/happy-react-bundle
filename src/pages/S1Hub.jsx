@@ -114,16 +114,6 @@ const QUICK_LINKS = [
   { title: 'OPDC 1-Page (PL,P)', sub: 'Single-page engineering summary', accent: C.amber, live: true, route: '/s1/opdc' },
 ];
 
-// ── KPI DATA ──
-const kpis = [
-  { label: 'Building CAPEX', val: '$1,374,610', unit: 'S1 Building Only · Indo Rates' },
-  { label: 'Equipment CAPEX', val: '$398,000', unit: 'POS decanter RFQ pending' },
-  { label: 'Monthly OPEX', val: '$37,957', unit: 'Labour + Electricity + Maint', suffix: '/mo' },
-  { label: 'Processing Lines', val: '3', unit: 'EFB · OPDC · POS', color: C.teal },
-  { label: 'Facility Area', val: '2,450', unit: 'Building footprint', suffix: ' m²', color: C.teal },
-  { label: 'Total Power', val: '617', unit: 'All 3 lines combined', suffix: ' kW', color: C.teal },
-];
-
 // ── GUARDRAILS ──
 const guardrails = [
   { icon: '💧', label: 'MC ≥40%', val: 'LOCKED', cls: 'red', note: 'CLASS A · OPDC screw press' },
@@ -139,7 +129,6 @@ const guardrails = [
 
 export default function S1Hub() {
   const nav = useNavigate();
-  const [capexOpen, setCapexOpen] = useState(false);
   const { site, derived } = useMill();
   const [activeModal, setActiveModal] = useState(null);
 
@@ -168,18 +157,6 @@ export default function S1Hub() {
     { num: 'Eng', title: 'Engineering Overview', desc: '24 equipment nodes · 3 processing lines · Full engineering spec with CAPEX + OPEX + Greenhouse + Guardrails', accent: C.grey, icon: '📐', tags: ['24 Nodes', '3 Lines', 'Full Spec'], route: '/s1-engineering' },
     { num: 'FP', title: 'Combined Floor Plans', desc: 'Tabbed floor plans · EFB · OPDC · POS · Building dimensions · Node cards with specs', accent: C.teal, icon: '🏭', tags: ['3 Floor Plans', 'Node Cards', 'Dimensions'], route: '/s1-combined' },
     { num: 'CAP', title: 'Financials — CAPEX / OPEX', desc: 'Building $1.37M · Equipment $372K · Labour $3,576 · Electricity $22,648 · Maintenance $11,733 · Total $37,957/mo', accent: C.amber, icon: '💰', tags: ['Building CAPEX', 'Equipment', 'OpEx', 'Site Metrics'], route: '/s1-capex-opex' },
-  ];
-
-  // Building CAPEX line items
-  const buildingCapex = [
-    { code: 'A1', name: 'S1C EFB Processing Hall', cost: '$425,000' },
-    { code: 'A2', name: 'S1B OPDC Processing Bay', cost: '$185,000' },
-    { code: 'A3', name: 'Shared Infrastructure', cost: '$312,610' },
-    { code: 'A4', name: 'Drying Yard & Hardstand', cost: '$95,000' },
-    { code: 'A5', name: 'Storage & Bagging', cost: '$142,000' },
-    { code: 'A6', name: 'Office & Laboratory', cost: '$78,000' },
-    { code: 'A7', name: 'Utilities & Services', cost: '$89,000' },
-    { code: 'A8', name: 'Contingency (5%)', cost: '$48,000' },
   ];
 
   return (
@@ -630,17 +607,6 @@ export default function S1Hub() {
       </div>
 
       <div className="content">
-        {/* KPI METRICS */}
-        <div className="metrics-strip">
-          {kpis.map((k, i) => (
-            <div key={i} className="metric">
-              <div className="metric-lbl">{k.label}</div>
-              <div className="metric-val" style={k.color ? { color: k.color } : {}}>{k.val}{k.suffix || ''}</div>
-              <div className="metric-unit">{k.unit}</div>
-            </div>
-          ))}
-        </div>
-
         {/* MODULE GRID */}
         <div className="sec-title st-teal">Select A Module</div>
         <div className="module-grid">
@@ -649,7 +615,7 @@ export default function S1Hub() {
               key={i}
               className="module-btn"
               style={{ '--accent': m.accent }}
-              onClick={() => m.route ? nav(m.route) : m.action === 'capex' && setCapexOpen(!capexOpen)}
+              onClick={() => m.route && nav(m.route)}
             >
               <span className="mb-status ms-live">Live ✓</span>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -664,42 +630,6 @@ export default function S1Hub() {
             </div>
           ))}
         </div>
-
-        {/* INLINE CAPEX SECTION */}
-        {capexOpen && (
-          <div style={{ marginTop: 20, background: C.navyCard, border: `1.5px solid ${C.bdrIdle}`, borderRadius: 11, overflow: 'hidden' }}>
-            <div style={{ padding: '16px 20px', borderBottom: `1px solid ${C.bdrIdle}`, display: 'flex', alignItems: 'center', gap: 12 }}>
-              <div style={{ fontFamily: Fnt.syne, fontSize: 14, fontWeight: 700, color: C.amber }}>BUILDING CAPEX BREAKDOWN</div>
-              <div style={{ marginLeft: 'auto', fontFamily: Fnt.mono, fontSize: 16, fontWeight: 700, color: C.amber }}>$1,374,610</div>
-            </div>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr style={{ background: 'rgba(0,0,0,.3)' }}>
-                  <th style={{ padding: '8px 16px', textAlign: 'left', fontFamily: Fnt.mono, fontSize: 10, fontWeight: 700, color: C.grey, textTransform: 'uppercase', letterSpacing: '.04em' }}>Code</th>
-                  <th style={{ padding: '8px 16px', textAlign: 'left', fontFamily: Fnt.mono, fontSize: 10, fontWeight: 700, color: C.grey, textTransform: 'uppercase' }}>Item</th>
-                  <th style={{ padding: '8px 16px', textAlign: 'right', fontFamily: Fnt.mono, fontSize: 10, fontWeight: 700, color: C.grey, textTransform: 'uppercase' }}>Cost</th>
-                </tr>
-              </thead>
-              <tbody>
-                {buildingCapex.map((row, i) => (
-                  <tr key={i} style={{ borderBottom: '1px solid rgba(30,107,140,.15)' }}>
-                    <td style={{ padding: '8px 16px', fontFamily: Fnt.mono, fontSize: 12, fontWeight: 700, color: C.teal }}>{row.code}</td>
-                    <td style={{ padding: '8px 16px', fontFamily: Fnt.dm, fontSize: 12, color: C.white }}>{row.name}</td>
-                    <td style={{ padding: '8px 16px', textAlign: 'right', fontFamily: Fnt.mono, fontSize: 13, fontWeight: 700, color: C.amber }}>{row.cost}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div style={{ padding: '12px 20px', background: 'rgba(0,0,0,.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey }}>
-                Base $883,880 → +8% Contingency → +20% EPC → +20% Developer Markup
-              </div>
-              <div style={{ fontFamily: Fnt.mono, fontSize: 11, color: C.green }}>
-                Save ~$678K vs Western
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* GUARDRAILS */}
         <div className="sec-title st-red" style={{ marginTop: 32 }}>9 Hard Guardrails — S1 Processing</div>

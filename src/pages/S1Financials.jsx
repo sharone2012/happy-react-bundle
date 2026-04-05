@@ -442,9 +442,45 @@ function CapexGroup({ grp }) {
 }
 
 // ── MAIN PAGE ──
+// ── MetricCard helper ──
+function MetricCard({ m }) {
+  return (
+    <div style={{
+      display: "flex", flexDirection: "column",
+      padding: "8px 10px",
+      background: "rgba(255,255,255,0.025)",
+      borderRadius: 6,
+      borderLeft: `3px solid ${C.teal}44`,
+    }}>
+      <span style={{ fontFamily: Fnt.dm, fontWeight: 700, fontSize: 10, color: C.grey, textTransform: "uppercase", letterSpacing: ".04em" }}>
+        {m.label}
+      </span>
+      <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 13, color: C.teal, margin: "2px 0" }}>
+        {m.val}
+      </span>
+      <span style={{ fontFamily: Fnt.dm, fontSize: 10, color: C.greyLt }}>
+        {m.note}
+      </span>
+    </div>
+  );
+}
+
+const DESIGN_DRAWINGS = [
+  { title: "Site Master Plan",       sub: "98m × 85m · All zones · North arrow",           route: "#" },
+  { title: "Building Architecture",  sub: "Floor · Elevation · Section · 3D · Machinery",  route: "#" },
+  { title: "Building Floor Plan",    sub: "36×35m · All machines ①–② · Legend",           route: "#" },
+  { title: "Greenhouse Design",      sub: "Site plan · Section XX · Store",                 route: "#" },
+  { title: "EFB Floor Plan",         sub: "①–② · 20 t/h · 10 machines · 600mm belt",      route: "/s1/efb" },
+  { title: "OPDC Floor Plan",        sub: "①–② · 5 t/h · CLASS A gate",                   route: "/s1/opdc" },
+  { title: "EFB ASCII Flow",         sub: "Step-by-step · machines · specs · gates",        route: "/s1/efb" },
+  { title: "OPDC ASCII Flow",        sub: "Step-by-step · CLASS A gate · 24h dwell",        route: "/s1/opdc" },
+  { title: "POS ASCII Flow",         sub: "ICP-OES Fe gate · decanter · inclusion rate",   route: "/s1/pos" },
+];
+
 export default function S1Financials() {
   const nav = useNavigate();
   const [modalOpen, setModalOpen]   = useState(false);
+  const [siteOpen, setSiteOpen]     = useState(false);
   const [opexSects, setOpexSects]   = useState({ labour: false, electricity: false, maintenance: false });
 
   const toggleOpex = (key) =>
@@ -513,34 +549,135 @@ export default function S1Financials() {
 
           {/* ── PANEL M: SITE METRICS ── */}
           <div style={{ background: C.navyCard, border: `1.5px solid ${C.bdrIdle}`, borderRadius: 11, overflow: "hidden" }}>
-            <div style={{
-              padding: "14px 18px", background: `${C.teal}12`,
-              borderBottom: `1px solid ${C.teal}30`,
-              display: "flex", alignItems: "center", gap: 10,
-            }}>
-              <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 13, color: C.teal }}>M</span>
-              <span style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 13, color: C.white }}>Site &amp; Facility Metrics</span>
+
+            {/* ── Title row — collapsible, Lab Analysis style ── */}
+            <div
+              onClick={() => setSiteOpen(o => !o)}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(0,201,177,0.09)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "rgba(0,201,177,0.048)"; }}
+              style={{
+                padding: "13px 16px",
+                background: "rgba(0,201,177,0.048)",
+                borderBottom: `1px solid ${C.teal}22`,
+                display: "flex", alignItems: "center", gap: 10,
+                cursor: "pointer",
+                transition: "background 0.15s ease",
+              }}
+            >
+              {/* Chevron */}
+              <span style={{
+                fontSize: 22,
+                color: siteOpen ? "#F5A623" : "#FFFFFF",
+                transform: siteOpen ? "rotate(90deg)" : "rotate(0deg)",
+                transition: "transform 0.2s ease, color 0.15s ease",
+                display: "inline-block",
+                lineHeight: 1,
+                flexShrink: 0,
+              }}>›</span>
+              {/* Badge */}
+              <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 13, color: C.teal, flexShrink: 0 }}>M</span>
+              {/* Label */}
+              <span style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 13, color: C.white, flex: 1 }}>
+                Site &amp; Facility Metrics
+              </span>
+              {/* Scope badge + toggle */}
+              <div style={{
+                display: "flex", alignItems: "center", gap: 6,
+                padding: "3px 9px", borderRadius: 5,
+                background: `${C.teal}18`,
+                border: `1px solid ${C.teal}44`,
+                fontFamily: Fnt.mono, fontSize: 9, fontWeight: 700, color: C.teal,
+                whiteSpace: "nowrap", flexShrink: 0,
+              }}>
+                S1 Building Only
+                <span style={{ marginLeft: 4, color: siteOpen ? "#F5A623" : C.teal, fontSize: 11, transition: "color 0.15s" }}>
+                  {siteOpen ? "▲" : "▼"}
+                </span>
+              </div>
             </div>
-            <div style={{ padding: "12px 16px", display: "flex", flexDirection: "column", gap: 8 }}>
-              {SITE_METRICS.map((m, i) => (
-                <div key={i} style={{
-                  display: "flex", flexDirection: "column",
-                  padding: "8px 10px",
-                  background: "rgba(255,255,255,0.025)",
-                  borderRadius: 6,
-                  borderLeft: `3px solid ${C.teal}44`,
-                }}>
-                  <span style={{ fontFamily: Fnt.dm, fontWeight: 700, fontSize: 10, color: C.grey, textTransform: "uppercase", letterSpacing: ".04em" }}>
-                    {m.label}
-                  </span>
-                  <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 13, color: C.teal, margin: "2px 0" }}>
-                    {m.val}
-                  </span>
-                  <span style={{ fontFamily: Fnt.dm, fontSize: 10, color: C.greyLt }}>
-                    {m.note}
-                  </span>
+
+            {/* ── Metrics body ── */}
+            <div style={{ padding: "12px 14px 6px" }}>
+              {/* Always-visible first 2 metrics */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 6 }}>
+                {SITE_METRICS.slice(0, 2).map((m, i) => (
+                  <MetricCard key={i} m={m} />
+                ))}
+              </div>
+
+              {/* Expanded metrics */}
+              {siteOpen && (
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 6 }}>
+                  {SITE_METRICS.slice(2).map((m, i) => (
+                    <MetricCard key={i} m={m} />
+                  ))}
                 </div>
-              ))}
+              )}
+
+              {/* ▼ More / ▲ Less toggle row */}
+              <div
+                onClick={() => setSiteOpen(o => !o)}
+                style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                  padding: "7px 10px",
+                  borderTop: "1px solid rgba(51,212,188,0.10)",
+                  background: "rgba(0,0,0,0.15)",
+                  borderRadius: "0 0 4px 4px",
+                  cursor: "pointer",
+                  marginTop: 4,
+                }}
+              >
+                <span style={{ fontFamily: Fnt.mono, fontSize: 10, fontWeight: 700, color: "#A8BDD0" }}>
+                  {siteOpen ? "▲ More Site Metrics" : "▼ More Site Metrics"}
+                </span>
+                {!siteOpen && (
+                  <span style={{ fontFamily: Fnt.dm, fontSize: 10, color: "#666" }}>8 more items →</span>
+                )}
+              </div>
+            </div>
+
+            {/* ── OPEN DESIGN DRAWINGS ── */}
+            <div style={{ padding: "0 14px 14px" }}>
+              <div style={{
+                fontFamily: Fnt.mono, fontSize: 10, fontWeight: 700,
+                color: C.grey, textTransform: "uppercase", letterSpacing: ".04em",
+                padding: "10px 2px 8px",
+                borderTop: "1px solid rgba(51,212,188,0.10)",
+              }}>
+                Open Design Drawings
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 7 }}>
+                {DESIGN_DRAWINGS.map((d, i) => (
+                  <div
+                    key={i}
+                    onClick={() => d.route !== "#" ? nav(d.route) : undefined}
+                    style={{
+                      background: "rgba(255,255,255,0.03)",
+                      border: "1px solid rgba(139,160,180,0.12)",
+                      borderRadius: 6,
+                      padding: "9px 10px 8px",
+                      cursor: d.route !== "#" ? "pointer" : "default",
+                      position: "relative",
+                      transition: "background 0.15s",
+                    }}
+                    onMouseEnter={e => { if (d.route !== "#") e.currentTarget.style.background = "rgba(51,212,188,0.06)"; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.03)"; }}
+                  >
+                    {/* Arrow icon */}
+                    <span style={{
+                      position: "absolute", top: 6, right: 8,
+                      fontFamily: Fnt.mono, fontSize: 9,
+                      color: d.route !== "#" ? C.teal : "rgba(139,160,180,0.3)",
+                    }}>↗</span>
+                    <div style={{ fontFamily: Fnt.dm, fontWeight: 700, fontSize: 11, color: C.white, marginBottom: 3, paddingRight: 14 }}>
+                      {d.title}
+                    </div>
+                    <div style={{ fontFamily: Fnt.dm, fontSize: 9, color: C.grey, lineHeight: 1.4 }}>
+                      {d.sub}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
