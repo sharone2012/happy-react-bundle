@@ -8,6 +8,8 @@ import S3ABioLibrary from "./pages/S3ABioLibrary.jsx";
 import S1Hub from "./pages/S1Hub.jsx";
 import S1Efb from "./pages/S1Efb.jsx";
 import S1Opdc from "./pages/S1Opdc.jsx";
+import S1EfbDetail from "./pages/S1EfbDetail.jsx";
+import S1OpdcDetail from "./pages/S1OpdcDetail.jsx";
 import S1Pos from "./pages/S1Pos.jsx";
 import S1Combined from "./pages/S1Combined.jsx";
 import S1Engineering from "./pages/S1Engineering";
@@ -29,8 +31,8 @@ createRoot(document.getElementById("root")!).render(
 
         {/* S1 new routes */}
         <Route path="/s1" element={<S1Hub />} />
-        <Route path="/s1/efb" element={<S1Efb />} />
-        <Route path="/s1/opdc" element={<S1Opdc />} />
+        <Route path="/s1/efb" element={<S1EfbDetail />} />
+        <Route path="/s1/opdc" element={<S1OpdcDetail />} />
         <Route path="/s1/pos" element={<S1Pos />} />
         <Route path="/s1-combined" element={<S1Combined />} />
         <Route path="/s1-engineering" element={<S1Engineering />} />
