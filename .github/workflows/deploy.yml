@@ -31,29 +31,9 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-
-          # --- DIAGNOSTICS ---
-          echo "=== Secret length ==="
-          echo -n "${{ secrets.EC2_SSH_KEY }}" | wc -c
-
-          echo "=== Writing key ==="
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/deploy_key
-          sed -i 's/\r//' ~/.ssh/deploy_key
-
-          echo "=== File size (bytes) ==="
-          wc -c ~/.ssh/deploy_key
-
-          echo "=== File lines ==="
-          wc -l ~/.ssh/deploy_key
-
-          echo "=== First 50 chars (hex) ==="
-          xxd ~/.ssh/deploy_key | head -3
-
-          echo "=== Key validation ==="
-          ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null && echo "Key is VALID" || echo "Key is INVALID"
-          # --- END DIAGNOSTICS ---
-
+          echo "${{ secrets.EC2_SSH_KEY }}" | base64 -d > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
+          ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null && echo "Key is VALID" || echo "Key is INVALID"
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -o BatchMode=yes \
             ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "echo SSH_OK"
