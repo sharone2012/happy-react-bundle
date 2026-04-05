@@ -11,6 +11,7 @@ import S1Opdc from "./pages/S1Opdc.jsx";
 import S1Pos from "./pages/S1Pos.jsx";
 import S1Combined from "./pages/S1Combined.jsx";
 import S1Engineering from "./pages/S1Engineering";
+import S1Financials from "./pages/S1Financials";
 import S0ResidueSelector from "./pages/S0ResidueSelector.jsx";
 import CFI_AG_Management_Planning_Calculator from "./CFI_AG_Management_Planning_Calculator.jsx";
 import "./index.css";
@@ -36,7 +37,7 @@ createRoot(document.getElementById("root")!).render(
         {/* S1 redirects from old paths */}
         <Route path="/s1-index" element={<Navigate to="/s1" replace />} />
         <Route path="/S1-index" element={<Navigate to="/s1" replace />} />
-        <Route path="/s1-capex-opex" element={<Navigate to="/s1" replace />} />
+        <Route path="/s1-capex-opex" element={<S1Financials />} />
         <Route path="/s1-efb-ascii" element={<Navigate to="/s1/efb" replace />} />
         <Route path="/s1-efb-spec" element={<Navigate to="/s1/efb" replace />} />
         <Route path="/s1-floor-efb" element={<Navigate to="/s1/efb" replace />} />
