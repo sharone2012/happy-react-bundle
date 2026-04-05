@@ -16,7 +16,7 @@
 
 ---
 
-## 📊 DATABASE OVERVIEW
+## 📊 DATABASE OVERVIEW[]
 
 ### **Schema Statistics:**
 - **Schemas:** 2 (public, lab_analysis)
