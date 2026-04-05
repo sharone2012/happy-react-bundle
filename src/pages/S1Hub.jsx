@@ -41,6 +41,77 @@ const S1_OUTFLOWS = [
   ]},
 ];
 
+// ── S1 LEADERBOARD — one entry per processing line ──
+const LEADERBOARD_LINES = [
+  {
+    name: 'EFB',
+    accent: C.teal,
+    tonnes: 275,
+    mcIn: '62.5%',
+    mcOut: '47.5%',
+    mcReduction: '24.0%',
+    linFrac: '70.0%',
+    cn: '60:1',
+    bf: '18:1',
+    npk: { N: '0.76–2.32', P: '0.20–0.30', K: '1.90–2.20' },
+    guardrail: 'DM < 5mm | MC 63.5%',
+    route: '/s1/efb',
+  },
+  {
+    name: 'OPDC',
+    accent: C.amber,
+    tonnes: 42,
+    mcIn: '70–75%',
+    mcOut: '≤35%',
+    mcReduction: '54.0%',
+    linFrac: '14.5%',
+    cn: '20:1',
+    bf: '18:1',
+    npk: { N: '2.32', P: '0.30', K: '1.90' },
+    guardrail: 'MC ≥ 40% CLASS A | pH 8–9',
+    route: '/s1/opdc',
+  },
+  {
+    name: 'POS',
+    accent: '#3B82F6',
+    tonnes: 31,
+    mcIn: '82%',
+    mcOut: '65–70%',
+    mcReduction: '18.0%',
+    linFrac: '11.0%',
+    cn: '19:1',
+    bf: '10:1',
+    npk: { N: '1.76', P: '—', K: '—' },
+    guardrail: 'Fe gated | Decanted 70–75% MC',
+    route: '/s1/pos',
+  },
+  {
+    name: 'Block 4',
+    accent: C.grey,
+    tonnes: null,
+    mcIn: '—',
+    mcOut: '—',
+    mcReduction: '—',
+    linFrac: '—',
+    cn: '—',
+    bf: '—',
+    npk: { N: '—', P: '—', K: '—' },
+    guardrail: 'Pending specification',
+    route: null,
+    placeholder: true,
+  },
+];
+
+// ── S1 QUICK-ACCESS LINKS ──
+const QUICK_LINKS = [
+  { title: 'EFB ASCII Process Flow', sub: '10 nodes · 20 t/h · 600mm belt', accent: C.teal, live: true, route: '/s1/efb' },
+  { title: 'EFB Floor Plan', sub: 'Building dimensions · Node cards', accent: C.teal, live: false, route: '/s1-combined' },
+  { title: 'EFB 1-Pager (PL,P)', sub: 'Single-page engineering summary', accent: C.teal, live: true, route: '/s1/efb' },
+  { title: 'OPDC ASCII Process Flow', sub: '10 nodes · 5 t/h · CLASS A gate', accent: C.amber, live: true, route: '/s1/opdc' },
+  { title: 'OPDC Floor Plan', sub: 'Building dimensions · Node cards', accent: C.amber, live: false, route: '/s1-combined' },
+  { title: 'OPDC 1-Page (PL,P)', sub: 'Single-page engineering summary', accent: C.amber, live: true, route: '/s1/opdc' },
+];
+
 // ── KPI DATA ──
 const kpis = [
   { label: 'Building CAPEX', val: '$1,374,610', unit: 'S1 Building Only · Indo Rates' },
@@ -124,6 +195,133 @@ export default function S1Hub() {
           <div className="ho-pill"><div className="ho-val">15.2%</div><div className="ho-unit">OPDC Yield (of EFB)</div></div>
           <div className="ho-pill"><div className="ho-val">30</div><div className="ho-unit">t/day POS Volume</div></div>
           <div className="ho-pill"><div className="ho-val">Ultisol</div><div className="ho-unit">Soil Type</div></div>
+        </div>
+      </div>
+
+      {/* ── S1 LEADERBOARD ── */}
+      <div style={{ margin: '20px 28px 0' }}>
+        {/* Section title */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+          <div style={{ width: 3, height: 14, borderRadius: 2, background: '#F5C842', flexShrink: 0 }} />
+          <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 13, color: '#F5C842', textTransform: 'uppercase', letterSpacing: '.06em' }}>
+            S1 Processing Lines — Live Status
+          </div>
+        </div>
+
+        {/* 4-column stream cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14 }}>
+          {LEADERBOARD_LINES.map((line, i) => (
+            <div
+              key={i}
+              onClick={() => !line.placeholder && line.route && nav(line.route)}
+              style={{
+                background: line.placeholder ? 'rgba(10,22,40,.6)' : C.navyCard,
+                border: `1.5px solid ${line.placeholder ? 'rgba(139,160,180,.15)' : line.accent + '44'}`,
+                borderTop: `3px solid ${line.accent}`,
+                borderRadius: 11,
+                padding: '14px 16px',
+                cursor: line.placeholder ? 'default' : 'pointer',
+                opacity: line.placeholder ? 0.5 : 1,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 10,
+              }}
+            >
+              {/* Header row */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 16, color: line.accent }}>{line.name}</div>
+                {line.tonnes !== null && (
+                  <div style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 22, color: C.white }}>
+                    {line.tonnes}
+                    <span style={{ fontFamily: Fnt.dm, fontSize: 10, color: C.grey, fontWeight: 400, marginLeft: 3 }}>t/day</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Metric rows */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px 12px' }}>
+                {[
+                  { lbl: 'MOISTURE INLET', val: line.mcIn },
+                  { lbl: 'LINEAR FRACTION', val: line.linFrac },
+                  { lbl: 'MOISTURE OUT', val: line.mcOut },
+                  { lbl: 'MC REDUCTION', val: line.mcReduction },
+                  { lbl: 'C:N RATIO', val: line.cn },
+                  { lbl: 'B:F RATIO', val: line.bf },
+                ].map((m, j) => (
+                  <div key={j}>
+                    <div style={{ fontFamily: Fnt.dm, fontSize: 9, fontWeight: 700, color: C.grey, textTransform: 'uppercase', letterSpacing: '.05em', marginBottom: 1 }}>{m.lbl}</div>
+                    <div style={{ fontFamily: Fnt.mono, fontSize: 13, fontWeight: 700, color: C.amber }}>{m.val}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* NPK strip */}
+              <div style={{ display: 'flex', gap: 8, padding: '6px 10px', background: 'rgba(0,0,0,.25)', borderRadius: 6 }}>
+                {['N', 'P', 'K'].map(k => (
+                  <div key={k} style={{ flex: 1, textAlign: 'center' }}>
+                    <div style={{ fontFamily: Fnt.dm, fontSize: 9, fontWeight: 700, color: C.grey, textTransform: 'uppercase' }}>{k}</div>
+                    <div style={{ fontFamily: Fnt.mono, fontSize: 11, fontWeight: 700, color: C.teal }}>{line.npk[k]}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Guardrail tag */}
+              <div style={{
+                marginTop: 'auto',
+                padding: '4px 9px',
+                background: line.placeholder ? 'rgba(139,160,180,.06)' : `${line.accent}18`,
+                border: `1px solid ${line.placeholder ? 'rgba(139,160,180,.2)' : line.accent + '55'}`,
+                borderRadius: 5,
+                fontFamily: Fnt.mono,
+                fontSize: 9,
+                fontWeight: 700,
+                color: line.placeholder ? C.grey : line.accent,
+                letterSpacing: '.03em',
+              }}>
+                {line.guardrail}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Quick-access link grid (3 × 2) */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginTop: 14 }}>
+          {QUICK_LINKS.map((lnk, i) => (
+            <div
+              key={i}
+              onClick={() => lnk.route && nav(lnk.route)}
+              style={{
+                background: C.navyDeep,
+                border: `1.5px solid ${lnk.live ? lnk.accent + '55' : 'rgba(139,160,180,.2)'}`,
+                borderRadius: 8,
+                padding: '10px 14px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 12,
+              }}
+            >
+              <div>
+                <div style={{ fontFamily: Fnt.dm, fontSize: 12, fontWeight: 700, color: C.white, marginBottom: 2 }}>{lnk.title}</div>
+                <div style={{ fontFamily: Fnt.dm, fontSize: 10, color: C.grey }}>{lnk.sub}</div>
+              </div>
+              <div style={{
+                flexShrink: 0,
+                padding: '3px 8px',
+                borderRadius: 4,
+                fontFamily: Fnt.mono,
+                fontSize: 9,
+                fontWeight: 700,
+                background: lnk.live ? 'rgba(61,203,122,.12)' : 'rgba(245,166,35,.1)',
+                border: `1px solid ${lnk.live ? 'rgba(61,203,122,.4)' : 'rgba(245,166,35,.3)'}`,
+                color: lnk.live ? '#3DCB7A' : C.amber,
+                whiteSpace: 'nowrap',
+              }}>
+                {lnk.live ? 'LIVE ✓' : 'COMING SOON'}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
