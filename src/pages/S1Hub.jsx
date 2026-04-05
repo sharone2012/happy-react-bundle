@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   C, Fnt, LINE_COLORS, S1_CSS,
   S0Header, S1Breadcrumb, SubstrateFlowStrip,
 } from "../components/S1Shared.jsx";
+import { useMill } from "../contexts/MillContext";
+import S1ResidueModal from "../components/S1ResidueModal.jsx";
 
 /*
  * S1Hub.jsx — S1 Mechanical Pre-Processing Hub (S3Landing pattern)
@@ -138,6 +140,26 @@ const guardrails = [
 export default function S1Hub() {
   const nav = useNavigate();
   const [capexOpen, setCapexOpen] = useState(false);
+  const { site, derived } = useMill();
+  const [activeModal, setActiveModal] = useState(null);
+
+  const s1Calc = useMemo(() => {
+    const efbFW  = derived?.monthlyEfb  || 0;
+    const opdcFW = derived?.monthlyOpdc || 0;
+    const posFW  = derived?.monthlyPos  || 0;
+    const totalFW = efbFW + opdcFW + posFW;
+    const efbDM   = efbFW  * 0.375 * 0.97;
+    const opdcDM  = opdcFW * 0.30  * 0.99;
+    const posDM   = posFW  * 0.18  * 0.95;
+    const totalDM = efbDM + opdcDM + posDM;
+    const waterRemoved = totalFW - totalDM;
+    const inputDM = efbFW*0.375 + opdcFW*0.30 + posFW*0.18;
+    const dmRecovery = inputDM > 0 ? ((totalDM/inputDM)*100).toFixed(1) : '\u2014';
+    const efbTPH  = efbFW  > 0 ? (efbFW  / 30 / 20).toFixed(1) : '\u2014';
+    const opdcTPH = opdcFW > 0 ? (opdcFW / 30 / 20).toFixed(1) : '\u2014';
+    const posTPH  = posFW  > 0 ? (posFW  / 30 / 20).toFixed(1) : '\u2014';
+    return { efbFW, opdcFW, posFW, totalFW, efbDM, opdcDM, posDM, totalDM, waterRemoved, dmRecovery, efbTPH, opdcTPH, posTPH };
+  }, [derived]);
 
   const modules = [
     { num: 'Line 1', title: 'EFB Pre-Processing Line', desc: '10-node mechanical line · 20 t/h · 600mm belt · 298 kW · Shred → Press → Mill → Screen', accent: C.teal, icon: '⚙', tags: ['10 Machines', '600mm Belt', '20 t/h', 'Trommel + Hammer Mill'], route: '/s1/efb' },
@@ -325,6 +347,279 @@ export default function S1Hub() {
         </div>
       </div>
 
+      {/* ── S0 VOLUME KPI STRIP ── */}
+      <div style={{ margin: '20px 28px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+          <div style={{ width: 3, height: 14, borderRadius: 2, background: '#00A249', flexShrink: 0 }} />
+          <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 13, color: '#00A249', textTransform: 'uppercase', letterSpacing: '.06em' }}>
+            S0 Active Streams → S1 Output
+          </div>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14 }}>
+          {[
+            { label: 'S0 IN \u2014 Total FW',  val: site ? `${Math.round(s1Calc.totalFW).toLocaleString()} t`         : '\u2014', unit: 'Fresh Weight / month' },
+            { label: 'S1 OUT \u2014 Total DM', val: site ? `${Math.round(s1Calc.totalDM).toLocaleString()} t`         : '\u2014', unit: 'Dry Matter / month' },
+            { label: 'Water Removed',          val: site ? `${Math.round(s1Calc.waterRemoved).toLocaleString()} t`    : '\u2014', unit: 'Evaporated / month' },
+            { label: 'DM Recovery',            val: site ? `${s1Calc.dmRecovery}%`                                    : '\u2014', unit: 'From input dry matter' },
+          ].map((kpi, i) => (
+            <div key={i} style={{
+              background: C.navyCard,
+              border: `1.5px solid ${C.bdrIdle}`,
+              borderTop: '3px solid #00A249',
+              borderRadius: 10,
+              padding: '14px 18px',
+            }}>
+              <div style={{ fontFamily: Fnt.dm, fontSize: 10, fontWeight: 700, color: C.grey, textTransform: 'uppercase', letterSpacing: '.05em', marginBottom: 6 }}>{kpi.label}</div>
+              <div style={{ fontFamily: Fnt.mono, fontSize: 22, fontWeight: 700, color: C.amber, marginBottom: 4 }}>{kpi.val || '\u2014'}</div>
+              <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: 'rgba(168,189,208,0.75)' }}>{kpi.unit}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── RESIDUE MIRROR CARDS ── */}
+      <div style={{ margin: '20px 28px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 3, height: 14, borderRadius: 2, background: C.teal, flexShrink: 0 }} />
+            <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 13, color: C.teal, textTransform: 'uppercase', letterSpacing: '.06em' }}>
+              S0 Residue Selection Mirror
+            </div>
+          </div>
+          <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey }}>Read-only · Controlled from S0</div>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
+          {[
+            { key: 'efb',  name: 'EFB',  accent: C.teal,    mcIn: '62.5%', mcOut: '47.5%', tph: s1Calc.efbTPH  },
+            { key: 'opdc', name: 'OPDC', accent: C.amber,   mcIn: '70–75%', mcOut: '\u226435%',  tph: s1Calc.opdcTPH },
+            { key: 'pos',  name: 'POS',  accent: '#3B82F6', mcIn: '82%',   mcOut: '65–70%', tph: s1Calc.posTPH  },
+          ].map((r) => {
+            const enabled = site?.[`${r.key}_enabled`] ?? false;
+            return (
+              <div key={r.key} style={{
+                background: enabled ? `${r.accent}12` : C.navyCard,
+                border: enabled ? `1.5px solid ${r.accent}66` : `1.5px solid ${C.bdrIdle}`,
+                borderTop: `3px solid ${enabled ? r.accent : 'rgba(139,160,180,.2)'}`,
+                borderRadius: 10,
+                padding: '14px 16px',
+                opacity: enabled ? 1 : 0.4,
+                transition: 'all .2s',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                  <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 15, color: enabled ? r.accent : C.grey }}>{r.name}</div>
+                  <div style={{
+                    padding: '2px 7px', borderRadius: 4,
+                    background: enabled ? `${r.accent}22` : 'rgba(139,160,180,.08)',
+                    fontFamily: Fnt.mono, fontSize: 9, fontWeight: 700,
+                    color: enabled ? r.accent : C.grey,
+                  }}>
+                    {enabled ? 'ACTIVE' : 'INACTIVE'}
+                  </div>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px 10px' }}>
+                  {[
+                    { lbl: 'MC IN', val: r.mcIn },
+                    { lbl: 'MC OUT', val: r.mcOut },
+                    { lbl: 'FLOW', val: site ? `${r.tph} t/h` : '\u2014' },
+                  ].map((m, j) => (
+                    <div key={j}>
+                      <div style={{ fontFamily: Fnt.dm, fontSize: 9, fontWeight: 700, color: C.grey, textTransform: 'uppercase', letterSpacing: '.05em', marginBottom: 1 }}>{m.lbl}</div>
+                      <div style={{ fontFamily: Fnt.mono, fontSize: 13, fontWeight: 700, color: enabled ? C.amber : C.grey }}>{m.val}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── PROCESS ENGINEERING ROW ── */}
+      <div style={{ margin: '20px 28px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+          <div style={{ width: 3, height: 14, borderRadius: 2, background: C.teal, flexShrink: 0 }} />
+          <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 13, color: C.teal, textTransform: 'uppercase', letterSpacing: '.06em' }}>
+            Process Engineering
+          </div>
+          <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, marginLeft: 4 }}>All residues shown · S0 selection dims inactive lines</div>
+        </div>
+        {[
+          {
+            key: 'efb', name: 'EFB', accent: C.teal,
+            fw: site ? `${Math.round(s1Calc.efbFW).toLocaleString()} t/mo` : '\u2014',
+            dm: site ? `${Math.round(s1Calc.efbDM).toLocaleString()} t DM/mo` : '\u2014',
+            mcIn: '62.5%', mcOut: '47.5%',
+            nodes: ['Shredder', 'Hammer Mill', 'Screw Press', 'Buffer Silo'],
+            nodesSub: ['450 kW', '37 kW', '110 kW', '5,000 L'],
+            outLabel: '\u226435% MC', outSub: 'After press',
+          },
+          {
+            key: 'opdc', name: 'OPDC', accent: C.amber,
+            fw: site ? `${Math.round(s1Calc.opdcFW).toLocaleString()} t/mo` : '\u2014',
+            dm: site ? `${Math.round(s1Calc.opdcDM).toLocaleString()} t DM/mo` : '\u2014',
+            mcIn: '70\u201375%', mcOut: '\u226435%',
+            nodes: ['Screw Press', 'Buffer Silo'],
+            nodesSub: ['110 kW', '5,000 L'],
+            outLabel: '\u226435% MC', outSub: 'CLASS A gate',
+          },
+          {
+            key: 'pos', name: 'POS', accent: '#3B82F6',
+            fw: site ? `${Math.round(s1Calc.posFW).toLocaleString()} t/mo` : '\u2014',
+            dm: site ? `${Math.round(s1Calc.posDM).toLocaleString()} t DM/mo` : '\u2014',
+            mcIn: '82%', mcOut: '65\u201370%',
+            nodes: ['Centrifuge', 'Decanter', 'POME Sep', 'Buffer Tank'],
+            nodesSub: ['15 kW', '37 kW', '7.5 kW', '10,000 L'],
+            outLabel: '65\u201370% MC', outSub: 'Post-skim',
+          },
+        ].map((r) => {
+          const enabled = site?.[`${r.key}_enabled`] ?? false;
+          return (
+            <div key={r.key} style={{
+              display: 'flex',
+              background: C.navyCard,
+              border: `1.5px solid ${C.bdrIdle}`,
+              borderLeft: `4px solid ${r.accent}`,
+              borderRadius: 10,
+              overflow: 'hidden',
+              marginBottom: 10,
+              opacity: enabled ? 1 : 0.45,
+              transition: 'opacity .2s',
+            }}>
+              {/* Zone A: Stream data */}
+              <div style={{
+                width: 260,
+                flexShrink: 0,
+                padding: '16px 20px',
+                borderRight: '2px solid rgba(30,107,140,0.3)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                gap: 8,
+              }}>
+                <div style={{ fontFamily: Fnt.syne, fontSize: 14, fontWeight: 700, color: C.white, marginBottom: 2 }}>{r.name}</div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                  <div style={{ fontFamily: Fnt.mono, fontSize: 14, fontWeight: 700, color: C.amber }}>{r.fw}</div>
+                  <div style={{ fontFamily: Fnt.dm, fontSize: 12, color: 'rgba(168,189,208,0.75)' }}>FW / month</div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                  <div style={{ fontFamily: Fnt.mono, fontSize: 14, fontWeight: 700, color: C.teal }}>{r.dm}</div>
+                  <div style={{ fontFamily: Fnt.dm, fontSize: 12, color: 'rgba(168,189,208,0.75)' }}>dry matter</div>
+                </div>
+                <div style={{ display: 'flex', gap: 20, marginTop: 4 }}>
+                  <div>
+                    <div style={{ fontFamily: Fnt.dm, fontSize: 9, fontWeight: 700, color: C.grey, textTransform: 'uppercase', marginBottom: 2 }}>MC IN</div>
+                    <div style={{ fontFamily: Fnt.mono, fontSize: 13, fontWeight: 700, color: C.amber }}>{r.mcIn}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontFamily: Fnt.dm, fontSize: 9, fontWeight: 700, color: C.grey, textTransform: 'uppercase', marginBottom: 2 }}>MC OUT</div>
+                    <div style={{ fontFamily: Fnt.mono, fontSize: 13, fontWeight: 700, color: C.amber }}>{r.mcOut}</div>
+                  </div>
+                </div>
+              </div>
+              {/* Zone B: Process flow nodes */}
+              <div style={{
+                flex: 1,
+                padding: '16px 20px',
+                display: 'flex',
+                alignItems: 'center',
+                overflowX: 'auto',
+              }}>
+                {r.nodes.flatMap((node, ni) => {
+                  const nodeEl = (
+                    <div key={`node-${ni}`} style={{
+                      flexShrink: 0,
+                      background: 'rgba(0,0,0,.3)',
+                      border: `1.5px solid ${r.accent}33`,
+                      borderRadius: 8,
+                      padding: '10px 16px',
+                      textAlign: 'center',
+                    }}>
+                      <div style={{ fontFamily: Fnt.dm, fontSize: 12, fontWeight: 700, color: C.white, whiteSpace: 'nowrap' }}>{node}</div>
+                      <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: 'rgba(168,189,208,0.75)', marginTop: 3, whiteSpace: 'nowrap' }}>{r.nodesSub[ni]}</div>
+                    </div>
+                  );
+                  if (ni < r.nodes.length - 1) {
+                    return [nodeEl, (
+                      <svg key={`arrow-${ni}`} width="48" height="20" style={{ flexShrink: 0 }}>
+                        <path d="M0,10 L44,10 M38,4 L44,10 L38,16" stroke={r.accent} strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )];
+                  }
+                  return [nodeEl];
+                })}
+              </div>
+              {/* Zone C: Output */}
+              <div style={{
+                width: 120,
+                flexShrink: 0,
+                padding: '16px 14px',
+                borderLeft: '2px solid rgba(30,107,140,0.3)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'flex-end',
+                gap: 4,
+              }}>
+                <div style={{ fontFamily: Fnt.dm, fontSize: 9, fontWeight: 700, color: C.grey, textTransform: 'uppercase', letterSpacing: '.05em' }}>OUTPUT</div>
+                <div style={{ fontFamily: Fnt.mono, fontSize: 14, fontWeight: 700, color: r.accent, textAlign: 'right' }}>{r.outLabel}</div>
+                <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: 'rgba(168,189,208,0.75)', textAlign: 'right' }}>{r.outSub}</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* ── ACTION BUTTONS ── */}
+      {site && (site.efb_enabled || site.opdc_enabled || site.pos_enabled) && (
+        <div style={{ margin: '16px 28px 8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+            <div style={{ fontFamily: Fnt.dm, fontSize: 12, fontWeight: 700, color: C.grey, marginRight: 4 }}>Open detailed view:</div>
+            {[
+              { key: 'efb',  name: 'EFB',  accent: C.teal,    enabledKey: 'efb_enabled'  },
+              { key: 'opdc', name: 'OPDC', accent: C.amber,   enabledKey: 'opdc_enabled' },
+              { key: 'pos',  name: 'POS',  accent: '#3B82F6', enabledKey: 'pos_enabled'  },
+            ].filter(r => site?.[r.enabledKey]).map(r => (
+              <button
+                key={r.key}
+                onClick={() => setActiveModal({ residue: r.key, tab: 0 })}
+                style={{
+                  padding: '8px 18px',
+                  background: `${r.accent}18`,
+                  border: `1.5px solid ${r.accent}66`,
+                  borderRadius: 7,
+                  fontFamily: Fnt.dm,
+                  fontSize: 13,
+                  fontWeight: 700,
+                  color: r.accent,
+                  cursor: 'pointer',
+                  letterSpacing: '.02em',
+                  transition: 'background .15s',
+                }}
+              >
+                {r.name} Detail \u2192
+              </button>
+            ))}
+            <button
+              onClick={() => setActiveModal({ residue: 'combined', tab: 0 })}
+              style={{
+                padding: '8px 18px',
+                background: 'rgba(0,162,73,.1)',
+                border: '1.5px solid rgba(0,162,73,.4)',
+                borderRadius: 7,
+                fontFamily: Fnt.dm,
+                fontSize: 13,
+                fontWeight: 700,
+                color: C.green,
+                cursor: 'pointer',
+                letterSpacing: '.02em',
+              }}
+            >
+              All Residues Combined
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* SUBSTRATE FLOW STRIP */}
       <div style={{ marginTop: 20 }}>
         <SubstrateFlowStrip
@@ -465,6 +760,14 @@ export default function S1Hub() {
           </a>
         </div>
       </div>
+      {activeModal != null && (
+        <S1ResidueModal
+          active={activeModal}
+          onClose={() => setActiveModal(null)}
+          site={site}
+          calc={s1Calc}
+        />
+      )}
     </>
   );
 }
