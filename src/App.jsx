@@ -1,4 +1,5 @@
 import { useState, useMemo, useRef, useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import SiteSetup from "./pages/SiteSetup";
 import LoginPage from "./LoginPage";
 import { supabase } from "@/integrations/supabase/client";
@@ -1416,6 +1417,7 @@ export default function CFI() {
     return () => subscription.unsubscribe();
   }, []);
   const [stage, setStage] = useState(0);
+  const navigate = useNavigate();
   const [showMoreStreams, setShowMoreStreams] = useState(false);
   const [showValCalc, setShowValCalc] = useState(false);
   const [tabsSeen, setTabsSeen]         = useState(new Set([0]));
@@ -1432,6 +1434,7 @@ export default function CFI() {
   const FREE_SEARCHES = 5;
 
   const handleTabClick = (i) => {
+    if (i === 1) { navigate('/s1'); return; }
     if (siteRegistered) { setStage(i); setTabsSeen(p => new Set([...p, i])); return; }
     const newSeen = new Set([...tabsSeen, i]);
     if (newSeen.size > FREE_TABS) {
