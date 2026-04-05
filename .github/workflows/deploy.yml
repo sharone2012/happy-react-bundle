@@ -31,10 +31,7 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          cat <<EOF > ~/.ssh/deploy_key
-          ${{ secrets.EC2_SSH_KEY }}
-          EOF
-          
+          printf '%s' "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           sed -i 's/\r$//' ~/.ssh/deploy_key
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
