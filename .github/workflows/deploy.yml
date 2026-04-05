@@ -31,8 +31,12 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          printf "%s" "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/deploy_key
+          cat <<EOF > ~/.ssh/deploy_key
+          ${{ secrets.EC2_SSH_KEY }}
+          EOF
+          
           chmod 600 ~/.ssh/deploy_key
+          sed -i 's/\r$//' ~/.ssh/deploy_key
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
       - name: Sync built frontend
@@ -49,28 +53,24 @@ jobs:
             server.cjs ecosystem.config.cjs nginx.conf package.json package-lock.json \
             ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/app/
 
-          rsync -az \
-            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
-            api/ \
-            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/app/api/
+          if [ -d "api" ]; then
+            rsync -az \
+              -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
+              api/ \
+              ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/app/api/
+          fi
 
       - name: Install prod deps & restart API
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
             set -e
             cd ~/app
             
-            echo "VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}" > .env
-            echo "VITE_SUPABASE_PUBLISHABLE_KEY=${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}" >> .env
-            echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
-            echo "SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" >> .env
-            echo "NODE_ENV=production" >> .env
-            echo "PORT=3001" >> .env
+            printf "VITE_SUPABASE_URL=%s\nVITE_SUPABASE_PUBLISHABLE_KEY=%s\nSUPABASE_URL=%s\nSUPABASE_SERVICE_ROLE_KEY=%s\nNODE_ENV=production\nPORT=3001\n" \
+            "${{ secrets.VITE_SUPABASE_URL }}" \
+            "${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}" \
+            "${{ secrets.SUPABASE_URL }}" \
+            "${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" > .env
 
             chmod -R 755 dist/
             npm install --omit=dev --legacy-peer-deps
