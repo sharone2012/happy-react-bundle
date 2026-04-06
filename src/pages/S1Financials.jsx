@@ -491,8 +491,6 @@ export default function S1Financials() {
       <style>{S1_CSS}</style>
       {modalOpen && <CapexScheduleModal onClose={() => setModalOpen(false)} />}
 
-      <S0Header activeStage={1} />
-
       {/* STAGE HEADER */}
       <div className="stage-hdr">
         <div className="stage-badge">

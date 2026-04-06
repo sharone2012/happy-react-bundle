@@ -264,7 +264,6 @@ export default function S1Efb() {
   return (
     <>
       <style>{S1_CSS}</style>
-      <S0Header activeStage={1} />
       <LineHero
         name="S1C — EFB Pre-Processing Line"
         throughput="20 t/h · 600mm Belt"

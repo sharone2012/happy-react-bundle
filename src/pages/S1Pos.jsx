@@ -166,7 +166,6 @@ export default function S1Pos() {
   return (
     <>
       <style>{S1_CSS}</style>
-      <S0Header activeStage={1} />
       <LineHero
         name="S1A — POS Pre-Skimming Line"
         throughput="1.25 t/h · Liquid/Semi"

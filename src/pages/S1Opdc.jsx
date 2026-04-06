@@ -289,7 +289,6 @@ export default function S1Opdc() {
   return (
     <>
       <style>{S1_CSS}</style>
-      <S0Header activeStage={1} />
       <LineHero
         name="S1B — OPDC Pre-Processing Line"
         throughput="5 t/h · 500mm Belt"

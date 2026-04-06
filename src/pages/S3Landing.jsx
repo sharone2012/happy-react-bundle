@@ -121,29 +121,6 @@ export default function App() {
     <>
       <style>{css}{show ? "" : ".slbl{display:none!important}"}</style>
 
-      {/* ═══ PERSISTENT CFI GLOBAL HEADER ═══ */}
-      <div style={{
-        height: 80, background: "#0A1628",
-        display: "flex", alignItems: "center", padding: "0 28px",
-        position: "sticky", top: 0, zIndex: 301, gap: 18,
-      }}>
-        <div style={{ display: "flex", alignItems: "center", flexShrink: 0, maxWidth: 340 }}>
-          <div>
-            <div style={{ display: "flex", alignItems: "baseline" }}>
-              <span style={{ fontFamily: "'EB Garamond', serif", fontWeight: 700, fontSize: 26, color: "#FFF", letterSpacing: "0.02em" }}>CFI</span>
-              <span style={{ fontFamily: "'EB Garamond', serif", fontSize: 22, color: "rgba(255,255,255,0.25)", margin: "0 8px" }}>·</span>
-              <span style={{ fontFamily: "'EB Garamond', serif", fontWeight: 700, fontSize: 20, color: "#40D7C5", letterSpacing: "0.10em" }}>DEEP TECH</span>
-            </div>
-            <div style={{ fontSize: 11, color: "#40D7C5", marginTop: 4, fontFamily: "'DM Sans', sans-serif" }}>Soil Microbiome Engineering &amp; Biofertiliser Production for Closed‑Loop Nutrient Recycling</div>
-          </div>
-        </div>
-        <div style={{ display: "flex", gap: 4, marginLeft: "auto", alignItems: "center", flexShrink: 0 }}>
-          {['S0','S1','S2','S3','S4','S5','S6','CAPEX','Σ'].map((s,i)=>(
-            <div key={s} style={{ background: i===3 ? '#40D7C5' : 'rgba(168,189,208,0.09)', border: `1px solid ${i===3 ? '#40D7C5' : 'rgba(168,189,208,0.18)'}`, borderRadius: 4, padding: '3px 9px', fontFamily: "'DM Mono', monospace", fontSize: 11, fontWeight: 700, color: i===3 ? '#060C14' : '#A8BDD0', cursor: 'pointer' }}>{s}</div>
-          ))}
-        </div>
-      </div>
-
       {/* ① STAGE HEADER */}
       <div className="stage-hdr" style={{ position: "relative" }}>
         {show && <S n="1" />}
