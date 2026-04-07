@@ -87,7 +87,6 @@ export default function GlobalLayout() {
   useEffect(() => { setSite(readSiteInfo()); }, [location.pathname]);
 
   const handleTabClick = (i) => {
-    if (i === 1) { navigate("/s1"); return; }
     if (i === 3) { navigate("/s3"); return; }
     // Stages that live inside App.jsx — pass via sessionStorage then navigate to /
     try { sessionStorage.setItem("cfi-target-stage", String(i)); } catch {}

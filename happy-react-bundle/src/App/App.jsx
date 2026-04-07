@@ -1434,7 +1434,6 @@ export default function CFI() {
   const FREE_SEARCHES = 5;
 
   const handleTabClick = (i) => {
-    if (i === 1) { navigate('/s1'); return; }
     if (siteRegistered) { setStage(i); setTabsSeen(p => new Set([...p, i])); return; }
     const newSeen = new Set([...tabsSeen, i]);
     if (newSeen.size > FREE_TABS) {
