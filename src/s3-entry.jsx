@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import S3 from "./pages/S3";
+import S3 from "./pages/S3/S3.jsx";
 
 ReactDOM.createRoot(document.getElementById("s3-root")).render(
   <React.StrictMode>

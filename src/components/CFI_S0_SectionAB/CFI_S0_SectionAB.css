@@ -1,0 +1,22 @@
+/* CFI_S0_SectionAB.css — Design tokens extracted from CFI_S0_SectionAB.jsx */
+
+/* ── C: colour tokens ── */
+:root {
+  --c-navy-mid: #153352;
+  --c-navy-lt:  #1A3A5C;
+  --c-teal:     #00C9B1;
+  --c-amber:    #F5A623;
+  --c-red:      #E84040;
+  --c-green:    #3DCB7A;
+  --c-blue:     #4A9EDB;
+  --c-grey:     #8BA0B4;
+  --c-grey-lt:  #C4D3E0;
+  --c-grey-md:  #A8B8C7;
+  --c-border:   #1E6B8C;
+  --c-black:    #060C14;
+
+  /* ── T: font families ── */
+  --t-syne: 'Syne', sans-serif;
+  --t-dm:   'DM Sans', sans-serif;
+  --t-mono: 'DM Mono', monospace;
+}

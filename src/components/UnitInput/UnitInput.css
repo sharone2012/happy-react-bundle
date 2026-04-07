@@ -1,0 +1,8 @@
+/* UnitInput.css — Design tokens extracted from UnitInput.jsx */
+
+/* ── C_UNIT: colour tokens ── */
+:root {
+  --c-unit-border:   #1E6B8C;
+  --c-unit-bg:       #1A3A5C;
+  --c-unit-dim-text: #8899ae;
+}

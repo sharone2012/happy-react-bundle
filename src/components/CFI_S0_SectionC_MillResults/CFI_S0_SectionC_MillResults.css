@@ -1,0 +1,21 @@
+/* CFI_S0_SectionC_MillResults.css — Design tokens extracted from CFI_S0_SectionC_MillResults.jsx */
+
+/* ── T: colour tokens ── */
+:root {
+  --t-navy-card:  #111E33;
+  --t-navy-deep:  #0C1E33;
+  --t-teal-dim:   rgba(64,215,197,0.12);
+  --t-teal-bdr:   rgba(64,215,197,0.60);
+  --t-teal:       #40D7C5;
+  --t-amber:      #F5A623;
+  --t-grey:       #A8BDD0;
+  --t-grey-lt:    rgba(168,189,208,0.75);
+  --t-grey-bdr:   rgba(168,189,208,0.22);
+  --t-white:      #E8F0FE;
+
+  /* ── F: font families ── */
+  --f-syne:  'Syne', sans-serif;
+  --f-dm:    'DM Sans', sans-serif;
+  --f-mono:  'DM Sans', sans-serif;
+  --f-brand: 'EB Garamond', serif;
+}

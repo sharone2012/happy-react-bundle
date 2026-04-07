@@ -1,0 +1,23 @@
+/* CFI_Soil_Science_Module.css — Design tokens extracted from CFI_Soil_Science_Module.jsx */
+
+/* ── C: colour tokens ── */
+:root {
+  --c-navy:      #060e1e;
+  --c-navy-mid:  #0a1628;
+  --c-navy-lt:   #0f2040;
+  --c-teal:      #14b8a6;
+  --c-teal-lt:   #5eead4;
+  --c-amber:     #f59e0b;
+  --c-amber-lt:  #fcd34d;
+  --c-green:     #22c55e;
+  --c-green-lt:  #86efac;
+  --c-blue:      #3b82f6;
+  --c-blue-lt:   #93c5fd;
+  --c-red:       #ef4444;
+  --c-red-lt:    #fca5a5;
+  --c-purple:    #a855f7;
+  --c-orange:    #f97316;
+  --c-grey:      #94a3b8;
+  --c-grey-lt:   #cbd5e1;
+  --c-white:     #e8f0fe;
+}

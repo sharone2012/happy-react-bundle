@@ -1,0 +1,24 @@
+/* CFI_S0_SectionC.css — Design tokens extracted from CFI_S0_SectionC.jsx */
+
+/* ── T: colour tokens ── */
+:root {
+  --t-navy-deep: #0C1E33;
+  --t-navy-card: #111E33;
+  --t-teal-dim:  rgba(64,215,197,0.12);
+  --t-teal-bdr:  rgba(64,215,197,0.60);
+  --t-teal:      #40D7C5;
+  --t-amber:     #F5A623;
+  --t-red:       #E84040;
+  --t-red-dim:   rgba(232,64,64,0.13);
+  --t-green:     #00A249;
+  --t-grey:      #A8BDD0;
+  --t-grey-lt:   rgba(168,189,208,0.75);
+  --t-bdr-calc:  rgba(139,160,180,0.18);
+  --t-white:     #E8F0FE;
+
+  /* ── F: font families ── */
+  --f-syne:  'Syne', sans-serif;
+  --f-dm:    'DM Sans', sans-serif;
+  --f-mono:  'DM Mono', monospace;
+  --f-eb:    'EB Garamond', serif;
+}

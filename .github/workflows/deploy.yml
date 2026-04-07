@@ -49,12 +49,10 @@ jobs:
             server.cjs ecosystem.config.cjs nginx.conf package.json package-lock.json \
             ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/app/
 
-          if [ -d "api" ]; then
-            rsync -az \
-              -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
-              api/ \
-              ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/app/api/
-          fi
+          rsync -az \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
+            backend/ \
+            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/app/backend/
 
       - name: Install prod deps & restart API
         run: |

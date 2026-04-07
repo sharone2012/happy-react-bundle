@@ -1,27 +1,30 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./store/store";
 import { MillProvider } from "./contexts/MillContext";
-import GlobalLayout from "./components/GlobalLayout.jsx";
-import App from "./App.jsx";
-import LabAnalysisV2 from "./pages/LabAnalysisV2.jsx";
-import S3Landing from "./pages/S3Landing.jsx";
-import S3ABioLibrary from "./pages/S3ABioLibrary.jsx";
-import S1Hub from "./pages/S1Hub.jsx";
-import S1Efb from "./pages/S1Efb.jsx";
-import S1Opdc from "./pages/S1Opdc.jsx";
-import S1EfbDetail from "./pages/S1EfbDetail.jsx";
-import S1OpdcDetail from "./pages/S1OpdcDetail.jsx";
-import S1Pos from "./pages/S1Pos.jsx";
-import S1Combined from "./pages/S1Combined.jsx";
-import S1Engineering from "./pages/S1Engineering";
-import S1EngineeringPrint from "./pages/S1EngineeringPrint.jsx";
-import S1FloorPlanPrint from "./pages/S1FloorPlanPrint.jsx";
-import S1Financials from "./pages/S1Financials";
-import S0ResidueSelector from "./pages/S0ResidueSelector.jsx";
-import CFI_AG_Management_Planning_Calculator from "./CFI_AG_Management_Planning_Calculator.jsx";
+import GlobalLayout from "./components/GlobalLayout/GlobalLayout.jsx";
+import App from "./App/App.jsx";
+import LabAnalysisV2 from "./pages/LabAnalysisV2/LabAnalysisV2.jsx";
+import S3Landing from "./pages/S3Landing/S3Landing.jsx";
+import S3ABioLibrary from "./pages/S3ABioLibrary/S3ABioLibrary.jsx";
+import S1Hub from "./pages/S1Hub/S1Hub.jsx";
+import S1Efb from "./pages/S1Efb/S1Efb.jsx";
+import S1Opdc from "./pages/S1Opdc/S1Opdc.jsx";
+import S1EfbDetail from "./pages/S1EfbDetail/S1EfbDetail.jsx";
+import S1OpdcDetail from "./pages/S1OpdcDetail/S1OpdcDetail.jsx";
+import S1Pos from "./pages/S1Pos/S1Pos.jsx";
+import S1Combined from "./pages/S1Combined/S1Combined.jsx";
+import S1Engineering from "./pages/S1Engineering/S1Engineering.jsx";
+import S1EngineeringPrint from "./pages/S1EngineeringPrint/S1EngineeringPrint.jsx";
+import S1FloorPlanPrint from "./pages/S1FloorPlanPrint/S1FloorPlanPrint.jsx";
+import S1Financials from "./pages/S1Financials/S1Financials.jsx";
+import S0ResidueSelector from "./pages/S0ResidueSelector/S0ResidueSelector.jsx";
+import CFI_AG_Management_Planning_Calculator from "./CFI_AG_Management_Planning_Calculator/CFI_AG_Management_Planning_Calculator.jsx";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
+  <Provider store={store}>
   <BrowserRouter>
     <MillProvider>
       <Routes>
@@ -64,4 +67,5 @@ createRoot(document.getElementById("root")!).render(
       </Routes>
     </MillProvider>
   </BrowserRouter>
+  </Provider>
 );
