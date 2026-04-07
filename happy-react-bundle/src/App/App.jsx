@@ -10,7 +10,7 @@ import CFI_SoilAcidity_Lookup from "@/CFI_SoilAcidity_Lookup/CFI_SoilAcidity_Loo
 import CFI_SoilAcidity_ProfileCard from "@/components/CFI_SoilAcidity_ProfileCard/CFI_SoilAcidity_ProfileCard.jsx";
 
 
-// ─── SUPABASE LIVE CONNECTION ─────────────────────────────────────────────────
+// ג”€ג”€ג”€ SUPABASE LIVE CONNECTION ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
 const SUPA_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPA_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
@@ -40,7 +40,7 @@ function supaInsert(table, record) {
   });
 }
 
-// ─── CFI DESIGN SYSTEM v3 — COLOUR TOKENS ────────────────────────────────────
+// ג”€ג”€ג”€ CFI DESIGN SYSTEM v3 ג€” COLOUR TOKENS ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
 // Locked: March 2026. Change via Admin Panel only.
 const C = {
   navy:      "#060C14",
@@ -82,21 +82,21 @@ const C = {
   navyLt: "#1A3A5C",
 };
 
-// ─── CFI DESIGN SYSTEM v3 — STYLE TOKENS ────────────────────────────────────
+// ג”€ג”€ג”€ CFI DESIGN SYSTEM v3 ג€” STYLE TOKENS ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
 const S = {
-  // ── Section wrappers (4 types) ──
+  // ג”€ג”€ Section wrappers (4 types) ג”€ג”€
   secInput:  { background:C.inputSectionBg,  border:`1.5px solid ${C.sectionBorder}`, borderRadius:8, marginBottom:16, overflow:"hidden" },
   secInfo:   { background:C.infoSectionBg,   border:`1.5px solid ${C.sectionBorder}`, borderRadius:8, marginBottom:16, overflow:"hidden" },
   secResult: { background:C.resultSectionBg, border:`1.5px solid ${C.sectionBorder}`, borderRadius:8, marginBottom:16, overflow:"hidden" },
   secAlert:  { background:C.alertSectionBg,  border:`1.5px solid ${C.sectionBorder}`, borderRadius:8, marginBottom:16, overflow:"hidden" },
-  // ── Section header ──
+  // ג”€ג”€ Section header ג”€ג”€
   secHeader: { padding:"10px 14px", borderBottom:"1px solid rgba(255,255,255,0.05)", display:"flex", alignItems:"center", justifyContent:"space-between" },
   secTitle:  { fontFamily:"'Syne', sans-serif", fontWeight:700, fontSize:18, letterSpacing:"0.02em" },
   secBadge:  (c) => ({ fontFamily:"'Syne', sans-serif", fontWeight:700, fontSize:12, padding:"2px 8px", borderRadius:4, background:c+"22", color:c }),
   secBody:   { padding:"12px 14px" },
-  // ── Inner black input zone (Type A only) ──
+  // ג”€ג”€ Inner black input zone (Type A only) ג”€ג”€
   innerZone: { background:C.innerZoneBg, borderRadius:6, padding:"10px 12px", marginBottom:8 },
-  // ── Field labels ──
+  // ג”€ג”€ Field labels ג”€ג”€
   fldLabel:  { fontFamily:"'DM Sans', sans-serif", fontWeight:600, fontSize:13, color:C.grey },
   fldSub:    { fontFamily:"'DM Sans', sans-serif", fontWeight:400, fontSize:11, color:C.grey, marginTop:2 },
   fldInput:  { background:C.inputBoxBg, border:`1.5px solid ${C.inputBoxBorder}`, borderRadius:5,
@@ -104,19 +104,19 @@ const S = {
                padding:"5px 10px", width:"100%", outline:"none" },
   calcLabel: { fontFamily:"'DM Sans', sans-serif", fontWeight:600, fontSize:16, color:C.grey },
   calcVal:   { fontFamily:"'DM Sans', sans-serif", fontWeight:700, fontSize:16, color:C.green },
-  // ── Hero numbers ──
+  // ג”€ג”€ Hero numbers ג”€ג”€
   heroNum:    { fontFamily:"'DM Sans', sans-serif", fontWeight:700, fontSize:20, color:C.amber },
   heroUnit:   { fontFamily:"'DM Sans', sans-serif", fontSize:11, color:C.greyMd, marginTop:3 },
   heroFormula:{ fontFamily:"'DM Sans', sans-serif", fontSize:9, color:C.greyMd, marginTop:4 },
-  // ── Table styles ──
+  // ג”€ג”€ Table styles ג”€ג”€
   tblHeader: { fontFamily:"'DM Sans', sans-serif", fontWeight:700, fontSize:12, color:C.greyMd, textAlign:"center", padding:"5px 6px" },
   tblStream: { fontFamily:"'DM Sans', sans-serif", fontWeight:700, fontSize:11, color:C.amber, textAlign:"center", padding:"5px 6px" },
   tblData:   { fontFamily:"'DM Sans', sans-serif", fontWeight:400, fontSize:11, color:C.greyMd, textAlign:"center", padding:"5px 6px" },
   tblTotal:  { fontFamily:"'DM Sans', sans-serif", fontWeight:700, fontSize:14, color:C.pastelGreen, textAlign:"center", padding:"5px 6px" },
-  // ── Alert banners ──
+  // ג”€ג”€ Alert banners ג”€ג”€
   alertBanner:(c) => ({ background:C.alertBannerBg, border:`1.5px solid ${C.sectionBorder}`, borderRadius:6,
                          padding:"9px 13px", marginBottom:7, fontFamily:"'DM Sans', sans-serif", fontSize:13, color:c }),
-  // ── Legacy aliases (backward compat) ──
+  // ג”€ג”€ Legacy aliases (backward compat) ג”€ג”€
   card:    { background:C.infoSectionBg, borderRadius:8, padding:"16px", marginBottom:12 },
   hdr:     { background:C.inputSectionBg, borderRadius:6, padding:"10px 14px", marginBottom:10,
              display:"flex", alignItems:"center", gap:8 },
@@ -144,7 +144,7 @@ const S = {
   }),
 };
 
-// ─── INFO DOT — clickable ? bubble for inline data context ───────────────────
+// ג”€ג”€ג”€ INFO DOT ג€” clickable ? bubble for inline data context ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
 function InfoDot({summary, logic, sources, color}) {
   const [open, setOpen] = useState(false);
   const dotColor = color || "#4A9EDB";
@@ -187,13 +187,13 @@ function InfoDot({summary, logic, sources, color}) {
         React.createElement("button", {
           onClick: function(){ setOpen(false); },
           style:{position:"absolute",top:5,right:7,background:"none",border:"none",color:"#8ba0b4",cursor:"pointer",fontSize:11,padding:0}
-        }, "✕")
+        }, "ג•")
       )
     )
   );
 }
 
-// ─── FIELD COMPONENTS ─────────────────────────────────────────────────────────
+// ג”€ג”€ג”€ FIELD COMPONENTS ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
 const Lbl = ({t, unit}) => (
   <div style={S.label}>{t}{unit && <span style={{color:C.teal,marginLeft:4}}>[{unit}]</span>}</div>
 );
@@ -250,7 +250,7 @@ const CalcField = ({label, unit, value, note}) => (
 const Halt = ({msg}) => (
   <div style={{background:C.red+"22", border:`1px solid ${C.red}`, borderRadius:6,
                padding:"8px 12px", color:C.red, fontSize:12, fontWeight:700, marginTop:6}}>
-    🛑 HALT — {msg}
+    נ›‘ HALT ג€” {msg}
   </div>
 );
 
@@ -301,7 +301,7 @@ const Card = ({children, style={}}) => (
 
 const Warn = ({msg, type="warn"}) => {
   const col = type==="warn"?C.amber : type==="ok"?C.green : C.red;
-  const icon = type==="warn"?"" : type==="ok"?"✓" : "✕";
+  const icon = type==="warn"?"" : type==="ok"?"ג“" : "ג•";
   return (
     <div style={{background:col+"14", border:`1px solid ${col}44`,
       borderLeft:`3px solid ${col}`, borderRadius:6,
@@ -342,7 +342,7 @@ const ResidueCard = ({label, active, locked, onClick, sublabel}) => (
         border:`2px solid ${active?C.teal:C.grey+"66"}`, transition:"all 0.15s"}}/>
     </div>
     {sublabel&&<div style={{color:C.grey, fontSize:9, marginTop:4}}>{sublabel}</div>}
-    {locked&&<div style={{color:C.grey, fontSize:9, marginTop:3, fontStyle:"italic"}}>locked — always active</div>}
+    {locked&&<div style={{color:C.grey, fontSize:9, marginTop:3, fontStyle:"italic"}}>locked ג€” always active</div>}
   </div>
 );
 
@@ -352,27 +352,27 @@ const LABEL_STYLE = { display:"block", color:C.grey, fontSize:10, fontWeight:700
   textTransform:"uppercase", letterSpacing:"0.09em", marginBottom:5 };
 
 
-// ─── SOIL TYPES DATA ──────────────────────────────────────────────────────────
+// ג”€ג”€ג”€ SOIL TYPES DATA ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
 const SOILS = [
-  {id:"inceptisol", name:"Inceptisols", pct:"39%", ph:"4.1", cec:"15.4", desc:"Best fertility, well-drained",              nAdj:-0.40, pAdj:-0.50, dmppEfficacy:0.35, dmppNote:"Well-drained mineral — moderate N₂O. DMPP 30–40% suppression. Good response."},
-  {id:"ultisol",    name:"Ultisols",    pct:"24%", ph:"4.5", cec:"8.2",  desc:"Clay-rich, acidic, low base saturation",    nAdj:0,     pAdj:0,     dmppEfficacy:0.45, dmppNote:"Clay + periodic waterlogging = HIGH N₂O risk. DMPP most effective here: 40–50% suppression. PRIORITY soil."},
-  {id:"oxisol",     name:"Oxisols",     pct:"8%",  ph:"4.4", cec:"5.0",  desc:"Fe/Al oxides, low P retention",             nAdj:0.10,  pAdj:0.20,  dmppEfficacy:0.38, dmppNote:"High Fe/Al moderately slows nitrifiers. DMPP 35–40% suppression. Also reduces P-fixation interaction."},
-  {id:"histosol",   name:"Histosols",   pct:"7%",  ph:"3.8", cec:"35.0", desc:"Peat/organic, drainage issues",             nAdj:-0.80, pAdj:-0.70, dmppEfficacy:0.22, dmppNote:"Peat: N₂O from DENITRIFICATION not nitrification — DMPP less effective (20–25%). Frass N already 80% reduced on Histosols."},
-  {id:"spodosol",   name:"Spodosols",   pct:"—",   ph:"4.77",cec:"2.0",  desc:"Sandy, lowest fertility",                   nAdj:0.20,  pAdj:0.15,  dmppEfficacy:0.30, dmppNote:"Sandy, fast-draining — lower denitrification. DMPP 25–35% suppression. Improves N retention in sandy profile."},
+  {id:"inceptisol", name:"Inceptisols", pct:"39%", ph:"4.1", cec:"15.4", desc:"Best fertility, well-drained",              nAdj:-0.40, pAdj:-0.50, dmppEfficacy:0.35, dmppNote:"Well-drained mineral ג€” moderate Nג‚‚O. DMPP 30ג€“40% suppression. Good response."},
+  {id:"ultisol",    name:"Ultisols",    pct:"24%", ph:"4.5", cec:"8.2",  desc:"Clay-rich, acidic, low base saturation",    nAdj:0,     pAdj:0,     dmppEfficacy:0.45, dmppNote:"Clay + periodic waterlogging = HIGH Nג‚‚O risk. DMPP most effective here: 40ג€“50% suppression. PRIORITY soil."},
+  {id:"oxisol",     name:"Oxisols",     pct:"8%",  ph:"4.4", cec:"5.0",  desc:"Fe/Al oxides, low P retention",             nAdj:0.10,  pAdj:0.20,  dmppEfficacy:0.38, dmppNote:"High Fe/Al moderately slows nitrifiers. DMPP 35ג€“40% suppression. Also reduces P-fixation interaction."},
+  {id:"histosol",   name:"Histosols",   pct:"7%",  ph:"3.8", cec:"35.0", desc:"Peat/organic, drainage issues",             nAdj:-0.80, pAdj:-0.70, dmppEfficacy:0.22, dmppNote:"Peat: Nג‚‚O from DENITRIFICATION not nitrification ג€” DMPP less effective (20ג€“25%). Frass N already 80% reduced on Histosols."},
+  {id:"spodosol",   name:"Spodosols",   pct:"ג€”",   ph:"4.77",cec:"2.0",  desc:"Sandy, lowest fertility",                   nAdj:0.20,  pAdj:0.15,  dmppEfficacy:0.30, dmppNote:"Sandy, fast-draining ג€” lower denitrification. DMPP 25ג€“35% suppression. Improves N retention in sandy profile."},
 ]
 
 const AG_TIERS = [
-  {id:"vgam", name:"VGAM — Very Good AG Management", uplift:1.0},
-  {id:"gam",  name:"GAM — Good AG Management",       uplift:0.85},
+  {id:"vgam", name:"VGAM ג€” Very Good AG Management", uplift:1.0},
+  {id:"gam",  name:"GAM ג€” Good AG Management",       uplift:0.85},
   {id:"poor", name:"Poor AG Management",              uplift:0.65},
   {id:"abandoned", name:"Abandoned",                 uplift:0.40},
 ];
 
-// ─── NUTRIENT LEDGER COMPONENT ────────────────────────────────────────────────
+// ג”€ג”€ג”€ NUTRIENT LEDGER COMPONENT ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
 // Shows per-stage NPK profile, mass flow, soil-adjusted effective values & C:N
-// ─── BLEND OPTIMISER — REVERSE SOLVER ────────────────────────────────────────
+// ג”€ג”€ג”€ BLEND OPTIMISER ג€” REVERSE SOLVER ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
 // Calculates POME inclusion % and/or PKE dose required to hit a target C:N and/or CP%.
-// Math: weighted C:N = Σ(Ni × CNi) / Σ(Ni); CP% = N% × 4.67 (GR-10 — true protein factor)
+// Math: weighted C:N = ־£(Ni ֳ— CNi) / ־£(Ni); CP% = N% ֳ— 4.67 (GR-10 ג€” true protein factor)
 // Two-variable linear system solved via Cramer's rule for dual-target mode.
 function BlendOptimiser({ efbDMpd, opdcDMreq, pomeSludgeMaxPct, pomeSludgeNatTPD,
                           pomeSludgeActMC, pomeSludgeEnabled, pkeEnabled,
@@ -383,16 +383,16 @@ function BlendOptimiser({ efbDMpd, opdcDMreq, pomeSludgeMaxPct, pomeSludgeNatTPD
   const [mode,      setMode]      = useState("dual");   // pome | pke | dual
   const [applyMsg,  setApplyMsg]  = useState("");
 
-  // ── BASE VALUES (EFB + OPDC only, no POME/PKE) ──
+  // ג”€ג”€ BASE VALUES (EFB + OPDC only, no POME/PKE) ג”€ג”€
   const baseDM   = efbDMpd + opdcDMreq;                      // t DM/day
-  const baseN    = efbDMpd * 8.5 + opdcDMreq * 26.0;           // kg N/day — EFB N=0.85% measured; OPDC N=2.60% locked (measured range 2.38–2.93%)
+  const baseN    = efbDMpd * 8.5 + opdcDMreq * 26.0;           // kg N/day ג€” EFB N=0.85% measured; OPDC N=2.60% locked (measured range 2.38ג€“2.93%)
   const baseC    = efbDMpd * 8.5 * 60 + opdcDMreq * 26.0 * 20; // C-numerator
 
-  // ── STREAM CONSTANTS — N coefficients: plant residues use ÷4.67; PKE = feed ingredient uses ÷6.25 ──
+  // ג”€ג”€ STREAM CONSTANTS ג€” N coefficients: plant residues use ֳ·4.67; PKE = feed ingredient uses ֳ·6.25 ג”€ג”€
   // POME: N=17.6 kg/t DM (1.76% measured canonical), C:N=15
-  // PKE:  N=28.8 kg/t DM (CP 18% / 6.25 = 2.88% — FEED INGREDIENT, N×6.25 correct here)
+  // PKE:  N=28.8 kg/t DM (CP 18% / 6.25 = 2.88% ג€” FEED INGREDIENT, Nֳ—6.25 correct here)
   const POME_N = 17.6, POME_CN = 15, POME_C = POME_N * POME_CN; // 264
-  const PKE_N  = 28.8, PKE_CN  = 15, PKE_C  = PKE_N  * PKE_CN;  // 432 — feed basis ÷6.25
+  const PKE_N  = 28.8, PKE_CN  = 15, PKE_C  = PKE_N  * PKE_CN;  // 432 ג€” feed basis ֳ·6.25
   const PKE_FW_PER_DM = 1 / 0.88;   // t FW per t DM
   const PKE_PRICE_PER_FW = 160;      // $/t FW
 
@@ -413,13 +413,13 @@ function BlendOptimiser({ efbDMpd, opdcDMreq, pomeSludgeMaxPct, pomeSludgeNatTPD
       const totC = baseC + pDM * POME_C + kDM * PKE_C;
       const totDM = baseDM + pDM + kDM;
       const cn  = totN > 0 ? totC / totN : null;
-      const cpPct = totDM > 0 ? (totN / (totDM * 10)) * 4.67 : null;  // BUG-12 FIX: N×4.67 per GR-10 (was 6.25)
+      const cpPct = totDM > 0 ? (totN / (totDM * 10)) * 4.67 : null;  // BUG-12 FIX: Nֳ—4.67 per GR-10 (was 6.25)
       const pkeFW = kDM * PKE_FW_PER_DM;
       const pkeCostDay = pkeFW * PKE_PRICE_PER_FW;
       return { pDM, kDM, pkeFW, pkeCostDay, cn, cpPct };
     };
 
-    // ── SINGLE TARGET C:N ──
+    // ג”€ג”€ SINGLE TARGET C:N ג”€ג”€
     const solveCN_pome = (T) => {
       // x = (baseC - T*baseN) / (POME_N*T - POME_C)
       const denom = POME_N * T - POME_C;
@@ -431,8 +431,8 @@ function BlendOptimiser({ efbDMpd, opdcDMreq, pomeSludgeMaxPct, pomeSludgeNatTPD
       if (Math.abs(denom) < 0.001) return null;
       return (baseC - T * baseN) / denom;
     };
-    // ── SINGLE TARGET CP% ──
-    // cp_r = T_cp/4.67/100 × 1000 = T_cp × 2.141  (kg N per t DM target) — BUG-12 FIX: N×4.67
+    // ג”€ג”€ SINGLE TARGET CP% ג”€ג”€
+    // cp_r = T_cp/4.67/100 ֳ— 1000 = T_cp ֳ— 2.141  (kg N per t DM target) ג€” BUG-12 FIX: Nֳ—4.67
     const solveCPpome = (T) => {
       const r = T * 2.141;
       const denom = r - POME_N;
@@ -446,7 +446,7 @@ function BlendOptimiser({ efbDMpd, opdcDMreq, pomeSludgeMaxPct, pomeSludgeNatTPD
       return (baseN - r * baseDM) / (-denom);
     };
 
-    // ── DUAL TARGET (C:N + CP%) — 2×2 linear system via Cramer ──
+    // ג”€ג”€ DUAL TARGET (C:N + CP%) ג€” 2ֳ—2 linear system via Cramer ג”€ג”€
     const solveDual = (T_cn, T_cp) => {
       const cp_r = T_cp * 1.6;
       const a1 = POME_C - T_cn * POME_N;   // coeff of x in C:N eq
@@ -469,22 +469,22 @@ function BlendOptimiser({ efbDMpd, opdcDMreq, pomeSludgeMaxPct, pomeSludgeNatTPD
     if (mode === "pome" && hasCN) {
       const x = solveCN_pome(T_cn);
       if (x === null) { result = { error: "No solution (POME C:N=15 cannot solve this target)" }; }
-      else if (x < 0) { result = { error: `C:N already ≤ target. Current: ${currentCN}` }; }
+      else if (x < 0) { result = { error: `C:N already ג‰₪ target. Current: ${currentCN}` }; }
       else {
         const capped = x > pomeMaxDM;
         const xUse = Math.min(x, pomeMaxDM);
         result = calc(xUse, 0);
-        if (capped) warning = ` POME capped at Fe limit (${pomeSludgeMaxPct}% WW). Target C:N not fully achievable with POME alone — add PKE.`;
+        if (capped) warning = ` POME capped at Fe limit (${pomeSludgeMaxPct}% WW). Target C:N not fully achievable with POME alone ג€” add PKE.`;
         strategy = "POME only";
       }
     } else if (mode === "pke" && hasCN) {
       const y = solveCN_pke(T_cn);
-      if (y === null) { result = { error: "No solution — PKE C:N=15, same as POME; cannot lower C:N further than PKE allows." }; }
-      else if (y < 0) { result = { error: `C:N already ≤ target. Current: ${currentCN}` }; }
+      if (y === null) { result = { error: "No solution ג€” PKE C:N=15, same as POME; cannot lower C:N further than PKE allows." }; }
+      else if (y < 0) { result = { error: `C:N already ג‰₪ target. Current: ${currentCN}` }; }
       else { result = calc(0, y); strategy = "PKE only"; }
     } else if (mode === "dual" && hasCN && hasCP) {
       const sol = solveDual(T_cn, T_cp);
-      if (!sol) { result = { error: "System has no unique solution — targets may be contradictory." }; }
+      if (!sol) { result = { error: "System has no unique solution ג€” targets may be contradictory." }; }
       else {
         const { x, y } = sol;
         const capped = x > pomeMaxDM;
@@ -504,14 +504,14 @@ function BlendOptimiser({ efbDMpd, opdcDMreq, pomeSludgeMaxPct, pomeSludgeNatTPD
         strategy = "POME + PKE";
       }
     } else if (mode === "dual" && hasCN && !hasCP) {
-      // C:N only in dual mode — POME-first, PKE for shortfall
+      // C:N only in dual mode ג€” POME-first, PKE for shortfall
       const x = solveCN_pome(T_cn);
-      if (x === null || x < 0) { result = { error: x === null ? "No POME solution." : `C:N already ≤ target. Current: ${currentCN}` }; }
+      if (x === null || x < 0) { result = { error: x === null ? "No POME solution." : `C:N already ג‰₪ target. Current: ${currentCN}` }; }
       else {
         const capped = x > pomeMaxDM;
         const xUse = Math.min(x, pomeMaxDM);
         if (capped) {
-          // POME maxed — how much PKE to bridge?
+          // POME maxed ג€” how much PKE to bridge?
           const pomeN_contrib = xUse * POME_N;
           const pomeC_contrib = xUse * POME_C;
           const remN = baseN + pomeN_contrib;
@@ -553,7 +553,7 @@ function BlendOptimiser({ efbDMpd, opdcDMreq, pomeSludgeMaxPct, pomeSludgeNatTPD
       upS0("pkeEnabled", true);
       upS0("pkeTPD", +solve.pkeFWday.toFixed(1));
     }
-    setApplyMsg(" Applied to S0 — Section F (POME) and G (PKE) updated.");
+    setApplyMsg(" Applied to S0 ג€” Section F (POME) and G (PKE) updated.");
     setTimeout(() => setApplyMsg(""), 4000);
   };
 
@@ -563,34 +563,34 @@ function BlendOptimiser({ efbDMpd, opdcDMreq, pomeSludgeMaxPct, pomeSludgeNatTPD
 
   return (
     <div style={{ ...S.card, border: `1px solid ${C.purple}55`, gridColumn: "1/-1" }}>
-      <SectionHdr icon="🎯" title="I — BLEND OPTIMISER — REVERSE SOLVER" color={C.purple}/>
+      <SectionHdr icon="נ¯" title="I ג€” BLEND OPTIMISER ג€” REVERSE SOLVER" color={C.purple}/>
       <div style={{ fontSize: 11, color: C.grey, marginBottom: 12, lineHeight: 1.7 }}>
         Set a <strong style={{color:C.white}}>target C:N</strong> and/or <strong style={{color:C.white}}>target CP%</strong>.
         The solver calculates the POME inclusion % and PKE dose required.
         POME capped at Fe-driven limit automatically. Minimum-cost solution uses POME-first.
       </div>
 
-      {/* ── INPUTS ROW ── */}
+      {/* ג”€ג”€ INPUTS ROW ג”€ג”€ */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 14 }}>
         <div>
-          <Lbl t="Target C:N Ratio" unit="BSF optimum 15–25"/>
+          <Lbl t="Target C:N Ratio" unit="BSF optimum 15ג€“25"/>
           <input type="number" min="5" max="60" step="0.5"
             style={S.input} value={targetCN}
             onChange={e => setTargetCN(e.target.value)}/>
           <div style={{ fontSize: 10, color: C.grey, marginTop: 3 }}>
-            Current blend C:N: <strong style={{ color: currentCN <= 25 ? C.green : C.amber }}>{currentCN || "—"}</strong>
+            Current blend C:N: <strong style={{ color: currentCN <= 25 ? C.green : C.amber }}>{currentCN || "ג€”"}</strong>
           </div>
         </div>
         <div>
-          <Lbl t="Target CP% (optional)" unit="% DM — BSF floor 5%"/>
+          <Lbl t="Target CP% (optional)" unit="% DM ג€” BSF floor 5%"/>
           <input type="number" min="0" max="25" step="0.5"
             style={S.input} value={targetCP}
             placeholder="Leave blank = C:N only"
             onChange={e => setTargetCP(e.target.value)}/>
           <div style={{ fontSize: 10, color: C.grey, marginTop: 3 }}>
             Current CP%: <strong style={{ color: C.greyLt }}>
-              {currentCP ? `${currentCP}%` : "—"}
-            </strong> · Hard floor: <strong style={{ color: C.red }}>5% DM</strong>
+              {currentCP ? `${currentCP}%` : "ג€”"}
+            </strong> ֲ· Hard floor: <strong style={{ color: C.red }}>5% DM</strong>
           </div>
         </div>
         <div>
@@ -613,27 +613,27 @@ function BlendOptimiser({ efbDMpd, opdcDMreq, pomeSludgeMaxPct, pomeSludgeNatTPD
         </div>
       </div>
 
-      {/* ── RESULT ── */}
+      {/* ג”€ג”€ RESULT ג”€ג”€ */}
       {solve && !solve.error && (
         <div>
           <div style={{ background: C.inputSectionBg, borderRadius: 8, padding: 14,
             border: `1px solid ${C.purple}44`, marginBottom: 10 }}>
             <div style={{ color: C.purple, fontWeight: 800, fontSize: 11, letterSpacing: "0.08em",
               marginBottom: 10 }}>
-              🔢 OPTIMISER SOLUTION — {solve.strategy.toUpperCase()}
+              נ”¢ OPTIMISER SOLUTION ג€” {solve.strategy.toUpperCase()}
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8, marginBottom: 10 }}>
               {[
                 { l: "POME Inclusion",   v: solve.pomeInclPct > 0 ? `${solve.pomeInclPct}%` : "Not needed",
                   u: "% of nat. yield",  c: C.blue },
-                { l: "POME Added",       v: solve.pDM > 0 ? `${solve.pDM.toFixed(2)} t DM/day` : "—",
+                { l: "POME Added",       v: solve.pDM > 0 ? `${solve.pDM.toFixed(2)} t DM/day` : "ג€”",
                   u: "dry matter",       c: C.blue },
                 { l: "PKE Dose",         v: solve.pkeFWday > 0.01 ? `${solve.pkeFWday} t FW/day` : "Not needed",
                   u: "fresh weight",     c: C.amber },
-                { l: "Result C:N",       v: solve.cn ? solve.cn.toFixed(1) : "—",
+                { l: "Result C:N",       v: solve.cn ? solve.cn.toFixed(1) : "ג€”",
                   u: "DM-weighted",      c: cnColor },
-                { l: "Result CP%",       v: solve.cpPct ? `${solve.cpPct.toFixed(1)}%` : "—",
-                  u: "% DM · floor 5%",  c: solve.cpPct >= 5 ? C.green : C.red },
+                { l: "Result CP%",       v: solve.cpPct ? `${solve.cpPct.toFixed(1)}%` : "ג€”",
+                  u: "% DM ֲ· floor 5%",  c: solve.cpPct >= 5 ? C.green : C.red },
               ].map((k, i) => (
                 <div key={i} style={{ background: C.pageBg, borderRadius: 6, padding: "8px 10px", textAlign: "center" }}>
                   <div style={{ color: C.grey, fontSize: 9, marginBottom: 3 }}>{k.l}</div>
@@ -650,7 +650,7 @@ function BlendOptimiser({ efbDMpd, opdcDMreq, pomeSludgeMaxPct, pomeSludgeNatTPD
                   borderRadius: 6, padding: "6px 14px", fontSize: 11 }}>
                   <span style={{ color: C.grey }}>PKE cost: </span>
                   <strong style={{ color: C.amber }}>${solve.pkeCostDay.toFixed(0)}/day</strong>
-                  <span style={{ color: C.grey }}> · </span>
+                  <span style={{ color: C.grey }}> ֲ· </span>
                   <strong style={{ color: C.amber }}>${solve.pkeCostMonth.toLocaleString()}/month</strong>
                 </div>
                 <div style={{ background: C.green + "18", border: `1px solid ${C.green}44`,
@@ -665,7 +665,7 @@ function BlendOptimiser({ efbDMpd, opdcDMreq, pomeSludgeMaxPct, pomeSludgeNatTPD
             {solve.cpPct !== null && solve.cpPct < 5 && (
               <div style={{ background: C.red + "18", border: `1px solid ${C.red}66`, borderLeft: `3px solid ${C.red}`,
                 borderRadius: 4, padding: "8px 12px", fontSize: 11, color: C.red, marginBottom: 8 }}>
-                 HARD FLOOR VIOLATION — Result CP {solve.cpPct.toFixed(1)}% &lt; 5% minimum.
+                 HARD FLOOR VIOLATION ג€” Result CP {solve.cpPct.toFixed(1)}% &lt; 5% minimum.
                 BSF inoculation not viable. Increase PKE dose or raise CP target.
               </div>
             )}
@@ -684,10 +684,10 @@ function BlendOptimiser({ efbDMpd, opdcDMreq, pomeSludgeMaxPct, pomeSludgeNatTPD
               style={{ background: C.purple, border: "none", color: C.white, borderRadius: 6,
                 padding: "9px 20px", fontWeight: 800, fontSize: 12, cursor: "pointer",
                 letterSpacing: "0.06em" }}>
-              ▶ APPLY TO S0 INPUTS
+              ג–¶ APPLY TO S0 INPUTS
             </button>
             <div style={{ fontSize: 11, color: C.grey }}>
-              Pushes POME inclusion % → Section F · PKE dose → Section G
+              Pushes POME inclusion % ג†’ Section F ֲ· PKE dose ג†’ Section G
             </div>
             {applyMsg && (
               <div style={{ background: C.green + "22", border: `1px solid ${C.green}55`,
@@ -715,7 +715,7 @@ function BlendOptimiser({ efbDMpd, opdcDMreq, pomeSludgeMaxPct, pomeSludgeNatTPD
       {/* Quick reference table */}
       <div style={{ marginTop: 12, background: C.pageBg, borderRadius: 6, padding: 10 }}>
         <div style={{ color: C.grey, fontSize: 10, letterSpacing: "0.08em", marginBottom: 6 }}>
-          STREAM REFERENCE — N RATES &amp; C:N USED BY SOLVER
+          STREAM REFERENCE ג€” N RATES &amp; C:N USED BY SOLVER
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6 }}>
           {[
@@ -727,7 +727,7 @@ function BlendOptimiser({ efbDMpd, opdcDMreq, pomeSludgeMaxPct, pomeSludgeNatTPD
             <div key={i} style={{ background: C.infoSectionBg, borderRadius: 4, padding: "6px 8px",
               border: `1px solid ${row.c}33` }}>
               <div style={{ color: row.c, fontWeight: 700, fontSize: 11 }}>{row.s}</div>
-              <div style={{ color: C.grey, fontSize: 10 }}>N: {row.n} · C:N: {row.cn}</div>
+              <div style={{ color: C.grey, fontSize: 10 }}>N: {row.n} ֲ· C:N: {row.cn}</div>
             </div>
           ))}
         </div>
@@ -757,10 +757,10 @@ function NutrLedger({stg,N,P,K,Ca,Mg,OM,cn,wetPD,mc,nAdj,pAdj,ag,col}) {
   return (
     <div style={{background:C.inputSectionBg,border:`1px solid ${col||C.teal}44`,borderRadius:10,padding:14,marginTop:14}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:6,marginBottom:10}}>
-        <div style={{color:col||C.teal,fontWeight:700,fontSize:12,letterSpacing:1}}> NUTRIENT LEDGER — {stg}</div>
+        <div style={{color:col||C.teal,fontWeight:700,fontSize:12,letterSpacing:1}}> NUTRIENT LEDGER ג€” {stg}</div>
         <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-          <span style={{background:cnC+"33",color:cnC,borderRadius:5,padding:"2px 8px",fontSize:10,fontWeight:700}}>C:N {cn}:1 · {cnL}</span>
-          <span style={{background:C.green+"22",color:C.green,borderRadius:5,padding:"2px 8px",fontSize:10,fontWeight:700}}>NPK Floor ${npkF}/t FW · ${(npkF*wetPD).toFixed(0)}/day</span>
+          <span style={{background:cnC+"33",color:cnC,borderRadius:5,padding:"2px 8px",fontSize:10,fontWeight:700}}>C:N {cn}:1 ֲ· {cnL}</span>
+          <span style={{background:C.green+"22",color:C.green,borderRadius:5,padding:"2px 8px",fontSize:10,fontWeight:700}}>NPK Floor ${npkF}/t FW ֲ· ${(npkF*wetPD).toFixed(0)}/day</span>
           <span style={{background:C.teal+"22",color:C.teal,borderRadius:5,padding:"2px 8px",fontSize:10,fontWeight:700}}>VGAM ${npkV}/t FW</span>
         </div>
       </div>
@@ -772,8 +772,8 @@ function NutrLedger({stg,N,P,K,Ca,Mg,OM,cn,wetPD,mc,nAdj,pAdj,ag,col}) {
           <tbody>
             {[
               {nm:"N (Total)",   pct:N,  kg:kgN,  ptfw:Ntfw, c:C.green},
-              {nm:"P₂O₅ equiv", pct:P,  kg:kgP,  ptfw:Ptfw, c:C.tealLt},
-              {nm:"K₂O equiv",  pct:K,  kg:kgK,  ptfw:Ktfw, c:C.amber},
+              {nm:"Pג‚‚Oג‚… equiv", pct:P,  kg:kgP,  ptfw:Ptfw, c:C.tealLt},
+              {nm:"Kג‚‚O equiv",  pct:K,  kg:kgK,  ptfw:Ktfw, c:C.amber},
               {nm:"Ca",         pct:Ca, kg:kgCa, ptfw:null,  c:C.grey},
               {nm:"Mg",         pct:Mg, kg:kgMg, ptfw:null,  c:C.grey},
             ].map((r,i)=>(
@@ -781,17 +781,17 @@ function NutrLedger({stg,N,P,K,Ca,Mg,OM,cn,wetPD,mc,nAdj,pAdj,ag,col}) {
                 <td style={{padding:"4px 6px",color:r.c,fontWeight:700}}>{r.nm}</td>
                 <td style={{padding:"4px 6px",color:C.white,textAlign:"right"}}>{r.pct}%</td>
                 <td style={{padding:"4px 6px",color:C.white,textAlign:"right"}}>{r.kg.toLocaleString()}</td>
-                <td style={{padding:"4px 6px",color:r.ptfw!=null?C.green:C.grey,textAlign:"right"}}>{r.ptfw!=null?"$"+r.ptfw:"—"}</td>
-                <td style={{padding:"4px 6px",color:r.ptfw!=null?C.green:C.grey,textAlign:"right"}}>{r.ptfw!=null?"$"+(r.ptfw*wetPD).toFixed(0):"—"}</td>
+                <td style={{padding:"4px 6px",color:r.ptfw!=null?C.green:C.grey,textAlign:"right"}}>{r.ptfw!=null?"$"+r.ptfw:"ג€”"}</td>
+                <td style={{padding:"4px 6px",color:r.ptfw!=null?C.green:C.grey,textAlign:"right"}}>{r.ptfw!=null?"$"+(r.ptfw*wetPD).toFixed(0):"ג€”"}</td>
               </tr>
             ))}
             <tr style={{background:C.green+"15",borderTop:`2px solid ${C.green}44`}}>
-              <td colSpan={3} style={{padding:"5px 6px",color:C.green,fontWeight:700,fontSize:11}}>NPK FLOOR — urea/TSP/MOP equiv</td>
+              <td colSpan={3} style={{padding:"5px 6px",color:C.green,fontWeight:700,fontSize:11}}>NPK FLOOR ג€” urea/TSP/MOP equiv</td>
               <td style={{padding:"5px 6px",color:C.green,fontWeight:900,textAlign:"right"}}>${npkF}</td>
               <td style={{padding:"5px 6px",color:C.green,fontWeight:900,textAlign:"right"}}>${(npkF*wetPD).toFixed(0)}</td>
             </tr>
             <tr style={{background:C.teal+"15"}}>
-              <td colSpan={3} style={{padding:"5px 6px",color:C.teal,fontWeight:700,fontSize:11}}>VGAM EFFECTIVE — soil-adj × ag-tier</td>
+              <td colSpan={3} style={{padding:"5px 6px",color:C.teal,fontWeight:700,fontSize:11}}>VGAM EFFECTIVE ג€” soil-adj ֳ— ag-tier</td>
               <td style={{padding:"5px 6px",color:C.teal,fontWeight:900,textAlign:"right"}}>${npkV}</td>
               <td style={{padding:"5px 6px",color:C.teal,fontWeight:900,textAlign:"right"}}>${(npkV*wetPD).toFixed(0)}</td>
             </tr>
@@ -802,9 +802,9 @@ function NutrLedger({stg,N,P,K,Ca,Mg,OM,cn,wetPD,mc,nAdj,pAdj,ag,col}) {
           {[
             {l:"OM Content",         v:`${OM}% DM`,                           c:C.tealLt},
             {l:"C:N Ratio",          v:`${cn}:1`,                             c:cnC,    n:cnL},
-            {l:"Humic Potential",    v:`${+(OM*0.10).toFixed(1)}% DM`,        c:C.amber,n:"→ stable humus fraction"},
+            {l:"Humic Potential",    v:`${+(OM*0.10).toFixed(1)}% DM`,        c:C.amber,n:"ג†’ stable humus fraction"},
             {l:"CEC Contribution",   v:`+${+(OM*0.015).toFixed(2)} cmol/kg`,  c:C.teal, n:"per 1% OM applied"},
-            {l:"Liming Equiv",       v:`${+(Ca*10).toFixed(0)} kg CaCO₃/t DM`,c:C.grey},
+            {l:"Liming Equiv",       v:`${+(Ca*10).toFixed(0)} kg CaCOג‚ƒ/t DM`,c:C.grey},
             {l:"NPK Floor",          v:`$${npkF}/t FW`,                        c:C.green},
             {l:"VGAM Effective",     v:`$${npkV}/t FW`,                        c:C.teal, n:`${npkF>0?((npkV/npkF-1)*100).toFixed(0):0}% vs floor`},
           ].map((r,i)=>(
@@ -822,12 +822,12 @@ function NutrLedger({stg,N,P,K,Ca,Mg,OM,cn,wetPD,mc,nAdj,pAdj,ag,col}) {
   );
 }
 
-// ─── MATERIALS REGISTRY v2 ───────────────────────────────────────────────────
+// ג”€ג”€ג”€ MATERIALS REGISTRY v2 ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
 const CFI_MATERIALS_CORE = ["EFB","OPDC","POME_sludge"];
 const CFI_MATERIALS_ADD  = ["PKE","PMF","fronds","CPO"];
 const CFI_MATERIALS = CFI_MATERIALS_CORE.concat(CFI_MATERIALS_ADD);
 
-// ─── ORCHESTRATION: MOCK DATA LAKE ───────────────────────────────────────────
+// ג”€ג”€ג”€ ORCHESTRATION: MOCK DATA LAKE ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
 const MOCK_SOLUTIONS = [
   {
     solution_id:"CFI-BIO-001", step:"biology", soil_type:"Ultisol",
@@ -838,26 +838,26 @@ const MOCK_SOLUTIONS = [
     product_metrics_before:{N_pct:1.20,P_pct:0.18,K_pct:0.80,CP_pct:8.14,CN_ratio:32},
     product_metrics_after:{N_pct:1.82,P_pct:0.24,K_pct:0.92,CP_pct:11.2,CN_ratio:21},
     carbon_metrics:{SOC_delta_pct:0.41,CH4_avoided_tCO2e_yr:108,N2O_avoided_tCO2e_yr:18},
-    stats:{n:12,mean_N_gain:0.62,sd:0.08,ci95:"0.54–0.70"},
+    stats:{n:12,mean_N_gain:0.62,sd:0.08,ci95:"0.54ג€“0.70"},
     source:{type:"DOI",ref:"10.1016/j.biortech.2023.128901",year:2023,title:"Enhanced N retention in palm residue bioconversion"},
     confidence:"high",last_updated:"2026-03-08T10:00:00Z",agent:"biology_synthetic_agent"
   },
   {
     solution_id:"CFI-BSF-001", step:"bsf", soil_type:"NA",
-    title:"PKM Supplementation +15% CP — BSF FCR on OPDC-Heavy Diets",
+    title:"PKM Supplementation +15% CP ג€” BSF FCR on OPDC-Heavy Diets",
     substrate_context:{blend:"OPDC 80:PKM 20",DM_pct:30,MC_pct:70},
-    biology_stack:{organisms:["Hermetia illucens BSFL"],dose:"5,000 neonate/m²"},
+    biology_stack:{organisms:["Hermetia illucens BSFL"],dose:"5,000 neonate/mֲ²"},
     process_conditions:{temp_C:28,moisture_pct:70,time_days:14,aeration:"passive"},
     product_metrics_before:{CP_pct:14.5,lipid_pct:12.0,FCR:2.1},
     product_metrics_after:{CP_pct:52.4,lipid_pct:28.6,FCR:1.75},
     carbon_metrics:{SOC_delta_pct:0,CH4_avoided_tCO2e_yr:0,synthetic_N_displaced_t_yr:186},
-    stats:{n:8,mean_FCR:1.75,sd:0.12,ci95:"1.63–1.87"},
+    stats:{n:8,mean_FCR:1.75,sd:0.12,ci95:"1.63ג€“1.87"},
     source:{type:"DOI",ref:"10.1016/j.wasman.2024.110234",year:2024,title:"FCR improvement on palm-derived BSF diets"},
     confidence:"high",last_updated:"2026-03-09T08:30:00Z",agent:"bsf_performance_agent"
   },
   {
     solution_id:"CFI-SOIL-001", step:"soil", soil_type:"Histosol",
-    title:"CFI Biofertiliser on Peat Soils — SOC & CEC Response",
+    title:"CFI Biofertiliser on Peat Soils ג€” SOC & CEC Response",
     substrate_context:{product:"frass_biofertiliser",dose_t_ha:4},
     biology_stack:{organisms:[],dose:"N/A"},
     process_conditions:{application:"basal+split",freq:"2x/yr"},
@@ -867,13 +867,13 @@ const MOCK_SOLUTIONS = [
     soil_metrics_after:{SOC_pct:25.8,CEC:20.1,pH:4.2,bulk_density:0.23},
     crop_metrics:{FFB_yield_t_ha_yr:18.4,FFB_uplift_pct:8.2},
     carbon_metrics:{SOC_delta_pct:1.3,CH4_avoided_tCO2e_yr:0,N2O_avoided_tCO2e_yr:42},
-    stats:{n:6,mean_SOC_gain:1.3,sd:0.22,ci95:"1.08–1.52"},
+    stats:{n:6,mean_SOC_gain:1.3,sd:0.22,ci95:"1.08ג€“1.52"},
     source:{type:"CFI_internal",ref:"CFI-FIELD-TRIAL-2025-002",year:2025,title:"Peat trial Sinar Mas Bogor block 14-C"},
     confidence:"medium",last_updated:"2026-03-05T14:15:00Z",agent:"soil_palm_agent"
   },
   {
     solution_id:"CFI-SOIL-002", step:"soil", soil_type:"Ultisol",
-    title:"Biofertiliser on Ultisol — CEC + K Uplift at 3 t/ha Dose",
+    title:"Biofertiliser on Ultisol ג€” CEC + K Uplift at 3 t/ha Dose",
     substrate_context:{product:"frass_biofertiliser",dose_t_ha:3},
     biology_stack:{organisms:[],dose:"N/A"},
     process_conditions:{application:"ring-spread",freq:"1x/yr"},
@@ -883,53 +883,53 @@ const MOCK_SOLUTIONS = [
     soil_metrics_after:{SOC_pct:2.3,CEC:10.4,pH:4.8,bulk_density:1.38},
     crop_metrics:{FFB_yield_t_ha_yr:21.2,FFB_uplift_pct:6.4},
     carbon_metrics:{SOC_delta_pct:0.5,CH4_avoided_tCO2e_yr:0,synthetic_N_displaced_t_yr:64},
-    stats:{n:18,mean_CEC_gain:2.2,sd:0.41,ci95:"2.01–2.39"},
+    stats:{n:18,mean_CEC_gain:2.2,sd:0.41,ci95:"2.01ג€“2.39"},
     source:{type:"DOI",ref:"10.1007/s11368-022-03145-8",year:2022,title:"Organic amendment effects on Ultisol oil palm yield"},
     confidence:"high",last_updated:"2026-03-07T09:45:00Z",agent:"soil_palm_agent"
   },
   {
     solution_id:"CFI-FINISH-001", step:"finishing", soil_type:"NA",
-    title:"Zeolite + Rock Phosphate Topping — +0.5% N, +0.3% P Post-BSF",
+    title:"Zeolite + Rock Phosphate Topping ג€” +0.5% N, +0.3% P Post-BSF",
     substrate_context:{product:"post_bsf_frass",base_N_pct:2.8},
     biology_stack:{organisms:[],dose:"N/A"},
     process_conditions:{zeolite_kg_t:15,rock_P_kg_t:8,mixing_min:20},
     product_metrics_before:{N_pct:2.8,P_pct:0.22,K_pct:0.65,EC_mS_cm:2.1},
     product_metrics_after:{N_pct:3.3,P_pct:0.52,K_pct:0.68,EC_mS_cm:2.4},
     carbon_metrics:{SOC_delta_pct:0,CH4_avoided_tCO2e_yr:0},
-    stats:{n:9,mean_N_gain:0.5,sd:0.06,ci95:"0.44–0.56"},
+    stats:{n:9,mean_N_gain:0.5,sd:0.06,ci95:"0.44ג€“0.56"},
     source:{type:"DOI",ref:"10.1016/j.geoderma.2023.116612",year:2023,title:"Mineral topping for slow-release biofertiliser"},
     confidence:"medium",last_updated:"2026-03-06T11:20:00Z",agent:"finishing_topping_agent"
   },
   {
     solution_id:"CFI-CARB-001", step:"carbon", soil_type:"NA",
-    title:"POME Biogas Capture — CH4 Avoided vs Open Pond Baseline",
+    title:"POME Biogas Capture ג€” CH4 Avoided vs Open Pond Baseline",
     substrate_context:{POME_m3_day:1200,COD_kg_m3:50},
     biology_stack:{organisms:[],dose:"N/A"},
     process_conditions:{treatment:"covered_lagoon",MCF_baseline:0.8,MCF_project:0.01},
     product_metrics_before:{},
     product_metrics_after:{},
     carbon_metrics:{CH4_avoided_tCO2e_yr:88400,GWP100:28,MCF_baseline:0.8,B0:0.21},
-    stats:{n:3,mean_avoided:88400,sd:4200,ci95:"83800–93000"},
+    stats:{n:3,mean_avoided:88400,sd:4200,ci95:"83800ג€“93000"},
     source:{type:"URL",ref:"https://verra.org/methodologies/vm0041",year:2024,title:"Verra VM0041 POME Methane Capture"},
     confidence:"high",last_updated:"2026-03-10T16:00:00Z",agent:"carbon_credits_agent"
   },
   {
     solution_id:"CFI-MATH-001", step:"substrate", soil_type:"NA",
     title:"Response Surface Model: C:N vs BSF FCR & Survival",
-    substrate_context:{blend_range:"EFB 40–80%:OPDC 20–60%",CN_range:"18–45"},
-    biology_stack:{organisms:["Hermetia illucens BSFL"],dose:"5,000/m²"},
+    substrate_context:{blend_range:"EFB 40ג€“80%:OPDC 20ג€“60%",CN_range:"18ג€“45"},
+    biology_stack:{organisms:["Hermetia illucens BSFL"],dose:"5,000/mֲ²"},
     process_conditions:{temp_C:28,moisture_pct:65,time_days:14},
     product_metrics_before:{},
     product_metrics_after:{FCR_predicted:1.82,survival_pct_predicted:78},
     carbon_metrics:{},
     stats:{n:36,R2:0.91,RMSE_FCR:0.08,model:"RSM Box-Behnken"},
-    source:{type:"CFI_internal",ref:"CFI-MATH-RSM-2026-001",year:2026,title:"CFI Internal RSM optimisation — C:N vs FCR"},
+    source:{type:"CFI_internal",ref:"CFI-MATH-RSM-2026-001",year:2026,title:"CFI Internal RSM optimisation ג€” C:N vs FCR"},
     confidence:"medium",last_updated:"2026-03-10T08:00:00Z",agent:"math_optimization_agent"
   },
   {
     solution_id:"INCEPTISOL_EFB-POME-OPDC_CA-MG_MICROBES_V1",
     step:"soil", soil_type:"Inceptisol",
-    title:"Inceptisol — EFB/POME/OPDC + Ca/Mg + Microbe Consortium: SOC, CEC & NPK Response (5yr)",
+    title:"Inceptisol ג€” EFB/POME/OPDC + Ca/Mg + Microbe Consortium: SOC, CEC & NPK Response (5yr)",
     substrate_context:{
       materials:["EFB","POME","OPDC"],
       blend_ratio_fresh:{EFB:0.55,POME:0.30,OPDC:0.15},
@@ -951,7 +951,7 @@ const MOCK_SOLUTIONS = [
     soil_metrics_after:{application_t_ha:6,time_horizon_yr:5,SOC_pct:1.8,CEC:11.0,pH:5.8,bulk_density:1.2},
     crop_metrics:{FFB_yield_t_ha_yr:18.4,FFB_uplift_pct:8.2,time_horizon_yr:5},
     carbon_metrics:{SOC_delta_pct:0.6,CH4_avoided_tCO2e_yr:0,synthetic_N_displaced_t_yr:0},
-    stats:{n:0,note:"Model projection — no field trial yet; confidence MEDIUM pending lab validation"},
+    stats:{n:0,note:"Model projection ג€” no field trial yet; confidence MEDIUM pending lab validation"},
     source:{type:"CFI_internal",ref:"CFI-ORCH-UPLOAD-2026-03-11",year:2026,title:"Orchestration upload: Inceptisol EFB-POME-OPDC Ca-Mg Microbes V1"},
     confidence:"medium",last_updated:"2026-03-11T09:00:00Z",agent:"soil_palm_agent",
     uploaded_by:"Sharon",uploaded_at:"2026-03-11T09:00:00Z"
@@ -959,13 +959,13 @@ const MOCK_SOLUTIONS = [
 ];
 
 const AGENT_STATUS = [
-  {id:"master_discovery_engine",   label:"Master Discovery",    icon:"🧭",schedule:"3d",last_run:"2026-03-09 06:00",next_run:"2026-03-12 06:00",status:"idle",   color:"#00C9B1"},
+  {id:"master_discovery_engine",   label:"Master Discovery",    icon:"נ§­",schedule:"3d",last_run:"2026-03-09 06:00",next_run:"2026-03-12 06:00",status:"idle",   color:"#00C9B1"},
   {id:"biology_synthetic_agent",   label:"Biology Synthetic",   icon:"",schedule:"3d",last_run:"2026-03-09 06:12",next_run:"2026-03-12 06:12",status:"idle",   color:"#3DCB7A"},
-  {id:"bsf_performance_agent",     label:"BSF Performance",     icon:"🦗",schedule:"3d",last_run:"2026-03-09 06:24",next_run:"2026-03-12 06:24",status:"idle",   color:"#4A9EDB"},
+  {id:"bsf_performance_agent",     label:"BSF Performance",     icon:"נ¦—",schedule:"3d",last_run:"2026-03-09 06:24",next_run:"2026-03-12 06:24",status:"idle",   color:"#4A9EDB"},
   {id:"soil_palm_agent",           label:"Soil & Palm",         icon:"",schedule:"3d",last_run:"2026-03-09 06:36",next_run:"2026-03-12 06:36",status:"idle",   color:"#9B59B6"},
   {id:"finishing_topping_agent",   label:"Finishing & Topping", icon:"", schedule:"3d",last_run:"2026-03-09 06:48",next_run:"2026-03-12 06:48",status:"idle",   color:"#F5A623"},
-  {id:"carbon_credits_agent",      label:"Carbon Credits",      icon:"🌍",schedule:"3d",last_run:"2026-03-09 07:00",next_run:"2026-03-12 07:00",status:"idle",   color:"#FFD080"},
-  {id:"math_optimization_agent",   label:"Math Optimisation",   icon:"📐",schedule:"3d",last_run:"2026-03-09 07:12",next_run:"2026-03-12 07:12",status:"idle",   color:"#E84040"},
+  {id:"carbon_credits_agent",      label:"Carbon Credits",      icon:"נ",schedule:"3d",last_run:"2026-03-09 07:00",next_run:"2026-03-12 07:00",status:"idle",   color:"#FFD080"},
+  {id:"math_optimization_agent",   label:"Math Optimisation",   icon:"נ“",schedule:"3d",last_run:"2026-03-09 07:12",next_run:"2026-03-12 07:12",status:"idle",   color:"#E84040"},
 ];
 
 const STEP_LABELS = {
@@ -974,7 +974,7 @@ const STEP_LABELS = {
 };
 const CONF_COLOR = {high:"#3DCB7A", medium:"#F5A623", low:"#E84040"};
 
-// ─── ORCHESTRATION TAB ────────────────────────────────────────────────────────
+// ג”€ג”€ג”€ ORCHESTRATION TAB ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
 function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
   const [orchTab, setOrchTab]     = useState("lake");
   const [filterStep, setFilterStep] = useState("all");
@@ -1015,11 +1015,11 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
       reader.onload = function(e){
         try {
           var text = e.target.result;
-          var parsed = file.name.endsWith(".json") ? JSON.parse(text) : {_raw:text,_parseNote:"YAML — raw preview."};
+          var parsed = file.name.endsWith(".json") ? JSON.parse(text) : {_raw:text,_parseNote:"YAML ג€” raw preview."};
           var entry = {name:file.name,size:file.size,
             type:file.name.endsWith(".json")?"JSON":"YAML",
             loaded_at:new Date().toISOString(),content:parsed,raw:text,db_status:"pending"};
-          // If valid solution record — insert to Supabase
+          // If valid solution record ג€” insert to Supabase
           if(parsed && parsed.solution_id && parsed.step && parsed.confidence){
             var record = Object.assign({},parsed,{
               uploaded_by: parsed.uploaded_by||"Sharon",
@@ -1034,7 +1034,7 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
                 setUploadedConfigs(function(prev){return prev.concat([entry]);});
               })
               .catch(function(err){
-                setUploadStatus(" "+file.name+" — "+err.message);
+                setUploadStatus(" "+file.name+" ג€” "+err.message);
                 entry.db_status="error: "+err.message;
                 setUploadedConfigs(function(prev){return prev.concat([entry]);});
               });
@@ -1081,51 +1081,51 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
         display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8}}>
         <div>
           <div style={{color:oc.teal,fontWeight:900,fontSize:16,letterSpacing:"0.06em"}}>
-            🧭 CFI Orchestration Layer
+            נ§­ CFI Orchestration Layer
           </div>
           <div style={{color:oc.grey,fontSize:10,marginTop:2}}>
-            Data Lake · Agent Status · Config Upload · Supabase LIVE · v21.0
+            Data Lake ֲ· Agent Status ֲ· Config Upload ֲ· Supabase LIVE ֲ· v21.0
           </div>
         </div>
         <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
           <span style={{background:oc.teal+"20",border:"1px solid "+oc.teal+"44",borderRadius:10,
             padding:"2px 9px",color:oc.teal,fontSize:10,fontWeight:800}}>
-            Core: {CFI_MATERIALS_CORE.join(" · ")}
+            Core: {CFI_MATERIALS_CORE.join(" ֲ· ")}
           </span>
           <span style={{background:oc.amber+"20",border:"1px solid "+oc.amber+"44",borderRadius:10,
             padding:"2px 9px",color:oc.amber,fontSize:10,fontWeight:800}}>
-            Additives: {CFI_MATERIALS_ADD.join(" · ")}
+            Additives: {CFI_MATERIALS_ADD.join(" ֲ· ")}
           </span>
         </div>
       </div>
 
       {/* Sub-tabs */}
       <div style={{display:"flex",gap:4,marginBottom:16,borderBottom:"1px solid "+oc.navyLt}}>
-        <SubTab id="lake" label="Data Lake" icon="🗄"/>
-        <SubTab id="agents" label="Agent Status" icon="🤖"/>
-        <SubTab id="upload" label="Upload Config" icon="📤"/>
+        <SubTab id="lake" label="Data Lake" icon="נ—„"/>
+        <SubTab id="agents" label="Agent Status" icon="נ₪–"/>
+        <SubTab id="upload" label="Upload Config" icon="נ“₪"/>
       </div>
 
-      {/* ── DATA LAKE TAB ── */}
+      {/* ג”€ג”€ DATA LAKE TAB ג”€ג”€ */}
       {orchTab==="lake" && (
         <div>
           {/* DB status banners */}
           {dbLoading && (
             <div style={{background:"#0d1f35",borderRadius:7,padding:"8px 13px",marginBottom:10,
               border:"1px solid #1e4060",fontSize:10,color:oc.teal,display:"flex",alignItems:"center",gap:8}}>
-              <span>⏳</span>{"Fetching live records from Supabase..."}
+              <span>ג³</span>{"Fetching live records from Supabase..."}
             </div>
           )}
           {dbError && (
             <div style={{background:"#2a0a0a",borderRadius:7,padding:"8px 13px",marginBottom:10,
               border:"1px solid "+oc.red+"55",fontSize:10,color:oc.red,display:"flex",alignItems:"center",gap:8}}>
-              <span></span><span style={{fontWeight:800}}>Supabase error:</span>{" "+dbError+" — showing mock seeds only."}
+              <span></span><span style={{fontWeight:800}}>Supabase error:</span>{" "+dbError+" ג€” showing mock seeds only."}
             </div>
           )}
           {!dbLoading && !dbError && dbSolutions.length > 0 && (
             <div style={{background:"#0d2818",borderRadius:7,padding:"7px 13px",marginBottom:10,
               border:"1px solid "+oc.green+"44",fontSize:10,color:oc.green,display:"flex",alignItems:"center",gap:8}}>
-              <span></span>{"Supabase connected · "+dbSolutions.length+" live record"+(dbSolutions.length!==1?"s":"")+" · "+MOCK_SOLUTIONS.length+" mock seeds"}
+              <span></span>{"Supabase connected ֲ· "+dbSolutions.length+" live record"+(dbSolutions.length!==1?"s":"")+" ֲ· "+MOCK_SOLUTIONS.length+" mock seeds"}
             </div>
           )}
           {/* Step filter */}
@@ -1187,7 +1187,7 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
                       </div>
                     </div>
                     <div style={{color:oc.grey,fontSize:14,transition:"transform 0.2s",
-                      transform:isExpanded?"rotate(90deg)":"rotate(0deg)"}}>▶</div>
+                      transform:isExpanded?"rotate(90deg)":"rotate(0deg)"}}>ג–¶</div>
                   </div>
 
                   {/* Expanded body */}
@@ -1254,7 +1254,7 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
         </div>
       )}
 
-      {/* ── AGENTS TAB ── */}
+      {/* ג”€ג”€ AGENTS TAB ג”€ג”€ */}
       {orchTab==="agents" && (
         <div>
           <div style={{color:oc.grey,fontSize:11,marginBottom:14}}>
@@ -1293,7 +1293,7 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
         </div>
       )}
 
-      {/* ── UPLOAD TAB ── */}
+      {/* ג”€ג”€ UPLOAD TAB ג”€ג”€ */}
       {orchTab==="upload" && (
         <div>
           {uploadStatus && (
@@ -1303,7 +1303,7 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
               fontSize:10,color:uploadStatus.startsWith("")?oc.green:uploadStatus.startsWith("")?oc.amber:oc.teal,
               display:"flex",justifyContent:"space-between",alignItems:"center"}}>
               <span>{uploadStatus}</span>
-              <span onClick={function(){setUploadStatus(null);}} style={{cursor:"pointer",color:oc.grey,fontSize:12}}>{"✕"}</span>
+              <span onClick={function(){setUploadStatus(null);}} style={{cursor:"pointer",color:oc.grey,fontSize:12}}>{"ג•"}</span>
             </div>
           )}
           <div
@@ -1315,7 +1315,7 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
               borderRadius:10,padding:"32px 20px",textAlign:"center",
               cursor:"pointer",marginBottom:16,transition:"all 0.2s",
               background:dragOver?oc.teal+"08":oc.navyDk}}>
-            <div style={{fontSize:28,marginBottom:8}}>📤</div>
+            <div style={{fontSize:28,marginBottom:8}}>נ“₪</div>
             <div style={{color:dragOver?oc.teal:oc.grey,fontWeight:700,fontSize:13}}>
               {dragOver ? "Drop to upload" : "Drag & drop JSON or YAML config here"}
             </div>
@@ -1329,7 +1329,7 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
             {[
               {label:"YAML orchestration config",icon:"",col:oc.teal,
                desc:"Drop the orchestration YAML (agents, schedules, tools, data_lake). Parsed keys display here."},
-              {label:"JSON solution record",icon:"🗄",col:oc.green,
+              {label:"JSON solution record",icon:"נ—„",col:oc.green,
                desc:"Drop a JSON matching cfi_solutions schema. Required keys: solution_id, step, title, confidence, source."}
             ].map(f=>(
               <div key={f.label} style={{background:oc.navyMid,borderRadius:8,padding:"11px 13px",
@@ -1344,7 +1344,7 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
           {uploadedConfigs.length===0 ? (
             <div style={{background:"#08131f",borderRadius:8,padding:"20px",textAlign:"center",
               border:"1px solid #1e3050",color:oc.grey,fontSize:11}}>
-              No configs loaded yet — drag files above.
+              No configs loaded yet ג€” drag files above.
             </div>
           ) : (
             <div>
@@ -1360,11 +1360,11 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
                     <div style={{background:isErr?"#2a0a0a":"#0d1f35",
                       borderBottom:"1px solid "+(isErr?oc.red:oc.teal)+"33",
                       padding:"8px 12px",display:"flex",alignItems:"center",gap:10}}>
-                      <span style={{fontSize:14}}>{isErr?"":cfg.type==="YAML"?"":"🗄"}</span>
+                      <span style={{fontSize:14}}>{isErr?"":cfg.type==="YAML"?"":"נ—„"}</span>
                       <div style={{flex:1}}>
                         <div style={{fontSize:11,fontWeight:700,color:oc.white}}>{cfg.name}</div>
                         <div style={{fontSize:8,color:oc.grey}}>
-                          {cfg.type+" · "+(cfg.size/1024).toFixed(1)+"KB · "+cfg.loaded_at.slice(0,19).replace("T"," ")}
+                          {cfg.type+" ֲ· "+(cfg.size/1024).toFixed(1)+"KB ֲ· "+cfg.loaded_at.slice(0,19).replace("T"," ")}
                         </div>
                       </div>
                       <span style={{background:(isErr?oc.red:oc.teal)+"22",
@@ -1394,11 +1394,11 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
 
           <div style={{marginTop:12,background:"#1a2a10",borderRadius:7,padding:"9px 13px",
             border:"1px solid "+oc.green+"33",fontSize:9,color:oc.grey,lineHeight:1.8}}>
-            <div style={{color:oc.green,fontWeight:800,marginBottom:4}}>🔌 Supabase Integration</div>
+            <div style={{color:oc.green,fontWeight:800,marginBottom:4}}>נ” Supabase Integration</div>
             <div style={{color:oc.teal,fontWeight:700,marginBottom:2}}>APPEND-ONLY (never overwrite):</div>
-            Use INSERT with ON CONFLICT DO NOTHING on solution_id — never UPSERT/UPDATE.
+            Use INSERT with ON CONFLICT DO NOTHING on solution_id ג€” never UPSERT/UPDATE.
             <div style={{color:oc.teal,fontWeight:700,marginTop:5,marginBottom:2}}>User Access (RLS):</div>
-            Sharon (admin): full read + upload · Viewers: read-only · Agents (service_role): write-only via backend
+            Sharon (admin): full read + upload ֲ· Viewers: read-only ֲ· Agents (service_role): write-only via backend
             <div style={{color:oc.teal,fontWeight:700,marginTop:5,marginBottom:2}}>Live fetch:</div>
             supabase.from('cfi_solutions').select('*').order('last_updated', ascending:false)
           </div>
@@ -1408,7 +1408,7 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
   );
 }
 
-// ─── MAIN APP ─────────────────────────────────────────────────────────────────
+// ג”€ג”€ג”€ MAIN APP ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
 export default function CFI() {
   const [session, setSession] = useState(null);
 
@@ -1467,7 +1467,7 @@ export default function CFI() {
   };
   const [uploadedConfigs, setUploadedConfigs] = useState([]);
 
-  // ── S0 STATE ──
+  // ג”€ג”€ S0 STATE ג”€ג”€
   const [s0, setS0] = useState({
     plantName: "", millName: "", district: "", province: "", contact: "", rspo: "none", country: "Indonesia",
     idCode: "", contactName: "", contactEmail: "",
@@ -1489,21 +1489,21 @@ export default function CFI() {
     pkeTPD: 5,
     cnTarget: 22,
     soil: "ultisol", ag: "vgam",
-    // ── RESIDUE CAPTURE % OVERRIDES (carbon model) ──
+    // ג”€ג”€ RESIDUE CAPTURE % OVERRIDES (carbon model) ג”€ג”€
     efbCapturePct: 100,    // % of generated EFB captured by CFI (vs left on field/burned)
     opdcCapturePct: 100,   // % of OPDC captured
     pomeCapturePct: 100,   // % of POME sludge captured
-    // ── CARBON CREDIT INPUTS ──
+    // ג”€ג”€ CARBON CREDIT INPUTS ג”€ג”€
     carbonPriceScenario: "mid",  // low/mid/high/custom
     carbonPriceCustom: 25,       // $/t CO2e if custom
     carbonGwp: "100yr",          // 100yr / 20yr
     carbonBaselineMCF: "shallow", // shallow(0.4) / deep(0.85)
     carbonPomeMCF: "pond",        // pond(0.8) / lagoon(0.01)
-    // ── DMPP N₂O SUPPRESSION MODULE ──
-    dmppEnabled:    false,   // toggle — enables N₂O suppression credit pathway
-    dmppDose:       1.5,     // kg DMPP per tonne frass (wet weight) — commercial range 1-2 kg/t
-    dmppCostPerKg:  9,       // $/kg DMPP — commercial range $8-15/kg
-    // ── STREAM MIX (pct or kg) ──
+    // ג”€ג”€ DMPP Nג‚‚O SUPPRESSION MODULE ג”€ג”€
+    dmppEnabled:    false,   // toggle ג€” enables Nג‚‚O suppression credit pathway
+    dmppDose:       1.5,     // kg DMPP per tonne frass (wet weight) ג€” commercial range 1-2 kg/t
+    dmppCostPerKg:  9,       // $/kg DMPP ג€” commercial range $8-15/kg
+    // ג”€ג”€ STREAM MIX (pct or kg) ג”€ג”€
     efbMixPct: 0, opdcMixPct: 0, posMixPct: 0, opfMixPct: 0, optMixPct: 0,
     pkeMixPct: 0, custom1MixPct: 0, custom2MixPct: 0,
     efbMixKg: 0, opdcMixKg: 0, posMixKg: 0, opfMixKg: 0, optMixKg: 0,
@@ -1513,7 +1513,7 @@ export default function CFI() {
 
   const upS0 = (k,v) => setS0(p=>({...p,[k]:v}));
 
-  // ── S0 DERIVED ──
+  // ג”€ג”€ S0 DERIVED ג”€ג”€
   const effFFB    = useMemo(()=> +(s0.ffbCapacity * s0.utilisation/100).toFixed(2), [s0.ffbCapacity, s0.utilisation]);
   const monthFFB  = useMemo(()=> +(effFFB * s0.hrsDay * s0.daysMonth).toFixed(0), [effFFB, s0.hrsDay, s0.daysMonth]);
   const efbTPH    = useMemo(()=> +(effFFB * 0.225).toFixed(3), [effFFB]);
@@ -1524,18 +1524,18 @@ export default function CFI() {
   // OPDC: 15.2% of EFB fresh weight
   const opdcNatTPD= useMemo(()=> +(efbTPD * 0.152).toFixed(2), [efbTPD]);
   const opdcNatDM = useMemo(()=> +(opdcNatTPD * (100-s0.opdcMC)/100).toFixed(2), [opdcNatTPD, s0.opdcMC]);
-  // ── FIX-01/09: OPDC uses actual decanter yield — no phantom totalDMTarget ──
+  // ג”€ג”€ FIX-01/09: OPDC uses actual decanter yield ג€” no phantom totalDMTarget ג”€ג”€
   // Natural ratio at 60 TPH: EFB ~89% DM / OPDC ~11% DM. Formula-driven, not user-set.
-  const opdcDMreq     = opdcNatDM;  // OPDC supply = actual decanter output (15.2% of EFB FW × DM frac)
-  const opdcShortfall = 0;          // No shortfall — we use what the mill produces
-  // FIX-03: pomeActive governed by user toggle only — POS inclusion via Fe gate, not blend remainder
+  const opdcDMreq     = opdcNatDM;  // OPDC supply = actual decanter output (15.2% of EFB FW ֳ— DM frac)
+  const opdcShortfall = 0;          // No shortfall ג€” we use what the mill produces
+  // FIX-03: pomeActive governed by user toggle only ג€” POS inclusion via Fe gate, not blend remainder
   const pomeActive    = s0.pomeEnabled;
   const blendOK       = true;
   // Monthly substrate entering Stage 3
   const s1_efbMonthDM  = +(efbDMpd * s0.daysMonth).toFixed(0);
   const s1_opdcMonthDM = +(opdcDMreq * s0.daysMonth).toFixed(0);
   const s1_blendDM     = +(s1_efbMonthDM + s1_opdcMonthDM).toFixed(0);
-  // ── BLEND MC (wet-weight-weighted — FIX-10: uses natural tonnage fractions not phantom 60:40) ──
+  // ג”€ג”€ BLEND MC (wet-weight-weighted ג€” FIX-10: uses natural tonnage fractions not phantom 60:40) ג”€ג”€
   const efbDMfrac2     = (100 - s0.efbMC) / 100;
   const opdcDMfrac2    = (100 - s0.opdcMC) / 100;
   const _baseTotalDM   = efbDMpd + opdcDMreq;
@@ -1546,12 +1546,12 @@ export default function CFI() {
   const blendDMfrac    = (100 - blendMC)/100;
   const s1_blendWet    = +(s1_blendDM / blendDMfrac).toFixed(0);
 
-  // ── POME SLUDGE DERIVED — auto-fills DM remainder ────────────────────────
+  // ג”€ג”€ POME SLUDGE DERIVED ג€” auto-fills DM remainder ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
   const pomeSludgeNatTPD   = +(effFFB * s0.hrsDay * 0.0245).toFixed(1);
   const pomeSludgeActMC    = s0.pomeSludgeDewatered ? 65 : s0.pomeSludgeMC;
   const pomeSludgeDMfrac   = (100 - pomeSludgeActMC) / 100;
   const pomeSludgeDMpd     = +(pomeSludgeNatTPD * pomeSludgeDMfrac).toFixed(2);
-  // Fe-driven max inclusion (guard — used for alerts only; auto logic respects supply cap)
+  // Fe-driven max inclusion (guard ג€” used for alerts only; auto logic respects supply cap)
   const pomeFe             = parseFloat(s0.pomeSludgeFeResult);
   const pomeSludgeFeStatus = isNaN(pomeFe) ? "UNtested"
     : pomeFe < 3000 ? "LOW" : pomeFe < 5000 ? "MODERATE" : pomeFe < 8000 ? "HIGH" : "CRITICAL";
@@ -1571,49 +1571,49 @@ export default function CFI() {
   const pomeSludgeInclPct  = pomeSludgeNatTPD > 0 ? +(pomeSludgeInclTPD / pomeSludgeNatTPD * 100).toFixed(1) : 0;
   const pomePct            = pomeSludgeInclPct;
   const pomeSludgeInclDM   = pomeSludgeInclDMpd;
-  // NPK from POME SLUDGE (kg/day) — canonical values per t DM
+  // NPK from POME SLUDGE (kg/day) ג€” canonical values per t DM
   const pomeN_kgpd  = +(pomeSludgeInclDMpd * 17.6).toFixed(1);
   const pomeP_kgpd  = +(pomeSludgeInclDMpd * 4.0).toFixed(1);
   const pomeK_kgpd  = +(pomeSludgeInclDMpd * 7.0).toFixed(1);
 
-  // ══════════════════════════════════════════════════════════════════════════
-  // CARBON CREDITS — IPCC FOD (SOLID RESIDUES) + COD METHOD (POME)
+  // ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
+  // CARBON CREDITS ג€” IPCC FOD (SOLID RESIDUES) + COD METHOD (POME)
   // Methodology: IPCC 2006 GL Vol.5 Ch.2; Verra ACM0022 v3.1; IPCC AR5 GWP
-  // ══════════════════════════════════════════════════════════════════════════
+  // ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
 
-  // ── IPCC CONSTANTS (locked — do not override) ──────────────────────────
-  const C_DOC_EFB    = 0.45;   // Degradable Organic Carbon fraction — EFB/OPDC; IPCC Tier 1
+  // ג”€ג”€ IPCC CONSTANTS (locked ג€” do not override) ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
+  const C_DOC_EFB    = 0.45;   // Degradable Organic Carbon fraction ג€” EFB/OPDC; IPCC Tier 1
   const C_DOCf_EFB   = 0.50;   // Fraction DOC that decomposes; IPCC default
   const C_DOC_POME   = 0.35;   // POME sludge DOC
-  const C_DOCf_POME  = 0.70;   // POME sludge DOCf — higher VS content
+  const C_DOCf_POME  = 0.70;   // POME sludge DOCf ג€” higher VS content
   const C_F          = 0.50;   // CH4 fraction in landfill gas; IPCC default
-  const C_1612       = 16/12;  // Molar conversion C→CH4
+  const C_1612       = 16/12;  // Molar conversion Cג†’CH4
   const C_GWP100     = 28;     // CH4 GWP 100yr; IPCC AR5
   const C_GWP20      = 84;     // CH4 GWP 20yr; IPCC AR5
-  const C_kWhperCH4  = 15417;  // kWh/t CH4; LHV 50.05 MJ/kg × 0.35 efficiency
+  const C_kWhperCH4  = 15417;  // kWh/t CH4; LHV 50.05 MJ/kg ֳ— 0.35 efficiency
   // POME COD method constants
-  const C_COD        = 59.195; // kg COD/m³; engineering report average
+  const C_COD        = 59.195; // kg COD/mֲ³; engineering report average
   const C_B0         = 0.25;   // kg CH4/kg COD; IPCC wastewater default
-  const C_POME_m3tFFB= 0.60;   // m³ POME per tonne FFB processed
+  const C_POME_m3tFFB= 0.60;   // mֲ³ POME per tonne FFB processed
 
-  // ── MCF SELECTION ──────────────────────────────────────────────────────
+  // ג”€ג”€ MCF SELECTION ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
   const MCF_solid_baseline = s0.carbonBaselineMCF === "deep" ? 0.85 : 0.40;
   const MCF_solid_project  = 0.01; // CFI aerobic BSF treatment; Verra ACM0022 v3.1
   const MCF_pome_baseline  = s0.carbonPomeMCF === "lagoon" ? 0.01 : 0.80;
   const MCF_pome_project   = 0.01; // Covered lagoon + flare/CHP
 
-  // ── CAPTURE-ADJUSTED DM (monthly) ──────────────────────────────────────
+  // ג”€ג”€ CAPTURE-ADJUSTED DM (monthly) ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
   // EFB: 22.5% of FFB processed; adjusted by capture %
   const carbon_efbDMmo  = +(monthFFB * 0.225 * (1-s0.efbMC/100) * (s0.efbCapturePct/100)).toFixed(1);
   // OPDC: 4.56% of FFB; adjusted by capture %
   const carbon_opdcDMmo = +(monthFFB * 0.042 * (1-s0.opdcMC/100) * (s0.opdcCapturePct/100)).toFixed(1);  // BUG-09 FIX: OPDC = 4.2% FFB canonical (was 0.0456)
-  // POME sludge DM: already computed as pomeSludgeNatTPD × 30 days × capture %
+  // POME sludge DM: already computed as pomeSludgeNatTPD ֳ— 30 days ֳ— capture %
   const carbon_pomeDMmo = +(pomeSludgeNatTPD * s0.daysMonth * pomeSludgeDMfrac * (s0.pomeCapturePct/100)).toFixed(1);
   // POME liquid volume (for COD method)
   const carbon_pomeVol  = +(monthFFB * C_POME_m3tFFB * (s0.pomeCapturePct/100)).toFixed(0);
 
-  // ── SOLID RESIDUES — IPCC FOD FORMULA ──────────────────────────────────
-  // Formula: CH4 (t/mo) = DM × DOC × DOCf × MCF × F × (16/12)
+  // ג”€ג”€ SOLID RESIDUES ג€” IPCC FOD FORMULA ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
+  // Formula: CH4 (t/mo) = DM ֳ— DOC ֳ— DOCf ֳ— MCF ֳ— F ֳ— (16/12)
   // BASELINE
   const ch4_efb_base  = +(carbon_efbDMmo  * C_DOC_EFB  * C_DOCf_EFB  * MCF_solid_baseline * C_F * C_1612).toFixed(3);
   const ch4_opdc_base = +(carbon_opdcDMmo * C_DOC_EFB  * C_DOCf_EFB  * MCF_solid_baseline * C_F * C_1612).toFixed(3);
@@ -1630,8 +1630,8 @@ export default function CFI() {
   const co2e20_solids    = +(ch4_solids_avoid * C_GWP20).toFixed(1);
   const kwh_solids       = +(ch4_solids_avoid * C_kWhperCH4).toFixed(0);
 
-  // ── POME PONDS — COD METHOD ────────────────────────────────────────────
-  // Formula: CH4 (t/mo) = Volume_m3 × COD_kg/m3 × B0_kg/kg × MCF ÷ 1000
+  // ג”€ג”€ POME PONDS ג€” COD METHOD ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
+  // Formula: CH4 (t/mo) = Volume_m3 ֳ— COD_kg/m3 ֳ— B0_kg/kg ֳ— MCF ֳ· 1000
   const ch4_pome_base  = +(carbon_pomeVol * C_COD * C_B0 * MCF_pome_baseline / 1000).toFixed(3);
   const ch4_pome_proj  = +(carbon_pomeVol * C_COD * C_B0 * MCF_pome_project  / 1000).toFixed(3);
   const ch4_pome_avoid = +(ch4_pome_base - ch4_pome_proj).toFixed(3);
@@ -1639,7 +1639,7 @@ export default function CFI() {
   const co2e20_pome    = +(ch4_pome_avoid * C_GWP20).toFixed(1);
   const kwh_pome       = +(ch4_pome_avoid * C_kWhperCH4).toFixed(0);
 
-  // ── COMBINED TOTALS ────────────────────────────────────────────────────
+  // ג”€ג”€ COMBINED TOTALS ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
   const ch4_total_avoid   = +(ch4_solids_avoid + ch4_pome_avoid).toFixed(2);
   const co2e100_total_mo  = +(co2e100_solids + co2e100_pome).toFixed(1);
   const co2e20_total_mo   = +(co2e20_solids  + co2e20_pome).toFixed(1);
@@ -1650,10 +1650,10 @@ export default function CFI() {
   // Credits use CO2e-100yr (standard for Verra VCS)
   const gwpMultiplier     = s0.carbonGwp === "20yr" ? C_GWP20 : C_GWP100;
   const credits_annual    = s0.carbonGwp === "20yr" ? co2e20_annual : co2e100_annual;
-  // ── REVENUE ──────────────────────────────────────────────────────────────
-  const carbonPriceLow    = 20;  // $/t — Indonesian voluntary market floor
-  const carbonPriceMid    = 25;  // $/t — Verra VCS / Gold Standard mid
-  const carbonPriceHigh   = 30;  // $/t — Premium biodiversity-linked
+  // ג”€ג”€ REVENUE ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
+  const carbonPriceLow    = 20;  // $/t ג€” Indonesian voluntary market floor
+  const carbonPriceMid    = 25;  // $/t ג€” Verra VCS / Gold Standard mid
+  const carbonPriceHigh   = 30;  // $/t ג€” Premium biodiversity-linked
   const carbonPriceActive = s0.carbonPriceScenario==="low"    ? carbonPriceLow
                           : s0.carbonPriceScenario==="high"   ? carbonPriceHigh
                           : s0.carbonPriceScenario==="custom" ? (+s0.carbonPriceCustom||25)
@@ -1662,32 +1662,32 @@ export default function CFI() {
   const carbon_rev_monthly= +(carbon_rev_annual / 12).toFixed(0);
 
 
-  // ── PKE DERIVED ──────────────────────────────────────────────────────────
+  // ג”€ג”€ PKE DERIVED ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
   const pkeDMpd      = s0.pkeEnabled ? +(s0.pkeTPD * 0.88).toFixed(2) : 0;
-  const pkeNpd       = +(pkeDMpd * 28.8).toFixed(1);  // PKE N = CP 18% / 6.25 = 2.88% — FEED ingredient, N×6.25 correct
+  const pkeNpd       = +(pkeDMpd * 28.8).toFixed(1);  // PKE N = CP 18% / 6.25 = 2.88% ג€” FEED ingredient, Nֳ—6.25 correct
   const pkeCostDay   = +(s0.pkeTPD * 160).toFixed(0);
 
-  // ── COMBINED 3-STREAM NPK (kg/day) ───────────────────────────────────────
-  const efbN_kgpd    = +(efbDMpd * 8.5).toFixed(1);   // EFB N = 0.85% DM measured midpoint (range 0.76–0.90%)
+  // ג”€ג”€ COMBINED 3-STREAM NPK (kg/day) ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
+  const efbN_kgpd    = +(efbDMpd * 8.5).toFixed(1);   // EFB N = 0.85% DM measured midpoint (range 0.76ג€“0.90%)
   const efbP_kgpd    = +(efbDMpd * 3.0).toFixed(1);   // EFB P = 0.30% DM locked (high-yield estate)
-  const efbK_kgpd    = +(efbDMpd * 20.0).toFixed(1);  // EFB K = 2.0% DM locked (high-yield estate range 2.0–2.40%)
-  const opdcN_kgpd   = +(opdcDMreq * 26.0).toFixed(1); // OPDC N = 2.60% DM locked (measured midpoint 2.38–2.93%)
-  const opdcP_kgpd   = +(opdcDMreq * 4.5).toFixed(1);  // OPDC P = 0.45% DM locked (midpoint 0.39–0.51%)
-  const opdcK_kgpd   = +(opdcDMreq * 18.0).toFixed(1); // OPDC K = 1.80% DM locked (midpoint 1.24–2.39%)
+  const efbK_kgpd    = +(efbDMpd * 20.0).toFixed(1);  // EFB K = 2.0% DM locked (high-yield estate range 2.0ג€“2.40%)
+  const opdcN_kgpd   = +(opdcDMreq * 26.0).toFixed(1); // OPDC N = 2.60% DM locked (measured midpoint 2.38ג€“2.93%)
+  const opdcP_kgpd   = +(opdcDMreq * 4.5).toFixed(1);  // OPDC P = 0.45% DM locked (midpoint 0.39ג€“0.51%)
+  const opdcK_kgpd   = +(opdcDMreq * 18.0).toFixed(1); // OPDC K = 1.80% DM locked (midpoint 1.24ג€“2.39%)
   const totalN_kgpd  = +(efbN_kgpd + opdcN_kgpd + pomeN_kgpd + pkeNpd).toFixed(1);
   const totalP_kgpd  = +(efbP_kgpd + opdcP_kgpd + pomeP_kgpd).toFixed(1);
   const totalK_kgpd  = +(efbK_kgpd + opdcK_kgpd + pomeK_kgpd).toFixed(1);
   const totalDMpd    = +(efbDMpd + opdcDMreq + pomeSludgeInclDMpd + pkeDMpd).toFixed(1);
 
   // Blend C:N (DM-weighted)
-  const blendCN_efb    = efbDMpd * 8.5 * 60;    // EFB N=8.5 kg/t DM (0.85% measured) × C:N 60
-  const blendCN_opdc   = opdcDMreq * 26.0 * 20;  // OPDC N=26.0 kg/t DM (2.60% locked) × C:N 20
-  // FIX-02: POS C:N is a CONFIRMED DATA GAP — no peer-reviewed value for centrifuge discharge POS
+  const blendCN_efb    = efbDMpd * 8.5 * 60;    // EFB N=8.5 kg/t DM (0.85% measured) ֳ— C:N 60
+  const blendCN_opdc   = opdcDMreq * 26.0 * 20;  // OPDC N=26.0 kg/t DM (2.60% locked) ֳ— C:N 20
+  // FIX-02: POS C:N is a CONFIRMED DATA GAP ג€” no peer-reviewed value for centrifuge discharge POS
   // C:N=15 is unverified. Excluded from blendCN until ICP-OES result received (Balai Penelitian Tanah Bogor).
   const POS_CN_DATAGAP = true;
-  const blendCN_pome   = 0;  // FIX-02: POS excluded from C:N calc — DATA GAP
-  const pkeCN_calc     = 45 / 3.86;  // FIX-11: formula-driven; pkeC=45% DM, pkeN=3.86% DM → C:N≈11.7
-  const blendCN_pke    = pkeDMpd * 28.8 * pkeCN_calc;  // PKE N=28.8 kg/t DM × C:N 11.7
+  const blendCN_pome   = 0;  // FIX-02: POS excluded from C:N calc ג€” DATA GAP
+  const pkeCN_calc     = 45 / 3.86;  // FIX-11: formula-driven; pkeC=45% DM, pkeN=3.86% DM ג†’ C:Nג‰ˆ11.7
+  const blendCN_pke    = pkeDMpd * 28.8 * pkeCN_calc;  // PKE N=28.8 kg/t DM ֳ— C:N 11.7
   const blendCN_totalN = efbN_kgpd + opdcN_kgpd + (POS_CN_DATAGAP ? 0 : pomeN_kgpd) + pkeNpd;  // FIX-02: POS excluded
   const blendCN_totalC = blendCN_efb + blendCN_opdc + blendCN_pome + blendCN_pke;
   const blendCN        = blendCN_totalN > 0 ? +(blendCN_totalC / blendCN_totalN).toFixed(1) : null;
@@ -1712,11 +1712,11 @@ export default function CFI() {
     ? +(baseDM3 * (baseCN3 - s0.cnTarget) / (s0.cnTarget - 15)).toFixed(2) : 0;
   const pkeRecWet  = pkeRecDM > 0 ? +(pkeRecDM / 0.88).toFixed(1) : 0;
 
-  // ── S2 STATE ──
-  // ── S2 CHEMICAL STATE ─────────────────────────────────────────────────────
+  // ג”€ג”€ S2 STATE ג”€ג”€
+  // ג”€ג”€ S2 CHEMICAL STATE ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
   const [s2, setS2] = useState({
     // Primary treatment
-    pksa:true,  // BUG-07 FIX: removed duplicate pksa_dose — use pksaDose only (below)
+    pksa:true,  // BUG-07 FIX: removed duplicate pksa_dose ג€” use pksaDose only (below)
     naoh:false, naoh_dose:3,
     koh:false, koh_dose:2,
     caoh2:false, caoh2_dose:1.5,
@@ -1756,7 +1756,7 @@ export default function CFI() {
   });
   const upS2 = (k,v) => setS2(p=>({...p,[k]:v}));
 
-  // ── S3 BIOLOGICAL STATE ───────────────────────────────────────────────────
+  // ג”€ג”€ S3 BIOLOGICAL STATE ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
   const [s3orgs, setS3Orgs] = useState({
     // DEFAULT one-shot protocol (5 organisms)
     lactobacillus:true, saccharomyces:true, bacillus_sub:true,
@@ -1785,35 +1785,35 @@ export default function CFI() {
   });
   const upS3 = (k,v) => setS3Orgs(p=>({...p,[k]:v}));
 
-  // ── S3 GATE MEASUREMENTS STATE ────────────────────────────────────────────
+  // ג”€ג”€ S3 GATE MEASUREMENTS STATE ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
   const [s3, setS3Gate] = useState({
     cn_measured:    "",   // user enters actual C:N from lab
     mc_measured:    "",   // user enters actual moisture %
     ph_measured:    "",   // user enters actual pH
-    temp_measured:  "",   // user enters actual substrate temp °C
+    temp_measured:  "",   // user enters actual substrate temp ֲ°C
     bt_confirmed_absent: false,
     visual_ok:      false,
     consortium:     "one-shot",
   });
   const upS3Gate = (k,v) => setS3Gate(p=>({...p,[k]:v}));
 
-  // ── S2 CONFLICT DETECTION ─────────────────────────────────────────────────
+  // ג”€ג”€ S2 CONFLICT DETECTION ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
   const s2Conflicts = [];
-  if(s2.naoh) s2Conflicts.push({id:"naoh_alert",sev:"amber",msg:" NaOH active — Na⁺ residues toxic to BSF above 0.3% DM. Mandatory rinse cycle required before BSF introduction. Monitor substrate Na after neutralisation."});  // BUG-06 FIX: GR-11 — NaOH = AMBER not red
-  if(s2.paa && (s0.rspo==="certified"||s0.rspo==="certified_adv")) s2Conflicts.push({id:"paa_rspo",sev:"red",msg:"PAA is RSPO-RESTRICTED. RSPO certification is active — PAA triggers mandatory third-party audit. Remove or document."});
-  if((s2.cellulase_s2||s2.xylanase_s2||s2.laccase_s2||s2.mnp_s2||s2.lip_s2)) s2Conflicts.push({id:"enzyme_s2",sev:"amber",msg:"Enzymes selected in S2. Enzymes denature above 55°C — apply ONLY after substrate cools below 45°C. Recommend moving to S3 (biological phase) where temperature is controlled."});
-  if(s2.h2so4 || s2.hcl) s2Conflicts.push({id:"acid_neutralise",sev:"amber",msg:"Acid treatment active — mandatory neutralisation to pH 6.5–8.0 required before S3 biological inoculation. Allow additional 12–24hr neutralisation time."});
-  if(s2.paa && (s3orgs.lactobacillus||s3orgs.saccharomyces||s3orgs.bacillus_sub||s3orgs.azotobacter||s3orgs.trichoderma_h)) s2Conflicts.push({id:"paa_microbes",sev:"red",msg:"PAA kills all microorganisms at >50 ppm. S3 biological inoculation requires complete PAA degradation (pH 6–7 + 24hr) before organism introduction."});
+  if(s2.naoh) s2Conflicts.push({id:"naoh_alert",sev:"amber",msg:" NaOH active ג€” Naג÷ residues toxic to BSF above 0.3% DM. Mandatory rinse cycle required before BSF introduction. Monitor substrate Na after neutralisation."});  // BUG-06 FIX: GR-11 ג€” NaOH = AMBER not red
+  if(s2.paa && (s0.rspo==="certified"||s0.rspo==="certified_adv")) s2Conflicts.push({id:"paa_rspo",sev:"red",msg:"PAA is RSPO-RESTRICTED. RSPO certification is active ג€” PAA triggers mandatory third-party audit. Remove or document."});
+  if((s2.cellulase_s2||s2.xylanase_s2||s2.laccase_s2||s2.mnp_s2||s2.lip_s2)) s2Conflicts.push({id:"enzyme_s2",sev:"amber",msg:"Enzymes selected in S2. Enzymes denature above 55ֲ°C ג€” apply ONLY after substrate cools below 45ֲ°C. Recommend moving to S3 (biological phase) where temperature is controlled."});
+  if(s2.h2so4 || s2.hcl) s2Conflicts.push({id:"acid_neutralise",sev:"amber",msg:"Acid treatment active ג€” mandatory neutralisation to pH 6.5ג€“8.0 required before S3 biological inoculation. Allow additional 12ג€“24hr neutralisation time."});
+  if(s2.paa && (s3orgs.lactobacillus||s3orgs.saccharomyces||s3orgs.bacillus_sub||s3orgs.azotobacter||s3orgs.trichoderma_h)) s2Conflicts.push({id:"paa_microbes",sev:"red",msg:"PAA kills all microorganisms at >50 ppm. S3 biological inoculation requires complete PAA degradation (pH 6ג€“7 + 24hr) before organism introduction."});
 
-  // ── S3 CONFLICT DETECTION ─────────────────────────────────────────────────
+  // ג”€ג”€ S3 CONFLICT DETECTION ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
   const s3Conflicts = [];
-  if(s3orgs.bt_icbb) s3Conflicts.push({id:"bt_bsf",sev:"amber",msg:" Bt (Bacillus thuringiensis) ICBB 6095 IS ACTIVE — ALLOWED but USE WITH CAUTION. Cry1A + Cry3A proteins are toxic to Diptera larvae at high concentrations. Recommended: Apply Bt only during S3 composting phase (Wave 1/2) BEFORE BSF introduction. Confirm Bt titre has degraded below 10⁴ CFU/g before S4 loading. Monitor larvae for early mortality signs (Day 1–3)."});
-  if(s2.feso4 && (s3orgs.laccase_e||s3orgs.cellulase_e||s3orgs.xylanase_e)) s3Conflicts.push({id:"feso4_mnp",sev:"red",msg:"FeSO₄ active in S2. Fe³⁺ formed via oxidation is a competitive inhibitor of MnP at the haem active site. Remove FeSO₄ or remove MnP-producing organisms (Phanerochaete, Trametes)."});
-  if((s3orgs.cellulase_e||s3orgs.xylanase_e||s3orgs.laccase_e)&&(s3orgs.geobacillus||s3orgs.bacillus_lich||s3orgs.thermomyces)) s3Conflicts.push({id:"enzyme_thermo",sev:"amber",msg:"Enzymes and thermophilic organisms selected. Apply enzymes ONLY after thermophilic phase ends (<45°C). Enzymes irreversibly denature during thermophilic phase (>55°C). Use two-wave protocol: Wave 1 = thermophiles, Wave 2 = enzymes + mesophiles."});
-  if(s3orgs.ganoderma) s3Conflicts.push({id:"ganoderma_risk",sev:"amber",msg:"Ganoderma lucidum selected — this species is closely related to G. boninense, the primary oil palm pathogen in Indonesia. Verify strain identity with supplier before use. Not recommended near active plantation."});
-  if(s3orgs.azotobacter && s3orgs.bt_icbb) s3Conflicts.push({id:"azot_bt",sev:"amber",msg:"Azotobacter vinelandii is temperature-sensitive — must apply AFTER substrate cools below 50°C (Wave 2). Do not apply simultaneously with thermophilic bacteria."});
+  if(s3orgs.bt_icbb) s3Conflicts.push({id:"bt_bsf",sev:"amber",msg:" Bt (Bacillus thuringiensis) ICBB 6095 IS ACTIVE ג€” ALLOWED but USE WITH CAUTION. Cry1A + Cry3A proteins are toxic to Diptera larvae at high concentrations. Recommended: Apply Bt only during S3 composting phase (Wave 1/2) BEFORE BSF introduction. Confirm Bt titre has degraded below 10ג´ CFU/g before S4 loading. Monitor larvae for early mortality signs (Day 1ג€“3)."});
+  if(s2.feso4 && (s3orgs.laccase_e||s3orgs.cellulase_e||s3orgs.xylanase_e)) s3Conflicts.push({id:"feso4_mnp",sev:"red",msg:"FeSOג‚„ active in S2. Feֲ³ג÷ formed via oxidation is a competitive inhibitor of MnP at the haem active site. Remove FeSOג‚„ or remove MnP-producing organisms (Phanerochaete, Trametes)."});
+  if((s3orgs.cellulase_e||s3orgs.xylanase_e||s3orgs.laccase_e)&&(s3orgs.geobacillus||s3orgs.bacillus_lich||s3orgs.thermomyces)) s3Conflicts.push({id:"enzyme_thermo",sev:"amber",msg:"Enzymes and thermophilic organisms selected. Apply enzymes ONLY after thermophilic phase ends (<45ֲ°C). Enzymes irreversibly denature during thermophilic phase (>55ֲ°C). Use two-wave protocol: Wave 1 = thermophiles, Wave 2 = enzymes + mesophiles."});
+  if(s3orgs.ganoderma) s3Conflicts.push({id:"ganoderma_risk",sev:"amber",msg:"Ganoderma lucidum selected ג€” this species is closely related to G. boninense, the primary oil palm pathogen in Indonesia. Verify strain identity with supplier before use. Not recommended near active plantation."});
+  if(s3orgs.azotobacter && s3orgs.bt_icbb) s3Conflicts.push({id:"azot_bt",sev:"amber",msg:"Azotobacter vinelandii is temperature-sensitive ג€” must apply AFTER substrate cools below 50ֲ°C (Wave 2). Do not apply simultaneously with thermophilic bacteria."});
 
-  // ── S2 DERIVED VALUES ─────────────────────────────────────────────────────
+  // ג”€ג”€ S2 DERIVED VALUES ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
   // Lignin reduction from active chemicals
   const ligninReductions = {
     pksa:32, naoh:66, koh:35, caoh2:18, cao:22, caco3:3, mgco3:3, k2co3:22,
@@ -1845,7 +1845,7 @@ export default function CFI() {
   Object.keys(chemCosts).forEach(k=>{ if(s2[k]) s2CostPerT += chemCosts[k]; });
   const s2MonthlyCost = Math.round(s1_blendWet * s2CostPerT);
 
-  // ── S3 DERIVED VALUES ─────────────────────────────────────────────────────
+  // ג”€ג”€ S3 DERIVED VALUES ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
   const orgCosts = {
     lactobacillus:0.05, saccharomyces:0.11, bacillus_sub:0.02,
     azotobacter:0.05, trichoderma_h:0.42, thermomyces:0.08, myceliophthora:0.12,
@@ -1879,7 +1879,7 @@ export default function CFI() {
   // S3 costs cascade from active organisms
   const s3_monthlyFW = s1_blendWet;
 
-  // BSF handoff gate — use pipeline-calculated values; user-entered measurements override
+  // BSF handoff gate ג€” use pipeline-calculated values; user-entered measurements override
   const btPass  = s3.bt_confirmed_absent;
   const visPass = s3.visual_ok;
   const cnGate  = s3.cn_measured !== "" ? parseFloat(s3.cn_measured) : blendCN;
@@ -1895,7 +1895,7 @@ export default function CFI() {
   const s3_monthlyCost = Math.round(s3_monthlyFW * s3CostPerT);
   const s3_annualCost  = s3_monthlyCost * 12;
 
-  // ── FULL PIPELINE LAB DERIVATION (formula-driven, responds to S2+S3 choices) ──────────────
+  // ג”€ג”€ FULL PIPELINE LAB DERIVATION (formula-driven, responds to S2+S3 choices) ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
   // S0 raw blend baseline
   // FIX-04: use actual DM fractions (~89% EFB / ~11% OPDC) not phantom efbPct/opdcPct
   const _labTotalDM   = efbDMpd + opdcDMreq + (pomeActive ? pomeSludgeInclDMpd : 0);
@@ -1911,8 +1911,8 @@ export default function CFI() {
   const lab_s0_CP      = blendCP || 8.0;
   const lab_s0_pH      = 5.5;
 
-  // S2: chemicals applied — each chemical shifts specific lab parameters
-  // Lignin: full diminishing-return calc already done → pksa_ligninRed
+  // S2: chemicals applied ג€” each chemical shifts specific lab parameters
+  // Lignin: full diminishing-return calc already done ג†’ pksa_ligninRed
   const lab_s2_lignin  = +(lab_s0_lignin * (1 - pksa_ligninRed/100)).toFixed(1);
   // Hemicellulose reduction from S2 enzymes (cellulase, xylanase, mannanase, LiP, MnP)
   const hemiRed_s2 = Math.min(55, (s2.cellulase_s2?12:0)+(s2.xylanase_s2?18:0)+(s2.mnp_s2?8:0)+(s2.lip_s2?14:0)+(s2.laccase_s2?6:0));
@@ -1921,11 +1921,11 @@ export default function CFI() {
   const nVolatLoss = s2.naoh?0.12 : s2.koh?0.08 : s2.pksa?0.04 : 0;
   const nConc = (s2.pksa||s2.naoh||s2.koh||s2.caoh2) ? 0.15 : 0; // concentration effect from OM loss
   const lab_s2_N       = +(lab_s0_N * (1 - nVolatLoss) * (1 + nConc)).toFixed(2);
-  // C:N: alkaline reduces lignin (C) faster than N → C:N drops; but N volatilisation pushes it back up
+  // C:N: alkaline reduces lignin (C) faster than N ג†’ C:N drops; but N volatilisation pushes it back up
   const ligninCReduction = pksa_ligninRed/100 * 0.4; // lignin ~40% of total C
   const lab_s2_CN      = +(lab_s0_CN * (1 - ligninCReduction) * (1 + nVolatLoss)).toFixed(1);
   const lab_s2_OM      = +(lab_s0_OM * (1 - pksa_ligninRed/100 * 0.45)).toFixed(1);
-  const lab_s2_CP      = +(lab_s2_N * 4.67 * 100).toFixed(1); // using N×4.67 per guardrail
+  const lab_s2_CP      = +(lab_s2_N * 4.67 * 100).toFixed(1); // using Nֳ—4.67 per guardrail
   const lab_s2_pH      = s2.pksa||s2.naoh||s2.koh ? 7.0 : s2.h2so4||s2.hcl||s2.citric ? 4.5 : s2.caco3||s2.caoh2 ? 7.5 : 5.5;
   const lab_s2_P       = +(lab_s0_P * 1.12).toFixed(2); // slight P concentration
   const lab_s2_K       = s2.pksa ? +(lab_s0_K * 7.7).toFixed(2) : +(lab_s0_K * 1.05).toFixed(2); // PKSA K spike
@@ -1937,7 +1937,7 @@ export default function CFI() {
   // Hemi further reduced by S3 enzymes
   const hemiRed_s3 = Math.min(55, (s3orgs.cellulase_e?15:0)+(s3orgs.xylanase_e?20:0)+(s3orgs.mannanase_e?14:0)+(s3orgs.bglucosidase_e?8:0)+(s3orgs.pectinase_e?6:0));
   const lab_s3_hemi    = +(lab_s2_hemi * (1 - hemiRed_s3/100)).toFixed(1);
-  // N-fixers add N; proteases can mineralise protein → available N up
+  // N-fixers add N; proteases can mineralise protein ג†’ available N up
   const nFixBoost = nfixOrgs * 0.06 + (s3orgs.protease_e?0.04:0) + (s3orgs.bacillus_sub?0.03:0);
   const lab_s3_N       = +(lab_s2_N * (1 + nFixBoost)).toFixed(2);
   const lab_s3_P       = +(lab_s2_P * (1 + (s3orgs.bacillus_meg||s3orgs.pseudomonas||s3orgs.paenibacillus ? 0.08:0) + (s3orgs.aspergillus_n?0.05:0))).toFixed(2);
@@ -1959,7 +1959,7 @@ export default function CFI() {
 
   // FCR bidirectional: good chemistry reduces, bad combos raise it
   const fcrPenalty = (s2.naoh && !s2.caco3 && !s2.h2so4 ? 0.10 : 0) // NaOH w/o neutralisation
-                   + (s2.urea ? 0.08 : 0)           // excess N → ammonia → BSF stress
+                   + (s2.urea ? 0.08 : 0)           // excess N ג†’ ammonia ג†’ BSF stress
                    + (s2.feso4 && !s2.pksa ? 0.06 : 0) // Fe overload without PKSA
                    + (s3orgs.bt_icbb && !s3.bt_confirmed_absent ? 0.15 : 0); // Bt active risk
   const ligninFCRBonus = +(Math.min(0.35, pksa_ligninRed * 0.008) - fcrPenalty).toFixed(3);
@@ -1969,8 +1969,8 @@ export default function CFI() {
     // Dual-track bays
     dualTrack: true,
     bayASplit: 50,           // % substrate to Bay A (protein-optimised)
-    bayADays: 9,             // Bay A grow days (6–10)
-    bayBDays: 13,            // Bay B grow days (10–18)
+    bayADays: 9,             // Bay A grow days (6ג€“10)
+    bayBDays: 13,            // Bay B grow days (10ג€“18)
     // PKM supplementation
     pkmEnabled: false,
     pkmPct: 30,              // % of substrate DM
@@ -1986,39 +1986,39 @@ export default function CFI() {
   });
   const upS4 = (k,v) => setS4(p=>({...p,[k]:v}));
 
-  // ── CARBON ENGINE LOCAL STATE ──────────────────────────────────────────────
+  // ג”€ג”€ CARBON ENGINE LOCAL STATE ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
   const [ccTab,      setCcTab]      = useState("calc");
   const [ccPriceOff, setCcPriceOff] = useState(20);   // offsetting slider default $20
   const [ccPriceIns, setCcPriceIns] = useState(50);   // insetting slider default $50
   const [ccPathway,  setCcPathway]  = useState("bsf_s4"); // bsf_s4 | fast_compost
 
-  // S4 Derived — linear interpolation Day 6→18 anchors
+  // S4 Derived ג€” linear interpolation Day 6ג†’18 anchors
   const s4_lerp = (a6, a18, d) => +(a6 + (a18-a6) * (d-6)/12).toFixed(2);
   const gd = Math.max(6, Math.min(18, +s4.growDays || 12));
 
-  // ── DUAL-TRACK BAY CALCULATIONS ─────────────────────────────────────────────
+  // ג”€ג”€ DUAL-TRACK BAY CALCULATIONS ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
   const bayADays = Math.max(6,  Math.min(10, +s4.bayADays || 9));
   const bayBDays = Math.max(10, Math.min(18, +s4.bayBDays || 13));
   const bayASplit = Math.max(0, Math.min(100, +s4.bayASplit || 50));
   const bayBSplit = 100 - bayASplit;
 
-  // Bay A (protein-optimised, Day 6–10): high protein, lower yield
+  // Bay A (protein-optimised, Day 6ג€“10): high protein, lower yield
   const bayA_yieldPct    = s4_lerp(14.0, 22.0, bayADays);
   const bayA_proteinDM   = +(44.0 - Math.max(0, bayADays-10)*0.5).toFixed(1); // peaks ~Day 10 at 44%
   const bayA_fatDM       = s4_lerp(28.0, 34.0, bayADays);
   const bayA_FCR         = +(s4_lerp(5.2,  3.5,  bayADays) - ligninFCRBonus).toFixed(2);
   const bayA_moisture    = s4_lerp(72.0, 65.0, bayADays);
 
-  // Bay B (biomass-optimised, Day 10–18): more FW yield, slightly lower protein
+  // Bay B (biomass-optimised, Day 10ג€“18): more FW yield, slightly lower protein
   const bayB_yieldPct    = s4_lerp(14.0, 22.0, bayBDays);
   const bayB_proteinDM   = gd <= 12 ? s4_lerp(42.0, 44.0, bayBDays) : +(44.0 - (bayBDays-12)*(6/6)).toFixed(2);
   const bayB_fatDM       = s4_lerp(28.0, 34.0, bayBDays);
   const bayB_FCR         = +(s4_lerp(5.2,  3.5,  bayBDays) - ligninFCRBonus).toFixed(2);
   const bayB_moisture    = s4_lerp(72.0, 65.0, bayBDays);
 
-  // Larvae yield (% of substrate FW) — legacy single-bay
+  // Larvae yield (% of substrate FW) ג€” legacy single-bay
   const larvYieldPct    = s4_lerp(14.0, 22.0, gd);
-  // Protein %DM — peaks ~Day12: lerp 42→44→38 (use quadratic approx via two lerps)
+  // Protein %DM ג€” peaks ~Day12: lerp 42ג†’44ג†’38 (use quadratic approx via two lerps)
   const larvProteinDM   = gd <= 12 ? s4_lerp(42.0, 44.0, gd) : +(44.0 - (gd-12)*(6/6)).toFixed(2);
   const larvFatDM       = s4_lerp(28.0, 34.0, gd);
   const larvFCR         = +(s4_lerp(5.2,  3.5,  gd) - ligninFCRBonus).toFixed(2);
@@ -2033,9 +2033,9 @@ export default function CFI() {
   const combo_FCR        = +((bayA_FCR*(bayASplit/100))       + (bayB_FCR*(bayBSplit/100))).toFixed(2);
   const combo_moisture   = +((bayA_moisture*(bayASplit/100))  + (bayB_moisture*(bayBSplit/100))).toFixed(1);
 
-  // ── PKM SUPPLEMENTATION ────────────────────────────────────────────────────
-  // Substrate CP before PKM — EFB:OPDC blend post-S3 approx
-  const substrateCP_S3   = +(blendCN ? (100 / (blendCN * 4.67) * 100).toFixed(1) : 8.4); // BUG-12 FIX: N×4.67 per GR-10 (was 6.25)
+  // ג”€ג”€ PKM SUPPLEMENTATION ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
+  // Substrate CP before PKM ג€” EFB:OPDC blend post-S3 approx
+  const substrateCP_S3   = +(blendCN ? (100 / (blendCN * 4.67) * 100).toFixed(1) : 8.4); // BUG-12 FIX: Nֳ—4.67 per GR-10 (was 6.25)
   const pkmCP_DM         = 18.5;  // PKE/PKM crude protein % DM
   const pkmCN            = 25;    // PKM C:N
   const pkmCost_perT     = 85;    // $85/t FW
@@ -2063,29 +2063,29 @@ export default function CFI() {
   const s4_frassFW     = +(s4_frassRaw * 0.85).toFixed(1); // 15% evap
   const s4_frassMC     = 62; // % typical post-rearing
 
-  // S5A — frass after larval extraction
+  // S5A ג€” frass after larval extraction
   const s5a_N_DM  = 1.80; const s5a_P_DM  = 0.90; const s5a_K_DM  = 1.20;
   const s5a_Ca_DM = 2.10; const s5a_Mg_DM = 0.60; const s5a_OM_DM = 45.0;
   const s5a_CN    = 14;   const s5a_pH     = 6.8;
   const s5a_FW    = s4_frassFW;
   const s5a_DM    = +(s5a_FW * (100 - s4_frassMC) / 100).toFixed(1);
 
-  // S5B — terminated in-substrate (larvae + frass combined)
+  // S5B ג€” terminated in-substrate (larvae + frass combined)
   const s5b_N_DM  = 2.40; const s5b_P_DM  = 1.10; const s5b_K_DM  = 1.20;
   const s5b_Ca_DM = 2.40; const s5b_Mg_DM = 0.70; const s5b_OM_DM = 52.0;
   const s5b_CN    = 11;   const s5b_pH     = 6.5;
   const s5b_FW    = s4_substrateIn;  // whole substrate in S5B
   const s5b_DM    = +(s5b_FW * (100 - s4_frassMC) / 100).toFixed(1);
 
-  // S6 — insect meal, oil, chitin yields (per month)
-  const s6_mealYield   = +(s4_larvaeDM * 0.506 * 1.15).toFixed(1); // 50.6% CP defatted, 1.15 factor DM→meal
+  // S6 ג€” insect meal, oil, chitin yields (per month)
+  const s6_mealYield   = +(s4_larvaeDM * 0.506 * 1.15).toFixed(1); // 50.6% CP defatted, 1.15 factor DMג†’meal
   const s6_oilYield    = +(s4_larvaeDM * 0.15).toFixed(1);  // ~15% DM extracted oil
   const s6_chitinYield = +(s4_larvaeDM * 0.093 * 0.45).toFixed(2); // 9.3% chitin, 45% extractable
 
-  // NPK replacement value calcs (urea $350/t→$0.761/kg N; TSP $450/t→$0.978/kg P2O5; MOP $380/t→$0.633/kg K2O)
+  // NPK replacement value calcs (urea $350/tג†’$0.761/kg N; TSP $450/tג†’$0.978/kg P2O5; MOP $380/tג†’$0.633/kg K2O)
   const NPK_N_price  = 0.761;  // $/kg N
-  const NPK_P_price  = 0.978;  // $/kg P2O5 (P × 2.29)
-  const NPK_K_price  = 0.633;  // $/kg K2O (K × 1.20)
+  const NPK_P_price  = 0.978;  // $/kg P2O5 (P ֳ— 2.29)
+  const NPK_K_price  = 0.633;  // $/kg K2O (K ֳ— 1.20)
 
   const soilObj = SOILS.find(s=>s.id===s0.soil) || SOILS[1];
   const agObj   = AG_TIERS.find(a=>a.id===s0.ag) || AG_TIERS[0];
@@ -2102,14 +2102,14 @@ export default function CFI() {
   const s5b_Keff = s5b_K_DM/100 * (100-s4_frassMC)/100 * 1.20 * agObj.uplift;
   const s5b_NPKval = +(( s5b_Neff*1000*NPK_N_price + s5b_Peff*1000*NPK_P_price + s5b_Keff*1000*NPK_K_price )).toFixed(2);
 
-  // Sinar Mas ACTUAL NPK cost — $1.50/kg N (inc. soil loss penalty) vs urea floor
+  // Sinar Mas ACTUAL NPK cost ג€” $1.50/kg N (inc. soil loss penalty) vs urea floor
   const SM_N_price   = 1.50;   // $/kg N (Sinar Mas estate, incl. soil loss penalty)
   const SM_P_price   = 1.80;   // $/kg P2O5 (TSP at Sinar Mas actual landing cost)
   const SM_K_price   = 0.90;   // $/kg K2O (MOP at Sinar Mas actual landing cost)
   const s5a_NPKval_SM = +(( s5a_Neff*1000*SM_N_price + s5a_Peff*1000*SM_P_price + s5a_Keff*1000*SM_K_price )).toFixed(2);
   const s5b_NPKval_SM = +(( s5b_Neff*1000*SM_N_price + s5b_Peff*1000*SM_P_price + s5b_Keff*1000*SM_K_price )).toFixed(2);
 
-  // ── NUTRIENT LEDGER — stage-by-stage mass flow + nutrient profiles ──────────
+  // ג”€ג”€ NUTRIENT LEDGER ג€” stage-by-stage mass flow + nutrient profiles ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
   const nl_wetPD   = +(efbTPD + opdcDMreq/opdcDMfrac2 + pomeSludgeInclTPD + (s0.pkeEnabled ? +s0.pkeTPD : 0)).toFixed(1);
   const nl_N       = totalDMpd>0 ? +(totalN_kgpd/(totalDMpd*10)).toFixed(2) : 1.38;
   const nl_P       = totalDMpd>0 ? +(totalP_kgpd/(totalDMpd*10)).toFixed(2) : 0.16;
@@ -2118,19 +2118,19 @@ export default function CFI() {
   const nl_Mg      = 0.16;
   const nl_OM      = totalDMpd>0 ? +(73*(efbDMpd/totalDMpd)+63*(opdcDMreq/totalDMpd)+35*(pomeSludgeInclDMpd/totalDMpd)).toFixed(1) : 71;
   const nl_CN      = blendCN || 32;
-  // S2 — PKSA K spike + alkali Ca amendments (K₂O 40% of ash, Ca from Ca(OH)₂/CaCO₃/dolomite)
+  // S2 ג€” PKSA K spike + alkali Ca amendments (Kג‚‚O 40% of ash, Ca from Ca(OH)ג‚‚/CaCOג‚ƒ/dolomite)
   const nl_s2K     = +(nl_K + (s2.pksa ? s2.pksaDose*0.40*0.83/(blendDMfrac*10) : 0)).toFixed(2);
   const nl_s2Ca    = +(nl_Ca + (s2.caoh2 ? s2.caoh2_dose*0.54/(blendDMfrac*10) : 0) + (s2.caco3 ? s2.caco3_dose*0.40/(blendDMfrac*10) : 0) + (s2.dolomite ? s2.dolomite_dose*0.21/(blendDMfrac*10) : 0)).toFixed(2);
   const nl_s2CN    = +Math.max(22, nl_CN - (s2.pksa ? 8 : 2)).toFixed(1);
   const nl_s2OM    = +(nl_OM * 0.93).toFixed(1);
-  // S3 — biological uplift (N+8%, P+10% PSB, K+5% solubilisation, OM-4% respiration)
+  // S3 ג€” biological uplift (N+8%, P+10% PSB, K+5% solubilisation, OM-4% respiration)
   const nl_s3N     = +(nl_N * 1.08).toFixed(2);
   const nl_s3P     = +(nl_P * 1.10).toFixed(2);
   const nl_s3K     = +(nl_s2K * 1.05).toFixed(2);
   const nl_s3Ca    = nl_s2Ca;
   const nl_s3CN    = +Math.max(18, nl_s2CN - 5).toFixed(1);
   const nl_s3OM    = +(nl_s2OM * 0.96).toFixed(1);
-  // S4 — frass at harvest day (gd-interpolated; larvae remove N↓, C:N drops sharply)
+  // S4 ג€” frass at harvest day (gd-interpolated; larvae remove Nג†“, C:N drops sharply)
   const nl_s4N     = +(2.20 - (gd-6)/(18-6)*0.40).toFixed(2);
   const nl_s4P     = +(0.80 + (gd-6)/(18-6)*0.10).toFixed(2);
   const nl_s4K     = +(nl_s3K * 0.92).toFixed(2);
@@ -2141,37 +2141,37 @@ export default function CFI() {
   const nl_s5aPD   = +(s5a_FW / s0.daysMonth).toFixed(1);
   const nl_s5bPD   = +(s5b_FW / s0.daysMonth).toFixed(1);
 
-  // ══════════════════════════════════════════════════════════════════════════
-  // DMPP N₂O SUPPRESSION MODULE
-  // IPCC 2006 Vol.4 Ch.11 — Direct N₂O from managed soils, organic N applied
-  // EF_direct = 0.010 kg N₂O-N / kg N applied (IPCC Tier 1 default)
-  // Conversion N₂O-N → N₂O: multiply by 44/28 (molecular weights)
-  // GWP N₂O = 265 (AR5 GWP100) — locked in CFI model
+  // ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
+  // DMPP Nג‚‚O SUPPRESSION MODULE
+  // IPCC 2006 Vol.4 Ch.11 ג€” Direct Nג‚‚O from managed soils, organic N applied
+  // EF_direct = 0.010 kg Nג‚‚O-N / kg N applied (IPCC Tier 1 default)
+  // Conversion Nג‚‚O-N ג†’ Nג‚‚O: multiply by 44/28 (molecular weights)
+  // GWP Nג‚‚O = 265 (AR5 GWP100) ג€” locked in CFI model
   // Source: IPCC 2006 GL Vol.4 Ch.11; Verra VM0042; Zaman et al. 2018
-  // ══════════════════════════════════════════════════════════════════════════
+  // ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
   const DMPP_N2O_EF       = 0.010;       // IPCC Tier 1 direct emission factor
-  const DMPP_GWP_N2O      = 265;         // AR5 GWP100 for N₂O — CFI locked
-  const DMPP_MW_CONV      = 44 / 28;     // N₂O-N → N₂O mass conversion
+  const DMPP_GWP_N2O      = 265;         // AR5 GWP100 for Nג‚‚O ג€” CFI locked
+  const DMPP_MW_CONV      = 44 / 28;     // Nג‚‚O-N ג†’ Nג‚‚O mass conversion
   const soilObjCalc       = SOILS.find(s=>s.id===s0.soil) || SOILS[1];
   const dmpp_frassNpct    = s4.pathwayS5==="s5a" ? s5a_N_DM : s5b_N_DM;   // % DM
   const dmpp_frassMCv     = s4_frassMC;
   const dmpp_frassTpd     = s4.pathwayS5==="s5a" ? nl_s5aPD : nl_s5bPD;   // t FW/day
   const dmpp_N_kgday      = +(dmpp_frassTpd * (1-dmpp_frassMCv/100) * dmpp_frassNpct/100 * 1000).toFixed(1);
-  // Baseline N₂O from frass soil application (no DMPP)
+  // Baseline Nג‚‚O from frass soil application (no DMPP)
   const dmpp_n2o_base_kgday  = +(dmpp_N_kgday * DMPP_N2O_EF * DMPP_MW_CONV).toFixed(3);
   const dmpp_co2e_base_ann   = +(dmpp_n2o_base_kgday * DMPP_GWP_N2O * 365 / 1000).toFixed(1);
   // Soil-specific DMPP suppression efficacy
   const dmpp_efficacy        = soilObjCalc.dmppEfficacy || 0.40;
   const dmpp_n2o_avoid_kgday = +(dmpp_n2o_base_kgday * dmpp_efficacy).toFixed(3);
   const dmpp_co2e_avoid_ann  = +(dmpp_n2o_avoid_kgday * DMPP_GWP_N2O * 365 / 1000).toFixed(1);
-  // Revenue from N₂O suppression credits
+  // Revenue from Nג‚‚O suppression credits
   const dmpp_credit_rev_ann  = s0.dmppEnabled ? +(dmpp_co2e_avoid_ann * carbonPriceActive).toFixed(0) : 0;
-  // DMPP annual cost: frass t/day × 365 × dose kg/t × cost $/kg
+  // DMPP annual cost: frass t/day ֳ— 365 ֳ— dose kg/t ֳ— cost $/kg
   const dmpp_cost_annual     = +(dmpp_frassTpd * 365 * +s0.dmppDose * +s0.dmppCostPerKg).toFixed(0);
   const dmpp_net_annual      = dmpp_credit_rev_ann - dmpp_cost_annual;
   const dmpp_roi             = dmpp_cost_annual > 0 ? +(dmpp_credit_rev_ann / dmpp_cost_annual).toFixed(1) : 0;
-  // Agronomic N uplift from DMPP (N retained in ammonium form longer — partial conversion to effective N)
-  const dmpp_n_retained_pct  = +(dmpp_efficacy * 0.60 * 100).toFixed(0); // ~60% of suppressed N₂O converts to retained plant-available N
+  // Agronomic N uplift from DMPP (N retained in ammonium form longer ג€” partial conversion to effective N)
+  const dmpp_n_retained_pct  = +(dmpp_efficacy * 0.60 * 100).toFixed(0); // ~60% of suppressed Nג‚‚O converts to retained plant-available N
   // Grand total carbon revenue (existing + DMPP if enabled)
   const carbon_rev_grand     = carbon_rev_annual + (s0.dmppEnabled ? dmpp_credit_rev_ann : 0);
 
@@ -2194,7 +2194,7 @@ export default function CFI() {
   const rev_frass5b = s4.pathwayS5==="s5b" ? +(s5b_FW * frass5bPrice / 1000).toFixed(0) : 0;
   const rev_total   = +(rev_meal + rev_oil + rev_chitin + rev_frass5a + rev_frass5b).toFixed(0);
 
-  // ── CAPEX / OPEX state
+  // ג”€ג”€ CAPEX / OPEX state
   const [capex, setCapex] = useState({
     greenhouse_area: 2000, greenhouse_cost_m2: 85,
     shredder: 120000, conveyor: 45000, screw_press: 80000,
@@ -2224,7 +2224,7 @@ export default function CFI() {
   const payback_years   = ebitda > 0 ? +(capex_total / ebitda).toFixed(1) : null;
   const roi_pct         = ebitda > 0 ? +(ebitda / capex_total * 100).toFixed(1) : null;
 
-  // ── NPV / IRR (10-year horizon)
+  // ג”€ג”€ NPV / IRR (10-year horizon)
   const r = capex.discount_rate / 100;
   const npv_10yr = ebitda > 0
     ? +([1,2,3,4,5,6,7,8,9,10].reduce((acc,t) => acc + ebitda / Math.pow(1+r, t), 0) - capex_total).toFixed(0)
@@ -2241,7 +2241,7 @@ export default function CFI() {
     irr = +((lo2+hi2)/2*100).toFixed(1);
   }
 
-  // ── SENSITIVITY (±20% revenue, ±20% CAPEX)
+  // ג”€ג”€ SENSITIVITY (ֲ±20% revenue, ֲ±20% CAPEX)
   const sens = {
     base_payback:   payback_years,
     revUp_payback:  ebitda > 0 ? +(capex_total / ((rev_annual*1.2) - opex_annual)).toFixed(1) : null,
@@ -2253,7 +2253,7 @@ export default function CFI() {
     revDn_npv: +([1,2,3,4,5,6,7,8,9,10].reduce((a,t) => a + (rev_annual*0.8-opex_annual)/Math.pow(1+r,t), 0) - capex_total).toFixed(0),
   };
 
-  // ── PER-STAGE CAPEX
+  // ג”€ג”€ PER-STAGE CAPEX
   const stageCapex = [
     {s:"S1",label:"Pre-Processing (shredder, conveyors, OPDC)",  v:capex.s1_capex,  col:"#1F7891"},
     {s:"S2",label:"Chemical Treatment (mixers, dosing, bays)",    v:capex.s2_capex,  col:"#FFC000"},
@@ -2264,7 +2264,7 @@ export default function CFI() {
   ];
   const stageCapexTotal = stageCapex.reduce((a,b) => a+b.v, 0);
 
-  // ── CERTIFICATION TIER PRICING
+  // ג”€ג”€ CERTIFICATION TIER PRICING
   const CERT_TIERS = {
     none:    {label:"No Certification",       mealMult:1.0, oilMult:1.0, badge:"Standard"},
     feed:    {label:"Feed Grade (QS 9000)",    mealMult:1.5, oilMult:1.3, badge:"Feed Grade"},
@@ -2278,7 +2278,7 @@ export default function CFI() {
   const certOilRev     = +(s6_oilYield  / 1000 * certOilPrice).toFixed(0);
   const certTotalRev   = certMealRev + certOilRev + rev_chitin + rev_frass5a + rev_frass5b;
 
-  // ── ALL-SOIL NPK COMPARISON
+  // ג”€ג”€ ALL-SOIL NPK COMPARISON
   const allSoilsNPK = SOILS.map(soil => {
     const nEff = (s4.pathwayS5==="s5a" ? s5a_N_DM : s5b_N_DM)/100 * (100-(s4.pathwayS5==="s5a"?s5a_FW:s5b_FW))/100 * (1+soil.nAdj) * agObj.uplift;
     const pEff = (s4.pathwayS5==="s5a" ? s5a_P_DM : s5b_P_DM)/100 * (100-(s4.pathwayS5==="s5a"?s5a_FW:s5b_FW))/100 * 2.29 * (1+soil.pAdj) * agObj.uplift;
@@ -2301,16 +2301,16 @@ export default function CFI() {
           <div style={{color:C.grey, fontSize:10}}>Target: {target}</div>
         </div>
         <div style={{color: hasVal ? (pass ? C.green : C.red) : C.grey, fontWeight:800, fontSize:12, width:60, textAlign:"center"}}>
-          {hasVal ? (pass ? " PASS" : " FAIL") : "—"}
+          {hasVal ? (pass ? " PASS" : " FAIL") : "ג€”"}
         </div>
       </div>
     );
   };
 
-  // ─── TABS ─────────────────────────────────────────────────────────────────
+  // ג”€ג”€ג”€ TABS ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
   const TABS = ["Site Setup","Pre-Processing","Pre-Treatment","Biologicals","BSF","Biofertiliser / Other","Emissions","Financials","Summary","Lab Analysis","Soil Science"];
 
-  // ─── FONT INJECTION ─────────────────────────────────────────────────────────
+  // ג”€ג”€ג”€ FONT INJECTION ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
   useEffect(function(){
     var id = "cfi-fonts-v3";
     if(document.getElementById(id)) return;
@@ -2320,7 +2320,7 @@ export default function CFI() {
     document.head.appendChild(link);
   }, []);
 
-  // ─── SYNC S0 DISPLAY DATA → sessionStorage (for GlobalLayout context bar) ───
+  // ג”€ג”€ג”€ SYNC S0 DISPLAY DATA ג†’ sessionStorage (for GlobalLayout context bar) ג”€ג”€ג”€
   useEffect(() => {
     try {
       sessionStorage.setItem("cfi-s0-display", JSON.stringify({
@@ -2338,12 +2338,12 @@ export default function CFI() {
     } catch {}
   }, [s0.plantName, s0.estateName, s0.millName, s0.ffbCapacity, s0.soil, s0.efbEnabled, s0.opdcEnabled, s0.posEnabled, s0.pomeEnabled]);
 
-  // ─── SYNC ACTIVE STAGE → sessionStorage (for GlobalLayout active tab) ───
+  // ג”€ג”€ג”€ SYNC ACTIVE STAGE ג†’ sessionStorage (for GlobalLayout active tab) ג”€ג”€ג”€
   useEffect(() => {
     try { sessionStorage.setItem("cfi-active-stage", String(stage)); } catch {}
   }, [stage]);
 
-  // ─── READ TARGET STAGE SET BY GlobalLayout (cross-route navigation) ───
+  // ג”€ג”€ג”€ READ TARGET STAGE SET BY GlobalLayout (cross-route navigation) ג”€ג”€ג”€
   useEffect(() => {
     // On mount: pick up stage set before navigation
     try {
@@ -2374,202 +2374,17 @@ export default function CFI() {
     <div style={{background:"#060C14", minHeight:"100vh", fontFamily:"'DM Sans', sans-serif",
                  color:"#FFFFFF", padding:"0 0 40px"}}>
 
-      {/* ── CONTENT ── */}
+      {/* ג”€ג”€ CONTENT ג”€ג”€ */}
       <div style={{padding:"16px 22px 60px", minWidth:1400, margin:"0 auto"}}>
 
-        {/* ════════════════════ S T A G E  0 ════════════════════ */}
+        {/* ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• S T A G E  0 ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• */}
         {stage===0 && (<><SiteSetup />
-          <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ▴':'Value Calculator ▾'}</button></div>
+          <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ג–´':'Value Calculator ג–¾'}</button></div>
           {showValCalc && <CFI_ValueCalculator defaultStage="s0"/>}
         </>)}
 
-        {/* ════════════════════ S T A G E  1 ════════════════════ */}
+        {/* ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• S T A G E  1 ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• */}
         {stage===1 && <S1Hub />}
-
-        {/* (old inline S1 content replaced by S1Hub component above) */}
-        {false && (
-          <div>
-            <div style={{display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:10, marginBottom:16}}>
-              <KPI label="EFB Monthly (wet)" value={efbMonthWet.toLocaleString()} unit="t/month"/>
-              <KPI label="EFB DM Monthly" value={s1_efbMonthDM.toLocaleString()} unit="t DM/month"/>
-              <KPI label="OPDC DM Required" value={s1_opdcMonthDM.toLocaleString()} unit="t DM/month" color={C.amber}/>
-              {pomeActive && <KPI label="POME Sludge (monthly)" value={(pomeSludgeInclTPD*s0.daysMonth).toFixed(0)} unit="t FW/month" color={C.blue}/>}
-              <KPI label="Blended Substrate" value={s1_blendWet.toLocaleString()} unit="t FW/month → S2" color={C.green}/>
-            </div>
-
-            <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:16}}>
-              <div style={S.card}>
-                <SectionHdr icon="" title="S1 — EFB PRE-PROCESSING (MECHANICAL)"/>
-                <div style={{display:"flex", flexDirection:"column", gap:6}}>
-                  <CalcField label="EFB Nameplate Throughput" unit="TPH (wet)" value={efbTPH}/>
-                  <CalcField label="EFB Daily (wet)" unit="t/day" value={efbTPD}/>
-                  <CalcField label="EFB Dry Matter @mill" unit="%" value={(efbDMFrac*100).toFixed(1)}/>
-                  <CalcField label="EFB DM per day" unit="t DM/day" value={efbDMpd}/>
-                  <CalcField label="EFB Monthly (wet)" unit="t/month" value={efbMonthWet.toLocaleString()}/>
-                  <CalcField label="EFB Monthly DM" unit="t DM/month" value={s1_efbMonthDM.toLocaleString()}/>
-                </div>
-                <hr style={S.divider}/>
-                <SectionHdr icon="" title="EQUIPMENT SIZING" color={C.amber}/>
-                <div style={{fontSize:12, color:C.greyLt, lineHeight:1.8}}>
-                  <div>• <span style={{color:C.amber}}>Shredder:</span> {(efbTPH / 0.65).toFixed(1)} TPH nameplate (÷0.65 Asian derating)</div>
-                  <div>• <span style={{color:C.amber}}>Hammer Mill:</span> {(efbTPH * 0.3 / 0.65).toFixed(1)} TPH (30% to 2mm fraction)</div>
-                  <div>• <span style={{color:C.amber}}>Screw Press (OPDC):</span> {(opdcNatTPD * 1.1 / 24 / 0.65).toFixed(2)} TPH target</div>
-                  <div>• <span style={{color:C.amber}}>Conveyor:</span> {(efbTPH * 1.2).toFixed(1)} TPH design (20% margin)</div>
-                  <div>• <span style={{color:C.teal}}>Particle Target:</span> 2mm for BSF substrate</div>
-                  <div>• <span style={{color:C.teal}}>Asian Derating Factor:</span> 0.65× nameplate</div>
-                </div>
-              </div>
-
-              <div style={S.card}>
-                <SectionHdr icon="" title="S1 — OPDC PRE-PROCESSING"/>
-                <div style={{display:"flex", flexDirection:"column", gap:6}}>
-                  <CalcField label="Natural OPDC (wet, 15.2%)" unit="t/day" value={opdcNatTPD}/>
-                  <CalcField label="Natural OPDC DM" unit="t DM/day" value={opdcNatDM}/>
-                  <CalcField label="OPDC DM Required (blend)" unit="t DM/day" value={opdcDMreq}/>
-                  <CalcField label="OPDC Shortfall" unit="t DM/day" value={opdcShortfall > 0 ? opdcShortfall : "0"}/>
-                  <CalcField label="OPDC Monthly DM (required)" unit="t DM/month" value={s1_opdcMonthDM.toLocaleString()}/>
-                  <CalcField label="Target OPDC MC (press)" unit="%" value="50"/>
-                </div>
-                {opdcShortfall > 0 &&
-                  <Alert msg={`Source ${(opdcShortfall * s0.daysMonth).toFixed(0)} t DM/month OPDC externally`}/>}
-                <hr style={S.divider}/>
-                <SectionHdr icon="" title="OPDC CONSTRAINTS" color={C.red}/>
-                <div style={{fontSize:12, color:C.greyLt, lineHeight:1.8}}>
-                  <div>• <span style={{color:C.red}}>NEVER below 40% MC</span> — pore damage kills BSF</div>
-                  <div>• Target 45–55% MC at press discharge</div>
-                  <div>• OPDC N: 2.40% DM (CFI confirmed)</div>
-                  <div>• OPDC yield: 15.2% of EFB fresh weight</div>
-                  <div>• Lignin 30.7%, C:N 20 (high protein vs EFB)</div>
-                </div>
-              </div>
-
-              {pomeActive && (
-                <div style={{...S.card, gridColumn:"1/-1", border:`1px solid ${C.blue}44`}}>
-                  <SectionHdr icon="" title="S1 — POME SLUDGE STREAM (ACTIVE)" color={C.blue}/>
-                  <div style={{display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:10, marginBottom:8}}>
-                    <KPI label="Natural Yield" value={pomeSludgeNatTPD} unit="t/day fresh" color={C.blue}/>
-                    <KPI label="MC at entry" value={`${pomeSludgeActMC}%`} unit={s0.pomeSludgeDewatered?"post-dewatering":"mill exit"} color={C.teal}/>
-                    <KPI label="Included (Fe-capped)" value={`${pomeSludgeInclTPD} t/day`} unit={`${pomeSludgeInclPct}% WW — Fe: ${pomeSludgeFeStatus}`} color={pomeSludgeFeStatus==="LOW"?C.green:pomeSludgeFeStatus==="MODERATE"?C.teal:C.amber}/>
-                    <KPI label="DM Added" value={`${pomeSludgeInclDMpd} t/day`} unit="into blend" color={C.green}/>
-                    <KPI label="N Added" value={`${pomeN_kgpd} kg/day`} unit="at 1.76% DM" color={C.green}/>
-                  </div>
-                  <div style={{fontSize:11, color:C.greyLt, lineHeight:1.8}}>
-                    <span style={{color:C.blue}}>POME Sludge enters blend AFTER mechanical pre-process (S1) and BEFORE chemical treatment (S2).</span>
-                    {" "}pH 4–5.5 neutralised by PKSA in S2 at zero additional cost.
-                    {" "}CPO 5–20% DM provides additional energy substrate for BSF larvae.
-                  </div>
-                  {!s0.pomeSludgeFeResult && (
-                    <Alert type="warn" msg="Fe result not entered — inclusion capped at 15% WW default. Submit CFI-LAB-POME-001 Package A to unlock full 20% WW."/>
-                  )}
-                </div>
-              )}
-
-              <div style={{...S.card, gridColumn:"1/-1"}}>
-                <SectionHdr icon="🔗" title="S1 OUTPUT → S2 CONNECTOR" color={C.green}/>
-                <div style={{display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:10}}>
-                  <KPI label="Blended FW (EFB+OPDC)" value={s1_blendWet.toLocaleString()} unit="t/month" color={C.green}/>
-                  <KPI label="Blended DM" value={s1_blendDM.toLocaleString()} unit="t DM/month" color={C.green}/>
-                  <KPI label="Blend MC" value={blendMC} unit="% (wet-weight-corrected)" color={C.teal}/>
-                  {pomeActive && <KPI label="POME Sludge Added" value={(pomeSludgeInclTPD*s0.daysMonth).toFixed(0)} unit="t FW/month" color={C.blue}/>}
-                  <KPI label="Blend C:N (est.)" value={blendCN||"—"} unit="EFB+OPDC basis" color={blendCN&&blendCN<=25&&blendCN>=15?C.green:C.amber}/>
-                </div>
-                <Alert type="ok" msg={`${(s1_blendWet + (pomeActive?pomeSludgeInclTPD*s0.daysMonth:0)).toLocaleString()} t FW/month total substrate (EFB+OPDC${pomeActive?" + POME Sludge":""}) ready for Stage 2`}/>
-              </div>
-
-              {/* ── PROCESS ENGINEERING — FACILITY LAYOUT & MACHINERY ── */}
-              <div style={{...S.card, gridColumn:"1/-1"}}>
-                <SectionHdr icon="🏭" title="S1 — PROCESS ENGINEERING & FACILITY LAYOUT" color={C.amber}/>
-                <div style={{background:'#0a0f18', border:'1px solid rgba(245,166,35,0.20)', borderRadius:8, padding:'16px 20px', marginBottom:14, fontFamily:"'DM Sans', sans-serif", fontSize:11, color:'#8ba0b4', lineHeight:1.9, whiteSpace:'pre', overflowX:'auto'}}>
-{`  ╔══════════════════════════════════════════════════════════════════════════╗
-  ║                     CFI S1 — MECHANICAL PRE-PROCESSING                  ║
-  ║                         PROCESS FLOW DIAGRAM                            ║
-  ╠══════════════════════════════════════════════════════════════════════════╣
-  ║                                                                         ║
-  ║  [CPO MILL]                                                             ║
-  ║      │                                                                  ║
-  ║      ├──► EFB DISCHARGE (22.5% FFB) ──► SHREDDER ──► HAMMER MILL       ║
-  ║      │    MC: 62.5% wb                  ${(efbTPH/0.65).toFixed(1)} TPH       2mm target       ║
-  ║      │                                                                  ║
-  ║      ├──► OPDC (15.2% EFB FW) ──► SCREW PRESS ──► DEWATERED OPDC      ║
-  ║      │    MC: 70% wb              MC: 50% target    ${opdcDMreq} t DM/d       ║
-  ║      │                                                                  ║
-  ║      └──► CONVEYOR SYSTEM (${(efbTPH*1.2).toFixed(1)} TPH) ──► MIXING HOPPER        ║
-  ║                                                                         ║
-  ║           ┌─────────────┐     ┌─────────────┐     ┌─────────────┐      ║
-  ║           │  SHREDDED   │     │  PRESSED    │     │   BLENDED   │      ║
-  ║           │    EFB      │ ──► │    OPDC     │ ──► │  SUBSTRATE  │      ║
-  ║           │ ${efbDMpd} t DM/d │     │ ${opdcDMreq} t DM/d│     │  → S2        │      ║
-  ║           └─────────────┘     └─────────────┘     └─────────────┘      ║
-  ║                                                                         ║
-  ╚══════════════════════════════════════════════════════════════════════════╝`}
-                </div>
-
-                <SectionHdr icon="⚙️" title="MACHINERY SPECIFICATIONS" color={C.teal}/>
-                <div style={{display:"flex", flexDirection:"column", gap:6, marginBottom:14}}>
-                  <CalcField label="EFB Shredder (nameplate)" unit="TPH" value={(efbTPH / 0.65).toFixed(1)}/>
-                  <CalcField label="Hammer Mill (30% to 2mm fraction)" unit="TPH" value={(efbTPH * 0.3 / 0.65).toFixed(1)}/>
-                  <CalcField label="Screw Press — OPDC dewatering" unit="TPH" value={(opdcNatTPD * 1.1 / 24 / 0.65).toFixed(2)}/>
-                  <CalcField label="Conveyor System (20% margin)" unit="TPH" value={(efbTPH * 1.2).toFixed(1)}/>
-                  <CalcField label="Asian Derating Factor" unit="×" value="0.65"/>
-                  <CalcField label="Particle Target (BSF substrate)" unit="mm" value="2"/>
-                </div>
-
-                <SectionHdr icon="💰" title="S1 — CAPEX ALLOCATION" color={C.amber}/>
-                <div style={{display:"flex", flexDirection:"column", gap:6}}>
-                  <CalcField label="S1 Pre-Processing CAPEX (shredder, conveyors, OPDC press)" unit="USD" value={`$${capex.s1_capex.toLocaleString()}`}/>
-                  <CalcField label="Operating Hours" unit="hr/day" value={s0.hrsDay}/>
-                  <CalcField label="Operating Days" unit="days/month" value={s0.daysMonth}/>
-                </div>
-
-                <div style={{marginTop:20}}>
-                  <div style={{fontFamily:"'Syne', sans-serif",fontSize:13,fontWeight:700,color:C.teal,letterSpacing:"0.06em",marginBottom:12}}>S1 DRAWINGS & PROCESS FLOWS</div>
-                  {[
-                    {heading:"Architectural",items:[
-                      {label:"Site Master Plan",href:"CFI_S1_Architectural_Plan.html"},
-                      {label:"Building Architecture",href:"CFI_S1_Building_Architecture.html"},
-                      {label:"Building Floor Plan",href:"CFI_S1_FloorPlan_v2.html"},
-                    ]},
-                    {heading:"Machine Line Floor Plans",items:[
-                      {label:"EFB Line Floor Plan",href:"/s1-floor-efb",internal:true},
-                      {label:"OPDC Line Floor Plan",href:"/s1-floor-opdc",internal:true},
-                      {label:"POS Line Floor Plan",href:"/s1-floor-pos",internal:true},
-                    ]},
-                    {heading:"S0 Exit Stage",items:[
-                      {label:"Residue Selector",href:"/s0-residue-select",internal:true},
-                      {label:"Combined Floor Plans",href:"/s1-combined",internal:true},
-                      {label:"Greenhouse Design",href:"CFI_S1_Greenhouse_Plan.html"},
-                    ]},
-                    {heading:"ASCII Process Flows",items:[
-                      {label:"EFB ASCII Flow",href:"/s1-efb-ascii",internal:true},
-                      {label:"OPDC ASCII Flow",href:"/s1-opdc-ascii",internal:true},
-                      {label:"POS ASCII Flow",href:"/s1-pos-ascii",internal:true},
-                    ]},
-                  ].map((row,ri)=>(
-                    <div key={ri} style={{marginBottom:10}}>
-                      <div style={{fontFamily:"'DM Sans', sans-serif",fontSize:10,fontWeight:700,color:"#8BA0B4",letterSpacing:"0.04em",marginBottom:6,textTransform:"uppercase"}}>{row.heading}</div>
-                      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
-                        {row.items.map((btn,i)=>(
-                          <a key={i} href={btn.href} {...(btn.internal ? {} : {target:"_blank",rel:"noopener noreferrer"})} style={{
-                            display:"block",background:"#0C1E33",border:"1px solid rgba(139,160,180,0.18)",borderRadius:6,
-                            padding:"12px 14px",textDecoration:"none",color:"#FFFFFF",fontFamily:"'DM Sans', sans-serif",
-                            fontSize:12,fontWeight:700,textAlign:"center",cursor:"pointer",transition:"color 0.15s, border-color 0.15s",
-                          }}
-                          onMouseEnter={e=>{e.currentTarget.style.color="#F5A623";e.currentTarget.style.borderColor="rgba(64,215,197,0.7)";}}
-                          onMouseLeave={e=>{e.currentTarget.style.color="#FFFFFF";e.currentTarget.style.borderColor="rgba(139,160,180,0.18)";}}
-                          >{btn.label}</a>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-            <NutrLedger stg="S1 · After Shredding (No Nutrient Change)" N={nl_N} P={nl_P} K={nl_K} Ca={nl_Ca} Mg={nl_Mg} OM={nl_OM} cn={nl_CN} wetPD={nl_wetPD} mc={blendMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.tealLt}/>
-            </div>
-          <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ▴':'Value Calculator ▾'}</button></div>
-          {showValCalc && <CFI_ValueCalculator defaultStage="s1"/>}
-          </div>
-        )}
 
         {/* ════════════════════ S T A G E  2 ════════════════════ */}
         {stage===2 && (
@@ -2597,25 +2412,25 @@ export default function CFI() {
               {/* LEFT: Chemical selector */}
               <div style={{display:"flex",flexDirection:"column",gap:10}}>
 
-                {/* PKSA — DEFAULT */}
+                {/* PKSA ג€” DEFAULT */}
                 <div style={S.card}>
-                  <SectionHdr icon="⭐" title="PKSA — DEFAULT PRIMARY TREATMENT (ZERO COST)" color={C.amber}/>
+                  <SectionHdr icon="ג­" title="PKSA ג€” DEFAULT PRIMARY TREATMENT (ZERO COST)" color={C.amber}/>
                   <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
                     <input type="checkbox" checked={s2.pksa} onChange={e=>upS2("pksa",e.target.checked)} style={{accentColor:C.teal,width:16,height:16}}/>
                     <span style={{color:s2.pksa?C.teal:C.grey,fontWeight:800}}>Palm Kernel Shell Ash (PKSA)</span>
                     <span style={S.badge(C.green)}>$0/t FW</span>
-                    <span style={S.badge(C.teal)}>✓ RSPO OK</span>
+                    <span style={S.badge(C.teal)}>ג“ RSPO OK</span>
                     <span style={S.badge(C.amber)}>DEFAULT</span>
                   </div>
                   {s2.pksa && (
                     <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
                       <div><Lbl t="Dose" unit="kg/t FW"/><input style={S.inputBlu} type="number" value={s2.pksaDose} onChange={e=>e.target.value} onBlur={e=>upS2("pksaDose",+e.target.value)}/></div>
                       <CalcField label="Lignin reduction" unit="%" value={`~${ligninReductions.pksa}%`}/>
-                      <CalcField label="pH target" unit="" value="10–12 → 6.5–8.0"/>
+                      <CalcField label="pH target" unit="" value="10ג€“12 ג†’ 6.5ג€“8.0"/>
                     </div>
                   )}
                   <div style={{marginTop:8,fontSize:10,color:C.grey,lineHeight:1.7}}>
-                    K₂O 35–45% · CaO 8–12% · MgO 3–5% · pH 10–12 aq. slurry · 30–35% lignin reduction at 6–10 kg/t · K₂O = $129.82/t synthetic equiv · 24hr neutralisation via CO₂ carbonation · 2 turns mandatory
+                    Kג‚‚O 35ג€“45% ֲ· CaO 8ג€“12% ֲ· MgO 3ג€“5% ֲ· pH 10ג€“12 aq. slurry ֲ· 30ג€“35% lignin reduction at 6ג€“10 kg/t ֲ· Kג‚‚O = $129.82/t synthetic equiv ֲ· 24hr neutralisation via COג‚‚ carbonation ֲ· 2 turns mandatory
                   </div>
                 </div>
 
@@ -2623,14 +2438,14 @@ export default function CFI() {
                 <div style={S.card}>
                   <SectionHdr icon="" title="ALKALINE CHEMICALS" color={C.blue}/>
                   {[
-                    {k:"naoh",  name:"NaOH — Sodium Hydroxide",      rspo:" Needs Doc", cost:"$0.12/t",lig:66,col:C.red,    note:"Strongest delignifier (66%) but Na⁺ toxic to BSF. RED ALERT if active."},
-                    {k:"koh",   name:"KOH — Potassium Hydroxide",     rspo:" Needs Doc", cost:"$0.18/t",lig:35,col:C.amber,  note:"Identical to NaOH but K⁺ enriches compost. pH >12. Better than NaOH for BSF substrate."},
-                    {k:"caoh2", name:"Ca(OH)₂ — Hydrated Lime",       rspo:" OK",        cost:"$0.08/t",lig:18,col:C.green,  note:"Slower than NaOH. Sustained pH 11–12 without spike. RSPO compatible. 24–72hr for EFB."},
-                    {k:"cao",   name:"CaO — Quicklime",               rspo:" OK",        cost:"$0.06/t",lig:22,col:C.green,  note:"Exothermic (+65 kJ/mol). Thermal spike 60–80°C + pH 12. Most aggressive RSPO option."},
-                    {k:"caco3", name:"CaCO₃ — Agricultural Lime",     rspo:" OK",        cost:"$0.04/t",lig:3, col:C.teal,   note:"pH buffer only — no delignification. Raises OPDC from pH 4.5 to 6.5–7.5."},
-                    {k:"mgco3", name:"MgCO₃ — Magnesium Carbonate",   rspo:" OK",        cost:"$0.06/t",lig:3, col:C.teal,   note:"Mg²⁺ cofactor for enzyme systems. Mild buffer. Mg-deficient Ultisol/Oxisol correction."},
-                    {k:"k2co3", name:"K₂CO₃ — Potassium Carbonate",   rspo:" Needs Doc", cost:"$0.22/t",lig:22,col:C.amber,  note:"pH 11.5. Dual: alkaline pretreatment + K nutrition. Expensive — PKSA preferred substitute."},
-                    {k:"dolomite",name:"Dolomite CaMg(CO₃)₂",         rspo:" OK",        cost:"$0.05/t",lig:0, col:C.teal,   note:"Ca²⁺ + Mg²⁺ simultaneously. pH buffer 3–6 week slow release. Ultisol/Oxisol soil correction."},
+                    {k:"naoh",  name:"NaOH ג€” Sodium Hydroxide",      rspo:" Needs Doc", cost:"$0.12/t",lig:66,col:C.red,    note:"Strongest delignifier (66%) but Naג÷ toxic to BSF. RED ALERT if active."},
+                    {k:"koh",   name:"KOH ג€” Potassium Hydroxide",     rspo:" Needs Doc", cost:"$0.18/t",lig:35,col:C.amber,  note:"Identical to NaOH but Kג÷ enriches compost. pH >12. Better than NaOH for BSF substrate."},
+                    {k:"caoh2", name:"Ca(OH)ג‚‚ ג€” Hydrated Lime",       rspo:" OK",        cost:"$0.08/t",lig:18,col:C.green,  note:"Slower than NaOH. Sustained pH 11ג€“12 without spike. RSPO compatible. 24ג€“72hr for EFB."},
+                    {k:"cao",   name:"CaO ג€” Quicklime",               rspo:" OK",        cost:"$0.06/t",lig:22,col:C.green,  note:"Exothermic (+65 kJ/mol). Thermal spike 60ג€“80ֲ°C + pH 12. Most aggressive RSPO option."},
+                    {k:"caco3", name:"CaCOג‚ƒ ג€” Agricultural Lime",     rspo:" OK",        cost:"$0.04/t",lig:3, col:C.teal,   note:"pH buffer only ג€” no delignification. Raises OPDC from pH 4.5 to 6.5ג€“7.5."},
+                    {k:"mgco3", name:"MgCOג‚ƒ ג€” Magnesium Carbonate",   rspo:" OK",        cost:"$0.06/t",lig:3, col:C.teal,   note:"Mgֲ²ג÷ cofactor for enzyme systems. Mild buffer. Mg-deficient Ultisol/Oxisol correction."},
+                    {k:"k2co3", name:"Kג‚‚COג‚ƒ ג€” Potassium Carbonate",   rspo:" Needs Doc", cost:"$0.22/t",lig:22,col:C.amber,  note:"pH 11.5. Dual: alkaline pretreatment + K nutrition. Expensive ג€” PKSA preferred substitute."},
+                    {k:"dolomite",name:"Dolomite CaMg(COג‚ƒ)ג‚‚",         rspo:" OK",        cost:"$0.05/t",lig:0, col:C.teal,   note:"Caֲ²ג÷ + Mgֲ²ג÷ simultaneously. pH buffer 3ג€“6 week slow release. Ultisol/Oxisol soil correction."},
                   ].map(chem=>(
                     <div key={chem.k} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"8px 10px",
                       background:s2[chem.k]?"rgba(64,215,197,0.15)":"#000000",borderRadius:6,marginBottom:4,
@@ -2661,14 +2476,14 @@ export default function CFI() {
                 <div style={S.card}>
                   <SectionHdr icon="" title="ACID / OXIDATIVE CHEMICALS" color={C.red}/>
                   {[
-                    {k:"h2so4",  name:"H₂SO₄ — Sulfuric Acid (dilute)", rspo:"",cost:"$0.05/t",lig:17,col:C.red,   note:"Hemicellulose hydrolysis + cellulose decrystallisation. Requires full neutralisation before biology."},
-                    {k:"hcl",    name:"HCl — Hydrochloric Acid",          rspo:"",cost:"$0.07/t",lig:16,col:C.red,   note:"Similar to H₂SO₄. Cl⁻ residues may inhibit cellulase. Higher cost than H₂SO₄."},
-                    {k:"citric", name:"Citric Acid — pH Correction",       rspo:"",cost:"$0.15/t",lig:6, col:C.teal,  note:"Post-alkaline pH correction pH 11–12→7.0–8.0. Chelates Ca/Fe. Biodegradable. Wood vinegar substitute."},
-                    {k:"paa",    name:"PAA — Peracetic Acid",              rspo:" RESTRICTED",cost:"$0.45/t",lig:40,col:C.red,note:"STRONGEST single chemical delignifier (40%). RSPO-RESTRICTED. Kills all microbes at >50ppm. Non-RSPO only."},
-                    {k:"h2o2",   name:"H₂O₂ — Hydrogen Peroxide",          rspo:"",cost:"$0.10/t",lig:12,col:C.amber, note:"Moderate oxidant. No residue (H₂O+O₂). Fenton reaction with Fe²⁺ amplifies effect. ≤3% DM recommended."},
-                    {k:"woodvinegar",name:"Wood Vinegar / Asap Cair",       rspo:"",cost:"$0.02/t",lig:0, col:C.green,  note:"pH ~3.5 for post-alkaline correction. Stimulates Bacillus/Trichoderma 1.5–2.5×. Free if PKS biochar kiln."},
+                    {k:"h2so4",  name:"Hג‚‚SOג‚„ ג€” Sulfuric Acid (dilute)", rspo:"",cost:"$0.05/t",lig:17,col:C.red,   note:"Hemicellulose hydrolysis + cellulose decrystallisation. Requires full neutralisation before biology."},
+                    {k:"hcl",    name:"HCl ג€” Hydrochloric Acid",          rspo:"",cost:"$0.07/t",lig:16,col:C.red,   note:"Similar to Hג‚‚SOג‚„. Clג» residues may inhibit cellulase. Higher cost than Hג‚‚SOג‚„."},
+                    {k:"citric", name:"Citric Acid ג€” pH Correction",       rspo:"",cost:"$0.15/t",lig:6, col:C.teal,  note:"Post-alkaline pH correction pH 11ג€“12ג†’7.0ג€“8.0. Chelates Ca/Fe. Biodegradable. Wood vinegar substitute."},
+                    {k:"paa",    name:"PAA ג€” Peracetic Acid",              rspo:" RESTRICTED",cost:"$0.45/t",lig:40,col:C.red,note:"STRONGEST single chemical delignifier (40%). RSPO-RESTRICTED. Kills all microbes at >50ppm. Non-RSPO only."},
+                    {k:"h2o2",   name:"Hג‚‚Oג‚‚ ג€” Hydrogen Peroxide",          rspo:"",cost:"$0.10/t",lig:12,col:C.amber, note:"Moderate oxidant. No residue (Hג‚‚O+Oג‚‚). Fenton reaction with Feֲ²ג÷ amplifies effect. ג‰₪3% DM recommended."},
+                    {k:"woodvinegar",name:"Wood Vinegar / Asap Cair",       rspo:"",cost:"$0.02/t",lig:0, col:C.green,  note:"pH ~3.5 for post-alkaline correction. Stimulates Bacillus/Trichoderma 1.5ג€“2.5ֳ—. Free if PKS biochar kiln."},
                     {k:"lactic", name:"Lactic Acid",                        rspo:"",cost:"$0.10/t",lig:5, col:C.teal,   note:"Mild ester bond hydrolysis. Primarily termination/preservation agent at S4 end of cycle."},
-                    {k:"sulfur", name:"Volcanic Sulfur / Belerang",         rspo:"",cost:"$0.03/t",lig:0, col:C.blue,   note:"Slow-release acidification (7–14 days). Sulfate for BSF Met+Cys amino acid synthesis. Indonesian supply chain."},
+                    {k:"sulfur", name:"Volcanic Sulfur / Belerang",         rspo:"",cost:"$0.03/t",lig:0, col:C.blue,   note:"Slow-release acidification (7ג€“14 days). Sulfate for BSF Met+Cys amino acid synthesis. Indonesian supply chain."},
                   ].map(chem=>(
                     <div key={chem.k} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"8px 10px",
                       background:s2[chem.k]?"rgba(64,215,197,0.15)":"#000000",borderRadius:6,marginBottom:4,
@@ -2691,18 +2506,18 @@ export default function CFI() {
                 <div style={S.card}>
                   <SectionHdr icon="" title="AMENDMENTS, N-RETENTION, MINERALS" color={C.green}/>
                   {[
-                    {k:"gypsum",      name:"Gypsum CaSO₄·2H₂O",         rspo:"",cost:"$0.04/t",col:C.green,  note:"N-RETENTION: SO₄²⁻ captures NH₄⁺ as ammonium sulfate. Reduces NH₃ loss 25–40%. Critical for OPDC."},
-                    {k:"feso4",       name:"FeSO₄·7H₂O — Ferrous Sulfate",rspo:"",cost:"$0.03/t",col:C.amber, note:"Fe²⁺ forms Fe-ammonium-phosphate complexes. N-retention 30–40%.  INCOMPATIBLE with MnP enzyme."},
-                    {k:"biochar",     name:"Biochar (PKS-derived)",        rspo:"",cost:"$0.08/t",col:C.teal,   note:"CEC 40–80 meq/100g. NH₄⁺ + K⁺ adsorption. Microbial habitat pores. Free if CFI installs pyrolysis kiln."},
-                    {k:"zeolite",     name:"Natural Zeolite (Klinoptilolite)",rspo:"",cost:"$0.10/t",col:C.blue, note:"CEC 100–200 meq/100g. Strongest NH₄⁺ absorber. Slow-release 8–12 weeks in soil. Tasikmalaya deposits."},
-                    {k:"humic",       name:"Humic Acid (Leonardite)",       rspo:"",cost:"$0.12/t",col:C.amber,  note:"Chelates Fe/Al/Ca. Stabilises N+P. Accelerates maturation 20–30%. CFI can self-generate from mature S3."},
-                    {k:"molasses",    name:"Molasses / Tetes Tebu",         rspo:"",cost:"$0.08/t",col:C.teal,   note:"C-source for microbial carrier. Reduces lag phase 72h→24h. ≤2% DM only — avoid at high C:N ratio."},
-                    {k:"phosphate",   name:"Natural Phosphate Rock",        rspo:"",cost:"$0.06/t",col:C.green,  note:"Organic acids solubilise apatite. P content 0.1–0.3% → 0.4–0.8% DM. PT Petrokimia Gresik."},
-                    {k:"bentonite",   name:"Bentonite Montmorillonite",      rspo:"",cost:"$0.08/t",col:C.blue,   note:"CEC 80–120 meq/100g. Heavy metal sequestration. Water retention +15–25%. Tasikmalaya deposits."},
-                    {k:"struvite",    name:"Struvite MgNH₄PO₄ (Slow-release)",rspo:"",cost:"$0.12/t",col:C.green, note:"N+P+Mg slow-release. Mg² supports enzyme cofactors. No direct lignin chemistry."},
-                    {k:"urea",        name:"Urea CO(NH₂)₂ — C:N Correction", rspo:"",cost:"$0.15/t",col:C.amber,  note:"C:N correction only. No lignin action. Use when blend C:N >35 without PKE/POME Sludge."},
-                    {k:"ammoniumsulf",name:"Ammonium Sulfate (NH₄)₂SO₄",    rspo:"",cost:"$0.12/t",col:C.amber,  note:"N+S fertilisation. C:N corrective + sulfate for amino acid synthesis. Same N function as urea."},
-                    {k:"tween80",     name:"Tween 80 (Polysorbate 80)",       rspo:"",cost:"$0.18/t",col:C.teal,   note:"Non-ionic surfactant. Prevents cellulase adsorption to lignin. +3–5% indirect lignin effect."},
+                    {k:"gypsum",      name:"Gypsum CaSOג‚„ֲ·2Hג‚‚O",         rspo:"",cost:"$0.04/t",col:C.green,  note:"N-RETENTION: SOג‚„ֲ²ג» captures NHג‚„ג÷ as ammonium sulfate. Reduces NHג‚ƒ loss 25ג€“40%. Critical for OPDC."},
+                    {k:"feso4",       name:"FeSOג‚„ֲ·7Hג‚‚O ג€” Ferrous Sulfate",rspo:"",cost:"$0.03/t",col:C.amber, note:"Feֲ²ג÷ forms Fe-ammonium-phosphate complexes. N-retention 30ג€“40%.  INCOMPATIBLE with MnP enzyme."},
+                    {k:"biochar",     name:"Biochar (PKS-derived)",        rspo:"",cost:"$0.08/t",col:C.teal,   note:"CEC 40ג€“80 meq/100g. NHג‚„ג÷ + Kג÷ adsorption. Microbial habitat pores. Free if CFI installs pyrolysis kiln."},
+                    {k:"zeolite",     name:"Natural Zeolite (Klinoptilolite)",rspo:"",cost:"$0.10/t",col:C.blue, note:"CEC 100ג€“200 meq/100g. Strongest NHג‚„ג÷ absorber. Slow-release 8ג€“12 weeks in soil. Tasikmalaya deposits."},
+                    {k:"humic",       name:"Humic Acid (Leonardite)",       rspo:"",cost:"$0.12/t",col:C.amber,  note:"Chelates Fe/Al/Ca. Stabilises N+P. Accelerates maturation 20ג€“30%. CFI can self-generate from mature S3."},
+                    {k:"molasses",    name:"Molasses / Tetes Tebu",         rspo:"",cost:"$0.08/t",col:C.teal,   note:"C-source for microbial carrier. Reduces lag phase 72hג†’24h. ג‰₪2% DM only ג€” avoid at high C:N ratio."},
+                    {k:"phosphate",   name:"Natural Phosphate Rock",        rspo:"",cost:"$0.06/t",col:C.green,  note:"Organic acids solubilise apatite. P content 0.1ג€“0.3% ג†’ 0.4ג€“0.8% DM. PT Petrokimia Gresik."},
+                    {k:"bentonite",   name:"Bentonite Montmorillonite",      rspo:"",cost:"$0.08/t",col:C.blue,   note:"CEC 80ג€“120 meq/100g. Heavy metal sequestration. Water retention +15ג€“25%. Tasikmalaya deposits."},
+                    {k:"struvite",    name:"Struvite MgNHג‚„POג‚„ (Slow-release)",rspo:"",cost:"$0.12/t",col:C.green, note:"N+P+Mg slow-release. Mgֲ² supports enzyme cofactors. No direct lignin chemistry."},
+                    {k:"urea",        name:"Urea CO(NHג‚‚)ג‚‚ ג€” C:N Correction", rspo:"",cost:"$0.15/t",col:C.amber,  note:"C:N correction only. No lignin action. Use when blend C:N >35 without PKE/POME Sludge."},
+                    {k:"ammoniumsulf",name:"Ammonium Sulfate (NHג‚„)ג‚‚SOג‚„",    rspo:"",cost:"$0.12/t",col:C.amber,  note:"N+S fertilisation. C:N corrective + sulfate for amino acid synthesis. Same N function as urea."},
+                    {k:"tween80",     name:"Tween 80 (Polysorbate 80)",       rspo:"",cost:"$0.18/t",col:C.teal,   note:"Non-ionic surfactant. Prevents cellulase adsorption to lignin. +3ג€“5% indirect lignin effect."},
                   ].map(chem=>(
                     <div key={chem.k} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"8px 10px",
                       background:s2[chem.k]?"rgba(64,215,197,0.15)":"#000000",borderRadius:6,marginBottom:4,
@@ -2723,15 +2538,15 @@ export default function CFI() {
 
                 {/* ENZYMES in S2 */}
                 <div style={S.card}>
-                  <SectionHdr icon="" title="ENZYMES (BETTER IN S3 — ALERT IF SELECTED HERE)" color={C.purple}/>
-                  <Alert type="warn" msg="Enzymes denature above 55°C — apply ONLY after substrate cools below 45°C. If substrate is still in thermophilic phase, move these to S3 (biological phase)."/>
+                  <SectionHdr icon="" title="ENZYMES (BETTER IN S3 ג€” ALERT IF SELECTED HERE)" color={C.purple}/>
+                  <Alert type="warn" msg="Enzymes denature above 55ֲ°C ג€” apply ONLY after substrate cools below 45ֲ°C. If substrate is still in thermophilic phase, move these to S3 (biological phase)."/>
                   <div style={{height:8}}/>
                   {[
-                    {k:"cellulase_s2",name:"Cellulase (T. reesei)",    cost:"$0.35/t",lig:0,  note:"β-1,4-glycosidic hydrolysis → glucose. Requires prior lignin exposure. Best in S3."},
-                    {k:"xylanase_s2", name:"Xylanase (A. niger)",       cost:"$0.40/t",lig:2,  note:"β-1,4-xylosidic → xylose. Strips hemicellulose shield. Best in S3."},
-                    {k:"laccase_s2",  name:"Laccase (T. versicolor)",   cost:"$0.50/t",lig:5,  note:"Phenolic lignin oxidation. Requires O₂ + aerobic conditions. Best in S3."},
-                    {k:"mnp_s2",      name:"MnP — Mn Peroxidase",       cost:"$0.45/t",lig:14, note:"Mn³⁺-mediated phenolic lignin oxidation. INCOMPATIBLE with FeSO₄."},
-                    {k:"lip_s2",      name:"LiP — Lignin Peroxidase",   cost:"$0.55/t",lig:20, note:"Highest redox (E°≈1.2V). Non-phenolic lignin cleavage. Requires H₂O₂ co-factor."},
+                    {k:"cellulase_s2",name:"Cellulase (T. reesei)",    cost:"$0.35/t",lig:0,  note:"־²-1,4-glycosidic hydrolysis ג†’ glucose. Requires prior lignin exposure. Best in S3."},
+                    {k:"xylanase_s2", name:"Xylanase (A. niger)",       cost:"$0.40/t",lig:2,  note:"־²-1,4-xylosidic ג†’ xylose. Strips hemicellulose shield. Best in S3."},
+                    {k:"laccase_s2",  name:"Laccase (T. versicolor)",   cost:"$0.50/t",lig:5,  note:"Phenolic lignin oxidation. Requires Oג‚‚ + aerobic conditions. Best in S3."},
+                    {k:"mnp_s2",      name:"MnP ג€” Mn Peroxidase",       cost:"$0.45/t",lig:14, note:"Mnֲ³ג÷-mediated phenolic lignin oxidation. INCOMPATIBLE with FeSOג‚„."},
+                    {k:"lip_s2",      name:"LiP ג€” Lignin Peroxidase",   cost:"$0.55/t",lig:20, note:"Highest redox (Eֲ°ג‰ˆ1.2V). Non-phenolic lignin cleavage. Requires Hג‚‚Oג‚‚ co-factor."},
                   ].map(chem=>(
                     <div key={chem.k} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"8px 10px",
                       background:s2[chem.k]?"rgba(64,215,197,0.15)":"#000000",borderRadius:6,marginBottom:4,
@@ -2769,11 +2584,11 @@ export default function CFI() {
                 <div style={S.card}>
                   <SectionHdr icon="" title="PROCESS SEQUENCE + GATES" color={C.amber}/>
                   {[
-                    {n:1,step:"PKSA soak at pH 10–12",dur:"60–90 min mixing",gate:"pH sensor confirms"},
-                    {n:2,step:"First turning",         dur:"8–12hr post-PKSA",gate:"🔒 HARD LOCK"},
-                    {n:3,step:"CO₂ carbonation",       dur:"12–16hr",         gate:"pH dropping"},
-                    {n:4,step:"Second turning",        dur:"16–20hr mark",    gate:"🔒 HARD LOCK"},
-                    {n:5,step:"pH reach 6.5–8.0",      dur:"24hr total",      gate:"BSF biology OK"},
+                    {n:1,step:"PKSA soak at pH 10ג€“12",dur:"60ג€“90 min mixing",gate:"pH sensor confirms"},
+                    {n:2,step:"First turning",         dur:"8ג€“12hr post-PKSA",gate:"נ”’ HARD LOCK"},
+                    {n:3,step:"COג‚‚ carbonation",       dur:"12ג€“16hr",         gate:"pH dropping"},
+                    {n:4,step:"Second turning",        dur:"16ג€“20hr mark",    gate:"נ”’ HARD LOCK"},
+                    {n:5,step:"pH reach 6.5ג€“8.0",      dur:"24hr total",      gate:"BSF biology OK"},
                   ].map(r=>(
                     <div key={r.n} style={{display:"grid",gridTemplateColumns:"20px 1fr 80px",gap:6,
                       padding:"6px 8px",background:C.inputSectionBg,borderRadius:4,marginBottom:3}}>
@@ -2788,13 +2603,13 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="💊" title="PKSA NUTRIENT VALUE" color={C.green}/>
+                  <SectionHdr icon="נ’" title="PKSA NUTRIENT VALUE" color={C.green}/>
                   {[
-                    {l:"K₂O",   v:"35–45% DM", note:"$0.633/kg K₂O equiv"},
-                    {l:"CaO",   v:"8–12% DM",  note:"Soil liming value"},
-                    {l:"MgO",   v:"3–5% DM",   note:"Frond yellowing correction"},
-                    {l:"P₂O₅",  v:"1–2% DM",   note:"Available phosphate"},
-                    {l:"Cost",  v:"$0/t",       note:"Mill waste — no cost"},
+                    {l:"Kג‚‚O",   v:"35ג€“45% DM", note:"$0.633/kg Kג‚‚O equiv"},
+                    {l:"CaO",   v:"8ג€“12% DM",  note:"Soil liming value"},
+                    {l:"MgO",   v:"3ג€“5% DM",   note:"Frond yellowing correction"},
+                    {l:"Pג‚‚Oג‚…",  v:"1ג€“2% DM",   note:"Available phosphate"},
+                    {l:"Cost",  v:"$0/t",       note:"Mill waste ג€” no cost"},
                     {l:"Synth equiv", v:"$129.82/t", note:"vs commercial fertiliser"},
                   ].map((r,i)=>(
                     <div key={i} style={{display:"flex",justifyContent:"space-between",padding:"5px 8px",
@@ -2809,19 +2624,19 @@ export default function CFI() {
                 </div>
 
                 <div style={{background:C.red+"18",border:`1px solid ${C.red}55`,borderRadius:8,padding:"12px 14px"}}>
-                  <div style={{color:C.red,fontWeight:800,fontSize:11,marginBottom:6}}>🔒 HARD-CODED RULES — CANNOT OVERRIDE</div>
+                  <div style={{color:C.red,fontWeight:800,fontSize:11,marginBottom:6}}>נ”’ HARD-CODED RULES ג€” CANNOT OVERRIDE</div>
                   <div style={{color:C.greyLt,fontSize:11,lineHeight:1.8}}>
-                    <div>• <b>2-turn minimum</b> at 8–12hr AND 16–20hr</div>
-                    <div>• <b>24hr neutralisation</b> minimum before S3</div>
-                    <div>• <b>pH exit: 6.5–8.0</b> required for BSF biology</div>
-                    <div>• <b>NaOH</b>: permitted + red alert only</div>
-                    <div>• <b>Bt ICBB 6095</b>: permitted + red alert only</div>
+                    <div>ג€¢ <b>2-turn minimum</b> at 8ג€“12hr AND 16ג€“20hr</div>
+                    <div>ג€¢ <b>24hr neutralisation</b> minimum before S3</div>
+                    <div>ג€¢ <b>pH exit: 6.5ג€“8.0</b> required for BSF biology</div>
+                    <div>ג€¢ <b>NaOH</b>: permitted + red alert only</div>
+                    <div>ג€¢ <b>Bt ICBB 6095</b>: permitted + red alert only</div>
                   </div>
                 </div>
               </div>
-            <NutrLedger stg="S2 · After PKSA Treatment (K spike · Ca uplift · C:N drop)" N={nl_N} P={nl_P} K={nl_s2K} Ca={nl_s2Ca} Mg={nl_Mg} OM={nl_s2OM} cn={nl_s2CN} wetPD={nl_wetPD} mc={blendMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.amber}/>
+            <NutrLedger stg="S2 ֲ· After PKSA Treatment (K spike ֲ· Ca uplift ֲ· C:N drop)" N={nl_N} P={nl_P} K={nl_s2K} Ca={nl_s2Ca} Mg={nl_Mg} OM={nl_s2OM} cn={nl_s2CN} wetPD={nl_wetPD} mc={blendMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.amber}/>
             </div>
-          <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ▴':'Value Calculator ▾'}</button></div>
+          <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ג–´':'Value Calculator ג–¾'}</button></div>
           {showValCalc && <CFI_ValueCalculator defaultStage="s2"/>}
           </div>
         )}
@@ -2831,10 +2646,10 @@ export default function CFI() {
             {/* KPI Row */}
             <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:10,marginBottom:16}}>
               <KPI label="Substrate In" value={s1_blendWet.toLocaleString()} unit="t FW/month"/>
-              <KPI label="Consortium Uplift" value={`×${upliftFactor}`} unit="BSF yield multiplier" color={C.green}/>
+              <KPI label="Consortium Uplift" value={`ֳ—${upliftFactor}`} unit="BSF yield multiplier" color={C.green}/>
               <KPI label="Monthly Bio Cost" value={`$${s3_monthlyCost.toLocaleString()}`} unit="/month" color={C.amber}/>
               <KPI label="Conflicts" value={s3Conflicts.length} unit={s3Conflicts.length>0?"RESOLVE NOW":"Clear"} color={s3Conflicts.length>0?C.red:C.green}/>
-              <KPI label="BSF Gate" value={allPass?" PASS":"⏳ PENDING"} unit="6 criteria" color={allPass?C.green:C.amber}/>
+              <KPI label="BSF Gate" value={allPass?" PASS":"ג³ PENDING"} unit="6 criteria" color={allPass?C.green:C.amber}/>
             </div>
 
             {/* Conflict Alerts */}
@@ -2853,15 +2668,15 @@ export default function CFI() {
 
                 {/* DEFAULT ONE-SHOT PROTOCOL */}
                 <div style={S.card}>
-                  <SectionHdr icon="⭐" title="DEFAULT — ONE-SHOT INOCULATION PROTOCOL ($0.65/t FW)" color={C.teal}/>
-                  <Alert type="ok" msg="All 5 organisms inoculated simultaneously — ONE event after PKSA neutralisation (pH ≤8.0). Consortium uplift ×1.38 on BSF yield."/>
+                  <SectionHdr icon="ג­" title="DEFAULT ג€” ONE-SHOT INOCULATION PROTOCOL ($0.65/t FW)" color={C.teal}/>
+                  <Alert type="ok" msg="All 5 organisms inoculated simultaneously ג€” ONE event after PKSA neutralisation (pH ג‰₪8.0). Consortium uplift ֳ—1.38 on BSF yield."/>
                   <div style={{height:8}}/>
                   {[
-                    {k:"lactobacillus",cat:"Bacteria",   name:"Lactobacillus sp. ICBB 6099",   fn:"pH buffer 5.5–6.0 · CH₄ ↓70–80%",                  cost:"$0.05/t",wave:"W1",col:C.blue,   bsf:""},
-                    {k:"saccharomyces", cat:"Yeast",      name:"Saccharomyces cerevisiae ICBB 8808",fn:"NH₃ retention +50% · N preservation",             cost:"$0.11/t",wave:"W1",col:C.teal,  bsf:""},
-                    {k:"bacillus_sub",  cat:"Bacteria",   name:"Bacillus subtilis ICBB 8780",    fn:"Cellulase + protease · PGPR · endospore shelf life",cost:"$0.02/t",wave:"W1",col:C.green, bsf:""},
-                    {k:"azotobacter",   cat:"N-Fixer",    name:"Azotobacter vinelandii ICBB 9098",fn:"N-fixation +10–20 mg N/kg/day · Wave 2 ONLY <50°C",cost:"$0.05/t",wave:"W2",col:C.amber, bsf:""},
-                    {k:"trichoderma_h", cat:"Fungi",      name:"Trichoderma harzianum ICBB 9127", fn:"⭐ Ganoderma biocontrol · aggressive cellulase",    cost:"$0.42/t",wave:"W2",col:C.red,   bsf:""},
+                    {k:"lactobacillus",cat:"Bacteria",   name:"Lactobacillus sp. ICBB 6099",   fn:"pH buffer 5.5ג€“6.0 ֲ· CHג‚„ ג†“70ג€“80%",                  cost:"$0.05/t",wave:"W1",col:C.blue,   bsf:""},
+                    {k:"saccharomyces", cat:"Yeast",      name:"Saccharomyces cerevisiae ICBB 8808",fn:"NHג‚ƒ retention +50% ֲ· N preservation",             cost:"$0.11/t",wave:"W1",col:C.teal,  bsf:""},
+                    {k:"bacillus_sub",  cat:"Bacteria",   name:"Bacillus subtilis ICBB 8780",    fn:"Cellulase + protease ֲ· PGPR ֲ· endospore shelf life",cost:"$0.02/t",wave:"W1",col:C.green, bsf:""},
+                    {k:"azotobacter",   cat:"N-Fixer",    name:"Azotobacter vinelandii ICBB 9098",fn:"N-fixation +10ג€“20 mg N/kg/day ֲ· Wave 2 ONLY <50ֲ°C",cost:"$0.05/t",wave:"W2",col:C.amber, bsf:""},
+                    {k:"trichoderma_h", cat:"Fungi",      name:"Trichoderma harzianum ICBB 9127", fn:"ג­ Ganoderma biocontrol ֲ· aggressive cellulase",    cost:"$0.42/t",wave:"W2",col:C.red,   bsf:""},
                   ].map(o=>(
                     <div key={o.k} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"9px 12px",
                       background:s3orgs[o.k]?o.col+"14":C.inputSectionBg,borderRadius:7,marginBottom:5,
@@ -2881,20 +2696,20 @@ export default function CFI() {
                   <div style={{background:C.teal+"22",border:`1.5px solid ${C.sectionBorder}`,borderRadius:6,
                     padding:"8px 12px",display:"flex",justifyContent:"space-between",marginTop:8}}>
                     <span style={{color:C.teal,fontWeight:700}}>ONE-SHOT TOTAL</span>
-                    <span style={{color:C.teal,fontWeight:900}}>$0.65/t FW · Uplift ×1.38</span>
+                    <span style={{color:C.teal,fontWeight:900}}>$0.65/t FW ֲ· Uplift ֳ—1.38</span>
                   </div>
                 </div>
 
                 {/* ADDITIONAL ORGANISMS */}
                 <div style={S.card}>
-                  <SectionHdr icon="🔥" title="THERMOPHILIC SPECIALISTS (Wave 1 — >50°C)" color={C.red}/>
+                  <SectionHdr icon="נ”¥" title="THERMOPHILIC SPECIALISTS (Wave 1 ג€” >50ֲ°C)" color={C.red}/>
                   {[
-                    {k:"thermomyces",      cat:"Thermo Fungi",  name:"Thermomyces lanuginosus",    fn:"Thermophilic cellulase/xylanase producer",       cost:"$25/kg",temp:"50–60°C",col:C.red,   bsf:""},
-                    {k:"myceliophthora",   cat:"Thermo Fungi",  name:"Myceliophthora thermophila",  fn:"C1 cellulase system, industrial enzyme source",  cost:"$30/kg", temp:"45–55°C",col:C.red,   bsf:""},
-                    {k:"chaetomium",       cat:"Thermo Fungi",  name:"Chaetomium thermophilum",     fn:"Thermophilic cellulase, model organism",          cost:"$35/kg", temp:"50–60°C",col:C.red,   bsf:""},
-                    {k:"geobacillus",      cat:"Thermo Bact",   name:"Geobacillus stearothermophilus",fn:"Thermophilic amylase/protease producer",        cost:"$15/kg", temp:"55–70°C",col:C.amber, bsf:""},
-                    {k:"bacillus_lich",    cat:"Thermo Bact",   name:"Bacillus licheniformis",       fn:"Thermotolerant protease/amylase",                cost:"$8/kg",  temp:"50–65°C",col:C.amber, bsf:""},
-                    {k:"thermobifida",     cat:"Thermo Actino", name:"Thermobifida fusca",           fn:"Thermophilic actinomycete, cellulase",            cost:"$40/kg", temp:"50–55°C",col:C.red,   bsf:""},
+                    {k:"thermomyces",      cat:"Thermo Fungi",  name:"Thermomyces lanuginosus",    fn:"Thermophilic cellulase/xylanase producer",       cost:"$25/kg",temp:"50ג€“60ֲ°C",col:C.red,   bsf:""},
+                    {k:"myceliophthora",   cat:"Thermo Fungi",  name:"Myceliophthora thermophila",  fn:"C1 cellulase system, industrial enzyme source",  cost:"$30/kg", temp:"45ג€“55ֲ°C",col:C.red,   bsf:""},
+                    {k:"chaetomium",       cat:"Thermo Fungi",  name:"Chaetomium thermophilum",     fn:"Thermophilic cellulase, model organism",          cost:"$35/kg", temp:"50ג€“60ֲ°C",col:C.red,   bsf:""},
+                    {k:"geobacillus",      cat:"Thermo Bact",   name:"Geobacillus stearothermophilus",fn:"Thermophilic amylase/protease producer",        cost:"$15/kg", temp:"55ג€“70ֲ°C",col:C.amber, bsf:""},
+                    {k:"bacillus_lich",    cat:"Thermo Bact",   name:"Bacillus licheniformis",       fn:"Thermotolerant protease/amylase",                cost:"$8/kg",  temp:"50ג€“65ֲ°C",col:C.amber, bsf:""},
+                    {k:"thermobifida",     cat:"Thermo Actino", name:"Thermobifida fusca",           fn:"Thermophilic actinomycete, cellulase",            cost:"$40/kg", temp:"50ג€“55ֲ°C",col:C.red,   bsf:""},
                   ].map(o=>(
                     <div key={o.k} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"8px 10px",
                       background:s3orgs[o.k]?o.col+"14":C.inputSectionBg,borderRadius:6,marginBottom:4,
@@ -2905,7 +2720,7 @@ export default function CFI() {
                           <span style={{color:s3orgs[o.k]?o.col:C.white,fontWeight:700,fontSize:11}}>{o.name}</span>
                           <span style={{...S.badge(o.col),fontSize:9}}>{o.cat}</span>
                           <span style={{...S.badge(C.red),fontSize:9}}>W1</span>
-                          <span style={{color:C.grey,fontSize:10}}>{o.cost} · {o.temp}</span>
+                          <span style={{color:C.grey,fontSize:10}}>{o.cost} ֲ· {o.temp}</span>
                         </div>
                         <div style={{color:C.grey,fontSize:10,marginTop:2}}>{o.fn}</div>
                       </div>
@@ -2914,15 +2729,15 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="🍄" title="LIGNINOLYTIC FUNGI (Wave 2 — Mesophilic)" color={C.purple}/>
+                  <SectionHdr icon="נ„" title="LIGNINOLYTIC FUNGI (Wave 2 ג€” Mesophilic)" color={C.purple}/>
                   {[
-                    {k:"phanerochaete_sp",  cat:"White-rot",  name:"Phanerochaete sp. ICBB 9182",     fn:"Primary lignin destroyer — LiP, MnP, Laccase trio",     cost:"$8/L",  col:C.purple, bsf:""},
-                    {k:"phanerochaete_chry",cat:"White-rot",  name:"Phanerochaete chrysosporium",       fn:"Strongest lignin degrader — wild-type reference strain", cost:"$8/L",  col:C.purple, bsf:""},
-                    {k:"pleurotus",         cat:"White-rot",  name:"Pleurotus ostreatus",               fn:"SELECTIVE lignin degradation — preserves cellulose",      cost:"$0.30/kg",col:C.green, bsf:""},
+                    {k:"phanerochaete_sp",  cat:"White-rot",  name:"Phanerochaete sp. ICBB 9182",     fn:"Primary lignin destroyer ג€” LiP, MnP, Laccase trio",     cost:"$8/L",  col:C.purple, bsf:""},
+                    {k:"phanerochaete_chry",cat:"White-rot",  name:"Phanerochaete chrysosporium",       fn:"Strongest lignin degrader ג€” wild-type reference strain", cost:"$8/L",  col:C.purple, bsf:""},
+                    {k:"pleurotus",         cat:"White-rot",  name:"Pleurotus ostreatus",               fn:"SELECTIVE lignin degradation ג€” preserves cellulose",      cost:"$0.30/kg",col:C.green, bsf:""},
                     {k:"trametes",          cat:"White-rot",  name:"Trametes versicolor",               fn:"Laccase producer, lignin oxidation, phenolic detox",     cost:"$2/L",  col:C.teal,   bsf:""},
-                    {k:"ganoderma",         cat:"White-rot",  name:"Ganoderma lucidum",                 fn:" Related to palm pathogen G. boninense — verify strain!", cost:"$1.50/L",col:C.red,   bsf:""},
-                    {k:"aspergillus_n",     cat:"Fungi",      name:"Aspergillus niger",                 fn:"Industrial cellulase/pectinase · P-solubiliser",         cost:"$5/kg", col:C.amber,  bsf:""},
-                    {k:"aspergillus_o",     cat:"Fungi",      name:"Aspergillus oryzae",                fn:"Koji mold — amylase + protease",                          cost:"$3/kg", col:C.amber,  bsf:""},
+                    {k:"ganoderma",         cat:"White-rot",  name:"Ganoderma lucidum",                 fn:" Related to palm pathogen G. boninense ג€” verify strain!", cost:"$1.50/L",col:C.red,   bsf:""},
+                    {k:"aspergillus_n",     cat:"Fungi",      name:"Aspergillus niger",                 fn:"Industrial cellulase/pectinase ֲ· P-solubiliser",         cost:"$5/kg", col:C.amber,  bsf:""},
+                    {k:"aspergillus_o",     cat:"Fungi",      name:"Aspergillus oryzae",                fn:"Koji mold ג€” amylase + protease",                          cost:"$3/kg", col:C.amber,  bsf:""},
                   ].map(o=>(
                     <div key={o.k} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"8px 10px",
                       background:s3orgs[o.k]?o.col+"14":C.inputSectionBg,borderRadius:6,marginBottom:4,
@@ -2942,12 +2757,12 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="🧫" title="BACTERIA — N-FIXERS, P-SOLUBILISERS, K-MOBILISERS" color={C.green}/>
+                  <SectionHdr icon="נ§«" title="BACTERIA ג€” N-FIXERS, P-SOLUBILISERS, K-MOBILISERS" color={C.green}/>
                   {[
-                    {k:"microbacterium", cat:"Bacteria",     name:"Microbacterium lactium ICBB 7125",   fn:"Primary cellulose decomposer → glucose",               cost:"$3/L",  col:C.green, wave:"W1"},
+                    {k:"microbacterium", cat:"Bacteria",     name:"Microbacterium lactium ICBB 7125",   fn:"Primary cellulose decomposer ג†’ glucose",               cost:"$3/L",  col:C.green, wave:"W1"},
                     {k:"paenibacillus",  cat:"Bacteria",     name:"Paenibacillus macerans ICBB 8810",   fn:"Hemicellulase + nif genes (N-fixation)",               cost:"$3/L",  col:C.green, wave:"W2"},
                     {k:"bacillus_meg",   cat:"P-Solubiliser",name:"Bacillus megaterium",                 fn:"P-solubiliser via gluconic acid secretion",            cost:"$1.5/kg",col:C.blue, wave:"W2"},
-                    {k:"cellulomonas",   cat:"Bacteria",     name:"Cellulomonas fimi",                   fn:"Cellulolytic bacterium — cellulose degradation",       cost:"$4/L",  col:C.teal, wave:"W1"},
+                    {k:"cellulomonas",   cat:"Bacteria",     name:"Cellulomonas fimi",                   fn:"Cellulolytic bacterium ג€” cellulose degradation",       cost:"$4/L",  col:C.teal, wave:"W1"},
                     {k:"azospirillum",   cat:"N-Fixer",      name:"Azospirillum lipoferum ICBB 6088",   fn:"Associative N-fixer + IAA phytohormone production",    cost:"$1/L",  col:C.amber, wave:"W2"},
                     {k:"bradyrhizobium", cat:"N-Fixer",      name:"Bradyrhizobium japonicum ICBB 9251", fn:"Root-nodule N-fixer (soil application phase)",        cost:"$1.5/L",col:C.amber, wave:"W2"},
                     {k:"pseudomonas",    cat:"P-Solubiliser",name:"Pseudomonas fluorescens",             fn:"P-solubiliser + HCN biocontrol vs Ganoderma",         cost:"$2.4/L",col:C.blue, wave:"W2"},
@@ -2956,8 +2771,8 @@ export default function CFI() {
                     {k:"frateuria",      cat:"K-Mobiliser",  name:"Frateuria aurantia",                  fn:"K-mobiliser specialist organism",                      cost:"$4/L",  col:C.amber, wave:"W2"},
                     {k:"streptomyces_a", cat:"Actinomycete", name:"Streptomyces sp. ICBB 9155",          fn:"Lignocellulolytic + antibiotic production",            cost:"$5/kg", col:C.purple, wave:"W2"},
                     {k:"streptomyces_b", cat:"Actinomycete", name:"Streptomyces sp. ICBB 9469",          fn:"Complementary antibiotic profile",                     cost:"$5/kg", col:C.purple, wave:"W2"},
-                    {k:"provibio_full",  cat:"Consortium",   name:"Provibio 9-Organism (full pack)",     fn:"Full commercial consortium — Tricho+Bacillus+Pseudo+Lacto+Sacch+Cellulomonas+Azoto+Strepto+Asperg",cost:"$0.80/t",col:C.teal, wave:"W1+2"},
-                    {k:"em4",            cat:"EM Consortium",name:"EM-4 (Effective Microorganisms)",     fn:"Lacto+Sacch+Rhodo+Asperg — pH 3.5 liquid, easy adoption",cost:"$0.12/t",col:C.green, wave:"W1"},
+                    {k:"provibio_full",  cat:"Consortium",   name:"Provibio 9-Organism (full pack)",     fn:"Full commercial consortium ג€” Tricho+Bacillus+Pseudo+Lacto+Sacch+Cellulomonas+Azoto+Strepto+Asperg",cost:"$0.80/t",col:C.teal, wave:"W1+2"},
+                    {k:"em4",            cat:"EM Consortium",name:"EM-4 (Effective Microorganisms)",     fn:"Lacto+Sacch+Rhodo+Asperg ג€” pH 3.5 liquid, easy adoption",cost:"$0.12/t",col:C.green, wave:"W1"},
                   ].map(o=>(
                     <div key={o.k} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"8px 10px",
                       background:s3orgs[o.k]?o.col+"14":C.inputSectionBg,borderRadius:6,marginBottom:4,
@@ -2977,19 +2792,19 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="" title="ENZYMES (Apply post-thermophilic — <45°C only)" color={C.purple}/>
-                  <Alert type="warn" msg="Never apply enzymes during thermophilic phase (>55°C). Irreversible denaturation. Apply as part of Wave 2 after substrate cools."/>
+                  <SectionHdr icon="" title="ENZYMES (Apply post-thermophilic ג€” <45ֲ°C only)" color={C.purple}/>
+                  <Alert type="warn" msg="Never apply enzymes during thermophilic phase (>55ֲ°C). Irreversible denaturation. Apply as part of Wave 2 after substrate cools."/>
                   <div style={{height:8}}/>
                   {[
-                    {k:"cellulase_e",    name:"Cellulase EC 3.2.1.4",   fn:"β-1,4-glycosidic → glucose · +35–45% IVDMD",          cost:"$15/kg",col:C.green},
-                    {k:"xylanase_e",     name:"Xylanase EC 3.2.1.8",    fn:"β-1,4-xylosidic → xylose · strips hemi shield",        cost:"$17/kg",col:C.teal},
-                    {k:"laccase_e",      name:"Laccase EC 1.10.3.2",    fn:"Phenolic detoxification · opens lignin surface",        cost:"$20/kg",col:C.purple},
-                    {k:"pectinase_e",    name:"Pectinase EC 3.2.1.15",  fn:"Pectin breakdown · softens cell walls",                 cost:"$12/kg",col:C.amber},
-                    {k:"lipase_e",       name:"Lipase EC 3.1.1.3",      fn:"Fat breakdown · OPDC 3–8% lipid release",               cost:"$18/kg",col:C.amber},
+                    {k:"cellulase_e",    name:"Cellulase EC 3.2.1.4",   fn:"־²-1,4-glycosidic ג†’ glucose ֲ· +35ג€“45% IVDMD",          cost:"$15/kg",col:C.green},
+                    {k:"xylanase_e",     name:"Xylanase EC 3.2.1.8",    fn:"־²-1,4-xylosidic ג†’ xylose ֲ· strips hemi shield",        cost:"$17/kg",col:C.teal},
+                    {k:"laccase_e",      name:"Laccase EC 1.10.3.2",    fn:"Phenolic detoxification ֲ· opens lignin surface",        cost:"$20/kg",col:C.purple},
+                    {k:"pectinase_e",    name:"Pectinase EC 3.2.1.15",  fn:"Pectin breakdown ֲ· softens cell walls",                 cost:"$12/kg",col:C.amber},
+                    {k:"lipase_e",       name:"Lipase EC 3.1.1.3",      fn:"Fat breakdown ֲ· OPDC 3ג€“8% lipid release",               cost:"$18/kg",col:C.amber},
                     {k:"protease_e",     name:"Protease EC 3.4.x.x",    fn:"Protein accessibility for BSF",                         cost:"$10/kg",col:C.green},
-                    {k:"amylase_e",      name:"Amylase EC 3.2.1.1",     fn:"Starch → glucose · 55–70°C optimum",                    cost:"$8/kg", col:C.teal},
-                    {k:"mannanase_e",    name:"Mannanase EC 3.2.1.78",  fn:"Mannan breakdown (palm kernel · PKE substrate)",        cost:"$22/kg",col:C.amber},
-                    {k:"bglucosidase_e", name:"β-glucosidase EC 3.2.1.21",fn:"Final cellulose step cellobiose → glucose",           cost:"$25/kg",col:C.green},
+                    {k:"amylase_e",      name:"Amylase EC 3.2.1.1",     fn:"Starch ג†’ glucose ֲ· 55ג€“70ֲ°C optimum",                    cost:"$8/kg", col:C.teal},
+                    {k:"mannanase_e",    name:"Mannanase EC 3.2.1.78",  fn:"Mannan breakdown (palm kernel ֲ· PKE substrate)",        cost:"$22/kg",col:C.amber},
+                    {k:"bglucosidase_e", name:"־²-glucosidase EC 3.2.1.21",fn:"Final cellulose step cellobiose ג†’ glucose",           cost:"$25/kg",col:C.green},
                   ].map(o=>(
                     <div key={o.k} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"8px 10px",
                       background:s3orgs[o.k]?C.purple+"14":C.inputSectionBg,borderRadius:6,marginBottom:4,
@@ -3008,15 +2823,15 @@ export default function CFI() {
                   ))}
                 </div>
 
-                {/* BT — AMBER WARNING ZONE */}
+                {/* BT ג€” AMBER WARNING ZONE */}
                 <div style={{background:C.amber+"18",border:`2px solid ${C.amber}77`,borderRadius:8,padding:14}}>
-                  <div style={{color:C.amber,fontWeight:900,fontSize:12,marginBottom:6}}> ALLOWED — TIMING-CRITICAL / USE WITH CAUTION IN BSF PATHWAYS</div>
+                  <div style={{color:C.amber,fontWeight:900,fontSize:12,marginBottom:6}}> ALLOWED ג€” TIMING-CRITICAL / USE WITH CAUTION IN BSF PATHWAYS</div>
                   <div style={{display:"flex",alignItems:"flex-start",gap:10,padding:"8px 10px",background:C.amber+"22",borderRadius:6}}>
                     <input type="checkbox" checked={!!s3orgs.bt_icbb} onChange={e=>upS3("bt_icbb",e.target.checked)} style={{accentColor:C.amber,marginTop:2,flexShrink:0}}/>
                     <div>
-                      <div style={{color:C.amber,fontWeight:700,fontSize:11}}>Bacillus thuringiensis (Bt) ICBB 6095 — Provibio</div>
-                      <div style={{color:C.greyLt,fontSize:10,marginTop:3}}> Produces Cry1A + Cry3A proteins which at high titres are toxic to Diptera larvae (BSF). <strong style={{color:C.amber}}>ALLOWED</strong> — apply during S3 composting phase only (Wave 1/2). Must confirm Bt titre has degraded to &lt;10⁴ CFU/g before S4 BSF loading. Monitor larvae Day 1–3 for mortality signs. Do NOT apply directly to active BSF rearing beds.</div>
-                      {s3orgs.bt_icbb && <div style={{color:C.amber,fontWeight:700,marginTop:6,background:C.amber+"33",padding:"4px 8px",borderRadius:4}}>🔶 ACTIVE — Confirm titre decay before S4 BSF introduction. Check substrate temp &gt;55°C for 48h to denature Cry proteins.</div>}
+                      <div style={{color:C.amber,fontWeight:700,fontSize:11}}>Bacillus thuringiensis (Bt) ICBB 6095 ג€” Provibio</div>
+                      <div style={{color:C.greyLt,fontSize:10,marginTop:3}}> Produces Cry1A + Cry3A proteins which at high titres are toxic to Diptera larvae (BSF). <strong style={{color:C.amber}}>ALLOWED</strong> ג€” apply during S3 composting phase only (Wave 1/2). Must confirm Bt titre has degraded to &lt;10ג´ CFU/g before S4 BSF loading. Monitor larvae Day 1ג€“3 for mortality signs. Do NOT apply directly to active BSF rearing beds.</div>
+                      {s3orgs.bt_icbb && <div style={{color:C.amber,fontWeight:700,marginTop:6,background:C.amber+"33",padding:"4px 8px",borderRadius:4}}>נ”¶ ACTIVE ג€” Confirm titre decay before S4 BSF introduction. Check substrate temp &gt;55ֲ°C for 48h to denature Cry proteins.</div>}
                     </div>
                   </div>
                 </div>
@@ -3027,41 +2842,41 @@ export default function CFI() {
               <div style={{display:"flex",flexDirection:"column",gap:10}}>
 
                 <div style={S.card}>
-                  <SectionHdr icon="" title="GATE MEASUREMENTS — ENTER LAB READINGS (OPTIONAL)" color={C.blue}/>
+                  <SectionHdr icon="" title="GATE MEASUREMENTS ג€” ENTER LAB READINGS (OPTIONAL)" color={C.blue}/>
                   <div style={{fontSize:10,color:C.grey,marginBottom:8}}>Pipeline-calculated values auto-populate. Enter actual lab measurements to override.</div>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:10}}>
-                    <BluField label="C:N Measured" unit="ratio" value={s3.cn_measured} onChange={v=>upS3Gate("cn_measured",v)} note={`Pipeline calc: ${blendCN||"—"}`}/>
+                    <BluField label="C:N Measured" unit="ratio" value={s3.cn_measured} onChange={v=>upS3Gate("cn_measured",v)} note={`Pipeline calc: ${blendCN||"ג€”"}`}/>
                     <BluField label="Moisture Measured" unit="%" value={s3.mc_measured} onChange={v=>upS3Gate("mc_measured",v)} note={`Pipeline calc: ${blendMC}%`}/>
-                    <BluField label="pH Measured (post-S2)" unit="pH" value={s3.ph_measured} onChange={v=>upS3Gate("ph_measured",v)} note="Target: 6.5–8.0"/>
-                    <BluField label="Substrate Temperature" unit="°C" value={s3.temp_measured} onChange={v=>upS3Gate("temp_measured",v)} note="Must be ≤30°C before BSF"/>
+                    <BluField label="pH Measured (post-S2)" unit="pH" value={s3.ph_measured} onChange={v=>upS3Gate("ph_measured",v)} note="Target: 6.5ג€“8.0"/>
+                    <BluField label="Substrate Temperature" unit="ֲ°C" value={s3.temp_measured} onChange={v=>upS3Gate("temp_measured",v)} note="Must be ג‰₪30ֲ°C before BSF"/>
                   </div>
                   <div style={{display:"flex",gap:16,marginBottom:8}}>
                     <label style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer"}}>
                       <input type="checkbox" checked={s3.bt_confirmed_absent}
                         onChange={e=>upS3Gate("bt_confirmed_absent",e.target.checked)} style={{accentColor:C.green}}/>
                       <span style={{color:s3.bt_confirmed_absent?C.green:C.amber,fontWeight:700,fontSize:12}}>
-                        ✓ Confirm Bt ICBB 6095 titre below 10⁴ CFU/g (or not active)
+                        ג“ Confirm Bt ICBB 6095 titre below 10ג´ CFU/g (or not active)
                       </span>
                     </label>
                     <label style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer"}}>
                       <input type="checkbox" checked={s3.visual_ok}
                         onChange={e=>upS3Gate("visual_ok",e.target.checked)} style={{accentColor:C.green}}/>
                       <span style={{color:s3.visual_ok?C.green:C.amber,fontWeight:700,fontSize:12}}>
-                        ✓ Visual check: substrate not compacted / anaerobic
+                        ג“ Visual check: substrate not compacted / anaerobic
                       </span>
                     </label>
                   </div>
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="🚦" title="BSF HANDOFF GATE — 6 CRITERIA" color={allPass?C.green:C.amber}/>
+                  <SectionHdr icon="נ¦" title="BSF HANDOFF GATE ג€” 6 CRITERIA" color={allPass?C.green:C.amber}/>
                   {[
-                    {label:"C:N Ratio",   pass:cnPass,  val:cnGate!=null?`${typeof cnGate==="number"?cnGate.toFixed(1):cnGate}:1 — target ≤35 ${s3.cn_measured?"[measured]":"[calc'd]"}`:"Not yet calculated", icon:""},
-                    {label:"Moisture",    pass:mcPass,  val:`${mcGate!=null?mcGate.toFixed(1):blendMC}% — target 55–75% ${s3.mc_measured?"[measured]":"[calc'd]"}`, icon:""},
-                    {label:"pH (S2 out)", pass:phPass,  val:phGate!=null?`${typeof phGate==="number"?phGate.toFixed(1):phGate} — target 6.5–8.0 ${s3.ph_measured?"[measured]":"[PKSA assumed]"}`:"Enter pH measurement", icon:""},
-                    {label:"Temperature", pass:tmpPass, val:tmpGate!=null?`${tmpGate}°C — target ≤30°C [measured]`:"Enter substrate temp °C", icon:"🌡"},
-                    {label:"Bt status",   pass:btPass,  val:btPass?"Bt ICBB 6095 not active ":" Bt ACTIVE — Confirm titre <10⁴ CFU/g & 48h >55°C before S4", icon:""},
-                    {label:"Visual OK",   pass:visPass, val:"Confirm substrate not compacted / anaerobic", icon:"👁"},
+                    {label:"C:N Ratio",   pass:cnPass,  val:cnGate!=null?`${typeof cnGate==="number"?cnGate.toFixed(1):cnGate}:1 ג€” target ג‰₪35 ${s3.cn_measured?"[measured]":"[calc'd]"}`:"Not yet calculated", icon:""},
+                    {label:"Moisture",    pass:mcPass,  val:`${mcGate!=null?mcGate.toFixed(1):blendMC}% ג€” target 55ג€“75% ${s3.mc_measured?"[measured]":"[calc'd]"}`, icon:""},
+                    {label:"pH (S2 out)", pass:phPass,  val:phGate!=null?`${typeof phGate==="number"?phGate.toFixed(1):phGate} ג€” target 6.5ג€“8.0 ${s3.ph_measured?"[measured]":"[PKSA assumed]"}`:"Enter pH measurement", icon:""},
+                    {label:"Temperature", pass:tmpPass, val:tmpGate!=null?`${tmpGate}ֲ°C ג€” target ג‰₪30ֲ°C [measured]`:"Enter substrate temp ֲ°C", icon:"נ¡"},
+                    {label:"Bt status",   pass:btPass,  val:btPass?"Bt ICBB 6095 not active ":" Bt ACTIVE ג€” Confirm titre <10ג´ CFU/g & 48h >55ֲ°C before S4", icon:""},
+                    {label:"Visual OK",   pass:visPass, val:"Confirm substrate not compacted / anaerobic", icon:"נ‘"},
                   ].map((g,i)=>(
                     <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 10px",
                       background:g.pass?C.green+"14":C.red+"14",borderRadius:6,marginBottom:4,
@@ -3071,39 +2886,39 @@ export default function CFI() {
                         <div style={{color:g.pass?C.green:C.red,fontWeight:700,fontSize:11}}>{g.label}</div>
                         <div style={{color:C.grey,fontSize:10}}>{g.val}</div>
                       </div>
-                      <span style={{color:g.pass?C.green:C.red,fontWeight:900,fontSize:16}}>{g.pass?"✓":"✗"}</span>
+                      <span style={{color:g.pass?C.green:C.red,fontWeight:900,fontSize:16}}>{g.pass?"ג“":"ג—"}</span>
                     </div>
                   ))}
                   <div style={{background:allPass?C.green+"22":C.amber+"22",border:`2px solid ${allPass?C.green:C.amber}55`,
                     borderRadius:8,padding:"10px 14px",textAlign:"center",marginTop:8}}>
                     <div style={{color:allPass?C.green:C.amber,fontWeight:900,fontSize:14}}>
-                      {allPass?" ALL GATES PASS — BSF INTRODUCTION APPROVED":"⏳ WAITING — RESOLVE ABOVE BEFORE BSF"}
+                      {allPass?" ALL GATES PASS ג€” BSF INTRODUCTION APPROVED":"ג³ WAITING ג€” RESOLVE ABOVE BEFORE BSF"}
                     </div>
                   </div>
                 </div>
 
                 <div style={S.card}>
                   <SectionHdr icon="" title="CONSORTIUM ANALYSIS" color={C.teal}/>
-                  <CalcField label="S4 Yield Uplift" unit="× baseline" value={upliftFactor}/>
+                  <CalcField label="S4 Yield Uplift" unit="ֳ— baseline" value={upliftFactor}/>
                   <CalcField label="Monthly bio cost" unit="USD" value={`$${s3_monthlyCost.toLocaleString()}`}/>
                   <CalcField label="Annual bio cost" unit="USD" value={`$${s3_annualCost.toLocaleString()}`}/>
                   <hr style={S.divider}/>
                   <div style={{fontSize:10,color:C.grey,lineHeight:1.8}}>
-                    <div>• <span style={{color:C.green}}>Lignin fungi:</span> {ligninOrgs} active → +{(ligninOrgs*8)}% uplift</div>
-                    <div>• <span style={{color:C.amber}}>N-fixers:</span> {nfixOrgs} active → +{(nfixOrgs*5)}% uplift</div>
-                    <div>• <span style={{color:C.purple}}>Enzymes:</span> {enzymeOrgs} active → +{(enzymeOrgs*10)}% uplift</div>
-                    <div>• <span style={{color:C.red}}>Trichoderma:</span> {s3orgs.trichoderma_h?"+15% Ganoderma biocontrol":"Not active"}</div>
+                    <div>ג€¢ <span style={{color:C.green}}>Lignin fungi:</span> {ligninOrgs} active ג†’ +{(ligninOrgs*8)}% uplift</div>
+                    <div>ג€¢ <span style={{color:C.amber}}>N-fixers:</span> {nfixOrgs} active ג†’ +{(nfixOrgs*5)}% uplift</div>
+                    <div>ג€¢ <span style={{color:C.purple}}>Enzymes:</span> {enzymeOrgs} active ג†’ +{(enzymeOrgs*10)}% uplift</div>
+                    <div>ג€¢ <span style={{color:C.red}}>Trichoderma:</span> {s3orgs.trichoderma_h?"+15% Ganoderma biocontrol":"Not active"}</div>
                   </div>
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="⏱" title="WAVE TIMING GATES" color={C.amber}/>
+                  <SectionHdr icon="ג±" title="WAVE TIMING GATES" color={C.amber}/>
                   {[
-                    {wave:"Wave 1 Trigger",   trigger:"pH sensor ≤ 8.0",     who:"Lactobacillus · Sacch · Bacillus · Thermophiles",  col:C.amber},
-                    {wave:"Wave 2 Trigger",   trigger:"Temperature < 50°C",  who:"Azotobacter · Trichoderma · P-solubilisers · N-fixers", col:C.blue},
-                    {wave:"Enzyme Window",    trigger:"Temperature < 45°C",  who:"All enzymes: Cellulase · Xylanase · Laccase",       col:C.purple},
-                    {wave:"BSF Introduction", trigger:"Temperature ≤ 30°C",  who:"After 5-day minimum bio treatment",                 col:C.green},
-                    {wave:"Bio Minimum",      trigger:"5 days hard lock",    who:"Cannot shorten — regulatory + biological basis",   col:C.red},
+                    {wave:"Wave 1 Trigger",   trigger:"pH sensor ג‰₪ 8.0",     who:"Lactobacillus ֲ· Sacch ֲ· Bacillus ֲ· Thermophiles",  col:C.amber},
+                    {wave:"Wave 2 Trigger",   trigger:"Temperature < 50ֲ°C",  who:"Azotobacter ֲ· Trichoderma ֲ· P-solubilisers ֲ· N-fixers", col:C.blue},
+                    {wave:"Enzyme Window",    trigger:"Temperature < 45ֲ°C",  who:"All enzymes: Cellulase ֲ· Xylanase ֲ· Laccase",       col:C.purple},
+                    {wave:"BSF Introduction", trigger:"Temperature ג‰₪ 30ֲ°C",  who:"After 5-day minimum bio treatment",                 col:C.green},
+                    {wave:"Bio Minimum",      trigger:"5 days hard lock",    who:"Cannot shorten ג€” regulatory + biological basis",   col:C.red},
                   ].map((r,i)=>(
                     <div key={i} style={{padding:"8px 10px",background:C.inputSectionBg,borderRadius:5,marginBottom:4,
                       borderLeft:`3px solid ${r.col}`}}>
@@ -3115,7 +2930,7 @@ export default function CFI() {
                 </div>
 
                 <div style={S.card}>
-                  <SectionHdr icon="🔢" title="ACTIVE ORGANISMS" color={C.teal}/>
+                  <SectionHdr icon="נ”¢" title="ACTIVE ORGANISMS" color={C.teal}/>
                   {Object.keys(s3orgs).filter(k=>!["customOrg","bt_icbb"].includes(k)&&s3orgs[k]===true).length===0 ? (
                     <div style={{color:C.grey,fontSize:11}}>No organisms selected</div>
                   ) : (
@@ -3127,35 +2942,35 @@ export default function CFI() {
                   )}
                   {s3orgs.bt_icbb && (
                     <div style={{background:C.red+"22",borderRadius:4,padding:"4px 8px",marginBottom:3,color:C.red,fontSize:10,fontWeight:700}}>
-                       BT ICBB 6095 — BSF BLOCKED
+                       BT ICBB 6095 ג€” BSF BLOCKED
                     </div>
                   )}
                 </div>
 
               </div>{/* end RIGHT */}
-            <NutrLedger stg="S3 · After Biological Treatment (N+8% · P+10% PSB · K+5%)" N={nl_s3N} P={nl_s3P} K={nl_s3K} Ca={nl_s3Ca} Mg={nl_Mg} OM={nl_s3OM} cn={nl_s3CN} wetPD={nl_wetPD} mc={blendMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.green}/>
+            <NutrLedger stg="S3 ֲ· After Biological Treatment (N+8% ֲ· P+10% PSB ֲ· K+5%)" N={nl_s3N} P={nl_s3P} K={nl_s3K} Ca={nl_s3Ca} Mg={nl_Mg} OM={nl_s3OM} cn={nl_s3CN} wetPD={nl_wetPD} mc={blendMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.green}/>
             </div>
-          <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ▴':'Value Calculator ▾'}</button></div>
+          <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ג–´':'Value Calculator ג–¾'}</button></div>
           {showValCalc && <CFI_ValueCalculator defaultStage="s3"/>}
           </div>
         )}
 
-        {/* ════════════════════ S T A G E  4 ════════════════════ */}
+        {/* ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• S T A G E  4 ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• */}
         {stage===4 && (
           <div>
-            {/* ── KPI BAR ── */}
+            {/* ג”€ג”€ KPI BAR ג”€ג”€ */}
             <div style={{display:"grid", gridTemplateColumns:"repeat(6,1fr)", gap:10, marginBottom:14}}>
               <KPI label="Substrate In" value={s4_substrateIn.toLocaleString()} unit="t FW/month"/>
               <KPI label="Bay A (protein)" value={`Day ${bayADays}`} unit={`${bayASplit}% substrate`} color={C.green}/>
               <KPI label="Bay B (biomass)" value={`Day ${bayBDays}`} unit={`${bayBSplit}% substrate`} color={C.amber}/>
               <KPI label="Combined Protein" value={`${combo_proteinDM}% DM`} unit="weighted avg" color={C.teal}/>
-              <KPI label="Larvae FW (uplifted)" value={s4_larvaeFW.toLocaleString()} unit={`t/month (×${upliftFactor})`} color={C.teal}/>
-              <KPI label="Frass FW" value={s4_frassFW.toLocaleString()} unit="t/month → S5" color={C.amber}/>
+              <KPI label="Larvae FW (uplifted)" value={s4_larvaeFW.toLocaleString()} unit={`t/month (ֳ—${upliftFactor})`} color={C.teal}/>
+              <KPI label="Frass FW" value={s4_frassFW.toLocaleString()} unit="t/month ג†’ S5" color={C.amber}/>
             </div>
 
-            {/* ── SUB-TABS ── */}
+            {/* ג”€ג”€ SUB-TABS ג”€ג”€ */}
             <div style={{display:"flex", gap:6, marginBottom:14}}>
-              {[["grow","🐛","Grow-Out"],["pkm","","PKM / Substrate"],["lab","","Lab Analysis S3→S4"]].map(([id,icon,lbl])=>(
+              {[["grow","נ›","Grow-Out"],["pkm","","PKM / Substrate"],["lab","","Lab Analysis S3ג†’S4"]].map(([id,icon,lbl])=>(
                 <div key={id} onClick={()=>upS4("s4tab",id)} style={{
                   padding:"7px 16px", borderRadius:6, cursor:"pointer", fontSize:12, fontWeight:700,
                   background: s4.s4tab===id ? C.teal+"33" : C.inputSectionBg,
@@ -3169,16 +2984,16 @@ export default function CFI() {
 
 
 
-            {/* ══ TAB: GROW-OUT ══ */}
+            {/* ג•ג• TAB: GROW-OUT ג•ג• */}
             {s4.s4tab==="grow" && (
               <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:16}}>
 
                 {/* Bay A */}
                 <div style={{...S.card, border:`1px solid ${C.green}44`}}>
-                  <SectionHdr icon="" title={`BAY A — PROTEIN-OPTIMISED (Day ${bayADays})`} color={C.green}/>
+                  <SectionHdr icon="" title={`BAY A ג€” PROTEIN-OPTIMISED (Day ${bayADays})`} color={C.green}/>
                   <div style={S.row}>
                     <div style={S.col}>
-                      <Lbl t="Bay A grow days" unit="6–10 (protein peak)"/>
+                      <Lbl t="Bay A grow days" unit="6ג€“10 (protein peak)"/>
                       <input type="range" min="6" max="10" step="1" value={bayADays}
                         onChange={e=>upS4("bayADays",+e.target.value)}
                         style={{width:"100%", accentColor:C.green}}/>
@@ -3214,15 +3029,15 @@ export default function CFI() {
                       </div>
                     ))}
                   </div>
-                  <Alert type="ok" msg={`Day ${bayADays} protein-optimised: ${bayA_proteinDM}% CP vs Day 13 (43.7%). Protein:fat ratio ${(bayA_proteinDM/bayA_fatDM).toFixed(2)}× — AAFCO monoprotein eligible.`}/>
+                  <Alert type="ok" msg={`Day ${bayADays} protein-optimised: ${bayA_proteinDM}% CP vs Day 13 (43.7%). Protein:fat ratio ${(bayA_proteinDM/bayA_fatDM).toFixed(2)}ֳ— ג€” AAFCO monoprotein eligible.`}/>
                 </div>
 
                 {/* Bay B */}
                 <div style={{...S.card, border:`1px solid ${C.amber}44`}}>
-                  <SectionHdr icon="" title={`BAY B — BIOMASS-OPTIMISED (Day ${bayBDays})`} color={C.amber}/>
+                  <SectionHdr icon="" title={`BAY B ג€” BIOMASS-OPTIMISED (Day ${bayBDays})`} color={C.amber}/>
                   <div style={S.row}>
                     <div style={S.col}>
-                      <Lbl t="Bay B grow days" unit="10–18 (max yield)"/>
+                      <Lbl t="Bay B grow days" unit="10ג€“18 (max yield)"/>
                       <input type="range" min="10" max="18" step="1" value={bayBDays}
                         onChange={e=>upS4("bayBDays",+e.target.value)}
                         style={{width:"100%", accentColor:C.amber}}/>
@@ -3234,7 +3049,7 @@ export default function CFI() {
                   <div style={{padding:"8px 12px", background:C.inputSectionBg, borderRadius:6, marginBottom:8}}>
                     <div style={{color:C.grey, fontSize:10}}>Bay B substrate share</div>
                     <div style={{color:C.amber, fontWeight:900, fontSize:20}}>{bayBSplit}%</div>
-                    <div style={{color:C.grey, fontSize:9}}>(100% − Bay A share)</div>
+                    <div style={{color:C.grey, fontSize:9}}>(100% גˆ’ Bay A share)</div>
                   </div>
                   <hr style={S.divider}/>
                   <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:6}}>
@@ -3252,12 +3067,12 @@ export default function CFI() {
                       </div>
                     ))}
                   </div>
-                  {bayBDays >= 14 && <Alert type="ok" msg={`Day ${bayBDays} — maximum FW yield. Fat ${bayB_fatDM}% DM (energy-dense). Best for aquafeed and livestock meal grade.`}/>}
+                  {bayBDays >= 14 && <Alert type="ok" msg={`Day ${bayBDays} ג€” maximum FW yield. Fat ${bayB_fatDM}% DM (energy-dense). Best for aquafeed and livestock meal grade.`}/>}
                 </div>
 
                 {/* Combined output + mass balance */}
                 <div style={{...S.card, gridColumn:"1/-1"}}>
-                  <SectionHdr icon="⚖" title="DUAL-TRACK COMBINED OUTPUT + MASS BALANCE" color={C.teal}/>
+                  <SectionHdr icon="ג–" title="DUAL-TRACK COMBINED OUTPUT + MASS BALANCE" color={C.teal}/>
                   <div style={{display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:10, marginBottom:12}}>
                     <div style={{background:C.inputSectionBg, borderRadius:6, padding:"10px 14px", borderTop:`3px solid ${C.teal}`}}>
                       <div style={{color:C.grey, fontSize:10}}>Weighted Protein</div>
@@ -3272,10 +3087,10 @@ export default function CFI() {
                     <div style={{background:C.inputSectionBg, borderRadius:6, padding:"10px 14px", borderTop:`3px solid ${C.amber}`}}>
                       <div style={{color:C.grey, fontSize:10}}>Larvae FW (uplifted)</div>
                       <div style={{color:C.amber, fontWeight:900, fontSize:22}}>{s4_larvaeFW.toLocaleString()}</div>
-                      <div style={{color:C.grey, fontSize:9}}>t/month ×{upliftFactor}</div>
+                      <div style={{color:C.grey, fontSize:9}}>t/month ֳ—{upliftFactor}</div>
                     </div>
                     <div style={{background:C.inputSectionBg, borderRadius:6, padding:"10px 14px", borderTop:`3px solid ${C.blue}`}}>
-                      <div style={{color:C.grey, fontSize:10}}>Frass FW → S5</div>
+                      <div style={{color:C.grey, fontSize:10}}>Frass FW ג†’ S5</div>
                       <div style={{color:C.blue, fontWeight:900, fontSize:22}}>{s4_frassFW.toLocaleString()}</div>
                       <div style={{color:C.grey, fontSize:9}}>t/month (post-evap)</div>
                     </div>
@@ -3284,22 +3099,22 @@ export default function CFI() {
                     <div style={{color:C.grey, fontSize:11, marginBottom:6, fontWeight:700}}>CONSORTIUM UPLIFT</div>
                     <div style={{display:"flex", justifyContent:"space-between", alignItems:"center"}}>
                       <span style={{color:C.white, fontSize:12}}>{s3.consortium ? s3.consortium.toUpperCase() : "ONE-SHOT"}</span>
-                      <span style={{color:C.green, fontWeight:900, fontSize:18}}>×{upliftFactor}</span>
+                      <span style={{color:C.green, fontWeight:900, fontSize:18}}>ֳ—{upliftFactor}</span>
                     </div>
                     <div style={{color:C.grey, fontSize:10, marginTop:4}}>
-                      Base larvae {s4_larvaeRaw} t/month → uplifted {s4_larvaeFW} t/month | Uplift adds {+(s4_larvaeFW - s4_larvaeRaw).toFixed(1)} t/month
+                      Base larvae {s4_larvaeRaw} t/month ג†’ uplifted {s4_larvaeFW} t/month | Uplift adds {+(s4_larvaeFW - s4_larvaeRaw).toFixed(1)} t/month
                     </div>
                   </div>
 
                   {/* S5 pathway selector */}
-                  <SectionHdr icon="🔀" title="S5 PATHWAY SELECTION" color={C.amber}/>
+                  <SectionHdr icon="נ”€" title="S5 PATHWAY SELECTION" color={C.amber}/>
                   <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:12}}>
                     {[
-                      {id:"s5a", icon:"", title:"S5A — EXTRACT LARVAE", sub:"Biofertiliser (frass only) + Live larvae → S6",
+                      {id:"s5a", icon:"", title:"S5A ג€” EXTRACT LARVAE", sub:"Biofertiliser (frass only) + Live larvae ג†’ S6",
                        n:`${s5a_N_DM}% DM`, p:`${s5a_P_DM}% DM`, k:`${s5a_K_DM}% DM`, cn:`${s5a_CN}:1`,
                        val:s5a_NPKval, fw:s5a_FW, color:C.green,
                        note:"Higher insect revenue. Frass has lower NPK (larvae removed N+P)."},
-                      {id:"s5b", icon:"", title:"S5B — TERMINATE IN-SUBSTRATE", sub:"Biofertiliser (frass + larvae combined)",
+                      {id:"s5b", icon:"", title:"S5B ג€” TERMINATE IN-SUBSTRATE", sub:"Biofertiliser (frass + larvae combined)",
                        n:`${s5b_N_DM}% DM`, p:`${s5b_P_DM}% DM`, k:`${s5b_K_DM}% DM`, cn:`${s5b_CN}:1`,
                        val:s5b_NPKval, fw:s5b_FW, color:C.amber,
                        note:"Max fertiliser NPK. No insect meal/oil revenue. Best for plantation-only model."},
@@ -3314,7 +3129,7 @@ export default function CFI() {
                             <div style={{color:opt.color, fontWeight:900, fontSize:13}}>{opt.title}</div>
                             <div style={{color:C.grey, fontSize:10}}>{opt.sub}</div>
                           </div>
-                          {s4.pathwayS5===opt.id && <span style={{...S.badge(opt.color), marginLeft:"auto"}}>✓ SELECTED</span>}
+                          {s4.pathwayS5===opt.id && <span style={{...S.badge(opt.color), marginLeft:"auto"}}>ג“ SELECTED</span>}
                         </div>
                         <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:6}}>
                           {[["N",opt.n],["P",opt.p],["K",opt.k],["C:N",opt.cn]].map(([l,v])=>(
@@ -3335,12 +3150,12 @@ export default function CFI() {
               </div>
             )}
 
-            {/* ══ TAB: PKM / SUBSTRATE ══ */}
+            {/* ג•ג• TAB: PKM / SUBSTRATE ג•ג• */}
             {s4.s4tab==="pkm" && (
               <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:16}}>
 
                 <div style={S.card}>
-                  <SectionHdr icon="" title="PKM SUPPLEMENTATION — SUBSTRATE PROTEIN CORRECTION" color={C.amber}/>
+                  <SectionHdr icon="" title="PKM SUPPLEMENTATION ג€” SUBSTRATE PROTEIN CORRECTION" color={C.amber}/>
                   <div style={{marginBottom:12}}>
                     <div style={{display:"flex", alignItems:"center", gap:10, marginBottom:8}}>
                       <span style={{color:C.grey, fontSize:12}}>PKM/PKE supplementation</span>
@@ -3394,13 +3209,13 @@ export default function CFI() {
                   </div>
 
                   {pkmWarning && (
-                    <Alert type="error" msg={` CRITICAL: Substrate CP ${adjustedCP}% DM is below 8% minimum for BSF growth. EFB-only substrate at 3.4% CP causes catastrophic larval failure. Enable PKM supplementation at ≥30% DM or increase OPDC blending.`}/>
+                    <Alert type="error" msg={` CRITICAL: Substrate CP ${adjustedCP}% DM is below 8% minimum for BSF growth. EFB-only substrate at 3.4% CP causes catastrophic larval failure. Enable PKM supplementation at ג‰¥30% DM or increase OPDC blending.`}/>
                   )}
                   {!pkmWarning && adjustedCP >= 12 && (
-                    <Alert type="ok" msg={`CP ${adjustedCP}% DM — optimal range (12–16% DM). Supports maximum larval growth rate. Research confirms C:N ${adjustedCN} is within target window.`}/>
+                    <Alert type="ok" msg={`CP ${adjustedCP}% DM ג€” optimal range (12ג€“16% DM). Supports maximum larval growth rate. Research confirms C:N ${adjustedCN} is within target window.`}/>
                   )}
                   {!pkmWarning && adjustedCP >= 8 && adjustedCP < 12 && (
-                    <Alert type="warn" msg={`CP ${adjustedCP}% DM — acceptable but sub-optimal. Larvae viable but growth rate may be 15–25% below potential. Consider increasing PKM to reach 12% DM.`}/>
+                    <Alert type="warn" msg={`CP ${adjustedCP}% DM ג€” acceptable but sub-optimal. Larvae viable but growth rate may be 15ג€“25% below potential. Consider increasing PKM to reach 12% DM.`}/>
                   )}
                 </div>
 
@@ -3414,8 +3229,8 @@ export default function CFI() {
                       ["C:N Ratio","25:1"],
                       ["Local price","$85/t FW (confirmed)"],
                       ["Dry Matter","~88%"],
-                      ["BSF safety"," Allowed — apply S3 phase only; confirm titre decay before S4"],
-                      ["Optimal inclusion","30–50% of substrate DM"],
+                      ["BSF safety"," Allowed ג€” apply S3 phase only; confirm titre decay before S4"],
+                      ["Optimal inclusion","30ג€“50% of substrate DM"],
                     ].map(([l,v],i)=>(
                       <div key={i} style={{display:"flex", justifyContent:"space-between", padding:"4px 0",
                         borderBottom:`1px solid ${C.inputSectionBg}`}}>
@@ -3427,11 +3242,11 @@ export default function CFI() {
                   <SectionHdr icon="" title="RESEARCH-CONFIRMED SUBSTRATE THRESHOLDS" color={C.red}/>
                   <div style={{fontSize:10, color:C.greyLt, lineHeight:1.9}}>
                     {[
-                      ["< 8% CP DM","CRITICAL FAILURE — BSF larvae do not survive; zero yield"],
-                      ["8–12% CP DM","Sub-optimal — 15–25% yield reduction; acceptable for volume play"],
-                      ["12–16% CP DM","OPTIMAL — maximum FCR efficiency; target for protein-grade product"],
-                      ["> 18% CP DM","Diminishing returns; excess N increases NH₃ volatilisation"],
-                      ["C:N 15–25","Ideal window — <15 causes N toxicity; >30 C-limited growth"],
+                      ["< 8% CP DM","CRITICAL FAILURE ג€” BSF larvae do not survive; zero yield"],
+                      ["8ג€“12% CP DM","Sub-optimal ג€” 15ג€“25% yield reduction; acceptable for volume play"],
+                      ["12ג€“16% CP DM","OPTIMAL ג€” maximum FCR efficiency; target for protein-grade product"],
+                      ["> 18% CP DM","Diminishing returns; excess N increases NHג‚ƒ volatilisation"],
+                      ["C:N 15ג€“25","Ideal window ג€” <15 causes N toxicity; >30 C-limited growth"],
                     ].map(([range,note],i)=>(
                       <div key={i} style={{display:"flex", gap:8, padding:"4px 0", borderBottom:`1px solid ${C.inputSectionBg}`}}>
                         <span style={{color:i===0?C.red:i===3?C.amber:C.green, fontWeight:700, minWidth:90, fontFamily:"'DM Sans', sans-serif"}}>{range}</span>
@@ -3450,20 +3265,20 @@ export default function CFI() {
               </div>
             )}
 
-            {/* ══ TAB: LAB ANALYSIS S3→S4 ══ */}
+            {/* ג•ג• TAB: LAB ANALYSIS S3ג†’S4 ג•ג• */}
             {s4.s4tab==="lab" && (
               <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:16}}>
 
                 {/* Parameter delta table */}
                 <div style={S.card}>
-                  <SectionHdr icon="" title="S3 → S4 SUBSTRATE TRANSFORMATION" color={C.teal}/>
+                  <SectionHdr icon="" title="S3 ג†’ S4 SUBSTRATE TRANSFORMATION" color={C.teal}/>
                   <div style={{marginBottom:8, fontSize:10, color:C.grey}}>
-                    BSF larvae consume ~30% substrate OM · N/P concentrate as C reduces · lignin partially degraded by gut microbiome
+                    BSF larvae consume ~30% substrate OM ֲ· N/P concentrate as C reduces ֲ· lignin partially degraded by gut microbiome
                   </div>
                   <table style={{width:"100%", borderCollapse:"collapse", fontSize:11}}>
                     <thead>
                       <tr style={{background:C.inputSectionBg}}>
-                        {["Parameter","S3 In","S4 Out","Δ","Reason"].map((h,i)=>(
+                        {["Parameter","S3 In","S4 Out","־”","Reason"].map((h,i)=>(
                           <td key={i} style={{padding:"6px 8px", color:C.grey, fontWeight:700}}>{h}</td>
                         ))}
                       </tr>
@@ -3480,7 +3295,7 @@ export default function CFI() {
                         {p:"Lignin (%DM)",  s3:lab_s3_lignin.toString(), s4:lab_s4_lignin.toString(), up:false, reason:"Partial lignin degradation by gut-associated microbiome"},
                         {p:"Hemicellulose", s3:lab_s3_hemi.toString(), s4:(lab_s3_hemi*0.7).toFixed(1), up:false, reason:"BSF gut enzymes further break down hemicellulose"},
                         {p:"pH",            s3:lab_s3_pH.toString(), s4:lab_s4_pH.toString(), up:lab_s4_pH>=lab_s3_pH, reason:"Mild acidification from larval frass (lactic acid)"},
-                        {p:"Moisture (%wb)",s3:"65",  s4:"62",   up:false, reason:"Evaporation during 8–13 day rearing period"},
+                        {p:"Moisture (%wb)",s3:"65",  s4:"62",   up:false, reason:"Evaporation during 8ג€“13 day rearing period"},
                         {p:"Crude Protein", s3:lab_s3_CP.toString(), s4:lab_s4_CP.toString(), up:lab_s4_CP>=lab_s3_CP, reason:"Microbial protein + larval exuviae enrichment"},
                         {p:"Fat (%DM)",    s3:"2.1",  s4:"3.5",  up:true,  reason:"Microbial lipid production; partial larval excretion"},
                         {p:"Ash (%DM)",    s3:"8.0",  s4:"12.0", up:true,  reason:"Mineral concentration as OM is metabolised"},
@@ -3492,7 +3307,7 @@ export default function CFI() {
                             <td style={{padding:"6px 8px", color:C.grey, fontWeight:600}}>{row.p}</td>
                             <td style={{padding:"6px 8px", color:C.white, fontFamily:"'DM Sans', sans-serif"}}>{row.s3}</td>
                             <td style={{padding:"6px 8px", color:row.up?C.green:C.red, fontFamily:"'DM Sans', sans-serif", fontWeight:700}}>
-                              {row.s4} <span style={{fontSize:14}}>{row.up?"↑":"↓"}</span>
+                              {row.s4} <span style={{fontSize:14}}>{row.up?"ג†‘":"ג†“"}</span>
                             </td>
                             <td style={{padding:"6px 8px", color:row.up?C.green:C.red, fontFamily:"'DM Sans', sans-serif"}}>
                               {row.up?"+":""}{delta}
@@ -3504,18 +3319,18 @@ export default function CFI() {
                     </tbody>
                   </table>
                   <div style={{marginTop:8, fontSize:10, color:C.grey}}>
-                    ↑ enrichment (green) · ↓ reduction (red) · Values on DM basis unless noted
+                    ג†‘ enrichment (green) ֲ· ג†“ reduction (red) ֲ· Values on DM basis unless noted
                   </div>
                 </div>
 
-                {/* Dual-bay body composition + S3→S4 progression chart */}
+                {/* Dual-bay body composition + S3ג†’S4 progression chart */}
                 <div style={{display:"flex", flexDirection:"column", gap:14}}>
                   <div style={S.card}>
-                    <SectionHdr icon="🐛" title="BAY A vs BAY B — LARVAE BODY COMPOSITION" color={C.green}/>
+                    <SectionHdr icon="נ›" title="BAY A vs BAY B ג€” LARVAE BODY COMPOSITION" color={C.green}/>
                     <table style={{width:"100%", borderCollapse:"collapse", fontSize:11}}>
                       <thead>
                         <tr style={{background:C.inputSectionBg}}>
-                          {["Parameter","Bay A (Pet Food)","Bay B (Aquafeed)","Δ A→B"].map((h,i)=>(
+                          {["Parameter","Bay A (Pet Food)","Bay B (Aquafeed)","־” Aג†’B"].map((h,i)=>(
                             <td key={i} style={{padding:"6px 8px", color:i===1?C.green:i===2?C.amber:C.grey, fontWeight:700}}>{h}</td>
                           ))}
                         </tr>
@@ -3544,29 +3359,29 @@ export default function CFI() {
                       </tbody>
                     </table>
                     <div style={{marginTop:8, fontSize:10, color:C.grey}}>
-                      Bay A advantage: higher protein:fat ratio → pet food monoprotein eligibility · Bay B advantage: higher yield volume + fat content → aquafeed energy density
+                      Bay A advantage: higher protein:fat ratio ג†’ pet food monoprotein eligibility ֲ· Bay B advantage: higher yield volume + fat content ג†’ aquafeed energy density
                     </div>
                   </div>
 
                   <div style={S.card}>
-                    <SectionHdr icon="" title="KEY NUTRIENT TRAJECTORY S0→S4" color={C.teal}/>
+                    <SectionHdr icon="" title="KEY NUTRIENT TRAJECTORY S0ג†’S4" color={C.teal}/>
                     <table style={{width:"100%", borderCollapse:"collapse", fontSize:11}}>
                       <thead>
                         <tr style={{background:C.inputSectionBg}}>
-                          {["Nutrient","S0","→S2","→S3","→S4","Change"].map((h,i)=>(
+                          {["Nutrient","S0","ג†’S2","ג†’S3","ג†’S4","Change"].map((h,i)=>(
                             <td key={i} style={{padding:"5px 8px", color:i===0?C.grey:C.teal, fontWeight:700}}>{h}</td>
                           ))}
                         </tr>
                       </thead>
                       <tbody>
                         {[
-                          {n:"N (%DM)",    s0:"0.95", s2:"1.10", s3:"1.35", s4:"1.60", note:"↑↑ continuous enrichment"},
-                          {n:"P (%DM)",    s0:"0.14", s2:"0.16", s3:"0.20", s4:"0.24", note:"↑ concentration"},
-                          {n:"K (%DM)",    s0:"0.83", s2:"6.40", s3:"6.80", s4:"6.90", note:"↑ PKSA spike then stable"},
-                          {n:"OM (%DM)",   s0:"82",   s2:"78",   s3:"72",   s4:"60",   note:"↓ BSF consume C"},
-                          {n:"C:N",        s0:"32",   s2:"28",   s3:"20",   s4:"16",   note:"↓ narrows towards ideal"},
-                          {n:"Lignin (%)", s0:"25",   s2:`${(25*(1-pksa_ligninRed/100)).toFixed(0)}`, s3:"15", s4:"8", note:"↓ PKSA+BSF gut degradation"},
-                          {n:"pH",         s0:"5.5",  s2:"7.0",  s3:"6.8",  s4:"6.5",  note:"S2↑ neutralise, then ↓"},
+                          {n:"N (%DM)",    s0:"0.95", s2:"1.10", s3:"1.35", s4:"1.60", note:"ג†‘ג†‘ continuous enrichment"},
+                          {n:"P (%DM)",    s0:"0.14", s2:"0.16", s3:"0.20", s4:"0.24", note:"ג†‘ concentration"},
+                          {n:"K (%DM)",    s0:"0.83", s2:"6.40", s3:"6.80", s4:"6.90", note:"ג†‘ PKSA spike then stable"},
+                          {n:"OM (%DM)",   s0:"82",   s2:"78",   s3:"72",   s4:"60",   note:"ג†“ BSF consume C"},
+                          {n:"C:N",        s0:"32",   s2:"28",   s3:"20",   s4:"16",   note:"ג†“ narrows towards ideal"},
+                          {n:"Lignin (%)", s0:"25",   s2:`${(25*(1-pksa_ligninRed/100)).toFixed(0)}`, s3:"15", s4:"8", note:"ג†“ PKSA+BSF gut degradation"},
+                          {n:"pH",         s0:"5.5",  s2:"7.0",  s3:"6.8",  s4:"6.5",  note:"S2ג†‘ neutralise, then ג†“"},
                         ].map((row,i)=>(
                           <tr key={i} style={{borderBottom:`1px solid ${C.inputSectionBg}`, background:i%2===0?C.navyLt+"30":"transparent"}}>
                             <td style={{padding:"5px 8px", color:C.grey, fontWeight:600}}>{row.n}</td>
@@ -3577,7 +3392,7 @@ export default function CFI() {
                               return (
                                 <td key={j} style={{padding:"5px 8px", textAlign:"center", fontFamily:"'DM Sans', sans-serif",
                                   color:j===0?C.white:up?C.green:dn?C.red:C.grey}}>
-                                  {v}{j>0&&up?"↑":j>0&&dn?"↓":""}
+                                  {v}{j>0&&up?"ג†‘":j>0&&dn?"ג†“":""}
                                 </td>
                               );
                             })}
@@ -3590,12 +3405,12 @@ export default function CFI() {
                 </div>
               </div>
             )}
-            <NutrLedger stg={`S4 · BSF Frass at Day ${gd} (C:N collapsing · N consumed by larvae)`} N={nl_s4N} P={nl_s4P} K={nl_s4K} Ca={nl_s4Ca} Mg={nl_Mg} OM={nl_s4OM} cn={nl_s4CN} wetPD={nl_s4wet} mc={s4_frassMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.teal}/>
+            <NutrLedger stg={`S4 ֲ· BSF Frass at Day ${gd} (C:N collapsing ֲ· N consumed by larvae)`} N={nl_s4N} P={nl_s4P} K={nl_s4K} Ca={nl_s4Ca} Mg={nl_Mg} OM={nl_s4OM} cn={nl_s4CN} wetPD={nl_s4wet} mc={s4_frassMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.teal}/>
 
           </div>
         )}
 
-        {/* ════════════════════ S T A G E  5 ════════════════════ */}
+        {/* ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• S T A G E  5 ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• */}
         {stage===5 && (
           <div>
             {/* KPI Row */}
@@ -3611,17 +3426,17 @@ export default function CFI() {
 
               {/* Frass Lab Analysis */}
               <div style={S.card}>
-                <SectionHdr icon="" title={`${s4.pathwayS5==="s5a"?"S5A":"S5B"} — FRASS LAB ANALYSIS`} color={C.green}/>
+                <SectionHdr icon="" title={`${s4.pathwayS5==="s5a"?"S5A":"S5B"} ג€” FRASS LAB ANALYSIS`} color={C.green}/>
                 {[
                   {l:"Total N",           v: s4.pathwayS5==="s5a" ? `${s5a_N_DM}%` : `${s5b_N_DM}%`,  unit:"DM", color:C.green},
-                  {l:"Total P (P₂O₅)",    v: s4.pathwayS5==="s5a" ? `${(s5a_P_DM*2.29).toFixed(2)}%` : `${(s5b_P_DM*2.29).toFixed(2)}%`, unit:"DM", color:C.green},
-                  {l:"Total K (K₂O)",     v: s4.pathwayS5==="s5a" ? `${(s5a_K_DM*1.20).toFixed(2)}%` : `${(s5b_K_DM*1.20).toFixed(2)}%`, unit:"DM", color:C.green},
+                  {l:"Total P (Pג‚‚Oג‚…)",    v: s4.pathwayS5==="s5a" ? `${(s5a_P_DM*2.29).toFixed(2)}%` : `${(s5b_P_DM*2.29).toFixed(2)}%`, unit:"DM", color:C.green},
+                  {l:"Total K (Kג‚‚O)",     v: s4.pathwayS5==="s5a" ? `${(s5a_K_DM*1.20).toFixed(2)}%` : `${(s5b_K_DM*1.20).toFixed(2)}%`, unit:"DM", color:C.green},
                   {l:"Calcium (Ca)",      v: s4.pathwayS5==="s5a" ? `${s5a_Ca_DM}%` : `${s5b_Ca_DM}%`, unit:"DM", color:C.teal},
                   {l:"Magnesium (Mg)",    v: s4.pathwayS5==="s5a" ? `${s5a_Mg_DM}%` : `${s5b_Mg_DM}%`, unit:"DM", color:C.teal},
                   {l:"Organic Matter",    v: s4.pathwayS5==="s5a" ? `${s5a_OM_DM}%` : `${s5b_OM_DM}%`, unit:"DM", color:C.amber},
                   {l:"C:N Ratio",         v: s4.pathwayS5==="s5a" ? `${s5a_CN}:1` : `${s5b_CN}:1`, unit:"", color:C.amber},
                   {l:"pH",                v: s4.pathwayS5==="s5a" ? `${s5a_pH}` : `${s5b_pH}`, unit:"", color:C.teal},
-                  {l:"Moisture (typical)",v:"55–65%", unit:"wb", color:C.blue},
+                  {l:"Moisture (typical)",v:"55ג€“65%", unit:"wb", color:C.blue},
                 ].map((r,i)=>(
                   <div key={i} style={{display:"flex", justifyContent:"space-between", padding:"7px 10px",
                     background:i%2===0?C.navyLt:"transparent", borderRadius:4}}>
@@ -3636,7 +3451,7 @@ export default function CFI() {
                 <table style={{width:"100%", borderCollapse:"collapse", fontSize:11}}>
                   <thead>
                     <tr style={{background:C.inputSectionBg}}>
-                      {["Parameter","S5A (Extract)","S5B (Terminate)","Δ Difference"].map((h,i)=>(
+                      {["Parameter","S5A (Extract)","S5B (Terminate)","־” Difference"].map((h,i)=>(
                         <td key={i} style={{padding:"5px 8px", color:i===1?C.green:i===2?C.amber:C.grey, fontWeight:700}}>{h}</td>
                       ))}
                     </tr>
@@ -3666,11 +3481,11 @@ export default function CFI() {
                 </table>
               </div>
 
-              {/* RIGHT COLUMN — NPK + S6 products stacked */}
+              {/* RIGHT COLUMN ג€” NPK + S6 products stacked */}
               <div style={{display:"flex", flexDirection:"column", gap:16}}>
               {/* NPK Replacement + All-Soils Table */}
               <div style={S.card}>
-                <SectionHdr icon="" title="NPK REPLACEMENT VALUE — ALL SOIL TYPES" color={C.amber}/>
+                <SectionHdr icon="" title="NPK REPLACEMENT VALUE ג€” ALL SOIL TYPES" color={C.amber}/>
 
                 {/* Certification tier selector for frass */}
                 <div style={{marginBottom:10}}>
@@ -3682,7 +3497,7 @@ export default function CFI() {
                           borderRadius:6, padding:"6px 14px", cursor:"pointer", fontSize:11, fontWeight:700, color:s4.frassCert===t.k?t.col:C.grey}}
                         onClick={()=>upS4("frassCert",t.k)}>
                         {t.l}
-                        {t.k==="organic" && <span style={{color:C.green, fontSize:9, display:"block"}}>+20–40% price uplift</span>}
+                        {t.k==="organic" && <span style={{color:C.green, fontSize:9, display:"block"}}>+20ג€“40% price uplift</span>}
                       </div>
                     ))}
                   </div>
@@ -3708,7 +3523,7 @@ export default function CFI() {
                           background:isActive?C.teal+"22":i%2===0?C.navyLt+"30":"transparent",
                           border:isActive?`1.5px solid ${C.sectionBorder}`:undefined}}>
                           <td style={{padding:"6px 8px", color:isActive?C.teal:C.white, fontWeight:isActive?900:400}}>
-                            {row.name} {isActive&&"← active"}
+                            {row.name} {isActive&&"ג† active"}
                           </td>
                           <td style={{padding:"6px 8px", color:C.grey, fontFamily:"'DM Sans', sans-serif"}}>{row.pct}</td>
                           <td style={{padding:"6px 8px", color:C.grey, fontFamily:"'DM Sans', sans-serif"}}>{row.ph}</td>
@@ -3720,12 +3535,12 @@ export default function CFI() {
                   </tbody>
                 </table>
 
-                {/* DMPP N₂O SUPPRESSION — SOIL-SPECIFIC PANEL */}
+                {/* DMPP Nג‚‚O SUPPRESSION ג€” SOIL-SPECIFIC PANEL */}
                 <div style={{background:"#12201a",border:"1px solid #2a5030",borderRadius:8,padding:"12px",marginTop:10,marginBottom:10}}>
                   <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
                     <div>
-                      <div style={{fontSize:11,fontWeight:800,color:"#8de8b4",letterSpacing:"0.04em"}}> DMPP N₂O SUPPRESSION — CARBON CREDIT UPLIFT BY SOIL TYPE</div>
-                      <div style={{fontSize:9,color:"#7aa890",marginTop:2}}>IPCC 2006 Vol.4 Ch.11 · EF = 1% N applied → N₂O · GWP₁₀₀ N₂O = 265 · Active soil: {soilObj.name} ({Math.round(dmpp_efficacy*100)}% DMPP efficacy)</div>
+                      <div style={{fontSize:11,fontWeight:800,color:"#8de8b4",letterSpacing:"0.04em"}}> DMPP Nג‚‚O SUPPRESSION ג€” CARBON CREDIT UPLIFT BY SOIL TYPE</div>
+                      <div style={{fontSize:9,color:"#7aa890",marginTop:2}}>IPCC 2006 Vol.4 Ch.11 ֲ· EF = 1% N applied ג†’ Nג‚‚O ֲ· GWPג‚ג‚€ג‚€ Nג‚‚O = 265 ֲ· Active soil: {soilObj.name} ({Math.round(dmpp_efficacy*100)}% DMPP efficacy)</div>
                     </div>
                     <div style={{display:"flex",alignItems:"center",gap:8}}>
                       <span style={{fontSize:9,color:"#8de8b4",fontWeight:700}}>DMPP</span>
@@ -3733,7 +3548,7 @@ export default function CFI() {
                         background:s0.dmppEnabled?"#1a7a40":"#1a3360",border:s0.dmppEnabled?"1px solid #3dcb7a":"1px solid #2a4070",
                         borderRadius:20,padding:"3px 12px",color:s0.dmppEnabled?"#3dcb7a":"#8898b0",
                         fontSize:10,fontWeight:800,cursor:"pointer"
-                      }}>{s0.dmppEnabled?"ON ✓":"OFF"}</button>
+                      }}>{s0.dmppEnabled?"ON ג“":"OFF"}</button>
                     </div>
                   </div>
 
@@ -3741,7 +3556,7 @@ export default function CFI() {
                   <table style={{width:"100%",borderCollapse:"collapse",fontSize:10,marginBottom:10}}>
                     <thead>
                       <tr style={{background:"#0a1f14"}}>
-                        {["Soil Type","Coverage","DMPP Efficacy","N₂O Baseline (t CO₂e/yr)","N₂O Avoided (t CO₂e/yr)","Credit $/yr","Soil-Specific Note"].map((h,i)=>(
+                        {["Soil Type","Coverage","DMPP Efficacy","Nג‚‚O Baseline (t COג‚‚e/yr)","Nג‚‚O Avoided (t COג‚‚e/yr)","Credit $/yr","Soil-Specific Note"].map((h,i)=>(
                           <th key={i} style={{padding:"5px 6px",color:"#8de8b4",fontWeight:700,textAlign:"left",fontSize:8,textTransform:"uppercase"}}>{h}</th>
                         ))}
                       </tr>
@@ -3755,18 +3570,18 @@ export default function CFI() {
                         const isActive = soil.id===s0.soil;
                         return (
                           <tr key={i} style={{borderBottom:"1px solid #1a3025",background:isActive?"#1a3a22":"transparent"}}>
-                            <td style={{padding:"5px 6px",color:isActive?"#3dcb7a":C.white,fontWeight:isActive?800:400}}>{soil.name}{isActive?" ←":""}</td>
+                            <td style={{padding:"5px 6px",color:isActive?"#3dcb7a":C.white,fontWeight:isActive?800:400}}>{soil.name}{isActive?" ג†":""}</td>
                             <td style={{padding:"5px 6px",color:"#7aa890",fontFamily:"'DM Sans', sans-serif"}}>{soil.pct}</td>
                             <td style={{padding:"5px 6px",fontFamily:"'DM Sans', sans-serif",fontWeight:800,
                               color:eff>=0.40?"#3dcb7a":eff>=0.30?"#f0a030":"#8898b0"}}>
                               {Math.round(eff*100)}%
-                              {eff>=0.40&&<span style={{fontSize:8,marginLeft:4,color:"#3dcb7a"}}>▲ HIGH</span>}
-                              {eff<0.25&&<span style={{fontSize:8,marginLeft:4,color:"#8898b0"}}>▼ LOW</span>}
+                              {eff>=0.40&&<span style={{fontSize:8,marginLeft:4,color:"#3dcb7a"}}>ג–² HIGH</span>}
+                              {eff<0.25&&<span style={{fontSize:8,marginLeft:4,color:"#8898b0"}}>ג–¼ LOW</span>}
                             </td>
                             <td style={{padding:"5px 6px",fontFamily:"'DM Sans', sans-serif",color:"#f0a030"}}>{baseline.toLocaleString()}</td>
                             <td style={{padding:"5px 6px",fontFamily:"'DM Sans', sans-serif",color:"#3dcb7a",fontWeight:700}}>{avoided.toLocaleString()}</td>
                             <td style={{padding:"5px 6px",fontFamily:"'DM Sans', sans-serif",color:"#f0a030",fontWeight:800}}>${rev.toLocaleString()}</td>
-                            <td style={{padding:"5px 6px",color:"#7aa890",fontSize:8}}>{soil.dmppNote||"—"}</td>
+                            <td style={{padding:"5px 6px",color:"#7aa890",fontSize:8}}>{soil.dmppNote||"ג€”"}</td>
                           </tr>
                         );
                       })}
@@ -3778,39 +3593,39 @@ export default function CFI() {
                     <div style={{background:"#0e2818",borderRadius:6,padding:"8px 10px",border:"1px solid #2a5030"}}>
                       <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:3,textTransform:"uppercase"}}>Frass N/Day Applied</div>
                       <div style={{fontSize:16,fontWeight:900,color:"#8de8b4",fontFamily:"'DM Sans', sans-serif"}}>{dmpp_N_kgday.toLocaleString()} kg N</div>
-                      <div style={{fontSize:8,color:"#5a8870"}}>N×4.67 true protein factor active</div>
+                      <div style={{fontSize:8,color:"#5a8870"}}>Nֳ—4.67 true protein factor active</div>
                     </div>
                     <div style={{background:"#0e2818",borderRadius:6,padding:"8px 10px",border:"1px solid #2a5030"}}>
-                      <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:3,textTransform:"uppercase"}}>Uncontrolled N₂O (baseline)</div>
-                      <div style={{fontSize:16,fontWeight:900,color:"#f0a030",fontFamily:"'DM Sans', sans-serif"}}>{dmpp_co2e_base_ann.toLocaleString()} t CO₂e/yr</div>
+                      <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:3,textTransform:"uppercase"}}>Uncontrolled Nג‚‚O (baseline)</div>
+                      <div style={{fontSize:16,fontWeight:900,color:"#f0a030",fontFamily:"'DM Sans', sans-serif"}}>{dmpp_co2e_base_ann.toLocaleString()} t COג‚‚e/yr</div>
                       <div style={{fontSize:8,color:"#5a8870"}}>Currently uncaptured / unmonetised</div>
                     </div>
                     <div style={{background:s0.dmppEnabled?"#102818":"#0e1a18",borderRadius:6,padding:"8px 10px",border:s0.dmppEnabled?"1px solid #3dcb7a44":"1px solid #1a2820"}}>
                       <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:3,textTransform:"uppercase"}}>DMPP Avoided ({soilObj.name})</div>
-                      <div style={{fontSize:16,fontWeight:900,color:s0.dmppEnabled?"#3dcb7a":"#445050",fontFamily:"'DM Sans', sans-serif"}}>{dmpp_co2e_avoid_ann.toLocaleString()} t CO₂e/yr</div>
-                      <div style={{fontSize:8,color:"#5a8870"}}>{Math.round(dmpp_efficacy*100)}% suppression · {soilObj.dmppNote&&soilObj.dmppNote.substring(0,40)}...</div>
+                      <div style={{fontSize:16,fontWeight:900,color:s0.dmppEnabled?"#3dcb7a":"#445050",fontFamily:"'DM Sans', sans-serif"}}>{dmpp_co2e_avoid_ann.toLocaleString()} t COג‚‚e/yr</div>
+                      <div style={{fontSize:8,color:"#5a8870"}}>{Math.round(dmpp_efficacy*100)}% suppression ֲ· {soilObj.dmppNote&&soilObj.dmppNote.substring(0,40)}...</div>
                     </div>
                     <div style={{background:s0.dmppEnabled?"#1a3520":"#0e1a18",borderRadius:6,padding:"8px 10px",border:s0.dmppEnabled?"1px solid #3dcb7a":"1px solid #1a2820"}}>
-                      <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:3,textTransform:"uppercase"}}>ROI · Net Annual Gain</div>
-                      <div style={{fontSize:16,fontWeight:900,color:s0.dmppEnabled&&dmpp_roi>=3?"#3dcb7a":s0.dmppEnabled&&dmpp_roi>=2?"#f0a030":"#445050",fontFamily:"'DM Sans', sans-serif"}}>{s0.dmppEnabled?dmpp_roi+"x":"—"}</div>
+                      <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:3,textTransform:"uppercase"}}>ROI ֲ· Net Annual Gain</div>
+                      <div style={{fontSize:16,fontWeight:900,color:s0.dmppEnabled&&dmpp_roi>=3?"#3dcb7a":s0.dmppEnabled&&dmpp_roi>=2?"#f0a030":"#445050",fontFamily:"'DM Sans', sans-serif"}}>{s0.dmppEnabled?dmpp_roi+"x":"ג€”"}</div>
                       <div style={{fontSize:8,color:"#5a8870"}}>Net: {s0.dmppEnabled?"$"+dmpp_net_annual.toLocaleString()+"/yr":"Enable DMPP to calculate"}</div>
                     </div>
                   </div>
 
                   <div style={{marginTop:8,background:"#0a1810",borderRadius:5,padding:"6px 10px",border:"1px solid #1a3020"}}>
                     <span style={{color:"#f0a030",fontWeight:700,fontSize:9}}>WHY THIS MATTERS FOR ESTATE BUYERS: </span>
-                    <span style={{color:"#7aa890",fontSize:9}}>Estates reporting under CSRD/SBTi must account for N₂O from fertiliser application in their Scope 3 footprint. CFI frass pre-treated with DMPP gives the estate a verifiable N₂O reduction they can report — making CFI frass a superior procurement option vs synthetic Urea. On {soilObj.name} (current soil selection), DMPP retains ~{dmpp_n_retained_pct}% additional N in ammonium form, improving effective N delivery to palms — Sinar Mas agronomists can reduce application rate while maintaining yield target.</span>
+                    <span style={{color:"#7aa890",fontSize:9}}>Estates reporting under CSRD/SBTi must account for Nג‚‚O from fertiliser application in their Scope 3 footprint. CFI frass pre-treated with DMPP gives the estate a verifiable Nג‚‚O reduction they can report ג€” making CFI frass a superior procurement option vs synthetic Urea. On {soilObj.name} (current soil selection), DMPP retains ~{dmpp_n_retained_pct}% additional N in ammonium form, improving effective N delivery to palms ג€” Sinar Mas agronomists can reduce application rate while maintaining yield target.</span>
                   </div>
                 </div>
 
                 <hr style={S.divider}/>
 
                 <div style={{background:C.inputSectionBg, borderRadius:8, padding:"12px"}}>
-                  <div style={{color:C.grey, fontSize:11, marginBottom:8}}>ACTIVE SOIL: {soilObj.name} — SOIL-ADJUSTED NPK (per t FW)</div>
+                  <div style={{color:C.grey, fontSize:11, marginBottom:8}}>ACTIVE SOIL: {soilObj.name} ג€” SOIL-ADJUSTED NPK (per t FW)</div>
                   {[
                     {name:"N", eff:s4.pathwayS5==="s5a"?s5a_Neff:s5b_Neff, price:NPK_N_price, unit:"kg N"},
-                    {name:"P", eff:s4.pathwayS5==="s5a"?s5a_Peff:s5b_Peff, price:NPK_P_price, unit:"kg P₂O₅"},
-                    {name:"K", eff:s4.pathwayS5==="s5a"?s5a_Keff:s5b_Keff, price:NPK_K_price, unit:"kg K₂O"},
+                    {name:"P", eff:s4.pathwayS5==="s5a"?s5a_Peff:s5b_Peff, price:NPK_P_price, unit:"kg Pג‚‚Oג‚…"},
+                    {name:"K", eff:s4.pathwayS5==="s5a"?s5a_Keff:s5b_Keff, price:NPK_K_price, unit:"kg Kג‚‚O"},
                   ].map((r,i)=>(
                     <div key={i} style={{display:"flex", justifyContent:"space-between", padding:"6px 8px",
                       background:C.pageBg, borderRadius:4, marginBottom:4}}>
@@ -3825,7 +3640,7 @@ export default function CFI() {
                   </div>
                   <div style={{display:"flex", justifyContent:"space-between", padding:"10px 8px",
                     background:C.teal+"28", borderRadius:4, borderTop:`2px solid ${C.teal}`, marginTop:4}}>
-                    <span style={{color:C.teal, fontWeight:700}}>✓ ESTATE SALES PRICE (Sinar Mas)</span>
+                    <span style={{color:C.teal, fontWeight:700}}>ג“ ESTATE SALES PRICE (Sinar Mas)</span>
                     <span style={{color:C.teal, fontWeight:900, fontSize:16}}>${s4.pathwayS5==="s5a"?s5a_NPKval_SM:s5b_NPKval_SM}/t FW</span>
                   </div>
                 </div>
@@ -3842,10 +3657,10 @@ export default function CFI() {
                 <CalcField label="Monthly Frass Revenue (floor)" unit="USD/month"
                   value={`$${(s4.pathwayS5==="s5a"?rev_frass5a:rev_frass5b).toLocaleString()}`}/>
               </div>
-              {/* ── S6 DOWNSTREAM PRODUCTS PREVIEW (S5A only) ── */}
+              {/* ג”€ג”€ S6 DOWNSTREAM PRODUCTS PREVIEW (S5A only) ג”€ג”€ */}
             {s4.pathwayS5==="s5a" && (
               <div style={{...S.card, border:`1.5px solid ${C.sectionBorder}`, marginTop:0}}>
-                <SectionHdr icon="" title="S6 DOWNSTREAM PRODUCTS — LARVAE PROCESSING PREVIEW" color={C.teal}/>
+                <SectionHdr icon="" title="S6 DOWNSTREAM PRODUCTS ג€” LARVAE PROCESSING PREVIEW" color={C.teal}/>
                 <div style={{color:C.grey, fontSize:11, marginBottom:12}}>
                   Larvae extracted in S5A flow directly to S6 for drying, oil pressing, and chitin extraction.
                   Volumes and revenues below are based on current S4 rearing outputs.
@@ -3853,15 +3668,15 @@ export default function CFI() {
                 <div style={{display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:10, marginBottom:14}}>
                   {/* BSF Insect Meal */}
                   <div style={{background:C.inputSectionBg, borderRadius:8, padding:"14px", border:`1px solid ${C.teal}33`}}>
-                    <div style={{color:C.teal, fontWeight:800, fontSize:13, marginBottom:6}}>🦟 BSF Insect Meal</div>
-                    <div style={{color:C.grey, fontSize:10, marginBottom:8}}>Defatted, dried — high-protein ingredient</div>
+                    <div style={{color:C.teal, fontWeight:800, fontSize:13, marginBottom:6}}>נ¦ BSF Insect Meal</div>
+                    <div style={{color:C.grey, fontSize:10, marginBottom:8}}>Defatted, dried ג€” high-protein ingredient</div>
                     <div style={{display:"flex", justifyContent:"space-between", marginBottom:4}}>
                       <span style={{color:C.grey, fontSize:11}}>Volume</span>
                       <span style={{color:C.white, fontWeight:700, fontSize:12}}>{s6_mealYield.toLocaleString()} kg/month</span>
                     </div>
                     <div style={{display:"flex", justifyContent:"space-between", marginBottom:4}}>
                       <span style={{color:C.grey, fontSize:11}}>Crude Protein</span>
-                      <span style={{color:C.teal, fontWeight:700, fontSize:12}}>~50–58% DM</span>
+                      <span style={{color:C.teal, fontWeight:700, fontSize:12}}>~50ג€“58% DM</span>
                     </div>
                     <div style={{display:"flex", justifyContent:"space-between", marginBottom:4}}>
                       <span style={{color:C.grey, fontSize:11}}>Commodity floor</span>
@@ -3878,15 +3693,15 @@ export default function CFI() {
                   </div>
                   {/* BSF Oil */}
                   <div style={{background:C.inputSectionBg, borderRadius:8, padding:"14px", border:`1px solid ${C.amber}33`}}>
-                    <div style={{color:C.amber, fontWeight:800, fontSize:13, marginBottom:6}}>🛢 BSF Insect Oil</div>
-                    <div style={{color:C.grey, fontSize:10, marginBottom:8}}>Lauric-rich lipid — feed / food / cosmetics</div>
+                    <div style={{color:C.amber, fontWeight:800, fontSize:13, marginBottom:6}}>נ›¢ BSF Insect Oil</div>
+                    <div style={{color:C.grey, fontSize:10, marginBottom:8}}>Lauric-rich lipid ג€” feed / food / cosmetics</div>
                     <div style={{display:"flex", justifyContent:"space-between", marginBottom:4}}>
                       <span style={{color:C.grey, fontSize:11}}>Volume</span>
                       <span style={{color:C.white, fontWeight:700, fontSize:12}}>{s6_oilYield.toLocaleString()} kg/month</span>
                     </div>
                     <div style={{display:"flex", justifyContent:"space-between", marginBottom:4}}>
                       <span style={{color:C.grey, fontSize:11}}>Lauric acid content</span>
-                      <span style={{color:C.amber, fontWeight:700, fontSize:12}}>~40–52% DM</span>
+                      <span style={{color:C.amber, fontWeight:700, fontSize:12}}>~40ג€“52% DM</span>
                     </div>
                     <div style={{display:"flex", justifyContent:"space-between", marginBottom:4}}>
                       <span style={{color:C.grey, fontSize:11}}>Feed grade floor</span>
@@ -3894,7 +3709,7 @@ export default function CFI() {
                     </div>
                     <div style={{display:"flex", justifyContent:"space-between", marginBottom:4}}>
                       <span style={{color:C.grey, fontSize:11}}>Cosmetics grade</span>
-                      <span style={{color:C.amberLt, fontWeight:700, fontSize:12}}>$5,000–9,000/t</span>
+                      <span style={{color:C.amberLt, fontWeight:700, fontSize:12}}>$5,000ג€“9,000/t</span>
                     </div>
                     <div style={{background:C.amber+"18", borderRadius:5, padding:"8px", marginTop:8, borderTop:`1px solid ${C.amber}33`}}>
                       <div style={{color:C.grey, fontSize:10}}>Monthly Revenue (active price)</div>
@@ -3903,15 +3718,15 @@ export default function CFI() {
                   </div>
                   {/* Chitin */}
                   <div style={{background:C.inputSectionBg, borderRadius:8, padding:"14px", border:`1px solid ${C.green}33`}}>
-                    <div style={{color:C.green, fontWeight:800, fontSize:13, marginBottom:6}}>🦐 BSF Chitin</div>
-                    <div style={{color:C.grey, fontSize:10, marginBottom:8}}>Extracted from cuticle — agricultural / pharma</div>
+                    <div style={{color:C.green, fontWeight:800, fontSize:13, marginBottom:6}}>נ¦ BSF Chitin</div>
+                    <div style={{color:C.grey, fontSize:10, marginBottom:8}}>Extracted from cuticle ג€” agricultural / pharma</div>
                     <div style={{display:"flex", justifyContent:"space-between", marginBottom:4}}>
                       <span style={{color:C.grey, fontSize:11}}>Volume</span>
                       <span style={{color:C.white, fontWeight:700, fontSize:12}}>{s6_chitinYield.toLocaleString()} kg/month</span>
                     </div>
                     <div style={{display:"flex", justifyContent:"space-between", marginBottom:4}}>
                       <span style={{color:C.grey, fontSize:11}}>Purity (ag grade)</span>
-                      <span style={{color:C.green, fontWeight:700, fontSize:12}}>~75–85% DM</span>
+                      <span style={{color:C.green, fontWeight:700, fontSize:12}}>~75ג€“85% DM</span>
                     </div>
                     <div style={{display:"flex", justifyContent:"space-between", marginBottom:4}}>
                       <span style={{color:C.grey, fontSize:11}}>Ag grade floor</span>
@@ -3919,7 +3734,7 @@ export default function CFI() {
                     </div>
                     <div style={{display:"flex", justifyContent:"space-between", marginBottom:4}}>
                       <span style={{color:C.grey, fontSize:11}}>Pharma / cosmetics</span>
-                      <span style={{color:C.tealLt, fontWeight:700, fontSize:12}}>$25,000–60,000/t</span>
+                      <span style={{color:C.tealLt, fontWeight:700, fontSize:12}}>$25,000ג€“60,000/t</span>
                     </div>
                     <div style={{background:C.green+"18", borderRadius:5, padding:"8px", marginTop:8, borderTop:`1px solid ${C.green}33`}}>
                       <div style={{color:C.grey, fontSize:10}}>Monthly Revenue (active price)</div>
@@ -3932,7 +3747,7 @@ export default function CFI() {
                              border:`1px solid ${C.teal}55`, borderRadius:8, padding:"14px 18px",
                              display:"flex", justifyContent:"space-between", alignItems:"center"}}>
                   <div>
-                    <div style={{color:C.grey, fontSize:11, marginBottom:2}}>S5A TOTAL MONTHLY REVENUE — all products</div>
+                    <div style={{color:C.grey, fontSize:11, marginBottom:2}}>S5A TOTAL MONTHLY REVENUE ג€” all products</div>
                     <div style={{color:C.grey, fontSize:10}}>
                       Frass ${rev_frass5a.toLocaleString()} + Meal ${rev_meal.toLocaleString()} + Oil ${rev_oil.toLocaleString()} + Chitin ${rev_chitin.toLocaleString()}
                     </div>
@@ -3941,23 +3756,23 @@ export default function CFI() {
                 </div>
                 <div style={{background:C.amber+"14", border:`1px solid ${C.amber}44`, borderRadius:6,
                              padding:"9px 12px", marginTop:10, fontSize:11, color:C.amber}}>
-                  🔑 <strong>Certification uplift:</strong> FSSC 22000 (pet food) takes meal to ~$3,500/t. ISO 22716 (cosmetics) takes oil to $5,000–9,000/t. Switch cert tier on S6.
+                  נ”‘ <strong>Certification uplift:</strong> FSSC 22000 (pet food) takes meal to ~$3,500/t. ISO 22716 (cosmetics) takes oil to $5,000ג€“9,000/t. Switch cert tier on S6.
                 </div>
               </div>
             )}
-            {/* S5B — no larvae */}
+            {/* S5B ג€” no larvae */}
             {s4.pathwayS5==="s5b" && (
               <div style={{...S.card, border:`1px solid ${C.amber}44`, marginTop:0}}>
-                <SectionHdr icon="" title="S5B — TERMINATE IN-SUBSTRATE: NO INSECT PRODUCTS" color={C.amber}/>
+                <SectionHdr icon="" title="S5B ג€” TERMINATE IN-SUBSTRATE: NO INSECT PRODUCTS" color={C.amber}/>
                 <div style={{color:C.grey, fontSize:12, lineHeight:1.6}}>
                   Larvae are terminated inside the substrate. No separate insect meal, oil, or chitin products.
                   All biomass composted as a single high-nutrient biofertiliser. Maximises NPK but eliminates S6 insect processing revenue.
                 </div>
                 <div style={{display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:10, marginTop:12}}>
                   {[
-                    {icon:"🦟", label:"BSF Insect Meal", value:"Not produced", col:C.red},
-                    {icon:"🛢", label:"BSF Insect Oil",  value:"Not produced", col:C.red},
-                    {icon:"🦐", label:"BSF Chitin",      value:"Not produced", col:C.red},
+                    {icon:"נ¦", label:"BSF Insect Meal", value:"Not produced", col:C.red},
+                    {icon:"נ›¢", label:"BSF Insect Oil",  value:"Not produced", col:C.red},
+                    {icon:"נ¦", label:"BSF Chitin",      value:"Not produced", col:C.red},
                   ].map((p,i)=>(
                     <div key={i} style={{background:C.inputSectionBg, borderRadius:8, padding:"12px",
                                         border:`1px solid ${C.red}33`, textAlign:"center"}}>
@@ -3971,14 +3786,14 @@ export default function CFI() {
             )}
               </div> {/* closes right-column flex wrapper */}
             </div> {/* closes 2-col grid */}
-            <NutrLedger stg={s4.pathwayS5==="s5a"?"S5A · Biofertiliser (Post-Extraction Frass)":"S5B · Biofertiliser (Terminate-in-Substrate)"} N={s4.pathwayS5==="s5a"?s5a_N_DM:s5b_N_DM} P={s4.pathwayS5==="s5a"?s5a_P_DM:s5b_P_DM} K={s4.pathwayS5==="s5a"?s5a_K_DM:s5b_K_DM} Ca={s4.pathwayS5==="s5a"?s5a_Ca_DM:s5b_Ca_DM} Mg={s4.pathwayS5==="s5a"?s5a_Mg_DM:s5b_Mg_DM} OM={s4.pathwayS5==="s5a"?s5a_OM_DM:s5b_OM_DM} cn={s4.pathwayS5==="s5a"?s5a_CN:s5b_CN} wetPD={s4.pathwayS5==="s5a"?nl_s5aPD:nl_s5bPD} mc={s4_frassMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.green}/>
-          <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ▴':'Value Calculator ▾'}</button></div>
+            <NutrLedger stg={s4.pathwayS5==="s5a"?"S5A ֲ· Biofertiliser (Post-Extraction Frass)":"S5B ֲ· Biofertiliser (Terminate-in-Substrate)"} N={s4.pathwayS5==="s5a"?s5a_N_DM:s5b_N_DM} P={s4.pathwayS5==="s5a"?s5a_P_DM:s5b_P_DM} K={s4.pathwayS5==="s5a"?s5a_K_DM:s5b_K_DM} Ca={s4.pathwayS5==="s5a"?s5a_Ca_DM:s5b_Ca_DM} Mg={s4.pathwayS5==="s5a"?s5a_Mg_DM:s5b_Mg_DM} OM={s4.pathwayS5==="s5a"?s5a_OM_DM:s5b_OM_DM} cn={s4.pathwayS5==="s5a"?s5a_CN:s5b_CN} wetPD={s4.pathwayS5==="s5a"?nl_s5aPD:nl_s5bPD} mc={s4_frassMC} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.green}/>
+          <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ג–´':'Value Calculator ג–¾'}</button></div>
           {showValCalc && <CFI_ValueCalculator defaultStage="s5a"/>}
           </div>
         )}
 
 
-        {/* ════════════════════ S T A G E  6 ════════════════════ */}
+        {/* ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• S T A G E  6 ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• */}
         {stage===6 && (
           <div>
             {/* KPI Row */}
@@ -3992,13 +3807,13 @@ export default function CFI() {
 
             {/* CERTIFICATION TIER SELECTOR */}
             <div style={{...S.card, marginBottom:16}}>
-              <SectionHdr icon="🏆" title="PRODUCT CERTIFICATION TIER — PRICE LADDER" color={C.amber}/>
+              <SectionHdr icon="נ†" title="PRODUCT CERTIFICATION TIER ג€” PRICE LADDER" color={C.amber}/>
               <div style={{display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:10, marginBottom:12}}>
                 {[
-                  {k:"none",    label:"No Certification",        mealPx:"$1,200/t",  oilPx:"$900/t",     uplift:"1×",  col:C.grey},
-                  {k:"feed",    label:"Feed Grade (QS 9000)",     mealPx:"$1,800/t",  oilPx:"$1,170/t",   uplift:"1.5×",col:C.teal},
-                  {k:"petfood", label:"FSSC 22000 (Pet Food EU)", mealPx:"$3,500/t",  oilPx:"$1,800/t",   uplift:"2.9×",col:C.green},
-                  {k:"pharma",  label:"ISO 22716 (Pharma/Cosm)", mealPx:"$6,500/t",  oilPx:"$12,000/t",  uplift:"5.4×",col:C.amber},
+                  {k:"none",    label:"No Certification",        mealPx:"$1,200/t",  oilPx:"$900/t",     uplift:"1ֳ—",  col:C.grey},
+                  {k:"feed",    label:"Feed Grade (QS 9000)",     mealPx:"$1,800/t",  oilPx:"$1,170/t",   uplift:"1.5ֳ—",col:C.teal},
+                  {k:"petfood", label:"FSSC 22000 (Pet Food EU)", mealPx:"$3,500/t",  oilPx:"$1,800/t",   uplift:"2.9ֳ—",col:C.green},
+                  {k:"pharma",  label:"ISO 22716 (Pharma/Cosm)", mealPx:"$6,500/t",  oilPx:"$12,000/t",  uplift:"5.4ֳ—",col:C.amber},
                 ].map(tier=>(
                   <div key={tier.k}
                     style={{background:s4.certLevel===tier.k?tier.col+"33":C.inputSectionBg,
@@ -4020,7 +3835,7 @@ export default function CFI() {
                   display:"flex", justifyContent:"space-between", alignItems:"center"}}>
                   <div>
                     <div style={{color:C.green, fontWeight:700, fontSize:13}}>CERTIFICATION REVENUE UPLIFT ACTIVE: {activeCert.badge}</div>
-                    <div style={{color:C.grey, fontSize:11}}>Meal ×{activeCert.mealMult} · Oil ×{activeCert.oilMult} vs no-cert baseline</div>
+                    <div style={{color:C.grey, fontSize:11}}>Meal ֳ—{activeCert.mealMult} ֲ· Oil ֳ—{activeCert.oilMult} vs no-cert baseline</div>
                   </div>
                   <div style={{textAlign:"right"}}>
                     <div style={{color:C.grey, fontSize:10}}>Monthly with cert</div>
@@ -4035,7 +3850,7 @@ export default function CFI() {
 
               {/* Insect Meal */}
               <div style={S.card}>
-                <SectionHdr icon="🥩" title="INSECT MEAL — LAB PROFILE"/>
+                <SectionHdr icon="נ¥©" title="INSECT MEAL ג€” LAB PROFILE"/>
                 <div style={{background:C.teal+"18", border:`1.5px solid ${C.sectionBorder}`, borderRadius:8,
                   padding:"10px 14px", marginBottom:10, textAlign:"center"}}>
                   <div style={{color:C.grey, fontSize:10}}>MONTHLY YIELD</div>
@@ -4063,10 +3878,10 @@ export default function CFI() {
                 <div style={{background:C.inputSectionBg, borderRadius:6, padding:"8px 10px", marginBottom:8, fontSize:11}}>
                   <div style={{color:C.teal, fontWeight:700, marginBottom:4}}>MARKET TIERS</div>
                   {[
-                    {t:"Commodity / stock feed",  p:"$900–$1,200/t"},
-                    {t:"EU/US aquaculture feed",  p:"$1,500–$2,200/t"},
-                    {t:"Pet food (monoprotein)",  p:"$3,500–$5,000/t"},
-                    {t:"Hypoallergenic dog food", p:"$4,500–$6,500/t"},
+                    {t:"Commodity / stock feed",  p:"$900ג€“$1,200/t"},
+                    {t:"EU/US aquaculture feed",  p:"$1,500ג€“$2,200/t"},
+                    {t:"Pet food (monoprotein)",  p:"$3,500ג€“$5,000/t"},
+                    {t:"Hypoallergenic dog food", p:"$4,500ג€“$6,500/t"},
                   ].map((r,i)=>(
                     <div key={i} style={{display:"flex", justifyContent:"space-between", marginBottom:2}}>
                       <span style={{color:C.grey}}>{r.t}</span>
@@ -4082,7 +3897,7 @@ export default function CFI() {
 
               {/* BSF Oil */}
               <div style={S.card}>
-                <SectionHdr icon="🛢" title="BSF OIL — FATTY ACID PROFILE" color={C.amber}/>
+                <SectionHdr icon="נ›¢" title="BSF OIL ג€” FATTY ACID PROFILE" color={C.amber}/>
                 <div style={{background:C.amber+"18", border:`1px solid ${C.amber}44`, borderRadius:8,
                   padding:"10px 14px", marginBottom:10, textAlign:"center"}}>
                   <div style={{color:C.grey, fontSize:10}}>MONTHLY YIELD</div>
@@ -4090,8 +3905,8 @@ export default function CFI() {
                   <div style={{color:C.grey, fontSize:10}}>{(s6_oilYield/1000).toFixed(3)} t/month</div>
                 </div>
                 {[
-                  {l:"Lauric Acid C12:0",   v:"47%",  col:C.amber, note:"MCT precursor — cosmetics / pharma"},
-                  {l:"MCT Fraction",         v:"~13%", col:C.amber, note:"C8+C10 — pharmaceutical grade target"},
+                  {l:"Lauric Acid C12:0",   v:"47%",  col:C.amber, note:"MCT precursor ג€” cosmetics / pharma"},
+                  {l:"MCT Fraction",         v:"~13%", col:C.amber, note:"C8+C10 ג€” pharmaceutical grade target"},
                   {l:"Myristic Acid C14:0",  v:"12%",  col:C.greyLt, note:""},
                   {l:"Palmitic Acid C16:0",  v:"9%",   col:C.greyLt, note:""},
                   {l:"Oleic Acid C18:1",     v:"8%",   col:C.greyLt, note:""},
@@ -4110,10 +3925,10 @@ export default function CFI() {
                 <div style={{background:C.inputSectionBg, borderRadius:6, padding:"8px 10px", marginBottom:8, fontSize:11}}>
                   <div style={{color:C.amber, fontWeight:700, marginBottom:4}}>CERTIFICATION ARBITRAGE LADDER</div>
                   {[
-                    {t:"Feed grade (no cert)",   p:"$900–$1,200/t",    col:C.grey},
-                    {t:"Food grade (QS 9000)",    p:"$1,170–$1,500/t",  col:C.teal},
-                    {t:"Cosmetics (FSSC 22000)",  p:"$1,800–$3,500/t",  col:C.green},
-                    {t:"Pharma lipid (ISO 22716)",p:"$9,000–$18,000/t", col:C.amber},
+                    {t:"Feed grade (no cert)",   p:"$900ג€“$1,200/t",    col:C.grey},
+                    {t:"Food grade (QS 9000)",    p:"$1,170ג€“$1,500/t",  col:C.teal},
+                    {t:"Cosmetics (FSSC 22000)",  p:"$1,800ג€“$3,500/t",  col:C.green},
+                    {t:"Pharma lipid (ISO 22716)",p:"$9,000ג€“$18,000/t", col:C.amber},
                   ].map((r,i)=>(
                     <div key={i} style={{display:"flex", justifyContent:"space-between", marginBottom:2}}>
                       <span style={{color:C.grey}}>{r.t}</span>
@@ -4129,18 +3944,18 @@ export default function CFI() {
 
               {/* Chitin */}
               <div style={S.card}>
-                <SectionHdr icon="🦀" title="CHITIN — MARKET GRADE LADDER" color={C.green}/>
+                <SectionHdr icon="נ¦€" title="CHITIN ג€” MARKET GRADE LADDER" color={C.green}/>
                 <div style={{background:C.green+"18", border:`1px solid ${C.green}44`, borderRadius:8,
                   padding:"10px 14px", marginBottom:10, textAlign:"center"}}>
                   <div style={{color:C.grey, fontSize:10}}>MONTHLY YIELD</div>
                   <div style={{color:C.green, fontSize:24, fontWeight:900}}>{s6_chitinYield} kg</div>
-                  <div style={{color:C.grey, fontSize:10}}>9.3% of larvae DM × 45% extractable</div>
+                  <div style={{color:C.grey, fontSize:10}}>9.3% of larvae DM ֳ— 45% extractable</div>
                 </div>
                 {[
-                  {grade:"Agricultural (soil amendment)",      price:"$5,000–$8,000/t",   col:C.green},
-                  {grade:"Food grade chitosan",                price:"$20,000–$30,000/t", col:C.teal},
-                  {grade:"Pharmaceutical chitosan",            price:"$35,000–$60,000/t", col:C.amber},
-                  {grade:"Medical / technical specialty",      price:"$80,000–$120,000/t",col:C.red},
+                  {grade:"Agricultural (soil amendment)",      price:"$5,000ג€“$8,000/t",   col:C.green},
+                  {grade:"Food grade chitosan",                price:"$20,000ג€“$30,000/t", col:C.teal},
+                  {grade:"Pharmaceutical chitosan",            price:"$35,000ג€“$60,000/t", col:C.amber},
+                  {grade:"Medical / technical specialty",      price:"$80,000ג€“$120,000/t",col:C.red},
                 ].map((r,i)=>(
                   <div key={i} style={{display:"flex", justifyContent:"space-between", padding:"8px 10px",
                     background:C.inputSectionBg, borderRadius:6, marginBottom:4}}>
@@ -4158,7 +3973,7 @@ export default function CFI() {
 
             {/* Revenue Summary */}
             <div style={{...S.card, marginTop:16}}>
-              <SectionHdr icon="💵" title="S6 REVENUE SUMMARY" color={C.green}/>
+              <SectionHdr icon="נ’µ" title="S6 REVENUE SUMMARY" color={C.green}/>
               <div style={{display:"grid", gridTemplateColumns:"repeat(6,1fr)", gap:10}}>
                 <KPI label="Insect Meal" value={`$${certMealRev.toLocaleString()}`} unit="/month" color={C.teal}/>
                 <KPI label="BSF Oil" value={`$${certOilRev.toLocaleString()}`} unit="/month" color={C.amber}/>
@@ -4170,7 +3985,7 @@ export default function CFI() {
               <div style={{background:C.green+"22", border:`2px solid ${C.green}55`, borderRadius:8,
                 padding:"14px 20px", display:"flex", justifyContent:"space-between", alignItems:"center", marginTop:10}}>
                 <div>
-                  <div style={{color:C.green, fontWeight:700, fontSize:14}}>ANNUAL REVENUE — {activeCert.badge.toUpperCase()}</div>
+                  <div style={{color:C.green, fontWeight:700, fontSize:14}}>ANNUAL REVENUE ג€” {activeCert.badge.toUpperCase()}</div>
                   <div style={{color:C.grey, fontSize:11}}>Certification tier: {activeCert.label}</div>
                 </div>
                 <div style={{textAlign:"right"}}>
@@ -4178,15 +3993,15 @@ export default function CFI() {
                   {s4.certLevel!=="none" && <div style={{color:C.green, fontSize:12}}>+${((certTotalRev-rev_total)*12).toLocaleString()}/yr uplift vs no-cert</div>}
                 </div>
               </div>
-            <NutrLedger stg="S6 · BSF Meal Profile (per tonne meal DM)" N={8.10} P={1.20} K={0.40} Ca={4.50} Mg={0.80} OM={52.0} cn={6} wetPD={+(s6_mealYield/1000/s0.daysMonth).toFixed(2)} mc={8} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.amber}/>
+            <NutrLedger stg="S6 ֲ· BSF Meal Profile (per tonne meal DM)" N={8.10} P={1.20} K={0.40} Ca={4.50} Mg={0.80} OM={52.0} cn={6} wetPD={+(s6_mealYield/1000/s0.daysMonth).toFixed(2)} mc={8} nAdj={soilObj.nAdj} pAdj={soilObj.pAdj} ag={agObj.uplift} col={C.amber}/>
             </div>
-          <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ▴':'Value Calculator ▾'}</button></div>
+          <div style={{textAlign:'right',padding:'12px 0'}}><button onClick={()=>setShowValCalc(v=>!v)} style={{background:'rgba(64,215,197,0.10)',border:'1.5px solid rgba(64,215,197,0.40)',borderRadius:6,color:'#40D7C5',fontFamily:"'DM Mono',monospace",fontSize:11,fontWeight:700,padding:'6px 14px',cursor:'pointer'}}>{showValCalc?'Hide Value Calculator ג–´':'Value Calculator ג–¾'}</button></div>
           {showValCalc && <CFI_ValueCalculator defaultStage="s6"/>}
           </div>
         )}
 
 
-        {/* ════════════════════ C A P E X / O P E X ════════════════════ */}
+        {/* ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• C A P E X / O P E X ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• */}
         {stage===7 && (
           <div>
             <div style={{display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:10, marginBottom:16}}>
@@ -4201,17 +4016,17 @@ export default function CFI() {
 
               {/* CAPEX overview */}
               <div style={S.card}>
-                <SectionHdr icon="🏗" title="CAPITAL EXPENDITURE (CAPEX)" color={C.red}/>
+                <SectionHdr icon="נ—" title="CAPITAL EXPENDITURE (CAPEX)" color={C.red}/>
                 <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8}}>
-                  <BluField label="Greenhouse Area" unit="m²" value={capex.greenhouse_area} onChange={v=>upCapex("greenhouse_area",+v)}/>
-                  <BluField label="Civil Cost" unit="$/m²" value={capex.greenhouse_cost_m2} onChange={v=>upCapex("greenhouse_cost_m2",+v)}/>
+                  <BluField label="Greenhouse Area" unit="mֲ²" value={capex.greenhouse_area} onChange={v=>upCapex("greenhouse_area",+v)}/>
+                  <BluField label="Civil Cost" unit="$/mֲ²" value={capex.greenhouse_cost_m2} onChange={v=>upCapex("greenhouse_cost_m2",+v)}/>
                   <BluField label="Shredder + Hammer Mill" unit="USD" value={capex.shredder} onChange={v=>upCapex("shredder",+v)}/>
                   <BluField label="Conveyors + Handling" unit="USD" value={capex.conveyor} onChange={v=>upCapex("conveyor",+v)}/>
                   <BluField label="Screw Press (OPDC)" unit="USD" value={capex.screw_press} onChange={v=>upCapex("screw_press",+v)}/>
                   <BluField label="Mixer / Treatment Tank" unit="USD" value={capex.mixer_tank} onChange={v=>upCapex("mixer_tank",+v)}/>
                   <BluField label="Drying Unit (larvae)" unit="USD" value={capex.drying_unit} onChange={v=>upCapex("drying_unit",+v)}/>
                   <BluField label="Oil Press / Extractor" unit="USD" value={capex.oil_press} onChange={v=>upCapex("oil_press",+v)}/>
-                  <BluField label="Contingency" unit="%" value={capex.contingency_pct} onChange={v=>upCapex("contingency_pct",+v)} note="Typically 10–20%"/>
+                  <BluField label="Contingency" unit="%" value={capex.contingency_pct} onChange={v=>upCapex("contingency_pct",+v)} note="Typically 10ג€“20%"/>
                   <BluField label="Depreciation Period" unit="years" value={capex.depreciation_years} onChange={v=>upCapex("depreciation_years",+v)}/>
                 </div>
                 <hr style={S.divider}/>
@@ -4235,7 +4050,7 @@ export default function CFI() {
                   <BluField label="Utilities" unit="USD/month" value={capex.utilities_monthly} onChange={v=>upCapex("utilities_monthly",+v)}/>
                   <BluField label="Consumables" unit="USD/month" value={capex.consumables_monthly} onChange={v=>upCapex("consumables_monthly",+v)}/>
                   <BluField label="Maintenance" unit="% CAPEX/yr" value={capex.maintenance_pct} onChange={v=>upCapex("maintenance_pct",+v)}/>
-                  <BluField label="Discount Rate (NPV)" unit="%" value={capex.discount_rate} onChange={v=>upCapex("discount_rate",+v)} note="Typical EM project: 10–15%"/>
+                  <BluField label="Discount Rate (NPV)" unit="%" value={capex.discount_rate} onChange={v=>upCapex("discount_rate",+v)} note="Typical EM project: 10ג€“15%"/>
                 </div>
                 <hr style={S.divider}/>
                 <table style={{width:"100%", borderCollapse:"collapse", fontSize:12}}>
@@ -4263,7 +4078,7 @@ export default function CFI() {
 
               {/* Per-Stage CAPEX Breakdown */}
               <div style={S.card}>
-                <SectionHdr icon="🔢" title="PER-STAGE CAPEX BREAKDOWN" color={C.teal}/>
+                <SectionHdr icon="נ”¢" title="PER-STAGE CAPEX BREAKDOWN" color={C.teal}/>
                 <div style={{color:C.grey, fontSize:10, marginBottom:8}}>Override individual stage CAPEX estimates (FD Engineering EPC basis)</div>
                 <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, marginBottom:10}}>
                   <BluField label="S1 Pre-Processing" unit="USD" value={capex.s1_capex} onChange={v=>upCapex("s1_capex",+v)}/>
@@ -4281,7 +4096,7 @@ export default function CFI() {
                     <div key={i} style={{marginBottom:6}}>
                       <div style={{display:"flex", justifyContent:"space-between", marginBottom:2}}>
                         <span style={{color:item.col, fontSize:11, fontWeight:700}}>{item.s}</span>
-                        <span style={{color:C.grey, fontSize:11}}>${item.v.toLocaleString()} · {pct}%</span>
+                        <span style={{color:C.grey, fontSize:11}}>${item.v.toLocaleString()} ֲ· {pct}%</span>
                       </div>
                       <div style={{background:C.inputSectionBg, borderRadius:4, height:8, overflow:"hidden"}}>
                         <div style={{background:item.col, height:"100%", width:`${pct}%`, transition:"width 0.3s"}}/>
@@ -4298,8 +4113,8 @@ export default function CFI() {
 
               {/* Sensitivity Analysis */}
               <div style={S.card}>
-                <SectionHdr icon="📉" title="SENSITIVITY ANALYSIS" color={C.amber}/>
-                <div style={{color:C.grey, fontSize:10, marginBottom:8}}>Payback period and NPV under ±20% revenue / CAPEX scenarios</div>
+                <SectionHdr icon="נ“‰" title="SENSITIVITY ANALYSIS" color={C.amber}/>
+                <div style={{color:C.grey, fontSize:10, marginBottom:8}}>Payback period and NPV under ֲ±20% revenue / CAPEX scenarios</div>
                 <table style={{width:"100%", borderCollapse:"collapse", fontSize:11}}>
                   <thead>
                     <tr style={{background:C.inputSectionBg}}>
@@ -4312,9 +4127,9 @@ export default function CFI() {
                     {[
                       {scen:"Base Case",           pb:sens.base_payback,  npv:sens.base_npv,  delta:0,    col:C.white},
                       {scen:"Revenue +20%",         pb:sens.revUp_payback, npv:sens.revUp_npv, delta:+(sens.revUp_npv-sens.base_npv).toFixed(0),  col:C.green},
-                      {scen:"Revenue −20%",         pb:sens.revDn_payback, npv:sens.revDn_npv, delta:+(sens.revDn_npv-sens.base_npv).toFixed(0),  col:C.red},
+                      {scen:"Revenue גˆ’20%",         pb:sens.revDn_payback, npv:sens.revDn_npv, delta:+(sens.revDn_npv-sens.base_npv).toFixed(0),  col:C.red},
                       {scen:"CAPEX +20% (overrun)", pb:sens.capUp_payback, npv:sens.base_npv-capex_total*0.2, delta:-(capex_total*0.2).toFixed(0), col:C.amber},
-                      {scen:"CAPEX −20% (underrun)",pb:sens.capDn_payback, npv:sens.base_npv+capex_total*0.2, delta:+(capex_total*0.2).toFixed(0), col:C.teal},
+                      {scen:"CAPEX גˆ’20% (underrun)",pb:sens.capDn_payback, npv:sens.base_npv+capex_total*0.2, delta:+(capex_total*0.2).toFixed(0), col:C.teal},
                     ].map((r,i)=>{
                       const isBase = i===0;
                       return (
@@ -4327,7 +4142,7 @@ export default function CFI() {
                             {r.npv>0?"+":""}{typeof r.npv==="number"?("$"+r.npv.toLocaleString()):"N/A"}
                           </td>
                           <td style={{padding:"7px 10px", color:isBase?C.grey:r.delta>0?C.green:C.red, fontFamily:"'DM Sans', sans-serif"}}>
-                            {isBase?"—":r.delta>0?"+$"+r.delta.toLocaleString():"$"+r.delta.toLocaleString()}
+                            {isBase?"ג€”":r.delta>0?"+$"+r.delta.toLocaleString():"$"+r.delta.toLocaleString()}
                           </td>
                         </tr>
                       );
@@ -4343,7 +4158,7 @@ export default function CFI() {
                   <table style={{width:"100%", borderCollapse:"collapse", fontSize:11}}>
                     <thead>
                       <tr style={{background:C.inputSectionBg}}>
-                        {["Parameter","S0 Raw","→S2 PKSA","→S3 Bio","→S4 BSF","S5A","S5B","S6 Meal"].map((h,i)=>(
+                        {["Parameter","S0 Raw","ג†’S2 PKSA","ג†’S3 Bio","ג†’S4 BSF","S5A","S5B","S6 Meal"].map((h,i)=>(
                           <td key={i} style={{padding:"6px 8px", color:i===0?C.grey:C.teal, fontWeight:700, whiteSpace:"nowrap"}}>{h}</td>
                         ))}
                       </tr>
@@ -4357,7 +4172,7 @@ export default function CFI() {
                         {p:"C:N",          s0:lab_s0_CN.toString(),     s2:lab_s2_CN.toString(),     s3:lab_s3_CN.toString(),     s4:lab_s4_CN.toString(),     s5a:`${s5a_CN}`, s5b:`${s5b_CN}`, s6:"5.9"},
                         {p:"Lignin (%DM)", s0:lab_s0_lignin.toString(), s2:lab_s2_lignin.toString(), s3:lab_s3_lignin.toString(), s4:lab_s4_lignin.toString(), s5a:"5", s5b:"5", s6:"0"},
                         {p:"Hemi (%DM)",   s0:"28.2",                   s2:lab_s2_hemi.toString(),   s3:lab_s3_hemi.toString(),   s4:(lab_s3_hemi*0.7).toFixed(1), s5a:"4", s5b:"4", s6:"0"},
-                        {p:"CP (%DM)",     s0:lab_s0_CP.toString(),     s2:lab_s2_CP.toString(),     s3:lab_s3_CP.toString(),     s4:lab_s4_CP.toString(),     s5a:"—", s5b:"—", s6:"52–60"},
+                        {p:"CP (%DM)",     s0:lab_s0_CP.toString(),     s2:lab_s2_CP.toString(),     s3:lab_s3_CP.toString(),     s4:lab_s4_CP.toString(),     s5a:"ג€”", s5b:"ג€”", s6:"52ג€“60"},
                         {p:"pH",           s0:lab_s0_pH.toString(),     s2:lab_s2_pH.toString(),     s3:lab_s3_pH.toString(),     s4:lab_s4_pH.toString(),     s5a:`${s5a_pH}`, s5b:`${s5b_pH}`, s6:"6.5"},
                       ].map((row,i)=>(
                         <tr key={i} style={{borderBottom:`1px solid ${C.inputSectionBg}`, background:i%2===0?C.navyLt+"30":"transparent"}}>
@@ -4369,7 +4184,7 @@ export default function CFI() {
                             return (
                               <td key={j} style={{padding:"6px 8px", textAlign:"center", fontFamily:"'DM Sans', sans-serif",
                                 color:j===0?C.white:up?C.green:dn?C.red:C.grey, fontWeight:j===6?900:400}}>
-                                {v}{j>0&&up?"↑":j>0&&dn?"↓":""}
+                                {v}{j>0&&up?"ג†‘":j>0&&dn?"ג†“":""}
                               </td>
                             );
                           })}
@@ -4379,7 +4194,7 @@ export default function CFI() {
                   </table>
                 </div>
                 <div style={{marginTop:6, fontSize:10, color:C.grey}}>
-                  ↑ enrichment vs prior stage · ↓ reduction · K spike at S2 = PKSA K₂O · N concentrates through BSF bioconversion
+                  ג†‘ enrichment vs prior stage ֲ· ג†“ reduction ֲ· K spike at S2 = PKSA Kג‚‚O ֲ· N concentrates through BSF bioconversion
                 </div>
               </div>
 
@@ -4387,15 +4202,15 @@ export default function CFI() {
           </div>
         )}
 
-        {/* ════════════════════ C A R B O N   C R E D I T S   E N G I N E ════════════════════ */}
+        {/* ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• C A R B O N   C R E D I T S   E N G I N E ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• */}
         {stage===8 && (()=>{
-          // ── Live values pulled from S0 ──────────────────────────────────────
+          // ג”€ג”€ Live values pulled from S0 ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
           const efbFreshMo  = +(monthFFB * 0.225 * (s0.efbCapturePct/100)).toFixed(0);
           const opdcFreshMo = +(monthFFB * 0.042 * (s0.opdcCapturePct/100)).toFixed(0);  // BUG-09 FIX: 4.2% canonical
           const pomeFreshMo = +(pomeSludgeNatTPD * s0.daysMonth * (s0.pomeCapturePct/100)).toFixed(0);
           const pomeVolMo   = carbon_pomeVol;
 
-          // ── Project EF by pathway ───────────────────────────────────────────
+          // ג”€ג”€ Project EF by pathway ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
           const PEF_CC = {
             bsf_s4:      {label:"BSF Inoculation (S4)",     ch4_per_tVS:1.0, n2o_per_tVS:0.10, ref:"IPCC 2006 Vol.4 Ch.4; ACM0022; AMS-III.H"},
             fast_compost:{label:"Fast In-House Composting",  ch4_per_tVS:4.0, n2o_per_tVS:0.30, ref:"IPCC 2006 Vol.4 Ch.4; ACM0022"},
@@ -4410,11 +4225,11 @@ export default function CFI() {
             return {co2e: ch4*GWP100_CC + n2o*GWP_N2O_CC, ch4, n2o, VS};
           }
 
-          // ── Solid stream results ────────────────────────────────────────────
+          // ג”€ג”€ Solid stream results ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
           const streams_cc = [
-            {id:"EFB",      name:"EFB — Empty Fruit Bunches",   fresh:efbFreshMo,  mc:+s0.efbMC,      base_co2e:co2e100_solids*(co2e100_solids>0?(ch4_efb_base*GWP100_CC)/(ch4_solids_avoid*GWP100_CC+0.001):0.6)},
-            {id:"OPDC",     name:"OPDC — Decanter Cake",        fresh:opdcFreshMo, mc:+s0.opdcMC,     base_co2e:co2e100_solids*(co2e100_solids>0?(ch4_opdc_base*GWP100_CC)/(ch4_solids_avoid*GWP100_CC+0.001):0.3)},
-            {id:"POME_SLUDGE",name:"POME Sludge — Centrifuge Cake",fresh:pomeFreshMo,mc:+s0.pomeSludgeMC,base_co2e:0},
+            {id:"EFB",      name:"EFB ג€” Empty Fruit Bunches",   fresh:efbFreshMo,  mc:+s0.efbMC,      base_co2e:co2e100_solids*(co2e100_solids>0?(ch4_efb_base*GWP100_CC)/(ch4_solids_avoid*GWP100_CC+0.001):0.6)},
+            {id:"OPDC",     name:"OPDC ג€” Decanter Cake",        fresh:opdcFreshMo, mc:+s0.opdcMC,     base_co2e:co2e100_solids*(co2e100_solids>0?(ch4_opdc_base*GWP100_CC)/(ch4_solids_avoid*GWP100_CC+0.001):0.3)},
+            {id:"POME_SLUDGE",name:"POME Sludge ג€” Centrifuge Cake",fresh:pomeFreshMo,mc:+s0.pomeSludgeMC,base_co2e:0},
           ].map(s=>{
             const proj = bioCO2e_cc(s.fresh, s.mc, s.id, ccPathway);
             const base_ch4 = s.id==="EFB"?ch4_efb_base:s.id==="OPDC"?ch4_opdc_base:ch4_sludge_base;
@@ -4431,7 +4246,7 @@ export default function CFI() {
           const revOff = +(totalAvoidAnn * ccPriceOff / 1e6).toFixed(2);
           const revIns = +(totalAvoidAnn * ccPriceIns / 1e6).toFixed(2);
 
-          // ── Style tokens (dark-navy theme matching v4) ──────────────────────
+          // ג”€ג”€ Style tokens (dark-navy theme matching v4) ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
           const cc = {
             navy:"#0f1d35", navyMd:"#1a3360", navyLt:"#162848",
             tealLt:"#22b89e", amberLt:"#f0a030", green:"#1a7a40", greenLt:"#8de8b4",
@@ -4457,34 +4272,34 @@ export default function CFI() {
           };
 
           const BUYERS_CC=[
-            {name:"Microsoft",logo:"🖥",price:"$20–25/t",advance:"25–35%",tier:"primary",color:cc.tealLt,focus:"Agricultural methane avoidance",standard:"Verra VCS, CORSIA",fit:"Palm waste = agricultural residue"},
-            {name:"Google/Alphabet",logo:"🔍",price:"$15–30/t",advance:"Up to 70%",tier:"primary",color:cc.amberLt,focus:"Waste valorisation, circular economy",standard:"Verra VCS",fit:"Aligns with waste-to-value mandate"},
-            {name:"Frontier Climate",logo:"🌊",price:"$40–100/t",advance:"Dev funding",tier:"primary",color:cc.greenLt,focus:"High-quality avoidance, innovative tech",standard:"Science-based premium",fit:"BSF = innovative + scalable + permanent"},
-            {name:"Nestlé",logo:"",price:"$40–75/t",advance:"ERPA structured",tier:"strategic",color:cc.gold,focus:"Scope 3 supply chain — palm oil",standard:"CSRD, SBTi Scope 3",fit:"CFI covers 85% of Nestlé's palm footprint"},
-            {name:"Unilever/Danone",logo:"",price:"$25–50/t",advance:"Varies",tier:"strategic",color:"#a070e0",focus:"Scope 3 FMCG palm supply chain",standard:"CSRD, EUDR",fit:"Mandatory CSRD disclosure"},
-            {name:"Aviation CORSIA",logo:"✈",price:"$15–30/t",advance:"Forward contracts",tier:"secondary",color:cc.greyLt,focus:"CORSIA compliance from 2027",standard:"CORSIA (ACM0022)",fit:"Demand surge 2027 — register now"},
-            {name:"Spot/Voluntary",logo:"💹",price:"$12–22/t",advance:"None",tier:"secondary",color:cc.grey,focus:"Carbonmark, Puro.earth, AirCarbon",standard:"Verra VCS, Gold Standard",fit:"Fill gaps between ERPA contracts"},
+            {name:"Microsoft",logo:"נ–¥",price:"$20ג€“25/t",advance:"25ג€“35%",tier:"primary",color:cc.tealLt,focus:"Agricultural methane avoidance",standard:"Verra VCS, CORSIA",fit:"Palm waste = agricultural residue"},
+            {name:"Google/Alphabet",logo:"נ”",price:"$15ג€“30/t",advance:"Up to 70%",tier:"primary",color:cc.amberLt,focus:"Waste valorisation, circular economy",standard:"Verra VCS",fit:"Aligns with waste-to-value mandate"},
+            {name:"Frontier Climate",logo:"נ",price:"$40ג€“100/t",advance:"Dev funding",tier:"primary",color:cc.greenLt,focus:"High-quality avoidance, innovative tech",standard:"Science-based premium",fit:"BSF = innovative + scalable + permanent"},
+            {name:"Nestlֳ©",logo:"",price:"$40ג€“75/t",advance:"ERPA structured",tier:"strategic",color:cc.gold,focus:"Scope 3 supply chain ג€” palm oil",standard:"CSRD, SBTi Scope 3",fit:"CFI covers 85% of Nestlֳ©'s palm footprint"},
+            {name:"Unilever/Danone",logo:"",price:"$25ג€“50/t",advance:"Varies",tier:"strategic",color:"#a070e0",focus:"Scope 3 FMCG palm supply chain",standard:"CSRD, EUDR",fit:"Mandatory CSRD disclosure"},
+            {name:"Aviation CORSIA",logo:"גˆ",price:"$15ג€“30/t",advance:"Forward contracts",tier:"secondary",color:cc.greyLt,focus:"CORSIA compliance from 2027",standard:"CORSIA (ACM0022)",fit:"Demand surge 2027 ג€” register now"},
+            {name:"Spot/Voluntary",logo:"נ’¹",price:"$12ג€“22/t",advance:"None",tier:"secondary",color:cc.grey,focus:"Carbonmark, Puro.earth, AirCarbon",standard:"Verra VCS, Gold Standard",fit:"Fill gaps between ERPA contracts"},
           ];
           const SC3_CC=[
-            {name:"Nestlé",total:"74.7M",s3:"71.4M",pct:95.5,palm:"937K"},
+            {name:"Nestlֳ©",total:"74.7M",s3:"71.4M",pct:95.5,palm:"937K"},
             {name:"Unilever",total:"52.3M",s3:"49.5M",pct:94.6,palm:"1.2M"},
             {name:"Danone",total:"24.6M",s3:"23.1M",pct:93.9,palm:"640K"},
             {name:"Wilmar",total:"38.2M",s3:"36.9M",pct:96.6,palm:"4.8M"},
             {name:"Sinar Mas",total:"31.5M",s3:"30.2M",pct:95.9,palm:"6.1M"},
-            {name:"Mondēlez",total:"11.2M",s3:"10.4M",pct:92.9,palm:"285K"},
+            {name:"Mondִ“lez",total:"11.2M",s3:"10.4M",pct:92.9,palm:"285K"},
           ];
 
           return (
             <div style={{fontFamily:fm.body,fontSize:12}}>
 
-              {/* ── DMPP N₂O SUPPRESSION PANEL ── */}
+              {/* ג”€ג”€ DMPP Nג‚‚O SUPPRESSION PANEL ג”€ג”€ */}
               <div style={{background:"#12201a",border:"1px solid #2a6040",borderRadius:8,padding:12,marginBottom:10}}>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
                   <div style={{display:"flex",alignItems:"center",gap:8}}>
                     <span style={{fontSize:16}}></span>
                     <div>
-                      <div style={{fontSize:12,fontWeight:800,color:"#8de8b4",letterSpacing:"0.04em"}}>DMPP N₂O SUPPRESSION — ADDITIONAL CREDIT PATHWAY</div>
-                      <div style={{fontSize:9,color:"#7aa890"}}>IPCC 2006 Vol.4 Ch.11 · EF_direct = 0.010 kg N₂O-N/kg N · GWP N₂O = 265 (AR5) · Verra VM0042</div>
+                      <div style={{fontSize:12,fontWeight:800,color:"#8de8b4",letterSpacing:"0.04em"}}>DMPP Nג‚‚O SUPPRESSION ג€” ADDITIONAL CREDIT PATHWAY</div>
+                      <div style={{fontSize:9,color:"#7aa890"}}>IPCC 2006 Vol.4 Ch.11 ֲ· EF_direct = 0.010 kg Nג‚‚O-N/kg N ֲ· GWP Nג‚‚O = 265 (AR5) ֲ· Verra VM0042</div>
                     </div>
                   </div>
                   <div style={{display:"flex",alignItems:"center",gap:8}}>
@@ -4493,7 +4308,7 @@ export default function CFI() {
                       background:s0.dmppEnabled?"#1a7a40":"#1a3360",border:s0.dmppEnabled?"1px solid #3dcb7a":"1px solid #2a4070",
                       borderRadius:20,padding:"4px 14px",color:s0.dmppEnabled?"#3dcb7a":"#8898b0",
                       fontSize:11,fontWeight:800,cursor:"pointer",letterSpacing:"0.05em"
-                    }}>{s0.dmppEnabled?"ON ✓":"OFF"}</button>
+                    }}>{s0.dmppEnabled?"ON ג“":"OFF"}</button>
                   </div>
                 </div>
 
@@ -4505,19 +4320,19 @@ export default function CFI() {
                     <div style={{fontSize:9,color:"#5a8870"}}>kg N/day to field</div>
                   </div>
                   <div style={{background:"#0e2818",borderRadius:6,padding:"8px 10px",border:"1px solid #2a5030"}}>
-                    <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:4,textTransform:"uppercase"}}>Baseline N₂O (no DMPP)</div>
+                    <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:4,textTransform:"uppercase"}}>Baseline Nג‚‚O (no DMPP)</div>
                     <div style={{fontSize:18,fontWeight:900,color:"#f0a030",fontFamily:"'DM Sans', sans-serif"}}>{dmpp_co2e_base_ann.toLocaleString()}</div>
-                    <div style={{fontSize:9,color:"#5a8870"}}>t CO₂e/yr emitted uncontrolled</div>
+                    <div style={{fontSize:9,color:"#5a8870"}}>t COג‚‚e/yr emitted uncontrolled</div>
                   </div>
                   <div style={{background:s0.dmppEnabled?"#102a18":"#0e1a18",borderRadius:6,padding:"8px 10px",border:s0.dmppEnabled?"1px solid #3dcb7a44":"1px solid #2a3030"}}>
-                    <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:4,textTransform:"uppercase"}}>N₂O Avoided ({soilObjCalc.name})</div>
+                    <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:4,textTransform:"uppercase"}}>Nג‚‚O Avoided ({soilObjCalc.name})</div>
                     <div style={{fontSize:18,fontWeight:900,color:s0.dmppEnabled?"#3dcb7a":"#445050",fontFamily:"'DM Sans', sans-serif"}}>{dmpp_co2e_avoid_ann.toLocaleString()}</div>
-                    <div style={{fontSize:9,color:"#5a8870"}}>t CO₂e/yr · {Math.round(dmpp_efficacy*100)}% suppression on {soilObjCalc.name}</div>
+                    <div style={{fontSize:9,color:"#5a8870"}}>t COג‚‚e/yr ֲ· {Math.round(dmpp_efficacy*100)}% suppression on {soilObjCalc.name}</div>
                   </div>
                   <div style={{background:s0.dmppEnabled?"#1a3520":"#0e1a18",borderRadius:6,padding:"8px 10px",border:s0.dmppEnabled?"1px solid #3dcb7a":"1px solid #2a3030"}}>
                     <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:4,textTransform:"uppercase"}}>Credit Revenue</div>
-                    <div style={{fontSize:18,fontWeight:900,color:s0.dmppEnabled?"#3dcb7a":"#445050",fontFamily:"'DM Sans', sans-serif"}}>${s0.dmppEnabled?dmpp_credit_rev_ann.toLocaleString():"—"}</div>
-                    <div style={{fontSize:9,color:"#5a8870"}}>$/yr @ ${carbonPriceActive}/t CO₂e</div>
+                    <div style={{fontSize:18,fontWeight:900,color:s0.dmppEnabled?"#3dcb7a":"#445050",fontFamily:"'DM Sans', sans-serif"}}>${s0.dmppEnabled?dmpp_credit_rev_ann.toLocaleString():"ג€”"}</div>
+                    <div style={{fontSize:9,color:"#5a8870"}}>$/yr @ ${carbonPriceActive}/t COג‚‚e</div>
                   </div>
                 </div>
 
@@ -4527,13 +4342,13 @@ export default function CFI() {
                     <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:3,textTransform:"uppercase"}}>DMPP Dose (kg/t frass WW)  USER INPUT</div>
                     <input style={{background:"#2a2010",border:"1px solid #f0a03066",borderRadius:5,color:"#f0c060",padding:"5px 8px",fontSize:12,width:"100%",outline:"none"}}
                       value={s0.dmppDose} onChange={e=>upS0("dmppDose",e.target.value)}/>
-                    <div style={{fontSize:8,color:"#5a7070",marginTop:2}}>Commercial range: 1–2 kg/t. IPCC ref dose 1.5 kg/t.</div>
+                    <div style={{fontSize:8,color:"#5a7070",marginTop:2}}>Commercial range: 1ג€“2 kg/t. IPCC ref dose 1.5 kg/t.</div>
                   </div>
                   <div>
                     <div style={{fontSize:8,color:"#7aa890",fontWeight:700,marginBottom:3,textTransform:"uppercase"}}>DMPP Cost ($/kg)  USER INPUT</div>
                     <input style={{background:"#2a2010",border:"1px solid #f0a03066",borderRadius:5,color:"#f0c060",padding:"5px 8px",fontSize:12,width:"100%",outline:"none"}}
                       value={s0.dmppCostPerKg} onChange={e=>upS0("dmppCostPerKg",e.target.value)}/>
-                    <div style={{fontSize:8,color:"#5a7070",marginTop:2}}>Commercial range: $8–15/kg DMPP (ENTEC, Piadin, Vizura brands).</div>
+                    <div style={{fontSize:8,color:"#5a7070",marginTop:2}}>Commercial range: $8ג€“15/kg DMPP (ENTEC, Piadin, Vizura brands).</div>
                   </div>
                   <div style={{background:s0.dmppEnabled?"#102818":"#0e1a18",borderRadius:6,padding:"8px 10px",border:s0.dmppEnabled?"1px solid #3dcb7a44":"1px solid #2a3030"}}>
                     <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
@@ -4542,21 +4357,21 @@ export default function CFI() {
                     </div>
                     <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
                       <span style={{fontSize:8,color:"#7aa890",fontWeight:700,textTransform:"uppercase"}}>Net Gain/yr</span>
-                      <span style={{fontSize:10,fontWeight:800,color:dmpp_net_annual>=0?"#3dcb7a":"#e84040",fontFamily:"'DM Sans', sans-serif"}}>${s0.dmppEnabled?dmpp_net_annual.toLocaleString():"—"}</span>
+                      <span style={{fontSize:10,fontWeight:800,color:dmpp_net_annual>=0?"#3dcb7a":"#e84040",fontFamily:"'DM Sans', sans-serif"}}>${s0.dmppEnabled?dmpp_net_annual.toLocaleString():"ג€”"}</span>
                     </div>
                     <div style={{display:"flex",justifyContent:"space-between"}}>
                       <span style={{fontSize:8,color:"#7aa890",fontWeight:700,textTransform:"uppercase"}}>ROI</span>
-                      <span style={{fontSize:14,fontWeight:900,color:dmpp_roi>=3?"#3dcb7a":dmpp_roi>=2?"#f0a030":"#e84040",fontFamily:"'DM Sans', sans-serif"}}>{s0.dmppEnabled?dmpp_roi+"x":"—"}</span>
+                      <span style={{fontSize:14,fontWeight:900,color:dmpp_roi>=3?"#3dcb7a":dmpp_roi>=2?"#f0a030":"#e84040",fontFamily:"'DM Sans', sans-serif"}}>{s0.dmppEnabled?dmpp_roi+"x":"ג€”"}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Per-soil DMPP table */}
-                <div style={{fontSize:9,color:"#8de8b4",fontWeight:700,marginBottom:5,textTransform:"uppercase",letterSpacing:"0.06em"}}>N₂O SUPPRESSION EFFICACY — ALL SOILS AT CURRENT FRASS OUTPUT</div>
+                <div style={{fontSize:9,color:"#8de8b4",fontWeight:700,marginBottom:5,textTransform:"uppercase",letterSpacing:"0.06em"}}>Nג‚‚O SUPPRESSION EFFICACY ג€” ALL SOILS AT CURRENT FRASS OUTPUT</div>
                 <table style={{width:"100%",borderCollapse:"collapse",fontSize:9}}>
                   <thead>
                     <tr style={{background:"#0a1f14"}}>
-                      {["Soil Type","Coverage","DMPP Efficacy","N₂O Avoided (t CO₂e/yr)","Credit Value ($/yr)","Key Note"].map((h,i)=>(
+                      {["Soil Type","Coverage","DMPP Efficacy","Nג‚‚O Avoided (t COג‚‚e/yr)","Credit Value ($/yr)","Key Note"].map((h,i)=>(
                         <th key={i} style={{padding:"4px 6px",color:"#8de8b4",fontWeight:700,textAlign:"left",textTransform:"uppercase",fontSize:8}}>{h}</th>
                       ))}
                     </tr>
@@ -4569,12 +4384,12 @@ export default function CFI() {
                       const isActive = soil.id===s0.soil;
                       return (
                         <tr key={i} style={{borderBottom:"1px solid #1a3025",background:isActive?"#1a3a20":"transparent"}}>
-                          <td style={{padding:"4px 6px",color:isActive?"#3dcb7a":"#c8d8f0",fontWeight:isActive?800:400}}>{soil.name}{isActive?" ← active":""}</td>
+                          <td style={{padding:"4px 6px",color:isActive?"#3dcb7a":"#c8d8f0",fontWeight:isActive?800:400}}>{soil.name}{isActive?" ג† active":""}</td>
                           <td style={{padding:"4px 6px",color:"#7aa890",fontFamily:"'DM Sans', sans-serif"}}>{soil.pct}</td>
                           <td style={{padding:"4px 6px",fontFamily:"'DM Sans', sans-serif",fontWeight:700,color:eff>=0.40?"#3dcb7a":eff>=0.30?"#f0a030":"#8898b0"}}>{Math.round(eff*100)}%</td>
                           <td style={{padding:"4px 6px",fontFamily:"'DM Sans', sans-serif",color:"#3dcb7a",fontWeight:700}}>{avoid.toLocaleString()}</td>
                           <td style={{padding:"4px 6px",fontFamily:"'DM Sans', sans-serif",color:"#f0a030",fontWeight:700}}>${rev.toLocaleString()}</td>
-                          <td style={{padding:"4px 6px",color:"#7aa890",fontSize:8}}>{soil.dmppNote||"—"}</td>
+                          <td style={{padding:"4px 6px",color:"#7aa890",fontSize:8}}>{soil.dmppNote||"ג€”"}</td>
                         </tr>
                       );
                     })}
@@ -4584,30 +4399,30 @@ export default function CFI() {
                 {/* Agronomic co-benefit note */}
                 <div style={{marginTop:8,background:"#0e1e14",borderRadius:5,padding:"6px 10px",border:"1px solid #2a4030"}}>
                   <span style={{color:"#f0a030",fontWeight:700,fontSize:9}}>AGRONOMIC CO-BENEFIT: </span>
-                  <span style={{color:"#7aa890",fontSize:9}}>DMPP retains ~{dmpp_n_retained_pct}% additional N in ammonium form on {soilObjCalc.name} — estate N-use efficiency improves, reducing total frass needed to hit same yield response. This is a selling point to Sinar Mas agronomists: lower application rate = lower transport cost to estate. Effective N cost comparison: frass + DMPP vs Urea at $1.50/kg N (Sinar Mas actual).</span>
+                  <span style={{color:"#7aa890",fontSize:9}}>DMPP retains ~{dmpp_n_retained_pct}% additional N in ammonium form on {soilObjCalc.name} ג€” estate N-use efficiency improves, reducing total frass needed to hit same yield response. This is a selling point to Sinar Mas agronomists: lower application rate = lower transport cost to estate. Effective N cost comparison: frass + DMPP vs Urea at $1.50/kg N (Sinar Mas actual).</span>
                 </div>
               </div>
 
-              {/* ── ENGINE HEADER ── */}
+              {/* ג”€ג”€ ENGINE HEADER ג”€ג”€ */}
               <div style={{background:`linear-gradient(135deg,#1a3360,#0f1d35)`,borderBottom:`2px solid ${cc.tealLt}`,
                 padding:"10px 14px",display:"flex",alignItems:"center",borderRadius:"8px 8px 0 0",marginBottom:0}}>
                 <div style={{flex:"0 0 auto",paddingRight:14,borderRight:"1px solid #ffffff18"}}>
                   <div style={{fontSize:15,fontWeight:800,color:cc.white,marginBottom:3}}>Carbon Credits Engine</div>
                   <div style={{display:"grid",gridTemplateColumns:"auto 1fr",gap:"2px 7px",fontSize:9}}>
-                    <span style={{color:"#bbc8de",fontWeight:700}}>Solid Residues:</span><span style={{color:"#c8d8f0"}}>Verra ACM0022 v4.0 · IPCC FOD Vol.5 Ch.2</span>
-                    <span style={{color:"#bbc8de",fontWeight:700}}>POME Sludge:</span><span style={{color:"#c8d8f0"}}>ACM0022 / AMS-III.H · IPCC Biological Treatment Vol.4 Ch.4</span>
-                    <span style={{color:"#bbc8de",fontWeight:700}}>POME Liquid:</span><span style={{color:"#c8d8f0"}}>Verra VM0041 · IPCC COD Vol.5 Ch.6</span>
-                    <span style={{color:"#bbc8de",fontWeight:700}}>Methane Equiv.:</span><span style={{color:"#c8d8f0"}}>AR5 GWP₁₀₀ = 28 · AR6 GWP_N₂O = 273</span>
+                    <span style={{color:"#bbc8de",fontWeight:700}}>Solid Residues:</span><span style={{color:"#c8d8f0"}}>Verra ACM0022 v4.0 ֲ· IPCC FOD Vol.5 Ch.2</span>
+                    <span style={{color:"#bbc8de",fontWeight:700}}>POME Sludge:</span><span style={{color:"#c8d8f0"}}>ACM0022 / AMS-III.H ֲ· IPCC Biological Treatment Vol.4 Ch.4</span>
+                    <span style={{color:"#bbc8de",fontWeight:700}}>POME Liquid:</span><span style={{color:"#c8d8f0"}}>Verra VM0041 ֲ· IPCC COD Vol.5 Ch.6</span>
+                    <span style={{color:"#bbc8de",fontWeight:700}}>Methane Equiv.:</span><span style={{color:"#c8d8f0"}}>AR5 GWPג‚ג‚€ג‚€ = 28 ֲ· AR6 GWP_Nג‚‚O = 273</span>
                   </div>
                 </div>
                 <div style={{flex:"0 0 auto",padding:"0 14px",textAlign:"center"}}>
                   <div style={{fontSize:8,color:"#c8d8f0",fontWeight:600}}>All figures</div>
-                  <div style={{fontSize:14,color:cc.tealLt}}>▶</div>
+                  <div style={{fontSize:14,color:cc.tealLt}}>ג–¶</div>
                   <div style={{fontSize:8,color:"#c8d8f0",fontWeight:600}}>Annual</div>
                 </div>
                 <div style={{flex:1,display:"flex",justifyContent:"flex-end",alignItems:"center",gap:14}}>
                   {[
-                    {lbl:"Credits Earned",  v:Math.round(totalAvoidAnn).toLocaleString(), sub:"tCO₂e",         c:cc.white},
+                    {lbl:"Credits Earned",  v:Math.round(totalAvoidAnn).toLocaleString(), sub:"tCOג‚‚e",         c:cc.white},
                     {lbl:"Offsetting",      v:`$${revOff}M`,  sub:`@ $${ccPriceOff}/t`,   c:cc.tealLt},
                     {lbl:"Insetting",       v:`$${revIns}M`,  sub:`@ $${ccPriceIns}/t`,   c:cc.amberLt},
                   ].map((k,i)=>(
@@ -4620,27 +4435,27 @@ export default function CFI() {
                 </div>
               </div>
 
-              {/* ── Live-data badge ── */}
+              {/* ג”€ג”€ Live-data badge ג”€ג”€ */}
               <div style={{background:"#0e2240",border:"1px solid #1e5080",borderTop:"none",
                 borderRadius:"0 0 0 0",padding:"5px 14px",display:"flex",gap:16,flexWrap:"wrap",marginBottom:0}}>
-                <span style={{fontSize:9,color:"#90c8e8"}}>🔗 <strong>Live S0 data:</strong> {s0.ffbCapacity} TPH · {s0.utilisation}% util · {s0.hrsDay}h/day · {s0.daysMonth} days/mo</span>
-                <span style={{fontSize:9,color:"#90c8e8"}}>EFB {efbFreshMo.toLocaleString()} t/mo · OPDC {opdcFreshMo.toLocaleString()} t/mo · POME Sludge {pomeFreshMo.toLocaleString()} t/mo · POME Liquid {pomeVolMo.toLocaleString()} m³/mo</span>
+                <span style={{fontSize:9,color:"#90c8e8"}}>נ”— <strong>Live S0 data:</strong> {s0.ffbCapacity} TPH ֲ· {s0.utilisation}% util ֲ· {s0.hrsDay}h/day ֲ· {s0.daysMonth} days/mo</span>
+                <span style={{fontSize:9,color:"#90c8e8"}}>EFB {efbFreshMo.toLocaleString()} t/mo ֲ· OPDC {opdcFreshMo.toLocaleString()} t/mo ֲ· POME Sludge {pomeFreshMo.toLocaleString()} t/mo ֲ· POME Liquid {pomeVolMo.toLocaleString()} mֲ³/mo</span>
               </div>
 
-              {/* ── Sub-tabs ── */}
+              {/* ג”€ג”€ Sub-tabs ג”€ג”€ */}
               <div style={{display:"flex",background:"#162848",borderBottom:`1px solid #2a4070`,padding:"0 10px",marginBottom:8}}>
-                {[{id:"calc",l:" Calculator"},{id:"meth",l:"📐 Methodology"},{id:"buy",l:"🎯 Buyers"},{id:"ins",l:"🔗 Insetting"},{id:"nes",l:" Nestlé Case"}].map(t=>(
+                {[{id:"calc",l:" Calculator"},{id:"meth",l:"נ“ Methodology"},{id:"buy",l:"נ¯ Buyers"},{id:"ins",l:"נ”— Insetting"},{id:"nes",l:" Nestlֳ© Case"}].map(t=>(
                   <button key={t.id} style={cs.subTab(ccTab===t.id)} onClick={()=>setCcTab(t.id)}>{t.l}</button>
                 ))}
               </div>
 
-              {/* ══════════════ CALCULATOR TAB ══════════════ */}
+              {/* ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• CALCULATOR TAB ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• */}
               {ccTab==="calc" && (
                 <div>
                   {/* S4 Pathway + KPIs */}
                   <div style={{...cs.card,border:`1px solid ${cc.amberLt}44`,marginBottom:8}}>
                     <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
-                      <span style={{fontSize:10,fontWeight:800,color:cc.amberLt,textTransform:"uppercase"}}>🔗 S4 Process Pathway</span>
+                      <span style={{fontSize:10,fontWeight:800,color:cc.amberLt,textTransform:"uppercase"}}>נ”— S4 Process Pathway</span>
                       <span style={{fontSize:9,color:"#c8d8f0"}}>Sets project treatment EFs for all solid residues (IPCC Vol.4 Ch.4)</span>
                       <div style={{marginLeft:"auto",display:"flex",gap:6,alignItems:"center"}}>
                         <span style={cs.lbl}>Treatment:</span>
@@ -4651,16 +4466,16 @@ export default function CFI() {
                       </div>
                     </div>
                     <div style={{marginTop:5,display:"flex",gap:14,flexWrap:"wrap"}}>
-                      {[{l:"CH₄ EF",v:`${PEF_CC[ccPathway].ch4_per_tVS} kg/t VS`,c:cc.redLt},{l:"N₂O EF",v:`${PEF_CC[ccPathway].n2o_per_tVS} kg/t VS`,c:cc.amberLt},{l:"Ref",v:PEF_CC[ccPathway].ref,c:"#c8d8f0"}].map(k=>(
+                      {[{l:"CHג‚„ EF",v:`${PEF_CC[ccPathway].ch4_per_tVS} kg/t VS`,c:cc.redLt},{l:"Nג‚‚O EF",v:`${PEF_CC[ccPathway].n2o_per_tVS} kg/t VS`,c:cc.amberLt},{l:"Ref",v:PEF_CC[ccPathway].ref,c:"#c8d8f0"}].map(k=>(
                         <div key={k.l} style={{fontSize:9}}><span style={{color:cc.grey,fontWeight:700,marginRight:4}}>{k.l}:</span><span style={{color:k.c,fontWeight:600}}>{k.v}</span></div>
                       ))}
                     </div>
                   </div>
 
                   <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:8}}>
-                    {[{l:"Solid Avoided (ACM0022)",v:Math.round(solidAvoidMo).toLocaleString(),u:"tCO₂e/mo",c:cc.tealLt},
-                      {l:"POME Avoided (VM0041)",v:Math.round(pomeAvoidMo).toLocaleString(),u:"tCO₂e/mo",c:cc.blue},
-                      {l:"Total Annual Credits",v:Math.round(totalAvoidAnn).toLocaleString(),u:"tCO₂e/yr",c:cc.greenLt}].map(k=>(
+                    {[{l:"Solid Avoided (ACM0022)",v:Math.round(solidAvoidMo).toLocaleString(),u:"tCOג‚‚e/mo",c:cc.tealLt},
+                      {l:"POME Avoided (VM0041)",v:Math.round(pomeAvoidMo).toLocaleString(),u:"tCOג‚‚e/mo",c:cc.blue},
+                      {l:"Total Annual Credits",v:Math.round(totalAvoidAnn).toLocaleString(),u:"tCOג‚‚e/yr",c:cc.greenLt}].map(k=>(
                       <div key={k.l} style={{...cs.card,textAlign:"center",marginBottom:0}}>
                         <div style={cs.lbl}>{k.l}</div>
                         <div style={cs.big(k.c)}>{k.v}</div>
@@ -4684,8 +4499,8 @@ export default function CFI() {
                   <div style={cs.card}>
                     <div style={cs.h2()}> Price Scenarios</div>
                     <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
-                      {[{l:"Offsetting $/t CO₂e",val:ccPriceOff,set:setCcPriceOff,min:5,max:150,c:cc.tealLt,note:"Voluntary carbon market — cannot satisfy CSRD Scope 3 targets."},
-                        {l:"Strategic Insetting $/t CO₂e",val:ccPriceIns,set:setCcPriceIns,min:10,max:150,c:cc.amberLt,note:"Supply chain insetting — counts toward CSRD Scope 3, SBTi FLAG, EUDR."}].map(p=>(
+                      {[{l:"Offsetting $/t COג‚‚e",val:ccPriceOff,set:setCcPriceOff,min:5,max:150,c:cc.tealLt,note:"Voluntary carbon market ג€” cannot satisfy CSRD Scope 3 targets."},
+                        {l:"Strategic Insetting $/t COג‚‚e",val:ccPriceIns,set:setCcPriceIns,min:10,max:150,c:cc.amberLt,note:"Supply chain insetting ג€” counts toward CSRD Scope 3, SBTi FLAG, EUDR."}].map(p=>(
                         <div key={p.l}>
                           <label style={cs.lbl}>{p.l}</label>
                           <input type="range" min={p.min} max={p.max} value={p.val} onChange={e=>p.set(+e.target.value)} style={{width:"100%",accentColor:p.c}}/>
@@ -4702,12 +4517,12 @@ export default function CFI() {
 
                   {/* Method A Table */}
                   <div style={cs.card}>
-                    <div style={cs.h2()}> Method A — Solid Residues (ACM0022 / AMS-III.H · IPCC FOD Vol.5 Ch.2)</div>
-                    <div style={{fontSize:9,color:"#c8d8f0",marginBottom:6}}>Baseline: CH₄ = DM × DOC × DOCf × MCF × 0.50 × (16/12) · Project: IPCC Vol.4 Ch.4 EFs · MCF baseline: {MCF_solid_baseline}</div>
+                    <div style={cs.h2()}> Method A ג€” Solid Residues (ACM0022 / AMS-III.H ֲ· IPCC FOD Vol.5 Ch.2)</div>
+                    <div style={{fontSize:9,color:"#c8d8f0",marginBottom:6}}>Baseline: CHג‚„ = DM ֳ— DOC ֳ— DOCf ֳ— MCF ֳ— 0.50 ֳ— (16/12) ֲ· Project: IPCC Vol.4 Ch.4 EFs ֲ· MCF baseline: {MCF_solid_baseline}</div>
                     <div style={{overflowX:"auto"}}>
                       <table style={{width:"100%",borderCollapse:"collapse",fontSize:10}}>
                         <thead><tr style={{borderBottom:"1px solid #2a4070"}}>
-                          {["Stream","Fresh t/mo","MC%","Baseline CO₂e/mo","Project CO₂e/mo","Avoided t/mo"].map(h=><th key={h} style={cs.th}>{h}</th>)}
+                          {["Stream","Fresh t/mo","MC%","Baseline COג‚‚e/mo","Project COג‚‚e/mo","Avoided t/mo"].map(h=><th key={h} style={cs.th}>{h}</th>)}
                         </tr></thead>
                         <tbody>
                           {streams_cc.map(x=>(
@@ -4733,13 +4548,13 @@ export default function CFI() {
 
                   {/* Method B POME */}
                   <div style={cs.cB}>
-                    <div style={cs.h2(cc.blue)}> Method B — POME Liquid (VM0041 · IPCC COD Vol.5 Ch.6)</div>
-                    <div style={{fontSize:9,color:"#b0d0f0",marginBottom:7}}>Liquid effluent to open anaerobic ponds — separate from solid sludge cake. CH₄ = Vol × COD × B₀ × MCF ÷ 1000</div>
+                    <div style={cs.h2(cc.blue)}> Method B ג€” POME Liquid (VM0041 ֲ· IPCC COD Vol.5 Ch.6)</div>
+                    <div style={{fontSize:9,color:"#b0d0f0",marginBottom:7}}>Liquid effluent to open anaerobic ponds ג€” separate from solid sludge cake. CHג‚„ = Vol ֳ— COD ֳ— Bג‚€ ֳ— MCF ֳ· 1000</div>
                     <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-                      {[{l:"Volume",v:`${pomeVolMo.toLocaleString()} m³/mo`},{l:"COD",v:`${C_COD} kg/m³`},{l:"B₀",v:`${C_B0}`},
-                        {l:"Baseline MCF",v:`${MCF_pome_baseline}`},{l:"Baseline CH₄",v:`${ch4_pome_base.toFixed(1)} t/mo`,c:cc.redLt},
-                        {l:"Avoided/mo",v:`${Math.round(pomeAvoidMo).toLocaleString()} tCO₂e`,c:cc.greenLt},
-                        {l:"Avoided/yr",v:`${Math.round(pomeAvoidMo*12).toLocaleString()} tCO₂e`,c:cc.greenLt}].map(k=>(
+                      {[{l:"Volume",v:`${pomeVolMo.toLocaleString()} mֲ³/mo`},{l:"COD",v:`${C_COD} kg/mֲ³`},{l:"Bג‚€",v:`${C_B0}`},
+                        {l:"Baseline MCF",v:`${MCF_pome_baseline}`},{l:"Baseline CHג‚„",v:`${ch4_pome_base.toFixed(1)} t/mo`,c:cc.redLt},
+                        {l:"Avoided/mo",v:`${Math.round(pomeAvoidMo).toLocaleString()} tCOג‚‚e`,c:cc.greenLt},
+                        {l:"Avoided/yr",v:`${Math.round(pomeAvoidMo*12).toLocaleString()} tCOג‚‚e`,c:cc.greenLt}].map(k=>(
                         <div key={k.l} style={{textAlign:"center",background:"#0a1828",borderRadius:5,padding:"5px 9px",border:"1px solid #1e4060"}}>
                           <div style={{...cs.lbl,color:"#90c8e8"}}>{k.l}</div>
                           <div style={{fontFamily:fm.mono,fontWeight:800,color:k.c||"#b0d0f0",fontSize:12}}>{k.v}</div>
@@ -4750,20 +4565,20 @@ export default function CFI() {
 
                   {/* 10-Year Projection */}
                   <div style={{background:"#0e2240",borderRadius:8,padding:11,marginBottom:10,border:"1px solid #1e5080"}}>
-                    <div style={cs.h2(cc.amberLt)}>☰ 10-Year Projection</div>
+                    <div style={cs.h2(cc.amberLt)}>ג˜° 10-Year Projection</div>
                     <div style={{display:"flex",flexDirection:"column",gap:7}}>
                       {[{sc:"Offsetting",price:ccPriceOff,c:cc.tealLt},{sc:"Strategic Insetting",price:ccPriceIns,c:cc.amberLt}].map(x=>{
                         const ann = totalAvoidAnn*x.price;
                         return(
                           <div key={x.sc} style={{borderRadius:6,overflow:"hidden",border:`1px solid ${x.c}33`}}>
-                            <div style={{background:x.c+"22",borderBottom:`1px solid ${x.c}44`,padding:"4px 11px",fontSize:10,fontWeight:800,color:x.c,textTransform:"uppercase"}}>{x.sc} · ${x.price}/t CO₂e</div>
+                            <div style={{background:x.c+"22",borderBottom:`1px solid ${x.c}44`,padding:"4px 11px",fontSize:10,fontWeight:800,color:x.c,textTransform:"uppercase"}}>{x.sc} ֲ· ${x.price}/t COג‚‚e</div>
                             <div style={{display:"flex",alignItems:"center",padding:"8px 14px",gap:24}}>
                               <div><div style={{fontFamily:fm.mono,fontWeight:900,color:x.c,fontSize:18}}>${(ann/1e6).toFixed(2)}M</div><div style={{fontSize:9,color:"#c8d8f0",marginTop:2}}>Per year</div></div>
                               <div style={{width:1,height:28,background:"#ffffff15"}}/>
                               <div><div style={{fontFamily:fm.mono,fontWeight:900,color:x.c,fontSize:18}}>${(ann*10/1e6).toFixed(1)}M</div><div style={{fontSize:9,color:"#c8d8f0",marginTop:2}}>10-year total</div></div>
                               <div style={{marginLeft:"auto",textAlign:"right"}}>
-                                <div style={{fontSize:9,color:"#c8d8f0"}}>{Math.round(totalAvoidAnn).toLocaleString()} tCO₂e/yr</div>
-                                <div style={{fontSize:9,color:"#c8d8f0"}}>× 10 = {Math.round(totalAvoidAnn*10).toLocaleString()} t</div>
+                                <div style={{fontSize:9,color:"#c8d8f0"}}>{Math.round(totalAvoidAnn).toLocaleString()} tCOג‚‚e/yr</div>
+                                <div style={{fontSize:9,color:"#c8d8f0"}}>ֳ— 10 = {Math.round(totalAvoidAnn*10).toLocaleString()} t</div>
                               </div>
                             </div>
                           </div>
@@ -4777,7 +4592,7 @@ export default function CFI() {
                 </div>
               )}
 
-              {/* ══════════════ METHODOLOGY TAB v21 ══════════════ */}
+              {/* ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• METHODOLOGY TAB v21 ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• */}
               {ccTab==="meth" && (
                 <div>
                   <div style={cs.card}>
@@ -4825,7 +4640,7 @@ export default function CFI() {
                            dotS:"CRITICAL: if mesocarp fiber goes to mill boiler = NO methane baseline = NO credits. Only claim if boiler is at capacity and fiber would otherwise be dumped. Lower moisture (40-50%) and better aeration = MCF 0.40.",
                            dotL:"Credits ONLY if: fiber volume > boiler capacity AND photographic disposal evidence provided to VVB.",
                            dotSrc:[{label:"Verra ACM0022",url:"https://verra.org/methodologies/acm0022-alternative-waste-treatment-processes/"}]},
-                          {res:"PKS / Shell",code:"N/A",doc:"—",mcf:"N/A",tco2:"0",when:"Never",
+                          {res:"PKS / Shell",code:"N/A",doc:"ג€”",mcf:"N/A",tco2:"0",when:"Never",
                            color:cc.red,
                            note:"Already fuel/activated carbon. No CH4 pathway.",
                            dotS:"PKS = 10-15% moisture, high recalcitrant lignin. Sold as boiler fuel or activated carbon feedstock. No anaerobic decay pathway = no methane emissions baseline. PKSA (ash) used in CFI as pH buffer at $0 cost (mill waste).",
@@ -4837,7 +4652,7 @@ export default function CFI() {
                            dotS:"Integrated system weighted-average approach. This is CFI primary credit claim. With N2O avoidance = 152,968 tCO2e/yr. At $50-120/t insetting price = $7.6M-$18.4M/yr gross.",
                            dotL:"Wtd DOC = (0.50x0.45)+(0.25x0.43)+(0.20x0.43)+(0.05x0.40) = 0.44\nWtd MCF = (0.50x0.60)+(0.25x0.70)+(0.20x0.55)+(0.05x0.50) = 0.61\n120,000 x 0.44 x 0.50 x 0.61 x 0.50 x (16/12) x 28 = 151,200",
                            dotSrc:[{label:"Verra ACM0022",url:"https://verra.org/methodologies/acm0022-alternative-waste-treatment-processes/"},{label:"IPCC 2019 Refinement Vol.5",url:"https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol5.html"}]},
-                          {res:"Fertiliser Displacement",code:"VM0042",doc:"—",mcf:"—",tco2:"7,008",when:"Phase 2 (Yr 4+)",
+                          {res:"Fertiliser Displacement",code:"VM0042",doc:"ג€”",mcf:"ג€”",tco2:"7,008",when:"Phase 2 (Yr 4+)",
                            color:cc.greenLt,
                            note:"N+P+K displacement from CFI frass. Phase 2 add-on.",
                            dotS:"CFI frass displaces synthetic N/P/K. Manufacturing credits: 2,967 tCO2e. Transport/packaging: 570. Field N2O net: 3,471. Total VM0042 = 7,008 tCO2e/yr. Start Phase 1 with ACM0022 only for simpler VVB approval, add VM0042 once fertiliser market uptake is proven.",
@@ -4865,7 +4680,7 @@ export default function CFI() {
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:11,marginBottom:11}}>
                     <div style={{...cs.card,border:"1px solid "+cc.amberLt+"44"}}>
                       <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:8}}>
-                        <div style={cs.h2(cc.amberLt)}>N2O Avoidance — Process Level</div>
+                        <div style={cs.h2(cc.amberLt)}>N2O Avoidance ג€” Process Level</div>
                         <InfoDot color={cc.amberLt}
                           summary="BSF bioconversion suppresses N2O vs composting. Rapid 12-14 day processing + N assimilation into larvae prevents nitrification/denitrification hotspots."
                           logic={"Direct N2O: 480 t N/yr x 0.01 x (44/28) x 298 = 1,430 tCO2e\nIndirect NH3: 72 t N avoided x 0.01 x (44/28) x 298 = 338 tCO2e\nTotal = 1,768 tCO2e/yr"}
@@ -4882,7 +4697,7 @@ export default function CFI() {
                     </div>
                     <div style={{...cs.card,border:"1px solid "+cc.green+"44"}}>
                       <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:8}}>
-                        <div style={cs.h2(cc.green)}>Fertiliser Displacement — VM0042</div>
+                        <div style={cs.h2(cc.green)}>Fertiliser Displacement ג€” VM0042</div>
                         <InfoDot color={cc.green}
                           summary="CFI frass displaces synthetic NPK. Credits under VM0042 for avoided Haber-Bosch manufacturing, shipping from Middle East/China to Indonesia, and reduced field N2O from slow-release organic N vs synthetic broadcast."
                           logic={"N displaced (0.65 ratio): 2,067 tCO2e\nP displaced (0.85 ratio): 387 tCO2e\nK displaced (0.95 ratio): 513 tCO2e\nTransport: 570 tCO2e\nField N2O net: 3,471 tCO2e\nTOTAL VM0042 = 7,008 tCO2e/yr"}
@@ -4900,7 +4715,7 @@ export default function CFI() {
                   </div>
                   <div style={{...cs.card,background:"linear-gradient(135deg,#0b2a1a,#0b1929)"}}>
                     <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:8}}>
-                      <div style={cs.h2(cc.green)}>Consolidated Credit Summary — Full Value Chain</div>
+                      <div style={cs.h2(cc.green)}>Consolidated Credit Summary ג€” Full Value Chain</div>
                       <InfoDot color={cc.green}
                         summary="Combined ACM0022 + VM0042 = 159,976 tCO2e/yr. Conservative 80% claim = 127,981 for VVB buffer. At insetting price $50-120/t = $6.4M-$15.4M/yr. 10-year NPV conservative = $64M."
                         logic={"ACM0022 = 152,968\nVM0042 = 7,008\nGrand total = 159,976\nConservative 80% = 127,981"}
@@ -4929,12 +4744,12 @@ export default function CFI() {
                 </div>
               )}
 
-              {/* ══════════════ BUYERS TAB ══════════════ */}
+              {/* ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• BUYERS TAB ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• */}
               {ccTab==="buy" && (
                 <div>
                   <div style={cs.card}>
-                    <div style={cs.h2()}>🎯 Carbon Credit Buyer Landscape</div>
-                    <div style={{fontSize:10,color:"#d8e8f8",lineHeight:1.6,marginBottom:8}}>ACM0022/AMS-III.H + VM0041 dual methodology opens every buyer tier. Insetting commands 2–5× market price under mandatory CSRD Scope 3.</div>
+                    <div style={cs.h2()}>נ¯ Carbon Credit Buyer Landscape</div>
+                    <div style={{fontSize:10,color:"#d8e8f8",lineHeight:1.6,marginBottom:8}}>ACM0022/AMS-III.H + VM0041 dual methodology opens every buyer tier. Insetting commands 2ג€“5ֳ— market price under mandatory CSRD Scope 3.</div>
                     <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>{[{t:"PRIMARY",c:cc.tealLt},{t:"STRATEGIC",c:cc.gold},{t:"SECONDARY",c:cc.grey}].map(x=><span key={x.t} style={cs.bdg(x.c)}>{x.t}</span>)}</div>
                   </div>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9}}>
@@ -4948,7 +4763,7 @@ export default function CFI() {
                           </div>
                           <div style={{marginLeft:"auto",textAlign:"right"}}>
                             <div style={{fontFamily:fm.mono,fontWeight:800,color:b.color,fontSize:12}}>{b.price}</div>
-                            <div style={{fontSize:9,color:"#c8d8f0"}}>per tCO₂e</div>
+                            <div style={{fontSize:9,color:"#c8d8f0"}}>per tCOג‚‚e</div>
                           </div>
                         </div>
                         <hr style={{border:"none",borderTop:"1px solid #2a4070",margin:"5px 0"}}/>
@@ -4957,21 +4772,21 @@ export default function CFI() {
                           <span style={{color:cc.grey}}>Advance:</span><span style={{color:cc.amberLt,fontWeight:700}}>{b.advance}</span>
                           <span style={{color:cc.grey}}>Standard:</span><span style={{color:"#d8e8f8"}}>{b.standard}</span>
                         </div>
-                        <div style={{marginTop:5,background:"#0f1d35",borderRadius:4,padding:"4px 7px",fontSize:9,color:cc.tealLt}}>✓ {b.fit}</div>
+                        <div style={{marginTop:5,background:"#0f1d35",borderRadius:4,padding:"4px 7px",fontSize:9,color:cc.tealLt}}>ג“ {b.fit}</div>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
 
-              {/* ══════════════ INSETTING TAB v21 ══════════════ */}
+              {/* ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• INSETTING TAB v21 ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• */}
               {ccTab==="ins" && (
                 <div>
                   {/* What is insetting */}
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:11,marginBottom:11}}>
                     <div style={{...cs.cG,border:"1px solid "+cc.greenLt+"44"}}>
-                      <div style={cs.h2(cc.greenLt)}>INSETTING — Inside Your Value Chain</div>
-                      <div style={{fontSize:10,color:"#e8f0fa",lineHeight:1.7,marginBottom:8}}>Emission reductions inside your own supply chain — fully traceable to your specific footprint. FMCG brands co-finance mill and farm upgrades in exchange for auditable Scope 3 reductions.</div>
+                      <div style={cs.h2(cc.greenLt)}>INSETTING ג€” Inside Your Value Chain</div>
+                      <div style={{fontSize:10,color:"#e8f0fa",lineHeight:1.7,marginBottom:8}}>Emission reductions inside your own supply chain ג€” fully traceable to your specific footprint. FMCG brands co-finance mill and farm upgrades in exchange for auditable Scope 3 reductions.</div>
                       <div style={{fontSize:9,display:"grid",gridTemplateColumns:"auto 1fr",gap:"4px 8px"}}>
                         <span style={{color:cc.greenLt,fontWeight:700}}>CSRD/ESRS E1:</span><span style={{color:"#d8e8f8"}}>Counts toward Scope 3 Cat.1. Paras 56-58.</span>
                         <span style={{color:cc.greenLt,fontWeight:700}}>SBTi FLAG:</span><span style={{color:"#d8e8f8"}}>Counts toward 90% reduction goal. Palm = FLAG.</span>
@@ -4983,12 +4798,12 @@ export default function CFI() {
                       </div>
                     </div>
                     <div style={{...cs.card,border:"1px solid "+cc.red+"33"}}>
-                      <div style={cs.h2(cc.grey)}>OFFSETTING — Outside Value Chain</div>
+                      <div style={cs.h2(cc.grey)}>OFFSETTING ג€” Outside Value Chain</div>
                       <div style={{fontSize:10,color:"#e8f0fa",lineHeight:1.7,marginBottom:8}}>Credits purchased from unrelated projects. No link to how products are actually made.</div>
                       <div style={{fontSize:9,display:"grid",gridTemplateColumns:"auto 1fr",gap:"4px 8px"}}>
                         <span style={{color:cc.red,fontWeight:700}}>CSRD:</span><span style={{color:"#d8e8f8"}}>Cannot count toward Scope 3 targets.</span>
                         <span style={{color:cc.red,fontWeight:700}}>EU Green Claims:</span><span style={{color:"#d8e8f8"}}>"Carbon neutral" offset claims banned EU 2026.</span>
-                        <span style={{color:cc.red,fontWeight:700}}>SBTi:</span><span style={{color:"#d8e8f8"}}>10% residual cap only — last resort.</span>
+                        <span style={{color:cc.red,fontWeight:700}}>SBTi:</span><span style={{color:"#d8e8f8"}}>10% residual cap only ג€” last resort.</span>
                       </div>
                       <div style={{marginTop:8,padding:"6px 9px",background:"#0f1d35",borderRadius:5,fontSize:9,color:cc.amberLt}}>Price: $10-30/t. Greenwashing scrutiny rising. CSRD phase-in 2024-2028 makes this increasingly worthless for Scope 3 compliance.</div>
                     </div>
@@ -4997,7 +4812,7 @@ export default function CFI() {
                   {/* Scope 3 anatomy */}
                   <div style={cs.cD}>
                     <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:9}}>
-                      <div style={cs.h2(cc.gold)}>Why FMCG Companies Need Insetting — Scope 3 Anatomy</div>
+                      <div style={cs.h2(cc.gold)}>Why FMCG Companies Need Insetting ג€” Scope 3 Anatomy</div>
                       <InfoDot color={cc.gold}
                         summary="Food and beverage companies have 90-99% of their GHG footprint in Scope 3, mostly Category 1 Purchased Goods (fertiliser, feed, ingredients including palm oil). Regulations like CSRD/ESRS E1 make Scope 3 reporting mandatory and push insetting as the preferred route."
                         logic={"Scope 3 Cat.1 = upstream purchased goods\nPalm oil processing = major emission source\nInsetting at mill level directly reduces Cat.1\nRequired by CSRD from 2027-2028 reporting years"}
@@ -5006,9 +4821,9 @@ export default function CFI() {
                     </div>
                     <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:9}}>
                       {[
-                        {icon:"",t:"Scope 3 Cat.1",b:"Purchased goods & services — palm oil processing = direct hit. CFI reduces this at source."},
+                        {icon:"",t:"Scope 3 Cat.1",b:"Purchased goods & services ג€” palm oil processing = direct hit. CFI reduces this at source."},
                         {icon:"",t:"CSRD/ESRS 2027",b:"Mandatory audited Scope 3 reporting. Brands need farm-level primary data not secondary averages."},
-                        {icon:"🎯",t:"SBTi FLAG",b:"Forest, Land & Agriculture targets. Palm buyers must set and hit FLAG. Insetting counts toward 90% reduction."},
+                        {icon:"נ¯",t:"SBTi FLAG",b:"Forest, Land & Agriculture targets. Palm buyers must set and hit FLAG. Insetting counts toward 90% reduction."},
                         {icon:"",t:"EUDR 2025",b:"Deforestation-free proof required for EU market access. CFI MRV produces geolocation traceability data."},
                       ].map(function(x){
                         return React.createElement("div",{key:x.t,style:{background:"#1a3360",borderRadius:6,padding:"9px 11px",border:"1px solid "+cc.gold+"22"}},
@@ -5023,7 +4838,7 @@ export default function CFI() {
                   {/* Company emissions table */}
                   <div style={cs.card}>
                     <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:9}}>
-                      <div style={cs.h2()}>Major Palm Buyers — Scope 3 Emissions and CFI Opportunity</div>
+                      <div style={cs.h2()}>Major Palm Buyers ג€” Scope 3 Emissions and CFI Opportunity</div>
                       <InfoDot color={cc.tealLt}
                         summary="Top 7 FMCG palm buyers = 2.0M tCO2e from Indonesian palm alone. All have SBTi or net-zero commitments with FLAG targets. Combined sustainability budgets exceed $6.75B. Insetting = the mechanism that turns these budgets into CFI co-investment."
                         logic={"Emissions = Indonesian volume x 2.20 tCO2e/t\n(2024 LCA baseline for Indonesian refined palm)\nCFI opp = Indonesian emissions x insetting fit %"}
@@ -5111,11 +4926,11 @@ export default function CFI() {
 
                   {/* CFI insetting pitch */}
                   <div style={{...cs.card,background:"linear-gradient(135deg,#0b1a2e,#0b2a1a)"}}>
-                    <div style={cs.h2(cc.greenLt)}>CFI as FMCG Insetting Vehicle — The Offer</div>
+                    <div style={cs.h2(cc.greenLt)}>CFI as FMCG Insetting Vehicle ג€” The Offer</div>
                     <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:9}}>
                       {[
                         {t:"What CFI Delivers",icon:"",pts:["152,968 tCO2e/yr avoided (ACM0022 verified)","Farm-level MRV data for CSRD Cat.1","EUDR-compatible traceability chain","Synthetic NPK reduction on estate land"]},
-                        {t:"What FMCG Brand Gets",icon:"🎯",pts:["Scope 3 Cat.1 reduction — counts toward 90%","CSRD/ESRS E1 para 56-58 compliant","SBTi FLAG-eligible credits","Supply chain resilience + co-benefits"]},
+                        {t:"What FMCG Brand Gets",icon:"נ¯",pts:["Scope 3 Cat.1 reduction ג€” counts toward 90%","CSRD/ESRS E1 para 56-58 compliant","SBTi FLAG-eligible credits","Supply chain resilience + co-benefits"]},
                         {t:"Deal Structure",icon:"",pts:["Price: $50-120/tCO2e insetting premium","ERPA advance purchase = working capital","Co-investment: $400K-1M/yr (Nestle model)","10-yr commitment = $5-11M total"]},
                       ].map(function(x){
                         return React.createElement("div",{key:x.t,style:{background:"#1a3360",borderRadius:6,padding:"10px 12px"}},
@@ -5125,7 +4940,7 @@ export default function CFI() {
                           ),
                           React.createElement("div",null, x.pts.map(function(p){
                             return React.createElement("div",{key:p,style:{display:"flex",gap:5,marginBottom:4,fontSize:9,color:"#d8e8f8"}},
-                              React.createElement("span",{style:{color:cc.greenLt,marginTop:1}},"✓"),
+                              React.createElement("span",{style:{color:cc.greenLt,marginTop:1}},"ג“"),
                               React.createElement("span",null,p)
                             );
                           }))
@@ -5136,12 +4951,12 @@ export default function CFI() {
                 </div>
               )}
 
-              {/* ══════════════ NESTLÉ TAB v21 ══════════════ */}
+              {/* ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• NESTLֳ‰ TAB v21 ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• */}
               {ccTab==="nes" && (
                 <div>
                   <div style={cs.cD}>
                     <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:9}}>
-                      <div style={cs.h2(cc.gold)}>Nestle — The Arbitrage Logic</div>
+                      <div style={cs.h2(cc.gold)}>Nestle ג€” The Arbitrage Logic</div>
                       <InfoDot color={cc.gold}
                         summary="Nestle buys 459,000 t palm/yr globally, 160,000 t from Indonesia. Scope 3 = 352,000 tCO2e Indonesian palm. Internal shadow carbon price $75-100/t. CFI insetting at $50-120/t sits BELOW Nestle's internal value = pure NPV for procurement team."
                         logic={"Nestle internal value: $75-100/t shadow carbon\nCFI ask: $50-120/t insetting\nArbitrage: $25-50/t savings vs internal cost\nCFI annual credits: 127,981 tCO2e (conservative)\nNestle annual revenue from credits: $6.4M-$15.4M"}
@@ -5158,7 +4973,7 @@ export default function CFI() {
                       })}
                     </div>
                     <div style={{background:"#0f1d35",borderRadius:7,padding:9,marginBottom:9}}>
-                      {[["Scope 3 — Supply Chain",95.5,cc.red],["Scope 1 — Direct Ops",2.8,cc.amberLt],["Scope 2 — Energy",1.7,"#bbc8de"]].map(function(arr){
+                      {[["Scope 3 ג€” Supply Chain",95.5,cc.red],["Scope 1 ג€” Direct Ops",2.8,cc.amberLt],["Scope 2 ג€” Energy",1.7,"#bbc8de"]].map(function(arr){
                         var l=arr[0],p=arr[1],c=arr[2];
                         return React.createElement("div",{key:l,style:{marginBottom:6}},
                           React.createElement("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:2}},
@@ -5171,7 +4986,7 @@ export default function CFI() {
                         );
                       })}
                       <div style={{fontSize:9,color:"#c8d8f0",fontStyle:"italic",marginTop:5}}>
-                        {React.createElement("strong",{style:{color:cc.tealLt}},"CFI insetting at $50-120/t sits below Nestle's $75-100/t internal shadow price — a financial NPV argument, not just ESG.")}
+                        {React.createElement("strong",{style:{color:cc.tealLt}},"CFI insetting at $50-120/t sits below Nestle's $75-100/t internal shadow price ג€” a financial NPV argument, not just ESG.")}
                       </div>
                     </div>
                     <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9}}>
@@ -5189,7 +5004,7 @@ export default function CFI() {
                   </div>
                   <div style={cs.card}>
                     <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:9}}>
-                      <div style={cs.h2()}>Major Palm Buyers — Scope 3 Exposure</div>
+                      <div style={cs.h2()}>Major Palm Buyers ג€” Scope 3 Exposure</div>
                       <InfoDot color={cc.tealLt}
                         summary="Top FMCG palm buyers combined = 2.0M tCO2e from Indonesian palm. All committed to SBTi or net-zero. Combined sustainability budgets exceed $6.75B. CFI insetting = Scope 3 Cat.1 reduction for Category 1 Purchased Goods."
                         logic={"Scope 3 = Indonesian volume x 2.20 tCO2e/t\nCFI opportunity = supplying mill with insetting credits\nInsetting price $50-120/t vs $10-30/t voluntary market"}
@@ -5226,17 +5041,17 @@ export default function CFI() {
           );
         })()}
 
-        {/* ════════════════════ S U M M A R Y ════════════════════ */}
+        {/* ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• S U M M A R Y ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• */}
         {stage===9 && (
            <div>
             <CFI_SoilAcidity_ProfileCard />
             <div style={S.card}>
-              <SectionHdr icon="" title="CFI PROJECT SUMMARY — ALL STAGES" color={C.teal}/>
+              <SectionHdr icon="" title="CFI PROJECT SUMMARY ג€” ALL STAGES" color={C.teal}/>
               <div style={{display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:12, marginBottom:16}}>
                 <KPI label="Mill Capacity" value={s0.ffbCapacity+" TPH"} unit={`${s0.utilisation}% utilisation`} color={C.teal}/>
                 <KPI label="Monthly FFB" value={monthFFB.toLocaleString()+" t"} unit="/month"/>
                 <KPI label="EFB Monthly" value={efbMonthWet.toLocaleString()+" t"} unit="wet/month" color={C.amber}/>
-                <KPI label="Blended Substrate" value={s1_blendWet.toLocaleString()+" t"} unit="FW/month → S3" color={C.green}/>
+                <KPI label="Blended Substrate" value={s1_blendWet.toLocaleString()+" t"} unit="FW/month ג†’ S3" color={C.green}/>
                 <KPI label="Monthly Bio Cost" value={"$"+s3_monthlyCost.toLocaleString()} unit="/month (biologicals)" color={C.amber}/>
                 <KPI label="Monthly Revenue" value={"$"+rev_total.toLocaleString()} unit="/month (all products)" color={C.green}/>
                 <KPI label="Annual Revenue" value={"$"+rev_annual.toLocaleString()} unit="/year" color={C.green}/>
@@ -5249,11 +5064,11 @@ export default function CFI() {
                   {stage:"S0",label:"Site Inputs",  status: s0.plantName ? " Complete" : " Pending", color: s0.plantName ? C.green : C.amber},
                   {stage:"S1",label:"Pre-Processing",status:" Complete", color:C.green},
                   {stage:"S2",label:"Chemical",      status: s2.pksa ? " PKSA Active" : " No PKSA", color: s2.pksa ? C.green : C.amber},
-                  {stage:"S3",label:"Biologicals",   status: allPass ? " BSF Approved" : "⏳ Monitoring", color: allPass ? C.green : C.teal},
-                  {stage:"S4",label:"BSF Rearing",    status: ` Day ${gd} · ${larvYieldPct}% yield`, color:C.teal},
-                  {stage:"S5",label:s4.pathwayS5==="s5a"?"Extract Path":"Terminate Path", status: ` ${s4.pathwayS5.toUpperCase()} · $${s4.pathwayS5==="s5a"?s5a_NPKval:s5b_NPKval}/t FW`, color:C.green},
+                  {stage:"S3",label:"Biologicals",   status: allPass ? " BSF Approved" : "ג³ Monitoring", color: allPass ? C.green : C.teal},
+                  {stage:"S4",label:"BSF Rearing",    status: ` Day ${gd} ֲ· ${larvYieldPct}% yield`, color:C.teal},
+                  {stage:"S5",label:s4.pathwayS5==="s5a"?"Extract Path":"Terminate Path", status: ` ${s4.pathwayS5.toUpperCase()} ֲ· $${s4.pathwayS5==="s5a"?s5a_NPKval:s5b_NPKval}/t FW`, color:C.green},
                   {stage:"S6",label:"Valuation",      status: ` $${rev_total.toLocaleString()}/month`, color:C.green},
-                  {stage:"CO₂",label:"Carbon Credits", status: ` $${carbon_rev_annual.toLocaleString()}/yr`, color:C.amber},
+                  {stage:"COג‚‚",label:"Carbon Credits", status: ` $${carbon_rev_annual.toLocaleString()}/yr`, color:C.amber},
                 ].map(s=>(
                   <div key={s.stage} style={{background:C.inputSectionBg, borderRadius:8, padding:"14px",
                                               border:`1px solid ${s.color}33`, textAlign:"center"}}>
@@ -5266,15 +5081,15 @@ export default function CFI() {
               <hr style={S.divider}/>
               <div style={{fontSize:12, color:C.greyLt, lineHeight:2.0}}>
                 <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0 20px"}}>
-                  <div><span style={{color:C.teal}}>Plantation:</span> {s0.plantName || "—"} | <span style={{color:C.teal}}>Mill:</span> {s0.millName || "—"}</div>
+                  <div><span style={{color:C.teal}}>Plantation:</span> {s0.plantName || "ג€”"} | <span style={{color:C.teal}}>Mill:</span> {s0.millName || "ג€”"}</div>
                   <div><span style={{color:C.teal}}>Soil:</span> {SOILS.find(s=>s.id===s0.soil)?.name} | <span style={{color:C.teal}}>AG:</span> {AG_TIERS.find(a=>a.id===s0.ag)?.name}</div>
-                  <div><span style={{color:C.amber}}>Blend:</span> EFB {pctEFB}% + OPDC {pctOPDC}% (DM basis, natural yield) | MC {blendMC}% | C:N {blendCN||"—"}
+                  <div><span style={{color:C.amber}}>Blend:</span> EFB {pctEFB}% + OPDC {pctOPDC}% (DM basis, natural yield) | MC {blendMC}% | C:N {blendCN||"ג€”"}
                     {pomeActive && <span style={{color:C.blue}}> + POME Sludge {pomeSludgeInclTPD} t/day ({pomeSludgeInclPct}% WW, Fe: {pomeSludgeFeStatus})</span>}
                     {s0.pkeEnabled && <span style={{color:C.amber}}> + PKE {s0.pkeTPD} t/day</span>}
                   </div>
-                  <div><span style={{color:C.amber}}>PKSA:</span> {s2.pksa ? `${s2.pksaDose} kg/t FW — ~${pksa_ligninRed}% lignin reduction` : "Not active"}</div>
-                  <div><span style={{color:C.green}}>Biologicals:</span> One-Shot $0.65/t · Monthly ${s3_monthlyCost.toLocaleString()}</div>
-                  <div><span style={{color:C.green}}>BSF Gate:</span> {allPass ? "All 6 pass — TRANSFER APPROVED" : "Awaiting measurements"}</div>
+                  <div><span style={{color:C.amber}}>PKSA:</span> {s2.pksa ? `${s2.pksaDose} kg/t FW ג€” ~${pksa_ligninRed}% lignin reduction` : "Not active"}</div>
+                  <div><span style={{color:C.green}}>Biologicals:</span> One-Shot $0.65/t ֲ· Monthly ${s3_monthlyCost.toLocaleString()}</div>
+                  <div><span style={{color:C.green}}>BSF Gate:</span> {allPass ? "All 6 pass ג€” TRANSFER APPROVED" : "Awaiting measurements"}</div>
                   <div><span style={{color:C.red}}>RSPO:</span> {s0.rspo==="none"?"Not certified":`Status: ${s0.rspo}`}</div>
                   <div><span style={{color:C.red}}>Safety:</span> Bt ICBB 6095 {s3.bt_confirmed_absent?"confirmed absent ":" not confirmed"} | NaOH {s2.naoh?" ACTIVE":"safe"}</div>
                 </div>
@@ -5288,7 +5103,7 @@ export default function CFI() {
         )}
       </div>
 
-      {/* ── VISITOR GATE MODAL ── */}
+      {/* ג”€ג”€ VISITOR GATE MODAL ג”€ג”€ */}
       {showGate && (
         <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.75)",
           display:"flex",alignItems:"center",justifyContent:"center",zIndex:9999}}>
@@ -5334,9 +5149,9 @@ export default function CFI() {
         </div>
       )}
 
-      {/* ── FOOTER ── */}
+      {/* ג”€ג”€ FOOTER ג”€ג”€ */}
       <div style={{textAlign:"center", color:C.grey, fontSize:10, marginTop:20, borderTop:`1px solid ${C.inputSectionBg}`, paddingTop:12}}>
-        CFI Bioconversion System · S0→S6 + Carbon Credits · All 31 Chemicals · All 40 Organisms · Bt NOW ALLOWED (timing-critical) · IPCC FOD + COD Carbon Model · Nutrient Ledger S0→S6 · Orchestration Layer · Core: EFB OPDC POS · Additives: PKE PMF fronds CPO · Supabase LIVE · v26 — FIX-01→11 applied · NPK LOCKED: EFB N=0.85% P=0.30% K=2.0%; OPDC N=2.60% P=0.45% K=1.80%; PKE N=2.88% (feed ÷6.25); all high-yield estate sources
+        CFI Bioconversion System ֲ· S0ג†’S6 + Carbon Credits ֲ· All 31 Chemicals ֲ· All 40 Organisms ֲ· Bt NOW ALLOWED (timing-critical) ֲ· IPCC FOD + COD Carbon Model ֲ· Nutrient Ledger S0ג†’S6 ֲ· Orchestration Layer ֲ· Core: EFB OPDC POS ֲ· Additives: PKE PMF fronds CPO ֲ· Supabase LIVE ֲ· v26 ג€” FIX-01ג†’11 applied ֲ· NPK LOCKED: EFB N=0.85% P=0.30% K=2.0%; OPDC N=2.60% P=0.45% K=1.80%; PKE N=2.88% (feed ֳ·6.25); all high-yield estate sources
       </div>
     </div>
   );
