@@ -563,7 +563,7 @@ const MODULE_DETAIL = {
 // PROCESS ENGINEERING — full-width table, always shows all 8 residue streams
 // ─────────────────────────────────────────────────────────────────────────────
 
-const PE_COLS = '200px 1fr 80px 1fr 1fr 190px';
+const PE_COLS = '196px 200px 68px 200px 1fr 176px';
 
 const PE_DEFS = [
   {
@@ -671,143 +671,144 @@ const PE_DEFS = [
 function PERow({ def, active }) {
   return (
     <div style={{
-      display: 'grid',
-      gridTemplateColumns: PE_COLS,
-      gap: 0,
-      padding: '18px 16px',
-      borderBottom: '1px solid rgba(255,255,255,0.04)',
-      alignItems: 'center',
-      background: active ? 'rgba(64,215,197,0.025)' : 'transparent',
-      opacity: active ? 1 : 0.45,
-      transition: 'opacity 0.15s',
+      borderBottom: '1px solid rgba(255,255,255,0.05)',
+      background: active ? 'rgba(64,215,197,0.022)' : 'transparent',
+      opacity: active ? 1 : 0.42,
+      transition: 'opacity 0.2s',
     }}>
 
-      {/* ── Col 1: Residue name ── */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 5, paddingRight: 16 }}>
-        <div style={{ fontFamily: Fnt.mono, fontWeight: 800, fontSize: 15, color: active ? def.accent : '#8BA0B4', letterSpacing: '0.02em' }}>
-          {def.code}
-        </div>
-        <div style={{ fontFamily: Fnt.dm, fontWeight: 700, fontSize: 12, color: active ? 'rgba(232,240,254,0.90)' : 'rgba(176,190,197,0.70)', lineHeight: 1.4 }}>
-          {def.name}
-        </div>
-        <div style={{
-          display: 'inline-flex', alignItems: 'center',
-          padding: '2px 8px', borderRadius: 20, width: 'fit-content',
-          background: active ? def.accentDim : 'rgba(139,160,180,0.07)',
-          border: `1px solid ${active ? def.accentBdr : 'rgba(139,160,180,0.20)'}`,
-        }}>
-          <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 9, color: active ? def.accent : '#8BA0B4', whiteSpace: 'nowrap' }}>
-            {active ? 'Active ✓' : 'Inactive — Toggle in S0'}
+      {/* ── Main grid row ── */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: PE_COLS,
+        gap: 0,
+        padding: '14px 16px 10px',
+        alignItems: 'start',
+      }}>
+
+        {/* Col 1: Residue identity */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 4, paddingRight: 14 }}>
+          <span style={{ fontFamily: Fnt.mono, fontWeight: 800, fontSize: 14, color: active ? def.accent : '#8BA0B4', letterSpacing: '0.03em', lineHeight: 1 }}>
+            {def.code}
+          </span>
+          <span style={{ fontFamily: Fnt.dm, fontWeight: 600, fontSize: 11, color: active ? 'rgba(232,240,254,0.82)' : 'rgba(176,190,197,0.55)', lineHeight: 1.35 }}>
+            {def.name}
+          </span>
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', marginTop: 2,
+            padding: '2px 7px', borderRadius: 20, width: 'fit-content',
+            background: active ? def.accentDim : 'rgba(139,160,180,0.06)',
+            border: `1px solid ${active ? def.accentBdr : 'rgba(139,160,180,0.18)'}`,
+          }}>
+            <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 9, color: active ? def.accent : '#8BA0B4', whiteSpace: 'nowrap' }}>
+              {active ? '● Active' : '○ Inactive'}
+            </span>
+          </div>
+          <span style={{ fontFamily: Fnt.mono, fontSize: 9, color: active ? 'rgba(168,189,208,0.60)' : 'rgba(168,189,208,0.30)', marginTop: 2 }}>
+            {def.cost}
           </span>
         </div>
-        <div style={{ fontFamily: Fnt.mono, fontSize: 10, color: active ? 'rgba(168,189,208,0.80)' : 'rgba(168,189,208,0.40)' }}>
-          {def.cost}
+
+        {/* Col 2: S0 FW — stacked */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 3, paddingRight: 10 }}>
+          <span style={{ fontFamily: Fnt.mono, fontWeight: 800, fontSize: 18, color: active ? '#F5A623' : '#8BA0B4', lineHeight: 1 }}>
+            {def.fw.val}
+          </span>
+          <span style={{ fontFamily: Fnt.dm, fontSize: 11, color: active ? 'rgba(168,189,208,0.80)' : 'rgba(168,189,208,0.38)' }}>
+            {def.fw.unit}
+          </span>
+          <span style={{ fontFamily: Fnt.mono, fontSize: 10, color: active ? 'rgba(168,189,208,0.58)' : 'rgba(168,189,208,0.28)', lineHeight: 1.5 }}>
+            {def.fw.mc}
+          </span>
+          <span style={{ fontFamily: Fnt.mono, fontWeight: 600, fontSize: 10, color: active ? 'rgba(245,166,35,0.68)' : 'rgba(168,189,208,0.24)' }}>
+            {def.fw.dm}
+          </span>
         </div>
-      </div>
 
-      {/* ── Col 2: S0 FW input — all on one no-wrap row ── */}
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, flexWrap: 'nowrap', paddingRight: 8 }}>
-        <span style={{ fontFamily: Fnt.mono, fontWeight: 800, fontSize: 14, color: active ? '#F5A623' : '#8BA0B4', whiteSpace: 'nowrap', lineHeight: 1 }}>
-          {def.fw.val}
-        </span>
-        <span style={{ fontFamily: Fnt.dm, fontSize: 12, color: active ? 'rgba(168,189,208,0.90)' : 'rgba(168,189,208,0.45)', whiteSpace: 'nowrap' }}>
-          {def.fw.unit}
-        </span>
-        <span style={{ fontFamily: Fnt.mono, fontSize: 11, color: active ? 'rgba(168,189,208,0.75)' : 'rgba(168,189,208,0.35)', whiteSpace: 'nowrap' }}>
-          · {def.fw.mc}
-        </span>
-        <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 11, color: active ? 'rgba(245,166,35,0.75)' : 'rgba(168,189,208,0.30)', whiteSpace: 'nowrap' }}>
-          · {def.fw.dm}
-        </span>
-      </div>
-
-      {/* ── Col 3: Circle arrow ── */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{
-          width: 62, height: 62, borderRadius: '50%',
-          border: `3px solid ${active ? 'rgba(64,215,197,0.55)' : 'rgba(139,160,180,0.25)'}`,
-          background: active ? 'rgba(64,215,197,0.07)' : 'rgba(139,160,180,0.04)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-        }}>
-          <span style={{
-            fontFamily: Fnt.mono, fontWeight: 900, fontSize: 26, lineHeight: 1,
-            color: active ? '#40D7C5' : 'rgba(139,160,180,0.45)', userSelect: 'none',
-          }}>→</span>
+        {/* Col 3: Circle arrow */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 2 }}>
+          <div style={{
+            width: 52, height: 52, borderRadius: '50%', flexShrink: 0,
+            border: `3px solid ${active ? 'rgba(64,215,197,0.50)' : 'rgba(139,160,180,0.20)'}`,
+            background: active ? 'rgba(64,215,197,0.07)' : 'rgba(139,160,180,0.03)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <span style={{ fontFamily: Fnt.mono, fontWeight: 900, fontSize: 22, lineHeight: 1, color: active ? '#40D7C5' : 'rgba(139,160,180,0.38)', userSelect: 'none' }}>→</span>
+          </div>
         </div>
-      </div>
 
-      {/* ── Col 4: S1 DM exit — all on one no-wrap row ── */}
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, flexWrap: 'nowrap', paddingLeft: 8 }}>
-        <span style={{ fontFamily: Fnt.mono, fontWeight: 800, fontSize: 14, color: active ? '#40D7C5' : '#8BA0B4', whiteSpace: 'nowrap', lineHeight: 1 }}>
-          {def.s1.val}
-        </span>
-        <span style={{ fontFamily: Fnt.dm, fontSize: 12, color: active ? 'rgba(168,189,208,0.90)' : 'rgba(168,189,208,0.45)', whiteSpace: 'nowrap' }}>
-          {def.s1.unit}
-        </span>
-        <span style={{ fontFamily: Fnt.mono, fontSize: 11, color: def.s1.mcRed && active ? '#E84040' : (active ? 'rgba(168,189,208,0.75)' : 'rgba(168,189,208,0.35)'), whiteSpace: 'nowrap' }}>
-          · {def.s1.mc}
-        </span>
-        <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 11, color: active ? 'rgba(64,215,197,0.75)' : 'rgba(168,189,208,0.30)', whiteSpace: 'nowrap' }}>
-          · {def.s1.dm}
-        </span>
-      </div>
+        {/* Col 4: S1 DM — stacked mirror of col 2 */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 3, paddingLeft: 10 }}>
+          <span style={{ fontFamily: Fnt.mono, fontWeight: 800, fontSize: 18, color: active ? '#40D7C5' : '#8BA0B4', lineHeight: 1 }}>
+            {def.s1.val}
+          </span>
+          <span style={{ fontFamily: Fnt.dm, fontSize: 11, color: active ? 'rgba(168,189,208,0.80)' : 'rgba(168,189,208,0.38)' }}>
+            {def.s1.unit}
+          </span>
+          <span style={{ fontFamily: Fnt.mono, fontSize: 10, color: def.s1.mcRed && active ? '#E84040' : (active ? 'rgba(168,189,208,0.58)' : 'rgba(168,189,208,0.28)'), lineHeight: 1.5 }}>
+            {def.s1.mc}
+          </span>
+          <span style={{ fontFamily: Fnt.mono, fontWeight: 600, fontSize: 10, color: active ? 'rgba(64,215,197,0.68)' : 'rgba(168,189,208,0.24)' }}>
+            {def.s1.dm}
+          </span>
+        </div>
 
-      {/* ── Col 5: Mechanical process ── */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: '4px 16px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'nowrap', overflowX: 'auto' }}>
+        {/* Col 5: Equipment chips — wrapping grid, no overflow */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignContent: 'flex-start', gap: 6, padding: '0 10px' }}>
           {def.equipment.map((eq, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <div style={{
-                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
-                background: C.navyDeep,
-                border: `1px solid ${eq.amber ? 'rgba(245,166,35,0.40)' : eq.green ? 'rgba(0,162,73,0.40)' : 'rgba(139,160,180,0.22)'}`,
-                borderRadius: 8, padding: '12px 18px', minWidth: 90, flexShrink: 0,
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
+                background: 'rgba(8,20,38,0.65)',
+                border: `1px solid ${eq.amber ? 'rgba(245,166,35,0.32)' : eq.green ? 'rgba(0,162,73,0.32)' : 'rgba(139,160,180,0.17)'}`,
+                borderRadius: 6, padding: '7px 12px', minWidth: 74,
               }}>
-                <span style={{ fontSize: 18, lineHeight: 1 }}>{eq.icon}</span>
                 <span style={{
-                  fontFamily: Fnt.mono, fontWeight: 700, fontSize: 12,
+                  fontFamily: Fnt.mono, fontWeight: 700, fontSize: 11,
                   color: eq.amber ? '#F5A623' : eq.green ? '#00A249' : '#40D7C5',
                   whiteSpace: 'nowrap',
                 }}>{eq.name}</span>
                 <span style={{
-                  fontFamily: Fnt.dm, fontSize: 11,
-                  color: eq.amber ? 'rgba(245,166,35,0.75)' : eq.green ? 'rgba(0,162,73,0.75)' : 'rgba(168,189,208,0.70)',
+                  fontFamily: Fnt.dm, fontSize: 10,
+                  color: eq.amber ? 'rgba(245,166,35,0.65)' : eq.green ? 'rgba(0,162,73,0.65)' : 'rgba(168,189,208,0.58)',
                   whiteSpace: 'nowrap',
                 }}>{eq.spec}</span>
               </div>
               {i < def.equipment.length - 1 && (
-                <span style={{ fontFamily: Fnt.mono, fontWeight: 900, fontSize: 18, color: 'rgba(64,215,197,0.45)', flexShrink: 0 }}>→</span>
+                <span style={{ fontFamily: Fnt.mono, fontWeight: 900, fontSize: 13, color: 'rgba(64,215,197,0.32)', lineHeight: 1, flexShrink: 0 }}>→</span>
               )}
             </div>
           ))}
         </div>
-        <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: active ? 'rgba(168,189,208,0.80)' : 'rgba(168,189,208,0.35)', lineHeight: 1.6, paddingLeft: 2 }}>
-          {def.procNote}
+
+        {/* Col 6: Particle Size Out */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
+          <div style={{
+            background: 'rgba(8,20,38,0.65)',
+            border: `1.5px solid ${def.ps.ok && active ? def.ps.accentPs + '44' : 'rgba(139,160,180,0.17)'}`,
+            borderRadius: 7, padding: '10px 14px', textAlign: 'center', width: '100%',
+          }}>
+            <div style={{ fontFamily: Fnt.mono, fontWeight: 800, fontSize: 16, color: def.ps.ok && active ? def.ps.accentPs : '#8BA0B4', lineHeight: 1 }}>
+              {def.ps.val}
+            </div>
+            <div style={{ fontFamily: Fnt.mono, fontSize: 10, color: 'rgba(168,189,208,0.52)', marginTop: 3 }}>{def.ps.unit}</div>
+          </div>
+          <div style={{
+            fontFamily: Fnt.mono, fontWeight: 700, fontSize: 9,
+            color: def.ps.ok && active ? '#00A249' : (active ? '#A8BDD0' : 'rgba(168,189,208,0.36)'),
+            padding: '2px 7px',
+            background: def.ps.ok && active ? 'rgba(0,162,73,0.10)' : 'rgba(139,160,180,0.05)',
+            border: `1px solid ${def.ps.ok && active ? 'rgba(0,162,73,0.26)' : 'rgba(139,160,180,0.12)'}`,
+            borderRadius: 4, whiteSpace: 'nowrap', textAlign: 'center',
+          }}>
+            {def.ps.note}
+          </div>
         </div>
       </div>
 
-      {/* ── Col 6: Particle Size Out ── */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-        <div style={{
-          background: C.navyDeep,
-          border: `1.5px solid ${def.ps.ok && active ? def.ps.accentPs + '55' : 'rgba(139,160,180,0.20)'}`,
-          borderRadius: 8, padding: '12px 18px', textAlign: 'center', width: '100%',
-        }}>
-          <div style={{ fontFamily: Fnt.mono, fontWeight: 800, fontSize: 14, color: def.ps.ok && active ? def.ps.accentPs : '#8BA0B4', lineHeight: 1 }}>
-            {def.ps.val}
-          </div>
-          <div style={{ fontFamily: Fnt.mono, fontSize: 11, color: 'rgba(168,189,208,0.60)', marginTop: 4 }}>{def.ps.unit}</div>
-        </div>
-        <div style={{
-          fontFamily: Fnt.mono, fontWeight: 700, fontSize: 9,
-          color: def.ps.ok && active ? '#00A249' : (active ? '#A8BDD0' : 'rgba(168,189,208,0.40)'),
-          padding: '2px 7px',
-          background: def.ps.ok && active ? 'rgba(0,162,73,0.12)' : 'rgba(139,160,180,0.06)',
-          border: `1px solid ${def.ps.ok && active ? 'rgba(0,162,73,0.30)' : 'rgba(139,160,180,0.15)'}`,
-          borderRadius: 4, whiteSpace: 'nowrap', textAlign: 'center',
-        }}>
-          {def.ps.note}
-        </div>
+      {/* ── Proc note — slim full-width strip below grid, indented past col 1 ── */}
+      <div style={{ padding: '0 16px 11px 212px', fontFamily: Fnt.dm, fontSize: 11, color: active ? 'rgba(168,189,208,0.62)' : 'rgba(168,189,208,0.25)', lineHeight: 1.65 }}>
+        {def.procNote}
       </div>
     </div>
   );
