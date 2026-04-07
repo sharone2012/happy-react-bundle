@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CFI S0 — Residue Selection → S1 Processing Line</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════
+   S0 EXIT STAGE — RESIDUE SELECTOR
+   ══════════════════════════════════════════════════════════════
+
+   This page is the S0 exit point. The user selects a residue
+   and this page routes them to the correct S1 Processing Line
+   1-Pager (PL1P).
+
+   WIRING RULES:
+   - Each residue card links to: S1/CFI_S1_[RESIDUE]_Processing_Line_1Pager.html
+   - Adding a new residue = add a new card + create the PL1P file
+   - The residue name flows from S0 into S1 via the URL
+   - S1 PL1P files use .s0r / .s0r-tag template wrappers
+
+   KNOWN RESIDUES:
+     OPDC — Oil Palm Decanter Cake (paste, 70-75% MC)
+     EFB  — Empty Fruit Bunch (fibre, 65-70% MC)
+     POS  — Palm Oil Sludge (liquid/semi, 80-85% MC)
+   ══════════════════════════════════════════════════════════════ */
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:#0B1422;
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  padding:40px 20px;
+  color:#F0F4F8;
+}
+
+.header{
+  text-align:center;margin-bottom:40px;
+}
+.header h1{
+  font-size:28px;font-weight:700;color:#40D7C5;
+  margin-bottom:8px;letter-spacing:.02em;
+}
+.header p{
+  font-size:13px;color:#8BA0B4;max-width:600px;line-height:1.6;
+}
+.header .stage-badge{
+  display:inline-block;
+  background:#40D7C5;color:#0B1422;
+  font-size:11px;font-weight:700;
+  padding:3px 12px;border-radius:12px;
+  margin-bottom:12px;letter-spacing:.06em;
+}
+
+.cards{
+  display:flex;gap:24px;flex-wrap:wrap;justify-content:center;
+  max-width:960px;
+}
+
+.card{
+  background:#111B2A;
+  border:1.5px solid rgba(64,215,197,.2);
+  border-radius:8px;
+  width:280px;
+  padding:24px;
+  cursor:pointer;
+  transition:all .2s;
+  text-decoration:none;
+  color:inherit;
+  display:flex;flex-direction:column;
+}
+.card:hover{
+  border-color:#40D7C5;
+  background:#142233;
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(0,0,0,.3);
+}
+
+.card-code{
+  font-size:24px;font-weight:700;color:#40D7C5;
+  margin-bottom:4px;
+}
+.card-name{
+  font-size:14px;font-weight:700;color:#F0F4F8;
+  margin-bottom:8px;
+}
+.card-form{
+  font-size:11px;color:#8BA0B4;
+  margin-bottom:12px;
+  padding-bottom:12px;
+  border-bottom:1px solid rgba(64,215,197,.1);
+}
+
+.card-specs{
+  font-size:11px;color:#8BA0B4;line-height:1.7;
+  flex:1;
+}
+.card-specs strong{color:#F0F4F8}
+
+.card-action{
+  margin-top:16px;
+  background:#40D7C5;color:#0B1422;
+  font-size:12px;font-weight:700;
+  padding:8px 16px;border-radius:4px;
+  text-align:center;
+  letter-spacing:.03em;
+}
+.card:hover .card-action{
+  background:#5EEBD9;
+}
+
+.footer{
+  margin-top:48px;text-align:center;
+  font-size:11px;color:#4A5A6A;
+  max-width:600px;line-height:1.6;
+}
+.footer a{color:#40D7C5;text-decoration:none}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="stage-badge">STAGE 0 — EXIT</div>
+  <h1>Select Residue for S1 Processing</h1>
+  <p>Choose the residue type to view its S1 Mechanical Pre-Processing Line 1-Pager (PL1P). Each residue has a unique machine sequence, guardrails, and CLASS A gates tailored to its physical form.</p>
+</div>
+
+<div class="cards">
+
+  <!-- OPDC — S1B -->
+  <a class="card" href="/CFI_S1_OPDC_Processing_Line_1Pager.html" data-residue="OPDC">
+    <div class="card-code">OPDC</div>
+    <div class="card-name">Oil Palm Decanter Cake</div>
+    <div class="card-form">Paste form · 72.5% MC · S1B</div>
+    <div class="card-specs">
+      <strong>10 machines</strong> · 5 t/h · 500mm belt<br>
+      Installed: ~206 kW · MC 72.5→61%<br>
+      Gate B.G2: Screw press MC ≥ 40% CLASS A<br>
+      SPRING-ISO: Hammer mill · B.G1: Screen 2mm<br>
+      C.G2/G3: 24hr dwell · pH 8.0–9.0
+    </div>
+    <div class="card-action">Open OPDC Processing Line →</div>
+  </a>
+
+  <!-- EFB — S1A -->
+  <a class="card" href="/CFI_S1_EFB_Processing_Line_1Pager.html" data-residue="EFB">
+    <div class="card-code">EFB</div>
+    <div class="card-name">Empty Fruit Bunch</div>
+    <div class="card-form">Fibre form · 62.5% MC · S1A</div>
+    <div class="card-specs">
+      <strong>10 machines</strong> · 20 t/h · 600mm belt<br>
+      Installed: ~298 kW · MC 62.5→47.5%<br>
+      Gate B.G2: Screw press + PKSA<br>
+      SPRING-ISO: Hammer mill 110kW · B.G1: Screen 2mm<br>
+      Baghouse shared with OPDC (S1B)
+    </div>
+    <div class="card-action">Open EFB Processing Line →</div>
+  </a>
+
+  <!-- POS — S1C -->
+  <a class="card" href="/CFI_S1_POS_Processing_Line_1Pager.html" data-residue="POS">
+    <div class="card-code">POS</div>
+    <div class="card-name">Palm Oil Sludge</div>
+    <div class="card-form">Liquid/semi form · 82% MC · S1C</div>
+    <div class="card-specs">
+      <strong>4 machines</strong> · 1.25 t/h liquid in<br>
+      Installed: ~62 kW · MC 82→65%<br>
+      ICP-OES-Fe gate: Fe result sets S2 inclusion<br>
+      Decanter centrifuge 55kW (Alfa Laval preferred)<br>
+      RFQ range: USD 80k–150k
+    </div>
+    <div class="card-action">Open POS Processing Line →</div>
+  </a>
+
+</div>
+
+<div class="footer">
+  <p>S0 selects the residue. S1 processes it. Each PL1P is a template — the residue name is never hardcoded.<br>
+  To add a new residue: duplicate any PL1P, replace <code>.s0r</code> / <code>.s0r-tag</code> content, add a card here.</p>
+</div>
+
+<script>
+/* ══ S0 EXIT STAGE WIRING ══
+   When a card is clicked, the residue code is stored in sessionStorage
+   so downstream S1 pages can read it if needed for dynamic rendering.
+*/
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('click', function(e) {
+    const residue = this.dataset.residue;
+    if (residue) {
+      sessionStorage.setItem('cfi-s0-residue', residue);
+      console.log('[S0] Residue selected:', residue);
+    }
+  });
+});
+</script>
+
+</body>
+</html>

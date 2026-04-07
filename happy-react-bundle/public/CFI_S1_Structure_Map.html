@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFI S1 Structure Map — March 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&family=Syne:wght@700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: #0B1422; color: #e0e0e0; padding: 32px; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  h1 { font-family: 'Syne', sans-serif; font-size: 28px; color: #40D7C5; margin-bottom: 4px; }
+  .subtitle { font-family: 'DM Mono', monospace; font-size: 13px; color: #888; margin-bottom: 32px; }
+  h2 { font-family: 'Syne', sans-serif; font-size: 20px; color: #F5A623; margin: 32px 0 16px 0; border-bottom: 1px solid #1a2a3a; padding-bottom: 8px; }
+  h3 { font-size: 16px; color: #40D7C5; margin: 20px 0 8px 0; }
+
+  .page-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .page-card {
+    background: #111d2e; border: 1px solid #1a2a3a; border-radius: 8px; padding: 16px;
+    transition: border-color 0.2s;
+  }
+  .page-card:hover { border-color: #40D7C5; }
+  .page-card.full-width { grid-column: 1 / -1; }
+
+  .route { font-family: 'DM Mono', monospace; font-size: 13px; color: #40D7C5; margin-bottom: 6px; }
+  .page-title { font-weight: 700; font-size: 16px; color: #fff; margin-bottom: 4px; }
+  .page-desc { font-size: 13px; color: #999; margin-bottom: 10px; line-height: 1.5; }
+
+  .status-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .badge {
+    font-family: 'DM Mono', monospace; font-size: 11px; padding: 3px 10px;
+    border-radius: 4px; font-weight: 500;
+  }
+  .badge-done { background: #1a3a2a; color: #3DCB7A; border: 1px solid #3DCB7A; }
+  .badge-partial { background: #3a2a1a; color: #F5A623; border: 1px solid #F5A623; }
+  .badge-todo { background: #2a1a1a; color: #E84040; border: 1px solid #E84040; }
+  .badge-stub { background: #1a1a2a; color: #888; border: 1px solid #555; }
+
+  .section-items { margin: 8px 0 0 16px; }
+  .section-items li { font-size: 13px; color: #bbb; margin-bottom: 4px; line-height: 1.5; }
+  .section-items li strong { color: #fff; }
+
+  .todo-section { background: #111d2e; border: 2px solid #F5A623; border-radius: 8px; padding: 20px; margin-top: 32px; }
+  .todo-section h2 { color: #F5A623; margin-top: 0; border: none; padding: 0; }
+  .todo-item { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
+  .todo-num { font-family: 'DM Mono', monospace; font-size: 14px; color: #F5A623; min-width: 24px; }
+  .todo-text { font-size: 14px; color: #ddd; line-height: 1.5; }
+  .todo-text .priority-high { color: #E84040; font-weight: 700; }
+  .todo-text .priority-med { color: #F5A623; font-weight: 700; }
+  .todo-text .priority-low { color: #3DCB7A; }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+  th { font-family: 'DM Mono', monospace; font-size: 12px; color: #888; text-align: left; padding: 8px 12px; border-bottom: 1px solid #1a2a3a; }
+  td { font-size: 13px; padding: 8px 12px; border-bottom: 1px solid #0f1a28; }
+  td.route-col { font-family: 'DM Mono', monospace; color: #40D7C5; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>CFI S1 Structure Map</h1>
+<p class="subtitle">Audit date: 29 March 2026 &middot; Lovable preview: happy-react-bundle &middot; Supabase: lcpbtnipkvrmuwllymfw</p>
+
+<!-- ============ LIVE ROUTES ============ -->
+<h2>1. Live Lovable Routes (Confirmed Working)</h2>
+
+<div class="page-grid">
+
+  <div class="page-card full-width">
+    <div class="route">/s1-index</div>
+    <div class="page-title">S1 Master Index</div>
+    <div class="page-desc">
+      Hub page for all S1 content. Shows: title block (CFI S1 Master v3, LOCKED, Rev 03, 60 TPH, 3 Lines),
+      3-column card grid (EFB S1C / OPDC S1B / POS S1A) with links to ASCII flows and CapEx,
+      Canonical Values Reference (8 params), RFQ Pack PDF card (View/Print), 9 Hard Guardrails.
+    </div>
+    <div class="status-row">
+      <span class="badge badge-done">LIVE</span>
+      <span class="badge badge-done">Header OK</span>
+      <span class="badge badge-done">Cards OK</span>
+      <span class="badge badge-done">PDF Link OK</span>
+      <span class="badge badge-done">Guardrails OK</span>
+    </div>
+    <ul class="section-items">
+      <li><strong>Issue:</strong> Header shows "EFB 20&rarr;13 t/h" — should be "EFB 20&rarr;13 t/h" per your todo item 1 (needs mill size row + site config)</li>
+    </ul>
+  </div>
+
+  <div class="page-card">
+    <div class="route">/s1-efb-ascii</div>
+    <div class="page-title">EFB Line (S1C) ASCII Process Flow</div>
+    <div class="page-desc">
+      10-node elevation profile: SOURCE &rarr; RH-EFB-101 Feeder &rarr; CV-EFB-101 Conveyor &rarr; ETR-01 Trommel &rarr;
+      ESP-01 Screw Press &rarr; NOISE ZONE &rarr; EHM-01 Hammer Mill (oversize return loop) &rarr;
+      EVS-01 Vibrating Screen &rarr; EDC-01 Baghouse &rarr; BIN-EFB-201 Buffer Bin &rarr; S2 DISCHARGE.
+      Full legend. GATE B.G1 + B.G2 present.
+    </div>
+    <div class="status-row">
+      <span class="badge badge-done">LIVE</span>
+      <span class="badge badge-done">Complete flow</span>
+      <span class="badge badge-done">Legend</span>
+      <span class="badge badge-partial">No eng specs yet</span>
+    </div>
+  </div>
+
+  <div class="page-card">
+    <div class="route">/s1-opdc-ascii</div>
+    <div class="page-title">OPDC Line (S1B) ASCII Process Flow</div>
+    <div class="page-desc">
+      10-node flow: SOURCE &rarr; RH-OPDC-101 Hopper &rarr; CV-OPDC-101 Belt &rarr;
+      OPR-01 Screw Press (CLASS A GATE) &rarr; OTR-01 Trommel &rarr;
+      ODR-01 Rotary Dryer &rarr; NOISE ZONE &rarr; OHM-01 Hammer Mill &rarr;
+      OVS-01 Vibrating Screen &rarr; BIN-OPDC-301 Product Bin (24HR DWELL GATE) &rarr; S2 DISCHARGE.
+      Full legend with CLASS A + AMBER GATE keys.
+    </div>
+    <div class="status-row">
+      <span class="badge badge-done">LIVE</span>
+      <span class="badge badge-done">Complete flow</span>
+      <span class="badge badge-done">Legend</span>
+      <span class="badge badge-partial">No eng specs yet</span>
+    </div>
+  </div>
+
+  <div class="page-card">
+    <div class="route">/s1-pos-ascii</div>
+    <div class="page-title">POS Line (S1A) ASCII Process Flow</div>
+    <div class="page-desc">
+      5-node flow: SOURCE &rarr; POS-PIT-01 Sludge Hopper &rarr; T-SLD-101 Buffer Tank &rarr;
+      SCR-POS-01 Rotary Drum Screen &rarr; MIX-POS-01 Conditioning Mixer &rarr;
+      FP-POS-01 Filter Press &rarr; S2 DISCHARGE.
+      ICP-OES Fe gate checkpoint. Full legend.
+    </div>
+    <div class="status-row">
+      <span class="badge badge-done">LIVE</span>
+      <span class="badge badge-done">Complete flow</span>
+      <span class="badge badge-done">Legend</span>
+      <span class="badge badge-partial">No eng specs yet</span>
+    </div>
+  </div>
+
+  <div class="page-card full-width">
+    <div class="route">/s1-capex-opex</div>
+    <div class="page-title">S1 Pre-Processing &mdash; CAPEX / OPEX / Facility</div>
+    <div class="page-desc">
+      Full-width dark dashboard. Breadcrumb bar (CFI Platform &gt; S0 Mill Config &gt; S1 Pre-Processing) with mill context
+      (Bogor Test Mill, 60 TPH, Active: EFB + OPDC, POS ICP-OES Pending).
+      6 hero KPIs: Building CAPEX $1,374,610 / Equipment CAPEX $233,000 / Monthly OpEx (DATA GAP) / 3 Active lines /
+      2,450 m&sup2; / Electricity IDR 8.2M/mo.
+      Left column: Site Metrics + 9 design drawing stub cards.
+      Center column: Building CAPEX breakdown (A1&ndash;A8 + contingency/EPC/developer = $1,374,610).
+      Right column: "COLUMN 3 &mdash; Equipment CAPEX" label visible but content appears truncated.
+    </div>
+    <div class="status-row">
+      <span class="badge badge-done">LIVE</span>
+      <span class="badge badge-done">Building CAPEX</span>
+      <span class="badge badge-partial">OpEx = DATA GAP</span>
+      <span class="badge badge-partial">Equip CAPEX truncated</span>
+      <span class="badge badge-stub">Site Plan btn = stub</span>
+      <span class="badge badge-stub">Architecture btn = stub</span>
+      <span class="badge badge-stub">9 drawing cards = stubs</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ NON-ROUTE ASSETS ============ -->
+<h2>2. Non-Route Assets (Exist but Not Deployed as Lovable Routes)</h2>
+
+<div class="page-grid">
+
+  <div class="page-card">
+    <div class="route">Supabase Storage: documents/CFI_S1_Engineering_Complete.pdf</div>
+    <div class="page-title">S1 RFQ Pack PDF</div>
+    <div class="page-desc">22-page engineering specs for all 3 lines. Served via <code>serve-engineering-pdf</code> edge function. Accessible from S1 Index "View PDF" button.</div>
+    <div class="status-row">
+      <span class="badge badge-done">Deployed</span>
+      <span class="badge badge-done">Edge fn live</span>
+    </div>
+  </div>
+
+  <div class="page-card">
+    <div class="route">Project knowledge: CFI_S1_Combined_v2.html</div>
+    <div class="page-title">S1 Combined Floor Plan (Standalone HTML)</div>
+    <div class="page-desc">Tabbed floor plan showing EFB, OPDC, POS line layouts. Uses CFI design system fonts. NOT deployed to Lovable yet.</div>
+    <div class="status-row">
+      <span class="badge badge-partial">Built, not deployed</span>
+      <span class="badge badge-todo">Header needs update</span>
+    </div>
+  </div>
+
+  <div class="page-card">
+    <div class="route">Project knowledge: CFI_S1S2_Calculator.jsx</div>
+    <div class="page-title">S1/S2 Calculator Component</div>
+    <div class="page-desc">Combined S1 Pre-Processing + S2 Chemical Treatment calculator. Reads from cfi_sites + canonical_lab_data. Writes s1_efb_milled_tday, s1_opdc_pressed_tday, s1_pos_decanted_tday.</div>
+    <div class="status-row">
+      <span class="badge badge-partial">JSX exists</span>
+      <span class="badge badge-stub">Not wired to route</span>
+    </div>
+  </div>
+
+  <div class="page-card">
+    <div class="route">Project knowledge: CFI_S1_ASCII_FLOWS_COMPLETE.html</div>
+    <div class="page-title">S1 ASCII Flows Complete (Standalone HTML)</div>
+    <div class="page-desc">All 3 ASCII flows in a single HTML file. Source document for the individual Lovable route pages.</div>
+    <div class="status-row">
+      <span class="badge badge-done">Reference file</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ BLANK / MISSING ROUTES ============ -->
+<h2>3. Blank / Missing Routes (Tested &mdash; Return Empty Page)</h2>
+
+<table>
+  <tr><th>Route Tested</th><th>Result</th><th>Notes</th></tr>
+  <tr><td class="route-col">/s1-combined</td><td>Blank white page</td><td>Floor plan HTML not deployed as Lovable route</td></tr>
+  <tr><td class="route-col">/s1-floor-plan</td><td>Blank white page</td><td>Not created</td></tr>
+  <tr><td class="route-col">/s1-engineering</td><td>Blank white page</td><td>Not created</td></tr>
+</table>
+
+<!-- ============ TODO ============ -->
+<div class="todo-section">
+<h2>4. S1 Remaining Work &mdash; Priority Order</h2>
+
+<div class="todo-item">
+  <div class="todo-num">1</div>
+  <div class="todo-text">
+    <span class="priority-high">HIGH</span> &mdash; <strong>Update S1 Combined Floor Plan header</strong><br>
+    Row 1: "Mill Size: 60 ton/hour"<br>
+    Row 2: "EFB 20&rarr;13 t/h | OPDC 5&rarr;3.3 t/h | POS 1.25&rarr;0.56 t/h"<br>
+    Right side: mill_name + district + province from cfi_site_config<br>
+    <em>File: CFI_S1_Combined_v2.html</em>
+  </div>
+</div>
+
+<div class="todo-item">
+  <div class="todo-num">2</div>
+  <div class="todo-text">
+    <span class="priority-high">HIGH</span> &mdash; <strong>Deploy Combined Floor Plan as Lovable route</strong><br>
+    Convert HTML to JSX component, add route (e.g. /s1-floor-plan or /s1-combined),
+    link from S1 Index and CapEx design drawing cards.
+  </div>
+</div>
+
+<div class="todo-item">
+  <div class="todo-num">3</div>
+  <div class="todo-text">
+    <span class="priority-high">HIGH</span> &mdash; <strong>Option C: Add expandable engineering spec sections to ASCII pages</strong><br>
+    Each equipment node on /s1-efb-ascii, /s1-opdc-ascii, /s1-pos-ascii gets a collapsible
+    detail section with full engineering specs (materials, dimensions, power, throughput, guards).
+  </div>
+</div>
+
+<div class="todo-item">
+  <div class="todo-num">4</div>
+  <div class="todo-text">
+    <span class="priority-med">MED</span> &mdash; <strong>Fix CapEx page Column 3 (Equipment CAPEX)</strong><br>
+    Right column shows "COLUMN 3 &mdash; Equipment CAPEX &middot; Residue &middot; Chunk 2" label but content appears cut off.
+    Equipment total $233,000 in hero but line items not visible.
+  </div>
+</div>
+
+<div class="todo-item">
+  <div class="todo-num">5</div>
+  <div class="todo-text">
+    <span class="priority-med">MED</span> &mdash; <strong>Wire CapEx design drawing cards</strong><br>
+    9 stub cards (Site Master Plan, Building Architecture, Building Floor Plan, Greenhouse Design,
+    EFB Floor Plan, OPDC Floor Plan, EFB/OPDC/POS ASCII Flow) currently do nothing on click.
+    Wire to correct routes or open HTML overlays.
+  </div>
+</div>
+
+<div class="todo-item">
+  <div class="todo-num">6</div>
+  <div class="todo-text">
+    <span class="priority-med">MED</span> &mdash; <strong>Wire CapEx "Site Plan" and "Architecture" buttons</strong><br>
+    Top-right buttons on /s1-capex-opex are stubs. Need to navigate to floor plan / architecture views.
+  </div>
+</div>
+
+<div class="todo-item">
+  <div class="todo-num">7</div>
+  <div class="todo-text">
+    <span class="priority-med">MED</span> &mdash; <strong>Fill Monthly OpEx (DATA GAP)</strong><br>
+    Hero KPI shows "(DATA GAP)" for Monthly OpEx. Needs labour + electricity + consumables data.
+  </div>
+</div>
+
+<div class="todo-item">
+  <div class="todo-num">8</div>
+  <div class="todo-text">
+    <span class="priority-low">LOW</span> &mdash; <strong>Update S1 Index header</strong><br>
+    Currently shows throughput summary on right. Your todo #1 says add:
+    Row 1 mill size, Row 2 stream throughputs, Right side mill_name/district/province from cfi_site_config.
+  </div>
+</div>
+
+<div class="todo-item">
+  <div class="todo-num">9</div>
+  <div class="todo-text">
+    <span class="priority-low">LOW</span> &mdash; <strong>Deploy S1/S2 Calculator as Lovable route</strong><br>
+    CFI_S1S2_Calculator.jsx exists in project knowledge but has no route. Decide if it gets
+    its own page or integrates into CapEx/facility page.
+  </div>
+</div>
+
+</div>
+
+<!-- ============ SUMMARY TABLE ============ -->
+<h2>5. Route Summary</h2>
+
+<table>
+  <tr><th>Route</th><th>Status</th><th>Content</th><th>Issues</th></tr>
+  <tr><td class="route-col">/s1-index</td><td><span class="badge badge-done">LIVE</span></td><td>Master hub</td><td>Header update pending</td></tr>
+  <tr><td class="route-col">/s1-efb-ascii</td><td><span class="badge badge-done">LIVE</span></td><td>EFB 10-node flow</td><td>No expandable eng specs</td></tr>
+  <tr><td class="route-col">/s1-opdc-ascii</td><td><span class="badge badge-done">LIVE</span></td><td>OPDC 10-node flow</td><td>No expandable eng specs</td></tr>
+  <tr><td class="route-col">/s1-pos-ascii</td><td><span class="badge badge-done">LIVE</span></td><td>POS 5-node flow</td><td>No expandable eng specs</td></tr>
+  <tr><td class="route-col">/s1-capex-opex</td><td><span class="badge badge-done">LIVE</span></td><td>CapEx/OpEx dashboard</td><td>Col 3 truncated, stubs, OpEx gap</td></tr>
+  <tr><td class="route-col">/s1-combined</td><td><span class="badge badge-todo">BLANK</span></td><td>&mdash;</td><td>HTML exists, not deployed</td></tr>
+  <tr><td class="route-col">/s1-floor-plan</td><td><span class="badge badge-todo">BLANK</span></td><td>&mdash;</td><td>Not created</td></tr>
+  <tr><td class="route-col">/s1-engineering</td><td><span class="badge badge-todo">BLANK</span></td><td>&mdash;</td><td>Not created</td></tr>
+</table>
+
+<p style="margin-top: 32px; font-family: 'DM Mono', monospace; font-size: 12px; color: #555;">
+  Generated by Claude &middot; 29 March 2026 &middot; CFI Deep Tech S1 Audit
+</p>
+
+</div>
+</body>
+</html>

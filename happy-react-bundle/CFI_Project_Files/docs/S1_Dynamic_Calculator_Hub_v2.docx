@@ -1,0 +1,1689 @@
+**CFI PROMPT SERIES --- S1 DYNAMIC MACHINERY CALCULATOR**
+
+**CALCULATOR HUB ARCHITECTURE**
+
+Auto-Scaling · Equipment Sizing · Building Design · CAPEX · OPEX · ASCII
+Flow · Architecture
+
+v2.0 \| March 2026 \| Design Basis: 60 TPH FFB Mill, Bogor, West Java
+
+> **CORE PRINCIPLE: When S0 throughput (t/h) changes for ANY residue
+> stream, the S1 Calculator IMMEDIATELY re-runs all eight downstream
+> calculators, redesigns the equipment register, resizes the building,
+> recalculates CAPEX/OPEX, regenerates the ASCII flow, and relays the
+> updated S2 handoff to Supabase --- with ZERO manual re-entry.**
+>
+> **BACKUP UNIT RULE (IMMUTABLE): Every machine with motor \>11 kW OR
+> classified as a press, shredder, mill, trommel, or decanter MUST have
+> a minimum 1 hot standby backup unit of identical specification. We
+> never operate at full nameplate capacity. Target utilisation ≤80% of
+> derated capacity at all times.**
+
+**0. S1 CALCULATOR HUB --- FULL CONNECTION MAP**
+
+The S1 Calculator is the master engineering engine for the S1
+pre-processing facility. It receives throughput data from S0, applies
+automatic scaling logic, and simultaneously drives eight subordinate
+calculators covering equipment, footprint, building structure, CAPEX,
+OPEX, process flow visualisation, architectural design, and NPK relay.
+
+> ┌────────────────────────────────────┐
+>
+> │ S0 THROUGHPUT INPUT │
+>
+> │ EFB (t/h) OPDC (t/h) POS (t/h) │
+>
+> └──────────────────┬─────────────────┘
+>
+> │
+>
+> ┌─────────────────────────▼───────────────────────────┐
+>
+> │ S1 DYNAMIC MACHINERY CALCULATOR │
+>
+> │ │
+>
+> │ ┌─────────────────────────────────────────────┐ │
+>
+> │ │ SUPABASE EQUIPMENT DATABASE │ │
+>
+> │ │ equipment_catalogue · manufacturer_dir │ │
+>
+> │ │ user_added_machines · cfi_equipment │ │
+>
+> │ └─────────────────────────────────────────────┘ │
+>
+> │ │
+>
+> │ Core logic: 65% Asian derate / 85% EU/JP derate │
+>
+> │ Backup rule: +1 standby for all critical machines │
+>
+> │ Target util: ≤80% derated capacity │
+>
+> └────────────────────────┬────────────────────────────┘
+>
+> │
+>
+> ┌──────────────┬──────────────┬───┴───────────┬─────────────────┐
+>
+> ▼ ▼ ▼ ▼ ▼
+>
+> ┌────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐
+>
+> │CALC-A │ │CALC-B │ │CALC-C │ │CALC-D │ │CALC-E │
+>
+> │Equip. │ │Footprint │ │Building │ │Mach. │ │Mach. │
+>
+> │Sizing │ │& Floor │ │Structure │ │CAPEX │ │OPEX │
+>
+> │Select │ │Plan │ │Conveyors │ │ │ │ │
+>
+> └───┬────┘ └────┬─────┘ └─────┬────┘ └──────────┘ └──────────┘
+>
+> │ │ │
+>
+> ▼ ▼ ▼
+>
+> ┌────────┐ ┌──────────┐ ┌──────────────────────────────────────┐
+>
+> │CALC-F │ │CALC-G │ │ CALC-H: NPK RELAY + S2 HANDOFF │
+>
+> │ASCII │ │Architec- │ │ NPK Value Dashboard │ S2 Chem. │
+>
+> │Process │ │tural │ │ Plantation Intel. │ Calculator │
+>
+> │Flow │ │Design │ └──────────────────────────────────────┘
+>
+> └────────┘ └──────────┘
+
+**1. DYNAMIC AUTO-SCALING --- CORE ALGORITHM**
+
+**1.1 When Does the Calculator Re-Scale?**
+
+The scaling engine triggers automatically on any of these conditions:
+
+-   S0 sends a new t/h value for EFB, OPDC, or POS (any change from
+    previous value)
+
+-   User manually edits a throughput field in the S1 calculator UI
+
+-   A new machine is added to the Supabase equipment_catalogue by the
+    user
+
+-   User selects a different OEM/model for any equipment type
+
+-   Scheduled 3-day AI search (Prompt 8) returns updated nameplate
+    capacity data
+
+-   Lab result changes POS Fe band → triggers POS inclusion rate change
+    → recalculate POS line
+
+**1.2 Scaling Decision Tree**
+
+The following algorithm executes independently for EACH equipment type
+in EACH processing line on every trigger:
+
+> ── INPUTS
+> ─────────────────────────────────────────────────────────────
+>
+> stream_tph → fresh weight t/h from S0 for this stream
+>
+> nameplate_tph → OEM nameplate capacity (from equipment_catalogue)
+>
+> oem_origin → \'Asian\' \| \'EU\' \| \'Japanese\' \| \'ID-Fabricated\'
+>
+> ── STEP 1: DERATE
+> ──────────────────────────────────────────────────────
+>
+> if oem_origin IN (\'Asian\', \'ID-Fabricated\') → derated_tph =
+> nameplate × 0.65
+>
+> if oem_origin IN (\'EU\', \'Japanese\') → derated_tph = nameplate ×
+> 0.85
+>
+> ── STEP 2: DUTY UNITS
+> ──────────────────────────────────────────────────
+>
+> duty_units = CEIL(stream_tph / derated_tph)
+>
+> ── STEP 3: UTILISATION CHECK
+> ───────────────────────────────────────────
+>
+> util_pct = (stream_tph / (duty_units × derated_tph)) × 100
+>
+> if util_pct \> 85% → RED flag, increment duty_units by 1, re-run step
+> 3
+>
+> if util_pct 81-85% → AMBER flag, show comparison table with +1 unit
+> option
+>
+> if util_pct ≤ 80% → GREEN, healthy headroom, proceed
+>
+> ── STEP 4: BACKUP RULE (IMMUTABLE)
+> ─────────────────────────────────────
+>
+> backup_required = TRUE if motor_kw \> 11
+>
+> TRUE if equipment_type IN (\'press\',\'shredder\',\'mill\',
+>
+> \'trommel\',\'decanter\',\'screen\')
+>
+> FALSE otherwise (conveyors \<11 kW, magnets)
+>
+> backup_units = 1 if backup_required else 0
+>
+> total_units = duty_units + backup_units
+>
+> ── STEP 5: OUTPUT TO DOWNSTREAM CALCULATORS
+> ─────────────────────────────
+>
+> {
+>
+> tag, equipment_name, duty_units, backup_units, total_units,
+>
+> nameplate_tph, derated_tph, util_pct, traffic_light,
+>
+> motor_kw_per_unit, total_kw, footprint_L_m, footprint_W_m,
+>
+> unit_cost_usd, total_cost_usd, oem, model, lead_time_wk
+>
+> }
+
+**1.3 Scaling Example --- EFB Increases from 25 t/h to 50 t/h**
+
+When S0 sends EFB = 50 t/h, the algorithm recalculates every machine in
+the EFB line:
+
+  ------------------------------------------------------------------------------------
+  **Equipment**   **Nameplate   **Derated   **@ 25 t/h **@ 50 t/h **Util %  **Flag**
+                  t/h**         (65%)**     (old)**    (new)**    \@50**    
+  --------------- ------------- ----------- ---------- ---------- --------- ----------
+  Trommel         20            13.0        2 duty + 1 4 duty + 1 96.2% →   RED → 5
+  (TR-2601)                                 bkp        bkp        +1 unit   duty
+
+  Screw Press (CB 22            14.3        2 duty + 1 4 duty + 1 87.4% →   AMBER → 5
+  20T/C)                                    bkp        bkp        +1 unit   duty
+
+  Shredder        10            6.5         4 duty + 1 8 duty + 1 96.2% →   RED → 10
+  (KH-777)                                  bkp        bkp        +1 unit   duty
+
+  Hammer Mill     8             5.2         5 duty + 1 10 duty +  96.2% →   RED → 12
+  (YTH-7.100)                               bkp        1 bkp      +1 unit   duty
+
+  Vibratory       11            7.15        4 duty + 1 7 duty + 1 99.7% →   RED → 8
+  Screen (SWECO)                            bkp        bkp        +1 unit   duty
+  ------------------------------------------------------------------------------------
+
+*After recalculation: CALC-A updates equipment register → CALC-B
+recalculates footprint → CALC-C resizes building bays → CALC-D/E
+recompute costs → CALC-F/G regenerate drawings. All in one automated
+chain.*
+
+**2. SUPABASE EQUIPMENT DATABASE**
+
+**2.1 Database Tables Referenced by S1**
+
+  ----------------------------------------------------------------------------------------------
+  **Table**                 **Purpose**    **Key Fields**                        **Current
+                                                                                 Rows**
+  ------------------------- -------------- ------------------------------------- ---------------
+  equipment_catalogue       Master machine ai_tag, equipment_function,           73
+                            register ---   residue_type, nameplate_tph,          
+                            all S1         motor_kw, oem_origin, derate_pct,     
+                            processing     footprint_L, footprint_W,             
+                            equipment      footprint_H, unit_cost_usd,           
+                                           lead_time_wk                          
+
+  equipment_manufacturers   OEM and        company_name, country,                26
+                            Indonesian     equipment_categories,                 
+                            supplier       palm_industry_ref, contact_person,    
+                            directory      phone, email, website                 
+
+  user_added_machines       Machines added added_by, added_ts,                   User-editable
+                            by CFI users   equipment_function, residue_type,     
+                            via Admin      nameplate_tph, motor_kw, oem_origin,  
+                            Panel          unit_cost_usd, source_quote,          
+                                           validated_by_professor                
+
+  cfi_equipment             Active         All catalogue fields + is_user_added, 73 + user adds
+                            combined set   version, status, approved             
+                            (catalogue +                                         
+                            user                                                 
+                            additions),                                          
+                            versioned                                            
+  ----------------------------------------------------------------------------------------------
+
+**2.2 Current Equipment Register --- S1 EFB, OPDC and POS Lines**
+
+Sourced from FD_CAPEX_Equipment_Manufacturers.xlsx. All costs are FOB
+origin unless stated.
+
+  --------------------------------------------------------------------------------------------------------------------
+  **Tag**     **Function**     **OEM / Model**   **Capacity**   **Motor    **Derate**   **Est. USD**         **Lead
+                                                                kW**                                         Wks**
+  ----------- ---------------- ----------------- -------------- ---------- ------------ -------------------- ---------
+  TR-2601     Trommel ---      Local / PT        13.8 in → 13.5 7.5        Asian 65%    In package           8--12
+              stones/sand      Kharismapratama   out                                                         
+              removal (EFB)    --- custom rotary                                                             
+
+  OBM-201     Overband         Local generic     Pass-through   2.2+0.75   Any          \$3,000--\$8,000     6--10
+              electromagnet    cross-belt                                                                    
+              --- ferrous                                                                                    
+              removal (EFB)                                                                                  
+
+  PR-201      EFB screw press  CB-Modipalm CB    10--22 (model  37         MY 85%       \$35,000--\$65,000   12--16
+              --- dewatering   20T/C (Malaysia)  dep.)                                                       
+              65% → 45--50% MC ✅                                                                            
+
+  PR-201a     EFB cutter press PT                8--10 t/h      75+2.2     Asian 65%    \$15,000--\$25,000   8--12
+              (alternative to  Kharismapratama                                                               
+              PR-201)          SE/SSCP 50, Medan                                                             
+
+  SD-201      EFB shredder --- YKL Group KH-777  8--10 fresh    90         MY 85%       \$18,000--\$30,000   8--12
+              coarse reduction (Malaysia) ✅     EFB                                                         
+              200mm → 30--50mm                                                                               
+
+  HM-201      EFB hammer mill  YKL Group         Feed 20--50mm  22--55     Asian 65%    \$12,000--\$25,000   8--14
+              --- 30--50mm →   YTH-7.100 / local out 2mm                                                     
+              ≤2mm output      Surabaya                                                                      
+
+  VS-201      EFB vibrating    SWECO             8--11          Small      US/EU 85%    \$12,000--\$22,000   10--14
+              screen --- ≤2mm  Vibro-Energy      product +                                                   
+              particle         (USA) ✅          recycle                                                     
+              classification                                                                                 
+
+  PR-301      OPDC dewatering  Biorem MDS        \~1.75 t/h (42 TBC        MY 85%       DATA GAP             12--16
+              --- 70--75% →    Multi-Disc Screw  t/day)                                                      
+              35--40% MC       Press ✅                                                                      
+              (FLOOR 40%)                                                                                    
+
+  SD-301      OPDC             YKL YTH-7.100     1.8--2.2       Low speed  Asian 65%    \$8,000--\$15,000    8--12
+              finger-screw     (low speed) /                                                                 
+              loosener / lump  local finger-comb                                                             
+              breaker                                                                                        
+
+  BUN-301     OPDC covered     Local civil       \~85 t FW      n/a        n/a          Civil: \~\$12,000    On-site
+              buffer bunker    contractor ---    buffer                                                      
+              --- 24--48 hr pH concrete                                                                      
+              stabilisation    push-wall                                                                     
+
+  SIL-301     EFB+OPDC         Local / PT        Variable       3--5 auger Asian 65%    \$12,000--\$20,000   8--12
+              blending silo    Kharismapratama                                                               
+              --- sets 60:40   conical base                                                                  
+              DM blend ratio                                                                                 
+
+  POS-DW-01   POS decanter     Asian suppliers / \~1.25 t/h     11         Asian 65%    \$18,000--\$35,000   10--14
+              centrifuge ---   local fabrication fresh in                                                    
+              82% → 65% MC                                                                                   
+  --------------------------------------------------------------------------------------------------------------------
+
+**2.3 Adding New Machinery --- User Workflow**
+
+Any user with Admin Panel access can add a new manufacturer. The S1
+Calculator incorporates it on the next run.
+
+  -------------------------------------------------------------------------------
+  **Step**   **Action**      **Input Required**   **System Response**
+  ---------- --------------- -------------------- -------------------------------
+  1          Admin Panel →   ---                  Form loads
+             Equipment                            
+             Database → Add                       
+             New Machine                          
+
+  2          Select          Trommel / Press /    Validates residue type match
+             equipment       Shredder / Mill /    
+             function        Screen / Decanter /  
+                             Conveyor / Silo /    
+                             Mixer / Other        
+
+  3          Select residue  EFB / OPDC / POS /   Tags machine to processing line
+             type            Blend / All          
+
+  4          Enter nameplate Fresh weight basis,  Stored as nameplate_tph
+             capacity t/h    numeric              
+
+  5          Select OEM      Asian / EU /         Auto-assigns 65% or 85% derate
+             origin          Japanese /           factor
+                             ID-Fabricated        
+
+  6          Enter motor     Numeric              Feeds CALC-B footprint + CALC-C
+             kW + footprint                       electrical
+             L × W × H                            
+             (metres)                             
+
+  7          Enter unit cost Numeric + free text  Feeds CALC-D CAPEX
+             USD + lead time                      
+             weeks + source                       
+             quote                                
+
+  8          Submit          ---                  Writes to user_added_machines
+                                                  in Supabase
+
+  9          AI Professor    ---                  Prof #22 Mechanical/OEM
+             evaluation                           validates nameplate vs known
+             (Prompts 0--9)                       industry data. Flags if
+                                                  inflated \>20%.
+
+  10         Machine         ---                  S1 uses on next scaling run
+             available in                         
+             selection                            
+             dropdown for                         
+             affected                             
+             streams                              
+  -------------------------------------------------------------------------------
+
+**CALC-A** **EQUIPMENT SELECTION & SIZING CALCULATOR**
+
+*First calculator in the chain --- determines duty and backup units for
+every machine across all three processing lines*
+
+**Purpose**
+
+Receives stream t/h from S0 via the S1 core, queries the Supabase
+equipment_catalogue, applies the scaling decision tree (Section 1.2) for
+every equipment type in the EFB, OPDC, and POS processing lines, and
+outputs the complete versioned equipment register for this run.
+
+**CALC-A Inputs**
+
+  -----------------------------------------------------------------------
+  **Input**        **Source**              **Guardrail**
+  ---------------- ----------------------- ------------------------------
+  EFB t/h (fresh   S0 output               Design basis: 25 t/h
+  weight)                                  
+
+  OPDC t/h (fresh  S0 output               LOCKED: 15.2% of EFB fresh
+  weight)                                  weight --- never change
+
+  POS t/h (fresh   S0 output               Default: \~1.25 t/h; ICP Fe
+  weight)                                  result may reduce inclusion
+
+  Equipment        Supabase                65%/85% derate must be applied
+  catalogue        equipment_catalogue     before sizing
+
+  User-preferred   Admin Panel or system   Professor #22 validates any
+  OEM              default (✅ =           non-default selection
+                   recommended)            
+
+  Utilisation      System default: ≤80% \| Hard ceiling: 85% utilisation
+  target %         User may tighten to 70% = RED, must resolve
+  -----------------------------------------------------------------------
+
+**CALC-A Outputs → All downstream calculators**
+
+  --------------------------------------------------------------------------
+  **Output Field**     **Description**                **Recipient**
+  -------------------- ------------------------------ ----------------------
+  equipment_register   Full list: tag, name,          CALC-B, C, D, E, F, G,
+  JSON                 duty_units, backup_units,      H
+                       total_units, util_pct,         
+                       motor_kw, footprint L/W/H,     
+                       oem, model, unit_cost,         
+                       total_cost, lead_time          
+
+  Utilisation          RED / AMBER / GREEN per        Display UI + CALC-D
+  traffic-light table  machine per stream             notes
+
+  Total connected load Sum of all motors × duty units CALC-C electrical
+  kW                   across entire facility         sizing
+
+  Equipment footprint  L × W per machine × unit count CALC-B floor plan
+  list                 (separate per line)            
+
+  CAPEX subtotal ---   Unit cost × total units, by    CALC-D
+  equipment supply     line and aggregate             
+  only                                                
+
+  Scaling change flags Machines where unit count      Alert display,
+                       changed vs. prior run          change_log Supabase
+                                                      write
+
+  DATA GAP list        Any machine where cost source  CALC-D flagging, CFO
+                       = estimate not quote           review gate
+  --------------------------------------------------------------------------
+
+> **CALC-A GUARDRAIL: No machine may pass to S2 with util_pct \> 85% of
+> derated capacity. CALC-A must resolve by adding a duty unit or
+> recommending a larger model before the run proceeds.**
+>
+> **OPDC YIELD LOCK: OPDC t/h is always calculated as 15.2% of EFB fresh
+> weight. CALC-A must never accept an independently entered OPDC rate
+> that contradicts this.**
+
+**CALC-B** **FOOTPRINT & FLOOR PLAN CALCULATOR**
+
+*Translates equipment register into minimum building floor area with
+full maintenance clearances, lane widths, and platform schedules*
+
+**Purpose**
+
+Takes the equipment register from CALC-A and computes the minimum
+building floor area. It arranges equipment in process sequence, applies
+mandatory clearance and aisle rules, sizes platforms, positions MCC
+rooms and maintenance workshop, and outputs the complete building
+envelope dimensions.
+
+**Floor Plan Rules (All Mandatory)**
+
+  -------------------------------------------------------------------------
+  **Rule**           **Value**      **Rationale**
+  ------------------ -------------- ---------------------------------------
+  Side clearance     Min 1.0 m each Operator access, guarding, inspection
+  each machine       side           
+
+  Drive / discharge  Min 1.5 m      Motor replacement, shaft extraction
+  end clearance                     
+
+  Central            6.0 m (full    Forklift passage + maintenance crew +
+  maintenance aisle  building       2-person clearance
+  width              length)        
+
+  Elevated platform  Min 2.5 m      2 operators + hand tools side-by-side
+  width                             
+
+  Staircase          1.5 m × 3.0 m  Building codes + emergency egress
+  footprint          (one per 2     
+                     platforms)     
+
+  MCC rooms          Two rooms, 6 × Electrical separation, heat ventilation
+                     4 m each, at   
+                     building NE    
+                     and NW corners 
+
+  Maintenance        10 × 10 m      Welding, lathe, tool storage, spare
+  workshop bay       attached to    parts
+                     north end of   
+                     building       
+
+  Truck receiving    18 × 12 m (EFB Truck turning radius 9 m, separate fire
+  bay                and OPDC       zone
+                     shared),       
+                     physically     
+                     separate from  
+                     processing     
+                     hall           
+
+  POS sump and       6 × 4 m        Spill containment, chemical resistance
+  decanter pad       reinforced     
+                     slab at ground 
+                     level,         
+                     adjacent to    
+                     south wall     
+
+  Buffer silos       Ø3.0 m EFB     Product surge buffering before S2
+  (EFB + OPDC)       silo + Ø2.8 m  gallery
+                     OPDC silo, end 
+                     of respective  
+                     lines          
+
+  Covered conveyor   4 m wide ×     Weather protection of product stream
+  gallery to S2      measured       
+                     distance       
+                     (calculated    
+                     per site plan) 
+
+  Emergency exit     Min 3 m        NFPA 101 / Indonesian fire code
+  clearance          unobstructed   
+                     path to all    
+                     exit doors     
+  -------------------------------------------------------------------------
+
+**Floor Plan Calculation Logic**
+
+> CALC-B FLOOR PLAN ALGORITHM:
+>
+> ── INPUT: equipment_register from CALC-A
+> ───────────────────────────────
+>
+> For each machine: footprint_L_m, footprint_W_m, unit_count,
+> process_sequence
+>
+> Clearance rules (above), fixed rooms (MCC, workshop, silos, bay)
+>
+> ── STEP 1: EFB LINE WIDTH
+> ───────────────────────────────────────────────
+>
+> efb_max_equip_width = MAX(footprint_W) across all EFB machines
+>
+> efb_line_width = efb_max_equip_width + 2 × 1.0 (side clearances)
+>
+> Round up to next 3 m module
+>
+> ── STEP 2: OPDC LINE WIDTH (mirrors EFB)
+> ───────────────────────────────
+>
+> opdc_line_width = MAX(footprint_W OPDC) + 2 × 1.0
+>
+> Round up to next 3 m module
+>
+> ── STEP 3: TOTAL BUILDING WIDTH
+> ────────────────────────────────────────
+>
+> total_width = efb_line_width + 6.0 (central aisle) + opdc_line_width
+>
+> Round up to next 6 m portal frame bay width
+>
+> ── STEP 4: BUILDING DEPTH
+> ───────────────────────────────────────────────
+>
+> For EFB line: SUM(footprint_L per machine + 1.5 m end clearance) in
+>
+> process sequence order
+>
+> For OPDC line: same calculation
+>
+> depth_basis = MAX(efb_depth, opdc_depth) + workshop zone (10 m) + silo
+> zone (4 m)
+>
+> Round up to next 5 m portal frame module
+>
+> ── STEP 5: REQUIRED CLEAR HEIGHT
+> ───────────────────────────────────────
+>
+> platform_max_elevation = MAX across all platform heights (from
+> equipment dimensions)
+>
+> required_clear_ht = platform_max_elevation + 2.5 m (headroom above
+> platform)
+>
+> Frame clear height → round up to: 8 / 10 / 12 / 14 m
+>
+> ── STEP 6: OUTPUT
+> ───────────────────────────────────────────────────────
+>
+> { building_width_m, building_depth_m, clear_height_m, floor_area_m2,
+>
+> portal_frame_count, bay_spacing_m, platform_schedule\[\],
+>
+> equipment_grid_positions{tag: {x_m, y_m, elevation_m}} }
+
+**Building Size vs. EFB Throughput --- Automatic Scaling Reference**
+
+  ------------------------------------------------------------------------------------
+  **EFB t/h   **Building   **Depth**   **Clear    **Floor   **Trigger Change**
+  Range**     Width**                  Height**   Area m²** 
+  ----------- ------------ ----------- ---------- --------- --------------------------
+  15--25 t/h  36 m         35 m        10 m       1,260     Current design
+  (current                                                  
+  base)                                                     
+
+  25--40 t/h  42 m         40 m        10 m       1,680     +1 press/shredder column
+                                                            each line
+
+  40--55 t/h  48 m         45 m        12 m       2,160     +2 equipment columns;
+                                                            taller silos
+
+  55--75 t/h  54 m         50 m        12 m       2,700     Major restructure of
+                                                            processing bay
+
+  \>75 t/h    CALC-B       ---         ---        ---       Dual-building option with
+              flags:                                        shared gallery
+              consider 2                                    
+              parallel S1                                   
+              buildings                                     
+  ------------------------------------------------------------------------------------
+
+**CALC-C** **BUILDING DESIGN CALCULATOR --- STRUCTURE, STEEL FRAMES &
+CONVEYORS**
+
+*Designs portal frame structure, steel section sizes, roof, wall,
+drainage, all conveyors, and complete electrical load schedule*
+
+**Purpose**
+
+Receives building envelope dimensions from CALC-B and the equipment list
+from CALC-A. Designs the full structural building including portal frame
+schedule, steel section selection, cladding specification, conveyor
+network (count, length, rise, motor kW), and the complete electrical
+load schedule for CALC-D.
+
+**C.1 Portal Frame Structure Design Logic**
+
+  -----------------------------------------------------------------------
+  **Structural     **Calculation Logic**           **Output**
+  Parameter**                                      
+  ---------------- ------------------------------- ----------------------
+  Frame spacing    Standard 6 m centres. If any    Number of bays =
+  (bay)            equipment span \>5.5 m → widen  CEIL(depth /
+                   to 7.2 m for that bay           bay_spacing) + 1 end
+                                                   frames
+
+  Rafter section   Span ≤36 m → 254UB or 305UB.    Section designation +
+                   Span 36--48 m → 356UB. Span     weight kg/m
+                   \>48 m → 406UB. Verify D/L+L/L  
+                   ratio ≤1.5 (deflection)         
+
+  Column section   Height 8--10 m → 203UC or       Section designation
+                   254UC. Height 10--12 m → 254UC  
+                   or 305UC. Axial load from frame 
+                   reaction                        
+
+  Roof pitch       15° standard (tropical fast     Pitch degrees; ridge
+                   drainage). ≥18° if site         height = 0.5 × span ×
+                   rainfall \>3,000 mm/yr (West    tan(pitch)
+                   Java = check)                   
+
+  Purlin spacing   Z-section 200×70 @ 1.5 m on     Count per rafter ×
+                   rafters (dead + live load calc) total rafters = total
+                                                   purlins
+
+  Side girt        C-section 150×65 @ 1.5 m        Count per column
+  spacing          vertical on columns, 3 sides    height × total columns
+                   (open south for ventilation)    
+
+  Wind bracing     X-rod bracing in first and last Rod diameter (typ. 20
+                   bays + 1 intermediate bay each  mm dia) + turnbuckles
+                   side                            
+
+  Column base      With anchor bolts 4× M24 in     Plate size + bolt
+  plates           pocket foundations.             layout per column
+                   Holding-down bolt centres =     
+                   column flange width + 100 mm    
+
+  Roof cladding    Insulated metal deck 75 mm EPS  Area m²; specify
+  area             core. Area = width × depth /    colour: Colorbond or
+                   cos(pitch) + 5% laps and waste  equivalent
+
+  Wall cladding    Insulated sandwich panel 50 mm  Area m²
+  area             EPS, 3 sides. South = partial   
+                   open + insect screen            
+
+  Ridge ventilator Continuous 1.0 m wide ×         Length m; fan count if
+                   building depth. Natural         forced
+                   ventilation + extract fans if   
+                   temp \>38°C                     
+
+  Translucent roof 10% of roof area evenly         Area m²; count
+  panels           distributed. Fibreglass or      
+                   polycarbonate 2.5 mm            
+  -----------------------------------------------------------------------
+
+**C.2 Conveyor Network Design Logic**
+
+All conveyors are designed by CALC-C using equipment positions from
+CALC-B. Each conveyor is sized for the stream t/h it carries.
+
+  -----------------------------------------------------------------------
+  **Conveyor         **Calculation Rule**
+  Parameter**        
+  ------------------ ----------------------------------------------------
+  Belt width (mm)    EFB line: max(600, CEIL(stream_tph / 35) × 100).
+                     OPDC line: max(500, CEIL(stream_tph / 25) × 100).
+                     Gallery: same as line width at discharge.
+
+  Belt speed (m/s)   1.0--1.5 m/s on feeders and horizontal runs.
+                     0.75--1.0 m/s on inclines \>15°. All VFD-controlled.
+
+  Incline angle      ≤18° without cleats. ≤22° with 50 mm rubber cleats
+                     at 300 mm pitch. If elevation change \>3 m over \<10
+                     m horizontal → cleated belt mandatory.
+
+  Drive motor kW     P_motor = (stream_tph × 9.81 × (L × friction_0.022 +
+                     H)) / (3600 × efficiency_0.85). Add 15% safety
+                     factor. Select next standard motor
+                     (7.5/11/15/18.5/22/30 kW).
+
+  Idler type and     Troughing 35° triple-roll idlers @ 1.2 m loaded, 3.0
+  spacing            m return. Impact idlers at feed points (5-roll,
+                     rubber disc).
+
+  Transfer chutes    Lined with 12 mm UHMW-PE or 20 mm polyurethane.
+                     Minimum 600 mm clearance above belt. Dust seal
+                     flaps. Dead-box impact zone.
+
+  Belt material      4-ply EP rubber, 10 mm top cover, 4 mm bottom.
+                     Suitable for wet fibrous palm residues. OR PVC
+                     food-grade on product streams post-S3.
+
+  Belt alignment     Auto-tracking training idlers at feed and discharge
+                     on all belts \>10 m. Belt-track switches trip on
+                     deviation \>50 mm.
+
+  Safety systems     Pull-cord (rip-cord) switches full length both
+                     sides. Zero-speed sensor on tail pulley. Belt-sway
+                     switches × 2 per conveyor. Guarding per ISO 11684.
+
+  Total conveyor     EFB line: 9 conveyors. OPDC line: 5 conveyors. POS
+  count --- base     line: 2 conveyors. Covered gallery to S2: 3
+  case 25 t/h EFB    conveyors. TOTAL: 19 conveyors.
+
+  Motor total ---    Sum of all drive motor ratings (kW) → feeds into
+  all conveyors      CALC-C electrical connected load total.
+  -----------------------------------------------------------------------
+
+**C.3 Electrical Design Logic**
+
+  -----------------------------------------------------------------------
+  **Item**           **Calculation**
+  ------------------ ----------------------------------------------------
+  Total connected    Sum of CALC-A equipment motors + CALC-C conveyor
+  load (kW)          motors + 15% allowance for lighting, HVAC,
+                     instrumentation, small power.
+
+  Demand factor      0.75 applied to all processing equipment (not all
+                     running simultaneously). 1.0 for lighting, controls,
+                     emergency systems.
+
+  Transformer kVA    kVA = (total demand kW × demand_factor) /
+                     power_factor_0.92. Then × 1.25 safety margin. Select
+                     next standard: 250 / 315 / 400 / 500 / 630 / 800
+                     kVA.
+
+  PLN grid           LV 380V 3-phase 50 Hz. Metering panel at perimeter
+  connection         wall. PLN tariff \$0.091437/kWh (IDR/USD 15,800).
+                     Flag for AI search update every 3 days.
+
+  LV switchboard     Main incomer MCCB. Bus-bar sized for full connected
+                     load. Separate circuits for EFB line, OPDC line,
+                     POS, lighting, services.
+
+  MCC panels         One MCC per processing line (EFB and OPDC). DOL
+                     starters ≤7.5 kW. Star-delta starters 11--37 kW. VFD
+                     for all feeders, conveyors, and variable-speed
+                     machines.
+
+  PLC and HMI        Allen-Bradley or Siemens S7 PLC (one per MCC).
+                     15-inch touchscreen HMI per line. Remote monitoring
+                     via Supabase API integration (OPC-UA or MQTT
+                     bridge).
+
+  Instrumentation    Belt scales on all product conveyors (output feed to
+                     NPK Relay). Level sensors on all silos and hoppers.
+                     Moisture sensors post-press discharge (alarms if
+                     OPDC \>40% MC).
+
+  Earthing system    TN-C-S. Earth grid 25 × 4 mm copper tape buried 600
+                     mm depth around building perimeter. All equipment
+                     bonded. Earth loop impedance ≤1 Ω.
+  -----------------------------------------------------------------------
+
+**CALC-D** **MACHINERY CAPEX CALCULATOR**
+
+*Calculates full capital expenditure for all S1 machinery and
+civil/structural works --- dynamically updates on every scaling run*
+
+**Purpose**
+
+Aggregates equipment supply costs from CALC-A, structural and conveyor
+costs from CALC-C, and building civil costs from CALC-B into a single
+versioned CAPEX statement. Every line item is traceable to a source (OEM
+quote / contractor estimate / engineering estimate / DATA GAP).
+
+**CAPEX Calculation Logic**
+
+> FOR each machine_item IN equipment_register (from CALC-A):
+>
+> supply_cost = unit_cost_usd × total_units
+>
+> install_rate = 18% (standard Indonesian site)
+>
+> = 22% (elevated platform \>3 m)
+>
+> = 25% (decanter centrifuge --- vibration isolation required)
+>
+> install_cost = supply_cost × install_rate
+>
+> commissioning = supply_cost × 8%
+>
+> item_capex = supply_cost + install_cost + commissioning
+>
+> AGGREGATION:
+>
+> equip_capex_efb_line = SUM(item_capex) for EFB stream equipment
+>
+> equip_capex_opdc_line = SUM(item_capex) for OPDC stream equipment
+>
+> equip_capex_pos_line = SUM(item_capex) for POS stream equipment
+>
+> equip_capex_shared = SUM(item_capex) for silos, gallery, PLC/HMI
+>
+> equip_capex_total = SUM of all four lines
+>
+> ADDITIONAL CAPEX (from CALC-B and CALC-C):
+>
+> building_civil = portal_frame_kg × rate_usd_per_kg
+>
+> \+ cladding_area_m2 × rate_usd_per_m2
+>
+> \+ floor_area_m2 × (150mm RC rate + 200mm truck lane rate)
+>
+> \+ drainage + foundations
+>
+> electrical_capex = transformer + switchboard + MCC_panels + cabling
+>
+> \+ earthing + instrumentation + CCTV + PLC/HMI
+>
+> platforms_stairs = hot-dip galv. steel platform area_m2 ×
+> fabrication_rate
+>
+> conveyor_gallery = gallery_length_m × 4m × 180 USD/m2
+>
+> MARGIN ITEMS:
+>
+> spare_parts_bank = equip_capex_total × 7%
+>
+> engineering_fee = (equip_capex_total + building_civil + electrical) ×
+> 8%
+>
+> contingency = SUM(all above) × 10%
+>
+> TOTAL_CAPEX = SUM(all line items)
+>
+> CAPEX_PER_T_CAPACITY = TOTAL_CAPEX / (stream_tph_efb × 7920 hrs × 0.85
+> utilisation)
+
+**Dynamic CAPEX Table Structure (updates every run)**
+
+  -------------------------------------------------------------------------------
+  **Category**   **Sub-Category**   **Calculation Basis**   **Source Flag**
+  -------------- ------------------ ----------------------- ---------------------
+  Equipment ---  Trommel, magnets,  CALC-A total_units ×    Quote/Estimate/DATA
+  EFB Line       presses ×duty+bkp, unit_cost + 18--22%     GAP per item
+                 shredders, mills,  install + 8%            
+                 screens, EFB       commissioning           
+                 conveyors                                  
+
+  Equipment ---  Trommel, magnet,   CALC-A total_units ×    Quote/Estimate/DATA
+  OPDC Line      dewatering press,  unit_cost + install +   GAP per item
+                 loosener, buffer   commissioning           
+                 bunker, blending                           
+                 silo, OPDC                                 
+                 conveyors                                  
+
+  Equipment ---  Decanter           CALC-A total_units ×    Quote/Estimate/DATA
+  POS Line       centrifuge ×       unit_cost + 25%         GAP
+                 duty+bkp, sludge   install + 8%            
+                 pump, sump, POS    commissioning           
+                 conveyors                                  
+
+  Equipment ---  Buffer silos       CALC-A + CALC-C         Quote/Estimate
+  Shared         (EFB+OPDC),                                
+                 blending conveyor,                         
+                 PLC/HMI per line,                          
+                 instrumentation                            
+
+  Building &     Portal frame,      CALC-C structural       Estimate --- obtain
+  Civil          cladding (roof + 3 output × current        contractor quote
+                 walls), floor      Indonesian unit rates   
+                 slabs,                                     
+                 foundations,                               
+                 drainage, sub-base                         
+
+  Electrical     Transformer, LV    CALC-C electrical       Estimate --- obtain
+                 switchboard, MCC   output × standard unit  contractor quote
+                 panels, cabling,   rates                   
+                 earthing, CCTV                             
+
+  Platforms &    Hot-dip galvanised CALC-C structural +     Estimate
+  Staircases     steel platforms at CALC-B platform         
+                 +3.0 / +3.2 / +4.0 schedule × fabrication  
+                 m elevations +     rate                    
+                 staircases                                 
+
+  Conveyor       Steel frame +      CALC-C gallery          Estimate
+  Gallery to S2  corrugated iron    dimensions × USD 180/m² 
+                 roof, 4 m wide ×                           
+                 gallery length m                           
+
+  Spare Parts    Initial wear parts 7% of equipment total   Derived
+  Bank           inventory                                  
+                 (hammers, screens,                         
+                 belts, bearings)                           
+
+  Engineering &  Process, civil,    8% of equipment +       Industry standard
+  Design         structural,        building + electrical   
+                 electrical                                 
+                 drawings and                               
+                 specifications                             
+
+  Contingency    Applied to all     10%                     Standard
+                 line items above                           
+
+  TOTAL CAPEX    ---                Sum of all above        USD total + USD/t
+                                                            capacity
+  -------------------------------------------------------------------------------
+
+> **DATA GAP RULE: Every cost item without a confirmed OEM quote or
+> contractor estimate must be labelled \'DATA GAP\' in the CAPEX output.
+> CFO Professor #35 must review all DATA GAP items before the CAPEX is
+> presented to any investor or estate company.**
+>
+> **CROSS-REFERENCE: All equipment costs must be cross-referenced
+> against FD_CFI_Engineering_Master_EPC_UPDATED.xlsx and
+> FD_CAPEX_Building_Machinery sheets. Any discrepancy \>15% must be
+> flagged explicitly.**
+
+**CALC-E** **MACHINERY OPEX CALCULATOR**
+
+*Annual operating cost for all S1 machinery --- electricity, labour,
+wear parts, lubrication --- per year and per tonne fresh substrate*
+
+**Purpose**
+
+Calculates the ongoing cost of operating the S1 facility. Outputs annual
+total, cost per tonne fresh substrate, and cost per operating hour. All
+inputs are dynamic --- changes in equipment count (CALC-A), building
+size (CALC-B), or electricity tariff (AI search Prompt 8) trigger
+automatic recalculation.
+
+**OPEX Calculation Logic**
+
+> CONSTANTS:
+>
+> operating_days_per_year = 330
+>
+> operating_hours_per_year = 330 × 24 = 7,920 hrs
+>
+> PLN_rate = \$0.091437/kWh ← UPDATE via AI search every 3 days
+>
+> ── ELECTRICITY
+> ─────────────────────────────────────────────────────────
+>
+> For each machine in equipment_register (from CALC-A):
+>
+> load_factor = 0.85 (press, shredder, mill, trommel, decanter)
+>
+> = 0.70 (conveyor, feeder, belt scale)
+>
+> = 0.65 (vibrating screen, sorter)
+>
+> annual_kWh = motor_kw × duty_units × operating_hrs × load_factor
+>
+> annual_cost_USD = annual_kWh × PLN_rate
+>
+> TOTAL electricity_cost = SUM across all equipment + conveyors +
+> lighting/HVAC
+>
+> ── LABOUR
+> ──────────────────────────────────────────────────────────────
+>
+> operators_per_shift = CEIL(total_duty_machines / 4)
+>
+> shifts_per_day = 3 (24 hr continuous operation)
+>
+> total_operators = operators_per_shift × 3
+>
+> maintenance_FTE = 2
+>
+> supervisor_FTE = 1 per shift = 3
+>
+> labour_cost = (total_operators × \$8,000) + (maintenance × \$9,500) +
+> (supervisors × \$12,000)
+>
+> \[All USD/year. Update annually via Prompt 8 AI search for Indonesian
+> wage indices\]
+>
+> ── WEAR PARTS
+> ──────────────────────────────────────────────────────────
+>
+> Hammer mill hammers → replace every 4 weeks → 13 changes/yr
+>
+> Mill screens → replace every 8 weeks → 6.5 changes/yr
+>
+> Press feed screws → replace every 6 months → 2 changes/yr
+>
+> Press pressure screens → replace every 3 months → 4 changes/yr
+>
+> Conveyor belts → replace every 12 months → 1 per conveyor/yr
+>
+> Bearings (all machines)→ replace every 6 months per duty machine
+>
+> Shredder knives/liners → inspect monthly, replace quarterly
+>
+> ── LUBRICATION
+> ─────────────────────────────────────────────────────────
+>
+> lube_cost = 1.8% × total_equipment_supply_cost_USD / year
+>
+> ── TOTALS
+> ───────────────────────────────────────────────────────────────
+>
+> annual_opex = electricity + labour + wear_parts + lube
+>
+> opex_per_tonne = annual_opex / (stream_tph × 7,920) \[USD/t fresh
+> substrate\]
+>
+> opex_per_hour = annual_opex / 7,920 \[USD/operating hour\]
+
+**OPEX Table --- Design Basis: 60 TPH FFB Mill (25 t/h EFB input)**
+
+  -----------------------------------------------------------------------------
+  **OPEX Category**         **Annual kWh / **USD/Year   **USD/Year   **USD/t
+                            Units**        (low)**      (high)**     Fresh**
+  ------------------------- -------------- ------------ ------------ ----------
+  EFB line electricity ---  \~3,200,000    \$292,600    \$292,600    \$1.65
+  all machines + conveyors  kWh                                      
+
+  OPDC + POS line           \~820,000 kWh  \$75,000     \$75,000     \$0.42
+  electricity                                                        
+
+  Lighting, controls, HVAC, \~280,000 kWh  \$25,600     \$25,600     \$0.14
+  instrumentation                                                    
+
+  Labour --- operators (3   CEIL(duty/4) × \$96,000     \$96,000     \$0.54
+  shifts)                   3 FTE                                    
+
+  Labour --- maintenance +  2 + 3 FTE      \$62,500     \$62,500     \$0.35
+  supervisors                                                        
+
+  Wear parts --- hammer     13 sets        \$35,000     \$52,000     \$0.25
+  mill hammers (13                                                   
+  changes/yr)                                                        
+
+  Wear parts --- press      6 sets total   \$18,000     \$28,000     \$0.13
+  screws and screens (2+4                                            
+  changes)                                                           
+
+  Wear parts --- shredder   Quarterly      \$12,000     \$20,000     \$0.09
+  knives and AR liners      replace                                  
+
+  Wear parts --- conveyor   19             \$19,000     \$28,500     \$0.14
+  belts (19 belts/yr)       replacements                             
+
+  Wear parts --- bearings,  6-monthly per  \$8,000      \$12,000     \$0.06
+  seals, misc.              machine                                  
+
+  Lubrication and           1.8% of equip  \$15,000     \$20,000     \$0.10
+  consumables               CAPEX                                    
+
+  TOTAL ANNUAL OPEX         ---            \$658,700    \$712,200    \$3.87/t
+
+  OPEX per operating hour   ---            \$83/hr      \$90/hr      ---
+  (7,920 hrs/yr)                                                     
+  -----------------------------------------------------------------------------
+
+**CALC-F** **ASCII PROCESS FLOW GENERATOR**
+
+*Dynamically generates an accurate ASCII process flow diagram from the
+live equipment register --- regenerates on every scaling run*
+
+**Purpose**
+
+Produces a machine-accurate ASCII process flow diagram that reflects the
+actual equipment count and configuration from CALC-A. If throughput
+changes and duty units change, the ASCII diagram shows the updated
+configuration with utilisation %, stream parameters, and guardrail gate
+status. This is never a static diagram.
+
+**Generation Logic**
+
+> ASCII FLOW GENERATOR --- RULES:
+>
+> 1\. Read equipment_register from CALC-A, ordered by process_sequence
+> field
+>
+> 2\. For each equipment_item in sequence order:
+>
+> a\. Draw equipment box (38 chars wide):
+>
+> Line 1: TAG + EQUIPMENT NAME
+>
+> Line 2: ×N duty + ×1 backup (if backup_required)
+>
+> Line 3: Motor: NN kW each \| Util: NN.N% \[COLOUR_FLAG\]
+>
+> b\. Draw ↓ arrow to next equipment
+>
+> c\. At SPLIT POINTS (e.g. screen oversize recycle):
+>
+> Draw ├─ → (oversize back to hammer mill)
+>
+> Draw └─ → (product forward)
+>
+> 3\. Show stream state at each connection point:
+>
+> \[t/h FRESH \| MC: XX% \| size: XXmm\]
+>
+> 4\. Show GUARDRAIL GATE at critical checkpoints:
+>
+> ⊕ PASS (green) or ⊗ FAIL --- halt run
+>
+> Gates: OPDC MC ≤40% \| EFB particle ≤2mm D90 \| pH ≤8.0 before S4
+>
+> 5\. Show BLEND POINT where EFB + OPDC converge into 60:40 DM blend
+>
+> 6\. End with BUFFER SILOS → CONVEYOR GALLERY → \[S2 CHEMICAL
+> TREATMENT\]
+>
+> SCALING NOTATION IN BOX:
+>
+> 1 duty + 1 bkp → shows: \'×1 duty + ×1 backup\'
+>
+> 3 duty + 1 bkp → shows: \'×3 duty + ×1 backup (AMBER 78%)\'
+>
+> RED util → shows: \'⚠ OVERLOADED --- add 1 duty unit\'
+>
+> OUTPUT: ascii_flow_text (stored in Supabase
+> s1_run_log.ascii_flow_text)
+
+**Sample ASCII Flow Output --- Base Case 25 t/h EFB**
+
+> MILL EXIT (EFB 25 t/h \| 65% MC \| WHOLE BUNCH)
+>
+> │
+>
+> ┌──────────────────────────────────────────┐
+>
+> │ TR-2601 TROMMEL SCREEN │
+>
+> │ ×2 duty + ×1 backup │
+>
+> │ Motor: 7.5 kW each │ Util: 96% ⚠ │
+>
+> └──────────────────────────────────────────┘
+>
+> │ \[25 t/h \| 65% MC\]
+>
+> ┌──────────────────────────────────────────┐
+>
+> │ OBM-201 OVERBAND MAGNET │
+>
+> │ ×1 (pass-through) │
+>
+> │ Motor: 2.2+0.75 kW │ Util: 55% ✓ │
+>
+> └──────────────────────────────────────────┘
+>
+> │
+>
+> ┌──────────────────────────────────────────┐
+>
+> │ PR-201 EFB SCREW PRESS (CB 20T/C) │
+>
+> │ ×2 duty + ×1 backup │
+>
+> │ Motor: 37 kW each │ Util: 87% AMBER │
+>
+> └──────────────────────────────────────────┘
+>
+> │ \[PRESSED EFB \| 45--50% MC\] ⊕ MC GATE
+>
+> ┌──────────────────────────────────────────┐
+>
+> │ SD-201 EFB SHREDDER (KH-777) │
+>
+> │ ×4 duty + ×1 backup │
+>
+> │ Motor: 90 kW each │ Util: 96% ⚠ │
+>
+> └──────────────────────────────────────────┘
+>
+> │
+>
+> ┌──────────────────────────────────────────┐
+>
+> │ HM-201 HAMMER MILL (YTH-7.100) │ ◄──── OVERSIZE RECYCLE
+>
+> │ ×5 duty + ×1 backup │
+>
+> │ Motor: 55 kW each │ Util: 96% ⚠ │
+>
+> └──────────────────────────────────────────┘
+>
+> │ │ OVERSIZE → RECYCLE
+>
+> ┌──────────────────────────────────────────┐
+>
+> │ VS-201 VIBRATORY SCREEN (SWECO) │
+>
+> │ ×4 duty + ×1 backup │
+>
+> │ Motor: small │ Util: 72% ✓ GREEN │
+>
+> └──────────────────────────────────────────┘
+>
+> │ ⊕ PARTICLE GATE ≤2mm D90 PASS
+>
+> │ \[EFB PRODUCT \| ≤2mm \| 45--50% MC\]
+>
+> ┌──────────────────────────────────────────┐
+>
+> │ SIL-301 EFB BUFFER SILO Ø3.0 m │
+>
+> └──────────────────────────────────────────┘
+>
+> │
+>
+> BLEND POINT (60:40 DM) ◄── OPDC LINE joins here
+>
+> │
+>
+> ┌──────────────────────────────────────────┐
+>
+> │ COVERED GALLERY → \[S2 CHEMICAL STAGE\] │
+>
+> └──────────────────────────────────────────┘
+
+**CALC-G** **ARCHITECTURAL DESIGN CALCULATOR**
+
+*Integrates CALC-B + CALC-C outputs to generate full architectural
+specification: floor plans, sections, foundation schedule, materials,
+and services schematics*
+
+**Purpose**
+
+Produces the complete architectural output package for the S1 facility.
+All drawings are ASCII-format for prompt output and are simultaneously
+written as structured data to Supabase (architecture_json) for use by
+external CAD/BIM tools and the project engineering team.
+
+**G.1 Architectural Output Package**
+
+  ------------------------------------------------------------------------
+  **Drawing /          **Content**                    **Source
+  Document**                                          Calculators**
+  -------------------- ------------------------------ --------------------
+  Site Master Plan     Facility boundary, building    CALC-B dimensions +
+  (ASCII)              footprint position, truck      fixed site constants
+                       access routes, GH-A/GH-B       
+                       greenhouse zone, mill          
+                       connection point, S2 building  
+                       zone, conveyor gallery,        
+                       service lanes, car park, waste 
+                       management areas, fire hydrant 
+                       ring positions                 
+
+  Building Floor Plan  Equipment grid positions (from CALC-B equipment
+  (ASCII)              CALC-B                         grid + CALC-C
+                       equipment_grid_positions),     
+                       central maintenance aisle, MCC 
+                       room positions, maintenance    
+                       workshop, receiving bay,       
+                       emergency exits (all within 30 
+                       m), drainage trench routing,   
+                       silo positions                 
+
+  Building             Portal frame profile, platform CALC-C structural
+  Cross-Section A-A    elevations (+3.0, +3.2, +4.0 m output + CALC-B
+  (ASCII)              typical), equipment heights    heights
+                       and clearances, ridge          
+                       ventilator, roof pitch, column 
+                       base level, sub-floor drainage 
+                       slope                          
+
+  Building             Receiving bay cross-section:   Fixed design +
+  Cross-Section B-B    hopper depth, apron feeder     CALC-A hopper
+  (ASCII)              angle, truck approach ramp,    geometry
+                       ventilation fans, bay door     
+                       height                         
+
+  Foundation Schedule  One row per equipment base:    CALC-A equipment
+  (Table)              isolated pad or strip          weights + CALC-C
+                       foundation, plan dimensions L  loads
+                       × W, depth from FFL, C25/30    
+                       reinforced concrete, anchor    
+                       bolt specification, vibration  
+                       isolation pad type and         
+                       durometer                      
+
+  Material             Concrete grades (C25/30 slab,  CALC-C structural
+  Specification Table  C30/37 truck lane, C20/25      selections
+                       walkways), steel grades (S355  
+                       frames, S275 purlins), floor   
+                       coating (2-part epoxy,         
+                       chemical resistant), platform  
+                       grating (38 × 5 mm galv. bar), 
+                       bolt grades                    
+
+  Services Schematic   Compressed air ring main (100  CALC-C services
+  (ASCII)              mm ID, 8 bar), potable water   design
+                       supply, fire suppression       
+                       system, leachate collection    
+                       drainage gradient, efflux      
+                       trench routing to POME pond,   
+                       fire hydrant ring              
+
+  Staircase and        Elevation, plan width,         CALC-C + CALC-B
+  Platform Schedule    rise/going (175/250 mm         platform schedule
+  (Table)              standard), handrail spec (42   
+                       mm OD hot-dip galv.), live     
+                       load rating (4 kN/m²),         
+                       anti-slip nosing               
+
+  Conveyor Gallery     Length × 4 m wide, steel RHS   CALC-C gallery
+  Drawing (ASCII)      portal every 6 m, corrugated   dimensions
+                       iron roof, open sides with     
+                       bird screen, belt centreline,  
+                       maintenance walkway 1.0 m      
+                       width one side                 
+  ------------------------------------------------------------------------
+
+**G.2 Site Master Plan --- Dynamic ASCII Template**
+
+> ╔══════════════════════════════════════════════════════════════════════════╗
+>
+> ║ CFI S1 --- SITE MASTER PLAN (Dimensions auto-calculated by CALC-B) ║
+>
+> ║ NORTH ↑ │ Scale: approximate, not to scale ║
+>
+> ╚══════════════════════════════════════════════════════════════════════════╝
+>
+> EXISTING CPO MILL (60 TPH FFB) ← EFB / OPDC / POS exit point
+>
+> │ │
+>
+> EFB ROAD OPDC CONVEYOR
+>
+> TRANSPORT BELT
+>
+> │ │
+>
+> ▼ ▼
+>
+> ╔══════════════════════════════╗
+>
+> ║ TRUCK RECEIVING BAY ║ {bay_width_m} × {bay_depth_m}
+>
+> ║ (EFB + OPDC shared) ║ \[CALC-B output\]
+>
+> ╚══════════════════════════════╝
+>
+> │
+>
+> ▼
+>
+> ╔══════════════════════════════════════════════════════╗
+>
+> ║ S1 PROCESSING BUILDING ║
+>
+> ║ {bldg_width_m} m wide × {bldg_depth_m} m deep ║
+>
+> ║ {clear_height_m} m clear height ║
+>
+> ║ ║
+>
+> ║ EFB LINE │ 6m AISLE │ OPDC LINE │ POS LINE (south) ║
+>
+> ║ Workshop │ MCC-EFB │ MCC-OPDC │ Emergency exits ║
+>
+> ╚══════════════════════════════════════════════════════╝
+>
+> │
+>
+> ▼
+>
+> ╔══════════════════════════════╗
+>
+> ║ COVERED GALLERY {gal_len}m ║ 4 m wide
+>
+> ╚══════════════════════════════╝
+>
+> │
+>
+> ▼
+>
+> ╔══════════════════════════════╗
+>
+> ║ S2 CHEMICAL TREATMENT ║ → S3 → S4 → S5/S6
+>
+> ╚══════════════════════════════╝
+
+**CALC-H** **NPK RELAY CALCULATOR + S2 HANDOFF**
+
+*Final calculator in the chain --- aggregates NPK across all three
+streams, calculates fertiliser replacement value, writes S2 handoff
+payload to Supabase*
+
+**Purpose**
+
+Aggregates the nutrient content across the three post-S1 streams (EFB,
+OPDC, POS), calculates daily and annual NPK fertiliser replacement value
+using estate pricing, and packages the complete S2 handoff JSON payload
+that is written to Supabase and consumed by the S2 Chemical Treatment
+Calculator, the NPK Value Dashboard, and the Plantation Intelligence
+tab.
+
+**NPK Relay Calculation Logic**
+
+> N CONVERSION FACTOR: ALWAYS 4.67 --- NEVER 6.25
+>
+> FOR EACH stream IN \[EFB_out, OPDC_out, POS_out\]:
+>
+> N_pct_DM = CP_pct_DM / 4.67
+>
+> N_kgd = DM_tpd × (N_pct_DM / 100) × 1000
+>
+> P_kgd = DM_tpd × (P_pct_DM / 100) × 1000
+>
+> K_kgd = DM_tpd × (K_pct_DM / 100) × 1000
+>
+> AGGREGATE (3-stream total):
+>
+> total_N_kgd = N_EFB + N_OPDC + N_POS
+>
+> total_P_kgd = P_EFB + P_OPDC + P_POS
+>
+> total_K_kgd = K_EFB + K_OPDC + K_POS
+>
+> REPLACEMENT VALUE (Sinar Mas estate pricing):
+>
+> N_value_usd_day = total_N_kgd × \$1.50 (USD/kg N)
+>
+> P_value_usd_day = total_P_kgd × \$1.80 (USD/kg P2O5)
+>
+> K_value_usd_day = total_K_kgd × \$0.90 (USD/kg K2O)
+>
+> daily_value = N_value + P_value + K_value
+>
+> annual_value = daily_value × 330 operating days
+>
+> BASELINE COMPARISON (guardrail-locked --- deviation \>10% → DATA GAP
+> flag):
+>
+> N baseline: 582 kg/day
+>
+> P baseline: 197 kg/day
+>
+> K baseline: 930 kg/day
+
+**S2 Handoff Payload (s2_payload JSONB) --- Written to Supabase
+s1_run_log**
+
+> {
+>
+> \"handoff_version\": \"2.0\",
+>
+> \"source_stage\": \"S1\",
+>
+> \"target_stage\": \"S2\",
+>
+> \"run_ts\": \"\<ISO 8601 timestamp\>\",
+>
+> \"run_id\": \"\<s1_run_log.id\>\",
+>
+> \"mill_config\": { \"ffb_tph\": 60, \"op_days\": 330 },
+>
+> \"streams\": {
+>
+> \"EFB\": { \"tph\": \<CALC-A\>, \"mc_pct\": \<measured\>,
+> \"particle_mm\": 2.0,
+>
+> \"cp_pct_dm\": 4.75, \"cn_ratio\": 60, \"lignin_pct_dm\": 22.0,
+> \"n_factor\": 4.67 },
+>
+> \"OPDC\": { \"tph\": \<CALC-A\>, \"mc_pct\": \<CALC-A --- floor 40%\>,
+>
+> \"cp_pct_dm\": 14.5, \"cn_ratio\": 20, \"lignin_pct_dm\": 30.7,
+>
+> \"yield_pct_efb_fw\": 15.2 },
+>
+> \"POS\": { \"tph\": \<CALC-A\>, \"mc_pct\": \<measured\>,
+>
+> \"cp_pct_dm\": 11.0, \"ash_pct_dm\": 28.0, \"ee_pct_dm\": 10.0,
+>
+> \"n_pct_dm\": 1.76, \"fe_mg_kg_dm\": \<ICP_OES result\> }
+>
+> },
+>
+> \"blend_60_40_dm\": { \"fresh_tpd\": \<calc\>, \"dm_tpd\": \<calc\>,
+>
+> \"cp_pct\": 8.14, \"cn_ratio\": 32, \"lignin_pct\": 25.0 },
+>
+> \"npk_relay\": { \"n_kgd\": \<calc\>, \"p_kgd\": \<calc\>, \"k_kgd\":
+> \<calc\>,
+>
+> \"n_usd_day\": \<calc\>, \"p_usd_day\": \<calc\>,
+>
+> \"k_usd_day\": \<calc\>, \"total_usd_day\": \<calc\>,
+>
+> \"annual_usd\": \<calc\> },
+>
+> \"equipment\": { \"total_duty_units\": \<CALC-A\>,
+> \"total_backup_units\": \<CALC-A\>,
+>
+> \"total_connected_kw\": \<CALC-C\> },
+>
+> \"building\": { \"width_m\": \<CALC-B\>, \"depth_m\": \<CALC-B\>,
+>
+> \"height_m\": \<CALC-B\>, \"floor_area_m2\": \<CALC-B\> },
+>
+> \"financials\": { \"capex_usd\": \<CALC-D total\>, \"opex_usd_per_t\":
+> \<CALC-E\> },
+>
+> \"guardrail_gates\": { \"opdc_mc_floor_met\": \<bool\>,
+> \"particle_2mm_gate\": \<bool\>,
+>
+> \"all_util_below_85pct\": \<bool\>, \"npk_relay_complete\": \<bool\>,
+>
+> \"five_day_bio_minimum\": \"PENDING --- enforced at S3\" },
+>
+> \"data_gaps\": \[ \"\<list of DATA_GAP flags from CALC-A through
+> CALC-H\>\" \],
+>
+> \"status\": \"S1_COMPLETE\"
+>
+> }
+
+**3. SUPABASE INTEGRATION --- FULL READ/WRITE MAP**
+
+  ---------------------------------------------------------------------------------------------------------
+  **Calculator**   **Reads from Supabase**             **Writes to Supabase**          **Trigger**
+  ---------------- ----------------------------------- ------------------------------- --------------------
+  S1 Core          equipment_catalogue,                s1_run_log (new row per run)    On S0 data receipt
+                   user_added_machines, cfi_lab_values                                 or manual trigger
+
+  CALC-A           equipment_catalogue,                s1_run_log.equipment_json       After S0 t/h
+                   equipment_manufacturers,                                            validated
+                   cfi_equipment                                                       
+
+  CALC-B           s1_run_log.equipment_json (from     s1_run_log.building_json        After CALC-A
+                   CALC-A)                                                             complete
+
+  CALC-C           s1_run_log.building_json,           s1_run_log.structure_json,      After CALC-B
+                   equipment_catalogue.motor_kw        s1_run_log.total_connected_kw   complete
+
+  CALC-D           s1_run_log.equipment_json,          s1_run_log.capex_json           After CALC-C
+                   equipment_catalogue.unit_cost_usd                                   complete
+
+  CALC-E           s1_run_log.equipment_json,          s1_run_log.opex_json            After CALC-D
+                   cfi_chemicals (PLN rate)                                            complete
+
+  CALC-F           s1_run_log.equipment_json,          s1_run_log.ascii_flow_text      After CALC-A +
+                   s1_run_log.building_json                                            CALC-B complete
+
+  CALC-G           s1_run_log.building_json,           s1_run_log.architecture_json    After CALC-C
+                   s1_run_log.structure_json                                           complete
+
+  CALC-H           s1_run_log (all columns)            s1_run_log.npk_json,            After all CALC-A
+                                                       s1_run_log.s2_payload,          through G complete
+                                                       s1_run_log.status =             
+                                                       \'S1_COMPLETE\'                 
+
+  NPK Dashboard    s1_run_log.npk_json (real-time      ---                             Real-time Supabase
+                   subscription)                                                       subscription on
+                                                                                       write
+
+  S2 Chemical      s1_run_log.s2_payload WHERE status  ---                             Polls on schedule or
+  Calc.            = \'S1_COMPLETE\'                                                   webhook trigger
+  ---------------------------------------------------------------------------------------------------------
+
+**4. GOVERNING PROMPT INTEGRATION (PROMPTS 0--9)**
+
+All eight calculators inherit and enforce the full CFI prompt stack. The
+matrix below shows which prompts are active for each calculator.
+
+  ------------------------------------------------------------------------------------------------------
+  **Prompt**   **Document**              **A**   **B**   **C**   **D**   **E**   **F**   **G**   **H**
+  ------------ ------------------------- ------- ------- ------- ------- ------- ------- ------- -------
+  0            Personas Master --- all   ✅      ✅      ✅      ✅      ✅      ✅      ✅      ✅
+               professor panels                                                                  
+
+  1            Research Intensity ---    ✅      --      --      ✅      ✅      --      --      --
+               source hierarchy                                                                  
+
+  2            Anti-Hallucination --- no ✅      ✅      ✅      ✅      ✅      ✅      ✅      ✅
+               guessing, data must be                                                            
+               sourced                                                                           
+
+  3            Guardrails --- locked     ✅      ✅      ✅      ✅      ✅      ✅      ✅      ✅
+               values cannot be changed                                                          
+
+  4            Persona Enhanced ---      ✅      --      ✅      ✅      ✅      --      ✅      --
+               expert voting                                                                     
+
+  5            Governance --- change     ✅      ✅      ✅      ✅      ✅      ✅      ✅      ✅
+               classification A/B/C/D                                                            
+
+  6            Process Engineer ---      ✅      ✅      ✅      --      --      ✅      ✅      ✅
+               equipment, mass balance,                                                          
+               flow                                                                              
+
+  7            (reserved)                --      --      --      --      --      --      --      --
+
+  8            AI Search --- 3-day PLN   ✅      --      --      ✅      ✅      --      --      --
+               rate + OEM nameplate                                                              
+               updates                                                                           
+
+  9            Soil Orchestration ---    --      --      --      --      --      --      --      ✅
+               NPK provenance and soil                                                           
+               type                                                                              
+  ------------------------------------------------------------------------------------------------------
+
+**IMMUTABLE GUARDRAILS --- ALL EIGHT CALCULATORS**
+
+The following rules are locked across the entire calculator hub. They
+cannot be overridden by user input, AI prompt, or Admin Panel setting.
+
+> **OPDC MOISTURE FLOOR: 40% MC is an absolute floor. The OPDC press
+> (PR-301) discharge may never exceed 40% MC. If equipment selection
+> cannot achieve this, CALC-A must refuse to proceed and flag for
+> engineer review.**
+>
+> **OPDC YIELD LOCK: OPDC t/h = 15.2% of EFB fresh weight. CALC-A will
+> never accept a manually entered OPDC rate. This is a
+> biological/process constant, not a user variable.**
+>
+> **EFB PARTICLE SIZE: 2 mm D90 is the hard gate for S2 loading. The
+> CALC-F ASCII flow shows an oversize recycle loop back to HM-201.
+> Product that fails the gate (VS-201) cannot proceed to SIL-301.**
+>
+> **UTILISATION CAP: No duty machine may operate above 85% of its
+> derated capacity. CALC-A must add duty units or recommend a larger
+> model and display a RED flag before the run completes.**
+>
+> **BACKUP UNIT: Every machine with motor \>11 kW or classed as
+> press/shredder/mill/trommel/decanter/screen must have a minimum 1 hot
+> standby backup unit of identical specification.**
+>
+> **N CONVERSION FACTOR: 4.67 in every CALC-H calculation without
+> exception. Using 6.25 is a guardrail violation.**
+>
+> **OEM DERATE: Asian and Indonesian-fabricated machinery = 65% of
+> nameplate. EU and Japanese OEMs = 85% of nameplate. Applied in CALC-A
+> before any sizing calculation.**
+>
+> **DATA GAP: Any item without a confirmed OEM quote or contractor
+> estimate must be labelled DATA GAP in CALC-D output. No DATA GAP item
+> may be used in investor presentations without CFO Professor #35
+> review.**
+>
+> **5-DAY BIO MINIMUM: Not enforced in S1, but CALC-H must write
+> \'five_day_bio_minimum: PENDING --- enforced at S3\' in the s2_payload
+> guardrail_gates field so the S3 calculator cannot bypass it.**
+
+*CFI PROMPT SERIES \| S1 DYNAMIC MACHINERY CALCULATOR --- CALCULATOR HUB
+ARCHITECTURE \| v2.0 \| March 2026*
+
+*Circular Fertiliser Industries \| CONFIDENTIAL \| Design Basis: 60 TPH
+FFB Mill, Bogor, West Java*

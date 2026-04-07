@@ -1,0 +1,33 @@
+/* S3.css — design tokens from S3.jsx */
+:root {
+  /* C — S0-aligned dark navy palette */
+  --s3-navy:      #060C14;
+  --s3-navyMid:   #0A1628;
+  --s3-navyCard:  #111E33;
+  --s3-navyField: #142030;
+  --s3-navyDeep:  #0C1E33;
+  --s3-teal:      #40D7C5;
+  --s3-tealDim:   rgba(64,215,197,0.12);
+  --s3-tealBdr:   rgba(64,215,197,0.60);
+  --s3-amber:     #F5A623;
+  --s3-amberDim:  rgba(245,166,35,0.14);
+  --s3-green:     #00A249;
+  --s3-greenDim:  rgba(0,162,73,0.13);
+  --s3-red:       #E84040;
+  --s3-redDim:    rgba(232,64,64,0.13);
+  --s3-grey:      #A8BDD0;
+  --s3-greyLt:    rgba(168,189,208,0.75);
+  --s3-white:     #E8F0FE;
+  --s3-bdrIdle:   rgba(255,255,255,0.06);
+  --s3-bdrCalc:   rgba(139,160,180,0.18);
+  /* T — back-compat aliases */
+  --s3-t-border:  rgba(64,215,197,0.25);
+  --s3-t-borderT: rgba(64,215,197,0.60);
+  --s3-blue:      #60A5FA;
+  --s3-violet:    #A78BFA;
+  /* Fnt */
+  --s3-font-syne:  'Syne', sans-serif;
+  --s3-font-dm:    'DM Sans', sans-serif;
+  --s3-font-mono:  'DM Mono', monospace;
+  --s3-font-brand: 'EB Garamond', serif;
+}

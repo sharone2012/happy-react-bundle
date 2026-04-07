@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFI — Soil Science</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:      #060C14;
+    --navyCard:  #0C1E33;
+    --navyInput: #0A1829;
+    --teal:      #40D7C5;
+    --tealDim:   rgba(64,215,197,0.12);
+    --tealBdr:   rgba(64,215,197,0.60);
+    --amber:     #F5A623;
+    --amberDim:  rgba(245,166,35,0.15);
+    --red:       #E84040;
+    --redDim:    rgba(232,64,64,0.13);
+    --green:     #00A249;
+    --grey:      #A8BDD0;
+    --greyLt:    rgba(168,189,208,0.60);
+    --bdr:       rgba(139,160,180,0.18);
+    --white:     #E8F0FE;
+    --syne:      'Syne', sans-serif;
+    --dm:        'DM Sans', sans-serif;
+    --mono:      'DM Mono', monospace;
+  }
+
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: var(--dm);
+    font-size: 13px;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  .nav {
+    background: #081018;
+    border-bottom: 1px solid var(--bdr);
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0 24px;
+    height: 48px;
+  }
+  .nav-brand {
+    font-family: var(--syne);
+    font-size: 15px;
+    color: var(--teal);
+    margin-right: 32px;
+    letter-spacing: 0.04em;
+  }
+  /* element 1 */
+  .nav-tab {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    font-family: var(--dm);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--grey);
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transition: all 0.15s;
+  }
+  .nav-tab:hover { color: var(--white); }
+  .nav-tab.active {
+    color: var(--teal);
+    border-bottom: 2px solid var(--teal);
+  }
+
+  /* ── PAGE WRAPPER ── */
+  .page { max-width: 1360px; margin: 0 auto; padding: 24px 24px 60px; }
+
+  /* ── PAGE HEADER ── element 2 */
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 24px;
+  }
+  .page-title {
+    font-family: var(--syne);
+    font-size: 22px;
+    color: var(--teal);
+    letter-spacing: 0.02em;
+  }
+  .page-subtitle {
+    color: var(--grey);
+    font-size: 12px;
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  /* ── ESTATE CONTEXT BAR ── element 3 */
+  .context-bar {
+    background: var(--navyCard);
+    border: 1.5px solid var(--bdr);
+    border-radius: 10px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .ctx-item { display: flex; flex-direction: column; gap: 2px; }
+  .ctx-label { font-size: 10px; color: var(--grey); text-transform: uppercase; letter-spacing: 0.08em; }
+  .ctx-value { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--amber); }
+  .ctx-value.teal { color: var(--teal); }
+  .ctx-divider { width: 1px; height: 32px; background: var(--bdr); }
+
+  /* ── HA INPUT BLOCK ── element 4 */
+  .ha-input-block {
+    background: var(--amberDim);
+    border: 1px solid rgba(245,166,35,0.35);
+    border-radius: 8px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+  }
+  .ha-input-block label { font-size: 11px; color: var(--amber); font-weight: 600; white-space: nowrap; }
+  .ha-input {
+    background: #0A1829;
+    border: 1px solid rgba(245,166,35,0.50);
+    border-radius: 6px;
+    color: var(--white);
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 6px 10px;
+    width: 110px;
+    text-align: right;
+  }
+  .ha-input::placeholder { color: var(--grey); font-weight: 400; font-size: 12px; }
+  .ha-unit { font-size: 11px; color: var(--grey); }
+  .ha-note { font-size: 10px; color: rgba(245,166,35,0.7); margin-top: 2px; }
+
+  /* ── SECTION CARD ── */
+  .section-card {
+    background: var(--navyCard);
+    border: 1.5px solid #1E6B8C;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .section-hdr {
+    background: rgba(30,107,140,0.20);
+    border-bottom: 1px solid var(--bdr);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-letter {
+    font-family: var(--syne);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--teal);
+    background: rgba(64,215,197,0.12);
+    border: 1px solid rgba(64,215,197,0.30);
+    border-radius: 4px;
+    padding: 2px 7px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .section-title {
+    font-family: var(--syne);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--teal);
+    white-space: nowrap;
+  }
+  .section-badge {
+    font-size: 10px;
+    color: var(--grey);
+    background: rgba(139,160,180,0.10);
+    border: 1px solid var(--bdr);
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-left: auto;
+  }
+  .section-body { padding: 20px; }
+
+  /* ── GLOBAL CHARTS GRID ── element 5 */
+  .global-charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .global-charts-grid-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* ── CHART BOX ── */
+  .chart-box {
+    background: #081018;
+    border: 1px solid var(--bdr);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  /* element 6 — chart title */
+  .chart-title {
+    font-family: var(--syne);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--amber);
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+  }
+  /* element 7 — chart intro sentence */
+  .chart-intro {
+    font-size: 11px;
+    color: var(--grey);
+    margin-bottom: 12px;
+    line-height: 1.5;
+    border-left: 2px solid rgba(245,166,35,0.30);
+    padding-left: 8px;
+    font-style: italic;
+  }
+  .chart-canvas-wrap { position: relative; height: 240px; }
+  .chart-canvas-wrap.tall { height: 280px; }
+  /* element 8 — chart summary */
+  .chart-summary {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--greyLt);
+    line-height: 1.6;
+    border-top: 1px solid var(--bdr);
+    padding-top: 8px;
+  }
+  .chart-summary strong { color: var(--amber); font-weight: 600; }
+  .chart-summary .teal { color: var(--teal); }
+
+  /* ── SOIL SELECTOR ROW — single horizontal strip ── */
+  .soil-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
+  /* ── SOIL CARD — compact single-row version ── */
+  .soil-card {
+    flex: 1;
+    min-width: 148px;
+    background: #0C1E33;
+    border: 1.5px solid rgba(139,160,180,0.18);
+    border-radius: 8px;
+    padding: 12px 14px 10px;
+    cursor: pointer;
+    transition: all 0.18s;
+    position: relative;
+  }
+  .soil-card:hover {
+    border-color: rgba(139,160,180,0.40);
+    background: #0f2540;
+  }
+  .soil-card.active {
+    background: rgba(64,215,197,0.08);
+    border-color: var(--tealBdr);
+  }
+  .soil-card-name {
+    font-family: var(--syne);
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 1px;
+    white-space: nowrap;
+  }
+  .soil-card:not(.active) .soil-card-name { color: var(--grey); }
+  .soil-card.active .soil-card-name { color: var(--amber); }
+
+  .soil-card-local {
+    font-size: 9px;
+    color: rgba(168,189,208,0.55);
+    margin-bottom: 8px;
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* coverage badge top-right */
+  .soil-coverage-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 9px;
+    font-family: var(--mono);
+    font-weight: 700;
+    color: var(--grey);
+    background: rgba(139,160,180,0.10);
+    border: 1px solid rgba(139,160,180,0.18);
+    border-radius: 3px;
+    padding: 1px 5px;
+  }
+  .soil-card.active .soil-coverage-badge {
+    color: var(--teal);
+    background: rgba(64,215,197,0.10);
+    border-color: rgba(64,215,197,0.30);
+  }
+
+  /* two badges per card — N Leach + P Fix */
+  .soil-badges {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .sbdg {
+    font-family: var(--mono);
+    font-size: 8.5px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+  .sbdg-red   { color: var(--red);   border-color: rgba(232,64,64,0.35);  background: rgba(232,64,64,0.10); }
+  .sbdg-amber { color: var(--amber); border-color: rgba(245,166,35,0.35); background: rgba(245,166,35,0.10); }
+  .sbdg-teal  { color: var(--teal);  border-color: rgba(64,215,197,0.35); background: rgba(64,215,197,0.10); }
+  .sbdg-grey  { color: var(--grey);  border-color: rgba(139,160,180,0.25);background: rgba(139,160,180,0.06); }
+
+  /* keep stat rows for expanded panels */
+  .soil-stat-row {
+    display: flex;
+    gap: 0;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .soil-stat {
+    flex: 1;
+    min-width: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .soil-stat-label { font-size: 9px; color: var(--grey); text-transform: uppercase; letter-spacing: 0.07em; }
+  .soil-stat-val { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--amber); }
+  .soil-stat-val.red { color: var(--red); }
+  .soil-stat-val.teal { color: var(--teal); }
+  .soil-challenge {
+    font-size: 10.5px;
+    color: rgba(168,189,208,0.80);
+    line-height: 1.5;
+    border-top: 1px solid var(--bdr);
+    padding-top: 8px;
+    margin-top: 4px;
+  }
+  .soil-alert {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 5px 9px;
+    border-radius: 5px;
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+  .soil-alert.red { background: var(--redDim); color: var(--red); border: 1px solid rgba(232,64,64,0.25); }
+  .soil-alert.amber { background: var(--amberDim); color: var(--amber); border: 1px solid rgba(245,166,35,0.25); }
+  .expand-hint {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 9px;
+    color: rgba(139,160,180,0.45);
+  }
+  .soil-card.active .expand-hint { color: rgba(64,215,197,0.50); }
+
+  /* ── EXPANDED SOIL PANEL ── element 16 */
+  .soil-expanded-panel {
+    background: var(--navyCard);
+    border: 1.5px solid var(--tealBdr);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    display: none;
+  }
+  .soil-expanded-panel.open { display: block; }
+
+  .expanded-hdr {
+    background: rgba(64,215,197,0.08);
+    border-bottom: 1px solid var(--bdr);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .expanded-soil-name {
+    font-family: var(--syne);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--amber);
+  }
+  .expanded-close {
+    margin-left: auto;
+    background: rgba(139,160,180,0.10);
+    border: 1px solid var(--bdr);
+    border-radius: 6px;
+    color: var(--grey);
+    font-size: 11px;
+    padding: 5px 12px;
+    cursor: pointer;
+    font-family: var(--dm);
+  }
+  .expanded-close:hover { color: var(--white); border-color: rgba(139,160,180,0.40); }
+
+  .expanded-body { padding: 20px; }
+
+  /* ── PROFESSOR PARAGRAPH / BRIEF ── element 17 */
+  .professor-para {
+    background: rgba(30,107,140,0.10);
+    border: 1px solid rgba(30,107,140,0.28);
+    border-left: 3px solid var(--teal);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    line-height: 1.7;
+    color: rgba(232,240,254,0.85);
+  }
+  .brief-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 24px;
+    margin-top: 4px;
+  }
+  .brief-title {
+    font-family: var(--syne);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--teal);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid rgba(64,215,197,0.18);
+  }
+  .brief-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .brief-ul li {
+    font-size: 11px;
+    color: rgba(232,240,254,0.80);
+    line-height: 1.6;
+    padding: 2px 0 2px 14px;
+    position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .brief-ul li:last-child { border-bottom: none; }
+  .brief-ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--teal);
+    font-size: 10px;
+    top: 3px;
+  }
+  .brief-ul li strong { color: var(--amber); font-weight: 600; }
+  .brief-ul li .red   { color: var(--red); font-weight: 600; }
+  .brief-ul li .teal  { color: var(--teal); }
+
+  .professor-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.10em;
+    color: var(--teal);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  /* ── CHART CATEGORY SECTION ── element 18 */
+  .chart-category {
+    margin-bottom: 14px;
+    border: 1px solid var(--bdr);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .chart-cat-hdr {
+    background: rgba(139,160,180,0.06);
+    padding: 11px 16px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 10px;
+    transition: background 0.15s;
+  }
+  .chart-cat-hdr:hover { background: rgba(139,160,180,0.10); }
+  .chart-cat-title {
+    font-family: var(--syne);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.02em;
+  }
+  .chart-cat-desc { font-size: 10.5px; color: var(--grey); }
+  .chart-cat-toggle {
+    margin-left: auto;
+    font-size: 10px;
+    color: var(--teal);
+    font-weight: 600;
+    background: rgba(64,215,197,0.08);
+    border: 1px solid rgba(64,215,197,0.20);
+    border-radius: 4px;
+    padding: 3px 9px;
+  }
+  .chart-cat-body {
+    padding: 16px;
+    display: none;
+    background: #081018;
+    border-top: 1px solid var(--bdr);
+  }
+  .chart-cat-body.open { display: block; }
+
+  /* charts inside category */
+  .cat-charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .cat-charts-grid.triple {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .cat-charts-grid.single {
+    grid-template-columns: 1fr;
+  }
+
+  /* ── FINANCIAL EXAMPLE NOTE ── element 19 */
+  .fin-example-note {
+    background: var(--amberDim);
+    border: 1px solid rgba(245,166,35,0.30);
+    border-radius: 6px;
+    padding: 9px 14px;
+    font-size: 11px;
+    color: rgba(245,166,35,0.85);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .fin-ha-input {
+    background: #0A1829;
+    border: 1px solid rgba(245,166,35,0.50);
+    border-radius: 5px;
+    color: var(--white);
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 8px;
+    width: 90px;
+    text-align: right;
+    margin: 0 4px;
+  }
+
+  /* ── UTILITY ── */
+  .tag-red { background: var(--redDim); color: var(--red); border: 1px solid rgba(232,64,64,0.25); border-radius: 4px; font-size: 10px; font-weight: 700; padding: 2px 7px; }
+  .tag-amber { background: var(--amberDim); color: var(--amber); border: 1px solid rgba(245,166,35,0.25); border-radius: 4px; font-size: 10px; font-weight: 700; padding: 2px 7px; }
+  .tag-teal { background: rgba(64,215,197,0.10); color: var(--teal); border: 1px solid rgba(64,215,197,0.25); border-radius: 4px; font-size: 10px; font-weight: 700; padding: 2px 7px; }
+  .tag-green { background: rgba(0,162,73,0.12); color: #3DCB7A; border: 1px solid rgba(0,162,73,0.25); border-radius: 4px; font-size: 10px; font-weight: 700; padding: 2px 7px; }
+
+  /* element numbers (design reference only) */
+  .el-num {
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    background: var(--amber);
+    color: #060C14;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    border-radius: 3px;
+    padding: 1px 5px;
+    z-index: 10;
+    pointer-events: none;
+  }
+  .pos-rel { position: relative; }
+</style>
+</head>
+<body>
+
+<!-- ══ ELEMENT 1 — NAV TABS ══ -->
+<nav class="nav">
+  <span class="nav-brand">CFI Platform</span>
+  <span class="nav-tab">S0 Site Setup</span>
+  <span class="nav-tab">S1 Pre-Treatment</span>
+  <span class="nav-tab">S2 Fibre</span>
+  <span class="nav-tab">S3 Compost</span>
+  <span class="nav-tab active">Soil Science</span>
+  <span class="nav-tab">Project Finance</span>
+  <span class="nav-tab">Lab Reports</span>
+</nav>
+
+<div class="page">
+
+  <!-- ══ ELEMENT 2 — PAGE HEADER ══ -->
+  <div class="page-header pos-rel">
+    <span class="el-num">2</span>
+    <div>
+      <div class="page-title">Soil Science — Fertiliser Performance By Soil Type</div>
+      <div class="page-subtitle">How soil chemistry governs nutrient availability, fertiliser loss, and CFI product value on Indonesian oil palm estates.</div>
+    </div>
+  </div>
+
+  <!-- ══ ELEMENT 3 — ESTATE CONTEXT BAR ══ -->
+  <div class="context-bar pos-rel">
+    <span class="el-num">3</span>
+    <div class="ctx-item">
+      <span class="ctx-label">Estate</span>
+      <span class="ctx-value teal">Sinar Mas — Riau Block 4</span>
+    </div>
+    <div class="ctx-divider"></div>
+    <div class="ctx-item">
+      <span class="ctx-label">Selected Soil</span>
+      <span class="ctx-value">Ultisols</span>
+    </div>
+    <div class="ctx-divider"></div>
+    <div class="ctx-item">
+      <span class="ctx-label">Agronomy Tier</span>
+      <span class="ctx-value">GAM</span>
+    </div>
+    <div class="ctx-divider"></div>
+    <div class="ctx-item">
+      <span class="ctx-label">Active Streams</span>
+      <span class="ctx-value teal">EFB + OPDC + POS</span>
+    </div>
+    <div class="ctx-divider"></div>
+    <div class="ctx-item">
+      <span class="ctx-label">CFI Product</span>
+      <span class="ctx-value">Bio-Fertiliser+ (S5A)</span>
+    </div>
+
+    <!-- ELEMENT 4 — HA INPUT -->
+    <div class="ha-input-block pos-rel">
+      <span class="el-num">4</span>
+      <label>Estate Area</label>
+      <input class="ha-input" type="number" placeholder="e.g. 5000" id="estateHa" oninput="updateFinancials(this.value)">
+      <span class="ha-unit">ha</span>
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <div class="ha-note">Currently showing per 1 ha.</div>
+        <div class="ha-note">Enter ha to scale to your estate.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ELEMENT 5 — GLOBAL CHARTS SECTION ══ -->
+  <div class="section-card pos-rel">
+    <span class="el-num">5</span>
+    <div class="section-hdr">
+      <span class="section-letter">Global</span>
+      <span class="section-title">Cross-Soil Comparison — All 6 Soil Types</span>
+      <span class="section-badge">4 Charts · All Indonesian Palm Soils · Expand Individual Soils Below</span>
+    </div>
+    <div class="section-body">
+
+      <div class="global-charts-grid">
+
+        <!-- ELEMENT 6 — CHART N: RADAR -->
+        <div class="chart-box pos-rel">
+          <span class="el-num">6</span>
+          <div class="chart-title">Soil Challenge Severity — All 6 Soils Across 5 Axes</div>
+          <div class="chart-intro">Each axis shows the severity of a different fertility problem on a 0–100 scale; a larger polygon means greater challenge and therefore greater CFI intervention value.</div>
+          <div class="chart-canvas-wrap tall"><canvas id="radarChart"></canvas></div>
+          <div class="chart-summary">
+            <strong>Andisols and Oxisols</strong> dominate P fixation, the most costly single-nutrient problem in the system. <span class="teal">Spodosols</span> show the largest overall polygon — the only soil where N leaching, CEC deficit, and K leaching all reach critical severity simultaneously.
+          </div>
+        </div>
+
+        <!-- ELEMENT 7 — CHART O: RANKING BAR -->
+        <div class="chart-box pos-rel">
+          <span class="el-num">7</span>
+          <div class="chart-title">CFI Product Value Index — Ranked By Soil Type</div>
+          <div class="chart-intro">Composite score combining P fixation severity, N leaching rate, K loss, CEC deficit, and biological gap; a higher score means CFI product delivers more agronomic value on this soil than a standard Ultisol reference estate.</div>
+          <div class="chart-canvas-wrap tall"><canvas id="rankingChart"></canvas></div>
+          <div class="chart-summary">
+            <strong>Oxisols</strong> score highest because synthetic fertiliser is functionally ineffective without biological P solubilisation — CFI provides the only viable P pathway. <span class="teal">Inceptisols</span> score lowest not because they are easy to serve, but because their baseline fertility is already the strongest in the system.
+          </div>
+        </div>
+
+      </div>
+
+      <div style="height:14px;"></div>
+
+      <div class="global-charts-grid-bottom">
+
+        <!-- ELEMENT 8 — CHART D: NPK DOLLAR LOSS -->
+        <div class="chart-box pos-rel">
+          <span class="el-num">8</span>
+          <div class="chart-title">Combined NPK Dollar Loss Per Ha/Yr — Synthetic Programme Only</div>
+          <div class="chart-intro">The total value of applied nitrogen, phosphorus, and potassium lost to leaching or fixation before the palm root can intercept it, expressed as fertiliser-price-equivalent dollars per hectare per year at standard mature palm application rates.</div>
+          <div class="chart-canvas-wrap"><canvas id="npkLossChart"></canvas></div>
+          <div class="chart-summary">
+            <strong>Oxisols lose $100/ha/yr</strong> — the highest of any soil — driven almost entirely by P fixation at 78%. <span class="teal">Histosols</span> lose the least on P but the most on K, reflecting their unique drainage-driven potassium flush rather than fixation chemistry.
+          </div>
+        </div>
+
+        <!-- ELEMENT 9 — CHART M: WASTED PER $100 -->
+        <div class="chart-box pos-rel">
+          <span class="el-num">9</span>
+          <div class="chart-title">Dollars Wasted Per $100 Spent On Synthetic Fertiliser — By Soil Type</div>
+          <div class="chart-intro">Of every $100 invested in a standard urea, TSP, and MOP programme, this is the fraction lost to soil chemistry before the palm can use it — representing direct financial waste with no yield return.</div>
+          <div class="chart-canvas-wrap"><canvas id="wastedChart"></canvas></div>
+          <div class="chart-summary">
+            On <strong>Oxisols, $49 of every $100</strong> applied in a synthetic fertiliser programme is unavailable to the plant. <span class="teal">Inceptisols</span> are the most efficient synthetic soil at $22 wasted per $100, yet even here CFI organic forms recover more than $15/ha/yr in avoided losses.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ELEMENT 10 — SOIL SELECTOR ROW (single horizontal strip) ══ -->
+  <div class="section-card pos-rel">
+    <span class="el-num">10</span>
+    <div class="section-hdr">
+      <span class="section-letter">Soils</span>
+      <span class="section-title">Select Soil Type</span>
+      <span class="section-badge">6 Types · Click To Expand Full Analysis Below</span>
+    </div>
+    <div class="section-body" style="padding-bottom:12px;">
+      <div class="soil-row">
+
+        <!-- ULTISOL (active by default) -->
+        <div class="soil-card active" onclick="toggleSoil('ultisol')" id="card-ultisol">
+          <div class="soil-coverage-badge">24% IDN Palm</div>
+          <div class="soil-card-name">Ultisols</div>
+          <div class="soil-card-local">Podsolik Merah Kuning</div>
+          <div class="soil-badges">
+            <span class="sbdg sbdg-red">High N Leach</span>
+            <span class="sbdg sbdg-red">High P Fix</span>
+          </div>
+          <div class="expand-hint">▼ Expand</div>
+        </div>
+
+        <!-- INCEPTISOL -->
+        <div class="soil-card" onclick="toggleSoil('inceptisol')" id="card-inceptisol">
+          <div class="soil-coverage-badge">39% IDN Palm</div>
+          <div class="soil-card-name">Inceptisols</div>
+          <div class="soil-card-local">Kambisol / Alluvial</div>
+          <div class="soil-badges">
+            <span class="sbdg sbdg-amber">Mod N Leach</span>
+            <span class="sbdg sbdg-teal">Low P Fix</span>
+          </div>
+          <div class="expand-hint">▼ Expand</div>
+        </div>
+
+        <!-- OXISOL -->
+        <div class="soil-card" onclick="toggleSoil('oxisol')" id="card-oxisol">
+          <div class="soil-coverage-badge">8% IDN Palm</div>
+          <div class="soil-card-name">Oxisols</div>
+          <div class="soil-card-local">Latosol / Ferralsol</div>
+          <div class="soil-badges">
+            <span class="sbdg sbdg-red">High N Leach</span>
+            <span class="sbdg sbdg-red">V.High P Fix</span>
+          </div>
+          <div class="expand-hint">▼ Expand</div>
+        </div>
+
+        <!-- HISTOSOL -->
+        <div class="soil-card" onclick="toggleSoil('histosol')" id="card-histosol">
+          <div class="soil-coverage-badge">7% IDN Palm</div>
+          <div class="soil-card-name">Histosols</div>
+          <div class="soil-card-local">Tanah Gambut (Peat)</div>
+          <div class="soil-badges">
+            <span class="sbdg sbdg-teal">Low N Leach</span>
+            <span class="sbdg sbdg-teal">Low P Fix</span>
+          </div>
+          <div class="expand-hint">▼ Expand</div>
+        </div>
+
+        <!-- SPODOSOL -->
+        <div class="soil-card" onclick="toggleSoil('spodosol')" id="card-spodosol">
+          <div class="soil-coverage-badge">5% IDN Palm</div>
+          <div class="soil-card-name">Spodosols</div>
+          <div class="soil-card-local">Podzol / BRIS Sand</div>
+          <div class="soil-badges">
+            <span class="sbdg sbdg-red">V.High N Leach</span>
+            <span class="sbdg sbdg-teal">Low P Fix</span>
+          </div>
+          <div class="expand-hint">▼ Expand</div>
+        </div>
+
+        <!-- ANDISOL -->
+        <div class="soil-card" onclick="toggleSoil('andisol')" id="card-andisol">
+          <div class="soil-coverage-badge">3% IDN Palm</div>
+          <div class="soil-card-name">Andisols</div>
+          <div class="soil-card-local">Andosol / Vulkanik</div>
+          <div class="soil-badges">
+            <span class="sbdg sbdg-amber">Mod N Leach</span>
+            <span class="sbdg sbdg-red">V.High P Fix</span>
+          </div>
+          <div class="expand-hint">▼ Expand</div>
+        </div>
+
+      </div><!-- end soil-row -->
+    </div>
+  </div>
+
+  <!-- ══ ELEMENT 17 — EXPANDED SOIL PANEL (Ultisol pre-expanded) ══ -->
+  <div class="soil-expanded-panel open" id="panel-ultisol">
+    <div class="expanded-hdr">
+      <span class="tag-teal">Expanded Analysis</span>
+      <span class="expanded-soil-name">Ultisols (Podsolik Merah Kuning)</span>
+      <span class="tag-amber">Your Selected Soil</span>
+      <span class="tag-red">P Fixation 70%</span>
+      <span class="tag-red">N Leach 35%</span>
+      <span class="tag-green">Primary CFI Market</span>
+      <button class="expanded-close" onclick="toggleSoil('ultisol')">Close ✕</button>
+    </div>
+    <div class="expanded-body">
+
+      <!-- ELEMENT 18 — ULTISOL BRIEF (titles + bullets) -->
+      <div class="professor-para pos-rel">
+        <span class="el-num">18</span>
+        <div class="professor-label">Soil Science Brief — Ultisols (Podsolik Merah Kuning)</div>
+
+        <div class="brief-grid">
+
+          <div class="brief-block">
+            <div class="brief-title">Classification &amp; Distribution</div>
+            <ul class="brief-ul">
+              <li>Order: Ultisols — ancient, deeply weathered tropical clays; low-activity clay mineralogy (kaolinite dominant)</li>
+              <li><strong>24%</strong> of Indonesian palm plantation land; primary CFI target market</li>
+              <li>pH: <strong class="red">4.2–5.0</strong> — strongly to very strongly acidic; Al³⁺ solubility exceeds phytotoxic threshold below pH 4.5</li>
+              <li>Base saturation: &lt;35%; most exchangeable Ca, Mg, K lost to millennia of leaching</li>
+            </ul>
+          </div>
+
+          <div class="brief-block">
+            <div class="brief-title">Primary Fertility Constraints</div>
+            <ul class="brief-ul">
+              <li><strong class="red">P fixation: 65–70%</strong> of applied TSP immobilised by Al/Fe compounds within hours of application — unavailable to palm regardless of dose</li>
+              <li><strong class="red">N leaching: 35%</strong> of applied urea-N lost below the root zone before palm uptake</li>
+              <li>CEC: <strong>4–8 cmol/kg</strong> — almost entirely OM-dependent; collapses as organic matter declines under conventional management</li>
+              <li>K leaching: 20% — moderate, but worsens as CEC degrades; compounding cycle</li>
+            </ul>
+          </div>
+
+          <div class="brief-block">
+            <div class="brief-title">CFI Response Mechanism</div>
+            <ul class="brief-ul">
+              <li>Phosphate-solubilising bacteria (<em>Bacillus megaterium</em>, <em>Aspergillus niger</em>) dissolve Al–P and Fe–P mineral bonds — bypasses fixation pathway entirely</li>
+              <li>Humate fraction (CFI frass) creates new cation exchange sites from Season 1 — compounding CEC recovery</li>
+              <li>Lignin + chitin fractions shift F:B ratio from bacterial-dominated (0.10–0.30) toward fungal-dominated (&gt;0.50) — improves aggregate stability and Ganoderma suppression</li>
+              <li>AMF colonisation rises as soil OC exceeds 2% threshold — extends effective P uptake radius by up to 15 cm</li>
+            </ul>
+          </div>
+
+          <div class="brief-block">
+            <div class="brief-title">Application Protocol &amp; Financial Case</div>
+            <ul class="brief-ul">
+              <li>Standard rate: <strong>2 t/ha/yr</strong> BF+ or <strong>15–20 t/ha/yr</strong> Compost+ (wet weight)</li>
+              <li>Liming requirement eliminated after Year 2 as soil pH stabilises through humate buffering</li>
+              <li>Combined NPK waste on synthetic programme: <strong class="red">~$76/ha/yr</strong> (P fixation $31 + N leach $30 + K leach $15)</li>
+              <li>CFI recovers an estimated <span class="teal">$47/ha/yr</span> of this loss at standard dose; improving compounding as soil biology establishes</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ELEMENT 19 — SECTION 7: N · P · K NUTRIENT LOSS CHARTS (open by default) -->
+      <div class="chart-category pos-rel">
+        <span class="el-num">19</span>
+        <div class="chart-cat-hdr" onclick="toggleCat('ult-cat1')">
+          <span class="chart-cat-title">Section 7 — N Leaching · P Fixation · K Leaching: Synthetic vs CFI</span>
+          <span class="chart-cat-desc">3 charts · Per ha at mature palm rates · Click any bar for tooltip</span>
+          <span class="chart-cat-toggle" id="ult-cat1-toggle">▲ Hide Charts</span>
+        </div>
+        <div class="chart-cat-body open" id="ult-cat1">
+          <div class="cat-charts-grid triple">
+
+            <div class="chart-box">
+              <div class="chart-title">N Leaching Loss — Synthetic Urea vs CFI Organic Nitrogen</div>
+              <div class="chart-intro">Percentage of applied nitrogen lost to leaching before the palm root intercepts it, compared across all soil types with and without CFI.</div>
+              <div class="chart-canvas-wrap"><canvas id="nLeachChart"></canvas></div>
+              <div class="chart-summary"><strong>Ultisols lose 35%</strong> of synthetic N — CFI organic nitrogen reduces this to approximately 17%, recovering ~20 kg N/ha/yr at standard 112.5 kg N/ha/yr mature palm application. <span class="teal">At 5,000 ha, this represents over 100 tonnes of nitrogen retained in the root zone per season.</span></div>
+            </div>
+
+            <div class="chart-box">
+              <div class="chart-title">P Fixation — TSP Immobilised vs CFI Chelated Phosphorus Available</div>
+              <div class="chart-intro">Proportion of applied phosphorus immediately locked into insoluble aluminium and iron compounds in the soil, making it unavailable to the palm regardless of application volume.</div>
+              <div class="chart-canvas-wrap"><canvas id="pFixChart"></canvas></div>
+              <div class="chart-summary"><strong>70% of every TSP application on Ultisols</strong> is fixed within hours of contact with soil — CFI chelated phosphorus bypasses this mechanism, reducing effective fixation to approximately 30%. <span class="teal">The soil biology in CFI frass continues to solubilise previously fixed P from the soil's mineral reserve.</span></div>
+            </div>
+
+            <div class="chart-box">
+              <div class="chart-title">K Leaching Loss — MOP vs CFI Potassium Retention</div>
+              <div class="chart-intro">Percentage of applied potassium lost through drainage before uptake, showing how CFI's CEC improvement progressively reduces K leaching as organic matter accumulates.</div>
+              <div class="chart-canvas-wrap"><canvas id="kLeachChart"></canvas></div>
+              <div class="chart-summary"><strong>Ultisols lose 20% of K₂O</strong> to leaching — moderate compared to Histosols (40%) and Spodosols (35%), but still representing direct financial loss on every MOP application. <span class="teal">CFI reduces K leaching to ~14% via CEC improvement from humate accumulation.</span></div>
+            </div>
+
+          </div><!-- end triple grid -->
+        </div>
+      </div>
+
+      <!-- ELEMENT 20 — CHART CATEGORY 2: TRAJECTORIES -->
+      <div class="chart-category pos-rel">
+        <span class="el-num">20</span>
+        <div class="chart-cat-hdr" onclick="toggleCat('ult-cat2')">
+          <span class="chart-cat-title">Category 2 — Soil Improvement Trajectories (Year 0 → 5)</span>
+          <span class="chart-cat-desc">3 charts · CEC, SOC, SOM over time · With vs Without CFI application</span>
+          <span class="chart-cat-toggle" id="ult-cat2-toggle">▼ Show Charts</span>
+        </div>
+        <div class="chart-cat-body" id="ult-cat2">
+          <div class="cat-charts-grid">
+
+            <div class="chart-box">
+              <div class="chart-title">Cation Exchange Capacity Trajectory — Year 0 Through Year 5 With CFI</div>
+              <div class="chart-intro">CEC measures the soil's ability to hold and slowly release nutrients; higher CEC means more nutrients retained against leaching, fewer split applications needed, and more stable palm nutrition year-round.</div>
+              <div class="chart-canvas-wrap"><canvas id="cecChart"></canvas></div>
+              <div class="chart-summary"><strong>Without CFI, Ultisol CEC slowly declines</strong> as organic matter is consumed. With CFI application, CEC rises from ~6 cmol/kg at Year 0 to an estimated <span class="teal">~14 cmol/kg by Year 5</span> — approaching Inceptisol levels — as humate fractions accumulate in the soil matrix.</div>
+            </div>
+
+            <div class="chart-box">
+              <div class="chart-title">Soil Organic Carbon Trajectory — Building Carbon Sequestration Over 5 Years</div>
+              <div class="chart-intro">Soil organic carbon is the foundation of all biological and chemical fertility — it feeds microbes, builds CEC, improves water retention, and sequesters atmospheric carbon into stable long-term soil pools.</div>
+              <div class="chart-canvas-wrap"><canvas id="socChart"></canvas></div>
+              <div class="chart-summary"><strong>Conventional management depletes Ultisol SOC</strong> from an already-low 1.0% toward 0.75% over five years. CFI application reverses this trajectory, with the <span class="teal">recalcitrant lignin (ADL) fraction</span> providing stable carbon input resistant to decomposition for decades.</div>
+            </div>
+
+            <div class="chart-box">
+              <div class="chart-title">Soil Organic Matter Accumulation — Annual Humus Formation Rate</div>
+              <div class="chart-intro">The fraction of each year's organic input that is stabilised into long-term humus rather than respired, compounding into permanent soil structure improvement that raises CEC, water retention, and microbial habitat quality with each season.</div>
+              <div class="chart-canvas-wrap"><canvas id="somChart"></canvas></div>
+              <div class="chart-summary"><strong>Humus accumulation is non-linear</strong> — each year's new organic matter benefits from the microbial community built by the previous year's application. <span class="teal">By Year 5, the annual SOM uplift from CFI frass on Ultisols is estimated at 0.20–0.25% per season</span>, compounding toward the 2.5–4.0% target range.</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ELEMENT 21 — CHART CATEGORY 3: BIOLOGICAL -->
+      <div class="chart-category pos-rel">
+        <span class="el-num">21</span>
+        <div class="chart-cat-hdr" onclick="toggleCat('ult-cat3')">
+          <span class="chart-cat-title">Category 3 — Soil Biology: Microbes, Fungi And Disease Suppression</span>
+          <span class="chart-cat-desc">3 charts · MBC, AMF colonisation, F:B ratio · Ganoderma and nematode suppression</span>
+          <span class="chart-cat-toggle" id="ult-cat3-toggle">▼ Show Charts</span>
+        </div>
+        <div class="chart-cat-body" id="ult-cat3">
+          <div class="cat-charts-grid">
+
+            <div class="chart-box">
+              <div class="chart-title">Microbial Biomass Carbon — Biological Activity Recovery From Degraded Baseline</div>
+              <div class="chart-intro">MBC is the leading indicator of long-term soil fertility — the mass of living microorganisms in the soil drives nutrient cycling, disease suppression, aggregate formation, and the biological weathering that releases minerals from rock particles over time.</div>
+              <div class="chart-canvas-wrap"><canvas id="mbcChart"></canvas></div>
+              <div class="chart-summary"><strong>Degraded Ultisol MBC (100–250 mg/kg)</strong> is approximately 25% of the target range, indicating a severely depleted biological community. <span class="teal">CFI frass provides both the carbon substrate and the inoculant organisms to rebuild MBC toward 500–1,000 mg/kg over three to five seasons</span>, restoring biological nutrient cycling that synthetic fertilisers entirely bypass.</div>
+            </div>
+
+            <div class="chart-box">
+              <div class="chart-title">Arbuscular Mycorrhizal Fungi Colonisation — P Uptake Efficiency And Drought Resilience</div>
+              <div class="chart-intro">AMF are the root extension network of oil palm — colonising root cells and extending fungal hyphae up to 15 cm into soil to intercept phosphorus, zinc, and water that root hairs cannot reach, in exchange for palm photosynthate.</div>
+              <div class="chart-canvas-wrap"><canvas id="amfChart"></canvas></div>
+              <div class="chart-summary"><strong>Ultisol AMF colonisation at 5–15%</strong> is far below the 40–70% target, meaning palm roots are operating with a fraction of their potential nutrient uptake network. <span class="teal">CFI application creates the organic carbon substrate that AMF require to proliferate</span>, with colonisation improving progressively as soil carbon rises above the 2% threshold.</div>
+            </div>
+
+            <div class="chart-box">
+              <div class="chart-title">Fungal-To-Bacterial Ratio Trajectory — Shift Toward Long-Term Soil Structure</div>
+              <div class="chart-intro">The F:B ratio indicates whether a soil's biology is shifting toward bacterial-dominated (fast nutrient cycling, structure breakdown) or fungal-dominated (slow cycling, stable aggregates, Ganoderma suppression) — higher is better for long-term palm estate productivity.</div>
+              <div class="chart-canvas-wrap"><canvas id="fbChart"></canvas></div>
+              <div class="chart-summary"><strong>Degraded Ultisol F:B of 0.10–0.30</strong> is strongly bacterial-dominated, associated with rapid organic matter loss and reduced Ganoderma suppression. <span class="teal">CFI's lignin and chitin fractions selectively feed fungal communities</span>, shifting the ratio toward 0.50–1.00 over five seasons, which correlates with natural Ganoderma disease pressure reduction of 30–50%.</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ELEMENT 22 — CHART CATEGORY 4: FINANCIAL -->
+      <div class="chart-category pos-rel">
+        <span class="el-num">22</span>
+        <div class="chart-cat-hdr" onclick="toggleCat('ult-cat4')">
+          <span class="chart-cat-title">Category 4 — Financial: Synthetic Programme Cost vs CFI Over 5 Years</span>
+          <span class="chart-cat-desc">3 charts · $/ha/yr comparison · Estate-scaled savings · 5-year cumulative</span>
+          <span class="chart-cat-toggle" id="ult-cat4-toggle">▼ Show Charts</span>
+        </div>
+        <div class="chart-cat-body" id="ult-cat4">
+
+          <!-- ELEMENT 23 — FINANCIAL HA INPUT NOTE -->
+          <div class="fin-example-note pos-rel">
+            <span class="el-num">23</span>
+            Showing example rates per 1 ha. Enter your estate area to scale:
+            <input class="fin-ha-input" type="number" id="finHa" placeholder="ha" oninput="updateFinancials(this.value)">
+            ha — all financial charts will update automatically.
+          </div>
+
+          <div class="cat-charts-grid">
+
+            <div class="chart-box">
+              <div class="chart-title">Annual Fertiliser Programme Cost — Synthetic vs CFI Per Ha Per Year</div>
+              <div class="chart-intro">Direct cost comparison of a standard synthetic N-P-K programme (Urea + TSP + MOP + liming) against an equivalent CFI frass application delivering the same plant-available nutrient dose on Ultisol chemistry.</div>
+              <div class="chart-canvas-wrap"><canvas id="costCompChart"></canvas></div>
+              <div class="chart-summary"><strong>Synthetic programme on Ultisols: ~$205/ha/yr</strong> — of which $76 is wasted to chemistry before plant uptake. CFI equivalent dose achieves the same plant-available nutrient delivery at reduced effective cost, with no liming requirement after Year 2. <span class="teal">Estate-scale differential at 5,000 ha: shown in chart below.</span></div>
+            </div>
+
+            <div class="chart-box">
+              <div class="chart-title">5-Year Cumulative Cost — Synthetic Programme vs CFI: Compounding Advantage</div>
+              <div class="chart-intro">Over five years the synthetic cost remains essentially flat while the effective CFI cost declines as soil improvement reduces the dose needed to maintain target nutrition — showing the compounding financial case for early adoption.</div>
+              <div class="chart-canvas-wrap"><canvas id="cumulChart"></canvas></div>
+              <div class="chart-summary"><strong>By Year 5, synthetic cumulative cost on Ultisols exceeds CFI equivalent</strong> by an estimated 18–25% per hectare, not including avoided liming, reduced split-application labour, or Ganoderma management savings. <span class="teal">The gap widens each season as soil improvement reduces CFI dose requirements.</span></div>
+            </div>
+
+            <div class="chart-box">
+              <div class="chart-title">Wasted Fertiliser Spend Per Ha/Yr — Breakdown By Nutrient (Synthetic Only)</div>
+              <div class="chart-intro">Of the total synthetic fertiliser investment, this shows exactly which nutrient is responsible for the greatest financial loss on Ultisols — the basis for calculating the CFI substitution value proposition to estate financial directors.</div>
+              <div class="chart-canvas-wrap"><canvas id="wasteBreakChart"></canvas></div>
+              <div class="chart-summary"><strong>P fixation ($31/ha/yr) and N leaching ($30/ha/yr) are nearly equal</strong> as the two primary sources of synthetic fertiliser waste on Ultisols. <span class="teal">Together they represent 79% of the total $76/ha/yr loss</span> — the financial case for CFI chelated P and slow-release N in a single application.</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Hidden panels for other soils (same structure, collapsed by default) -->
+  <div class="soil-expanded-panel" id="panel-inceptisol">
+    <div class="expanded-hdr">
+      <span class="tag-teal">Expanded Analysis</span>
+      <span class="expanded-soil-name">Inceptisols (Kambisol / Gleisol)</span>
+      <span class="tag-green">Largest Market By Area — 39%</span>
+      <button class="expanded-close" onclick="toggleSoil('inceptisol')">Close ✕</button>
+    </div>
+    <div class="expanded-body">
+      <div class="professor-para">
+        <div class="professor-label">Soil Science Brief — Inceptisols</div>
+        Inceptisols are the best soils in the Indonesian palm system — covering 39% of plantation land, they are relatively young and moderately developed soils with genuine clay mineralogy that responds generously to organic matter inputs, the agricultural equivalent of a patient who is not yet sick but will thrive with good nutrition. Their pH of 4.0–5.0 still causes phosphorus fixation at 30% and moderate nitrogen leaching at 25%, but both problems are manageable compared to the catastrophic losses seen on Ultisols, Oxisols, or Spodosols. The critical number on Inceptisols is not the loss rate but the recovery rate: each 1% of soil organic matter added raises cation exchange capacity by 2.8 cmol/kg — the highest mineral CEC response of any soil type in the palm system, meaning that every tonne of CFI frass applied generates compounding fertility improvements that accumulate season after season in a virtuous cycle that no synthetic programme can replicate. Mycorrhizal fungi colonise Inceptisols readily once organic carbon rises above 2%, unlocking additional phosphorus from the soil's mineral reserve that has been fixed there for years, effectively recovering free nutrients that the estate has already paid for. The Inceptisol estate is not a problem to be solved; it is a performance platform waiting to be activated by the biological and organic inputs that its 2:1 clay mineralogy is chemically primed to respond to at scale.
+      </div>
+      <div style="padding:20px;color:var(--grey);font-size:12px;text-align:center;">
+        Charts for Inceptisols follow the same Category 1–4 structure as Ultisols above.<br>
+        This panel will be fully populated in the Lovable build.
+      </div>
+    </div>
+  </div>
+
+  <div class="soil-expanded-panel" id="panel-oxisol">
+    <div class="expanded-hdr">
+      <span class="tag-teal">Expanded Analysis</span>
+      <span class="expanded-soil-name">Oxisols (Latosol / Ferralsol)</span>
+      <span class="tag-amber">Highest Individual CFI Impact Per Ha</span>
+      <button class="expanded-close" onclick="toggleSoil('oxisol')">Close ✕</button>
+    </div>
+    <div class="expanded-body">
+      <div class="professor-para">
+        <div class="professor-label">Soil Science Brief — Oxisols</div>
+        Oxisols represent the most extreme fertiliser challenge in the Indonesian palm system — their entire mineralogy is dominated by iron and aluminium oxides, the very compounds responsible for phosphorus fixation, and at 78% P fixation they render conventional TSP applications almost entirely ineffective from the moment the fertiliser contacts the soil surface. Think of it this way: a plantation manager applying triple superphosphate to an Oxisol is spending 78 cents of every dollar they invest in phosphorus on fertiliser that the soil chemistry will seize and lock away permanently. With a cation exchange capacity of just 3–6 cmol/kg and a base saturation below 20%, these soils cannot hold calcium, magnesium, or potassium in plant-available form, meaning that every significant rainstorm strips the fertiliser programme back toward zero. The only long-term solution to Oxisol fertility is organic matter — each 1% of soil organic matter added does not merely feed the plant directly, it physically creates new exchange sites in a soil that has almost none, and the phosphate-solubilising bacteria living in CFI frass provide the only practical pathway to phosphorus availability by dissolving the iron-aluminium bonds that hold 78 cents of every TSP dollar captive. A doubled CFI application rate on Oxisols is not an excessive recommendation — it is the minimum biological intervention required to move these soils from their current near-zero productivity baseline toward something approaching the agronomic performance that the original planting investment was designed to deliver.
+      </div>
+      <div style="padding:20px;color:var(--grey);font-size:12px;text-align:center;">Charts follow same Category 1–4 structure. Fully populated in Lovable build.</div>
+    </div>
+  </div>
+
+  <div class="soil-expanded-panel" id="panel-histosol">
+    <div class="expanded-hdr">
+      <span class="tag-teal">Expanded Analysis</span>
+      <span class="expanded-soil-name">Histosols — Peat Soils (Tanah Gambut)</span>
+      <span class="tag-red">Peat Protocol — Special Rules Apply</span>
+      <button class="expanded-close" onclick="toggleSoil('histosol')">Close ✕</button>
+    </div>
+    <div class="expanded-body">
+      <div class="professor-para">
+        <div class="professor-label">Soil Science Brief — Histosols (Peat)</div>
+        Histosols — peat soils — operate under a completely different set of rules from every other soil type in the palm system, and applying conventional fertiliser programmes to them is one of the most costly and agronomically counterproductive mistakes in Indonesian plantation management. With organic carbon already at 24.5% and pH at 3.8, the primary nitrogen challenge on peat is not leaching but immobilisation: the very high carbon-to-nitrogen ratio of peat — above 50 — means that the soil's microbial community consumes applied nitrogen before the palm root can intercept it, locking it into microbial biomass where it remains unavailable until that biomass dies and is mineralised, a process that takes months to years. Think of it as paying for nitrogen and having the soil microbes steal it before the palm sees a single kilogram. Potassium is the critical nutrient on peat — drainage systems flush 40% of applied potassium through the peat profile, and without sustained K supply palm bunches abort and yield crashes. Lime is strictly prohibited on Histosols because calcium carbonate triggers irreversible peat oxidation and subsidence of 2–3 cm per year. CFI's product on peat soils addresses the three endemic deficiencies simultaneously — calcium from the frass mineral fraction corrects pH without the oxidation risk of lime, the BSF cuticle delivers copper and zinc that are structurally absent from peat mineralogy, and the slow-release organic nitrogen fraction bypasses the immobilisation trap that defeats conventional urea on every peat estate in Indonesia.
+      </div>
+      <div style="padding:20px;color:var(--grey);font-size:12px;text-align:center;">Charts follow same Category 1–4 structure. GHG Baseline chart replaces F:B chart for Histosols. Fully populated in Lovable build.</div>
+    </div>
+  </div>
+
+  <div class="soil-expanded-panel" id="panel-spodosol">
+    <div class="expanded-hdr">
+      <span class="tag-teal">Expanded Analysis</span>
+      <span class="expanded-soil-name">Spodosols — Sandy Entisols (Podzol / BRIS)</span>
+      <span class="tag-amber">Lowest Fertility · Highest Transformation Potential</span>
+      <button class="expanded-close" onclick="toggleSoil('spodosol')">Close ✕</button>
+    </div>
+    <div class="expanded-body">
+      <div class="professor-para">
+        <div class="professor-label">Soil Science Brief — Spodosols</div>
+        Spodosols are the most structurally degraded soils in the Indonesian palm system — coastal and inland sands with almost zero clay content, a cation exchange capacity of just 2.0 cmol/kg, and nitrogen leaching losses of 50% that mean half of every kilogram of applied Urea is washed through the profile before a root hair has the opportunity to find it. Unlike every other Indonesian palm soil where phosphorus is locked by iron and aluminium, on Spodosols phosphorus behaves in the opposite direction — it leaches rather than fixes, moving rapidly through the sandy profile in the same way nitrogen does, which means the standard agronomic response of applying more TSP to overcome soil retention is doubly ineffective: the phosphorus does not stay long enough to be fixed, but also does not stay long enough to be taken up. Yields on Spodosols are structurally 31% below Ultisol baseline not because of a single limiting factor but because of compounding deficiencies across every fertility parameter simultaneously — the CEC is near zero so nutrients cannot be held, the biology is near zero so there is no microbial buffering, and the water holding capacity is so low that drought stress compounds every nutrient deficit into a yield crisis. CFI's humate fraction provides the only viable long-term intervention: each 1% of soil organic matter added to a Spodosol raises water holding capacity by 4 mm — the highest WHC response of any soil type in the system — and simultaneously raises CEC by 1.75 cmol/kg, transforming a soil that currently retains almost nothing into one that can hold a meaningful nutrient reserve.
+      </div>
+      <div style="padding:20px;color:var(--grey);font-size:12px;text-align:center;">Charts follow same Category 1–4 structure. WHC Improvement chart replaces SOC for Spodosols. Fully populated in Lovable build.</div>
+    </div>
+  </div>
+
+  <div class="soil-expanded-panel" id="panel-andisol">
+    <div class="expanded-hdr">
+      <span class="tag-teal">Expanded Analysis</span>
+      <span class="expanded-soil-name">Andisols — Volcanic Ash Soils (Tanah Vulkanik)</span>
+      <span class="tag-amber">Highest P Fixation 90% · Allophane Mineralogy</span>
+      <button class="expanded-close" onclick="toggleSoil('andisol')">Close ✕</button>
+    </div>
+    <div class="expanded-body">
+      <div class="professor-para">
+        <div class="professor-label">Soil Science Brief — Andisols</div>
+        Andisols are volcanically derived soils found on the slopes and foothills of Indonesia's active volcanic arc, and they represent one of the great paradoxes in tropical soil science: simultaneously the most naturally fertile and the most phosphorus-challenged soils in the entire Indonesian palm system. Their allophane mineralogy — an amorphous aluminium silicate formed directly from volcanic glass — gives them a suite of exceptional physical properties that agronomists elsewhere dream about: high water holding capacity, low bulk density, excellent natural aggregate stability, and the highest cation exchange capacity response per unit of organic matter of any soil in the CFI system at 3.2 cmol/kg per 1% SOM. The problem, and it is a serious one, is phosphorus: allophane binds phosphate with extraordinary chemical affinity, fixing 90% of applied TSP into forms the palm root cannot reach within minutes of application — the highest fixation rate of any soil type in the system. Critically, this is a different fixation mechanism from Ultisol or Oxisol chemistry: allophane creates what soil chemists call inner-sphere surface complexes with phosphate ions, bonds that are more stable and harder to release than the iron-aluminium oxide bonds that dominate Ultisol and Oxisol P fixation. Calcium silicate (CaSiO₃) co-amendment at 2.5–4.5 t/ha is the confirmed intervention, physically displacing phosphate from allophane surfaces by competitive silicate sorption; CFI's chelated organic phosphorus compounds provide a parallel biological pathway that circumvents the fixation mechanism entirely rather than competing with it chemically, making the Andisol estate the most compelling combined inorganic-organic fertiliser case in the Indonesian palm sector.
+      </div>
+      <div style="padding:20px;color:var(--grey);font-size:12px;text-align:center;">Charts follow same Category 1–4 structure. P Fixation chart is the primary chart for Andisols. Fully populated in Lovable build.</div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+// ── CHART DEFAULTS ──
+Chart.defaults.color = '#A8BDD0';
+Chart.defaults.font.family = "'DM Mono', monospace";
+Chart.defaults.font.size = 10;
+
+const TEAL   = '#40D7C5';
+const AMBER  = '#F5A623';
+const RED    = '#E84040';
+const GREEN  = '#3DCB7A';
+const GREY   = '#A8BDD0';
+const NAVY   = '#081018';
+const SOILS  = ['Ultisols','Inceptisols','Oxisols','Histosols','Spodosols','Andisols'];
+const gridColor = 'rgba(139,160,180,0.12)';
+
+function chartOpts(title) {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: true, position: 'top', labels: { boxWidth: 10, padding: 12, color: GREY } },
+      tooltip: { backgroundColor: '#0C1E33', borderColor: 'rgba(139,160,180,0.30)', borderWidth: 1, titleColor: AMBER, bodyColor: '#E8F0FE' }
+    },
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: GREY } },
+      y: { grid: { color: gridColor }, ticks: { color: GREY } }
+    }
+  };
+}
+
+// ── CHART N: RADAR ──
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: ['P Fixation %','N Leaching %','K Leaching %','CEC Deficit','MBC Deficit'],
+    datasets: [
+      { label:'Ultisols',     data:[70,35,20,65,79], borderColor:'#F5A623', backgroundColor:'rgba(245,166,35,0.08)', pointBackgroundColor:'#F5A623', borderWidth:2 },
+      { label:'Inceptisols',  data:[30,25,15,35,83], borderColor:TEAL,      backgroundColor:'rgba(64,215,197,0.06)', pointBackgroundColor:TEAL, borderWidth:1.5 },
+      { label:'Oxisols',      data:[78,50,30,80,72], borderColor:RED,       backgroundColor:'rgba(232,64,64,0.06)',  pointBackgroundColor:RED,  borderWidth:1.5 },
+      { label:'Histosols',    data:[18,20,40,5,62],  borderColor:'#9B59B6', backgroundColor:'rgba(155,89,182,0.06)',pointBackgroundColor:'#9B59B6',borderWidth:1.5 },
+      { label:'Spodosols',    data:[10,50,35,90,65], borderColor:'#4A9EDB', backgroundColor:'rgba(74,158,219,0.06)', pointBackgroundColor:'#4A9EDB',borderWidth:1.5 },
+      { label:'Andisols',     data:[90,20,10,45,100],borderColor:GREEN,     backgroundColor:'rgba(61,203,122,0.06)', pointBackgroundColor:GREEN, borderWidth:1.5 },
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins: {
+      legend:{ display:true, position:'right', labels:{ boxWidth:10, padding:8, color:GREY, font:{size:10} } },
+      tooltip:{ backgroundColor:'#0C1E33', borderColor:'rgba(139,160,180,0.30)', borderWidth:1, titleColor:AMBER, bodyColor:'#E8F0FE' }
+    },
+    scales: {
+      r: {
+        grid:{ color:'rgba(139,160,180,0.15)' },
+        pointLabels:{ color:AMBER, font:{size:10, family:"'DM Sans', sans-serif", weight:'600'} },
+        ticks:{ color:GREY, backdropColor:'transparent', stepSize:20 },
+        min:0, max:100
+      }
+    }
+  }
+});
+
+// ── CHART O: RANKING BAR ──
+new Chart(document.getElementById('rankingChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Oxisols','Andisols','Spodosols','Ultisols','Histosols','Inceptisols'],
+    datasets:[{
+      label:'CFI Product Value Index',
+      data:[0.92, 0.89, 0.85, 0.78, 0.75, 0.70],
+      backgroundColor:['rgba(232,64,64,0.70)','rgba(61,203,122,0.70)','rgba(74,158,219,0.70)','rgba(245,166,35,0.70)','rgba(155,89,182,0.70)','rgba(64,215,197,0.70)'],
+      borderColor:    ['#E84040','#3DCB7A','#4A9EDB','#F5A623','#9B59B6','#40D7C5'],
+      borderWidth:1, borderRadius:4
+    }]
+  },
+  options: {
+    ...chartOpts(), indexAxis:'y',
+    plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0C1E33', borderColor:'rgba(139,160,180,0.30)', borderWidth:1, titleColor:AMBER, bodyColor:'#E8F0FE' } },
+    scales:{
+      x:{ grid:{color:gridColor}, ticks:{color:GREY}, min:0, max:1 },
+      y:{ grid:{color:gridColor}, ticks:{color:GREY} }
+    }
+  }
+});
+
+// ── CHART D: NPK DOLLAR LOSS ──
+new Chart(document.getElementById('npkLossChart'), {
+  type:'bar',
+  data:{
+    labels:SOILS,
+    datasets:[
+      { label:'N Loss ($/ha/yr)', data:[30,21,43,17,43,17], backgroundColor:'rgba(232,64,64,0.75)', borderColor:RED, borderWidth:1, borderRadius:3 },
+      { label:'P Loss ($/ha/yr)', data:[31,13,34,8,4,40],   backgroundColor:'rgba(245,166,35,0.75)', borderColor:AMBER, borderWidth:1, borderRadius:3 },
+      { label:'K Loss ($/ha/yr)', data:[15,11,23,30,27,8],  backgroundColor:'rgba(64,215,197,0.65)', borderColor:TEAL, borderWidth:1, borderRadius:3 },
+    ]
+  },
+  options:{
+    ...chartOpts(), plugins:{ legend:{ display:true, position:'top', labels:{ boxWidth:10, padding:10, color:GREY } }, tooltip:{ backgroundColor:'#0C1E33', borderColor:'rgba(139,160,180,0.30)', borderWidth:1, titleColor:AMBER, bodyColor:'#E8F0FE' } },
+    scales:{ x:{ stacked:true, grid:{color:gridColor}, ticks:{color:GREY} }, y:{ stacked:true, grid:{color:gridColor}, ticks:{color:GREY}, title:{display:true,text:'$/ha/yr',color:GREY} } }
+  }
+});
+
+// ── CHART M: WASTED PER $100 ──
+new Chart(document.getElementById('wastedChart'), {
+  type:'bar',
+  data:{
+    labels:SOILS,
+    datasets:[
+      { label:'$ Wasted Per $100 Synthetic', data:[37,22,49,27,36,32], backgroundColor:['rgba(245,166,35,0.80)','rgba(64,215,197,0.70)','rgba(232,64,64,0.80)','rgba(155,89,182,0.70)','rgba(74,158,219,0.70)','rgba(61,203,122,0.70)'], borderColor:['#F5A623',TEAL,'#E84040','#9B59B6','#4A9EDB','#3DCB7A'], borderWidth:1, borderRadius:4 }
+    ]
+  },
+  options:{
+    ...chartOpts(), plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0C1E33', borderColor:'rgba(139,160,180,0.30)', borderWidth:1, titleColor:AMBER, bodyColor:'#E8F0FE',
+      callbacks:{ label: ctx => ` $${ctx.raw} wasted of every $100 spent` }
+    }},
+    scales:{ x:{grid:{color:gridColor},ticks:{color:GREY}}, y:{grid:{color:gridColor},ticks:{color:GREY, callback: v=>`$${v}`}, max:60, title:{display:true,text:'$ wasted per $100',color:GREY}} }
+  }
+});
+
+// ── ULTISOL DETAIL CHARTS ──
+
+// N Leaching
+new Chart(document.getElementById('nLeachChart'), {
+  type:'line',
+  data:{
+    labels:SOILS,
+    datasets:[
+      { label:'Synthetic N Leach %', data:[35,25,50,20,50,20], borderColor:RED, backgroundColor:'rgba(232,64,64,0.10)', pointBackgroundColor:RED, borderWidth:2, tension:0.3 },
+      { label:'CFI N Leach %',       data:[17,13,22,9,19,10],  borderColor:TEAL, backgroundColor:'rgba(64,215,197,0.08)', pointBackgroundColor:TEAL, borderWidth:2, tension:0.3 }
+    ]
+  },
+  options:{ ...chartOpts(), scales:{ x:{grid:{color:gridColor},ticks:{color:GREY}}, y:{grid:{color:gridColor},ticks:{color:GREY,callback:v=>v+'%'},min:0,max:60} }, plugins:{ legend:{display:true,position:'top',labels:{boxWidth:10,padding:10,color:GREY}}, tooltip:{backgroundColor:'#0C1E33',borderColor:'rgba(139,160,180,0.30)',borderWidth:1,titleColor:AMBER,bodyColor:'#E8F0FE'} } }
+});
+
+// P Fixation
+new Chart(document.getElementById('pFixChart'), {
+  type:'line',
+  data:{
+    labels:SOILS,
+    datasets:[
+      { label:'Synthetic P Fixed %', data:[70,30,78,18,10,90], borderColor:RED, backgroundColor:'rgba(232,64,64,0.10)', pointBackgroundColor:RED, borderWidth:2, tension:0.3 },
+      { label:'CFI P Fixed %',       data:[30,14,30,10,10,34], borderColor:TEAL, backgroundColor:'rgba(64,215,197,0.08)', pointBackgroundColor:TEAL, borderWidth:2, tension:0.3 }
+    ]
+  },
+  options:{ ...chartOpts(), scales:{ x:{grid:{color:gridColor},ticks:{color:GREY}}, y:{grid:{color:gridColor},ticks:{color:GREY,callback:v=>v+'%'},min:0,max:100} }, plugins:{ legend:{display:true,position:'top',labels:{boxWidth:10,padding:10,color:GREY}}, tooltip:{backgroundColor:'#0C1E33',borderColor:'rgba(139,160,180,0.30)',borderWidth:1,titleColor:AMBER,bodyColor:'#E8F0FE'} } }
+});
+
+// K Leaching
+new Chart(document.getElementById('kLeachChart'), {
+  type:'line',
+  data:{
+    labels:SOILS,
+    datasets:[
+      { label:'Synthetic K Leach %', data:[20,15,30,40,35,10], borderColor:RED, backgroundColor:'rgba(232,64,64,0.10)', pointBackgroundColor:RED, borderWidth:2, tension:0.3 },
+      { label:'CFI K Leach %',       data:[14,11,20,28,23,8],  borderColor:TEAL, backgroundColor:'rgba(64,215,197,0.08)', pointBackgroundColor:TEAL, borderWidth:2, tension:0.3 }
+    ]
+  },
+  options:{ ...chartOpts(), scales:{ x:{grid:{color:gridColor},ticks:{color:GREY}}, y:{grid:{color:gridColor},ticks:{color:GREY,callback:v=>v+'%'},min:0,max:55} }, plugins:{ legend:{display:true,position:'top',labels:{boxWidth:10,padding:10,color:GREY}}, tooltip:{backgroundColor:'#0C1E33',borderColor:'rgba(139,160,180,0.30)',borderWidth:1,titleColor:AMBER,bodyColor:'#E8F0FE'} } }
+});
+
+// Combined NPK (Ultisol)
+new Chart(document.getElementById('npkCombinedChart'), {
+  type:'bar',
+  data:{
+    labels:['N Loss','P Loss','K Loss','Total'],
+    datasets:[
+      { label:'Synthetic ($/ha/yr)', data:[30,31,15,76], backgroundColor:'rgba(232,64,64,0.75)', borderColor:RED, borderWidth:1, borderRadius:4 },
+      { label:'CFI ($/ha/yr)',       data:[15,13,11,39], backgroundColor:'rgba(64,215,197,0.65)', borderColor:TEAL, borderWidth:1, borderRadius:4 }
+    ]
+  },
+  options:{ ...chartOpts(), scales:{ x:{grid:{color:gridColor},ticks:{color:GREY}}, y:{grid:{color:gridColor},ticks:{color:GREY,callback:v=>'$'+v},title:{display:true,text:'$/ha/yr',color:GREY}} }, plugins:{ legend:{display:true,position:'top',labels:{boxWidth:10,padding:10,color:GREY}}, tooltip:{backgroundColor:'#0C1E33',borderColor:'rgba(139,160,180,0.30)',borderWidth:1,titleColor:AMBER,bodyColor:'#E8F0FE'} } }
+});
+
+// CEC Trajectory
+new Chart(document.getElementById('cecChart'), {
+  type:'line',
+  data:{
+    labels:['Year 0','Year 1','Year 2','Year 3','Year 4','Year 5'],
+    datasets:[
+      { label:'With CFI (cmol/kg)', data:[6.0,7.5,9.2,10.8,12.4,13.9], borderColor:TEAL, backgroundColor:'rgba(64,215,197,0.10)', pointBackgroundColor:TEAL, borderWidth:2.5, tension:0.3, fill:true },
+      { label:'Without CFI',        data:[6.0,5.7,5.5,5.3,5.1,4.9],     borderColor:RED,  backgroundColor:'rgba(232,64,64,0.06)',  pointBackgroundColor:RED, borderWidth:1.5, tension:0.3, borderDash:[4,3] }
+    ]
+  },
+  options:{ ...chartOpts(), scales:{ x:{grid:{color:gridColor},ticks:{color:GREY}}, y:{grid:{color:gridColor},ticks:{color:GREY,callback:v=>v+' cmol'},title:{display:true,text:'CEC cmol/kg',color:GREY}} }, plugins:{ legend:{display:true,position:'top',labels:{boxWidth:10,padding:10,color:GREY}}, tooltip:{backgroundColor:'#0C1E33',borderColor:'rgba(139,160,180,0.30)',borderWidth:1,titleColor:AMBER,bodyColor:'#E8F0FE'} } }
+});
+
+// SOC Trajectory
+new Chart(document.getElementById('socChart'), {
+  type:'line',
+  data:{
+    labels:['Year 0','Year 1','Year 2','Year 3','Year 4','Year 5'],
+    datasets:[
+      { label:'With CFI (% SOC)', data:[1.00,1.22,1.48,1.77,2.10,2.48], borderColor:TEAL, backgroundColor:'rgba(64,215,197,0.10)', pointBackgroundColor:TEAL, borderWidth:2.5, tension:0.3, fill:true },
+      { label:'Without CFI',      data:[1.00,0.95,0.90,0.86,0.82,0.78], borderColor:RED,  backgroundColor:'rgba(232,64,64,0.06)',  pointBackgroundColor:RED, borderWidth:1.5, tension:0.3, borderDash:[4,3] }
+    ]
+  },
+  options:{ ...chartOpts(), scales:{ x:{grid:{color:gridColor},ticks:{color:GREY}}, y:{grid:{color:gridColor},ticks:{color:GREY,callback:v=>v+'%'},title:{display:true,text:'% SOC',color:GREY}} }, plugins:{ legend:{display:true,position:'top',labels:{boxWidth:10,padding:10,color:GREY}}, tooltip:{backgroundColor:'#0C1E33',borderColor:'rgba(139,160,180,0.30)',borderWidth:1,titleColor:AMBER,bodyColor:'#E8F0FE'} } }
+});
+
+// SOM Accumulation
+new Chart(document.getElementById('somChart'), {
+  type:'line',
+  data:{
+    labels:['Year 0','Year 1','Year 2','Year 3','Year 4','Year 5'],
+    datasets:[
+      { label:'With CFI (% SOM)', data:[1.15,1.42,1.74,2.11,2.55,3.02], borderColor:AMBER, backgroundColor:'rgba(245,166,35,0.10)', pointBackgroundColor:AMBER, borderWidth:2.5, tension:0.3, fill:true },
+      { label:'Without CFI',      data:[1.15,1.08,1.01,0.96,0.91,0.87], borderColor:RED,   backgroundColor:'rgba(232,64,64,0.06)',  pointBackgroundColor:RED, borderWidth:1.5, tension:0.3, borderDash:[4,3] }
+    ]
+  },
+  options:{ ...chartOpts(), scales:{ x:{grid:{color:gridColor},ticks:{color:GREY}}, y:{grid:{color:gridColor},ticks:{color:GREY,callback:v=>v+'%'},title:{display:true,text:'% SOM',color:GREY}} }, plugins:{ legend:{display:true,position:'top',labels:{boxWidth:10,padding:10,color:GREY}}, tooltip:{backgroundColor:'#0C1E33',borderColor:'rgba(139,160,180,0.30)',borderWidth:1,titleColor:AMBER,bodyColor:'#E8F0FE'} } }
+});
+
+// MBC
+new Chart(document.getElementById('mbcChart'), {
+  type:'line',
+  data:{
+    labels:['Year 0','Year 1','Year 2','Year 3','Year 4','Year 5'],
+    datasets:[
+      { label:'With CFI (mg/kg)', data:[175,290,420,580,720,870], borderColor:TEAL, backgroundColor:'rgba(64,215,197,0.10)', pointBackgroundColor:TEAL, borderWidth:2.5, tension:0.3, fill:true },
+      { label:'Without CFI',      data:[175,162,150,140,132,125], borderColor:RED,  backgroundColor:'rgba(232,64,64,0.06)',  pointBackgroundColor:RED, borderWidth:1.5, tension:0.3, borderDash:[4,3] },
+      { label:'Target Range Low', data:[500,500,500,500,500,500],  borderColor:'rgba(61,203,122,0.40)', borderWidth:1, borderDash:[2,4], pointRadius:0 },
+    ]
+  },
+  options:{ ...chartOpts(), scales:{ x:{grid:{color:gridColor},ticks:{color:GREY}}, y:{grid:{color:gridColor},ticks:{color:GREY,callback:v=>v+' mg/kg'},title:{display:true,text:'MBC mg/kg',color:GREY}} }, plugins:{ legend:{display:true,position:'top',labels:{boxWidth:10,padding:10,color:GREY}}, tooltip:{backgroundColor:'#0C1E33',borderColor:'rgba(139,160,180,0.30)',borderWidth:1,titleColor:AMBER,bodyColor:'#E8F0FE'} } }
+});
+
+// AMF
+new Chart(document.getElementById('amfChart'), {
+  type:'line',
+  data:{
+    labels:['Year 0','Year 1','Year 2','Year 3','Year 4','Year 5'],
+    datasets:[
+      { label:'With CFI (% colonisation)', data:[10,19,30,44,57,68], borderColor:AMBER, backgroundColor:'rgba(245,166,35,0.10)', pointBackgroundColor:AMBER, borderWidth:2.5, tension:0.3, fill:true },
+      { label:'Without CFI',               data:[10,9,8,8,7,7],      borderColor:RED,   backgroundColor:'rgba(232,64,64,0.06)',  pointBackgroundColor:RED, borderWidth:1.5, tension:0.3, borderDash:[4,3] },
+      { label:'Target Min (40%)',           data:[40,40,40,40,40,40], borderColor:'rgba(61,203,122,0.40)', borderWidth:1, borderDash:[2,4], pointRadius:0 }
+    ]
+  },
+  options:{ ...chartOpts(), scales:{ x:{grid:{color:gridColor},ticks:{color:GREY}}, y:{grid:{color:gridColor},ticks:{color:GREY,callback:v=>v+'%'},min:0,max:80,title:{display:true,text:'AMF Colonisation %',color:GREY}} }, plugins:{ legend:{display:true,position:'top',labels:{boxWidth:10,padding:10,color:GREY}}, tooltip:{backgroundColor:'#0C1E33',borderColor:'rgba(139,160,180,0.30)',borderWidth:1,titleColor:AMBER,bodyColor:'#E8F0FE'} } }
+});
+
+// F:B Ratio
+new Chart(document.getElementById('fbChart'), {
+  type:'line',
+  data:{
+    labels:['Year 0','Year 1','Year 2','Year 3','Year 4','Year 5'],
+    datasets:[
+      { label:'With CFI (F:B ratio)', data:[0.20,0.28,0.38,0.50,0.65,0.82], borderColor:TEAL, backgroundColor:'rgba(64,215,197,0.10)', pointBackgroundColor:TEAL, borderWidth:2.5, tension:0.3, fill:true },
+      { label:'Without CFI',          data:[0.20,0.18,0.16,0.15,0.14,0.13], borderColor:RED,  backgroundColor:'rgba(232,64,64,0.06)',  pointBackgroundColor:RED, borderWidth:1.5, tension:0.3, borderDash:[4,3] },
+      { label:'Target Min (0.5)',      data:[0.5,0.5,0.5,0.5,0.5,0.5],       borderColor:'rgba(61,203,122,0.40)', borderWidth:1, borderDash:[2,4], pointRadius:0 }
+    ]
+  },
+  options:{ ...chartOpts(), scales:{ x:{grid:{color:gridColor},ticks:{color:GREY}}, y:{grid:{color:gridColor},ticks:{color:GREY},min:0,max:1.0,title:{display:true,text:'F:B Ratio',color:GREY}} }, plugins:{ legend:{display:true,position:'top',labels:{boxWidth:10,padding:10,color:GREY}}, tooltip:{backgroundColor:'#0C1E33',borderColor:'rgba(139,160,180,0.30)',borderWidth:1,titleColor:AMBER,bodyColor:'#E8F0FE'} } }
+});
+
+// Cost Comparison ($/ha)
+let estHa = 1;
+const costCompCtx = document.getElementById('costCompChart');
+let costCompChart = new Chart(costCompCtx, {
+  type:'bar',
+  data:{
+    labels:['Urea','TSP','MOP','Liming','Micronutrients','Total'],
+    datasets:[
+      { label:'Synthetic ($/ha)', data:[86,44,76,18,12,205].map(v=>v*estHa), backgroundColor:'rgba(232,64,64,0.75)', borderColor:RED, borderWidth:1, borderRadius:4 },
+      { label:'CFI Equivalent ($/ha)', data:[60,18,65,0,0,143].map(v=>v*estHa), backgroundColor:'rgba(64,215,197,0.65)', borderColor:TEAL, borderWidth:1, borderRadius:4 }
+    ]
+  },
+  options:{ ...chartOpts(), scales:{ x:{grid:{color:gridColor},ticks:{color:GREY}}, y:{grid:{color:gridColor},ticks:{color:GREY,callback:v=>'$'+v},title:{display:true,text:'$/ha/yr',color:GREY}} }, plugins:{ legend:{display:true,position:'top',labels:{boxWidth:10,padding:10,color:GREY}}, tooltip:{backgroundColor:'#0C1E33',borderColor:'rgba(139,160,180,0.30)',borderWidth:1,titleColor:AMBER,bodyColor:'#E8F0FE'} } }
+});
+
+// Cumulative 5yr
+let cumulChart = new Chart(document.getElementById('cumulChart'), {
+  type:'line',
+  data:{
+    labels:['Year 1','Year 2','Year 3','Year 4','Year 5'],
+    datasets:[
+      { label:'Synthetic Cumulative ($/ha)', data:[205,410,615,820,1025], borderColor:RED, backgroundColor:'rgba(232,64,64,0.10)', pointBackgroundColor:RED, borderWidth:2.5, tension:0.2 },
+      { label:'CFI Cumulative ($/ha)',        data:[143,278,405,523,635],  borderColor:TEAL, backgroundColor:'rgba(64,215,197,0.10)', pointBackgroundColor:TEAL, borderWidth:2.5, tension:0.2, fill:false }
+    ]
+  },
+  options:{ ...chartOpts(), scales:{ x:{grid:{color:gridColor},ticks:{color:GREY}}, y:{grid:{color:gridColor},ticks:{color:GREY,callback:v=>'$'+v},title:{display:true,text:'Cumulative $/ha',color:GREY}} }, plugins:{ legend:{display:true,position:'top',labels:{boxWidth:10,padding:10,color:GREY}}, tooltip:{backgroundColor:'#0C1E33',borderColor:'rgba(139,160,180,0.30)',borderWidth:1,titleColor:AMBER,bodyColor:'#E8F0FE'} } }
+});
+
+// Waste breakdown
+new Chart(document.getElementById('wasteBreakChart'), {
+  type:'bar',
+  data:{
+    labels:['N Leach Loss','P Fixation Loss','K Leach Loss'],
+    datasets:[
+      { label:'Wasted $/ha/yr', data:[30,31,15], backgroundColor:['rgba(232,64,64,0.75)','rgba(245,166,35,0.75)','rgba(64,215,197,0.65)'], borderColor:[RED,AMBER,TEAL], borderWidth:1, borderRadius:6 }
+    ]
+  },
+  options:{ ...chartOpts(), plugins:{ legend:{display:false}, tooltip:{backgroundColor:'#0C1E33',borderColor:'rgba(139,160,180,0.30)',borderWidth:1,titleColor:AMBER,bodyColor:'#E8F0FE', callbacks:{label:ctx=>' $'+ctx.raw+'/ha/yr wasted'}} }, scales:{ x:{grid:{color:gridColor},ticks:{color:GREY}}, y:{grid:{color:gridColor},ticks:{color:GREY,callback:v=>'$'+v},max:40,title:{display:true,text:'$/ha/yr',color:GREY}} } }
+});
+
+// ── INTERACTIONS ──
+function toggleSoil(soilKey) {
+  const panel = document.getElementById('panel-' + soilKey);
+  const card  = document.getElementById('card-' + soilKey);
+  const isOpen = panel.classList.contains('open');
+
+  // close all panels + deactivate all cards
+  document.querySelectorAll('.soil-expanded-panel').forEach(p => p.classList.remove('open'));
+  document.querySelectorAll('.soil-card').forEach(c => c.classList.remove('active'));
+
+  if (!isOpen) {
+    panel.classList.add('open');
+    card.classList.add('active');
+    panel.scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+}
+
+function toggleCat(id) {
+  const body   = document.getElementById(id);
+  const toggle = document.getElementById(id + '-toggle');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open');
+  toggle.textContent = isOpen ? '▼ Show Charts' : '▲ Hide Charts';
+}
+
+function updateFinancials(ha) {
+  // Update both ha inputs in sync
+  const v = parseFloat(ha) || 1;
+  document.getElementById('estateHa').value = v > 1 ? v : '';
+  document.getElementById('finHa').value    = v > 1 ? v : '';
+  // Update cost comp chart (simplified rescale of total)
+  // Just updates label to show estate scale
+  const scale = v;
+  const synth = [86,44,76,18,12,205].map(x=>Math.round(x*scale));
+  const cfi   = [60,18,65,0,0,143].map(x=>Math.round(x*scale));
+  costCompChart.data.datasets[0].data = synth;
+  costCompChart.data.datasets[1].data = cfi;
+  costCompChart.data.datasets[0].label = `Synthetic (${ scale>1 ? scale+'ha total' : '/ha'})`;
+  costCompChart.data.datasets[1].label = `CFI Equivalent (${ scale>1 ? scale+'ha total' : '/ha'})`;
+  costCompChart.update();
+
+  const cumulSynth = [205,410,615,820,1025].map(x=>Math.round(x*scale));
+  const cumulCfi   = [143,278,405,523,635].map(x=>Math.round(x*scale));
+  cumulChart.data.datasets[0].data = cumulSynth;
+  cumulChart.data.datasets[1].data = cumulCfi;
+  cumulChart.update();
+}
+
+// cat1 open by default — toggle text already set to hide
+// document.getElementById('ult-cat1-toggle').textContent = '▲ Hide Charts';
+</script>
+</body>
+</html>

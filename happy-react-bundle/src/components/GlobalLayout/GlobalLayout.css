@@ -1,0 +1,5 @@
+/* GlobalLayout.css — Design tokens extracted from GlobalLayout.jsx */
+:root {
+  --f-font:   'DM Sans', sans-serif;
+  --fm-font:  'DM Mono', monospace;
+}

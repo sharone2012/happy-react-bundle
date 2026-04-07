@@ -1,0 +1,2333 @@
+**COMPLETE PROCESS ENGINEERING DESIGN: EFB & DECANTER CAKE PRE-TREATMENT
+FACILITY WITH PKSA TREATMENT**
+
+**60 TPH FFB Palm Oil Mill**\
+**Location:** Bogor, West Java, Indonesia\
+**Date:** March 3, 2026\
+**Design Basis:** 24/7 Continuous Operation
+
+**EXECUTIVE SUMMARY**
+
+This document provides complete process engineering specifications for a
+dual-stream facility processing **Empty Fruit Bunches (EFB)** and
+**Decanter Cake (DC)** from a 60 TPH FFB palm oil mill, including
+innovative **Palm Kernel Shell Ash (PKSA)** alkaline pre-treatment. The
+facility achieves:
+
+-   **Stage 1:** Mechanical size reduction to D90 ≤2mm and moisture
+    control (45-55% MC)
+
+-   **Stage 2:** Chemical pre-treatment using PKSA for 30-35% lignin
+    reduction in 1.5-2 hours
+
+-   **Final product:** Biology-ready substrate for microbes and BSF
+    larvae at pH 6.5-8.0
+
+**Key Performance Metrics:**
+
+-   **Throughput:** 331 t FW EFB/day + 50-80 t FW DC/day
+
+-   **PKSA dose:** 6-10 kg/t FW EFB (FREE - mill waste stream)
+
+-   **Total processing time:** 18-24 hours from truck arrival to
+    biology-ready substrate
+
+-   **CAPEX:** \$540K-\$980K (Stages 1+2 combined)
+
+-   **Footprint:** 1,800 m² (1,400 m² Stage 2 + 400 m² Stage 1 shared
+    equipment)
+
+**SECTION 1: FACILITY OVERVIEW & MATERIAL FLOW**
+
+**1.1 Input Materials**
+
+**Two parallel waste streams arrive at facility:**
+
+  ----------------------------------------------------------------------------
+  **Material**   **Source**    **Arrival    **Arrival   **Initial State**
+                               Rate**       Method**    
+  -------------- ------------- ------------ ----------- ----------------------
+  **Empty Fruit  Palm oil mill 13.8 t/hr    8-ton       Whole bunches,
+  Bunches        sterilizer    average (23% trucks,     100-300mm, 65-70% MC,
+  (EFB)**        discharge     of 60 TPH    24-28       contains
+                               FFB)         loads/day   sand/stones/metal
+
+  **Decanter     Decanter      2-3 t/hr     8-ton       Wet slurry, 75-85% MC,
+  Cake           centrifuge,   average      trucks,     high lipid (20-35%
+  (DC/OPDC)**    POME                       6-10        DM), acidic pH 4.5-5.5
+                 treatment                  loads/day   
+  ----------------------------------------------------------------------------
+
+**1.2 Overall Process Flow - The Complete Journey**
+
+`┌─────────────────────────────────────────────────────────────────────────────┐``
+│                        TRUCK RECEIVING AREA                                 │``
+│  ┌──────────────────────────────┐  ┌──────────────────────────────────────┐│``
+│  │  EFB UNLOADING BAY #1        │  │  DC UNLOADING BAY #2                 ││``
+│  │  - Elevated ramp (1.2m high) │  │  - Elevated ramp (1.2m high)         ││``
+│  │  - Truck tips into RH-01     │  │  - Truck tips into RH-02             ││``
+│  │  - Hopper 20m³ capacity      │  │  - Hopper 15m³ capacity              ││``
+│  │  - Apron feeder AF-01        │  │  - Screw feeder SF-01                ││``
+│  └──────────────────────────────┘  └──────────────────────────────────────┘│``
+└─────────────────────────────────────────────────────────────────────────────┘``
+                    ↓                                    ↓``
+┌─────────────────────────────────────────────────────────────────────────────┐``
+│                         STAGE 1: MECHANICAL PRE-PROCESSING                  │``
+│                                                                             │``
+│  EFB LINE:                              DC LINE:                            │``
+│  BC-01 → TR-2060 Trommel               BC-10 → No trommel (slurry)         │``
+│  → BC-02 → OBM-01 Magnet               → BC-11 (direct feed)               │``
+│  → BC-04 + MD-01 Metal Detector        → No metal separation needed        │``
+│  → PR-01 Screw Press (70→47% MC)       → DC-PRESS-01 (85→60% MC)          │``
+│  → BC-05 → SD-01 Shredder              → BC-12 (pressed cake)              │``
+│  → BC-06 → HM-01 Hammer Mill           → Optional: SD-02 Light shredding   │``
+│  → BC-07 → VS-01 Screen (2mm)          → BC-13 to Stage 2                  │``
+│  → BC-08 Recycle loop                                                       │``
+│  → BC-09 → Buffer Bin (20m³)                                                │``
+│                                                                             │``
+│  OUTPUT: 331 t/day EFB at 2mm, 47% MC  OUTPUT: 50-80 t/day DC at 60% MC   │``
+└─────────────────────────────────────────────────────────────────────────────┘``
+                    ↓                                    ↓``
+┌─────────────────────────────────────────────────────────────────────────────┐``
+│                    STAGE 2: PKSA CHEMICAL PRE-TREATMENT                     │``
+│                         (EFB and DC processed separately)                   │``
+│                                                                             │``
+│  STEP 1: Mixer Loading (10 min)                                            │``
+│  - Screw feeder drops 165.6t EFB OR 80t DC into paddle mixer drum         │``
+│  - Add water 1:1 ratio (165.6t for EFB, 80t for DC)                       │``
+│  - Total slurry: 331t EFB batch OR 160t DC batch                          │``
+│                                                                             │``
+│  STEP 2: PKSA Dosing (2 min)                                               │``
+│  - Pump PKSA slurry (10% concentration) from 20m³ tank                    │``
+│  - EFB dose: 1.6t dry PKSA (16t slurry) = 6-10 kg/t FW                   │``
+│  - DC dose: 0.8t dry PKSA (8t slurry) = 10-12 kg/t FW                    │``
+│  - pH rises instantly to 10-12 (K₂O + CaO → KOH + Ca(OH)₂)               │``
+``│                                                                             │``
+│  STEP 3: Reaction (60-90 min) - THE CRITICAL CHEMICAL STEP                │``
+│  ┌─────────────────────────────────────────────────────────────────────┐  │``
+│  │  PADDLE MIXER DRUM PMD-01 - 6m diameter × 6m length                 │  │``
+│  │  - 10 RPM rotation with 40 paddle blades                             │  │``
+│  │  - Carbon steel with 8mm EPDM rubber lining (alkali-resistant)     │  │``
+│  │  - 2 parallel shafts with stainless steel 304 paddles               │  │``
+│  │                                                                       │  │``
+│  │  WHAT HAPPENS INSIDE:                                                 │  │``
+│  │  • KOH cleaves ester bonds in lignin-carbohydrate complexes (LCC)   │  │``
+│  │  • Lignin fragments dissolve into aqueous phase (8-10 g/L)          │  │``
+│  │  • Cellulose fibrils swell and separate (surface area ↑ 3-4×)       │  │``
+│  │  • Hemicellulose saponification releases fermentable sugars          │  │``
+│  │                                                                       │  │``
+│  │  KINETICS (2mm particles, 28-35°C ambient):                          │  │``
+│  │  - 30 min: 18-22% lignin reduction                                   │  │``
+│  │  - 60 min: 28-32% lignin reduction ← OPTIMAL                         │  │``
+│  │  - 90 min: 30-35% lignin reduction (diminishing returns)            │  │``
+│  └─────────────────────────────────────────────────────────────────────┘  │``
+│                                                                             │``
+│  STEP 4: Drain (5 min)                                                      │``
+│  - Bottom valve opens → 150m³ spent liquor drains through 5mm mesh        │``
+│  - Liquor (pH 11, 8-10 g/L dissolved lignin) → POME pond                 │``
+│  - Wet EFB/DC (70% MC, pH 10-12) drops onto conveyor                      │``
+│                                                                             │``
+│  STEP 5: Re-Press (60 min)                                                  │``
+│  - CB-15TC screw press squeezes 70% → 50-55% MC                           │``
+│  - Press cake (165t at 50-55% MC, pH 10-12) to neutralization bay        │``
+│  - Recovered liquor (25m³) → POME pond for reuse                          │``
+│                                                                             │``
+│  STEP 6-8: Neutralization (24 hours total)                                 │``
+│  ┌─────────────────────────────────────────────────────────────────────┐  │``
+│  │  NEUTRALIZATION BAY #1 (12m×12m×1.5m high)                           │  │``
+│  │  Phase 1 (0-12 hours): Passive CO₂ carbonation                       │  │``
+│  │  - Front-end loader spreads 165t into windrow (1.0-1.5m height)     │  │``
+│  │  - Atmospheric CO₂ (0.04%) dissolves into alkaline moisture:         │  │``
+│  │    • KOH + CO₂ → KHCO₃ (potassium bicarbonate)                       │  │``
+│  │    • Ca(OH)₂ + CO₂ → ``CaCO``₃ + H₂O (limestone formation)              │  │``
+│  │  - pH drops from 10-12 → 8 over 12 hours                             │  │``
+│  │  - Slight exotherm: Temperature rises 5-10°C from carbonation        │  │``
+│  │                                                                       │  │``
+│  │  POME Spray + Turn (30 min)                                           │  │``
+``│  │  - Spray 82m³ diluted POME (1:1 water, pH 4.5-5.5)                  │  │``
+│  │  - Bobcat turns windrow 2-3 passes with hydraulic turner            │  │``
+│  │  - POME acidity + residual alkalinity → pH 7-7.5                    │  │``
+│  │  - Nutrient loading: C:N improves from 60:1 → 35:1                  │  │``
+│  │                                                                       │  │``
+│  │  Phase 2 (12-24 hours): Final cure                                    │  │``
+│  │  - Continue passive carbonation → pH stabilizes at 6.5-8.0          │  │``
+│  │  - Temperature check: Must be <45°C before biology                   │  │``
+│  └─────────────────────────────────────────────────────────────────────┘  │``
+│                                                                             │``
+│  STEP 9: Biology GO Check (15 min) - CRITICAL QUALITY GATE                │``
+│  ┌──────────────────────────────────────────────────────────┐             │``
+│  │  Handheld measurements (MANDATORY pass before Stage 3):  │             │``
+│  │  ✓ pH: 6.5-8.0 (pH meter)                                │             │``
+│  │  ✓ Temperature: <45°C (IR thermometer)                   │             │``
+│  │  ✓ Visual: Fluffy, no clumps, uniform color             │             │``
+│  │                                                           │             │``
+│  │  IF ANY PARAMETER FAILS → Hold 6 hours, recheck         │             │``
+│  │  Alkaline (pH>8) or hot (>45°C) material will KILL      │             │``
+│  │  microbes and BSF larvae instantly.                      │             │``
+│  └──────────────────────────────────────────────────────────┘             │``
+│                                                                             │``
+│  STEP 10: OPDC Blending (60 min)                                           │``
+│  - Bobcat mixes treated EFB (60% DM) + treated DC (40% DM)                │``
+│  - Final substrate: pH 7.0-8.5, C:N 30-35:1, 55% MC                       │``
+└─────────────────────────────────────────────────────────────────────────────┘``
+                              ↓``
+┌─────────────────────────────────────────────────────────────────────────────┐``
+│                   FINAL OUTPUT: BIOLOGY-READY SUBSTRATE                     │``
+│                                                                             │``
+│  Specifications:                                                            │``
+│  • Particle size: D90 ≤2mm (EFB), paste-like (DC)                         │``
+│  • Moisture: 55% MC                                                         │``
+│  • pH: 6.5-8.0 (safe for biology)                                          │``
+│  • Temperature: <45°C (enzymes/microbes viable)                            │``
+│  • Lignin reduction: 30-35% (BSF-ready)                                    │``
+│  • C:N ratio: 30-35:1 (optimal for bioconversion)                         │``
+│  • Throughput: 331 t/day ready for Stage 3 Microbes or Stage 4 BSF        │``
+└─────────────────────────────────────────────────────────────────────────────┘``
+`
+
+**SECTION 2: TRUCK RECEIVING & UNLOADING BAYS**
+
+**2.1 Design Philosophy - No Manual Shoveling**
+
+**CRITICAL REQUIREMENT:** Zero manual shoveling by workers. All material
+transfer is mechanized for safety, efficiency, and consistent
+throughput.
+
+**Solution:** Elevated tipping ramps with direct gravity discharge into
+receiving hoppers with automatic feeders.
+
+**2.2 EFB Unloading Bay #1**
+
+**Physical Layout:**
+
+`                     [Safety Guardrails 1.5m high]``
+                              │``
+         ┌────────────────────``┴``────────────────────┐``
+         ``│``    TRUCK PARKING ZONE (wheel chocks)    ``│``
+         ``│``    ``┌──────────────────────────────┐``     ``│``
+         ``│``    ``│``  8-TON TRUCK (rear tipper)   ``│``     ``│``
+         ``│``    ``│``  Load: 6-8 ``tonnes`` EFB        ``│``     ``│``
+         ``│``    ``└────────``┬``─────────────────────┘``     ``│``
+         ``│``             ``│`` Hydraulic lift engaged     ``│``
+``┌────────``┴``─────────────``┼``─────────────────────────────``┴``───``─────┐``
+│  CONCRETE RAMP       │                                       │``
+│  - 6m length × 4m width                                      │``
+│  - 15° incline                                               │``
+│  - Non-slip surface (grooved)                                │``
+│  - Receiving height: 1.2m above hopper lip                   │``
+└──────────────────────``┼``───────────────────────────────────────┘``
+                       ``│`` EFB bunches tumble down``
+                       ``↓``
+         ``┌───────────────────────────────``──────┐``
+         │     RECEIVING HOPPER RH-01          │``
+         │  - Live capacity: 20m³ (≈20 min)    │``
+         │  - Concrete with 304SS liner        │``
+         │  - 60° sloped walls (no bridging)   │``
+         │  - Dimensions: 4m L × 3m W × 2.5m H │``
+         │                                      │``
+         │  Instrumentation:                   │``
+         │  • High level sensor (ultrasonic)   │``
+         │  • Low level sensor (capacitance)   │``
+         │  • Bottom drainage valve (100mm)    │``
+         └───────────────``┬``─────────────────────┘``
+                         ``↓``
+         ``┌─────────────────────────────────────┐``
+         ``│``    APRON FEEDER AF-01               ``│``
+``         ``│``  - Heavy-duty steel apron           ``│``
+         ``│``  - 3.5m L ``×`` 1.2m W                  ``│``
+         ``│``  - Variable speed: 2-8 m/min (VFD)  ``│``
+         ``│``  - AR400 wear-resistant pans        ``│``
+         ``│``  - Motor: 7.5 kW                    ``│``
+         ``└───────────────``┬``─────────────────────┘``
+                         ``↓``
+                   To BC-01 conveyor``
+`
+
+**Dust & Drainage Control:**
+
+-   **Three-sided enclosure:** Back + two sides with 45° sloped roof,
+    open front for truck entry
+
+-   **Dust suppression:** Water mist spray (optional) activated during
+    tipping
+
+-   **Floor drainage:** 2% slope to 150mm trench drain → covered 2m³
+    leachate collection sump → pump to POME pond
+
+-   **Signage:** Bahasa Indonesia warnings - \"STOP ENGINE BEFORE
+    TIPPING\", \"CHECK HOPPER EMPTY BEFORE DUMP\"
+
+-   **Lighting:** 200 lux minimum at tipping zone for night operations
+
+**Operator Actions:**
+
+1.  **Truck driver:** Backs onto ramp (guided by painted lines), engages
+    parking brake, applies wheel chocks
+
+2.  **Spotter (if required):** Verifies hopper not full (visual check or
+    level indicator light)
+
+3.  **Driver:** Engages hydraulic tipper, dumps load (30-60 seconds),
+    lowers bed, removes chocks, drives forward
+
+4.  **Line operator (remote):** Monitors via CCTV camera, adjusts AF-01
+    speed via HMI to match downstream capacity
+
+**Cycle time:** 3-5 minutes per truck (24-28 trucks/day at 13.8 t/hr
+average)
+
+**2.3 Decanter Cake (DC) Unloading Bay #2**
+
+**Identical ramp design to EFB bay, modified hopper:**
+
+`         ┌─────────────────────────────────────┐``
+         │     RECEIVING HOPPER RH-02          │``
+         │  - Live capacity: 15m³ (≈30 min)    │``
+         │  - Concrete with epoxy coating      │``
+         │  - 60° sloped walls                 │``
+         │  - Dimensions: 3.5m L × 2.5m W ×2m H│``
+         │                                      │``
+         │  DC-specific features:              │``
+         │  • Deeper sump (DC is slurry)       │``
+         │  • Agitator (optional): Prevent     │``
+         │    settling of solids               │``
+         │  • Larger drainage: 150mm valve     │``
+``         └───────────────``┬``─────────────────────┘``
+                         ``↓``
+         ``┌─────────────────────────────────────┐``
+         ``│``    SCREW FEEDER SF-01               ``│``
+         ``│``  - Enclosed screw conveyor          ``│``
+         ``│``  - 3m L ``×`` 300mm diameter            ``│``
+         ``│``  - Variable speed: 10-50 RPM (VFD)  ``│``
+         ``│``  - 304SS construction (corrosion)   ``│``
+         ``│``  - Motor: 5.5 kW                    ``│``
+         ``└───────────────``┬``─────────────────────┘``
+                         ↓``
+                   To BC-10 conveyor``
+`
+
+**DC Handling Considerations:**
+
+-   **Slurry consistency:** DC is wet paste (75-85% MC), flows more
+    easily than EFB - screw feeder better than apron
+
+-   **Odor control:** DC contains residual organics, slight anaerobic
+    odor - enclosed transfer, ventilation to biofilter (optional)
+
+-   **Oil content:** DC has 5-15% residual palm oil - all equipment
+    304SS or oil-resistant coatings
+
+-   **Settling prevention:** If DC sits \>4 hours in hopper, solids
+    settle - agitator (2.2 kW paddle) keeps suspension
+
+**Operator Actions:**
+
+-   Similar to EFB bay, but truck driver must ensure complete dump (DC
+    sticks to truck bed) - may require manual scraping or water hose
+    rinse
+
+**SECTION 3: STAGE 1 MECHANICAL PRE-PROCESSING - DETAILED MACHINE
+DESCRIPTIONS**
+
+I\'ll now describe **every machine in sequence** with full engineering
+detail.
+
+**3.1 TROMMEL SCREEN TR-2060 (EFB Line Only)**
+
+**Industry Name:** Rotary trommel screen / vibrating trommel for biomass
+
+`┌────────────────────────────────────────────────────────────────────┐``
+│                     TROMMEL SCREEN TR-2060                          │``
+│                                                                     │``
+│      [Feed End]              [Rotating Drum]           [Discharge]  │``
+│          ↓                                                   ↓       │``
+│    ┌─────────────────────────────────────────────────────────┐     │``
+│    │  ``╔═══════════════════════════════════════════════╗``      ``│``     ``│``
+``│`` EFB``│``  ``║``  ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙``         ``║``      ``│``Overs``│``
+``│`` ``──``>``│``  ``║``    20mm perforations (320 holes/m``²``)         ``║``      ``│────``>``│``
+``│``    ``│``  ``║``  ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙`` ``⊙``         ``║``      ``│``     ``│``
+``│``    ``│``  ``╚══════════════╤══════════════════════════════╝``      ``│``     ``│``
+``│``    ``└─────────────────``┼``─────────────────────────────────────┘``     ``│``
+``│``                      ``│``                                             ``│``
+``│``                      ``↓`` Undersize (sand/stones)                     ``│``
+``│``              [Collection Hopper]                                    │``
+│                      ↓                                              │``
+│              To fines bin (daily emptying)                          │``
+│                                                                     │``
+│  Drum: 2.0m ``dia`` × 6.0m length, 3-5° incline, 10-15 RPM             │``
+│  Motor: 7.5 kW (3 kW absorbed), 380V 3-phase                       │``
+│  Drive: Eccentric vibration + slow rotation                        │``
+└─────────────────────────────────────────────────────────────────────┘``
+`
+
+**WHAT DOES IT DO:**
+
+Removes **abrasive contaminants** (sand, gravel, small stones) from raw
+EFB **before** mechanical pressing and milling. This prevents:
+
+-   Premature wear of screw press flights (AR400 steel still wears with
+    silica)
+
+-   Bearing damage in shredder and hammer mill
+
+-   Screen mesh blinding in final classification
+
+**HOW IT WORKS:**
+
+1.  **Material Entry:** EFB bunches (100-300mm) tumble into rotating
+    drum from BC-01 conveyor
+
+2.  **Rotation + Vibration:** Drum rotates at 10-15 RPM while eccentric
+    weights create vibratory motion
+
+3.  **Size Separation:**
+
+    -   **Undersize (\<20mm):** Sand, gravel, dirt, small fiber
+        fragments fall through 20mm round perforations → collection
+        hopper
+
+    -   **Oversize (\>20mm):** EFB bunches, fiber clumps retained in
+        drum → tumble forward to discharge end
+
+4.  **Discharge:** Clean EFB exits discharge end, drops onto BC-02
+    conveyor
+
+5.  **Fines Collection:** Undersize fines (1-3% of input mass, ≈400
+    kg/day) collect in 2m³ bin → manual wheelbarrow emptying daily to
+    compost yard
+
+**MACHINE SITS ON:**
+
+-   **Structural steel frame:** Welded 150mm×150mm box section steel,
+    bolted to concrete pad
+
+-   **Foundation:** Reinforced concrete pad 8m L × 3m W × 0.4m thick
+    (150mm rebar grid), compacted gravel base
+
+-   **Vibration isolation:** 8× rubber isolation pads (200mm dia × 50mm
+    thick) under frame legs to prevent vibration transmission to
+    building structure
+
+**OUTPUT OF MACHINE:**
+
+-   **Product:** Clean EFB bunches at 65-70% MC, free of
+    sand/gravel/stones (98% removal efficiency)
+
+-   **Mass flow:** 13.5 t/hr (18 t/hr design) - slightly reduced from
+    input (13.8 t/hr) due to fines removal
+
+-   **State:** Still whole/partially broken bunches, 100-300mm size,
+    ready for dewatering
+
+**OPERATOR SAFETY & MAINTENANCE:**
+
+-   **Guards:** Full sheet metal enclosure with interlocked inspection
+    doors (door open → trommel stops)
+
+-   **Noise:** 85-90 dBA at 1m - hearing protection recommended
+
+-   **Dust:** Water mist spray at feed point (optional) to suppress dust
+
+-   **Inspection:** Every 4 hours check for screen blinding (wet EFB can
+    clog perforations) - water hose manual cleaning if needed
+
+-   **Wear parts:** Screen panels (AR400 perforated plate) replace
+    annually, cost \$800-\$1,500
+
+**3.2 OVERBAND MAGNET OBM-01 (EFB Line Only)**
+
+**Industry Name:** Overband magnetic separator / suspended crossbelt
+magnet
+
+`┌────────────────────────────────────────────────────────────────────┐``
+│               OVERBAND MAGNET OBM-01 SYSTEM                         │``
+│                                                                     │``
+│                [Structural Steel Gantry Frame]                      │``
+│                         │         │                                 │``
+│                    [Adjustable Suspension]                          │``
+│                    250-400mm height                                 │``
+│                         │         │                                 │``
+│              ┌──────────``┴``─────────``┴``──────────┐``                     ``│``
+``│``              ``│``  ELECTROMAGNET (1,500-2,000G) ``│``                     ``│``
+``│``              ``│``  ``╔═══════════════════════╗``    ``│``                     ``│``
+``│``              ``│``  ``║``   N ``←`` ``←`` ``←`` ``←`` ``←`` ``←`` ``←`` S   ``║``    ``│``                     ``│``
+``│``              ``│``  ``╚═══════════════════════╝``    ``│``                     ``│``
+``│``              ``│``    Self-cleaning belt loop     ``│``                     ``│``
+``│``              ``│``         (continuous)           │                     │``
+│              └──────────``┬``─────────``┬``───────────┘``                    ``│``
+``│``                         ``│``         ``│``                                 ``│``
+``│``              Magnetic field zone  ``│``                                 ``│``
+``│``                    ``│``               ``│``Metal discharge chute           ``│``
+``│``    ``════════════════╪═══════════════╪═══════════════``                ``│``
+``│``    ``║``  BC-02 BELT CONVEYOR (900mm wide)      ``║``                      ``│``
+``│``    ``║``  ``→→→→→``  EFB flow direction  →→→→→      ``║``                      ``│``
+``│``    ``════════════════════════════════════════════``                     ``│``
+``│``                                    ``│``                                 ``│``
+``│``                                    ``↓``                                 ``│``
+``│``                         [200L Scrap Bin]                            ``│``
+``│``                    (ferrous metal collection)                       ``│``
+``│``                                                                     ``│``
+``│``  Magnet Power: 2.2 kW (electromagnet coil)                          │``
+│  Cleaning Belt: 0.75 kW motor                                       │``
+│  Field Strength: Adjustable via height (250-400mm above belt)       │``
+``└─────────────────────────────────────────────────────────────────────┘``
+`
+
+**WHAT DOES IT DO:**
+
+Extracts **ferrous tramp metal** (bolts, nuts, wire, agricultural tool
+fragments, truck body parts) from EFB before high-value rotating
+equipment (screw press, shredder, hammer mill). This is the **first line
+of defense** against catastrophic metal events.
+
+**HOW IT WORKS:**
+
+1.  **Material Flow:** Clean EFB from trommel flows on BC-02 belt (900mm
+    wide, 1.5 m/s speed) beneath suspended magnet
+
+2.  **Magnetic Attraction:** Electromagnet (energized at 2.2 kW) creates
+    1,500-2,000 gauss field at belt surface
+
+3.  **Metal Capture:** Ferrous metal pieces (Fe, steel) are attracted
+    upward, lifted off BC-02 belt surface (≈250-400mm rise)
+
+4.  **Self-Cleaning:** Captured metal adheres to magnet\'s continuous
+    cleaning belt loop, carried away from magnetic field zone
+
+5.  **Discharge:** As cleaning belt exits field zone, metal loses
+    magnetic attraction, drops down 45° chute into 200L scrap bin
+
+6.  **Continuous Operation:** Cleaning belt runs continuously (0.75 kW
+    motor), no operator intervention needed
+
+**WHY HEIGHT IS ADJUSTABLE:**
+
+-   **Lower (250mm):** Stronger magnetic field (inverse square law) →
+    better pickup of small metal (5-10mm) → BUT risk of picking up
+    non-metallic material (stones with iron oxide content)
+
+-   **Higher (400mm):** Weaker field → cleaner separation (only strong
+    ferrous metal) → BUT misses small pieces
+
+-   **Optimal:** 300-350mm for palm mill EFB application
+
+**MACHINE SITS ON:**
+
+-   **Structural steel A-frame gantry:** Spans BC-02 conveyor (2.5m
+    span), bolted to concrete floor pads (4× anchor points)
+
+-   **Adjustable suspension:** Threaded rods (M24) with lock nuts allow
+    height adjustment ±150mm
+
+-   **No separate foundation** - anchored to main floor slab
+
+**OUTPUT OF MACHINE:**
+
+-   **Main product:** EFB flow continues on BC-02 to BC-04, metal-free
+    (95-98% ferrous removal efficiency)
+
+-   **By-product:** Ferrous scrap in 200L bin
+
+    -   **Composition:** Rusty bolts, wire fragments, nails, small truck
+        parts
+
+    -   **Quantity:** Engineering estimate **5-10 kg/day** (35-70
+        kg/week)
+
+    -   **Disposal:** Bin emptied 1-2×/week during shift break, scrap
+        sold to metal recycler or discarded
+
+**NON-FERROUS METALS:**
+
+⚠️ **CRITICAL LIMITATION:** Overband magnet **ONLY** removes **ferrous**
+metal (Fe, steel). It **CANNOT** remove:
+
+-   Aluminum (non-magnetic)
+
+-   Copper / brass (non-magnetic)
+
+-   Stainless steel 304/316 (weakly magnetic, often not captured)
+
+**This is why MD-01 metal detector is mandatory downstream** (Step 7) as
+second line of defense.
+
+**OPERATOR SAFETY & MAINTENANCE:**
+
+-   **High voltage:** Electromagnet coil operates at 220V DC (rectified
+    from 380V AC) - do NOT touch terminals when energized
+
+-   **Maintenance:** Monthly inspection of cleaning belt for wear
+    (replace every 18-24 months), check magnet coil temperature (should
+    be \<60°C during operation)
+
+-   **Scrap bin:** Wear cut-resistant gloves when emptying (sharp rusty
+    metal edges)
+
+**3.3 METAL DETECTOR MD-01 (EFB Line Only)**
+
+**Industry Name:** Conveyor belt metal detector / bulk solids metal
+detector
+
+`┌────────────────────────────────────────────────────────────────────┐``
+│           METAL DETECTOR MD-01 ON BC-04 CONVEYOR                    │``
+│                                                                     │``
+│    [BC-04 Belt Conveyor Frame - Non-metallic splice required]      │``
+│                                                                     │``
+│         ┌───────────────────────────────────────────┐              │``
+│         │   MD-01 DETECTION HEAD (Tunnel Frame)     │              │``
+│         │                                            │              │``
+│         │    ``╔═══════════════════════════════╗``     ``│``              ``│``
+``│``         ``│``    ``║``                               ``║``     ``│``              ``│``
+``│``   Belt  ``│``    ``║``     Detection Zone            ``║``     ``│``  Belt        ``│``
+``│``   ``──────``┼``───``>``║``  1000mm W ``×`` 200mm H aperture  ``║``────``>``┼``──────``>       ``│``
+``│``   EFB   ``│``    ``║``     (Electromagnetic coils)   ``║``     ``│``  EFB         ``│``
+``│``         ``│``    ``║``                               ``║``     ``│``              ``│``
+``│``         ``│``    ``╚═══════════════════════════════╝``     ``│``              ``│``
+``│``         ``│``              ``↓`` Signal cable               ``│``              ``│``
+``│``         ``└──────────────``┼``────────────────────────────┘``              ``│``
+``│``                        ``↓``                                            ``│``
+``│``              [Control Panel + Alarm]                                ``│``
+``│``         ``•`` Relay output to PLC (TRIP signal)                        ``│``
+``│``         ``•`` LED display: CLEAR / METAL DETECTED                       ``│``
+``│``         ``•`` Audible alarm + flashing beacon                           │``
+│                                                                     │``
+│  SENSITIVITY (95% confidence):                                      │``
+│  • Ferrous (Fe): 3mm sphere                                         │``
+│  • Non-ferrous (Al, Cu, brass): 5mm sphere                          │``
+│  • Stainless steel (304/316): 8mm sphere                            │``
+│                                                                     │``
+│  Power: 220V single-phase, low power (<500W)                        │``
+│  Location: 1.5-2.0m upstream of PR-01 screw press feed chute       │``
+``└─────────────────────────────────────────────────────────────────────┘``
+`
+
+**WHAT DOES IT DO:**
+
+**Final protection layer** before screw press PR-01 (first high-value
+machine). Detects **ALL metal types** including:
+
+-   Ferrous (Fe, steel) - missed by OBM-01
+
+-   Non-ferrous (Al, Cu, brass) - invisible to OBM-01
+
+-   Stainless steel 304/316 - weakly magnetic, often missed by OBM-01
+
+**HOW IT WORKS (Electromagnetic Induction Principle):**
+
+1.  **Coil Configuration:** Three coils in detection tunnel - 1
+    transmitter (TX) + 2 receivers (RX)
+
+2.  **Baseline Field:** TX coil generates stable electromagnetic field
+    at specific frequency (typically 50-200 kHz)
+
+3.  **Material Flow:** EFB on BC-04 belt passes through detection zone -
+    organic material (cellulose, lignin) does NOT disturb field
+
+4.  **Metal Disturbance:** If any metal piece enters zone:
+
+    -   **Ferrous metal:** Changes field amplitude + phase (high signal)
+
+    -   **Non-ferrous metal:** Induces eddy currents, changes phase
+        (medium signal)
+
+    -   **Stainless steel:** Weak disturbance (low signal, but
+        detectable at 8mm)
+
+5.  **Signal Processing:** RX coils detect disturbance, comparator
+    circuit checks: \|Signal - Baseline\| \> Threshold?
+
+6.  **ALARM:** If YES → Relay contact closes → PLC receives TRIP signal
+    → **LINE-WIDE E-STOP**
+
+**CRITICAL: NON-METALLIC BELT SPLICE:**
+
+-   Standard metal belt fasteners (e.g., alligator lacing) would
+    **constantly trigger** MD-01 → false alarms
+
+-   **Solution:** BC-04 belt must use **vulcanized splice** (heat-bonded
+    rubber, zero metal) or **mechanical splice with ceramic pins**
+
+-   **Cost:** Vulcanized splice \$300-\$500 (requires specialist
+    contractor), lasts 2-3 years
+
+**MACHINE SITS ON:**
+
+-   **Integrated into BC-04 frame:** Detection head tunnel is bolted to
+    conveyor structure (4× M16 bolts), straddles belt at 1.5m upstream
+    of PR-01
+
+-   **No separate foundation** - supported by BC-04 conveyor frame
+    (structural steel)
+
+**OUTPUT OF MACHINE:**
+
+-   **Normal operation:** EFB flows through continuously, no output
+    change
+
+-   **Metal detected:** **ENTIRE LINE STOPS** → See detailed trip logic
+    below
+
+**MD-01 TRIP LOGIC - MOST CRITICAL SAFETY SEQUENCE**
+
+`┌─────────────────────────────────────────────────────────────────────┐``
+│                   METAL DETECTED - AUTOMATIC RESPONSE                │``
+│                        (within 0.5 seconds)                          │``
+│                                                                     │``
+│  1. STOP BC-04 (belt stops, EFB freezes in ``place)   ``                │``
+``│  2``. STOP AF-01, BC-01, BC-02, TR-2060 (upstream stops ``feeding)   ``   │``
+``│  3``. STOP PR-01 screw press (stops accepting ``material)   ``            │``
+``│  4``. STOP SD-01 shredder, HM-01 hammer mill, VS-01 screen            │``
+``│  5``. STOP BC-05, BC-06, BC-07, BC-08, BC-09 (all ``conveyors)   ``       │``
+``│  6``. AUDIBLE ALARM + FLASHING BEACON at control panel                │``
+│                                                                     │``
+│             >>>  LINE-WIDE E-STOP ACTIVATED  <<<                     │``
+│                                                                     │``
+│  [WAIT FOR OPERATOR MANUAL RESPONSE - REQUIRED BEFORE RESTART]      │``
+└─────────────────────────────────────────────────────────────────────┘``
+                               ↓``
+┌─────────────────────────────────────────────────────────────────────┐``
+│              OPERATOR RESPONSE (Manual, 5-15 minutes)                │``
+│                                                                     │``
+│  STEP A: Lock-Out/Tag-Out BC-04 Conveyor                            │``
+│  • Go to MCC (Motor Control Center) panel                           │``
+│  • Open BC-04 isolator switch (disconnect power)                    │``
+│  • Apply personal PADLOCK to open switch                            │``
+│  • Hang tag: "DO NOT START - METAL REMOVAL IN PROGRESS"             │``
+│  • Write: Operator name, date, time on tag                          │``
+│                                                                     │``
+│  STEP B: Inspect Belt in MD-01 Detection Zone                       │``
+│  • Walk to BC-04 conveyor, locate MD-01 tunnel (1.5m before press)  │``
+│  • Visually inspect EFB material on belt in 1-2m section            │``
+│  • Use handheld metal detector wand (backup tool) to pinpoint metal │``
+│                                                                     │``
+│  STEP C: Remove Metal Object                                        │``
+│  • Wear cut-resistant gloves (MANDATORY - sharp edges)              │``
+│  • Manually extract metal piece from EFB material                   │``
+│  • If embedded deep, use grabber tool or tongs                      │``
+│  • Typical objects found: 50mm bolt, rusty wire, truck part         │``
+│                                                                     │``
+│  STEP D: Place Metal in Scrap Bin                                   │``
+│  • Deposit in scrap bin (same bin as OBM-01 scrap)                  │``
+│  • Log incident in shift logbook:                                   │``
+│    - Time of alarm                                                  │``
+│    - Object description (e.g., "bolt 50mm, rusty")                  │``
+``│    - Operator initials                                              │``
+│                                                                     │``
+│  STEP E: Reset MD-01 and Restart Line                               │``
+│  • Press "RESET" button on MD-01 control panel                      │``
+│  • Remove padlock from BC-04 isolator                               │``
+│  • Close isolator switch (restore power)                            │``
+│  • Remove tag from isolator                                         │``
+│  • Return to main control panel                                     │``
+│  • Press "LINE START" button                                        │``
+│                                                                     │``
+│  → PLC executes STANDARD STARTUP SEQUENCE (reverse order):          │``
+│     BC-09 → VS-01 → HM-01 → SD-01 → PR-01 → BC-04 (with MD-01) →   │``
+│     OBM-01 → TR-2060 → BC-01 → AF-01 (material flow resumes)       │``
+└─────────────────────────────────────────────────────────────────────┘``
+`
+
+**WHY THIS IS NON-NEGOTIABLE:**
+
+Your Stage-1 report states: *\"A single bolt in the Hammer Mill
+shattered hammers → days of downtime\"*
+
+-   **Metal in HM-01:** Bolt strikes swing hammers at 1,800 RPM →
+    hammers shatter (cast iron fracture on hard steel) → shrapnel
+    damages mill housing, screen plate, bearings → **2-3 days downtime**
+    → **\$5,000-\$15,000 repair cost**
+
+-   **Metal in PR-01:** Less catastrophic but still serious - metal jams
+    between screw flights → screw bends → bearing overload → **6-12
+    hours downtime** → **\$2,000-\$5,000**
+
+**MD-01 prevents 99.9% of metal events** when combined with OBM-01
+(two-layer defense).
+
+**3.4 SCREW PRESS PR-01 (EFB) & DC-PRESS-01 (Decanter Cake)**
+
+**Industry Name:** Horizontal double-screw palm oil mill press /
+continuous screw press for fibre
+
+`┌────────────────────────────────────────────────────────────────────┐``
+│              SCREW PRESS PR-01 / DC-PRESS-01                        │``
+│                      (CB-20TC or equivalent)                        │``
+│                                                                     │``
+│        [Feed Hopper]                                                │``
+│             │                                                       │``
+│    ┌────────``▼``──────────────────────────────────────────────┐``       ``│``
+``│``    ``│``   ``╔════════════════════════════════════════════╗``      ``│``       ``│``
+``│``    ``│``   ``║``  ``════════►``  TWIN SCREWS (AR400 flights) ``══║══►``   ``│``       ``│``
+``│``    ``│``   ``║``                                             ``║``      ``│``       ``│``
+``│`` EFB``│``   ``║``  Compression zone: 65-70% MC ``→`` 45-50% MC   ``║`` Pressed    ``│``
+``│`` ``───``┼``──``>``║``                                             ``║``──────``┼``──``>   ``│``
+``│``    ``│``   ``║``  ``════════►``                             ``══║══►``      ``│``       ``│``
+``│``    ``│``   ``╚═════════════════╤═══════════════════════╝``      ``│``       ``│``
+``│``    ``│``                     ``│``                              │       │``
+│    │                     │ Press water (liquor)         │       │``
+``│    │                     ↓                              │       │``
+│    │         [Perforated barrel 5mm slots]             │       │``
+│    │                     │                              │       │``
+│    │                     ↓                              │       │``
+│    │         [Collection trough]                        │       │``
+│    │                     │                              │       │``
+│    │                     ↓                              │       │``
+│    │               100mm pipe to POME pond              │       │``
+│    └────────────────────────────────────────────────────┘       │``
+│                                                                     │``
+│  Twin screws: Rotating at 20-40 RPM, variable speed                │``
+│  Hydraulic cone: Adjustable backpressure (controls output MC)      │``
+│  Motor: 37 kW (EFB), 30 kW (DC)                                    │``
+│  Throughput: PR-01: 13.8 t/``hr`` EFB, DC-PRESS-01: 2-3 t/``hr`` DC       │``
+└─────────────────────────────────────────────────────────────────────┘``
+`
+
+**WHAT DOES IT DO:**
+
+**Primary dewatering** - squeezes water out of fibrous material
+mechanically (no heat, no chemicals).
+
+-   **PR-01 (EFB):** 65-70% MC → **45-50% MC** (target 47% typical)
+
+-   **DC-PRESS-01 (Decanter Cake):** 75-85% MC → **60-65% MC** (DC more
+    resistant to pressing due to lipid content)
+
+**HOW IT WORKS (Mechanical Compression):**
+
+1.  **Feed Zone:** Material enters feed hopper, gravity-fed into twin
+    screw channels
+
+2.  **Compression Zone (3-5m length):**
+
+    -   Twin screws rotate at 20-40 RPM (variable speed VFD)
+
+    -   Screw flights have **decreasing pitch** (large pitch at feed,
+        small pitch at discharge) → compression increases progressively
+
+    -   Material is squeezed against **perforated barrel** (5mm slots or
+        holes)
+
+3.  **Liquid Extraction:**
+
+    -   Water + residual palm oil forced through 5mm perforations
+
+    -   Drains into collection trough below press
+
+    -   **143 kg water per tonne EFB** (calculated from 70% → 47% MC
+        drop)
+
+4.  **Hydraulic Cone Adjustment:**
+
+    -   Discharge end has adjustable cone (hydraulic cylinder)
+
+    -   Cone position controls backpressure → affects output moisture
+
+    -   **Tighter cone (more backpressure):** Drier output (45% MC) but
+        slower throughput
+
+    -   **Looser cone (less backpressure):** Wetter output (50% MC) but
+        faster throughput
+
+5.  **Discharge:** Pressed fiber (now partially broken bunches,
+    100-200mm) drops onto BC-05 conveyor
+
+**PRESS WATER ROUTING (CRITICAL FOR ENVIRONMENTAL COMPLIANCE):**
+
+`Screw Press → Collection Trough (304SS, 3m L × 0.5m W)``
+              ↓``
+         Floor drain grate (prevents spillage)``
+              ↓``
+         100mm gravity pipe (PVC or HDPE)``
+              ↓``
+         Pump Station (2× submersible pumps, duty + standby)``
+              ↓``
+         POME Pond (mill's main wastewater system)``
+              ↓``
+         Treatment: Oil skimming, biological digestion, irrigation``
+`
+
+⚠️ **NEVER discharge press water to surface water** - high BOD
+(20,000-40,000 mg/L), palm oil content (1-3%), acidic pH - violates
+Indonesian environmental regulations.
+
+**MACHINE SITS ON:**
+
+-   **Reinforced concrete pad:** 3m L × 2m W × 0.5m thick
+
+    -   **Load:** Press equipment 5-8 tonnes + material in chamber 1-2
+        tonnes + vibration loads
+
+    -   **Anchor bolts:** 8× M24 bolts grouted into concrete (epoxy
+        grout)
+
+    -   **Vibration isolation pads:** 4× rubber pads (300mm × 300mm ×
+        75mm thick) under press feet - reduces vibration transmission to
+        building
+
+-   **Access platform:** Steel grating platform 1.2m wide, 3.2m above
+    floor (operator access to feed hopper, cone adjustment, bearing
+    inspection) with 1.1m high safety railings
+
+**OUTPUT OF MACHINE:**
+
+**PR-01 (EFB):**
+
+-   **Product:** Pressed EFB at 47% MC, partially broken fibers
+    100-200mm
+
+-   **Mass:** 13.8 t/hr input → **9.8 t/hr output** (29% mass reduction
+    from water removal)
+
+-   **State:** Damp fibrous material, ready for shredding
+
+**DC-PRESS-01 (Decanter Cake):**
+
+-   **Product:** Pressed DC at 60-65% MC, paste-like consistency
+
+-   **Mass:** 2.5 t/hr input → **1.8 t/hr output** (28% reduction)
+
+-   **State:** Wet paste, ready for optional light shredding or direct
+    to Stage 2
+
+**OPERATOR SAFETY & MAINTENANCE:**
+
+-   **Pinch points:** Rotating twin screws with high compression force -
+    **FULL SHEET METAL GUARDS** with interlocked access doors (door open
+    → press stops)
+
+-   **Lock-out/tag-out:** MANDATORY during cone adjustment or screw
+    inspection (same procedure as MD-01)
+
+-   **Daily:** Visual inspection for abnormal vibration/noise (bearing
+    wear), check press water flow (blockage indicator)
+
+-   **Weekly:** Bearing lubrication (grease gun, sealed bearings)
+
+-   **Monthly:** Hydraulic cone adjustment check (maintains consistent
+    pressing force), screw flight wear inspection via access door (press
+    stopped)
+
+-   **Quarterly:** Detailed screw flight wear measurement - if worn
+    \>30% replace screws
+
+-   **Annual:** Complete bearing replacement (preventive, avoid
+    catastrophic failure)
+
+**Critical Spares:**
+
+-   Screw flights (complete set): \$8,000-\$12,000, lead time 8-12 weeks
+    from Malaysia
+
+-   Hydraulic cone assembly: \$3,000-\$5,000, lead time 6-8 weeks
+
+-   Main shaft bearings (set of 4): \$1,500-\$2,500, lead time 4-6 weeks
+
+**Supplier:** PT Kharismapratama Abadisejatindo (CB-Modipalm
+distributor), Eric Tanujaya, +62-61-8469822
+
+**3.5 SHREDDER SD-01 (EFB) & Optional SD-02 (DC)**
+
+**Industry Name:** Low-speed high-torque dual-shaft shredder / break
+cutter biomass
+
+`┌────────────────────────────────────────────────────────────────────┐``
+│              SHREDDER SD-01 (KH-777-12 or equivalent)               │``
+│                                                                     │``
+│                    [Feed Hopper - Gravity]                          │``
+│                             │                                       │``
+│    ┌────────────────────────``▼``───────────────────────────────┐``      ``│``
+``│``    ``│``      ``╔══════════════════════════════════════╗``          ``│``      ``│``
+``│``    ``│``      ``║``  SHAFT A: ``╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲``       ``║``          ``│``      ``│``
+``│``    ``│``      ``║``  (Helical knives, counter-rotating)  ``║``          ``│``      ``│``
+``│`` EFB``│``      ``║``                                       ``║`` Shredded ``│``      ``│``
+``│────``┼``─────``>``║``  ``╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱`` :SHAFT B       ``║``──────────``┼``─────``>``│``
+``│``100-``│``      ``║``                                       ``║`` 30-50mm  ``│``      ``│``
+``│``200mm      ``║``  Cutting zone: Low-speed (20-40 RPM) ``║``          ``│``      ``│``
+``│``    ``│``      ``║``            High-torque via gearbox   ``║``          ``│``      ``│``
+``│``    ``│``      ``╚══════════════════════════════════════╝``          ``│``      ``│``
+``│``    ``│``                                                         ``│``      ``│``
+``│``    ``│``  Triple-reduction helical gearbox (YKL spec)           ``│``      ``│``
+``│``    ``│``  Motor: 90 kW (absorbed 75 kW + 1.2``×`` safety = 90 kW)   ``│``      ``│``
+``│``    ``│``  Knife material: AR400 wear-resistant steel            ``│``      ``│``
+``│``    ``└─────────────────────────────────────────────────────────┘``      ``│``
+``│``                                                                     ``│``
+``│``  Function: 3-in-1 ``→`` Breaks bunches + Squeezes residual oil + Cuts  │``
+│  Throughput: 8-10 t/``hr`` (design), 6.9 t/``hr`` (actual pressed EFB)     │``
+└─────────────────────────────────────────────────────────────────────┘``
+`
+
+**WHAT DOES IT DO:**
+
+**Primary size reduction** - converts pressed EFB from partially broken
+bunches (100-200mm) to coarse shredded fibers (30-50mm). This is **NOT**
+fine milling - it\'s aggressive tearing/cutting to create
+manageable-sized pieces for downstream hammer mill.
+
+**HOW IT WORKS (Shearing Action):**
+
+1.  **Material Entry:** Pressed EFB drops into feed hopper via gravity
+    from BC-05
+
+2.  **Dual-Shaft Cutting:**
+
+    -   Two parallel horizontal shafts with **helical knives**
+        (staggered pattern)
+
+    -   Shafts **counter-rotate** at 20-40 RPM (slow speed but massive
+        torque from gearbox)
+
+    -   Material fed into gap between shafts (typically 50-80mm gap)
+
+3.  **Shearing:** As shafts rotate:
+
+    -   Knives on Shaft A pass between knives on Shaft B (like scissors
+        blades)
+
+    -   Fibers are **sheared** (not crushed) into 30-50mm discrete
+        pieces
+
+    -   Oversized pieces caught between knives → pulled down by gravity
+        → re-sheared on next rotation
+
+4.  **Triple Benefit (per YKL specification):**
+
+    -   **Breaks bunches:** Separates dense clumps into individual fiber
+        strands
+
+    -   **Squeezes residual oil:** Some additional liquid pressed out
+        (minor, 1-2% mass loss)
+
+    -   **Cuts into pieces:** Creates uniform 30-50mm length suitable
+        for hammer mill
+
+5.  **Discharge:** Shredded fibers drop onto BC-06 conveyor
+
+**WHY LOW-SPEED HIGH-TORQUE:**
+
+-   **Low speed (20-40 RPM):** Prevents dust generation (vs. high-speed
+    hammer mills at 1,800 RPM)
+
+-   **High torque (via 3-stage gearbox):** Required to shear tough
+    lignified EFB fibers - single fibers can have tensile strength \>500
+    MPa
+
+**MACHINE SITS ON:**
+
+-   **Reinforced concrete pad:** 4m L × 3m W × 0.6m thick
+
+-   **Vibration isolation:** Moderate vibration (less than hammer
+    mill) - rubber pads under frame legs
+
+-   **Access platform:** Not required (feed hopper at 4m height accessed
+    via permanent ladder with safety cage)
+
+**OUTPUT OF MACHINE:**
+
+-   **Product:** Coarse shredded EFB fibers, 30-50mm length (target 40mm
+    typical), 47% MC
+
+-   **Mass:** 6.9 t/hr (same as input - minimal moisture loss during
+    shredding)
+
+-   **State:** Open, fluffy fibers ready for fine milling
+
+**OPERATOR SAFETY & MAINTENANCE:**
+
+-   **Entrapment hazard:** Dual rotating shafts with shearing knives -
+    extremely dangerous if accessed while running
+
+-   **Guards:** **FULL SHEET METAL ENCLOSURE** with interlocked access
+    doors
+
+-   **Inspection windows:** Tempered glass windows for viewing cutting
+    zone without opening doors
+
+-   **Daily:** Visual inspection through windows, abnormal noise check
+    (bearing or knife damage)
+
+-   **Weekly:** Gearbox oil level check (sight glass on gearbox)
+
+-   **Monthly:** Knife edge wear inspection via access door (machine
+    stopped) - if edges dull/chipped, schedule knife sharpening or
+    replacement
+
+-   **Quarterly:** Gearbox oil sample analysis (contamination check),
+    bearing temperature check (IR thermometer \<60°C)
+
+-   **Annual:** Gearbox oil change (full flush + refill per
+    manufacturer), complete bearing inspection
+
+**Critical Spares:**
+
+-   Helical knives (complete set for both shafts): \$12,000-\$18,000,
+    lead time 8-10 weeks from Malaysia - **most expensive consumable**,
+    plan annual replacement
+
+-   Main shaft bearings (set of 4): \$2,500-\$4,000, lead time 6-8 weeks
+
+**Supplier:** PT Kharismapratama (YKL/Khun Heng distributor)
+
+**3.6 HAMMER MILL HM-01 (EFB Line Only)**
+
+**Industry Name:** Industrial hammer mill / biomass pulverizer
+
+`┌────────────────────────────────────────────────────────────────────┐``
+│                    HAMMER MILL HM-01 (YTH-7.100)                    │``
+│                                                                     │``
+│                     [Feed Hopper - Elevated]                        │``
+│                              │                                      │``
+│    ┌─────────────────────────``▼``────────────────────────────┐``        ``│``
+``│``    ``│``   ``╔═════════════════════════════════════════╗``        ``│``        ``│``
+``│``    ``│``   ``║``                                          ``║``        ``│``        ``│``
+``│``    ``│``   ``║``    ``●──●──●──●`` ROTOR (1,200-1,800 RPM)  ``║``        ``│``        ``│``
+``│`` 30-``│``   ``║``    ``│``  ``│``  ``│``  ``│`` Swing hammers (32-48``×``)   ``║``  3-8mm ``│``        ``│``
+``│`` 50mm  ``║``    ``│``  ``│``  ``│``  ``│`` Strike material against ``║`` fibers ``│``        ``│``
+``│────``┼``──``>``║``    ``●──●──●──●`` perforated screen plate  ``║``────────``┼``───``>    ``│``
+``│``    ``│``   ``║``                                          ``║``        ``│``        ``│``
+``│``    ``│``   ``║``    [AR400 screen plate: 8-10mm holes]   ``║``        ``│``        ``│``
+``│``    ``│``   ``╚══════════════╤══════════════════════════╝``        ``│``        ``│``
+``│``    ``│``                  ``│`` Dust extraction (200mm)           ``│``        ``│``
+``│``    ``│``                  ``↓`` (MANDATORY)                       ``│``        ``│``
+``│``    ``│``         To cyclone dust collector                    ``│``        ``│``
+``│``    ``└──────────────────────────────────────────────────────┘``        ``│``
+``│``                                                                     ``│``
+``│``  Motor: 55 kW (absorbed 45 kW + 1.2``×`` safety = 54 ``→`` 55 kW std)      ``│``
+``│``  Rotor speed: 1,200-1,800 RPM (high-speed impact milling)          │``
+│  Noise: ≥95 dBA at 1m → Hearing protection zone                    │``
+│  Fire risk: HIGH → Dust extraction + housekeeping critical         │``
+└─────────────────────────────────────────────────────────────────────┘``
+`
+
+**WHAT DOES IT DO:**
+
+**Secondary size reduction** - pulverizes coarse shredded fibers
+(30-50mm) into fine fibers (3-8mm, target D50 ≈6mm). This is high-energy
+impact milling to approach final 2mm target before screening.
+
+**HOW IT WORKS (Impact Milling):**
+
+1.  **Material Entry:** Coarse fibers from BC-06 drop into elevated feed
+    hopper, gravity-fed into mill chamber
+
+2.  **Rotor Impact:**
+
+    -   High-speed rotor (1,200-1,800 RPM) with **32-48 swing hammers**
+        mounted on pins
+
+    -   Hammers are **free-swinging** (pivot on pins) - this is KEY
+        advantage over fixed knives
+
+    -   Material enters chamber → hammers strike fibers at high velocity
+        (tip speed 50-80 m/s)
+
+3.  **Repeated Impact:**
+
+    -   Fiber particles bounce around chamber, struck multiple times by
+        successive hammers
+
+    -   Each impact **fractures fibers** into progressively smaller
+        pieces
+
+    -   Particles strike each other (particle-on-particle attrition) -
+        additional size reduction
+
+4.  **Screen Plate Retention:**
+
+    -   Chamber bottom has **AR400 steel screen plate** with 8-10mm
+        perforations
+
+    -   Oversize material (\>8-10mm) cannot pass through → retained in
+        chamber → continues to be hammered
+
+    -   Undersize (\<8-10mm) passes through screen → discharges to BC-07
+        conveyor
+
+5.  **Discharge:** Fine fibers (3-8mm majority) exit mill via screen
+    plate
+
+**WHY SWING HAMMERS (vs. Fixed Knives):**
+
+Your Stage-1 report: *\"Single broken hammer \$50, swap 30 min\"* - this
+is critical economic advantage.
+
+-   **Swing hammers:** If hammer hits metal (despite OBM-01 + MD-01),
+    hammer **swings backward** on pivot → absorbs impact energy → may
+    crack but doesn\'t shatter → **\$50 replacement, 30 min job**
+
+-   **Fixed knives:** Metal impact → knife **rigidly mounted** → all
+    energy transferred to blade → blade shatters → fragments damage mill
+    housing/bearings → **\$5,000-\$15,000 repair, 2-3 days downtime**
+
+**MACHINE SITS ON:**
+
+-   **Reinforced concrete pad:** 3m L × 2.5m W × 0.6m thick with
+    **heavy-duty vibration isolation pads** - hammer mill generates
+    **highest vibration** of any machine in line
+
+-   **Foundation must be separate from building columns** - vibration
+    can crack structural concrete if directly coupled
+
+**OUTPUT OF MACHINE:**
+
+-   **Product:** Fine pulverized EFB fibers, 3-8mm (majority 5-10mm),
+    target D50 ≈6mm, 47% MC
+
+-   **Mass:** 6.9 t/hr (same as input - no moisture change during dry
+    milling)
+
+-   **State:** Dusty fine fibers ready for final 2mm classification
+    screening
+
+**FIRE RISK CONTROLS (CRITICAL - NON-NEGOTIABLE):**
+
+Hammer mill generates **friction heat** (hammers striking fibers at
+1,800 RPM) + EFB fiber dust is **combustible organic material**. This is
+**highest fire risk point** in entire facility.
+
+**Mandatory Controls:**
+
+1.  **Dust extraction system:**
+
+    -   200mm diameter flexible hose from mill discharge to central
+        cyclone dust collector
+
+    -   Creates **negative pressure** inside mill housing (-50 to -100
+        Pa)
+
+    -   **Interlock:** Dust fan MUST run whenever HM-01 runs (fan trip →
+        mill stops automatically)
+
+2.  **No dust accumulation:**
+
+    -   Daily sweeping/vacuuming of floor around HM-01
+
+    -   **Do NOT allow fiber dust \>5mm depth** on floor (combustible
+        layer)
+
+3.  
+
+4.  **No smoking / hot work permits:**
+
+    -   \"NO SMOKING\" signs posted in hammer mill area
+
+    -   Welding/grinding near HM-01 requires **hot work permit** (fire
+        watch, extinguisher ready, check for smoldering after work)
+
+5.  **Fire extinguisher:**
+
+    -   20 kg dry powder extinguisher mounted **within 5m of mill**,
+        clearly marked
+
+    -   Monthly inspection (pressure gauge check)
+
+6.  **Operator training:**
+
+    -   Monthly fire drill (practice using PASS method: Pull pin, Aim at
+        base, Squeeze handle, Sweep)
+
+    -   Know location of nearest fire alarm pull station
+
+**Optional (higher cost):**
+
+-   Spark detection system in discharge chute (infrared sensor detects
+    sparks → triggers water spray suppression) - \$10,000-\$20,000
+
+**OPERATOR SAFETY & MAINTENANCE:**
+
+-   **Noise:** **Minimum 95 dBA at 1m** (engineering estimate) -
+    **MANDATORY hearing protection zone** around mill (signage + PPE
+    enforcement)
+
+-   **Guards:** Full sheet metal enclosure with bolt-on access panels
+    for hammer inspection/replacement
+
+-   **Daily:** Visual inspection through access window (hammers rotating
+    freely, no visible cracks), listen for abnormal noise (grinding =
+    screen plate blockage or bearing damage)
+
+-   **Weekly:** Hammer wear inspection via access panel (mill stopped) -
+    measure hammer thickness with calipers, if worn \>50% of original →
+    replace
+
+-   **Monthly:** Screen plate inspection (check particle size
+    distribution of output - if \>20% oversize, screen may be blinded or
+    worn)
+
+-   **Quarterly:** Complete hammer set inspection, bearing temperature
+    check (IR thermometer), drive belt condition
+
+-   **Annual:** Replace ALL hammers (preventive, even if not fully
+    worn), screen plate replacement, bearing replacement
+
+**Critical Spares:**
+
+-   Swing hammers (individual): Keep 20 on-site (≈50% of total),
+    \$50-\$80/hammer, lead time 3-4 weeks from Malaysia
+
+-   Screen plate (replaceable): Keep 2 on-site, \$800-\$1,500/plate,
+    lead time 6-8 weeks, 3-6 month life
+
+-   Main shaft bearings (set of 2): Keep 1 set on-site, \$1,200-\$2,000,
+    lead time 6-8 weeks
+
+**Hammer Replacement Procedure (30 minutes):**
+
+1.  Stop mill, lock-out/tag-out
+
+2.  Open access panel (remove 4× bolts)
+
+3.  Remove retaining pins from rotor shaft
+
+4.  Slide old hammer off shaft
+
+5.  Slide new hammer on, reinstall pins
+
+6.  Close panel, remove lock-out
+
+7.  Restart mill
+
+**No rotor removal required** - hammers replaced individually while
+rotor stays in mill.
+
+**3.7 SWECO VIBRO-ENERGY SCREEN VS-01 (EFB Final Classification)**
+
+**Industry Name:** Round vibratory separator / vibro-energy separator
+
+`┌────────────────────────────────────────────────────────────────────┐``
+│            SWECO VIBRO-ENERGY SCREEN VS-01 (30-36" ``dia``)             │``
+│                                                                     │``
+│                        [Feed Hopper - Center]                       │``
+│                                 │                                   │``
+│    ┌────────────────────────────``▼``──────────────────────────┐``       ``│``
+``│``    ``│``                  ``╔═══════════════════╗``                 ``│``       ``│``
+``│``    ``│``                  ``║``  2mm SCREEN MESH  ``║``                 ``│``       ``│``
+``│``    ``│``    Oversize      ``║``  ``╱╲╱╲╱╲╱╲╱╲╱╲╱╲``  ``║``   Undersize     ``│``       ``│``
+``│``    ``│``    (>2mm)  ``◄``─────``║`` ``╱``            ``╲`` ``║``─────``►`` (<2mm)      ``│``       ``│``
+``│`` 3-8mm               ``║``  Material spirals ``║``      FINAL        ``│``       ``│``
+``│────``┼``────────────``►``    ``║``  across screen    ``║``──────``┼``──────``►``    ``│``       ``│``
+``│`` fibers              ``║``  (gyratory motion)``║``      PRODUCT      ``│``       ``│``
+``│``    ``│``                  ``║`` ``╲``            ``╱`` ``║``      D90 ``≤``2mm     ``│``       ``│``
+``│``    ``│``                  ``║``  ``╲╱╲╱╲╱╲╱╲╱╲╱╲``  ``║``                   ``│``       ``│``
+``│``    ``│``                  ``╚═══════╤═════════╝``                   ``│``       ``│``
+``│``    ``│``                          ``│``                             ``│``       ``│``
+``│``    ``│``                    Eccentric motor                     ``│``       ``│``
+``│``    ``│``                    (0.75-3 kW)                         ``│``       ``│``
+``│``    ``└──────────────────────────────────────────────────────┘``        ``│``
+``│``           ``│``                                      ``│``                  ``│``
+``│``           ``↓`` BC-08 Recycle                       ↓ BC-09 Product    │``
+``│      Back to HM-01                         To storage bin          │``
+│      (10-20% mass)                         (80-90% mass)           │``
+│                                                                     │``
+│  Screen: 304 stainless steel mesh, 2mm square or round aperture    │``
+│  Separation: Undersize passes → Product | Oversize retained → Recycle│``
+│  Cleaning: Optional ultrasonic OR manual brushing (stop + brush)   │``
+└─────────────────────────────────────────────────────────────────────┘``
+`
+
+**WHAT DOES IT DO:**
+
+**Final classification** - separates fine fibers into two streams:
+
+-   **Undersize (\<2mm):** FINAL PRODUCT meeting D90 ≤2mm specification
+
+-   **Oversize (\>2mm):** Recycle back to HM-01 for re-grinding
+
+This is the **critical quality control point** that **GUARANTEES** D90
+≤2mm specification.
+
+**HOW IT WORKS (Gyratory Screening):**
+
+1.  **Material Entry:** Fine fibers (3-8mm) from BC-07 drop into center
+    of screen deck
+
+2.  **Eccentric Vibration:**
+
+    -   Motor with eccentric weights creates **gyratory motion**
+        (horizontal + vertical + tangential)
+
+    -   Screen deck vibrates in spiral pattern
+
+    -   Material spreads from center → spirals outward toward periphery
+
+3.  **Size Separation:**
+
+    -   **Undersize (\<2mm):** Small particles pass through 2mm
+        apertures, fall through screen → collected at undersize
+        discharge
+
+    -   **Oversize (\>2mm):** Large particles too big to pass → retained
+        on screen surface → continue spiraling → exit at oversize
+        discharge (periphery)
+
+4.  **Discharge:**
+
+    -   **Undersize:** Drops onto BC-09 product conveyor → storage bin →
+        Stage 2
+
+    -   **Oversize:** Drops onto BC-08 recycle conveyor → returns to
+        HM-01 feed hopper
+
+**HOW D90 ≤2MM IS ACHIEVED (Closed-Loop Grinding System):**
+
+`                    ┌──────────────────┐``
+                    │  HM-01 Hammer    │``
+                    │  Mill (3-8mm)    │``
+                    └─────────``┬``────────┘``
+                              ``↓``
+                    ``┌──────────────────┐``
+                    ``│``  VS-01 Screen    ``│``
+                    ``│``  (2mm aperture)  ``│``
+                    ``└─────``┬``──────``┬``─────┘``
+``                          ``│``      ``│``
+                Undersize ``│``      ``│`` Oversize``
+                 (<2mm)   ``│``      ``│``  (>2mm)``
+                          ``│``      │``
+                          ↓      └───────┐``
+                   ┌──────────┐          │``
+                   │  PRODUCT │          │``
+                   │ D90≤2mm  │          │``
+                   │(80-90% of│          │``
+                   │  flow)   │          │``
+                   └──────────┘          │``
+                                         │ RECYCLE``
+                                         │ LOOP``
+                                         │ (10-20%)``
+                                         ↓``
+                    ┌──────────────────┐``
+                    │  HM-01 Feed      │``◄``──┘``
+                    ``│``  (Re-grind)      ``│``
+                    ``└──────────────────┘``
+`
+
+**Physical Guarantee:**
+
+1.  **Screen aperture = 2mm:** Anything larger than 2mm **CANNOT**
+    physically pass through the screen - it is mechanically retained
+
+2.  **Recycle loop:** Oversize (\>2mm) material is recycled back to
+    hammer mill, re-ground, re-screened - this continues until it is
+    reduced below 2mm
+
+3.  **Equilibrium:** At steady-state operation, 80-90% of material
+    passes screen on first pass (already \<2mm from HM-01), 10-20%
+    recycles
+
+4.  **The undersize discharge from VS-01 is GUARANTEED to be D90 ≤2mm**
+    because the screen physically retains anything larger
+
+**Verification Sampling Plan:**
+
+-   **Daily:** Visual inspection (material should be fine, fluffy, no
+    visible oversize fibers \>2mm)
+
+-   **Weekly:** Collect 1 kg sample from BC-09, perform visual check
+
+-   **Monthly:** Sieve analysis - use 2mm test sieve + scale, measure %
+    passing → confirm D90 ≤2mm
+
+-   **If D90 drifts \>2mm:** Screen damaged (torn) or blinded (caked) →
+    replace or clean screen
+
+**MACHINE SITS ON:**
+
+-   **Vibration isolation springs:** Floor-mounted on 4-6× springs
+    (screen vibrates intentionally, must be isolated from building
+    structure)
+
+-   **No concrete foundation** - lightweight machine (100-300 kg),
+    spring-mounted
+
+**OUTPUT OF MACHINE:**
+
+**Undersize (Product):**
+
+-   **Specification:** D90 ≤2mm (90% of mass passing 2mm), 47% MC
+
+-   **Mass:** 10.0-11.0 t/hr (80-90% of 12.4 t/hr total through screen)
+
+-   **Destination:** BC-09 → product storage bin → Stage 2 PKSA
+    treatment
+
+**Oversize (Recycle):**
+
+-   **Specification:** \>2mm particles
+
+-   **Mass:** 1.2-2.4 t/hr (10-20% of total - **recycle ratio**)
+
+-   **Destination:** BC-08 recycle conveyor → HM-01 feed hopper (merged
+    with fresh feed from BC-06)
+
+**Recycle Ratio Control:**
+
+-   **Typical:** 10-15% recycle (indicates good HM-01 performance)
+
+-   **High recycle (\>20%):** HM-01 producing too much oversize -
+    indicates:
+
+    -   Screen plate worn (8-10mm holes enlarged → passing larger
+        pieces)
+
+    -   Hammers worn (not hitting hard enough)
+
+    -   Motor underpowered / overloaded
+
+    -   **Action:** Inspect HM-01 screen plate + hammers, replace if
+        worn
+
+-   **Low recycle (\<5%):** HM-01 over-grinding (wasting energy) -
+    reduce HM-01 residence time or increase screen plate perforation
+    size
+
+**OPERATOR SAFETY & MAINTENANCE:**
+
+-   **Low risk machine** - enclosed, low noise (70-80 dBA), no pinch
+    points when covered
+
+-   **Daily:** Inspect screen deck via hinged lid (machine stopped) -
+    check for tears, holes, blinding (material caked on mesh)
+
+-   **Cleaning:** If blinded, manual brushing (wire brush or water
+    hose) - stop machine first
+
+-   **Quarterly:** Replace screen mesh (preventive) - mesh
+    wears/stretches over time → D90 drifts
+
+    -   Replacement procedure: Open lid, release quick-clamps, remove
+        old mesh, tension new mesh in frame, re-clamp
+
+    -   **15-minute job** with quick-release clamps (SWECO design
+        feature)
+
+-   **Screen mesh life:** 3-4 months typical with EFB (abrasive silica
+    content shortens life)
+
+**Critical Spares:**
+
+-   Screen mesh (2mm aperture): Keep 2 on-site, \$300-\$600/mesh, lead
+    time 4-6 weeks
+
+-   Vibration isolation springs: \$200-\$400/set (rarely replaced)
+
+**Supplier:** SWECO (USA, global brand since 1942) via Southeast Asia
+rep (Singapore) OR PT Kharismapratama can source equivalent local
+Indonesian fabrication
+
+**SECTION 4: STAGE 2 PKSA CHEMICAL PRE-TREATMENT - THE GAME-CHANGING
+INNOVATION**
+
+**4.1 Introduction to PKSA (Palm Kernel Shell Ash)**
+
+**PKSA is a FREE waste stream from the palm oil mill that replaces
+expensive commercial alkaline chemicals.**
+
+**What is PKSA:**
+
+Palm kernel shells (PKS) are burned in mill boilers to generate steam
+for FFB sterilization. The ash produced contains:
+
+  ------------------------------------------------------------------------
+  Component        Typical       Active Form in    Function
+                   Content (%    Water             
+                   DM)                             
+  ---------------- ------------- ----------------- -----------------------
+  **K₂O (Potassium 35-45%        KOH (potassium    **Strong alkaline**
+  oxide)**                       hydroxide)        delignification agent,
+                                                   pH 10-12
+
+  **CaO (Calcium   8-12%         Ca(OH)₂ (calcium  **Moderate alkaline** +
+  oxide)**                       hydroxide)        Ca nutrition
+
+  **MgO (Magnesium 3-5%          Mg(OH)₂           **Weak alkaline** + Mg
+  oxide)**                       (magnesium        nutrition
+                                 hydroxide)        
+
+  **P₂O₅           1-2%          H₃PO₄ → HPO₄²⁻    Phosphorus nutrition
+  (Phosphorus                                      
+  pentoxide)**                                     
+
+  Ash/inerts       Balance       Silica, minor     Inert
+                                 metals            
+  ------------------------------------------------------------------------
+
+**Why PKSA is Revolutionary:**
+
+1.  **Zero cost:** Waste product from mill\'s own PKS boiler - normally
+    disposed of or given away free
+
+2.  **RSPO-approved:** 100% mill waste stream - no synthetic chemicals -
+    complies with Roundtable on Sustainable Palm Oil standards
+
+3.  **Dual function:** Alkaline treatment (lignin reduction) + NPK
+    nutrition (K₂O primary nutrient)
+
+4.  **Equivalent performance:** At 6-10 kg/t FW dose, delivers **same
+    lignin reduction** as:
+
+    -   K₂CO₃ (potassium carbonate): \$1.66/kg × 10 kg = **\$16.60/t
+        FW**
+
+    -   Ca(OH)₂ (hydrated lime): \$0.35/kg × 15 kg = **\$5.25/t FW**
+
+    -   NaOH (caustic soda): \$0.80/kg × 8 kg = **\$6.40/t FW**
+
+5.  **PKSA cost: \$0/t FW** (already available at mill)
+
+**Chemical Mechanism (What Happens at Molecular Level):**
+
+When PKSA is mixed with water:
+
+`K₂O + H₂O → 2 KOH      ``   (``potassium hydroxide, strong base, pH 12)``
+CaO + H₂O → ``Ca(``OH)₂    ``   (``calcium hydroxide, moderate base, pH 11)``
+MgO + H₂O → ``Mg(``OH)₂    ``   (``magnesium hydroxide, weak base, pH 10)``
+`
+
+These hydroxides (OH⁻ ions) attack lignin-carbohydrate complexes (LCC)
+in EFB:
+
+1.  **Ester bond cleavage:** OH⁻ cleaves ester linkages between lignin
+    and hemicellulose
+
+    -   `R-COO-R' + OH``⁻`` ``→`` R-COO``⁻`` + R'-OH` (saponification
+        reaction)
+
+2.  **Ether bond cleavage:** OH⁻ attacks β-O-4 and α-O-4 ether bonds in
+    lignin polymer
+
+    -   These are the **weakest bonds** in lignin structure (bond energy
+        250-300 kJ/mol)
+
+    -   Cleavage breaks lignin into **smaller fragments** (oligomers)
+        that dissolve in aqueous phase
+
+3.  **Cellulose swelling:** Alkaline conditions cause cellulose crystal
+    structure to swell (mercerization)
+
+    -   Crystal structure transitions: Cellulose I → Cellulose III
+
+    -   Surface area increases 3-4× → more accessible to
+        enzymes/microbes in Stage 3
+
+4.  **Hemicellulose solubilization:** Xylan and arabinan side chains
+    cleave from hemicellulose backbone
+
+    -   Released sugars (xylose, arabinose) dissolve into liquor
+
+    -   These are **fermentable C5 sugars** for BSF larval gut bacteria
+
+**Result after 60-90 minutes at pH 10-12:**
+
+-   **30-35% lignin reduction** (dissolved lignin in spent liquor: 8-10
+    g/L)
+
+-   **Cellulose accessibility increased** (surface area ↑ 300-400%)
+
+-   **C:N ratio unchanged** (PKSA has negligible nitrogen)
+
+-   **pH 10-12** (requires neutralization before biology)
+
+**4.2 PADDLE MIXER DRUM PMD-01 - THE CRITICAL REACTOR**
+
+**Industry Name:** Paddle mixer / ribbon blender / alkaline digester
+
+`┌────────────────────────────────────────────────────────────────────┐``
+│           PADDLE MIXER DRUM PMD-01 - PKSA REACTOR                   │``
+│                                                                     │``
+│                        [Top Loading Hatch]                          │``
+│                        (1.5m ``dia``, pneumatic)                        │``
+│                               │                                     │``
+│    ┌──────────────────────────``▼``─────────────────────────────┐``      ``│``
+``│``    ``│``  ``╔═══════════════════════════════════════════════════╗`` ``│``      ``│``
+``│``    ``│``  ``║``                                                    ``║`` ``│``      ``│``
+``│``    ``│``  ``║``  SHAFT A: ``═══``●``═══``●``═══``●``═══``●``═══``●``═══``●``══``             ``║`` ``│``      ``│``
+``│``    ``│``  ``║``           (20 paddle blades, helical pattern)     ``║`` ``│``      ``│``
+``│``    ``│``  ``║``                                                    ``║`` ``│``      ``│``
+``│``    ``│``  ``║``                  MIXING ZONE                       ``║`` ``│``      ``│``
+``│``    ``│``  ``║``              165.6t EFB + 165.6t H``₂``O              ``║`` ``│``      ``│``
+``│``    ``│``  ``║``              + 16t PKSA slurry (10%)              ``║`` ``│``      ``│``
+``│``    ``│``  ``║``              = 347.2t total @ pH 10-12            ``║`` ``│``      ``│``
+``│``    ``│``  ``║``                                                    ``║`` ``│``      ``│``
+``│``    ``│``  ``║``  SHAFT B: ``══``●``═══``●``═══``●``═══``●``═══``●``═══``●``═══``             ``║`` ``│``      ``│``
+``│``    ``│``  ``║``           (20 paddle blades, counter-rotating)    ``║`` ``│``      ``│``
+``│``    ``│``  ``║``                                                    ``║`` ``│``      ``│``
+``│``    ``│``  ``╚═══════════════════════╤═══════════════════════════╝`` ``│``      ``│``
+``│``    ``│``                          ``│``                             │      │``
+│    │                  [Bottom Drain Valve]                  │      │``
+│    │                  300mm ball valve + 5mm mesh basket    │      │``
+│    │                          │                             │      │``
+│    │                          ↓                             │      │``
+│    │                   Spent liquor to POME pond            │      │``
+│    └──────────────────────────────────────────────────────┘       │``
+│                                                                     │``
+│  Dimensions: 6m diameter × 6m length (cylindrical drum)             │``
+│  Working volume: 165 m³ (180 m³ total with 15 m³ headspace)         │``
+│  Drum material: Carbon steel A36, 10mm wall thickness               │``
+│  Lining: 8mm EPDM rubber (alkali-resistant, ``bolted+bonded``)         │``
+│  Paddles: Stainless steel 304, 6mm plate, 40 total (20/shaft)      │``
+│  Rotation: 10 RPM (variable frequency drive)                        │``
+│  Motor: 15 kW, 3-phase 415V, IP65 rated                             │``
+│  Gearbox: Chain/gear reducer, 150:1 ratio (1500 RPM → 10 RPM)      │``
+│  Bearings: Sealed spherical roller, external pillow blocks          │``
+│  Shaft seals: Mechanical Type 1, 150mm ``dia`` (prevent slurry leak)   │``
+``└─────────────────────────────────────────────────────────────────────┘``
+`
+
+**WHAT DOES IT DO:**
+
+**Alkaline digester** - provides controlled environment for PKSA-EFB
+reaction at ambient temperature (28-35°C). This is where **30-35% lignin
+reduction occurs** in 60-90 minutes.
+
+**CRITICAL DESIGN QUESTION: Does the drum need to be stainless steel?**
+
+**Answer: NO.** Carbon steel with rubber lining is optimal.
+
+**Justification:**
+
+  ----------------------------------------------------------------------------
+  Aspect            Stainless Steel 304 Carbon Steel + Rubber Lining
+                    Drum                
+  ----------------- ------------------- --------------------------------------
+  **Cost**          \$50,000-\$80,000   \$15,000-\$30,000 (50-70% savings)
+
+  **Corrosion       Natural passivation 8mm EPDM rubber lining provides
+  protection**      at pH 10-12         **complete protection**
+
+  **Wear            Steel abrades from  Rubber **absorbs impact**, reduces
+  protection**      fibrous EFB impact  wear on metal
+
+  **Maintenance**   Weld repairs        Lining **replaceable** in 8-12 hours,
+                    difficult           3-5 year life
+                    (specialist)        
+
+  **Standard**      Uncommon for this   **Standard in alkaline slurry**
+                    application         applications (cement mixers, pulp
+                                        digesters, mining)
+  ----------------------------------------------------------------------------
+
+**Conclusion:** Carbon steel + rubber lining is **proven technology**
+for pH 10-14 alkaline biomass digestion. Cost savings of
+\$35,000-\$50,000 justify this choice.
+
+**Rubber Lining Specification:**
+
+-   **Material:** EPDM (Ethylene Propylene Diene Monomer) - excellent
+    alkali resistance up to pH 14
+
+-   **Thickness:** 8mm (sufficient for pH 10-12, 3-5 year life)
+
+-   **Installation:** Bolted + bonded (mechanical fasteners + adhesive)
+    to drum interior
+
+-   **Replacement cost:** \$3,000-\$5,000 (includes labor)
+
+-   **Supplier:** Local Indonesian rubber lining contractors (Jakarta,
+    Surabaya)
+
+**HOW IT WORKS (Batch Mixing Process):**
+
+**STEP 1: Loading (10 minutes)**
+
+1.  **Open top hatch** (1.5m diameter pneumatic lid, actuated via
+    control panel button)
+
+2.  **Screw feeder drops 165.6t EFB** (2mm particles, 45% MC) from Stage
+    1 buffer hopper into drum
+
+3.  **Add water:** Pump 165.6t clean water via top spray ring (5 min
+    pumping time)
+
+    -   **1:1 ratio by weight** (EFB:water) creates 60% solids slurry
+
+4.  **Close hatch** (pneumatic actuator)
+
+**Why 1:1 water ratio:**
+
+-   At 45% MC, EFB already contains 74t water (165.6t × 0.45 = 74t)
+
+-   Adding 165.6t brings total water to 240t, total FW to 331t
+
+-   **Moisture content after mixing:** 240t ÷ 331t = **72% MC** (optimal
+    for slurry mixing)
+
+**STEP 2: PKSA Dosing (2 minutes)**
+
+1.  **Pump PKSA slurry** from 20m³ preparation tank via bottom injection
+    port
+
+    -   **Dose:** 16t of 10% slurry (1.6t dry PKSA + 14.4t water)
+
+    -   **Dosing rate:** 6-10 kg dry PKSA per tonne FW EFB (1.6t ÷
+        165.6t = 9.7 kg/t)
+
+2.  **pH rises instantly to 10-12** as K₂O + CaO dissolve and form KOH +
+    Ca(OH)₂
+
+**Chemistry happening immediately:**
+
+`K₂O + H₂O → 2 KOH     ``   (``exothermic, ΔH = -58 kJ/mol)``
+CaO + H₂O → ``Ca(``OH)₂   ``   (``exothermic, ΔH = -65 kJ/mol)``
+`
+
+-   Slight temperature rise (2-5°C) from exothermic hydration
+
+**STEP 3: Reaction (60-90 minutes) - THE CRITICAL STEP**
+
+1.  **Start paddle agitator:** 10 RPM rotation via VFD-controlled 15 kW
+    motor
+
+2.  **Paddle action:**
+
+    -   Two parallel shafts with 40 total paddles (20/shaft) in helical
+        pattern
+
+    -   **Ribbon-paddle hybrid:** Lifts material from bottom → folds
+        over → ensures full slurry contact
+
+    -   **Counter-rotation:** Shafts rotate opposite directions →
+        creates shear zones → breaks up fiber clumps
+
+3.  **Reaction kinetics:**
+
+  ------------------------------------------------------------------------
+  Time     Lignin Reduction   Hemicellulose Solubility Cellulose Access
+           (%)                (%)                      (%)
+  -------- ------------------ ------------------------ -------------------
+  **30     18-22%             12%                      20%
+  min**                                                
+
+  **60     28-32%             18%                      30%
+  min**                                                
+
+  **90     30-35%             24%                      38%
+  min**                                                
+  ------------------------------------------------------------------------
+
+**Why 90 minutes is optimal:**
+
+-   **2mm particles:** Reaction-limited kinetics (NOT
+    diffusion-limited) - small particle size means OH⁻ ions reach fiber
+    core quickly
+
+-   **Diminishing returns after 90 min:** Curve flattens - 24 hour soak
+    only gains 2-4% additional lignin reduction (not worth the time)
+
+-   **Dissolved lignin safety:** Stays below 12 g/L (safe for downstream
+    microbes - lignin oligomers at \>15 g/L can inhibit microbial
+    growth)
+
+**STEP 4: Drain (5 minutes)**
+
+1.  **Stop agitator**
+
+2.  **Open bottom valve** (300mm ball valve, pneumatic actuator)
+
+3.  **Liquor drains through 5mm mesh basket:**
+
+    -   **Retains fiber** (2mm EFB particles cannot pass through 5mm
+        mesh)
+
+    -   **Passes liquid** (water + dissolved lignin + K⁺ + Ca²⁺ ions)
+
+4.  **Spent liquor:** 150 m³, pH 11, 8-10 g/L dissolved lignin → pumps
+    to POME pond
+
+5.  **Wet EFB:** 175t at 70% MC, pH 10-12 → drops onto conveyor to screw
+    press
+
+**Why spent liquor goes to POME pond (NOT discharged to surface
+water):**
+
+-   **High pH (11):** Violates discharge standards (pH 6-9 typical)
+
+-   **High BOD:** Dissolved lignin + hemicellulose sugars =
+    15,000-25,000 mg/L BOD
+
+-   **Alkalinity:** K⁺ and Ca²⁺ salts increase water hardness
+
+**POME pond treatment:**
+
+-   Biological digestion (anaerobic bacteria degrade lignin oligomers
+    over 20-40 days)
+
+-   pH naturally drops to 7-8 via CO₂ absorption + microbial acid
+    production
+
+-   Final treated water used for irrigation (K⁺ and Ca²⁺ beneficial for
+    soil)
+
+**MACHINE SITS ON:**
+
+-   **Reinforced concrete pad:** 8m L × 8m W × 0.8m thick (massive load:
+    10t equipment + 350t slurry)
+
+    -   **Load calculation:** 360t total ÷ 64 m² = **5.6 t/m²** bearing
+        pressure
+
+    -   Requires **compacted gravel base** (300mm) below concrete +
+        **steel reinforcement** (150mm rebar grid, Grade 60 steel)
+
+-   **Structural steel frame:** Drum supported on 4× steel saddles
+    (welded to drum body, bolted to concrete pad)
+
+-   **Motor + gearbox:** External mounting (separate pedestal) to avoid
+    slurry contact
+
+**OUTPUT OF MACHINE:**
+
+**Product:** Wet alkali-treated EFB
+
+-   **Mass:** 175t at 70% MC, pH 10-12
+
+-   **State:** Swollen fibers, lignin partially dissolved, cellulose
+    accessible
+
+-   **Destination:** CB-15TC screw press for re-pressing to 50-55% MC
+
+**By-product:** Spent liquor
+
+-   **Mass:** 150 m³ (≈150t assuming density ≈1.0 g/mL)
+
+-   **Composition:** Water + 8-10 g/L dissolved lignin + K⁺ (4,000-6,000
+    mg/L) + Ca²⁺ (800-1,200 mg/L)
+
+-   **Destination:** POME pond
+
+**OPERATOR SAFETY & MAINTENANCE:**
+
+⚠️ **CRITICAL HAZARD: Chemical burns from pH 12 slurry**
+
+**Personal Protective Equipment (PPE):**
+
+-   **Safety goggles** (MANDATORY - splashes cause severe eye injury)
+
+-   **Nitrile gloves** (chemical-resistant, 15 mil thickness)
+
+-   **Rubber boots** (knee-high, oil/alkali-resistant)
+
+-   **Rubber apron** (full-length)
+
+**Hazards:**
+
+-   **Chemical burns:** PKSA slurry at pH 12 is corrosive - skin contact
+    causes burns within 30-60 seconds
+
+    -   **First aid:** Immediate water flush (15-20 min), medical
+        attention
+
+-   **Hot surfaces:** Drum exterior can reach 35-40°C during mixing
+    (mild warmth from exothermic reaction + friction)
+
+-   **Pinch points:** Rotating paddles (10 RPM slow but high torque) -
+    do NOT open hatch while running
+
+**Interlocks:**
+
+-   Top hatch interlocked: **Hatch open → agitator cannot start**
+
+-   Bottom valve interlocked: **Valve open → agitator stops** (prevents
+    material discharge while mixing)
+
+**Maintenance:**
+
+-   **Daily:** Visual inspection of rubber lining via inspection port
+    (check for tears, debonding)
+
+-   **Weekly:** Bearing temperature check (IR thermometer, \<60°C
+    normal)
+
+-   **Monthly:** Paddle blade inspection via top hatch (machine
+    stopped) - check for wear/damage on 304SS blades (replace if
+    bent/cracked)
+
+-   **Annual:** Rubber lining inspection (remove sample section, measure
+    thickness - if \<5mm remaining, schedule full relining)
+
+**Critical Spares:**
+
+-   Paddle blades (individual 304SS plates): \$150-\$300/blade, lead
+    time 6-8 weeks
+
+-   Mechanical shaft seals (Type 1, 150mm): \$800-\$1,500/set, lead time
+    8-10 weeks
+
+-   Bottom valve ball (300mm): \$2,000-\$3,500, lead time 10-12 weeks
+
+**4.3 NEUTRALIZATION BAYS - PASSIVE CO₂ CARBONATION**
+
+**After PKSA treatment, EFB/DC is at pH 10-12 (highly alkaline). This
+MUST be neutralized to pH 6.5-8.0 before Stage 3 biology - alkaline
+material instantly kills microbes and BSF larvae.**
+
+**Industry Name:** Windrow composting bay / aerated static pile /
+neutralization pad
+
+`┌────────────────────────────────────────────────────────────────────┐``
+│              NEUTRALIZATION BAY #1 (12m × 12m × 1.5m H)             │``
+│                                                                     │``
+│   [Front-End Loader / Bobcat with Hydraulic Windrow Turner]        │``
+│                          │                                          │``
+│                          ↓ Spreads material                         │``
+│    ┌──────────────────────────────────────────────────────┐        │``
+│    │                                                       │        │``
+│    │   ``╱╲╱╲╱╲╱╲╱╲╱╲``  WINDROW (1.0-1.5m height) ``╱╲╱╲╱╲╱╲``  ``│``        ``│``
+``│``    ``│``  ``╱``  165t EFB @ 50-55% MC, pH 10-12 initially    ``╲``   ``│``        ``│``
+``│``    ``│`` ``╱``                                                  ``╲``  ``│``        ``│``
+``│``    ``│``╱``    10m length ``×`` 12m width ``×`` 1.0-1.5m height       ``╲`` ``│``        ``│``
+``│``    ``│``                                                       ``│``        ``│``
+``│``    ``│``  PHASE 1 (0-12 hours): Passive CO``₂`` carbonation       ``│``        ``│``
+``│``    ``│``  - Atmospheric CO``₂`` (0.04%) dissolves in moisture     ``│``        ``│``
+``│``    ``│``  - KOH + CO``₂`` ``→`` KHCO₃ (potassium bicarbonate)         │        │``
+│    │  - Ca(OH)₂ + CO₂ → ``CaCO``₃ + H₂O (limestone)           │        │``
+│    │  - pH drops: 10-12 → 8 over 12 hours                 │        │``
+│    │  - Slight exotherm: Temp rises 5-10°C                │        │``
+``│    │                                                       │        │``
+│    │  [POME Spray + Turn at 12 hours]                     │        │``
+│    │  - Spray 82m³ diluted POME (1:1 water)               │        │``
+│    │  - Bobcat turns windrow 2-3 passes                   │        │``
+│    │  - POME acidity → pH 7-7.5                           │        │``
+│    │                                                       │        │``
+│    │  PHASE 2 (12-24 hours): Final cure                    │        │``
+│    │  - Continue passive carbonation                       │        │``
+│    │  - pH stabilizes at 6.5-8.0                          │        │``
+│    │  - Temperature <45°C (check before biology)          │        │``
+│    │                                                       │        │``
+│    └───────────────────────────``┬``───────────────────────────┘``        ``│``
+``│``                                ``│``                                    ``│``
+``│``                                ``↓`` 2% floor slope                     ``│``
+``│``                    [Perimeter drainage trench]                      ``│``
+``│``                                ``│``                                    ``│``
+``│``                                ``↓`` 150mm pipe                         ``│``
+``│``                         POME pond (liquor collection)               │``
+│                                                                     │``
+│  Floor: Reinforced concrete, 200mm thick, 30 MPa compressive       │``
+│  Walls: 200mm concrete curb, 0.3m height (splash guard)            │``
+│  Roof: Optional - Open-air (preferred) OR rain canopy 4m clearance │``
+│  Capacity: 165t FW per ``bay`` (one mixer batch)                       │``
+└─────────────────────────────────────────────────────────────────────┘``
+`
+
+**WHAT DOES IT DO:**
+
+**Passive pH neutralization** via atmospheric CO₂ carbonation + POME
+acidification. This is a **zero-energy, zero-chemical process** that
+relies on:
+
+1.  Natural CO₂ absorption from air (0.04% = 400 ppm)
+
+2.  Acid-base reaction with POME (pH 4.5-5.5)
+
+**HOW IT WORKS (Phase 1: Passive CO₂ Carbonation, 0-12 hours):**
+
+1.  **Front-end loader spreads material:**
+
+    -   165t pressed EFB (50-55% MC, pH 10-12) from re-press CB-15TC
+
+    -   Forms windrow: 10m L × 12m W × 1.0-1.5m H max
+
+    -   **Why 1.5m max height:** Taller piles trap CO₂ at bottom → slow
+        neutralization. Flat windrows maximize surface area for CO₂
+        access.
+
+2.  **CO₂ absorption mechanism:**
+
+    -   Atmospheric air (0.04% CO₂) flows through pile via **natural
+        convection** (no forced air)
+
+    -   CO₂ dissolves into alkaline moisture inside fibers:
+
+`KOH + CO₂ → KHCO₃     ``   (``potassium bicarbonate, soluble, pH↓)``
+``Ca(``OH)₂ + CO₂ → ``CaCO``₃ + H₂``O  (``limestone formation, pH↓)``
+`
+
+3.  **pH trajectory:**
+
+    -   **0 hours:** pH 10-12 (immediately after press)
+
+    -   **6 hours:** pH 9-10 (partial carbonation)
+
+    -   **12 hours:** pH 8 (target for POME application)
+
+4.  **Temperature rise:**
+
+    -   Carbonation is slightly **exothermic** (releases heat)
+
+    -   Temperature rises 5-10°C above ambient (28°C → 33-38°C)
+
+    -   This is **beneficial** - mild warmth accelerates reaction
+        kinetics
+
+**HOW IT WORKS (POME Spray + Turn, at 12 hours):**
+
+**Trigger:** After 12 hours, when pH ≈8 (check with handheld pH meter -
+insert probe into windrow at 3 locations, average reading)
+
+1.  **POME application:**
+
+    -   **Spray bar:** 10m stainless 304 pipe with 10 nozzles (1m
+        spacing), mounted on tractor 3-point hitch or fixed gantry
+
+    -   **Rate:** 0.5 m³ POME per tonne EFB, diluted 1:1 with water
+
+        -   165t EFB × 0.5 = **82.5 m³ total** (41 m³ POME + 41 m³
+            water)
+
+    -   **Spray time:** 10-15 minutes overhead application while turning
+
+2.  **POME chemistry (Nutrient loading + pH acceleration):**
+
+    -   **POME composition:** pH 4.5-5.5 (acidic), high NPK (N: 750
+        mg/L, P: 180 mg/L, K: 2,100 mg/L)
+
+    -   **Acid-base reaction:** POME acidity (organic acids + H⁺) +
+        residual alkalinity → **neutralization**
+
+> `KHCO₃ + H``⁺`` ``→`` K``⁺`` + H``₂``O + CO``₂↑`` ``   (``bicarbonate neutralized)``
+> `
+
+-   **pH drop:** 8 → 7-7.5 (rapid, within 30 minutes)
+
+-   **Nutrient uptake:** 40-60% of dissolved NPK absorbed by fibers →
+    **C:N improves from 60:1 → 35:1**
+
+3.  **Bobcat turn:**
+
+    -   **Equipment:** Bobcat skid-steer with hydraulic windrow turner
+        attachment (3-point hitch)
+
+    -   **Procedure:** 2-3 passes over windrow (20 minutes total)
+
+    -   **Effect:**
+
+        -   Distributes POME evenly throughout pile
+
+        -   Fluffs material (adds oxygen → prepares for aerobic Phase 2)
+
+        -   Breaks up clumps
+
+**HOW IT WORKS (Phase 2: Final Cure, 12-24 hours):**
+
+1.  **Continue passive carbonation:**
+
+    -   pH stabilization: 7-7.5 → **6.5-8.0** (target range)
+
+    -   Temperature check: Must be **\<45°C** before biology (IR
+        thermometer, scan windrow surface)
+
+2.  **Optional second turn:**
+
+    -   If pH slow (still \>8 after 18 hours): Turn once more, wait 6
+        hours, recheck
+
+    -   Rarely needed - POME application usually sufficient
+
+**OUTPUT OF NEUTRALIZATION BAYS:**
+
+**Product:** Fully cured EFB ready for Stage 3
+
+-   **Mass:** 240t at 55% MC (165t initial + 82t POME spray + some
+    evaporation loss)
+
+-   **pH:** 6.5-8.0 (safe for biology)
+
+-   **Temperature:** \<45°C (enzymes/microbes viable)
+
+-   **C:N ratio:** 35:1 (improved from 60:1 via POME nitrogen)
+
+-   **State:** Fluffy, open fibers, no clumps, uniform color
+
+**Destination:** Stage 3 Microbes (Provibio/EM4 inoculation) OR Stage 4
+BSF larvae
+
+**4.4 BIOLOGY GO CHECK - THE CRITICAL QUALITY GATE**
+
+**This is the MANDATORY pass-fail checkpoint before ANY biology
+(microbes or BSF) can be applied.**
+
+`┌────────────────────────────────────────────────────────────────────┐``
+│                     BIOLOGY GO CHECK STATION                        │``
+│                   (Handheld instruments, 15 min)                    │``
+│                                                                     │``
+│  Operator takes 3 measurements from windrow:                        │``
+│                                                                     │``
+│  1. pH CHECK (Handheld pH meter)                                    │``
+│     - Insert probe 30cm deep into windrow at 3 locations            │``
+│     - Average reading: MUST BE 6.5-8.0                              │``
+│     - If pH >8.0: HOLD 6 hours, recheck                             │``
+│     - If pH <6.5: Add lime (``CaCO``₃) 2 kg/t, wait 6 hours             │``
+│                                                                     │``
+│  2. TEMPERATURE CHECK (IR ``thermometer)   ``                           │``
+│     - Scan windrow surface at 5 locations                           │``
+│     - Max reading: MUST BE <45°C                                    │``
+│     - If >45°C: Turn pile (add O₂, cool via evaporation), wait 6hr │``
+│                                                                     │``
+``│  3``. VISUAL CHECK (Operator inspection)                              │``
+│     - Material should be fluffy, no clumps                          │``
+│     - Uniform color (light brown, not black/charred)                │``
+│     - No visible mold (white/green growth = contamination)          │``
+│     - If clumps present: Break manually or turn pile                │``
+│                                                                     │``
+│  ┌──────────────────────────────────────────────────────────────┐  │``
+│  │         IF ALL THREE PASS → PROCEED TO STAGE 3/4             │  │``
+│  │         IF ANY FAILS → HOLD + CORRECTIVE ACTION             │  │``
+│  └──────────────────────────────────────────────────────────────┘  │``
+``│                                                                     │``
+│  WHY THIS IS NON-NEGOTIABLE:                                        │``
+│  • pH >8: Alkaline toxicity kills microbes + BSF larvae instantly  │``
+│  • Temp >45°C: Denatures enzymes (cellulase/xylanase) irreversibly │``
+│  • pH <6.5: Acidic conditions slow microbial growth                │``
+│                                                                     │``
+│  Equipment required (one-time purchase):                            │``
+│  • Handheld pH meter: $150-$400 (e.g., Hanna HI98128)              │``
+│  • IR thermometer: $50-$150 (e.g., Fluke 62 MAX)                   │``
+│  • Logbook: Record all checks (date, time, pH, temp, pass/fail)    │``
+└─────────────────────────────────────────────────────────────────────┘``
+`
+
+**This is the LAST GATE before biology.** If material passes GO check:
+
+-   ✅ Safe for Provibio/EM4 microbe inoculation (Stage 3)
+
+-   ✅ Safe for BSF larvae (Stage 4)
+
+-   ✅ Lignin reduced 30-35% (cellulose accessible)
+
+-   ✅ C:N ratio optimal (30-35:1)
+
+**SECTION 5: FACILITY LAYOUT & BUILDING DESIGN**
+
+**5.1 Overall Site Plan (1,800 m² total)**
+
+`┌────────────────────────────────────────────────────────────────────────────┐``
+│                        SITE PLAN - TOP VIEW                                │``
+│                        (Not to scale)                                      │``
+│                                                                            │``
+│  NORTH ↑                                                                   │``
+│                                                                            │``
+│  ┌──────────────────────────────────────────────────────────────────────┐ │``
+│  │                    TRUCK RECEIVING AREA (300 m²)                     │ │``
+│  │  ┌────────────────────┐         ┌────────────────────┐              │ │``
+│  │  │ EFB Bay #1         │         │ DC Bay #2          │              │ │``
+│  │  │ - Ramp + RH-01     │         │ - Ramp + RH-02     │              │ │``
+│  │  │ - AF-01 feeder     │         │ - SF-01 feeder     │              │ │``
+│  │  └─────────``┬``──────────┘``         ``└─────────``┬``──────────┘``              ``│`` ``│``
+``│``  ``└─────``───────``┼``───────────────────────────────``┼``─────────────────────────┘`` ``│``
+``│``               ``↓``                               ``↓``                            ``│``
+``│``  ``┌────────────────────────────────────────────────────────────────────┐``   ``│``
+``│``  ``│``              STAGE 1 MECHANICAL PROCESSING (450 m``²``)                ``│``   ``│``
+``│``  ``│``  30m L ``×`` 15m W, 8m clear height, pre-engineered steel building     ``│``   ``│``
+``│``  ``│``                                                                     ``│``   ``│``
+``│``  ``│``  [EFB LINE - West Side]           [DC LINE - East Side]            │   │``
+│  │  BC-01 → TR-2060 → BC-02 →        BC-10 → DC-PRESS → BC-12         │   │``
+│  │  OBM-01 → BC-04/MD-01 →           (shorter, simpler)               │   │``
+│  │  PR-01 → SD-01 → HM-01 →                                           │   │``
+│  │  VS-01 → Buffer bins                                               │   │``
+│  │                                                                     │   │``
+│  │  [MCC Room - South corner]                                          │   │``
+│  │  4m × 6m electrical room, dust-free, AC, UPS backup                │   │``
+│  └─────────────``┬``───────────────────────``┬``─────────────────────────────┘``   ``│``
+``│``                ``↓`` BC-09 Product          ``↓`` BC-13 DC Product                ``│``
+``│``  ``┌────────────────────────────────────────────────────────────────────┐``   ``│``
+``│``  ``│``           STAGE 2 PKSA TREATMENT BUILDING (1,400 m``²``)               ``│``   ``│``
+``│``  ``│``  40m L ``×`` 35m W, mixed roof (shed + canopy + open-air zones)        ``│``   ``│``
+``│``  ``│``                                                                     │   │``
+│  │  [MIXER AREA - North, 80 m²]                                       │   │``
+│  │  - PMD-01 Paddle Mixer Drum (6m × 6m)                              │   │``
+│  │  - PKSA Slurry Tank (20 m³)                                        │   │``
+│  │  - Full steel shed, 8m peak height                                 │   │``
+│  │  - Concrete slab 200mm, anchor bolts                               │   │``
+│  │                                                                     │   │``
+│  │  [PRESS + CONVEYOR - West, 48 m²]                                  │   │``
+│  │  - CB-15TC Re-press (reused from Stage 1 duty)                     │   │``
+│  │  - Steel canopy, concrete floor 150mm                              │   │``
+│  │                                                                     │   │``
+│  │  [NEUTRALIZATION BAYS - Center, 300 m²]                            │   │``
+│  │  ┌──────────────────────┐  ┌──────────────────────┐               │   │``
+│  │  │ Bay #1 (12m × 12m)   │  │ Bay #2 (12m × 12m)   │               │   │``
+│  │  │ - 1.5m max height    │  │ - 1.5m max height    │               │   │``
+│  │  │ - Open-air preferred │  │ - Open-air preferred │               │   │``
+│  │  │ - Reinforced concrete│  │ - Reinforced concrete│               │   │``
+│  │  │ - 2% slope to drain  │  │ - 2% slope to drain  │               │   │``
+│  │  └──────────────────────┘  └──────────────────────┘               │   │``
+│  │           ↓ Bobcat access (4m wide aisles)                         │   │``
+│  │                                                                     │   │``
+│  │  [OPDC BLEND AREA - South, 180 m²]                                 │   │``
+│  │  - EFB + DC blending zone (60:40 ratio)                            │   │``
+│  │  - Open-air, concrete floor 150mm                                  │   │``
+│  │  - Front-end loader workspace                                      │   │``
+│  │                                                                     │   │``
+│  │  [UTILITIES + CONTROL - East corner, 24 m²]                        │   │``
+│  │  - Pump station (POME liquor)                                      │   │``
+│  │  - Instrument panel (pH monitors, tank levels)                     │   │``
+``│  │  - Full enclosure, IP65 rated                                      │   │``
+│  │                                                                     │   │``
+│  │  [ACCESS ROADS - Perimeter, 120 m²]                                │   │``
+│  │  - 4m wide compacted gravel                                        │   │``
+│  │  - Bobcat + truck circulation                                      │   │``
+│  │                                                                     │   │``
+│  │  [BUFFER / EXPANSION - 648 m²]                                     │   │``
+│  │  - Future Stage 3 (Microbes) or Stage 4 (BSF) facilities           │   │``
+│  └─────────────────────────────────────────────────────────────────────┘   │``
+│                                                                            │``
+│  UTILITIES INFRASTRUCTURE:                                                 │``
+│  • Power: 150 kW total demand (100 kW Stage 1 + 50 kW Stage 2)            │``
+│    - Main transformer: 200 kVA (25% margin)                                │``
+│    - Voltage: 380-400V 3-phase, 50 Hz                                     │``
+│  • Water: 250 m³/day (200 m³ process + 50 m³ wash-down)                   │``
+│    - Source: Mill water supply or borehole                                │``
+│    - Recycled from POME pond preferred                                    │``
+│  • Compressed air: NOT REQUIRED (no pneumatic actuators in base design)   │``
+│                                                                            │``
+│  ENVIRONMENTAL CONTROLS:                                                   │``
+│  • Leachate collection: All floors slope 2% → perimeter drains            │``
+│  • POME pond connection: 150mm HDPE pipes, gravity flow                   │``
+│  • Dust extraction: Centralized cyclone (200mm ducts from HM-01, VS-01)   │``
+│  • Ventilation: Natural ridge vents + side louvers (Stage 1 building)     │``
+│                                                                            │``
+│  SAFETY INFRASTRUCTURE:                                                    │``
+│  • Fire water: Hydrant network (100mm mains, 16 bar pressure)             │``
+│  • Fire extinguishers: 20 kg dry powder, 15m spacing                      │``
+│  • Eye wash stations: Near PKSA mixer (3 locations)                       │``
+│  • Emergency assembly point: 50m south of buildings                       │``
+│  • First aid room: 12 m² (adjacent to MCC room)                           │``
+└────────────────────────────────────────────────────────────────────────────┘``
+`
+
+**5.2 Building Heights & Structural Requirements**
+
+**Stage 1 Building (30m × 15m × 8m H):**
+
+-   **Clear height:** 8m allows elevated conveyors at 5m + 3m clearance
+    above for crane hook access, lighting, ventilation
+
+-   **Structure:** Pre-engineered steel building (PEB) with insulated
+    metal cladding (roof + walls)
+
+-   **Foundation:** Isolated footings for steel columns (1.5m × 1.5m ×
+    2m deep), grade beam perimeter
+
+-   **Floor:** Reinforced concrete slab 150mm thick, 25 MPa compressive,
+    mesh reinforcement (150mm grid)
+
+-   **Crane:** Optional 2-ton⁂
+
+1.  CFI_S1_Master_Business_Process_PreProcessing.docx
+
+2.  USE-THIS-CFI_Palm_Processing_Residues_Lab_Analysis_Formatted.xlsx
+
+3.  CFI_S2_PreProcessing_Equipment_Flow_v1.xlsx
+
+4.  Stage-1-Stage-2-EFB_OPDC_Master_v7.xlsx
+
+5.  MASTER-PROMPT-option-1-Stage-1-EFB-Mechanical-Pre-Pro-3.docx
+
+6.  MASTER-PROMPT-option-1-Stage-1-EFB-Mechanical-Pre-Pro.docx
+
+7.  CFI_S2_PreProcessing_Equipment_Flow_v1.xlsx
+
+8.  Stage-2-Pre-Treatment-Soak-Bath-Palm-Kernal-Ash-boiler.pdf
+
+9.  Stage-1-Stage-2-EFB.xlsx
+
+10. CFI_S2_Chemical_Library_v2_0_March2026_4.xlsx
+
+11. CFI_PALM_KERNAL_EXPELER_PKE_PKM_ANALYSIS_CORRECTED.xlsx

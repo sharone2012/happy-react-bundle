@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFI Database Structure</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap');
+
+  :root {
+    --bg: #0a0e14;
+    --surface: #111820;
+    --border: #1e2d3d;
+    --accent-green: #4caf82;
+    --accent-amber: #f0a500;
+    --accent-blue: #4a9eff;
+    --accent-purple: #9b6dff;
+    --accent-red: #ff6b6b;
+    --text: #c9d1d9;
+    --text-dim: #6e7f8e;
+    --text-bright: #e6edf3;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    padding: 40px 32px;
+    min-height: 100vh;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 24px;
+    margin-bottom: 40px;
+  }
+
+  .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin: 6px 0 4px;
+  }
+
+  .subtitle { font-size: 13px; color: var(--text-dim); }
+
+  /* SCHEMA GRID */
+  .schema-section { margin-bottom: 48px; }
+
+  .schema-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .schema-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+
+  .badge-public { background: rgba(74,158,255,0.15); color: var(--accent-blue); border: 1px solid rgba(74,158,255,0.3); }
+  .badge-lab { background: rgba(155,109,255,0.15); color: var(--accent-purple); border: 1px solid rgba(155,109,255,0.3); }
+  .badge-xlsx { background: rgba(240,165,0,0.15); color: var(--accent-amber); border: 1px solid rgba(240,165,0,0.3); }
+
+  .schema-title { font-size: 15px; font-weight: 600; color: var(--text-bright); }
+  .schema-desc { font-size: 12px; color: var(--text-dim); margin-left: auto; }
+
+  /* TABLE CARDS */
+  .tables-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+
+  .table-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .table-card.view-card {
+    border-style: dashed;
+    opacity: 0.85;
+  }
+
+  .card-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-icon {
+    font-size: 14px;
+    width: 24px;
+    text-align: center;
+  }
+
+  .card-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-bright);
+    flex: 1;
+  }
+
+  .row-count {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-green);
+    background: rgba(76,175,130,0.1);
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+
+  .view-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    background: rgba(255,255,255,0.05);
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .card-body { padding: 12px 16px; }
+
+  .card-desc {
+    font-size: 11.5px;
+    color: var(--text-dim);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+
+  .columns-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .col-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+  }
+
+  .col-name { color: var(--text); min-width: 160px; }
+  .col-type { color: var(--text-dim); font-size: 9.5px; }
+
+  .pk-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-amber); flex-shrink: 0; }
+  .fk-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-blue); flex-shrink: 0; }
+  .gen-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-green); flex-shrink: 0; }
+  .plain-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+
+  .col-more {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    padding-top: 4px;
+  }
+
+  /* FK ARROWS */
+  .fk-section { margin-bottom: 48px; }
+
+  .fk-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 14px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .fk-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .fk-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .fk-from { color: var(--accent-blue); }
+  .fk-arrow { color: var(--text-dim); }
+  .fk-to { color: var(--accent-amber); }
+  .fk-note { color: var(--text-dim); font-size: 10px; }
+
+  /* GUARDRAIL SECTION */
+  .guardrails-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .guardrail {
+    display: flex;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    font-size: 11.5px;
+  }
+
+  .g-icon { font-size: 14px; flex-shrink: 0; }
+  .g-text { color: var(--text-dim); line-height: 1.5; }
+  .g-text strong { color: var(--text); font-weight: 600; }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-top: 16px;
+    padding: 10px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .amber-alert {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--accent-amber);
+    background: rgba(240,165,0,0.1);
+    border: 1px solid rgba(240,165,0,0.25);
+    padding: 1px 7px;
+    border-radius: 3px;
+    margin-left: 8px;
+  }
+
+  .summary-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  .stat-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text-bright);
+    display: block;
+  }
+
+  .stat-lbl {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="label">Circular Fertiliser Industries · March 2026</div>
+  <h1>CFI Database Architecture</h1>
+  <div class="subtitle">Supabase + Dynamic Model · 2 schemas · 8 tables · 6 views · ~260 rows</div>
+</header>
+
+<div class="summary-bar">
+  <div class="stat-box">
+    <span class="stat-num" style="color:var(--accent-blue)">2</span>
+    <div class="stat-lbl">Schemas<br><span style="font-size:10px;color:var(--text-dim)">public + lab_analysis</span></div>
+  </div>
+  <div class="stat-box">
+    <span class="stat-num" style="color:var(--accent-green)">8</span>
+    <div class="stat-lbl">Tables<br><span style="font-size:10px;color:var(--text-dim)">5 public · 3 lab</span></div>
+  </div>
+  <div class="stat-box">
+    <span class="stat-num" style="color:var(--accent-purple)">6</span>
+    <div class="stat-lbl">Views<br><span style="font-size:10px;color:var(--text-dim)">3 public · 3 lab</span></div>
+  </div>
+  <div class="stat-box">
+    <span class="stat-num" style="color:var(--accent-amber)">~260</span>
+    <div class="stat-lbl">Rows total<br><span style="font-size:10px;color:var(--text-dim)">verified data</span></div>
+  </div>
+</div>
+
+<!-- ===== PUBLIC SCHEMA ===== -->
+<div class="schema-section">
+  <div class="schema-header">
+    <span class="schema-badge badge-public">public schema</span>
+    <span class="schema-title">Commercial Prospecting Database</span>
+    <span class="schema-desc">Mills · Owners · Soil · KCP · Traders</span>
+  </div>
+
+  <div class="tables-grid">
+
+    <!-- PROVINCE SOIL -->
+    <div class="table-card">
+      <div class="card-header">
+        <span class="card-icon">🌱</span>
+        <span class="card-title">cfi_province_soil_lookup</span>
+        <span class="row-count">23 rows</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">One row per Indonesian province. Anchor lookup for all soil science: N leaching %, P fixation %, pH, CEC, rainfall, CFI amendment flags. No foreign keys — pure reference table.</div>
+        <div class="columns-list">
+          <div class="col-row"><span class="pk-dot"></span><span class="col-name">id</span><span class="col-type">UUID PK</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">province</span><span class="col-type">TEXT UNIQUE</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">region / island</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">dominant_soil_wrb</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">peat_present</span><span class="col-type">BOOLEAN</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">ph_min / ph_max</span><span class="col-type">NUMERIC</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">n_leaching_base_pct_min/max</span><span class="col-type">INTEGER</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">p_fixation_base_pct_min/max</span><span class="col-type">INTEGER</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">liming_required</span><span class="col-type">BOOLEAN</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">cfi_n_loss_flag</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">cfi_p_fixation_flag</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">cfi_priority_amendment</span><span class="col-type">TEXT</span></div>
+          <div class="col-more">+ 12 more: CEC, drainage, rainfall, climate, sources…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MILL OWNERS -->
+    <div class="table-card">
+      <div class="card-header">
+        <span class="card-icon">🏢</span>
+        <span class="card-title">cfi_mill_owners</span>
+        <span class="row-count">32 rows</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Master company registry. 32 plantation groups ranked by size. Referenced as FK by mills and KCP tables. Includes KCP status, PKM availability, and CFI prospect tier.</div>
+        <div class="columns-list">
+          <div class="col-row"><span class="pk-dot"></span><span class="col-name">id</span><span class="col-type">UUID PK</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">rank</span><span class="col-type">INTEGER</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">company</span><span class="col-type">TEXT UNIQUE</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">parent_controlling_group</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">planted_area_ha</span><span class="col-type">INTEGER</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">number_of_mills</span><span class="col-type">INTEGER</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">has_kernel_crushing_plant</span><span class="col-type">BOOLEAN</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">pkm_available_on_site</span><span class="col-type">BOOLEAN</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">cfi_prospect_tier</span><span class="col-type">TIER 1/2/3</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">rspo_status</span><span class="col-type">TEXT</span></div>
+          <div class="col-more">+ 9 more: province_locations, JV_partners, KCP details…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MILLS -->
+    <div class="table-card">
+      <div class="card-header">
+        <span class="card-icon">🏭</span>
+        <span class="card-title">cfi_mills_60tph</span>
+        <span class="row-count">105 rows</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Core prospecting table. 105 Indonesian mills ≥60 TPH. Links to owners (who owns it) and soil (what ground it sits on). OPDC yield is auto-calculated as a generated column.</div>
+        <div class="columns-list">
+          <div class="col-row"><span class="pk-dot"></span><span class="col-name">id</span><span class="col-type">UUID PK</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">mill_id</span><span class="col-type">INTEGER UNIQUE</span></div>
+          <div class="col-row"><span class="fk-dot"></span><span class="col-name">owner_id</span><span class="col-type">FK → cfi_mill_owners</span></div>
+          <div class="col-row"><span class="fk-dot"></span><span class="col-name">province_soil_id</span><span class="col-type">FK → cfi_province_soil_lookup</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">capacity_tph</span><span class="col-type">INTEGER</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">est_efb_at_60tph_t_yr</span><span class="col-type">INTEGER</span></div>
+          <div class="col-row"><span class="gen-dot"></span><span class="col-name">est_opdc_t_yr</span><span class="col-type">GENERATED (EFB × 0.152)</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">latitude / longitude</span><span class="col-type">NUMERIC</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">confirmed_soil_type</span><span class="col-type">TEXT (overrides lookup)</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">cfi_approach_status</span><span class="col-type">TEXT</span></div>
+          <div class="col-more">+ 8 more: rspo_status, contact, district, notes…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KCP -->
+    <div class="table-card">
+      <div class="card-header">
+        <span class="card-icon">⚙️</span>
+        <span class="card-title">cfi_kernel_crushing_plants</span>
+        <span class="row-count">15 rows</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Confirmed kernel crushing plants. Tracks PKM output volume, price, and whether on-site at a mill. Key for identifying zero-cost PKE/PKM supply for BSF substrate.</div>
+        <div class="columns-list">
+          <div class="col-row"><span class="pk-dot"></span><span class="col-name">id</span><span class="col-type">UUID PK</span></div>
+          <div class="col-row"><span class="fk-dot"></span><span class="col-name">owner_id</span><span class="col-type">FK → cfi_mill_owners</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">kcp_name</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">capacity_t_kernels_day</span><span class="col-type">INTEGER</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">est_pkm_output_t_month</span><span class="col-type">INTEGER</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">on_site_at_mill</span><span class="col-type">BOOLEAN</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">pkm_price_usd_t</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">cfi_pkm_opportunity</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">confidence_level</span><span class="col-type">HIGH/MEDIUM/LOW</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRADERS -->
+    <div class="table-card">
+      <div class="card-header">
+        <span class="card-icon">🌐</span>
+        <span class="card-title">cfi_traders_refiners_jv</span>
+        <span class="row-count">20 rows</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Standalone reference table. 20 traders, refiners and JV partners (Wilmar, Cargill, Apical, ADM etc). No FK — some have no Indonesian mill ownership but are still commercially relevant.</div>
+        <div class="columns-list">
+          <div class="col-row"><span class="pk-dot"></span><span class="col-name">id</span><span class="col-type">UUID PK</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">company</span><span class="col-type">TEXT UNIQUE</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">hq_country</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">role</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">processes_ffb</span><span class="col-type">BOOLEAN</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">owns_mills</span><span class="col-type">BOOLEAN</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">cfi_relevance</span><span class="col-type">TEXT</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEWS PUBLIC -->
+    <div class="table-card view-card">
+      <div class="card-header">
+        <span class="card-icon">👁</span>
+        <span class="card-title">cfi_mill_full_profile</span>
+        <span class="view-tag">view</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Master read view. Joins mills + owners + soil in one query. COALESCE: uses confirmed soil type if available, province lookup as fallback. Soil confidence level derived automatically.</div>
+      </div>
+    </div>
+
+    <div class="table-card view-card">
+      <div class="card-header">
+        <span class="card-icon">👁</span>
+        <span class="card-title">cfi_tier1_targets</span>
+        <span class="view-tag">view</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Aggregated EFB + OPDC totals per TIER 1 owner. One row per company with SUM of annual EFB and OPDC tonnes across all their mills in the database.</div>
+      </div>
+    </div>
+
+    <div class="table-card view-card">
+      <div class="card-header">
+        <span class="card-icon">👁</span>
+        <span class="card-title">cfi_kcp_map</span>
+        <span class="view-tag">view</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">KCP locations with owner join. Sorted by PKM output volume. Used to identify PKM supply sources near target mills.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ===== LAB_ANALYSIS SCHEMA ===== -->
+<div class="schema-section">
+  <div class="schema-header">
+    <span class="schema-badge badge-lab">lab_analysis schema</span>
+    <span class="schema-title">Scientific Characterisation Database</span>
+    <span class="schema-desc">Files · Parameters · Residues</span>
+  </div>
+
+  <div class="tables-grid">
+
+    <!-- FILE CATALOGUE -->
+    <div class="table-card">
+      <div class="card-header">
+        <span class="card-icon">📁</span>
+        <span class="card-title">cfi_file_catalogue</span>
+        <span class="row-count">10 rows</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Master index of all 10 CFI lab analysis Excel files. One row per file with quality rating, data confidence, analytical methods, and link to residue registry.</div>
+        <div class="columns-list">
+          <div class="col-row"><span class="pk-dot"></span><span class="col-name">id</span><span class="col-type">UUID PK</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">file_code</span><span class="col-type">TEXT UNIQUE (LAB-001…010)</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">display_title</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">residue_code</span><span class="col-type">TEXT (EFB, OPDC, PKE…)</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">data_quality</span><span class="col-type">HIGH / MEDIUM / TEMPLATE</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">confidence_overall</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">parameters_count</span><span class="col-type">INTEGER</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">peer_reviewed</span><span class="col-type">BOOLEAN</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">supabase_table</span><span class="col-type">TEXT (links to future tables)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARAMETER REGISTRY -->
+    <div class="table-card">
+      <div class="card-header">
+        <span class="card-icon">🔬</span>
+        <span class="card-title">cfi_parameter_registry</span>
+        <span class="row-count">44 rows</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">All 44 analytical parameters tracked across all residues. Groups: Physical, Elemental, Proximate, Macronutrient, Micronutrient, Heavy Metal, Fibre, BSF/Nutritional. Regulatory limits included.</div>
+        <div class="columns-list">
+          <div class="col-row"><span class="pk-dot"></span><span class="col-name">id</span><span class="col-type">UUID PK</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">parameter_code</span><span class="col-type">TEXT (P01–P44)</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">parameter_name</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">parameter_group</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">unit</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">analytical_method</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">required_for_bsf</span><span class="col-type">BOOLEAN</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">required_for_sni</span><span class="col-type">BOOLEAN</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">regulatory_limit</span><span class="col-type">TEXT (SNI limits)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESIDUE REGISTRY -->
+    <div class="table-card">
+      <div class="card-header">
+        <span class="card-icon">🌿</span>
+        <span class="card-title">cfi_residue_registry</span>
+        <span class="row-count">9 rows</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">One row per palm residue stream. EFB, OPDC, OPF, OPT, POME, PKE, CPO, BSF (multi-residue), PMF. Locked parameters, pipeline stage, and yield basis per stream.</div>
+        <div class="columns-list">
+          <div class="col-row"><span class="pk-dot"></span><span class="col-name">id</span><span class="col-type">UUID PK</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">residue_code</span><span class="col-type">TEXT UNIQUE</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">cfi_pipeline_stage</span><span class="col-type">S1→S2→S3→S4</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">yield_pct_ffb</span><span class="col-type">NUMERIC</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">monthly_volume_60tph</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">cfi_primary_pathway</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="plain-dot"></span><span class="col-name">locked_parameters</span><span class="col-type">TEXT</span></div>
+          <div class="col-row"><span class="fk-dot"></span><span class="col-name">file_code</span><span class="col-type">FK → cfi_file_catalogue</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LAB VIEWS -->
+    <div class="table-card view-card">
+      <div class="card-header">
+        <span class="card-icon">👁</span>
+        <span class="card-title">cfi_lab_folder</span>
+        <span class="view-tag">view</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Joins file_catalogue + residue_registry. Full folder view: every file with its residue context, volumes, locked parameters and quality status.</div>
+      </div>
+    </div>
+
+    <div class="table-card view-card">
+      <div class="card-header">
+        <span class="card-icon">👁</span>
+        <span class="card-title">cfi_bsf_critical_params</span>
+        <span class="view-tag">view</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Filters parameter registry to BSF-required columns only. Quick reference for what must be confirmed before BSF inoculation gate.</div>
+      </div>
+    </div>
+
+    <div class="table-card view-card">
+      <div class="card-header">
+        <span class="card-icon">👁</span>
+        <span class="card-title">cfi_sni_compliance_params</span>
+        <span class="view-tag">view</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Filters parameter registry to SNI 19-7030-2004 required parameters. Regulatory compliance checklist for fertiliser product registration.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- RELATIONSHIPS -->
+<div class="section-label">Foreign Key Relationships</div>
+
+<div class="fk-grid" style="margin-bottom:40px">
+  <div class="fk-row">
+    <span class="fk-from">cfi_mills_60tph.owner_id</span>
+    <span class="fk-arrow">──FK──▶</span>
+    <span class="fk-to">cfi_mill_owners.id</span>
+    <span class="fk-note">ON DELETE SET NULL · Who owns each mill</span>
+  </div>
+  <div class="fk-row">
+    <span class="fk-from">cfi_mills_60tph.province_soil_id</span>
+    <span class="fk-arrow">──FK──▶</span>
+    <span class="fk-to">cfi_province_soil_lookup.id</span>
+    <span class="fk-note">ON DELETE SET NULL · Soil science for that province</span>
+  </div>
+  <div class="fk-row">
+    <span class="fk-from">cfi_kernel_crushing_plants.owner_id</span>
+    <span class="fk-arrow">──FK──▶</span>
+    <span class="fk-to">cfi_mill_owners.id</span>
+    <span class="fk-note">ON DELETE SET NULL · Which group operates the KCP</span>
+  </div>
+  <div class="fk-row">
+    <span class="fk-from">lab_analysis.cfi_residue_registry.file_code</span>
+    <span class="fk-arrow">──FK──▶</span>
+    <span class="fk-to">lab_analysis.cfi_file_catalogue.file_code</span>
+    <span class="fk-note">Links residue to its analysis file</span>
+  </div>
+  <div class="fk-row" style="opacity:0.5">
+    <span class="fk-from">cfi_traders_refiners_jv</span>
+    <span class="fk-arrow">── no FK ──</span>
+    <span class="fk-to">standalone table</span>
+    <span class="fk-note">Some traders own no Indonesian mills → no FK possible</span>
+  </div>
+</div>
+
+<!-- OPDC GENERATED COLUMN NOTE -->
+<div class="section-label">Key Design Decisions</div>
+
+<div class="guardrails-grid" style="margin-bottom:40px">
+  <div class="guardrail">
+    <span class="g-icon">⚡</span>
+    <div class="g-text"><strong>OPDC auto-calculated.</strong> est_opdc_t_yr is a GENERATED ALWAYS column = EFB × 0.152. You never enter OPDC volumes — the database derives them automatically from locked yield coefficient.</div>
+  </div>
+  <div class="guardrail">
+    <span class="g-icon">🔀</span>
+    <div class="g-text"><strong>Soil fallback logic.</strong> Each mill stores a confirmed_soil_type. The full profile view uses COALESCE — confirmed value wins; if null, falls back to province lookup automatically.</div>
+  </div>
+  <div class="guardrail">
+    <span class="g-icon">🏗</span>
+    <div class="g-text"><strong>Two schemas, different purposes.</strong> public = commercial pipeline (who to sell to, where, how much EFB). lab_analysis = scientific backbone (what's in the feedstock, what can go to BSF).</div>
+  </div>
+  <div class="guardrail">
+    <span class="g-icon">📐</span>
+    <div class="g-text"><strong>Run order is mandatory.</strong> Migration 1 (public schema) must run before Migration 3 (lab schema). Migration 2 re-runs the soil lookup with cleaner formatting — drops and recreates that one table.</div>
+  </div>
+  <div class="guardrail">
+    <span class="g-icon">🔒</span>
+    <div class="g-text"><strong>lab_analysis is a separate Supabase schema.</strong> Appears as its own schema tab. Query with prefix: SELECT * FROM lab_analysis.cfi_file_catalogue — not just the table name.</div>
+  </div>
+  <div class="guardrail">
+    <span class="g-icon">📊</span>
+    <div class="g-text"><strong>Dynamic Model (xlsx) is separate.</strong> CFI_Dynamic_Model_v3.xlsx is the process calculator (PKSA kinetics, treatment optimizer, pathway calc). Not the same as the Supabase database — it's the operational engine.</div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><span class="pk-dot"></span> Primary Key (UUID)</div>
+  <div class="legend-item"><span class="fk-dot"></span> Foreign Key</div>
+  <div class="legend-item"><span class="gen-dot"></span> Generated Column</div>
+  <div class="legend-item"><span class="plain-dot"></span> Standard Column</div>
+  <div style="font-size:11px;color:var(--text-dim);font-family:'IBM Plex Mono',monospace;margin-left:auto">CFI Database Architecture · March 2026</div>
+</div>
+
+</body>
+</html>

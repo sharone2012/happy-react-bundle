@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFI Deep Tech — S3 Biological</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:    #060C14;
+  --navyM:   #0B1827;
+  --navyL:   #0D1E30;
+  --navyLL:  #112236;
+  --border:  #1E4060;
+  --borderT: rgba(0,201,177,.25);
+  --teal:    #00C9B1;
+  --teal2:   rgba(0,201,177,.12);
+  --amber:   #F5A623;
+  --green:   #3DCB7A;
+  --red:     #E84040;
+  --blue:    #60A5FA;
+  --violet:  #A78BFA;
+  --grey:    #8BA0B4;
+  --greyL:   #C4D3E0;
+  --white:   #EAF3F8;
+  --syne:    'Syne', sans-serif;
+  --sans:    'DM Sans', sans-serif;
+  --mono:    'DM Mono', monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--greyL);font-family:var(--sans);font-size:13px;line-height:1.5;min-height:100vh}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--navyM)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* ══════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════ */
+.header{
+  position:sticky;top:0;z-index:100;
+  background:var(--navyM);
+  border-bottom:1px solid var(--border);
+  padding:0 24px;
+  display:flex;align-items:center;height:52px;gap:16px;
+}
+.brand{font-family:var(--syne);font-size:18px;font-weight:800;color:#fff;letter-spacing:-.01em}
+.brand span{color:var(--teal)}
+.header-divider{width:1px;height:20px;background:var(--border);flex-shrink:0}
+.site-info{display:flex;gap:20px;align-items:center}
+.site-pill{font-size:11px;color:var(--grey);font-family:var(--mono)}
+.site-pill strong{color:var(--greyL);font-weight:600}
+.stage-nav{display:flex;gap:2px;margin-left:auto}
+.stage-btn{font-family:var(--mono);font-size:10px;font-weight:700;padding:4px 10px;border-radius:4px;border:1px solid var(--border);color:var(--grey);background:transparent;cursor:pointer;transition:all .12s}
+.stage-btn.active{background:var(--teal);color:var(--navy);border-color:var(--teal)}
+.stage-btn:hover:not(.active){border-color:var(--teal);color:var(--teal)}
+
+/* ══════════════════════════════════════════
+   TICKER
+══════════════════════════════════════════ */
+.ticker{
+  background:rgba(6,12,20,.95);
+  border-bottom:1px solid var(--border);
+  padding:6px 24px;
+  display:flex;gap:0;overflow-x:auto;scrollbar-width:none;
+}
+.ticker::-webkit-scrollbar{display:none}
+.tick{
+  display:flex;align-items:center;gap:6px;
+  padding:0 16px;border-right:1px solid var(--border);
+  white-space:nowrap;
+}
+.tick:first-child{padding-left:0}
+.tick:last-child{border-right:none}
+.tick-lbl{font-size:9px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:.06em}
+.tick-val{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--amber)}
+.tick-val.t{color:var(--teal)}.tick-val.g{color:var(--green)}.tick-val.muted{color:var(--border)}
+
+/* ══════════════════════════════════════════
+   SUBSTRATE FLOW STRIP
+══════════════════════════════════════════ */
+.strip-wrap{background:#000;border-bottom:2px solid var(--borderT)}
+.strip-label-bar{
+  background:var(--navyM);border-bottom:1px solid var(--borderT);
+  padding:6px 24px;
+  font-family:var(--syne);font-size:10px;font-weight:700;color:var(--teal);
+  text-transform:uppercase;letter-spacing:.1em;
+  display:flex;align-items:center;gap:12px;
+}
+.strip-label-bar span{color:var(--grey);font-family:var(--sans);font-weight:400;text-transform:none;letter-spacing:0;font-size:10px}
+.strip{
+  display:grid;
+  grid-template-columns:56px repeat(4,1fr) 56px 60px repeat(4,1fr);
+  width:100%;
+}
+.s-label{
+  display:flex;align-items:center;justify-content:center;
+  background:var(--navyM);
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  font-family:var(--sans);font-size:12px;font-weight:700;
+  color:var(--amber);letter-spacing:.06em;
+  border-right:1px solid var(--borderT);
+  grid-row:1/3;padding:0 10px;
+}
+.s-label.out{border-right:none;border-left:1px solid var(--borderT)}
+.s-cell{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:14px 8px;text-align:center;cursor:pointer;
+  transition:background .12s;position:relative;
+}
+.s-cell:hover{background:rgba(0,201,177,.05)}
+.s-cell.active{background:rgba(0,201,177,.08)}
+.s-cell::after{
+  content:'';position:absolute;bottom:0;left:18%;right:18%;
+  height:1px;background:rgba(0,201,177,.2);
+}
+.s-cell.r2::after{display:none}
+.s-lbl{font-size:9px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.s-num{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--amber);line-height:1.2}
+.s-num.out{color:var(--teal)}
+.s-num.dash{color:var(--border);font-size:20px}
+.s-unit{font-size:9px;color:var(--grey);margin-top:2px}
+.s-delta{font-size:9px;font-weight:700;margin-top:2px}
+.s-delta.up{color:var(--green)}.s-delta.dn{color:var(--red)}.s-delta.eq{color:var(--grey)}
+.s-arrow{
+  grid-row:1/3;display:flex;align-items:center;justify-content:center;
+  background:#000;font-family:var(--mono);font-size:44px;font-weight:900;
+  color:var(--teal);-webkit-text-stroke:.5px var(--teal);
+}
+.s-npk{display:flex;flex-direction:column;gap:2px;align-items:center}
+.s-npk-row{display:flex;align-items:baseline;gap:3px}
+.s-npk-k{font-size:10px;font-weight:700;color:var(--teal);width:10px}
+.s-npk-v{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--amber)}
+.s-npk-v.out{color:var(--teal)}
+.s-npk-u{font-size:8px;color:var(--grey)}
+.strip-note{
+  display:none;grid-column:1/-1;
+  background:rgba(0,201,177,.06);border-top:1px solid var(--borderT);
+  padding:10px 24px;font-size:11px;color:var(--greyL);line-height:1.7;
+}
+.strip-note.show{display:block}
+.strip-note strong{color:var(--teal)}
+.strip-note-src{font-size:9px;color:var(--grey);font-family:var(--mono);margin-top:4px}
+
+/* ══════════════════════════════════════════
+   GOAL SELECTOR
+══════════════════════════════════════════ */
+.section{padding:20px 24px}
+.section-title{
+  font-family:var(--syne);font-size:13px;font-weight:700;
+  color:var(--teal);text-transform:uppercase;letter-spacing:.08em;
+  margin-bottom:4px;
+}
+.section-sub{font-size:11px;color:var(--grey);margin-bottom:14px}
+.goal-row{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.goal{
+  background:var(--navyL);border:1.5px solid var(--border);
+  border-radius:10px;padding:14px 10px;cursor:pointer;
+  transition:all .15s;position:relative;overflow:hidden;
+  text-align:center;
+}
+.goal:hover{border-color:var(--teal);background:var(--navyLL)}
+.goal.sel{border-color:var(--teal);border-width:2px;background:rgba(0,201,177,.08)}
+.goal.sel::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--teal);
+}
+.goal-name{
+  font-family:var(--syne);font-size:11px;font-weight:700;
+  color:var(--greyL);margin-bottom:6px;line-height:1.3;
+}
+.goal.sel .goal-name{color:var(--teal)}
+.goal-delta{
+  font-family:var(--mono);font-size:13px;font-weight:700;
+  color:var(--green);margin-bottom:5px;
+}
+.goal-orgs{font-size:9px;color:var(--grey);line-height:1.4}
+
+/* ══════════════════════════════════════════
+   WAVE TIMELINE
+══════════════════════════════════════════ */
+.timeline-wrap{
+  margin:0 24px 20px;
+  border:1.5px solid var(--border);border-radius:10px;overflow:hidden;
+}
+.wave-lane{
+  display:flex;align-items:stretch;min-height:52px;
+  border-bottom:1px solid var(--border);
+}
+.wave-lane:last-child{border-bottom:none}
+.wave-lane.pre{border-left:3px solid var(--green)}
+.wave-lane.w1a{border-left:3px solid var(--teal)}
+.wave-lane.w1b{border-left:3px solid var(--red)}
+.wave-lane.w2{border-left:3px solid var(--blue)}
+.wave-lane.cond{border-left:3px solid var(--amber)}
+.wl-meta{
+  width:130px;flex-shrink:0;padding:10px 12px;
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;justify-content:center;
+  background:var(--navyM);
+}
+.wl-wave{
+  font-size:9px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;margin-bottom:2px;
+}
+.wl-day{font-size:10px;font-weight:700;color:var(--greyL)}
+.wl-note{font-size:8px;color:var(--grey);margin-top:2px;line-height:1.4}
+.wl-orgs{flex:1;display:flex;flex-wrap:wrap;gap:5px;padding:10px 12px;align-content:center}
+.wl-slot{
+  font-size:9px;font-weight:700;padding:4px 10px;border-radius:20px;
+  border:1px solid;cursor:pointer;transition:all .12s;
+  font-family:var(--mono);white-space:nowrap;
+}
+.wl-slot.in{
+  background:rgba(61,203,122,.12);border-color:rgba(61,203,122,.4);color:var(--green);
+}
+.wl-slot.out{
+  background:transparent;border-color:var(--border);color:var(--border);
+  border-style:dashed;
+}
+.wl-slot.out:hover{border-color:var(--grey);color:var(--grey)}
+.wl-warn{
+  display:none;width:100%;font-size:9px;color:var(--amber);
+  padding:4px 12px 8px;
+}
+.wl-warn.show{display:block}
+
+/* ══════════════════════════════════════════
+   ORGANISM SELECTOR
+══════════════════════════════════════════ */
+.org-section{margin:0 24px 6px}
+.org-section-hdr{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 12px;border-radius:7px 7px 0 0;
+  cursor:pointer;user-select:none;
+}
+.osh-wave{
+  font-size:9px;font-weight:700;padding:3px 10px;border-radius:20px;
+  border:1px solid;font-family:var(--mono);
+}
+.osh-title{font-size:11px;font-weight:700;color:var(--greyL);flex:1}
+.osh-count{font-family:var(--mono);font-size:10px;color:var(--grey)}
+.osh-chevron{font-size:10px;color:var(--grey);transition:transform .2s}
+.org-section.closed .osh-chevron{transform:rotate(-90deg)}
+.osh-warn{
+  display:none;width:100%;font-size:9px;
+  padding:6px 12px;margin-bottom:0;line-height:1.5;
+}
+.osh-warn.show{display:block}
+.org-grid{
+  display:flex;flex-wrap:wrap;gap:5px;
+  padding:8px 12px 12px;
+  border:1.5px solid var(--border);border-top:none;
+  border-radius:0 0 7px 7px;background:rgba(0,0,0,.2);
+}
+.org-section.closed .org-grid{display:none}
+.org-btn{
+  display:inline-flex;align-items:flex-start;gap:8px;
+  padding:7px 12px;border-radius:7px;
+  border:1.5px solid var(--border);background:var(--navyL);
+  cursor:pointer;transition:all .12s;flex-direction:column;
+}
+.ob-top-row{display:flex;align-items:center;gap:8px;width:100%}
+.org-btn:hover{border-color:rgba(0,201,177,.4);background:var(--navyLL)}
+.org-btn.sel{border-color:var(--green);background:rgba(61,203,122,.07)}
+.org-btn.warn-border{border-color:var(--amber)}
+.org-btn.cond{border-color:var(--amber);background:rgba(245,166,35,.04)}
+.ob-chk{
+  width:15px;height:15px;border-radius:3px;
+  border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:10px;font-weight:900;color:var(--navy);
+  transition:all .1s;
+}
+.org-btn.sel .ob-chk{background:var(--green);border-color:var(--green)}
+.ob-name{
+  font-size:11px;font-weight:700;color:var(--greyL);
+  font-family:var(--sans);flex:1;
+}
+.org-btn.sel .ob-name{color:var(--green)}
+.org-btn.sel .ob-chk{background:var(--green);border-color:var(--green)}
+.ob-wave-tag{
+  font-size:8px;font-weight:700;padding:1px 5px;border-radius:8px;
+  border:1px solid;font-family:var(--mono);
+}
+.ob-pills{display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-top:2px}
+.ob-pill{
+  font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;
+  border:1.5px solid;font-family:var(--sans);letter-spacing:.01em;
+  white-space:nowrap;
+}
+.ob-info{
+  font-size:10px;font-weight:600;padding:3px 10px;border-radius:4px;
+  border:1.5px solid rgba(0,201,177,.4);color:var(--teal);
+  background:rgba(0,201,177,.06);cursor:pointer;font-family:var(--sans);
+  transition:all .1s;flex-shrink:0;margin-left:4px;
+}
+.ob-info:hover{background:rgba(0,201,177,.1)}
+
+/* ══════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════ */
+.modal-bg{
+  display:none;position:fixed;inset:0;z-index:500;
+  background:rgba(0,0,0,.7);
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal-bg.open{display:flex}
+.modal{
+  background:var(--navyL);border:1.5px solid var(--borderT);
+  border-radius:12px;width:100%;max-width:580px;
+  max-height:90vh;display:flex;flex-direction:column;
+  animation:slideUp .2s ease;
+}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
+.modal-hdr{
+  background:var(--navyM);border-bottom:1.5px solid var(--border);
+  padding:14px 52px 14px 18px;position:relative;
+  border-radius:12px 12px 0 0;flex-shrink:0;
+}
+.modal-name{
+  font-family:var(--syne);font-size:15px;font-weight:700;
+  color:var(--teal);flex:1;line-height:1.3;
+}
+.modal-icbb{font-size:10px;color:var(--grey);font-family:var(--mono);margin-top:2px}
+.modal-close-btn{
+  position:absolute;top:14px;right:16px;
+  display:flex;align-items:center;gap:5px;
+  font-size:10px;font-weight:700;font-family:var(--mono);
+  color:var(--grey);border:1px solid rgba(168,189,208,.25);
+  border-radius:5px;padding:4px 10px;cursor:pointer;
+  background:var(--navyM);z-index:10;transition:all .1s;
+}
+.modal-close-btn:hover{color:#fff;border-color:rgba(168,189,208,.5)}
+.modal-close-x{color:var(--red);font-size:13px;font-weight:900}
+.modal-body{overflow-y:auto;padding:0;flex:1}
+.modal-section{
+  padding:14px 18px;border-bottom:1px solid var(--border);
+}
+.modal-section:last-child{border-bottom:none}
+.ms-tag{
+  font-size:9px;font-weight:700;color:var(--teal);
+  text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;
+}
+.ms-title{font-size:12px;font-weight:700;color:var(--white);margin-bottom:6px}
+.ms-body{font-size:11px;color:var(--grey);line-height:1.7}
+.ms-body strong{color:var(--greyL)}
+.ms-source{font-size:10px;color:var(--grey);font-family:var(--mono)}
+.outcome-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:5px 0;border-bottom:1px solid rgba(30,64,96,.4);
+}
+.outcome-row:last-child{border-bottom:none}
+.or-lbl{font-size:10px;color:var(--grey)}
+.or-val{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--green)}
+.code-line{
+  background:#000;border:1px solid var(--border);border-radius:5px;
+  padding:8px 12px;font-family:var(--mono);font-size:10px;
+  color:var(--teal);line-height:1.7;margin-top:6px;
+}
+.warn-banner{
+  background:rgba(245,166,35,.07);border:1px solid rgba(245,166,35,.3);
+  border-radius:5px;padding:8px 12px;font-size:10px;color:var(--amber);
+  line-height:1.6;margin-top:8px;
+}
+.err-banner{
+  background:rgba(232,64,64,.07);border:1px solid rgba(232,64,64,.3);
+  border-radius:5px;padding:8px 12px;font-size:10px;color:var(--red);
+  line-height:1.6;margin-top:8px;
+}
+.modal-ftr{
+  background:var(--navyM);border-top:1.5px solid var(--border);
+  padding:12px 18px;display:flex;align-items:center;gap:10px;
+  border-radius:0 0 12px 12px;flex-shrink:0;
+}
+.mf-cost{font-size:10px;color:var(--grey)}
+.mf-cost strong{font-family:var(--mono);font-weight:700;color:var(--amber)}
+.mf-btn{
+  margin-left:auto;font-size:11px;font-weight:700;font-family:var(--sans);
+  padding:7px 20px;border-radius:6px;border:none;cursor:pointer;
+  transition:all .12s;
+}
+.mf-btn.add{background:var(--green);color:var(--navy)}
+.mf-btn.add:hover{background:#4AE086}
+.mf-btn.rem{background:rgba(232,64,64,.15);border:1.5px solid var(--red);color:var(--red)}
+.mf-btn.rem:hover{background:rgba(232,64,64,.25)}
+
+/* ══════════════════════════════════════════
+   RESULTS BAR (sticky bottom)
+══════════════════════════════════════════ */
+.results-bar{
+  position:sticky;bottom:0;z-index:90;
+  background:var(--navyM);border-top:2px solid var(--borderT);
+  padding:10px 24px;display:flex;align-items:center;gap:16px;
+  box-shadow:0 -8px 32px rgba(0,0,0,.5);
+}
+.rb-item{display:flex;flex-direction:column;gap:1px}
+.rb-lbl{font-size:9px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:.05em}
+.rb-val{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--amber)}
+.rb-val.t{color:var(--teal)}.rb-val.g{color:var(--green)}
+.rb-divider{width:1px;height:30px;background:var(--border)}
+.rb-btn{
+  margin-left:auto;font-size:12px;font-weight:700;
+  padding:9px 24px;border-radius:7px;border:none;
+  background:var(--teal);color:var(--navy);cursor:pointer;
+  transition:all .15s;white-space:nowrap;
+}
+.rb-btn:hover{background:#00E5CC}
+.rb-btn:disabled{background:var(--border);color:var(--grey);cursor:not-allowed}
+
+/* ══════════════════════════════════════════
+   PROTOCOL PANEL (expands on button click)
+══════════════════════════════════════════ */
+.proto-panel{
+  display:none;
+  border-top:2px solid var(--teal);
+  background:var(--navyM);
+  padding:20px 24px;
+}
+.proto-panel.open{display:block}
+.proto-grid{display:grid;grid-template-columns:1fr 280px;gap:20px}
+.proto-table{width:100%;border-collapse:collapse;font-size:11px}
+.proto-table th{
+  font-size:9px;font-weight:700;color:var(--grey);text-transform:uppercase;
+  letter-spacing:.04em;padding:6px 10px;text-align:left;
+  border-bottom:1px solid var(--border);background:rgba(0,0,0,.3);
+}
+.proto-table td{
+  padding:6px 10px;border-bottom:1px solid rgba(30,64,96,.3);color:var(--greyL);
+}
+.proto-table tr.total td{
+  border-top:2px solid var(--border);font-weight:700;background:rgba(0,0,0,.3);
+}
+.outflow-card{
+  background:rgba(0,0,0,.3);border:1.5px solid var(--border);
+  border-radius:8px;padding:14px;
+}
+.oc-title{
+  font-size:10px;font-weight:700;color:var(--teal);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;
+}
+.oc-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:5px 0;border-bottom:1px solid rgba(30,64,96,.25);
+}
+.oc-row:last-child{border-bottom:none}
+.oc-lbl{font-size:10px;color:var(--grey)}
+.oc-val{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--teal)}
+.oc-d{font-family:var(--mono);font-size:9px;font-weight:700;margin-left:6px}
+.oc-d.up{color:var(--green)}.oc-d.dn{color:var(--red)}
+.oc-total{
+  margin-top:10px;padding:8px;background:rgba(0,201,177,.07);
+  border:1px solid rgba(0,201,177,.3);border-radius:5px;text-align:center;
+}
+.oc-total-val{
+  font-family:var(--mono);font-size:18px;font-weight:700;color:var(--green);
+}
+.oc-total-lbl{font-size:9px;color:var(--grey);margin-top:2px}
+
+/* ══════════════════════════════════════════
+   UTILS
+══════════════════════════════════════════ */
+.teal{color:var(--teal)}.amber{color:var(--amber)}.green{color:var(--green)}
+.muted{color:var(--grey)}.mono{font-family:var(--mono)}
+.syne{font-family:var(--syne)}
+.spacer{height:80px}
+/* ── INFLOWS / OUTFLOWS GRID ── */
+.rd-wrapper{display:grid;grid-template-columns:64px repeat(4,1fr) 64px 66px repeat(4,1fr);width:100%;border-bottom:2px solid rgba(0,201,177,0.22);background:var(--navy)}
+.rd-label{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:var(--navyMid);border-right:1px solid rgba(0,201,177,0.25);padding:0 10px;width:64px;writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);white-space:nowrap;cursor:default}
+.rd-label-word{font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;color:var(--amber);letter-spacing:.04em}
+.rd-field{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px 8px;border:none;background:var(--navy);cursor:pointer;transition:background .15s;min-width:0;position:relative}
+.rd-field[style*="grid-row:1"]{border-bottom:1px solid transparent;padding-bottom:18px;padding-top:18px}
+.rd-field[style*="grid-row:1"]::after{content:'';position:absolute;bottom:0;left:18%;right:18%;height:1px;background:rgba(0,201,177,0.35)}
+.rd-field[style*="grid-row:2"]{padding-top:18px;padding-bottom:18px}
+.rd-field:hover{background:rgba(0,201,177,0.05)}
+.rd-field.active{background:var(--teal-dim);border-color:var(--teal-bdr)}
+.rd-title{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;color:var(--greyMd);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;white-space:nowrap;transition:color .15s}
+.rd-field.active .rd-title{color:var(--teal)}
+.rd-num{font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--amber);line-height:1.2;white-space:nowrap}
+.rd-num-teal{font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--teal);line-height:1.2;white-space:nowrap}
+.rd-unit{font-family:'DM Sans',sans-serif;font-size:10px;color:var(--greyMd);margin-top:3px;white-space:nowrap}
+.rd-num-row{display:flex;align-items:center;justify-content:center;gap:3px}
+.rd-arr-up{font-size:16px;font-weight:900;color:var(--green);line-height:1;font-family:'DM Mono',monospace;-webkit-text-stroke:.4px var(--green)}
+.rd-arr-dn{font-size:16px;font-weight:900;color:var(--red);line-height:1;font-family:'DM Mono',monospace;-webkit-text-stroke:.4px var(--red)}
+.rd-arr-neu{font-size:16px;font-weight:900;color:var(--greyMd);line-height:1;font-family:'DM Mono',monospace}
+.rd-npk{display:flex;flex-direction:column;gap:3px;align-items:center}
+.rd-npk-row{display:flex;align-items:baseline;gap:4px}
+.rd-npk-key{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;color:var(--teal);width:10px}
+.rd-npk-val{font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:var(--teal)}
+.rd-npk-u{font-family:'DM Sans',sans-serif;font-size:9px;color:var(--greyMd)}
+.rd-tooltip{display:none;position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:rgba(0,201,177,0.13);border:1px solid rgba(0,201,177,0.55);border-radius:6px;padding:7px 10px;min-width:150px;max-width:180px;z-index:300;pointer-events:none;white-space:normal}
+.rd-field:hover .rd-tooltip{display:block}
+.rd-tooltip-val{font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:var(--amber);margin-bottom:3px;white-space:nowrap}
+.rd-tooltip-txt{font-family:'DM Sans',sans-serif;font-size:10px;color:var(--amber);line-height:1.5}
+.rd-note{display:none;grid-column:1/-1;background:rgba(0,201,177,0.07);border-top:1px solid var(--teal-bdr);padding:11px 16px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--greyLt);line-height:1.7}
+.rd-note.show{display:block}
+.rd-note strong{color:var(--teal);font-weight:700}
+.note-src{margin-top:5px;font-size:10px;color:var(--greyMd);font-family:'DM Mono',monospace}
+
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header class="header">
+  <div class="brand">CFI <span>Deep Tech</span></div>
+  <div class="header-divider"></div>
+  <div class="site-info">
+    <div class="site-pill"><strong>Sinar Mas Agribusiness</strong></div>
+    <div class="site-pill">Mill: <strong>PKS Ukui 1</strong></div>
+    <div class="site-pill">Capacity: <strong>60 t/hr FFB</strong></div>
+    <div class="site-pill">EFB: <strong>6.89K t/mo</strong></div>
+  </div>
+  <nav class="stage-nav">
+    <button class="stage-btn">S0</button>
+    <button class="stage-btn">S1</button>
+    <button class="stage-btn">S2</button>
+    <button class="stage-btn active">S3</button>
+    <button class="stage-btn">S4</button>
+    <button class="stage-btn">S5</button>
+    <button class="stage-btn">S6</button>
+  </nav>
+</header>
+
+<!-- ══ LIVE TICKER ══ -->
+<div class="ticker">
+  <div class="tick"><div class="tick-lbl">Organisms</div><div class="tick-val t" id="t-cnt">0</div></div>
+  <div class="tick"><div class="tick-lbl">Cost</div><div class="tick-val" id="t-cost">$0.00/t</div></div>
+  <div class="tick"><div class="tick-lbl">Monthly OpEx</div><div class="tick-val" id="t-opex">$0/mo</div></div>
+  <div class="tick"><div class="tick-lbl">N uplift</div><div class="tick-val g" id="t-n">+0.00%</div></div>
+  <div class="tick"><div class="tick-lbl">P uplift</div><div class="tick-val g" id="t-p">+0.00%</div></div>
+  <div class="tick"><div class="tick-lbl">Lignin ADL</div><div class="tick-val g" id="t-lig">25.0%</div></div>
+  <div class="tick"><div class="tick-lbl">Crude Protein</div><div class="tick-val t" id="t-cp">8.14%</div></div>
+  <div class="tick"><div class="tick-lbl">Synthetic Value</div><div class="tick-val g" id="t-sv">$5.86/t</div></div>
+</div>
+
+<!-- ══ SUBSTRATE FLOW ══ -->
+<div style="background:var(--navyMid,#112236);border-bottom:1px solid rgba(0,201,177,.2);padding:6px 24px;font-family:var(--syne);font-size:10px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.1em;display:flex;align-items:center;gap:12px">
+  Substrate Flow — S2 Reception &rarr; S3 Discharge
+  <span style="font-family:var(--sans);font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;color:var(--grey)">Click any Inflow field for source notes</span>
+</div>
+
+<div class="rd-wrapper">
+  <div class="rd-label" style="grid-column:1;grid-row:1/3"><div class="rd-label-word">Inflows</div></div>
+  <div class="rd-field" style="grid-column:2;grid-row:1" onclick="toggle(this,'r-vol')">
+    <div class="rd-title">Monthly Volume</div><div class="rd-num">7,200 <span style="font-size:11px">t</span></div><div class="rd-unit">FW / month &middot; Post-S2</div>
+  </div>
+  <div class="rd-field" style="grid-column:3;grid-row:1" onclick="toggle(this,'r-moist')">
+    <div class="rd-title">Moisture</div><div class="rd-num">55&ndash;65<span style="font-size:11px">%</span></div><div class="rd-unit">MC wb &middot; Post-Press</div>
+  </div>
+  <div class="rd-field" style="grid-column:4;grid-row:1" onclick="toggle(this,'r-cp')">
+    <div class="rd-title">Crude Protein</div><div class="rd-num">8.14<span style="font-size:11px">%</span></div><div class="rd-unit">DM &middot; N&times;6.25</div>
+  </div>
+  <div class="rd-field" style="grid-column:5;grid-row:1" onclick="toggle(this,'r-lig')">
+    <div class="rd-title">Lignin ADL</div><div class="rd-num">25<span style="font-size:11px">%</span></div><div class="rd-unit">DM &middot; EFB+OPDC</div>
+  </div>
+  <div class="rd-field" style="grid-column:2;grid-row:2" onclick="toggle(this,'r-sug')">
+    <div class="rd-title">Red. Sugars</div><div class="rd-num">8&ndash;15<span style="font-size:11px">%</span></div><div class="rd-unit">DM &middot; TRS &middot; DNS</div>
+  </div>
+  <div class="rd-field" style="grid-column:3;grid-row:2" onclick="toggle(this,'r-oc')">
+    <div class="rd-title">Organic Carbon</div><div class="rd-num">41<span style="font-size:11px">%</span></div><div class="rd-unit">DM &middot; CHNS</div>
+  </div>
+  <div class="rd-field" style="grid-column:4;grid-row:2" onclick="toggle(this,'r-cn')">
+    <div class="rd-title">C:N Ratio</div><div class="rd-num">32<span style="font-size:11px">:1</span></div><div class="rd-unit">DM-Weighted</div>
+  </div>
+  <div class="rd-field" style="grid-column:5;grid-row:2" onclick="toggle(this,'r-npk')">
+    <div class="rd-npk">
+      <div class="rd-npk-row"><span class="rd-npk-key">N</span><span class="rd-npk-val" style="color:var(--amber)">1.76</span><span class="rd-npk-u">% DM</span></div>
+      <div class="rd-npk-row"><span class="rd-npk-key">P</span><span class="rd-npk-val" style="color:var(--amber)">0.30</span><span class="rd-npk-u">% DM</span></div>
+      <div class="rd-npk-row"><span class="rd-npk-key">K</span><span class="rd-npk-val" style="color:var(--amber)">1.90</span><span class="rd-npk-u">% DM</span></div>
+    </div>
+  </div>
+  <!-- OUTFLOWS label -->
+  <div class="rd-label" style="grid-column:6;grid-row:1/3;border-right:none;border-left:1px solid rgba(0,201,177,0.25)"><div class="rd-label-word">Outflows</div></div>
+  <!-- ARROW -->
+  <div style="grid-column:7;grid-row:1/3;display:flex;align-items:center;justify-content:center;background:var(--navy);font-family:'DM Mono',monospace;font-size:99px;font-weight:900;color:var(--teal);line-height:1;-webkit-text-stroke:0.6px var(--teal)">&#8594;</div>
+  <!-- OUTFLOWS ROW 1 -->
+  <div class="rd-field" style="grid-column:8;grid-row:1" onclick="toggle(this,'d-vol')">
+    <div class="rd-tooltip"><div class="rd-tooltip-val">7,200 t FW/month</div><div class="rd-tooltip-txt">Volume unchanged — batch integrity confirmed</div></div>
+    <div class="rd-title">Monthly Volume</div><div class="rd-num-row"><span class="rd-arr-neu">=</span><span class="rd-num-teal">7,200 <span style="font-size:11px">t</span></span></div><div class="rd-unit">FW / month &middot; S3 Exit</div>
+  </div>
+  <div class="rd-field" style="grid-column:9;grid-row:1" onclick="toggle(this,'d-moist')">
+    <div class="rd-tooltip"><div class="rd-tooltip-val">60–70% MC wb</div><div class="rd-tooltip-txt">Adjusted up via sprinklers — BSF larval entry spec</div></div>
+    <div class="rd-title">Moisture</div><div class="rd-num-row"><span class="rd-arr-up">&#8593;</span><span class="rd-num-teal">60&ndash;70<span style="font-size:11px">%</span></span></div><div class="rd-unit">MC wb &middot; BSF Gate</div>
+  </div>
+  <div class="rd-field" style="grid-column:10;grid-row:1" onclick="toggle(this,'d-cp')">
+    <div class="rd-tooltip"><div class="rd-tooltip-val">9.2%+ DM</div><div class="rd-tooltip-txt">+1.06% — Azotobacter fixed N from atmosphere</div></div>
+    <div class="rd-title">Crude Protein</div><div class="rd-num-row"><span class="rd-arr-up">&#8593;</span><span class="rd-num-teal">9.2+<span style="font-size:11px">%</span></span></div><div class="rd-unit">DM &middot; N&times;6.25</div>
+  </div>
+  <div class="rd-field" style="grid-column:11;grid-row:1" onclick="toggle(this,'d-lig')">
+    <div class="rd-tooltip"><div class="rd-tooltip-val">19–21% DM</div><div class="rd-tooltip-txt">Trichoderma + Phanerochaete broke down 4–6% lignin</div></div>
+    <div class="rd-title">Lignin ADL</div><div class="rd-num-row"><span class="rd-arr-dn">&#8595;</span><span class="rd-num-teal">19&ndash;21<span style="font-size:11px">%</span></span></div><div class="rd-unit">DM &middot; Day 14</div>
+  </div>
+  <!-- OUTFLOWS ROW 2 -->
+  <div class="rd-field" style="grid-column:8;grid-row:2" onclick="toggle(this,'d-sug')">
+    <div class="rd-tooltip"><div class="rd-tooltip-val">2–5% DM</div><div class="rd-tooltip-txt">Sugars consumed — organisms confirmed active</div></div>
+    <div class="rd-title">Red. Sugars</div><div class="rd-num-row"><span class="rd-arr-up">&#8593;</span><span class="rd-num-teal">2&ndash;5<span style="font-size:11px">%</span></span></div><div class="rd-unit">DM &middot; Biology Confirmed</div>
+  </div>
+  <div class="rd-field" style="grid-column:9;grid-row:2" onclick="toggle(this,'d-oc')">
+    <div class="rd-tooltip"><div class="rd-tooltip-val">39–40% DM</div><div class="rd-tooltip-txt">Normal CO₂ respiration — stable humic C increased</div></div>
+    <div class="rd-title">Organic Carbon</div><div class="rd-num-row"><span class="rd-arr-dn">&#8595;</span><span class="rd-num-teal">39&ndash;40<span style="font-size:11px">%</span></span></div><div class="rd-unit">DM &middot; CO&#8322; Normal</div>
+  </div>
+  <div class="rd-field" style="grid-column:10;grid-row:2" onclick="toggle(this,'d-cn')">
+    <div class="rd-tooltip"><div class="rd-tooltip-val">20:1 DM</div><div class="rd-tooltip-txt">Narrowed 12 points — biological N addition confirmed</div></div>
+    <div class="rd-title">C:N Ratio</div><div class="rd-num-row"><span class="rd-arr-dn">&#8595;</span><span class="rd-num-teal">20<span style="font-size:11px">:1</span></span></div><div class="rd-unit">DM &middot; BSF Gate</div>
+  </div>
+  <div class="rd-field" style="grid-column:11;grid-row:2" onclick="toggle(this,'d-npk')">
+    <div class="rd-tooltip"><div class="rd-tooltip-val">N↑ P↑ K=</div><div class="rd-tooltip-txt">N fixed from air · P solubilised · K unchanged</div></div>
+    <div class="rd-npk">
+      <div class="rd-npk-row"><span class="rd-arr-up" style="font-size:10px">&#8593;</span><span class="rd-npk-key">N</span><span class="rd-npk-val">2.10</span><span class="rd-npk-u">% DM</span></div>
+      <div class="rd-npk-row"><span class="rd-arr-up" style="font-size:10px">&#8593;</span><span class="rd-npk-key">P</span><span class="rd-npk-val">0.36</span><span class="rd-npk-u">% DM</span></div>
+      <div class="rd-npk-row"><span class="rd-arr-neu" style="font-size:10px">=</span><span class="rd-npk-key">K</span><span class="rd-npk-val" style="color:var(--amber)">1.90</span><span class="rd-npk-u">% DM</span></div>
+    </div>
+  </div>
+  <!-- NOTES -->
+  <div class="rd-note" id="note-r-vol"><strong>Monthly Volume</strong> — Post-S2 press and size-reduction weight. ~7,200 t FW/month entering S3. Exact figure requires S1/S2 mass balance confirmation from pilot.<div class="note-src">Source: S1/S2 mass balance · CFI Design Basis 60 TPH · Pilot confirmation pending (Alex, IPB)</div></div>
+  <div class="rd-note" id="note-r-moist"><strong>Moisture</strong> — 55–65% wb target. Below 55% organism establishment slows. Above 65% anaerobic pockets form and CH₄ risk rises.<div class="note-src">Source: CFI S2 process spec · OPDC press floor 40% MC CLASS A guardrail</div></div>
+  <div class="rd-note" id="note-r-cp"><strong>Crude Protein</strong> — N × 6.25 (AOAC 984.13). EFB+OPDC 60:40 blend canonical: 8.14% CP DM. Day 0 baseline before biological uplift.<div class="note-src">Source: CFI Lab · EFB 4.75% CP · OPDC 14.5% CP · 60:40 blend = 8.14% · Locked Mar 2026</div></div>
+  <div class="rd-note" id="note-r-lig"><strong>Lignin ADL</strong> — 25% DM. Trichoderma and Phanerochaete target this — 10–25% reduction by Day 14.<div class="note-src">Source: CFI Lab · EFB 22% ADL · OPDC 30.7% ADL · 60:40 blend = 25% · Locked Mar 2026</div></div>
+  <div class="rd-note" id="note-r-sug"><strong>Reducing Sugars</strong> — 8–15% DM post-PKSA. Immediate carbon for Lactobacillus Day 0. Fermentation drops pH 8–10 → 5.5–6.0 within 48h, killing methanogens.<div class="note-src">Source: PKSA hydrolysis kinetics · DNS colorimetric assay</div></div>
+  <div class="rd-note" id="note-r-oc"><strong>Organic Carbon</strong> — 41% DM by CHNS analyser. Total carbon pool for biological metabolism and humic acid formation.<div class="note-src">Source: CFI CHNS analysis · EFB C 41.41% Malaysia combustion study 2023</div></div>
+  <div class="rd-note" id="note-r-cn"><strong>C:N Ratio</strong> — 32:1 DM-weighted for EFB+OPDC 60:40 blend. Narrows to 20:1 at Discharge as N is added biologically.<div class="note-src">Source: CFI canonical · EFB C:N 60 · OPDC C:N 20 · 60:40 weighted = 32:1 · Locked Mar 2026</div></div>
+  <div class="rd-note" id="note-r-npk"><strong>NPK</strong> — N: 1.76% DM · P: 0.30% DM · K: 1.90% DM. Synthetic replacement value: $5.86/t FW.<div class="note-src">Source: CFI Lab · ICP-OES Package B pending · Blend canonical Locked Mar 2026</div></div>
+  <div class="rd-note" id="note-d-vol"><strong>Outflow · Volume</strong> — 7,200 t FW confirmed at S3 exit. Volume integrity confirms no unaccounted diversion.<div class="note-src">Source: S3 mass balance · Azotobacter N-fixation adds &lt;0.1% mass</div></div>
+  <div class="rd-note" id="note-d-moist"><strong>Outflow · Moisture</strong> — 60–70% wb. Adjusted via S3 sprinkler. BSF Handoff Gate Criterion #2.<div class="note-src">Source: BSF Handoff Gate Criterion #2 · S3 sprinkler spec</div></div>
+  <div class="rd-note" id="note-d-cp"><strong>Outflow · Crude Protein</strong> — 9.2%+ DM. +1.06% uplift via Azotobacter fixation + Saccharomyces NH₃ retention. Biological protein from atmospheric nitrogen — zero synthetic input.<div class="note-src">Source: Azotobacter nifH studies · Saccharomyces NH₃ assimilation pathway</div></div>
+  <div class="rd-note" id="note-d-lig"><strong>Outflow · Lignin ADL</strong> — 19–21% DM. −4–6% vs inflow. Trichoderma CMCase peak 20–35 U/g + Phanerochaete LiP/MnP/Laccase.<div class="note-src">Source: Trichoderma CMCase ICBB literature · Phanerochaete ligninase data</div></div>
+  <div class="rd-note" id="note-d-sug"><strong>Outflow · Red. Sugars</strong> — 2–5% DM. Drawdown from 8–15% confirms biological activity established Day 0.<div class="note-src">Source: Lactobacillus fermentation kinetics · DNS assay Day 14</div></div>
+  <div class="rd-note" id="note-d-oc"><strong>Outflow · Organic Carbon</strong> — 39–40% DM. Normal CO₂ respiration loss. Stable humic C fraction increases — improves soil CEC.<div class="note-src">Source: Composting C mineralisation kinetics · Humic acid formation pathway</div></div>
+  <div class="rd-note" id="note-d-cn"><strong>Outflow · C:N Ratio</strong> — 20:1. Narrowed from 32:1 — 12-point improvement. BSF Handoff Gate Criterion #1 requires 15–25:1.<div class="note-src">Source: BSF Handoff Gate Criterion #1 · Azotobacter + Saccharomyces N contribution</div></div>
+  <div class="rd-note" id="note-d-npk"><strong>Outflow · NPK</strong> — N: 2.10% (+0.34%) · P: 0.36% (+0.06% via Pseudomonas) · K: 1.90% (=). Synthetic value: $7.11/t FW (+$1.25).<div class="note-src">Source: Azotobacter nifH + Saccharomyces data · Pseudomonas P-solubilisation literature</div></div>
+</div>
+
+<script>
+var rdKey=null;
+function toggle(el,key){
+  document.querySelectorAll('.rd-field').forEach(function(f){f.classList.remove('active')});
+  document.querySelectorAll('.rd-note').forEach(function(n){n.classList.remove('show')});
+  if(rdKey===key){rdKey=null;return}
+  el.classList.add('active');
+  var noteId='note-'+key;
+  var n=document.getElementById(noteId);
+  if(n)n.classList.add('show');
+  rdKey=key;
+}
+</script>
+
+<!-- ══ GOAL SELECTOR ══ -->
+<div class="section">
+  <div class="section-title">What is your goal for this batch?</div>
+  <div class="section-sub">Your selection filters organisms by relevance and updates projected outcomes.</div>
+  <div class="goal-row" id="goal-row">
+    <div class="goal" data-g="N" onclick="selectGoal('N',this)">
+      <div class="goal-name">Maximise Nitrogen</div>
+      <div class="goal-delta">N +0.34%</div>
+      <div class="goal-orgs">Azotobacter · Saccharomyces</div>
+    </div>
+    <div class="goal" data-g="P" onclick="selectGoal('P',this)">
+      <div class="goal-name">Maximise Phosphorus</div>
+      <div class="goal-delta" style="color:var(--red)">P +0.06%</div>
+      <div class="goal-orgs">Pseudomonas · B. megaterium</div>
+    </div>
+    <div class="goal" data-g="LIG" onclick="selectGoal('LIG',this)">
+      <div class="goal-name">Break Down Lignin</div>
+      <div class="goal-delta" style="color:var(--violet)">ADL -25%</div>
+      <div class="goal-orgs">Phanerochaete · Trichoderma</div>
+    </div>
+    <div class="goal" data-g="CP" onclick="selectGoal('CP',this)">
+      <div class="goal-name">Maximise Protein</div>
+      <div class="goal-delta" style="color:var(--blue)">CP 8.14→9.8%</div>
+      <div class="goal-orgs">Rhizopus · Aspergillus</div>
+    </div>
+    <div class="goal" data-g="GAS" onclick="selectGoal('GAS',this)">
+      <div class="goal-name">Control Gas Emissions</div>
+      <div class="goal-delta" style="color:var(--blue)">CH4 -80%</div>
+      <div class="goal-orgs">Lactobacillus · Saccharomyces</div>
+    </div>
+    <div class="goal" data-g="COST" onclick="selectGoal('COST',this)">
+      <div class="goal-name">Lowest Cost Stack</div>
+      <div class="goal-delta">$0.65/t FW</div>
+      <div class="goal-orgs">5 organisms · One-Shot</div>
+    </div>
+    <div class="goal" data-g="CUSTOM" onclick="selectGoal('CUSTOM',this)">
+      <div class="goal-name">Custom Mix</div>
+      <div class="goal-delta" style="color:var(--grey)">I'll choose</div>
+      <div class="goal-orgs">All 43 organisms</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ WAVE TIMELINE ══ -->
+<div class="section" style="padding-top:0">
+  <div class="section-title">Inoculation schedule</div>
+  <div class="section-sub" style="margin-bottom:10px">Click organism slots to select. Your choices populate here automatically.</div>
+  <div class="timeline-wrap">
+    <div class="wave-lane pre">
+      <div class="wl-meta"><div class="wl-wave" style="color:var(--green)">Pre-Wave</div><div class="wl-day">Before Day 0</div><div class="wl-note">Applied in hydration water</div></div>
+      <div class="wl-orgs" id="tl-pre"><div class="wl-slot out">Spirulina (Stream B)</div><div class="wl-slot out">Chlorella (backup)</div></div>
+    </div>
+    <div class="wave-lane w1a">
+      <div class="wl-meta"><div class="wl-wave" style="color:var(--teal)">Wave 1A</div><div class="wl-day">Day 0 — Loading</div><div class="wl-note">All applied together at substrate loading</div></div>
+      <div class="wl-orgs" id="tl-1a"></div>
+    </div>
+    <div class="wave-lane w1b">
+      <div class="wl-meta"><div class="wl-wave" style="color:var(--red)">Wave 1B</div><div class="wl-day">Day 3+ only</div><div class="wl-note" style="color:var(--amber)">After Rhizopus fuzz confirmed</div></div>
+      <div class="wl-orgs" id="tl-1b"></div>
+    </div>
+    <div class="wave-lane w2">
+      <div class="wl-meta"><div class="wl-wave" style="color:var(--blue)">Wave 2</div><div class="wl-day">Day 5+ · Temp &lt;50°C</div><div class="wl-note">Measure temperature before applying</div></div>
+      <div class="wl-orgs" id="tl-2"></div>
+    </div>
+    <div class="wave-lane cond" style="display:none" id="tl-cond-lane">
+      <div class="wl-meta"><div class="wl-wave" style="color:var(--amber)">Conditional</div><div class="wl-day">Hard gate required</div><div class="wl-note" style="color:var(--amber)">Titre &lt;10⁴ CFU/g before S4</div></div>
+      <div class="wl-orgs" id="tl-cond"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ORGANISM SECTIONS (WAVE-GROUPED) ══ -->
+<div id="org-area"></div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div><div class="modal-name" id="m-name">Organism</div><div class="modal-icbb" id="m-icbb"></div></div>
+      <button class="modal-close-btn" onclick="closeModal()"><span class="modal-close-x">✕</span> Close</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-ftr">
+      <div class="mf-cost" id="m-cost"></div>
+      <button class="mf-btn add" id="m-btn" onclick="modalToggle()">+ Add to Consortium</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SPACER for sticky bar ══ -->
+<div class="spacer"></div>
+
+<!-- ══ PROTOCOL PANEL ══ -->
+<div class="proto-panel" id="proto-panel">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+    <div style="font-family:var(--syne);font-size:13px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.08em">Protocol + Projected Outcomes</div>
+    <button onclick="closeProto()" style="font-size:10px;font-weight:700;font-family:var(--mono);color:var(--grey);border:1px solid var(--border);border-radius:5px;padding:3px 10px;cursor:pointer;background:transparent;display:flex;align-items:center;gap:4px"><span style="color:var(--red);font-size:12px;font-weight:900">✕</span> Close</button>
+  </div>
+  <div class="proto-grid">
+    <div>
+      <table class="proto-table" id="proto-table">
+        <thead><tr><th>Organism</th><th>Wave</th><th>$/kg</th><th>Dose %DM</th><th>kg/month</th><th>$/month</th></tr></thead>
+        <tbody id="proto-tbody"></tbody>
+      </table>
+    </div>
+    <div class="outflow-card">
+      <div class="oc-title">Projected Outflows — Day 14</div>
+      <div class="oc-row"><span class="oc-lbl">Crude Protein</span><span><span class="oc-val" id="pc-cp">8.14%</span><span class="oc-d up" id="pcd-cp"></span></span></div>
+      <div class="oc-row"><span class="oc-lbl">Lignin ADL</span><span><span class="oc-val" id="pc-lig">25.0%</span><span class="oc-d dn" id="pcd-lig"></span></span></div>
+      <div class="oc-row"><span class="oc-lbl">N % DM</span><span><span class="oc-val" id="pc-n">1.76%</span><span class="oc-d up" id="pcd-n"></span></span></div>
+      <div class="oc-row"><span class="oc-lbl">P % DM</span><span><span class="oc-val" id="pc-p">0.30%</span><span class="oc-d up" id="pcd-p"></span></span></div>
+      <div class="oc-row"><span class="oc-lbl">K % DM</span><span><span class="oc-val">1.90%</span><span class="oc-d" style="color:var(--grey)"> unchanged</span></span></div>
+      <div class="oc-total">
+        <div class="oc-total-val" id="pc-sv">$5.86/t FW</div>
+        <div class="oc-total-lbl" id="pc-sv-d">1:1 Synthetic Replacement Value</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ RESULTS BAR ══ -->
+<div class="results-bar">
+  <div class="rb-item"><div class="rb-lbl">Organisms</div><div class="rb-val t" id="rb-cnt">0</div></div>
+  <div class="rb-divider"></div>
+  <div class="rb-item"><div class="rb-lbl">Cost</div><div class="rb-val" id="rb-cost">—</div></div>
+  <div class="rb-divider"></div>
+  <div class="rb-item"><div class="rb-lbl">Monthly OpEx</div><div class="rb-val" id="rb-opex">—</div></div>
+  <div class="rb-divider"></div>
+  <div class="rb-item"><div class="rb-lbl">N uplift</div><div class="rb-val g" id="rb-n">—</div></div>
+  <div class="rb-divider"></div>
+  <div class="rb-item"><div class="rb-lbl">Lignin</div><div class="rb-val g" id="rb-lig">25.0%</div></div>
+  <div class="rb-divider"></div>
+  <div class="rb-item"><div class="rb-lbl">Synthetic Value</div><div class="rb-val g" id="rb-sv">$5.86/t</div></div>
+  <button class="rb-btn" id="rb-btn" disabled onclick="toggleProto()">View Protocol + Outcomes</button>
+</div>
+
+<script>
+var SEL={};
+var modalId=null;
+
+var WAVES=[
+  {key:'pre',label:'Pre-Wave — Stream B Algae',wave_label:'Pre-Wave',color:'var(--green)',border:'rgba(61,203,122,.4)',bg:'rgba(61,203,122,.08)',
+   sub:'Applied as hydration water before inoculation. Replaces plain water. $0 ongoing OpEx — CapEx only.',
+   warn:'',tl:'tl-pre'},
+  {key:'1a',label:'Wave 1A — Apply Day 0',wave_label:'Wave 1A',color:'var(--teal)',border:'rgba(0,201,177,.4)',bg:'rgba(0,201,177,.08)',
+   sub:'All Wave 1A organisms applied together at substrate loading. No sequencing required.',
+   warn:'',tl:'tl-1a'},
+  {key:'1b',label:'Wave 1B — Day 3+ only',wave_label:'Wave 1B',color:'var(--red)',border:'rgba(232,64,64,.4)',bg:'rgba(232,64,64,.08)',
+   sub:'Apply only after white Rhizopus mycelium is visible on substrate surface.',
+   warn:'Adding Wave 1B before Day 3 will kill Rhizopus oligosporus. Trichoderma is a mycoparasite.',tl:'tl-1b'},
+  {key:'2',label:'Wave 2 — Day 5+ · Substrate temp &lt;50°C',wave_label:'Wave 2',color:'var(--blue)',border:'rgba(96,165,250,.4)',bg:'rgba(96,165,250,.08)',
+   sub:'Apply after substrate cools below 50°C. Measure temperature before applying N-fixers.',
+   warn:'N-fixing enzymes (nitrogenase) are irreversibly denatured above 50°C substrate temperature.',tl:'tl-2'},
+  {key:'cond',label:'Conditional — Restricted Use',wave_label:'Conditional',color:'var(--amber)',border:'rgba(245,166,35,.4)',bg:'rgba(245,166,35,.08)',
+   sub:'Requires hard gate confirmation before S4 BSF loading. Lab titre confirmation mandatory.',
+   warn:'Hard gate: Confirm titre decay to <10⁴ CFU/g before any BSF introduction. BSF is Diptera — Bt is directly lethal to BSF larvae.',tl:'tl-cond'},
+];
+
+var ORGS=[
+  // PRE-WAVE
+  {id:42,name:'Arthrospira platensis',short:'Spirulina',icbb:'—',wave:'pre',cost:0,dose:0,n:0,p:0,lig:0,cp:0,bsf:4,one:false,nine:false,
+   src:'CFI on-site POME raceway · $0 ongoing OpEx (CapEx ~$32,400)',
+   what:'Replaces plain water in substrate wetting. Delivers 65% CP algae protein — Methionine and Lysine — the two amino acids BSF larvae need most. Grown free in POME raceways using tropical sunlight.',
+   how:'1,850 L hydration water per tonne EFB DM delivers 2.31 kg Spirulina DM to substrate. Methionine sufficiency → BSF neonate survival +22%. Lysine + Met completeness → FCR −0.7. BSF meal protein rises from 52% to 56% DM.',
+   outcomes:[['BSF Meal CP','52% → 56% DM'],['Neonate survival','+22%'],['FCR','−0.7'],['OpEx','$0/month']],
+   timing:'Pre-Wave — applied during substrate hydration before any organism inoculation.',warn:''},
+  {id:43,name:'Chlorella vulgaris',short:'Chlorella',icbb:'—',wave:'pre',cost:0,dose:0,n:0,p:0,lig:0,cp:0,bsf:2,one:false,nine:false,
+   src:'CFI on-site POME raceway — backup to Spirulina',
+   what:'Stream B backup if Spirulina culture fails. Green microalgae grown in POME raceways. Lower protein than Spirulina but faster doubling time.',
+   how:'45% CP DM (vs Spirulina 65%). Faster growth (2–4 day doubling vs 3–5 days). May require centrifuge harvest. BSF meal uplift: 52% → 51% CP DM. POME BOD removal 35–50% as co-benefit.',
+   outcomes:[['BSF Meal CP','52% → 51% DM'],['Neonate survival','+15%'],['FCR','−0.5'],['OpEx','$0/month']],
+   timing:'Pre-Wave backup option. Use if Spirulina culture crashes.',warn:''},
+
+  // WAVE 1A
+  {id:41,name:'Rhizopus oligosporus',short:'Rhizopus',icbb:'—',wave:'1a',cost:0.5,dose:0.10,n:0,p:0.01,lig:0,cp:0.5,one:false,nine:true,
+   src:'Tokopedia (ragi tempe) · $0.50/kg · same-day purchase anywhere in Indonesia',
+   what:'The tempe mold. Grows white fluffy mycelium across substrate fibres by Day 3, adding fungal protein directly. Also releases bound phosphorus and reduces OPDC lipid content.',
+   how:'Mycelial protein biosynthesis adds Lysine + Methionine amino acids. Phytase (EC 3.1.3.26) releases phytate-bound P. Lipase reduces OPDC residual CPO (3–8% DM) which can hurt BSF FCR. Result: CP +0.5% DM, P +0.01% DM.',
+   outcomes:[['CP uplift','+0.5% DM'],['P bioavailable','+0.01% DM'],['Lysine + Met','improved for BSF'],['Visual gate','White fuzz Day 3']],
+   timing:'FIRST organism in 9-org stack. Add BEFORE Trichoderma by 48–72h. Trichoderma will kill Rhizopus if added simultaneously.',
+   warn:'9-ORG STACK: Add Trichoderma (Wave 1B, Day 3+) ONLY after Rhizopus white mycelium is visibly established.'},
+  {id:15,name:'Saccharomyces cerevisiae',short:'Saccharomyces',icbb:'ICBB 8808',wave:'1a',cost:0.3,dose:0.10,n:0.18,p:0,lig:0,cp:0.3,one:true,nine:true,
+   src:'Fermipan (any Indonesian supermarket) · Provibio ICBB 8808 · $0.30/kg',
+   what:'Locks ammonia in the substrate before it escapes as gas. Without it, 50% of substrate nitrogen evaporates into the air and is permanently lost.',
+   how:'Glutamate dehydrogenase pathway assimilates NH3 directly into yeast protein biomass. pH synergy with Lactobacillus: pH below 6.0 chemically shifts NH3 (volatile gas) → NH4+ (ion, stays in substrate). Combined effect: 50% less N loss.',
+   outcomes:[['NH3 emissions','−50%'],['N retained','+0.18% DM'],['CP uplift','+0.3% DM'],['Stack','One-Shot + 9-Org']],
+   timing:'Day 0, Wave 1A. No conflicts.',warn:''},
+  {id:21,name:'Lactobacillus sp.',short:'Lactobacillus',icbb:'ICBB 6099',wave:'1a',cost:0.86,dose:0.08,n:0,p:0,lig:0,cp:0,one:true,nine:true,
+   src:'EM-4 (Effective Microorganisms-4) · any Indonesian agri store · Rp 25k/L · Provibio ICBB 6099',
+   what:'Drives pH from 8–10 (post-PKSA) down to 5.5–6.0 within 48 hours, which kills the methane-producing bacteria that would otherwise release CH4.',
+   how:'Lactic acid fermentation produces acid that lowers substrate pH. Methanogens require pH 6.8+ — pH drop kills them. Result: CH4 suppression 70–80%. pH 5.5–6.0 also creates ideal conditions for Aspergillus and Trichoderma. Synergy with Saccharomyces: N-Trap effect locks NH4+ at low pH.',
+   outcomes:[['CH4 emissions','−70–80%'],['pH target','5.5–6.0 by Day 2'],['NH3 reduction','−50% (synergy)'],['Stack','One-Shot + 9-Org']],
+   timing:'Day 0, Wave 1A. No conflicts.',warn:''},
+  {id:18,name:'Bacillus subtilis',short:'B. subtilis',icbb:'ICBB 8780',wave:'1a',cost:0.2,dose:0.04,n:0,p:0,lig:0,cp:0.1,one:true,nine:true,
+   src:'Ansel Biotech India · $0.20/kg · cheapest effective organism in the library',
+   what:'The workhorse bacteria. Produces enzymes, protects against pathogens, and enhances root growth when frass is applied to oil palm. Survives heat as endospores.',
+   how:'Endospores survive >70°C — remains viable through thermophilic phase. PGPR (Plant Growth Promoting Rhizobacterium) — produces IAA phytohormone, siderophores. Produces initial cellulase + lipase. H2S suppression via aerobic microenvironment.',
+   outcomes:[['PGPR effect','in frass field application'],['Endospore','2-year shelf life'],['H2S','suppressed'],['Stack','One-Shot + 9-Org']],
+   timing:'Day 0, Wave 1A. No conflicts.',warn:''},
+  {id:19,name:'Bacillus coagulans',short:'B. coagulans',icbb:'—',wave:'1a',cost:2,dose:0.03,n:0,p:0.02,lig:0,cp:0.1,one:false,nine:true,
+   src:'Commercial / Alibaba · $2.00/kg',
+   what:'Bridge organism that stays active as substrate cools from 50°C to 30°C — a temperature range where most other bacteria slow down. Also releases phosphorus from bound complexes.',
+   how:'Thermotolerant lactic acid bacteria forming endospores. Bridges between Bacilli (50°C) and LAB (35°C) temperature guilds. Produces gluconic acid → P-solubilisation. Lactic acid assists Lactobacillus pH drop.',
+   outcomes:[['P solubilisation','+0.02% DM'],['Temperature bridge','50°C → 30°C'],['Stack','9-Org']],
+   timing:'Day 0, Wave 1A. No conflicts.',warn:''},
+  {id:5,name:'Bacillus licheniformis',short:'B. licheniformis',icbb:'—',wave:'1a',cost:8,dose:0.04,n:0,p:0,lig:0,cp:0.2,one:false,nine:true,
+   src:'Indotrading / Alibaba · $8.00/kg',
+   what:'Produces heat-stable protease that keeps working at 50–65°C — breaking down protein while other organisms cannot survive the heat.',
+   how:'Subtilisin-family protease (Carlsberg protease) stable to 65°C. Cleaves OPDC protein fraction (14.5% CP DM) into bioavailable amino acids. Also produces alpha-amylase for starch hydrolysis.',
+   outcomes:[['CP accessibility','+0.2% DM'],['Temp range','50–65°C active'],['Stack','9-Org']],
+   timing:'Day 0, Wave 1A. 9-org dose locked at 0.04% DM.',warn:''},
+  {id:13,name:'Aspergillus niger',short:'A. niger',icbb:'—',wave:'1a',cost:5,dose:0.05,n:0,p:0,lig:1,cp:0.2,one:false,nine:true,
+   src:'Indotrading / Alibaba · $5.00/kg',
+   what:'Industrial black mold producing cellulase, pectinase and citric acid — breaking fibres while naturally acidifying the substrate to help Lactobacillus.',
+   how:'Cellulase (Cel3A β-glucosidase) + Pectinase (breaks OPDC pectin) + Citric acid (substrate pH assist 4–6). Commonly co-cultured with Rhizopus — neutral compatibility. Important when OPDC fraction >30% of blend.',
+   outcomes:[['CP uplift','+0.2% DM'],['Cellulose access','improved'],['pH assist','citric acid'],['Stack','9-Org']],
+   timing:'Day 0, Wave 1A. Neutral synergy with Rhizopus.',warn:''},
+  {id:32,name:'Cellulase (T. reesei)',short:'Cellulase',icbb:'EC 3.2.1.4',wave:'1a',cost:15,dose:0.03,n:0,p:0,lig:2,cp:0.3,one:false,nine:true,
+   src:'Novozymes Indonesia · $15/kg',
+   what:'The industrial gold standard enzyme for breaking cellulose chains into glucose that BSF larvae can digest. 3–5× more effective when combined with xylanase and β-glucosidase.',
+   how:'Three enzyme types work together: Cellobiohydrolase I + II process from both chain ends releasing cellobiose. Endoglucanase creates new chain ends. β-glucosidase converts cellobiose → glucose preventing product inhibition. Must pair with Xylanase (xylan coat blocks access to cellulose).',
+   outcomes:[['IVDMD uplift','+35–45%'],['Cellulose hydrolysis','complete cascade'],['Stack','9-Org']],
+   timing:'Day 0. Always pair with Xylanase + β-glucosidase.',warn:'Must pair with Xylanase and β-glucosidase for full cascade effect.'},
+  {id:33,name:'Xylanase',short:'Xylanase',icbb:'EC 3.2.1.8',wave:'1a',cost:17,dose:0.02,n:0,p:0,lig:1,cp:0.2,one:false,nine:true,
+   src:'Alibaba bulk · $17/kg',
+   what:'Removes the hemicellulose "coat" that physically blocks cellulase from reaching cellulose fibres. Without it, cellulase efficiency drops 40–60%.',
+   how:'Cleaves xylan beta-1,4 bonds exposing underlying cellulose microfibrils. Must be applied simultaneously with cellulase on Day 0.',
+   outcomes:[['Cellulase efficiency','+40–60% when paired'],['Hemicellulose','removed'],['Stack','9-Org']],
+   timing:'Day 0. Apply simultaneously with Cellulase.',warn:'No value as standalone — must pair with Cellulase.'},
+  {id:40,name:'β-glucosidase',short:'β-glucosidase',icbb:'EC 3.2.1.21',wave:'1a',cost:25,dose:0.01,n:0,p:0,lig:1,cp:0.1,one:false,nine:true,
+   src:'Novozymes · $25/kg',
+   what:'Prevents cellulase from poisoning itself. As cellulase works, it produces cellobiose — which then blocks (inhibits) further cellulase activity. β-glucosidase removes cellobiose continuously.',
+   how:'Cleaves cellobiose → 2 glucose molecules. Without this enzyme, cellobiose accumulates to inhibitory levels (Ki ~2mM) and cellulase activity drops 40–60% over 48 hours.',
+   outcomes:[['Cellulase inhibition','prevented'],['Glucose availability','maximised'],['Stack','9-Org']],
+   timing:'Day 0. Always pair with Cellulase. No value as standalone.',warn:''},
+  {id:7,name:'Phanerochaete ICBB 9182',short:'Phanerochaete',icbb:'ICBB 9182',wave:'1a',cost:8,dose:0.10,n:0,p:0,lig:5,cp:0,one:false,nine:false,
+   src:'Provibio / IPB Bogor ICBB collection · $8/kg',
+   what:'The most powerful lignin-destroying organism available. Deploys the complete ligninolytic system to break down the tough lignin polymer that protects EFB fibres from biological attack.',
+   how:'LiP (Lignin Peroxidase) + MnP (Manganese Peroxidase) + Laccase — all three working together. LiP oxidises non-phenolic lignin units. MnP oxidises Mn2+ → Mn3+ which attacks phenolics. Laccase oxidises phenolics directly. ICBB 9182 verified for palm residues at IPB Bogor.',
+   outcomes:[['Lignin ADL reduction','−4 to −6% DM'],['Cellulose access','↑ 35–50%'],['BSF digestibility','significantly improved']],
+   timing:'Day 0, Wave 1A. IPB-verified for EFB substrate.',warn:''},
+
+  // WAVE 1B
+  {id:12,name:'Trichoderma harzianum',short:'Trichoderma',icbb:'ICBB 9127',wave:'1b',cost:1.5,dose:0.08,n:0,p:0,lig:3,cp:0,one:true,nine:true,
+   src:'Super Bio Boost (Tokopedia) / Provibio ICBB 9127 · $1.50/kg',
+   what:'Two things in one: a cellulase producer (breaks fibres) AND a biological control agent against Ganoderma — the most destructive oil palm disease. Critical timing rule: must come AFTER Rhizopus.',
+   how:'CMCase (endo-β-1,4-glucanase) peak: 20–35 U/g DM at Day 7. Ganoderma biocontrol: Trichoderma hyphae coil around and penetrate Ganoderma hyphae, secreting glucanase + chitinase to dissolve Ganoderma cell wall (mycoparasitism). CRITICAL: Trichoderma is also a mycoparasite of Rhizopus. Must wait 48–72h for Rhizopus to establish.',
+   outcomes:[['CMCase peak','20–35 U/g DM at Day 7'],['Lignin ADL reduction','−3% DM'],['Ganoderma control','independent biocontrol pathway'],['Stack','One-Shot + 9-Org']],
+   timing:'9-org stack: Wave 1B — Day 3+ ONLY after Rhizopus mycelium visible. Standard One-Shot: Day 0 (no Rhizopus conflict).',
+   warn:'TIMING CRITICAL in 9-org stack: Add ONLY after white Rhizopus fuzz is visible on substrate (Day 3+). Trichoderma is a mycoparasite and will kill Rhizopus if added on Day 0.'},
+  {id:23,name:'Azotobacter vinelandii',short:'Azotobacter',icbb:'ICBB 9098',wave:'1b',cost:0.4,dose:0.10,n:0.34,p:0,lig:0,cp:0.76,one:true,nine:true,
+   src:'Provibio / PT Pupuk Kaltim · $0.40/kg',
+   what:'Pulls nitrogen directly from the air — for free. The highest rate free-living nitrogen-fixing organism known. Adds 0.34% N DM to the substrate from atmospheric N2.',
+   how:'nifH gene complex catalyses: N2 + 8H+ + 16ATP → 2NH3 (ammonia for substrate). Rate: 10–20 mg N/kg DM/day. HARD GATE: nitrogenase enzyme is irreversibly denatured above 50°C substrate temperature. Must wait for substrate to cool.',
+   outcomes:[['N added','+0.34% DM (from air)'],['CP uplift','+0.76% DM'],['Cost of N','$0 — atmospheric'],['Stack','One-Shot + 9-Org']],
+   timing:'9-org: Wave 1B Day 3+. Standard: Day 5+. HARD GATE: substrate temp must be below 50°C.',
+   warn:'HARD GATE: Measure substrate temperature before applying. Above 50°C destroys nitrogenase permanently.'},
+
+  // WAVE 2
+  {id:26,name:'Pseudomonas fluorescens',short:'Pseudomonas',icbb:'—',wave:'2',cost:2.4,dose:0.08,n:0,p:0.04,lig:0,cp:0,one:false,nine:false,
+   src:'Katyayani Organics India · $2.40/kg',
+   what:'Releases phosphorus trapped in Indonesian soils and produces hydrogen cyanide that kills Ganoderma — a second independent Ganoderma biocontrol pathway separate from Trichoderma.',
+   how:'Gluconic + citric acid chelate Fe3+ in Fe-Al-P soil complexes, releasing orthophosphate (plant-available P). HCN directly inhibits cytochrome c oxidase in Ganoderma respiratory chain. Two complementary Ganoderma attack mechanisms when combined with Trichoderma.',
+   outcomes:[['P bioavailable','+0.04% DM'],['P plant uptake','2–3× improvement'],['Ganoderma HCN','independent pathway']],
+   timing:'Day 5+, Wave 2. Or Day 14+ booster.',warn:'HCN producer — do not apply in sealed or poorly-ventilated spaces.'},
+  {id:24,name:'Azospirillum lipoferum',short:'Azospirillum',icbb:'ICBB 6088',wave:'2',cost:1.0,dose:0.08,n:0.15,p:0,lig:0,cp:0.34,one:false,nine:false,
+   src:'Provibio / Jaipur Bio India · $1.00/kg',
+   what:'Nitrogen-fixer that also produces a plant hormone (IAA) which improves oil palm root absorption when frass is applied to soil.',
+   how:'Associative N-fixation: 0.15% N DM added. IAA (indole-3-acetic acid) enhances root hair development — frass agronomic value improves. Temp gate same as Azotobacter.',
+   outcomes:[['N added','+0.15% DM'],['IAA hormone','root uptake enhanced'],['CP uplift','+0.34% DM']],
+   timing:'Day 5+, Wave 2. Temp gate: <50°C required.',warn:'TEMP GATE: <50°C before applying.'},
+  {id:22,name:'Bacillus megaterium',short:'B. megaterium',icbb:'—',wave:'2',cost:1.5,dose:0.04,n:0,p:0.02,lig:0,cp:0,one:false,nine:false,
+   src:'IndiaMART · $1.50/kg',
+   what:'Late-stage phosphorus booster. Produces phytase enzyme that releases P trapped in phytate complexes. Best applied Day 14+ or directly into frass.',
+   how:'Phytase (EC 3.1.3.26) releases phytate-bound P. No conflicts with any other organism. Enhances frass NPK profile.',
+   outcomes:[['P solubilisation','+0.02% DM'],['Frass NPK','improved'],['No conflicts','any wave']],
+   timing:'Day 14+ or frass direct application.',warn:''},
+  {id:29,name:'Streptomyces ICBB 9155',short:'Streptomyces 9155',icbb:'ICBB 9155',wave:'2',cost:5,dose:0.03,n:0,p:0,lig:0,cp:0,one:false,nine:false,
+   src:'Provibio / IPB ICBB Bogor · $5.00/kg',
+   what:'Final-stage treatment that builds humic acids (improving soil fertility) and produces antibiotics that kill pathogens before substrate goes to BSF.',
+   how:'Humic acid polymerisation increases frass CEC (Cation Exchange Capacity) 40–60% — nutrients stay in soil longer. Antibiotic production suppresses pathogenic bacteria and fungi. ICBB 9155 IPB-verified for palm residues.',
+   outcomes:[['Frass CEC','+40–60%'],['Pathogen suppression','broad spectrum'],['Humic acid','stable carbon fraction']],
+   timing:'Day 14–21 only. Pair with ICBB 9469 for broad-spectrum cover.',warn:'Apply Day 14–21 only.'},
+  {id:30,name:'Streptomyces ICBB 9469',short:'Streptomyces 9469',icbb:'ICBB 9469',wave:'2',cost:5,dose:0.03,n:0,p:0,lig:0,cp:0,one:false,nine:false,
+   src:'Provibio / IPB ICBB Bogor · $5.00/kg',
+   what:'Companion to ICBB 9155 — different antibiotic profile means together they cover a broader range of pathogens.',
+   how:'Complementary antibiotic spectrum to ICBB 9155. Together: broad-spectrum cover for all major bacterial and fungal pathogens. Both produce humic acid precursors.',
+   outcomes:[['Pathogen cover','broad-spectrum with 9155'],['Humic acid','co-formation'],['IPB verified','palm residues']],
+   timing:'Day 14–21 only. Always use alongside ICBB 9155.',warn:'Apply Day 14–21 only.'},
+  {id:27,name:'Bacillus mucilaginosus',short:'B. mucilaginosus',icbb:'—',wave:'2',cost:3,dose:0.05,n:0,p:0,lig:0,cp:0,one:false,nine:false,
+   src:'IndiaMART / Alibaba · $3.00/kg',
+   what:'Solubilises potassium from silicate minerals. Most valuable in soil/frass application rather than substrate — where the silicate minerals are.',
+   how:'Produces acidic exopolysaccharides that dissolve silicate minerals releasing K+. K in substrate (1.90% DM) is already high and mostly plant-available. Main benefit is in frass field application.',
+   outcomes:[['K bioavailable','uplift in field'],['Best use','frass application'],['Silicate sol.','active']],
+   timing:'Day 14+ or frass direct application.',warn:''},
+
+  // CONDITIONAL
+  {id:31,name:'Bt ICBB 6095',short:'Bt ICBB 6095',icbb:'ICBB 6095',wave:'cond',cost:0.15,dose:0,n:0,p:0,lig:0,cp:0,one:false,nine:false,cond:true,
+   src:'Provibio · CONDITIONAL USE ONLY · Status changed EXCLUDED → CONDITIONAL March 2026',
+   what:'A biological pesticide that kills pest flies in S3 composting. CRITICAL: BSF (Black Soldier Fly) is the same insect order (Diptera) as the pest flies it targets. It is DIRECTLY LETHAL to BSF larvae.',
+   how:'Cry protein crystal (delta-endotoxin) specifically targets Diptera gut epithelium. Binds gut receptors, forms pores, lyses cells. BSF is Diptera — larvae exposed to active Bt will die. The titre must fully decay to <10⁴ CFU/g before any BSF can be introduced.',
+   outcomes:[['Pest fly control','active in S3'],['BSF safety','REQUIRES titre decay'],['Titre gate','<10⁴ CFU/g lab-confirmed'],['Status','CONDITIONAL only']],
+   timing:'S3 composting phase ONLY before any BSF introduction. Apply Wave 1 if pest fly pressure is severe.',
+   warn:'HARD GATE: Lab-confirm Bt titre has decayed to <10⁴ CFU/g BEFORE any BSF introduction. BSF is Diptera — active Bt is directly lethal to BSF larvae. Never apply when BSF larvae are present.'},
+];
+
+function buildOrgArea(){
+  var html='';
+  WAVES.forEach(function(w){
+    var orgs=ORGS.filter(function(o){return o.wave===w.key});
+    if(!orgs.length)return;
+    html+='<div class="org-section" id="ws-'+w.key+'">';
+    html+='<div class="org-section-hdr" onclick="toggleSection(\''+w.key+'\')" style="background:'+w.bg.replace('.08','.05')+';border:1.5px solid '+w.border+';margin-bottom:0">';
+    html+='<div class="osh-wave" style="color:'+w.color+';border-color:'+w.border+';background:'+w.bg+'">'+w.wave_label+'</div>';
+    html+='<div class="osh-title">'+w.label+'</div>';
+    html+='<div class="osh-count" id="wc-'+w.key+'">'+orgs.length+' organisms</div>';
+    html+='<div class="osh-chevron">▾</div>';
+    html+='</div>';
+    if(w.warn){
+      html+='<div class="osh-warn '+(w.key==='cond'||w.key==='1b'?'show':'')+'" style="background:rgba(245,166,35,.07);border-left:1.5px solid '+w.border+';border-right:1.5px solid '+w.border+';padding:6px 14px;font-size:10px;color:'+(w.key==='cond'?'var(--red)':'var(--amber)')+';display:block">'+w.warn+'</div>';
+    }
+    if(w.sub){
+      html+='<div style="background:rgba(0,0,0,.15);border-left:1.5px solid '+w.border+';border-right:1.5px solid '+w.border+';padding:5px 14px;font-size:10px;color:var(--grey);display:block" id="wsub-'+w.key+'">'+w.sub+'</div>';
+    }
+    html+='<div class="org-grid" id="wg-'+w.key+'">';
+    orgs.forEach(function(o){
+      var isSel=SEL[o.id];
+      var cls='org-btn'+(isSel?' sel':'')+(o.warn&&!isSel?' warn-border':'')+(o.cond?' cond':'');
+      html+='<div class="'+cls+'" id="obtn-'+o.id+'">';
+      html+='<div class="ob-top-row">';
+      html+='<div class="ob-chk" onclick="toggleOrg('+o.id+')">'+(isSel?'✓':'')+'</div>';
+      html+='<span class="ob-name" onclick="toggleOrg('+o.id+')">'+o.name+'</span>';
+      html+='<button class="ob-info" onclick="openModal('+o.id+')">Details</button>';
+      html+='</div>';
+      html+='<div class="ob-pills">';
+      if(o.nine)html+='<span class="ob-pill" style="color:#A78BFA;border-color:rgba(167,139,250,.5);background:rgba(167,139,250,.1)">9-Org Stack</span>';
+      if(o.one)html+='<span class="ob-pill" style="color:var(--green);border-color:rgba(61,203,122,.5);background:rgba(61,203,122,.1)">One-Shot</span>';
+      if(o.n>0)html+='<span class="ob-pill" style="color:#4ADE80;border-color:rgba(74,222,128,.5);background:rgba(74,222,128,.1)">N Fixation +'+o.n.toFixed(2)+'%</span>';
+      if(o.p>0)html+='<span class="ob-pill" style="color:#F87171;border-color:rgba(248,113,113,.5);background:rgba(248,113,113,.1)">P Release +'+o.p.toFixed(2)+'%</span>';
+      if(o.lig>0)html+='<span class="ob-pill" style="color:#C084FC;border-color:rgba(192,132,252,.5);background:rgba(192,132,252,.1)">Lignin ADL -'+o.lig+'pt</span>';
+      if(o.cp>0)html+='<span class="ob-pill" style="color:#38BDF8;border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.1)">Protein +'+o.cp.toFixed(1)+'%</span>';
+      if(o.bsf)html+='<span class="ob-pill" style="color:var(--teal);border-color:rgba(0,201,177,.5);background:rgba(0,201,177,.1)">BSF Meal +'+o.bsf+'% CP</span>';
+      if(o.cond)html+='<span class="ob-pill" style="color:var(--amber);border-color:rgba(245,166,35,.5);background:rgba(245,166,35,.1)">Conditional Use</span>';
+      html+='</div>';
+      html+='</div>';
+    });
+    html+='</div></div>';
+  });
+  document.getElementById('org-area').innerHTML=html;
+}
+
+function toggleSection(key){
+  var ws=document.getElementById('ws-'+key);
+  ws.classList.toggle('closed');
+  var ch=ws.querySelector('.osh-chevron');
+  ch.style.transform=ws.classList.contains('closed')?'rotate(-90deg)':'';
+}
+
+var activeNote=null;
+function toggleNote(id,cell){
+  var note=document.getElementById(id);
+  if(activeNote&&activeNote!==id){
+    document.getElementById(activeNote).classList.remove('show');
+    document.querySelectorAll('.s-cell.active').forEach(function(c){c.classList.remove('active')});
+  }
+  if(activeNote===id){note.classList.remove('show');cell.classList.remove('active');activeNote=null;}
+  else{note.classList.add('show');cell.classList.add('active');activeNote=id;}
+}
+
+function toggleOrg(id){
+  SEL[id]=!SEL[id];
+  if(!SEL[id])delete SEL[id];
+  rebuildBtn(id);
+  updateTimeline();
+  updateAll();
+}
+
+function rebuildBtn(id){
+  var o=ORGS.find(function(x){return x.id===id});
+  var btn=document.getElementById('obtn-'+id);
+  if(!btn)return;
+  var isSel=SEL[id];
+  btn.className='org-btn'+(isSel?' sel':'')+(o.warn&&!isSel?' warn-border':'')+(o.cond?' cond':'');
+  btn.querySelector('.ob-chk').textContent=isSel?'✓':'';
+}
+
+function updateTimeline(){
+  var lanes={pre:[],w1a:[],'1a':[],'1b':[],'2':[],'cond':[]};
+  WAVES.forEach(function(w){
+    var tl=document.getElementById('tl-'+w.key.replace('1a','1a').replace('1b','1b').replace('2','2').replace('pre','pre').replace('cond','cond'));
+    if(!tl)return;
+    var orgs=ORGS.filter(function(o){return o.wave===w.key});
+    var html='';
+    orgs.forEach(function(o){
+      var isSel=SEL[o.id];
+      html+='<div class="wl-slot '+(isSel?'in':'out')+'" onclick="toggleOrg('+o.id+')">'+o.short+'</div>';
+    });
+    tl.innerHTML=html;
+  });
+  var condLane=document.getElementById('tl-cond-lane');
+  var hasCond=ORGS.filter(function(o){return o.wave==='cond'&&SEL[o.id]}).length>0;
+  condLane.style.display=hasCond?'flex':'none';
+}
+
+function updateAll(){
+  var allN=1.76,allP=0.30,allLig=25,allCp=8.14,allSv,cost=0;
+  var cnt=0;
+  ORGS.forEach(function(o){
+    if(!SEL[o.id])return;
+    cnt++;allN+=o.n;allP+=o.p;allLig-=o.lig*0.5;allCp+=o.cp;
+    cost+=o.cost*o.dose*8157/100;
+  });
+  allSv=allN*6.125+allP*4.89+1.90*3.158;
+  var cpt=cost/8157;
+  // ticker
+  document.getElementById('t-cnt').textContent=cnt;
+  document.getElementById('t-cost').textContent=cnt?'$'+cpt.toFixed(2)+'/t':'$0.00/t';
+  document.getElementById('t-opex').textContent=cnt?'$'+Math.round(cpt*7200).toLocaleString()+'/mo':'$0/mo';
+  document.getElementById('t-n').textContent='+'+allN.toFixed(2)+'%';
+  document.getElementById('t-p').textContent='+'+allP.toFixed(2)+'%';
+  document.getElementById('t-lig').textContent=Math.max(15,allLig).toFixed(1)+'%';
+  document.getElementById('t-cp').textContent=allCp.toFixed(2)+'%';
+  document.getElementById('t-sv').textContent='$'+allSv.toFixed(2)+'/t';
+  // outflows
+  if(cnt>0){
+    setOut('o-vol','7,200','ou-vol','t FW/month · S3 exit');
+    setOut('o-mc','60–70','mc','% MC wb · BSF gate');
+    setOutDelta('o-cp',allCp.toFixed(2)+'%','ou-cp',allCp>8.14?'+'+((allCp-8.14).toFixed(2))+'%':'');
+    setOutDelta('o-lig',Math.max(15,allLig).toFixed(1)+'%','ou-lig',allLig<25?'-'+((25-allLig).toFixed(1))+'%':'');
+    setOut('o-sug','2–5','su','% DM · consumed');
+    setOut('o-oc','39–40','oc','% DM · CO2 normal');
+    setOutDelta('o-cn',(allN>1.76?Math.round(41/allN):32)+':1','',allN>1.76?'narrowed':'');
+    document.getElementById('on-n').style.color='var(--teal)';
+    document.getElementById('on-n').textContent=allN.toFixed(2);
+    document.getElementById('on-p').style.color='var(--teal)';
+    document.getElementById('on-p').textContent=allP.toFixed(2);
+    // protocol panel
+    document.getElementById('pc-cp').textContent=allCp.toFixed(2)+'%';
+    document.getElementById('pcd-cp').textContent=allCp>8.14?'+'+((allCp-8.14).toFixed(2))+'%':'';
+    document.getElementById('pc-lig').textContent=Math.max(15,allLig).toFixed(1)+'%';
+    document.getElementById('pcd-lig').textContent=allLig<25?'-'+((25-allLig).toFixed(1))+'%':'';
+    document.getElementById('pc-n').textContent=allN.toFixed(2)+'%';
+    document.getElementById('pcd-n').textContent=allN>1.76?'+'+((allN-1.76).toFixed(2))+'%':'';
+    document.getElementById('pc-p').textContent=allP.toFixed(2)+'%';
+    document.getElementById('pcd-p').textContent=allP>0.30?'+'+((allP-0.30).toFixed(2))+'%':'';
+    document.getElementById('pc-sv').textContent='$'+allSv.toFixed(2)+'/t FW';
+    document.getElementById('pc-sv-d').textContent=allSv>5.86?'+$'+((allSv-5.86).toFixed(2))+' biological uplift':'1:1 Synthetic Replacement';
+  } else {
+    ['o-vol','o-mc','o-cp','o-lig','o-sug','o-oc','o-cn'].forEach(function(id){
+      var el=document.getElementById(id);
+      if(el)el.innerHTML='<span style="font-size:22px;color:var(--border)">—</span>';
+    });
+    document.getElementById('on-n').style.color='var(--border)';document.getElementById('on-n').textContent='—';
+    document.getElementById('on-p').style.color='var(--border)';document.getElementById('on-p').textContent='—';
+  }
+  // results bar
+  document.getElementById('rb-cnt').textContent=cnt;
+  document.getElementById('rb-cost').textContent=cnt?'$'+cpt.toFixed(2)+'/t':'—';
+  document.getElementById('rb-opex').textContent=cnt?'$'+Math.round(cpt*7200).toLocaleString()+'/mo':'—';
+  document.getElementById('rb-n').textContent=cnt&&allN>1.76?'+'+((allN-1.76).toFixed(2))+'% N':'—';
+  document.getElementById('rb-lig').textContent=Math.max(15,allLig).toFixed(1)+'%';
+  document.getElementById('rb-sv').textContent='$'+allSv.toFixed(2)+'/t';
+  document.getElementById('rb-btn').disabled=cnt===0;
+  // protocol table
+  buildProtoTable();
+}
+
+function setOut(id,val,idu,unit){
+  var el=document.getElementById(id);
+  if(el)el.innerHTML='<span style="color:var(--teal);font-family:var(--mono);font-size:14px;font-weight:700">'+val+'</span>';
+  if(idu){var u=document.getElementById(idu);if(u)u.textContent=unit;}
+}
+function setOutDelta(id,val,idu,delta){
+  var el=document.getElementById(id);
+  if(el)el.innerHTML='<span style="color:var(--teal);font-family:var(--mono);font-size:14px;font-weight:700">'+val+'</span>'+(delta?'<span style="font-size:9px;color:var(--green);font-weight:700;font-family:var(--mono);margin-top:2px;display:block">'+delta+'</span>':'');
+}
+
+function buildProtoTable(){
+  var tbody=document.getElementById('proto-tbody');
+  var rows='';var tot=0;
+  ORGS.forEach(function(o){
+    if(!SEL[o.id]||o.dose===0)return;
+    var wc=o.wave==='1a'?'var(--teal)':o.wave==='1b'?'var(--red)':'var(--blue)';
+    var mo=Math.round(o.cost*o.dose*8157/100);
+    tot+=mo;
+    var kg=Math.round(o.dose/100*8157*1000)/1000;
+    rows+='<tr><td style="font-family:var(--mono);color:var(--amber)">'+o.short+'</td>';
+    rows+='<td><span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;color:'+wc+';border:1px solid '+wc+'33;background:'+wc.replace(')',',0.08)').replace('var(--','rgba(')+'">Wave '+o.wave.toUpperCase()+'</span></td>';
+    rows+='<td style="font-family:var(--mono)">$'+o.cost.toFixed(2)+'</td>';
+    rows+='<td style="font-family:var(--mono)">'+o.dose.toFixed(2)+'%</td>';
+    rows+='<td style="font-family:var(--mono)">'+kg.toFixed(0)+' kg</td>';
+    rows+='<td style="font-family:var(--mono);color:var(--green)">$'+mo.toLocaleString()+'</td></tr>';
+  });
+  if(tot>0)rows+='<tr class="total"><td colspan="5" style="text-align:right;color:var(--grey)">Total</td><td style="font-family:var(--mono);color:var(--green);font-size:13px">$'+tot.toLocaleString()+'/mo</td></tr>';
+  tbody.innerHTML=rows||'<tr><td colspan="6" style="color:var(--grey);font-style:italic">Select organisms above</td></tr>';
+}
+
+var goalData={
+  N:{sel:['Saccharomyces','Lactobacillus','Azotobacter']},
+  P:{sel:['Pseudomonas','B. megaterium']},
+  LIG:{sel:['Phanerochaete','Trichoderma']},
+  CP:{sel:['Rhizopus','A. niger','Saccharomyces']},
+  GAS:{sel:['Lactobacillus','Saccharomyces','B. subtilis']},
+  COST:{sel:['Lactobacillus','Saccharomyces','B. subtilis','Azotobacter','Trichoderma']},
+  CUSTOM:{sel:[]},
+};
+
+function selectGoal(key,el){
+  document.querySelectorAll('.goal').forEach(function(g){g.classList.remove('sel')});
+  el.classList.add('sel');
+  var orgsToSel=goalData[key]?goalData[key].sel:[];
+  SEL={};
+  ORGS.forEach(function(o){
+    if(orgsToSel.indexOf(o.short)>=0){SEL[o.id]=true;}
+  });
+  ORGS.forEach(function(o){rebuildBtn(o.id)});
+  updateTimeline();
+  updateAll();
+}
+
+function openModal(id){
+  modalId=id;
+  var o=ORGS.find(function(x){return x.id===id});
+  if(!o)return;
+  document.getElementById('m-name').textContent=o.name;
+  document.getElementById('m-icbb').textContent=o.icbb&&o.icbb!=='—'?o.icbb+' · IPB-verified':'';
+  var mo=o.cost>0?'$'+o.cost.toFixed(2)+'/kg · '+o.dose+'% DM · est. $'+Math.round(o.cost*o.dose*8157/100).toLocaleString()+'/month':'$0 ongoing OpEx';
+  document.getElementById('m-cost').innerHTML='<strong>'+mo+'</strong>';
+  var btn=document.getElementById('m-btn');
+  btn.className='mf-btn '+(SEL[id]?'rem':'add');
+  btn.textContent=SEL[id]?'- Remove from Consortium':'+ Add to Consortium';
+  var html='';
+  html+='<div class="modal-section"><div class="ms-tag">SOURCE</div><div class="ms-title">'+o.name+'</div><div class="ms-source">'+o.src+'</div>';
+  if(o.warn)html+='<div class="'+(o.cond||o.warn.includes('HARD')||o.warn.includes('LETHAL')||o.warn.includes('lethal')?'err-banner':'warn-banner')+'">'+o.warn+'</div>';
+  html+='</div>';
+  html+='<div class="modal-section"><div class="ms-tag">WHAT IT DOES</div><div class="ms-body">'+o.what+'</div></div>';
+  html+='<div class="modal-section"><div class="ms-tag">HOW IT WORKS</div><div class="ms-body">'+o.how+'</div></div>';
+  if(o.outcomes&&o.outcomes.length){
+    html+='<div class="modal-section"><div class="ms-tag">PROJECTED OUTCOMES</div>';
+    o.outcomes.forEach(function(r){html+='<div class="outcome-row"><span class="or-lbl">'+r[0]+'</span><span class="or-val">'+r[1]+'</span></div>';});
+    html+='</div>';
+  }
+  html+='<div class="modal-section"><div class="ms-tag">TIMING</div><div class="code-line">'+o.timing+'</div></div>';
+  document.getElementById('modal-body').innerHTML=html;
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function closeModal(){document.getElementById('modal-bg').classList.remove('open');modalId=null;}
+
+function modalToggle(){
+  if(modalId!==null){
+    toggleOrg(modalId);
+    var btn=document.getElementById('m-btn');
+    btn.className='mf-btn '+(SEL[modalId]?'rem':'add');
+    btn.textContent=SEL[modalId]?'- Remove from Consortium':'+ Add to Consortium';
+  }
+}
+
+document.getElementById('modal-bg').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+var protoOpen=false;
+function toggleProto(){
+  protoOpen=!protoOpen;
+  document.getElementById('proto-panel').classList.toggle('open',protoOpen);
+  document.getElementById('rb-btn').textContent=protoOpen?'Close Outcomes ▲':'View Protocol + Outcomes';
+}
+function closeProto(){protoOpen=false;document.getElementById('proto-panel').classList.remove('open');document.getElementById('rb-btn').textContent='View Protocol + Outcomes';}
+
+buildOrgArea();
+updateTimeline();
+updateAll();
+</script>
+</body>
+</html>

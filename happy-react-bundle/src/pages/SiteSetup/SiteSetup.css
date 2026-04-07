@@ -1,0 +1,30 @@
+/* SiteSetup.css — design tokens from SiteSetup.jsx (CFI_S0_MASTER_v1.jsx) */
+:root {
+  /* C — locked design tokens */
+  --ss-navy:      #060C14;
+  --ss-navyMid:   #0A1628;
+  --ss-navyCard:  #111E33;
+  --ss-navyField: #142030;
+  --ss-navyDeep:  #0C1E33;
+  --ss-teal:      #40D7C5;
+  --ss-tealDim:   rgba(64,215,197,0.12);
+  --ss-tealBdr:   rgba(64,215,197,0.60);
+  --ss-amber:     #F5A623;
+  --ss-amberDim:  rgba(245,166,35,0.14);
+  --ss-green:     #00A249;
+  --ss-greenLt:   #33B56D;
+  --ss-greenLt30: #4DBF82;
+  --ss-greenDim:  rgba(0,162,73,0.13);
+  --ss-red:       #E84040;
+  --ss-redDim:    rgba(232,64,64,0.13);
+  --ss-grey:      #A8BDD0;
+  --ss-greyLt:    rgba(168,189,208,0.75);
+  --ss-white:     #E8F0FE;
+  --ss-bdrIdle:   rgba(255,255,255,0.06);
+  --ss-bdrCalc:   rgba(139,160,180,0.18);
+  /* Fnt */
+  --ss-font-syne:  'Syne', sans-serif;
+  --ss-font-dm:    'DM Sans', sans-serif;
+  --ss-font-mono:  'DM Sans', sans-serif;
+  --ss-font-brand: 'EB Garamond', serif;
+}

@@ -1,0 +1,61 @@
+DESIGN SYSTEM OVERHAUL — S0 LAYOUT. Apply these rules to the entire app, starting with S0.
+
+═══ RULE 1: SECTION CARD PATTERN ═══
+Every section (A, B, C, D, E, F, G, H etc.) must use this exact structure:
+
+OUTER CONTAINER: light grey background (#162E45), rounded border (border: 1px solid teal at 20% opacity, border-radius: 10px). This is the grey frame the user sees.
+
+TITLE BAR: sits inside the grey frame at the top. Padding 12px 16px. Icon + title text. Title color = teal (#00C9B1). Font size 13px, font weight 800. Title must NEVER wrap — use white-space: nowrap. No black background behind the title. The grey outer frame IS the title background.
+
+INPUT AREA: a black rectangle (#070F1A) inside the grey frame. Margin: 0 12px (so grey shows on left and right sides). Border-radius: 8px. Padding: 14px 16px. This is where ALL user-editable inputs go.
+
+RESULTS AREA: below the black input area, still inside the grey frame. Padding 10px 16px 14px. This is where calculated outputs go. Result numbers = amber (#F5A623), font-weight 700. Large totals (like monthly production) = amber, font-weight 900, font-size 16px. Sub-labels under results = grey (#8BA0B4), font-size 10px.
+
+═══ RULE 2: ROW-BASED LAYOUT ═══
+Organise S0 into rows using CSS grid. Each row uses: display: grid, gap: 16px, align-items: stretch, margin-bottom: 16px.
+
+All cards in the same row must be the SAME HEIGHT (align-items: stretch handles this). Column widths can differ. No section title should wrap.
+
+S0 ROW STRUCTURE:
+- ROW 1: gridTemplateColumns "1fr 2fr" → [A: Site identity] [B: Mill capacity + D: Capture %]
+- ROW 2: gridTemplateColumns "1fr 1fr" → [C: Choose residues] [D: Blend analysis — active streams only]  
+- ROW 3: gridTemplateColumns "1fr 1fr" → [E: Soil type] [AG Management tier]
+- ROW 4: gridTemplateColumns "1fr" → [F: POS — Palm oil sludge]
+- ROW 5: gridTemplateColumns "1fr" → [G: PKM — Palm kernel meal (optional)]
+- ROW 6: gridTemplateColumns "1fr" → [H: Combined NPK summary]
+
+═══ RULE 3: TYPOGRAPHY — SENTENCE CASE EVERYWHERE ═══
+- Section titles: "A — Enter your site details below" (NOT "A — ENTER YOUR DETAILS")
+- Field labels: "Fresh fruit bunches" (NOT "FRESH FRUIT BUNCH")
+- Sub-labels: "Tonnes / hour" (NOT "TONNES / HOUR") 
+- Unit labels: "Fresh weight" (NOT "FRESH WEIGHT")
+- Abbreviated codes stay uppercase: EFB, OPDC, POS, PMF, PKM, POME, FFB, TPH, DM, NPK
+- Only first letter of sentences and proper names are capitalised
+- Remove textTransform: "uppercase" from ALL labels and section headers globally
+
+═══ RULE 4: INPUT FIELDS ═══
+All user-editable input fields: background #142030, border 1px solid teal at 40% opacity, border-radius 6px, color white. These always sit inside the black input area.
+
+═══ RULE 5: CALCULATED OUTPUTS ═══
+Never put a black background behind calculated results. Results sit in the grey frame area (results area below the black input block). Result values = amber (#F5A623). Large totals (primary KPIs like monthly production) = amber, larger font. Secondary results = teal (#00C9B1). Sub-text / units = grey (#8BA0B4), font-size 9-10px.
+
+═══ RULE 6: RESIDUE CARDS (Section C) ═══
+Show all 6 streams: EFB, OPDC, POS, PMF, POME, PKM in a 3x2 grid (gridTemplateColumns: "1fr 1fr 1fr").
+Active/selected = teal background tint (#00C9B118), teal border, teal label text, filled teal dot.
+Inactive = dark background, grey border, grey text, hollow dot.
+Sub-label text = grey, font-size 9px, sentence case.
+POME = locked (greyed out, not clickable), sub-label = "Liquid — sent to pond".
+
+═══ RULE 7: CONSISTENT ROW ALIGNMENT ═══
+Every row of sections must start and end at the same horizontal positions. Use the same outer padding (20px 24px) on the page container for all rows. All section cards in a row share the same left edge and right edge.
+
+═══ RULE 8: SECTION B SPECIFICS ═══
+In Section B, the EFB monthly production result (currently showing 8,262) should:
+- Sit in the RESULTS area (grey frame, below the black input block)
+- Label: "EFB monthly production" (sentence case)
+- Value: amber (#F5A623), font-weight 900, font-size 18px (largest number on the page — it's the key output)
+- Sub-label: "Fresh weight" in grey, font-size 10px
+
+The 4 input fields (FFB processing, utilisation %, operating hours, operating days) stay in the black input area as a 2x2 grid.
+
+Apply these rules globally to all existing stages (S1–S6, CAPEX, Carbon Credits, Summary) as well — same SectionCard pattern, same typography, same colour system.

@@ -1,0 +1,32 @@
+/* S1EngineeringComplete.css — Design tokens extracted from S1EngineeringComplete.jsx */
+
+/* ── T: white/formal print palette ── */
+:root {
+  --t-bg:       #FFFFFF;
+  --t-bg-alt:   #FFFFFF;
+  --t-bg-card:  #FFFFFF;
+  --t-node-bg:  #F5F7FA;
+  --t-border:   #E2E6EC;
+  --t-border-d: #CBD2DC;
+  --t-teal:     #00897B;
+  --t-teal-l:   #E0F2F1;
+  --t-teal-bg:  rgba(0,137,123,.06);
+  --t-amber:    #E65100;
+  --t-amber-l:  #FFF3E0;
+  --t-green:    #2E7D32;
+  --t-green-l:  #E8F5E9;
+  --t-red:      #C62828;
+  --t-red-l:    #FFEBEE;
+  --t-blue:     #1565C0;
+  --t-navy:     #1A2332;
+  --t-navy-l:   #37474F;
+  --t-grey:     #78909C;
+  --t-grey-d:   #455A64;
+  --t-grey-l:   #B0BEC5;
+  --t-text:     #263238;
+  --t-text-l:   #546E7A;
+  --t-white:    #FFFFFF;
+
+  /* ── F: font ── */
+  --f-font:     'DM Sans', sans-serif;
+}

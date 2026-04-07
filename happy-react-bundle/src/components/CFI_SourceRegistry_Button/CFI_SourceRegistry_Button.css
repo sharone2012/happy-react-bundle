@@ -1,0 +1,8 @@
+/* CFI_SourceRegistry_Button.css — no standalone colour token objects */
+/* Design palette: navy #070D16 | teal #00C9B1 | amber #F5A623 | green #3DCB7A */
+:root {
+  --srb-navy:  #070D16;
+  --srb-teal:  #00C9B1;
+  --srb-amber: #F5A623;
+  --srb-green: #3DCB7A;
+}

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CFI S1 — POS Processing Line (1-Pager)</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ══ CFI LAYOUT CONFIG ══ */
+:root {
+  --card-img-w: 161px;
+  --card-data-max: 520px;
+  --page-w: fit-content;
+  --left-w: 210px;
+  --zoom-level: 0.75;
+}
+/* ══════════════════════════════════════════════════════════════
+   S0 RESIDUE TEMPLATE ENGINE
+   ══════════════════════════════════════════════════════════════
+   THIS IS A TEMPLATE. The residue name is selected in Stage 0.
+   CURRENT RESIDUE: POS
+   LINE CODE: S1C (from cfi_s1_process_nodes)
+   SOURCE: Supabase table cfi_s1_process_nodes WHERE line_code = 'S1C'
+           + cfi_equipment_capex_epc WHERE line = 'OPDC' (sludge pre-skim)
+   KNOWN RESIDUES (S0 selection pool):
+     OPDC  — Oil Palm Decanter Cake (paste, 70-75% MC)  → S1B
+     EFB   — Empty Fruit Bunch (fibre, 65-70% MC)       → S1A
+     POS   — Palm Oil Sludge (liquid/semi, 80-85% MC)   → S1C
+   ══════════════════════════════════════════════════════════════ */
+:root {
+  --s0-residue: "POS";
+  --s0-residue-full: "Palm Oil Sludge";
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#e0e0e0;font-family:'DM Sans',sans-serif;min-height:100vh;padding:20px}
+.s0r{font-style:normal;font-weight:inherit;color:inherit}
+.s0r-tag{font-style:normal;font-weight:inherit;color:inherit}
+.page{background:#fff;border:1px solid #111;width:fit-content;margin:0 auto;display:flex;flex-direction:column}
+.main{display:flex;flex:1}
+.lp{width:var(--left-w,210px);flex-shrink:0;border-right:1px solid #ccc;padding:11px 0px 11px 13px;display:flex;flex-direction:column;gap:11px}
+.lp-t{font-size:12px;font-weight:700;color:#111;margin-bottom:6px;padding-bottom:3px;border-bottom:1px solid #ddd;font-family:'DM Sans',sans-serif}
+.lp-rf{display:flex;align-items:center;gap:5px;margin-bottom:3px}
+.sw{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.lp-r{font-size:10px;color:#333;line-height:1.55;font-family:'DM Sans',sans-serif}
+.ml-item{padding:7px 0;border-bottom:1px solid #f0f0f0}
+.ml-item:last-child{border-bottom:none}
+.ml-num{display:inline-block;background:#111;color:#fff;font-size:10px;font-weight:700;padding:1px 5px;border-radius:2px;margin-right:4px;vertical-align:middle;font-family:'DM Sans',sans-serif}
+.ml-tag{font-size:12px;font-weight:700;color:#111;display:block;margin-bottom:1px;font-family:'DM Sans',sans-serif}
+.ml-name{font-size:12px;color:#444;display:block;line-height:1.4;font-family:'DM Sans',sans-serif}
+.ml-spec{font-size:10px;color:#777;display:block;line-height:1.4;font-family:'DM Sans',sans-serif}
+.ml-conn{font-size:10px;color:#111;display:block;line-height:1.5;font-style:italic;font-weight:400;font-family:'DM Sans',sans-serif}
+.lt-row{display:flex;justify-content:space-between;padding:1.5px 0;border-bottom:1px solid #f5f5f5}
+.lt-row:last-child{border-bottom:none}
+.lt-l{font-size:10px;color:#888;font-family:'DM Sans',sans-serif}
+.lt-v{font-size:10px;font-weight:700;color:#111;font-family:'DM Sans',sans-serif}
+.content{flex:0 1 auto;padding:14px 12px 16px 40px;min-width:0;display:flex;flex-direction:column;justify-content:flex-start}
+.sh-title{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;color:#111;margin-bottom:2px}
+.sh-sub{font-size:12px;color:#555;margin-bottom:7px;font-family:'DM Sans',sans-serif}
+.warn{background:#fafafa;border:1px solid #bbb;border-radius:3px;padding:5px 12px;font-size:11px;color:#555;line-height:1.45;margin-bottom:10px;font-family:'DM Sans',sans-serif}
+.dim-wrap{margin-bottom:8px;margin-right:0}
+.dim-title{font-size:12px;font-weight:700;color:#444444;font-family:'DM Sans',sans-serif;text-align:center;margin-bottom:4px}
+.dim-row{display:flex;align-items:center;position:relative}
+.dtick{width:1px;height:14px;background:#999;flex-shrink:0}
+.dline{flex:1;height:1px;background:#999}
+.dnum{position:absolute;left:50%;transform:translateX(-50%);font-size:12px;font-weight:700;color:#444444;background:#fff;padding:0 7px;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.fz-ho-row{display:flex;align-items:stretch}
+.fz-outer{display:flex;align-items:stretch;flex:0 0 auto}
+.fz{border:none;border-radius:0;padding:12px 12px 12px 0;flex:1;position:relative;display:flex;flex-direction:column;gap:7px}
+.fz-badge{position:relative;top:0;left:0;background:transparent;padding:0;font-size:11px;font-weight:700;color:#111;border:none;border-radius:0;margin-bottom:4px}
+.mcard{display:flex;gap:8px;align-items:stretch}
+.mic{width:var(--card-img-w,140px);flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:0;align-self:stretch;background:#f5f5f5;border:1.5px solid #999;border-radius:3px;overflow:hidden}
+.mil{font-size:10px;font-weight:700;color:#111;text-align:center;line-height:1.2;padding:4px 4px 2px;width:100%;white-space:normal;overflow:visible;word-wrap:break-word;font-family:'DM Sans',sans-serif;border-bottom:1px solid #ccc;background:#eee}
+.mib{width:100%;flex:1;min-height:0;border:none;border-radius:0;background:transparent;display:flex;align-items:center;justify-content:center;padding:4px}
+.mib-classA{border:2px solid rgba(0,0,0,.4)}
+.mis{font-size:10px;color:#555;text-align:center;padding:2px 4px 4px;width:100%;font-family:'DM Sans',sans-serif;border-top:1px solid #ccc;background:#eee}
+.md{flex:1;border:1.5px solid #111;border-radius:3px;display:flex;flex-direction:column;min-width:0;max-width:var(--card-data-max,520px)}
+.mdh{display:flex;align-items:center;gap:5px;padding:4px 8px 4px 8px;border-bottom:1px solid #e0e0e0}
+.mn{background:#111;color:#fff;font-size:12px;font-weight:700;padding:2px 7px;border-radius:2px;flex-shrink:0;font-family:'DM Sans',sans-serif}
+.mt{font-size:12px;font-weight:700;color:#111;font-family:'DM Sans',sans-serif}
+.mnr{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;color:#000;padding:3px 8px;border-bottom:1px solid #eee;white-space:nowrap;overflow:visible;display:block}
+.ft{width:100%;border-collapse:collapse}
+.ft tr{border-bottom:1px solid #f2f2f2}
+.ft tr:last-child{border-bottom:none}
+.ft td{padding:3px 10px;vertical-align:middle;line-height:1.45;font-size:11px;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.fl{color:#666;white-space:nowrap;width:1%;padding-right:6px;padding-left:8px;font-size:11px}
+.fv{color:#111;font-weight:700;font-size:11px;white-space:nowrap}
+.fc{color:#777;font-weight:400;font-size:10px}
+.fl-a{color:#666;white-space:nowrap;width:1%;padding-right:5px;padding-left:8px;font-size:11px}
+.fv-a{color:#111;font-weight:700;font-size:11px;white-space:nowrap}
+.fdiv{border-left:1px solid #e0e0e0;padding:0;width:1px}
+.fl-b{color:#666;white-space:nowrap;width:1%;padding-right:5px;padding-left:6px;font-size:11px}
+.fv-b{color:#111;font-weight:700;font-size:11px;white-space:nowrap}
+.fg-red{background:rgba(0,0,0,.04)}
+.fg-red td{padding:3px 8px;font-style:italic;color:#444444;font-size:11px}
+.fg-amber{background:rgba(0,0,0,.04)}
+.fg-amber td{padding:3px 8px;font-style:italic;color:#555555;font-size:11px;font-weight:700}
+.mconn{padding:3px 8px 4px;border-top:1px dashed #e0e0e0;font-size:11px;color:#aaa;white-space:nowrap;display:flex;align-items:center;gap:5px;margin-top:auto}
+.mconn-arr{color:#bbb;font-size:11px;flex-shrink:0}
+.s2box{border-radius:3px;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;text-align:center;flex-shrink:0}
+.s2-pos{background:#222;color:#fff;border:1.5px solid #888}
+.ho{width:32px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding-left:8px;padding-top:72px;align-self:stretch}
+.h-title{font-size:12px;font-weight:700;color:#444;font-family:'DM Sans',sans-serif;writing-mode:vertical-rl;position:absolute;left:8px;top:50%;transform:translateY(-50%);white-space:nowrap}
+.h-tick{height:1px;width:14px;background:#999}
+.h-line{flex:1;width:1px;background:#999;position:relative;display:flex;align-items:center;justify-content:center}
+.h-num{font-size:12px;font-weight:700;color:#444;font-family:'DM Sans',sans-serif;writing-mode:vertical-rl;background:#fff;padding:4px 0;position:absolute;white-space:nowrap}
+.panel{display:flex;flex-direction:column}
+html,body{background:#E0E0E0 !important;padding:30px !important;overflow:auto !important;height:auto !important;min-height:100vh}
+.onepager-frame{background:#FFFFFF;border:2px solid #40D7C5;padding:24px;width:fit-content;max-width:95vw;margin:0 auto;box-shadow:0 4px 24px rgba(0,0,0,.15)}
+.onepager-title{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;color:#111;letter-spacing:.02em;text-transform:none;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #111;display:flex;justify-content:flex-start;gap:24px;align-items:center}
+.onepager-title .rev{font-size:10px;color:#444;font-weight:500}
+.onepager-scaled{zoom:var(--zoom-level,0.75);-moz-transform:scale(0.75);-moz-transform-origin:top left}
+</style>
+</head>
+<body>
+<div class="onepager-frame">
+  <div class="onepager-title">
+    <span>S1 - CFI - <span class="s0r">POS</span> Mechanical Downsizing</span>
+    <span class="rev">Residue selected in S0 &nbsp;·&nbsp; Plantation: [Name] &nbsp;·&nbsp; Mill: [Name] &nbsp;·&nbsp; [City], [Region]</span>
+  </div>
+  <div class="onepager-scaled">
+    <div class="page">
+      <div id="panel-pos" class="panel">
+  <div class="main">
+    <div class="lp">
+      <div>
+        <div class="lp-t">Legend</div>
+        <div class="lp-rf"><div class="sw" style="background:#f8f8f8;border:1.5px solid #bbb"></div><span class="lp-r">Processing equipment</span></div>
+        <div class="lp-rf"><div class="sw" style="background:#fff;border:2px solid rgba(204,34,34,.55)"></div><span class="lp-r">ICP-OES gate (Fe test)</span></div>
+        <div class="lp-rf"><span style="font-size:10px;color:#bbb;flex-shrink:0">▼</span><span class="lp-r"><span class="s0r">POS</span> flow</span></div>
+      </div>
+      <div style="flex:1">
+        <div class="lp-t"><span class="s0r">POS</span> Machinery (S1C)</div>
+        <!-- DB: cfi_s1_process_nodes WHERE line_code='S1C' — 4 nodes -->
+        <div class="ml-item"><span class="ml-tag"><span class="ml-num">1</span>RH-<span class="s0r-tag">POS</span>-101</span><span class="ml-name">Sludge Pit 15m³</span><span class="ml-spec">±0.0m · 0kW · 1.25 t/h · ICP-OES-Fe</span></div>
+        <div class="ml-item"><span class="ml-conn">▾ gravity → rotary drum screen</span></div>
+        <div class="ml-item"><span class="ml-tag"><span class="ml-num">2</span>DRS-SLD-01</span><span class="ml-name">Rotary Drum Screen</span><span class="ml-spec">+1.5m · 7kW · 1.17 t/h</span></div>
+        <div class="ml-item"><span class="ml-conn">▾ screened sludge → decanter</span></div>
+        <div class="ml-item"><span class="ml-tag"><span class="ml-num">3</span>DEC-SLD-101</span><span class="ml-name">Decanter Centrifuge</span><span class="ml-spec">+3.0m · 55kW · MC 78→65%</span></div>
+        <div class="ml-item"><span class="ml-conn">▾ cake → buffer tank</span></div>
+        <div class="ml-item"><span class="ml-tag"><span class="ml-num">4</span>BIN-<span class="s0r-tag">POS</span>-301</span><span class="ml-name">Buffer Tank 15m³</span><span class="ml-spec">+3.0m · 0kW · 0.56 t/h</span></div>
+        <div class="ml-item"><span class="ml-conn">▾ conveyor → S2</span></div>
+        <div style="margin-top:8px;padding-top:7px;border-top:1px solid #eee">
+          <div class="lp-t" style="margin-bottom:4px">Line totals</div>
+          <div class="lt-row"><span class="lt-l">Installed kW</span><span class="lt-v">~62 kW</span></div>
+          <div class="lt-row"><span class="lt-l">Throughput</span><span class="lt-v">1.25 t/h (liquid in)</span></div>
+          <div class="lt-row"><span class="lt-l">MC in / out</span><span class="lt-v">82% → 65%</span></div>
+          <div class="lt-row"><span class="lt-l">Floor slab</span><span class="lt-v">200mm RC C30 + bund</span></div>
+          <div class="lt-row"><span class="lt-l">Power</span><span class="lt-v">3-phase 415V</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="sh-title"><span class="s0r">POS</span> Mechanical Downsizing Line (S1C)</div>
+      <div class="sh-sub">4 machines · liquid handling · 1.25 t/h · from <span class="s0r">POS</span> sludge pit receiving · liquid/semi form · MC 82% in</div>
+      <div class="warn"><span class="s0r">POS</span> input: 82% MC · high FOG · liquid/semi form — requires dewatering via decanter centrifuge · ICP-OES-Fe gate at sludge pit sets S2 inclusion · Alfa Laval preferred for decanter</div>
+      <div class="fz-ho-row"><div class="fz-outer">
+        <div class="fz">
+          <div class="dim-wrap">
+            <div class="dim-title">Width</div>
+            <div class="dim-row"><div class="dtick"></div><div class="dline"></div><div class="dtick"></div><div class="dnum">10.0 m</div></div>
+          </div>
+          <div class="fz-badge"><span class="s0r">POS</span> S1C · 4 machines · 1.25 t/h</div>
+
+          <!-- ① RH-POS-101 Sludge Pit (ICP-OES-Fe gate) -->
+          <div class="mcard">
+            <div class="mic">
+              <div class="mil">Sludge Pit 15m³</div>
+              <div class="mib mib-classA">
+                <svg width="108" height="108" viewBox="0 0 86 100" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="14" y="12" width="58" height="46" fill="#e8e8e8" stroke="#666666" stroke-width="1.5" rx="3"/>
+                  <rect x="18" y="28" width="50" height="26" fill="#d0d0d0" opacity=".5"/>
+                  <line x1="18" y1="28" x2="68" y2="28" stroke="#666666" stroke-width="1" stroke-dasharray="4,2"/>
+                  <text x="43" y="44" font-family="DM Sans" font-size="9" fill="#666666" text-anchor="middle">SLUDGE</text>
+                  <line x1="72" y1="30" x2="80" y2="30" stroke="#666666" stroke-width="1.5"/>
+                  <circle cx="80" cy="30" r="3" fill="none" stroke="#666666" stroke-width="1"/>
+                  <rect x="14" y="58" width="58" height="6" fill="#888" rx="1"/>
+                  <rect x="4" y="4" width="40" height="12" fill="#444444" rx="2"/>
+                  <text x="24" y="13" font-family="DM Sans" font-size="9" fill="#fff" text-anchor="middle" font-weight="700">ICP-OES-Fe</text>
+                  <text x="43" y="78" font-family="DM Sans" font-size="9" fill="#666666" text-anchor="middle">15 m³ · bunded</text>
+                  <text x="43" y="96" font-family="DM Sans" font-size="9" fill="#888" text-anchor="middle">Fe result → S2 inclusion</text>
+                </svg>
+              </div>
+              <div class="mis">ICP-OES-Fe gate</div>
+            </div>
+            <div class="md">
+              <div class="mdh"><span class="mn">1</span><span class="mt">RH-<span class="s0r-tag">POS</span>-101</span></div>
+              <div class="mnr">Sludge Pit 15m³</div>
+              <table class="ft">
+                <tr><td class="fl-a">Location</td><td class="fv-a">Ground ±0.0m</td><td class="fdiv"></td><td class="fl-b">Power</td><td class="fv-b">0 kW (passive)</td></tr>
+                <tr><td class="fl-a">Volume</td><td class="fv-a">15 m³</td><td class="fdiv"></td><td class="fl-b">Throughput</td><td class="fv-b">1.25 t/h</td></tr>
+                <tr><td class="fl-a">Inputs</td><td class="fv-a"><span class="s0r">POS</span> raw sludge</td><td class="fdiv"></td><td class="fl-b">MC in</td><td class="fv-b">82%</td></tr>
+                <tr><td class="fl-a">Gate</td><td class="fv-a">ICP-OES-Fe</td><td class="fdiv"></td><td class="fl-b">Bund</td><td class="fv-b">110% capacity</td></tr>
+                <tr class="fg-red"><td colspan="5">ICP-OES-Fe gate — Fe result sets S2 inclusion decision</td></tr>
+              </table>
+              <div class="mconn"><span class="mconn-arr">▾</span>gravity → DRS-SLD-01 rotary drum screen · +1.5m</div>
+            </div>
+          </div>
+
+          <!-- ② DRS-SLD-01 Rotary Drum Screen -->
+          <div class="mcard">
+            <div class="mic">
+              <div class="mil">Rotary Drum Screen</div>
+              <div class="mib">
+                <svg width="108" height="108" viewBox="0 0 86 100" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="15" cy="43" rx="9" ry="20" fill="#e8e8e8" stroke="#666666" stroke-width="1.3"/>
+                  <rect x="15" y="23" width="50" height="40" fill="#e8e8e8" stroke="#666666" stroke-width="1.3"/>
+                  <ellipse cx="65" cy="43" rx="9" ry="20" fill="#d0d0d0" stroke="#666666" stroke-width="1.3"/>
+                  <line x1="22" y1="30" x2="22" y2="56" stroke="#666666" stroke-width=".8" stroke-dasharray="2,2"/>
+                  <line x1="34" y1="30" x2="34" y2="56" stroke="#666666" stroke-width=".8" stroke-dasharray="2,2"/>
+                  <line x1="46" y1="30" x2="46" y2="56" stroke="#666666" stroke-width=".8" stroke-dasharray="2,2"/>
+                  <line x1="58" y1="30" x2="58" y2="56" stroke="#666666" stroke-width=".8" stroke-dasharray="2,2"/>
+                  <text x="43" y="78" font-family="DM Sans" font-size="9" fill="#666666" text-anchor="middle">7kW · 1.17 t/h</text>
+                  <text x="43" y="96" font-family="DM Sans" font-size="9" fill="#888" text-anchor="middle">MC 82→78%</text>
+                </svg>
+              </div>
+              <div class="mis">+1.5m · coarse screening</div>
+            </div>
+            <div class="md">
+              <div class="mdh"><span class="mn">2</span><span class="mt">DRS-SLD-01</span></div>
+              <div class="mnr">Rotary Drum Screen</div>
+              <table class="ft">
+                <tr><td class="fl-a">Location</td><td class="fv-a">+1.5m platform</td><td class="fdiv"></td><td class="fl-b">Power</td><td class="fv-b">7 kW</td></tr>
+                <tr><td class="fl-a">Throughput</td><td class="fv-a">1.17 t/h</td><td class="fdiv"></td><td class="fl-b">MC in</td><td class="fv-b">82%</td></tr>
+                <tr><td class="fl-a">MC out</td><td class="fv-a">78%</td><td class="fdiv"></td><td class="fl-b">Supplier</td><td class="fv-b">TBC after RFQ</td></tr>
+                <tr><td class="fl-a">Inputs</td><td class="fv-a"><span class="s0r">POS</span> raw sludge</td><td class="fdiv"></td><td class="fl-b">Reject</td><td class="fv-b">Coarse debris → skip</td></tr>
+              </table>
+              <div class="mconn"><span class="mconn-arr">▾</span>screened sludge → DEC-SLD-101 decanter centrifuge</div>
+            </div>
+          </div>
+
+          <!-- ③ DEC-SLD-101 Decanter Centrifuge -->
+          <div class="mcard">
+            <div class="mic">
+              <div class="mil">Decanter Centrifuge</div>
+              <div class="mib">
+                <svg width="108" height="108" viewBox="0 0 86 100" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="6" y="28" width="74" height="22" fill="#e0e0e0" stroke="#444444" stroke-width="1.5" rx="10"/>
+                  <ellipse cx="16" cy="39" rx="6" ry="10" fill="#d0d0d0" stroke="#444444" stroke-width="1"/>
+                  <ellipse cx="70" cy="39" rx="6" ry="10" fill="#d0d0d0" stroke="#444444" stroke-width="1"/>
+                  <line x1="22" y1="39" x2="64" y2="39" stroke="#444444" stroke-width="1.5"/>
+                  <line x1="40" y1="50" x2="40" y2="60" stroke="#555" stroke-width="1" stroke-dasharray="3,2"/>
+                  <line x1="50" y1="50" x2="55" y2="60" stroke="#555" stroke-width="1" stroke-dasharray="3,2"/>
+                  <text x="43" y="78" font-family="DM Sans" font-size="9" fill="#444444" text-anchor="middle">55kW · 3-phase decanter</text>
+                  <text x="43" y="96" font-family="DM Sans" font-size="9" fill="#888" text-anchor="middle">MC 78→65% · Alfa Laval</text>
+                </svg>
+              </div>
+              <div class="mis">+3.0m · Alfa Laval preferred</div>
+            </div>
+            <div class="md">
+              <div class="mdh"><span class="mn">3</span><span class="mt">DEC-SLD-101</span></div>
+              <div class="mnr">Decanter Centrifuge (3-phase)</div>
+              <table class="ft">
+                <tr><td class="fl-a">Location</td><td class="fv-a">+3.0m platform</td><td class="fdiv"></td><td class="fl-b">Power</td><td class="fv-b">55 kW</td></tr>
+                <tr><td class="fl-a">Throughput</td><td class="fv-a">0.56 t/h cake out</td><td class="fdiv"></td><td class="fl-b">MC in</td><td class="fv-b">78%</td></tr>
+                <tr><td class="fl-a">MC out</td><td class="fv-a">65% (cake)</td><td class="fdiv"></td><td class="fl-b">Foundation</td><td class="fv-b">M30×8 · 800mm emb.</td></tr>
+                <tr><td class="fl-a">Inputs</td><td class="fv-a"><span class="s0r">POS</span> screened sludge</td><td class="fdiv"></td><td class="fl-b">Enforcement</td><td class="fv-b">Alfa Laval preferred</td></tr>
+                <tr><td class="fl">Outputs</td><td class="fv" colspan="4">Oil phase → recovery · Centrate → POME pond · Cake → buffer tank</td></tr>
+                <tr><td class="fl">RFQ range</td><td class="fv" colspan="4">USD 80,000–150,000 · Supplier: PT Kharismapratama / ZK Separation</td></tr>
+              </table>
+              <div class="mconn"><span class="mconn-arr">▾</span>cake → BIN-<span class="s0r-tag">POS</span>-301 buffer tank</div>
+            </div>
+          </div>
+
+          <!-- ④ BIN-POS-301 Buffer Tank -->
+          <div class="mcard">
+            <div class="mic">
+              <div class="mil">Buffer Tank 15m³</div>
+              <div class="mib">
+                <svg width="108" height="108" viewBox="0 0 86 100" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="18" y="8" width="50" height="50" fill="#e8e8e8" stroke="#777777" stroke-width="1.5" rx="1"/>
+                  <polygon points="18,58 68,58 58,74 28,74" fill="#d0d0d0" stroke="#777777" stroke-width="1.5"/>
+                  <rect x="20" y="24" width="46" height="34" fill="rgba(100,150,200,.08)"/>
+                  <line x1="43" y1="8" x2="43" y2="56" stroke="#aaa" stroke-width="1.1"/>
+                  <text x="43" y="94" font-family="DM Sans" font-size="9" fill="#555" text-anchor="middle">15m³ · 0.56 t/h · MC 65%</text>
+                </svg>
+              </div>
+              <div class="mis">+3.0m · dewatered cake</div>
+            </div>
+            <div class="md">
+              <div class="mdh"><span class="mn">4</span><span class="mt">BIN-<span class="s0r-tag">POS</span>-301</span></div>
+              <div class="mnr">Buffer Tank 15m³</div>
+              <table class="ft">
+                <tr><td class="fl-a">Location</td><td class="fv-a">+3.0m platform</td><td class="fdiv"></td><td class="fl-b">Power</td><td class="fv-b">0 kW (passive)</td></tr>
+                <tr><td class="fl-a">Volume</td><td class="fv-a">15 m³</td><td class="fdiv"></td><td class="fl-b">Throughput</td><td class="fv-b">0.56 t/h</td></tr>
+                <tr><td class="fl-a">Inputs</td><td class="fv-a">Dewatered <span class="s0r">POS</span> cake</td><td class="fdiv"></td><td class="fl-b">MC</td><td class="fv-b">65%</td></tr>
+              </table>
+              <div class="mconn"><span class="mconn-arr">▾</span>conveyor → S2 chemical treatment</div>
+            </div>
+          </div>
+
+          <div class="s2box s2-pos">S2 discharge — <span class="s0r">POS</span> dewatered cake @ 65% MC → S2 chemical treatment</div>
+        </div>
+      </div>
+      <div class="ho">
+        <div class="h-tick"></div>
+        <div class="h-line">
+          <div class="h-num">15.0 m</div>
+          <div class="h-title">Height</div>
+        </div>
+        <div class="h-tick"></div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

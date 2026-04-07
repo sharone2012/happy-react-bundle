@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFI S3 — Biological Inoculation Stage</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;600;700&family=DM+Mono:wght@500;700&display=swap"/>
+<style>
+@media print {
+  .ph,.toolbar,.no-print{display:none!important}
+  .exp-panel{display:block!important;border:none!important}
+  .print-target ~ tr:not(.print-target){display:none}
+  body{background:#fff;color:#000}
+  table{width:100%}
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1422;--navyMid:#153352;--navyLt:#1A3A5C;--navyDk:#070D16;
+  --teal:#00C9B1;--amber:#F5A623;--amberLt:#FFD080;
+  --red:#E84040;--green:#3DCB7A;--blue:#4A9EDB;--purple:#9B59B6;
+  --white:#F0F4F8;--grey:#8BA0B4;--greyLt:#C4D3E0;--greyMd:#A8B8C7;
+  --pastelGreen:#A8E6C1;--border:#1E6B8C;
+}
+body{font-family:'DM Sans',sans-serif;background:#070D16;color:var(--white);font-size:14px}
+
+/* ── HEADER ── */
+.ph{background:var(--navyMid);border-bottom:1.5px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:flex-start;position:sticky;top:0;z-index:500;gap:24px}
+.ph h1{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;color:var(--teal)}
+.bdgs{display:flex;gap:6px;flex-wrap:wrap}
+.bdg{font-family:'Syne',sans-serif;font-weight:700;font-size:10px;padding:3px 10px;border-radius:20px;border:1px solid;white-space:nowrap}
+.bdg-t{background:rgba(0,201,177,.08);color:var(--teal);border-color:var(--teal)}
+.bdg-a{background:rgba(245,166,35,.08);color:var(--amber);border-color:var(--amber)}
+
+/* ── MILL INFO ROW ── */
+.mill-info-row{background:var(--navyMid);border-bottom:1.5px solid var(--border);display:flex;align-items:center;justify-content:flex-start;gap:0;padding:8px 24px;flex-wrap:nowrap;overflow-x:auto}
+.mi-field{display:flex;flex-direction:row;align-items:center;gap:6px;padding:0 18px}
+.mi-label{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;color:var(--greyMd);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.mi-value{font-family:'DM Sans',sans-serif;font-weight:500;font-size:10px;color:var(--greyMd);white-space:nowrap}
+.mi-unit{font-family:'DM Sans',sans-serif;font-size:10px;color:var(--greyMd);margin-left:2px}
+.mi-sep{width:1px;height:16px;background:rgba(30,107,140,.35);flex-shrink:0}
+
+/* ── S3 NAV ROW ── */
+.s3-nav{background:var(--navyDk);border-bottom:1.5px solid var(--border);display:flex;justify-content:center;align-items:flex-end;gap:2px;padding:0 24px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.s3-nav::-webkit-scrollbar{display:none}
+.s3-nav-btn{font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--grey);background:transparent;border:none;border-bottom:3px solid transparent;padding:12px 18px 10px;cursor:pointer;white-space:nowrap;letter-spacing:.02em;transition:color .12s,border-color .12s}
+.s3-nav-btn:hover:not(.active){color:var(--greyLt);background:rgba(255,255,255,.02)}
+.s3-nav-btn.active{color:var(--teal);border-bottom-color:var(--teal);background:rgba(0,201,177,.04)}
+
+/* ── TOOLBAR ── */
+.toolbar{background:var(--navyDk);border-bottom:1.5px solid var(--border);padding:10px 24px;display:flex;gap:7px;align-items:center;flex-wrap:wrap;position:sticky;top:55px;z-index:400}
+.toolbar input{background:var(--navyMid);border:1.5px solid var(--border);border-radius:5px;padding:7px 13px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--white);width:230px;outline:none}
+.toolbar input:focus{border-color:var(--teal)}
+.toolbar input::placeholder{color:var(--grey)}
+
+.s2-title{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;color:#7EC8C0;letter-spacing:.03em;white-space:nowrap;line-height:1.2;margin-bottom:3px}
+.s2-num{font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:#D4934A;letter-spacing:.01em;line-height:1.3;white-space:nowrap}
+.s2-num-green{font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:#3DCB7A;letter-spacing:.01em;line-height:1.3;white-space:nowrap}
+.s2-sub{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:400;color:var(--greyMd);letter-spacing:.02em;white-space:nowrap;line-height:1.2;margin-top:2px}
+
+/* ── HO BANNER CSS — kept for S3 handoff row which still uses these classes ── */
+/* .ho-banner rules below are SUPERSEDED for S2 row but ACTIVE for S3 row */
+.ho-banner{margin:10px 24px 0;padding:8px 12px;background:rgba(245,166,35,.06);border:1.5px solid rgba(245,166,35,.3);border-radius:8px;display:flex;align-items:center;gap:8px;flex-wrap:nowrap;overflow-x:auto}
+.ho-lbl{background:rgba(245,166,35,.14);border:1.5px solid rgba(245,166,35,.35);border-radius:7px;padding:6px 12px;text-align:center;flex-shrink:0;min-width:80px;max-width:90px}
+.ho-lbl-line1{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--teal);line-height:1.2}
+.ho-lbl-line2{font-family:'DM Sans',sans-serif;font-weight:700;font-size:10px;color:var(--teal);line-height:1.3;white-space:nowrap}
+.ho-pills{display:flex;gap:6px;align-items:center;flex-wrap:nowrap}
+.ho-pill{background:rgba(255,255,255,.04);border:1px solid rgba(30,107,140,.3);border-radius:6px;padding:5px 11px;text-align:center;flex-shrink:0}
+.ho-val{font-family:'DM Mono',monospace;font-weight:700;font-size:14px;color:var(--white);white-space:nowrap}
+.ho-unit{font-family:'DM Sans',sans-serif;font-size:10px;color:var(--grey);margin-top:1px;white-space:nowrap}
+.ho-pct{font-family:'DM Mono',monospace;font-size:.85em;color:inherit;margin-left:1px}
+
+/* ── S3 HANDOFF BANNER ── */
+.s3-handoff-banner{margin-top:6px;background:rgba(0,201,177,.07);border:1.5px solid rgba(0,201,177,.35)}
+.s3-ho-lbl{background:rgba(0,201,177,.12);border:1.5px solid rgba(0,201,177,.4)}
+.s3-ho-lbl .ho-lbl-line1{color:var(--amber)}
+.s3-ho-lbl .ho-lbl-line2{color:var(--amber)}
+.s3-pill-val{font-family:'DM Mono',monospace;font-weight:700;color:var(--amber)}
+.fb{cursor:pointer;padding:5px 13px;border-radius:20px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;border:1px solid rgba(139,160,180,.28);color:var(--grey);background:transparent;transition:all .12s}
+.fb.on{border-color:var(--teal);color:var(--teal);background:rgba(0,201,177,.09)}
+.sep{width:1px;height:20px;background:rgba(30,107,140,.4);flex-shrink:0;margin:0 2px}
+.count-lbl{font-family:'DM Mono',monospace;font-size:11px;color:var(--greyMd);white-space:nowrap}
+.col-all{cursor:pointer;padding:5px 12px;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;border:1px solid rgba(30,107,140,.4);color:var(--grey);background:transparent;transition:all .12s}
+.col-all:hover{color:var(--white);border-color:var(--greyMd)}
+
+/* ── COMPACT MODE — active when any filter is on ── */
+table.compact td{padding:7px 8px;font-size:12px}
+table.compact td.name .n1{font-size:12px}
+table.compact td.name .n2{font-size:10px}
+table.compact td.role{font-size:12px;line-height:1.5}
+table.compact td.num{font-size:12px}
+table.compact td.nval,
+table.compact td.pval,
+table.compact td.cpval,
+table.compact td.bsfcp{font-size:12px}
+table.compact td.dash{font-size:11px}
+table.compact .lbar-txt{font-size:11px}
+table.compact .cg-val{font-size:11px}
+table.compact .cg-lbl{font-size:9px}
+table.compact .ws-strip{height:6px}
+table.compact .wsd{font-size:9px}
+table.compact .btn-more{padding:5px 10px;font-size:11px}
+
+/* Compact: section dividers tighter */
+table.compact .sec-row td{padding:4px 14px;font-size:10px}
+
+/* Filter active indicator strip above table */
+.filter-active-bar{
+  display:none;
+  align-items:center;gap:10px;
+  padding:8px 24px;
+  background:rgba(0,201,177,.07);
+  border-bottom:1px solid rgba(0,201,177,.2);
+  font-family:'DM Sans',sans-serif;font-size:12px;color:var(--teal);
+}
+.filter-active-bar.show{display:flex}
+.filter-active-bar strong{font-weight:700;color:var(--amber)}
+.fab-clear{cursor:pointer;padding:3px 10px;border-radius:20px;font-weight:700;font-size:11px;border:1px solid rgba(0,201,177,.4);color:var(--teal);background:transparent;transition:all .12s}
+.fab-clear:hover{background:rgba(0,201,177,.12)}
+.twrap{overflow-x:auto;margin:16px 24px 32px;border:1.5px solid var(--border);border-radius:10px}
+table{width:100%;border-collapse:collapse;min-width:1280px}
+
+/* Classification type label */
+.type-lbl{font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;color:var(--white);line-height:1.4}
+.type-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--grey);margin-top:1px}
+
+/* ── COLUMN GROUP HEADER ── */
+.cg-hdr{background:var(--navy)}
+.cg-hdr th{font-family:'Syne',sans-serif;font-weight:700;font-size:10px;padding:6px 8px;text-align:center;border-right:1px solid rgba(30,107,140,.3);letter-spacing:.5px;text-transform:uppercase}
+.cg-hdr th:last-child{border-right:none}
+.cg-id{color:var(--grey)}
+.cg-bio{color:var(--teal)}
+.cg-nut{color:var(--green)}
+.cg-bsf{color:var(--blue)}
+.cg-info{color:var(--amberLt)}
+
+/* ── COLUMN HEADERS ── */
+.col-hdr{background:var(--navyDk);border-bottom:1.5px solid var(--border)}
+.col-hdr th{font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;color:var(--greyMd);padding:9px 10px;text-align:center;white-space:nowrap;border-right:1px solid rgba(30,107,140,.18);user-select:none}
+.col-hdr th:hover{color:var(--white)}
+.col-hdr th.lft{text-align:left}
+.col-hdr th:last-child{border-right:none}
+
+/* ── SECTION ROW ── */
+.sec-row td{background:rgba(0,201,177,.06);padding:5px 14px;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;color:var(--teal);border-top:1px solid rgba(30,107,140,.3);border-bottom:1px solid rgba(30,107,140,.2);letter-spacing:.4px}
+
+/* ── DATA ROWS ── */
+.drow{border-bottom:1px solid rgba(30,107,140,.14);transition:background .1s;cursor:pointer}
+.drow:hover>td{background:rgba(26,58,92,.45)!important}
+.drow.hidden{display:none}
+.drow.w2{background:rgba(0,20,45,.4)}
+.drow.alg{background:rgba(0,40,25,.35)}
+.drow.wrn{background:rgba(80,0,0,.35)}
+.drow.expanded>td{background:rgba(0,201,177,.05)!important;border-bottom:none!important}
+.drow.expanded{border-left:3px solid var(--teal)}
+
+/* ── CELLS — default center for all data columns ── */
+td{
+  padding:11px 10px;
+  vertical-align:middle;
+  text-align:center;
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;
+  border-right:1px solid rgba(30,107,140,.1);
+}
+td:last-child{border-right:none}
+
+/* # — centre */
+td.num{font-family:'DM Mono',monospace;font-weight:700;font-size:13px;color:var(--grey);width:32px}
+
+/* Organism name — left inside cell, centered vertically */
+td.name{min-width:180px;text-align:left;vertical-align:middle}
+td.name .n1{font-family:'DM Mono',monospace;font-weight:700;font-size:13px;color:var(--amber);line-height:1.25}
+td.name .n2{font-family:'DM Sans',sans-serif;font-size:11px;color:var(--grey);margin-top:2px}
+
+/* Classification — centred */
+td.cls-col{vertical-align:top;padding-top:12px;text-align:center}
+
+/* Conditions grid — centred */
+td.cond-col{vertical-align:top;padding-top:12px;text-align:center}
+
+/* Primary Function — LEFT aligned, wraps freely */
+td.role{
+  font-family:'DM Sans',sans-serif;font-size:13px;color:var(--greyLt);
+  min-width:200px;max-width:240px;
+  text-align:left;vertical-align:middle;
+  line-height:1.6;white-space:normal;
+}
+
+/* Activity Timeline — LEFT aligned content, centre the cell */
+td.wave{text-align:left;vertical-align:middle;min-width:130px}
+
+/* Numeric data columns — centred */
+td.nval{font-family:'DM Mono',monospace;font-weight:700;font-size:13px;color:var(--green)}
+td.pval{font-family:'DM Mono',monospace;font-weight:700;font-size:13px;color:var(--blue)}
+td.lval{}
+td.cpval{font-family:'DM Mono',monospace;font-weight:700;font-size:13px;color:var(--green)}
+td.bsfcp{font-family:'DM Mono',monospace;font-weight:700;font-size:13px;color:var(--teal)}
+td.dash{color:rgba(139,160,180,.3);font-size:12px}
+
+/* More Info button — centred */
+td.action{vertical-align:middle;white-space:nowrap;min-width:120px}
+
+/* ── PILLS (expand panel only) ── */
+.pill{display:inline-block;padding:3px 9px;border-radius:20px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;white-space:nowrap;border:1px solid var(--border);background:rgba(30,107,140,.15);color:var(--greyLt)}
+
+/* ── STRUCTURED CATEGORY GRID ──
+   Fixed 2-col layout: label | value
+   Same color rules for every organism:
+     Label  → DM Sans 9px grey
+     Type   → DM Sans 11px white
+     Wave   → DM Mono 11px amber (always)
+     Temp   → DM Mono 11px teal; red if contains GATE/ONLY
+     BSF    → DM Sans 11px green/amber/red by status
+     Flag   → accent row, only when needed
+── */
+.cat-grid{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;align-items:center;min-width:130px}
+.cg-lbl{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+.cg-val{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--white);white-space:nowrap}
+.cg-val.mono{font-family:'DM Mono',monospace;font-weight:700}
+.cg-val.amber{color:var(--amber)}
+.cg-val.teal{color:var(--teal)}
+.cg-val.red{color:var(--red)}
+.cg-val.green{color:var(--green)}
+.cg-val.blue{color:var(--blue)}
+/* Divider between rows */
+.cg-div{grid-column:1/-1;height:1px;background:rgba(30,107,140,.2);margin:2px 0}
+/* Flag strip — full width accent when special */
+.cg-flag{grid-column:1/-1;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;margin-top:3px;text-align:center;white-space:nowrap}
+.cg-flag.mandatory{background:rgba(232,64,64,.2);color:var(--red);border:1px solid rgba(232,64,64,.35)}
+.cg-flag.new{background:rgba(74,158,219,.15);color:var(--blue);border:1px solid rgba(74,158,219,.3)}
+.cg-flag.conditional{background:rgba(232,64,64,.25);color:var(--red);border:1px solid var(--red)}
+
+/* ── MINI LIGNIN BAR ── */
+.lbar-wrap{display:flex;align-items:center;gap:5px;justify-content:center}
+.lbar{background:rgba(30,107,140,.2);border-radius:10px;height:5px;width:50px;overflow:hidden}
+.lbar-fill{height:100%;border-radius:10px;background:var(--green)}
+.lbar-txt{font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:var(--green);white-space:nowrap}
+
+/* ── MORE INFO BUTTON ── */
+.btn-more{
+  display:inline-flex;align-items:center;gap:6px;cursor:pointer;
+  background:rgba(0,201,177,.07);border:1.5px solid rgba(0,201,177,.4);
+  border-radius:5px;padding:7px 14px;
+  font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;color:var(--amber);
+  transition:all .15s;
+}
+.btn-more:hover{background:rgba(0,201,177,.18);border-color:var(--teal);color:var(--amberLt)}
+.btn-more.open{background:rgba(0,201,177,.18);border-color:var(--teal);color:var(--tealLt)}
+.btn-more .arr{display:inline-block;transition:transform .25s;font-size:11px}
+.btn-more.open .arr{transform:rotate(90deg)}
+.btn-more .icon{font-size:12px;opacity:.75}
+
+/* ── EXPAND ROW — always in DOM, height animates ── */
+.exp-row td{padding:0;border:none!important;background:transparent!important}
+.exp-panel{
+  background:rgba(0,6,16,.75);
+  border-top:none;border-bottom:1.5px solid var(--border);
+  max-height:0;overflow:hidden;
+  transition:max-height .35s ease,border-top .35s;
+}
+.exp-panel.open{
+  max-height:900px;
+  border-top:1.5px solid rgba(0,201,177,.35);
+}
+/* Expanded main row accent */
+.drow.expanded>td{
+  background:rgba(0,201,177,.04)!important;
+  border-bottom:none!important;
+}
+
+/* ── EXPAND CONTENT — 4 COLUMNS ── */
+.exp-inner{padding:20px 24px 22px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:18px;align-items:start}
+@media(max-width:1300px){.exp-inner{grid-template-columns:1fr 1fr}}
+.exp-col{}
+.exp-col-title{font-family:'DM Sans',sans-serif;font-weight:700;font-size:10px;color:var(--greyMd);text-transform:uppercase;letter-spacing:.7px;margin-bottom:9px;display:flex;align-items:center;gap:5px}
+.exp-col-title::before{content:'';width:3px;height:11px;border-radius:2px;display:inline-block}
+.ect-amber::before{background:var(--amber)}
+.ect-teal::before{background:var(--teal)}
+.ect-green::before{background:var(--green)}
+.ect-red::before{background:var(--red)}
+
+/* Description text */
+.desc-text{font-family:'DM Sans',sans-serif;font-size:13px;color:var(--greyLt);line-height:1.8}
+.desc-text strong{color:var(--white);font-weight:700}
+.desc-text em{color:var(--amber);font-style:normal;font-weight:600}
+.desc-text p+p{margin-top:9px}
+
+/* Mechanism box */
+.mech-box{background:var(--navyDk);border:1px solid rgba(30,107,140,.4);border-left:3px solid var(--teal);border-radius:5px;padding:11px 13px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--greyMd);line-height:1.75}
+
+/* Contribution boxes */
+.contrib-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.cbox{background:var(--navyDk);border:1px solid rgba(30,107,140,.3);border-radius:5px;padding:8px 10px}
+.cbox-lbl{font-family:'DM Sans',sans-serif;font-size:10px;color:var(--grey);margin-bottom:3px}
+.cbox-val{font-family:'DM Mono',monospace;font-weight:700;font-size:15px;line-height:1.2}
+.cbox-val.g{color:var(--green)}.cbox-val.a{color:var(--amber)}.cbox-val.t{color:var(--teal)}.cbox-val.r{color:var(--red)}.cbox-val.gr{color:var(--grey)}
+.cbox-unit{font-family:'DM Sans',sans-serif;font-size:10px;color:var(--grey);margin-top:2px}
+
+/* Bars */
+.brow{margin-bottom:8px}
+.btop{display:flex;justify-content:space-between;margin-bottom:4px}
+.blbl{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--greyMd)}
+.bval{font-family:'DM Mono',monospace;font-size:12px;font-weight:700}
+.btrack{background:rgba(30,107,140,.18);border-radius:10px;height:6px;overflow:hidden}
+.bfill{height:100%;border-radius:10px;width:0;transition:width .8s ease}
+
+/* Wave mini strip in expand */
+.wave-mini{margin-top:12px}
+.wave-mini-lbl{font-family:'DM Sans',sans-serif;font-size:10px;color:var(--grey);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.ws-strip{display:flex;height:7px;border-radius:5px;overflow:hidden;gap:1px;margin-bottom:3px}
+.ws{flex:1}
+.ws-days{display:flex;justify-content:space-between}
+.wsd{font-family:'DM Mono',monospace;font-size:10px;color:var(--grey)}
+
+/* Meta row in expand */
+.meta-pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+
+/* Action row at bottom of expand */
+.exp-actions{grid-column:1/-1;display:flex;align-items:center;justify-content:flex-end;gap:8px;padding-top:10px;border-top:1px solid rgba(30,107,140,.2);margin-top:4px}
+.btn-print{display:inline-flex;align-items:center;gap:5px;cursor:pointer;background:rgba(61,203,122,.07);border:1.5px solid rgba(61,203,122,.35);border-radius:5px;padding:6px 14px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;color:var(--green);transition:all .15s}
+.btn-print:hover{background:rgba(61,203,122,.16);border-color:var(--green)}
+.btn-collapse{display:inline-flex;align-items:center;gap:5px;cursor:pointer;background:rgba(232,64,64,.07);border:1.5px solid rgba(232,64,64,.3);border-radius:5px;padding:6px 14px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;color:var(--red);transition:all .15s}
+.btn-collapse:hover{background:rgba(232,64,64,.16)}
+
+/* ── TAB BAR ── */
+/* .tabs and .tab-btn superseded by .s3-nav and .s3-nav-btn */
+.tabs::-webkit-scrollbar{display:none}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+/* tab-btn rules removed — superseded by .s3-nav-btn */
+/* Toolbar sticky needs to sit below both header + tabs */
+.toolbar{top:103px!important}
+
+/* ── LANDING STYLES ── */
+.lp{padding:18px 24px 48px}
+.bc-removed{display:none}
+.bc-done{background:rgba(61,203,122,.1);color:var(--green);border:1px solid rgba(61,203,122,.3)}
+.bc-active{background:rgba(0,201,177,.15);color:var(--teal);border:1px solid var(--teal)}
+.bc-pend{background:rgba(139,160,180,.06);color:var(--grey);border:1px solid rgba(139,160,180,.2)}
+.bc-arr{color:rgba(30,107,140,.5);font-size:12px;margin:0 2px}
+
+/* old ho-banner rules superseded — new rules injected at top */
+
+.sec-hdr{font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--grey);text-transform:uppercase;letter-spacing:.6px;margin:24px 0 11px;display:flex;align-items:center;gap:7px}
+.sec-hdr::before{content:'';width:3px;height:13px;border-radius:2px;display:inline-block}
+.sh-t::before{background:var(--teal)}.sh-a::before{background:var(--amber)}.sh-g::before{background:var(--green)}.sh-r::before{background:var(--red)}
+
+.kpi-strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:9px;margin-bottom:22px}
+.kpi{background:var(--navyMid);border:1.5px solid var(--border);border-radius:7px;padding:11px 14px}
+.kpi-lbl{font-family:'DM Sans',sans-serif;font-weight:700;font-size:10px;color:var(--grey);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.kpi-val{font-family:'DM Mono',monospace;font-weight:700;font-size:17px;color:var(--amber)}
+.kpi-val.g{color:var(--green)}.kpi-val.t{color:var(--teal)}
+.kpi-unit{font-family:'DM Sans',sans-serif;font-size:10px;color:var(--greyMd);margin-top:1px}
+
+.module-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:13px}
+.mod-btn{background:var(--navyMid);border:1.5px solid var(--border);border-radius:10px;padding:16px 18px;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;gap:9px;position:relative;overflow:hidden}
+.mod-btn::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--mc,var(--teal))}
+.mod-btn:hover{border-color:var(--mc,var(--teal));background:rgba(21,51,82,.95);transform:translateY(-1px);box-shadow:0 5px 20px rgba(0,0,0,.4)}
+.mod-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--grey);margin-bottom:2px}
+.mod-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);line-height:1.3}
+.mod-desc{font-family:'DM Sans',sans-serif;font-size:11px;color:var(--greyMd);line-height:1.6}
+.mod-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:3px}
+.mod-tag{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;border:1px solid rgba(30,107,140,.35);color:var(--grey);background:rgba(30,107,140,.09)}
+.mod-status{position:absolute;top:10px;right:12px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:9px;padding:2px 7px;border-radius:20px}
+.ms-live{background:rgba(61,203,122,.12);color:var(--green);border:1px solid rgba(61,203,122,.3)}
+.ms-db{background:rgba(0,201,177,.08);color:var(--teal);border:1px solid rgba(0,201,177,.3)}
+.ms-new{background:rgba(74,158,219,.08);color:var(--blue);border:1px solid rgba(74,158,219,.3)}
+
+.gate-strip{display:flex;gap:9px;flex-wrap:wrap;padding:13px 16px;background:rgba(0,0,0,.3);border:1.5px solid var(--border);border-radius:8px}
+.gate-item{display:flex;align-items:center;gap:6px}
+.gate-lbl{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--greyLt)}
+.gate-val{font-family:'DM Mono',monospace;font-weight:700;font-size:12px}
+.gv-pend{color:var(--grey)}.gv-pass{color:var(--green)}.gv-fail{color:var(--red)}
+.gate-sep{width:1px;height:18px;background:rgba(30,107,140,.3)}
+
+.proto-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.proto-card{background:var(--navyDk);border:1.5px solid var(--border);border-radius:8px;padding:13px 15px;cursor:pointer;transition:all .18s}
+.proto-card:hover,.proto-card.psel{border-color:var(--teal);background:rgba(0,201,177,.06)}
+.pc-name{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--white);margin-bottom:4px}
+.pc-cost{font-family:'DM Mono',monospace;font-weight:700;font-size:15px;color:var(--amber);margin-bottom:6px}
+.pc-desc{font-family:'DM Sans',sans-serif;font-size:11px;color:var(--greyMd);line-height:1.5}
+
+.audit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.audit-card{background:var(--navyMid);border:1.5px solid var(--border);border-radius:8px;overflow:hidden}
+.au-hdr{padding:8px 13px;background:var(--navyLt);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.au-tbl{font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--teal)}
+.au-cnt{font-family:'DM Mono',monospace;font-size:10px;color:var(--grey)}
+.au-body{padding:9px 13px}
+.af-row{display:flex;align-items:center;gap:7px;padding:3px 0;border-bottom:1px solid rgba(30,107,140,.12)}
+.af-row:last-child{border-bottom:none}
+.af-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.af-ok{background:var(--green)}.af-warn{background:var(--amber)}.af-miss{background:var(--red)}
+.af-name{font-family:'DM Mono',monospace;font-size:11px;color:var(--greyLt);flex:1}
+.af-note{font-family:'DM Sans',sans-serif;font-size:10px;color:var(--grey)}
+.miss-card{background:var(--navyMid);border:1.5px solid rgba(245,166,35,.35);border-radius:8px;padding:14px 16px}
+.miss-title{font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--amber);margin-bottom:9px}
+.miss-list{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px}
+.miss-item{display:flex;align-items:flex-start;gap:6px;font-family:'DM Sans',sans-serif;font-size:11px;color:var(--greyLt);padding:2px 0}
+.miss-dot{width:5px;height:5px;border-radius:50%;background:var(--amber);flex-shrink:0;margin-top:5px}
+/* ── INFLOWS / OUTFLOWS GRID ── */
+.rd-wrapper{display:grid;grid-template-columns:64px repeat(4,1fr) 64px 66px repeat(4,1fr);width:100%;border-bottom:2px solid rgba(0,201,177,0.22);background:var(--navy)}
+.rd-label{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:var(--navyMid);border-right:1px solid rgba(0,201,177,0.25);padding:0 10px;width:64px;writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);white-space:nowrap;cursor:default}
+.rd-label-word{font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;color:var(--amber);letter-spacing:.04em}
+.rd-field{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px 8px;border:none;background:var(--navy);cursor:pointer;transition:background .15s;min-width:0;position:relative}
+.rd-field[style*="grid-row:1"]{border-bottom:1px solid transparent;padding-bottom:18px;padding-top:18px}
+.rd-field[style*="grid-row:1"]::after{content:'';position:absolute;bottom:0;left:18%;right:18%;height:1px;background:rgba(0,201,177,0.35)}
+.rd-field[style*="grid-row:2"]{padding-top:18px;padding-bottom:18px}
+.rd-field:hover{background:rgba(0,201,177,0.05)}
+.rd-field.active{background:var(--teal-dim);border-color:var(--teal-bdr)}
+.rd-title{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;color:var(--greyMd);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;white-space:nowrap;transition:color .15s}
+.rd-field.active .rd-title{color:var(--teal)}
+.rd-num{font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--amber);line-height:1.2;white-space:nowrap}
+.rd-num-teal{font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--teal);line-height:1.2;white-space:nowrap}
+.rd-unit{font-family:'DM Sans',sans-serif;font-size:10px;color:var(--greyMd);margin-top:3px;white-space:nowrap}
+.rd-num-row{display:flex;align-items:center;justify-content:center;gap:3px}
+.rd-arr-up{font-size:16px;font-weight:900;color:var(--green);line-height:1;font-family:'DM Mono',monospace;-webkit-text-stroke:.4px var(--green)}
+.rd-arr-dn{font-size:16px;font-weight:900;color:var(--red);line-height:1;font-family:'DM Mono',monospace;-webkit-text-stroke:.4px var(--red)}
+.rd-arr-neu{font-size:16px;font-weight:900;color:var(--greyMd);line-height:1;font-family:'DM Mono',monospace}
+.rd-npk{display:flex;flex-direction:column;gap:3px;align-items:center}
+.rd-npk-row{display:flex;align-items:baseline;gap:4px}
+.rd-npk-key{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;color:var(--teal);width:10px}
+.rd-npk-val{font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:var(--teal)}
+.rd-npk-u{font-family:'DM Sans',sans-serif;font-size:9px;color:var(--greyMd)}
+.rd-tooltip{display:none;position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:rgba(0,201,177,0.13);border:1px solid rgba(0,201,177,0.55);border-radius:6px;padding:7px 10px;min-width:150px;max-width:180px;z-index:300;pointer-events:none;white-space:normal}
+.rd-field:hover .rd-tooltip{display:block}
+.rd-tooltip-val{font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:var(--amber);margin-bottom:3px;white-space:nowrap}
+.rd-tooltip-txt{font-family:'DM Sans',sans-serif;font-size:10px;color:var(--amber);line-height:1.5}
+.rd-note{display:none;grid-column:1/-1;background:rgba(0,201,177,0.07);border-top:1px solid var(--teal-bdr);padding:11px 16px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--greyLt);line-height:1.7}
+.rd-note.show{display:block}
+.rd-note strong{color:var(--teal);font-weight:700}
+.note-src{margin-top:5px;font-size:10px;color:var(--greyMd);font-family:'DM Mono',monospace}
+
+</style>
+</head>
+<body>
+
+<div class="ph">
+  <div>
+    <h1>S3 Biological &mdash; Overview</h1>
+  </div>
+  <div class="bdgs">
+    <span class="bdg bdg-g">5-Day Bio Minimum</span>
+  </div>
+</div>
+
+<!-- ── MILL INFO ROW — copied from S0 design ── -->
+<div class="mill-info-row">
+  <div class="mi-field">
+    <div class="mi-label">Company</div>
+    <div class="mi-value" id="mi-company">—</div>
+  </div>
+  <div class="mi-sep"></div>
+  <div class="mi-field">
+    <div class="mi-label">Estate / Plantation</div>
+    <div class="mi-value" id="mi-estate">—</div>
+  </div>
+  <div class="mi-sep"></div>
+  <div class="mi-field">
+    <div class="mi-label">Mill Name</div>
+    <div class="mi-value" id="mi-mill">—</div>
+  </div>
+  <div class="mi-sep"></div>
+  <div class="mi-field">
+    <div class="mi-label">Capacity</div>
+    <div class="mi-value" id="mi-tph">60 <span class="mi-unit">t / hr</span></div>
+  </div>
+  <div class="mi-sep"></div>
+  <div class="mi-field">
+    <div class="mi-label">FFB Processed</div>
+    <div class="mi-value" id="mi-ffb">30.6K <span class="mi-unit">t / month</span></div>
+  </div>
+  <div class="mi-sep"></div>
+  <div class="mi-field">
+    <div class="mi-label">EFB Monthly Volume</div>
+    <div class="mi-value" id="mi-efb">6.89K <span class="mi-unit">t / month</span></div>
+  </div>
+</div>
+
+<div class="s3-nav no-print">
+  <button class="s3-nav-btn active" onclick="showTab('overview',this)">Overview</button>
+  <button class="s3-nav-btn" onclick="showTab('library',this)">Organism Library</button>
+  <button class="s3-nav-btn" onclick="showTab('protocol',this)">Protocols + Dosage</button>
+  <button class="s3-nav-btn" onclick="showTab('timeline',this)">Inoculation Timeline</button>
+  <button class="s3-nav-btn" onclick="showTab('gate',this)">BSF Handoff Gate</button>
+  <button class="s3-nav-btn" onclick="showTab('algae',this)">Algae Stream B</button>
+  <button class="s3-nav-btn" onclick="showTab('npk',this)">NPK + Gas</button>
+  <button class="s3-nav-btn" onclick="showTab('db',this)">DB Status</button>
+</div>
+
+<!-- ══════ TAB: OVERVIEW ══════ -->
+<div class="tab-pane active" id="tab-overview">
+
+<!-- ══ RECEPTION + HANDOFF — FLAT EQUAL-CELL GRID ══ -->
+<div class="rd-wrapper">
+  <div class="rd-label" style="grid-column:1;grid-row:1/3"><div class="rd-label-word">Inflows</div></div>
+  <div class="rd-field" style="grid-column:2;grid-row:1" onclick="toggle(this,'r-vol')">
+    <div class="rd-title">Monthly Volume</div><div class="rd-num">7,200 <span style="font-size:11px">t</span></div><div class="rd-unit">FW / month &middot; Post-S2</div>
+  </div>
+  <div class="rd-field" style="grid-column:3;grid-row:1" onclick="toggle(this,'r-moist')">
+    <div class="rd-title">Moisture</div><div class="rd-num">55&ndash;65<span style="font-size:11px">%</span></div><div class="rd-unit">MC wb &middot; Post-Press</div>
+  </div>
+  <div class="rd-field" style="grid-column:4;grid-row:1" onclick="toggle(this,'r-cp')">
+    <div class="rd-title">Crude Protein</div><div class="rd-num">8.14<span style="font-size:11px">%</span></div><div class="rd-unit">DM &middot; N&times;6.25</div>
+  </div>
+  <div class="rd-field" style="grid-column:5;grid-row:1" onclick="toggle(this,'r-lig')">
+    <div class="rd-title">Lignin ADL</div><div class="rd-num">25<span style="font-size:11px">%</span></div><div class="rd-unit">DM &middot; EFB+OPDC</div>
+  </div>
+  <div class="rd-field" style="grid-column:2;grid-row:2" onclick="toggle(this,'r-sug')">
+    <div class="rd-title">Red. Sugars</div><div class="rd-num">8&ndash;15<span style="font-size:11px">%</span></div><div class="rd-unit">DM &middot; TRS &middot; DNS</div>
+  </div>
+  <div class="rd-field" style="grid-column:3;grid-row:2" onclick="toggle(this,'r-oc')">
+    <div class="rd-title">Organic Carbon</div><div class="rd-num">41<span style="font-size:11px">%</span></div><div class="rd-unit">DM &middot; CHNS</div>
+  </div>
+  <div class="rd-field" style="grid-column:4;grid-row:2" onclick="toggle(this,'r-cn')">
+    <div class="rd-title">C:N Ratio</div><div class="rd-num">32<span style="font-size:11px">:1</span></div><div class="rd-unit">DM-Weighted</div>
+  </div>
+  <div class="rd-field" style="grid-column:5;grid-row:2" onclick="toggle(this,'r-npk')">
+    <div class="rd-npk">
+      <div class="rd-npk-row"><span class="rd-npk-key">N</span><span class="rd-npk-val" style="color:var(--amber)">1.76</span><span class="rd-npk-u">% DM</span></div>
+      <div class="rd-npk-row"><span class="rd-npk-key">P</span><span class="rd-npk-val" style="color:var(--amber)">0.30</span><span class="rd-npk-u">% DM</span></div>
+      <div class="rd-npk-row"><span class="rd-npk-key">K</span><span class="rd-npk-val" style="color:var(--amber)">1.90</span><span class="rd-npk-u">% DM</span></div>
+    </div>
+  </div>
+  <!-- OUTFLOWS label -->
+  <div class="rd-label" style="grid-column:6;grid-row:1/3;border-right:none;border-left:1px solid rgba(0,201,177,0.25)"><div class="rd-label-word">Outflows</div></div>
+  <!-- ARROW -->
+  <div style="grid-column:7;grid-row:1/3;display:flex;align-items:center;justify-content:center;background:var(--navy);font-family:'DM Mono',monospace;font-size:99px;font-weight:900;color:var(--teal);line-height:1;-webkit-text-stroke:0.6px var(--teal)">&#8594;</div>
+  <!-- OUTFLOWS ROW 1 -->
+  <div class="rd-field" style="grid-column:8;grid-row:1" onclick="toggle(this,'d-vol')">
+    <div class="rd-tooltip"><div class="rd-tooltip-val">7,200 t FW/month</div><div class="rd-tooltip-txt">Volume unchanged — batch integrity confirmed</div></div>
+    <div class="rd-title">Monthly Volume</div><div class="rd-num-row"><span class="rd-arr-neu">=</span><span class="rd-num-teal">7,200 <span style="font-size:11px">t</span></span></div><div class="rd-unit">FW / month &middot; S3 Exit</div>
+  </div>
+  <div class="rd-field" style="grid-column:9;grid-row:1" onclick="toggle(this,'d-moist')">
+    <div class="rd-tooltip"><div class="rd-tooltip-val">60–70% MC wb</div><div class="rd-tooltip-txt">Adjusted up via sprinklers — BSF larval entry spec</div></div>
+    <div class="rd-title">Moisture</div><div class="rd-num-row"><span class="rd-arr-up">&#8593;</span><span class="rd-num-teal">60&ndash;70<span style="font-size:11px">%</span></span></div><div class="rd-unit">MC wb &middot; BSF Gate</div>
+  </div>
+  <div class="rd-field" style="grid-column:10;grid-row:1" onclick="toggle(this,'d-cp')">
+    <div class="rd-tooltip"><div class="rd-tooltip-val">9.2%+ DM</div><div class="rd-tooltip-txt">+1.06% — Azotobacter fixed N from atmosphere</div></div>
+    <div class="rd-title">Crude Protein</div><div class="rd-num-row"><span class="rd-arr-up">&#8593;</span><span class="rd-num-teal">9.2+<span style="font-size:11px">%</span></span></div><div class="rd-unit">DM &middot; N&times;6.25</div>
+  </div>
+  <div class="rd-field" style="grid-column:11;grid-row:1" onclick="toggle(this,'d-lig')">
+    <div class="rd-tooltip"><div class="rd-tooltip-val">19–21% DM</div><div class="rd-tooltip-txt">Trichoderma + Phanerochaete broke down 4–6% lignin</div></div>
+    <div class="rd-title">Lignin ADL</div><div class="rd-num-row"><span class="rd-arr-dn">&#8595;</span><span class="rd-num-teal">19&ndash;21<span style="font-size:11px">%</span></span></div><div class="rd-unit">DM &middot; Day 14</div>
+  </div>
+  <!-- OUTFLOWS ROW 2 -->
+  <div class="rd-field" style="grid-column:8;grid-row:2" onclick="toggle(this,'d-sug')">
+    <div class="rd-tooltip"><div class="rd-tooltip-val">2–5% DM</div><div class="rd-tooltip-txt">Sugars consumed — organisms confirmed active</div></div>
+    <div class="rd-title">Red. Sugars</div><div class="rd-num-row"><span class="rd-arr-up">&#8593;</span><span class="rd-num-teal">2&ndash;5<span style="font-size:11px">%</span></span></div><div class="rd-unit">DM &middot; Biology Confirmed</div>
+  </div>
+  <div class="rd-field" style="grid-column:9;grid-row:2" onclick="toggle(this,'d-oc')">
+    <div class="rd-tooltip"><div class="rd-tooltip-val">39–40% DM</div><div class="rd-tooltip-txt">Normal CO₂ respiration — stable humic C increased</div></div>
+    <div class="rd-title">Organic Carbon</div><div class="rd-num-row"><span class="rd-arr-dn">&#8595;</span><span class="rd-num-teal">39&ndash;40<span style="font-size:11px">%</span></span></div><div class="rd-unit">DM &middot; CO&#8322; Normal</div>
+  </div>
+  <div class="rd-field" style="grid-column:10;grid-row:2" onclick="toggle(this,'d-cn')">
+    <div class="rd-tooltip"><div class="rd-tooltip-val">20:1 DM</div><div class="rd-tooltip-txt">Narrowed 12 points — biological N addition confirmed</div></div>
+    <div class="rd-title">C:N Ratio</div><div class="rd-num-row"><span class="rd-arr-dn">&#8595;</span><span class="rd-num-teal">20<span style="font-size:11px">:1</span></span></div><div class="rd-unit">DM &middot; BSF Gate</div>
+  </div>
+  <div class="rd-field" style="grid-column:11;grid-row:2" onclick="toggle(this,'d-npk')">
+    <div class="rd-tooltip"><div class="rd-tooltip-val">N↑ P↑ K=</div><div class="rd-tooltip-txt">N fixed from air · P solubilised · K unchanged</div></div>
+    <div class="rd-npk">
+      <div class="rd-npk-row"><span class="rd-arr-up" style="font-size:10px">&#8593;</span><span class="rd-npk-key">N</span><span class="rd-npk-val">2.10</span><span class="rd-npk-u">% DM</span></div>
+      <div class="rd-npk-row"><span class="rd-arr-up" style="font-size:10px">&#8593;</span><span class="rd-npk-key">P</span><span class="rd-npk-val">0.36</span><span class="rd-npk-u">% DM</span></div>
+      <div class="rd-npk-row"><span class="rd-arr-neu" style="font-size:10px">=</span><span class="rd-npk-key">K</span><span class="rd-npk-val" style="color:var(--amber)">1.90</span><span class="rd-npk-u">% DM</span></div>
+    </div>
+  </div>
+  <!-- NOTES -->
+  <div class="rd-note" id="note-r-vol"><strong>Monthly Volume</strong> — Post-S2 press and size-reduction weight. ~7,200 t FW/month entering S3. Exact figure requires S1/S2 mass balance confirmation from pilot.<div class="note-src">Source: S1/S2 mass balance · CFI Design Basis 60 TPH · Pilot confirmation pending (Alex, IPB)</div></div>
+  <div class="rd-note" id="note-r-moist"><strong>Moisture</strong> — 55–65% wb target. Below 55% organism establishment slows. Above 65% anaerobic pockets form and CH₄ risk rises.<div class="note-src">Source: CFI S2 process spec · OPDC press floor 40% MC CLASS A guardrail</div></div>
+  <div class="rd-note" id="note-r-cp"><strong>Crude Protein</strong> — N × 6.25 (AOAC 984.13). EFB+OPDC 60:40 blend canonical: 8.14% CP DM. Day 0 baseline before biological uplift.<div class="note-src">Source: CFI Lab · EFB 4.75% CP · OPDC 14.5% CP · 60:40 blend = 8.14% · Locked Mar 2026</div></div>
+  <div class="rd-note" id="note-r-lig"><strong>Lignin ADL</strong> — 25% DM. Trichoderma and Phanerochaete target this — 10–25% reduction by Day 14.<div class="note-src">Source: CFI Lab · EFB 22% ADL · OPDC 30.7% ADL · 60:40 blend = 25% · Locked Mar 2026</div></div>
+  <div class="rd-note" id="note-r-sug"><strong>Reducing Sugars</strong> — 8–15% DM post-PKSA. Immediate carbon for Lactobacillus Day 0. Fermentation drops pH 8–10 → 5.5–6.0 within 48h, killing methanogens.<div class="note-src">Source: PKSA hydrolysis kinetics · DNS colorimetric assay</div></div>
+  <div class="rd-note" id="note-r-oc"><strong>Organic Carbon</strong> — 41% DM by CHNS analyser. Total carbon pool for biological metabolism and humic acid formation.<div class="note-src">Source: CFI CHNS analysis · EFB C 41.41% Malaysia combustion study 2023</div></div>
+  <div class="rd-note" id="note-r-cn"><strong>C:N Ratio</strong> — 32:1 DM-weighted for EFB+OPDC 60:40 blend. Narrows to 20:1 at Discharge as N is added biologically.<div class="note-src">Source: CFI canonical · EFB C:N 60 · OPDC C:N 20 · 60:40 weighted = 32:1 · Locked Mar 2026</div></div>
+  <div class="rd-note" id="note-r-npk"><strong>NPK</strong> — N: 1.76% DM · P: 0.30% DM · K: 1.90% DM. Synthetic replacement value: $5.86/t FW.<div class="note-src">Source: CFI Lab · ICP-OES Package B pending · Blend canonical Locked Mar 2026</div></div>
+  <div class="rd-note" id="note-d-vol"><strong>Outflow · Volume</strong> — 7,200 t FW confirmed at S3 exit. Volume integrity confirms no unaccounted diversion.<div class="note-src">Source: S3 mass balance · Azotobacter N-fixation adds &lt;0.1% mass</div></div>
+  <div class="rd-note" id="note-d-moist"><strong>Outflow · Moisture</strong> — 60–70% wb. Adjusted via S3 sprinkler. BSF Handoff Gate Criterion #2.<div class="note-src">Source: BSF Handoff Gate Criterion #2 · S3 sprinkler spec</div></div>
+  <div class="rd-note" id="note-d-cp"><strong>Outflow · Crude Protein</strong> — 9.2%+ DM. +1.06% uplift via Azotobacter fixation + Saccharomyces NH₃ retention. Biological protein from atmospheric nitrogen — zero synthetic input.<div class="note-src">Source: Azotobacter nifH studies · Saccharomyces NH₃ assimilation pathway</div></div>
+  <div class="rd-note" id="note-d-lig"><strong>Outflow · Lignin ADL</strong> — 19–21% DM. −4–6% vs inflow. Trichoderma CMCase peak 20–35 U/g + Phanerochaete LiP/MnP/Laccase.<div class="note-src">Source: Trichoderma CMCase ICBB literature · Phanerochaete ligninase data</div></div>
+  <div class="rd-note" id="note-d-sug"><strong>Outflow · Red. Sugars</strong> — 2–5% DM. Drawdown from 8–15% confirms biological activity established Day 0.<div class="note-src">Source: Lactobacillus fermentation kinetics · DNS assay Day 14</div></div>
+  <div class="rd-note" id="note-d-oc"><strong>Outflow · Organic Carbon</strong> — 39–40% DM. Normal CO₂ respiration loss. Stable humic C fraction increases — improves soil CEC.<div class="note-src">Source: Composting C mineralisation kinetics · Humic acid formation pathway</div></div>
+  <div class="rd-note" id="note-d-cn"><strong>Outflow · C:N Ratio</strong> — 20:1. Narrowed from 32:1 — 12-point improvement. BSF Handoff Gate Criterion #1 requires 15–25:1.<div class="note-src">Source: BSF Handoff Gate Criterion #1 · Azotobacter + Saccharomyces N contribution</div></div>
+  <div class="rd-note" id="note-d-npk"><strong>Outflow · NPK</strong> — N: 2.10% (+0.34%) · P: 0.36% (+0.06% via Pseudomonas) · K: 1.90% (=). Synthetic value: $7.11/t FW (+$1.25).<div class="note-src">Source: Azotobacter nifH + Saccharomyces data · Pseudomonas P-solubilisation literature</div></div>
+</div>
+
+
+
+
+
+<div class="lp">
+
+<div class="sec-hdr sh-a">Key Metrics — Current Protocol</div>
+<div class="kpi-strip">
+  <div class="kpi"><div class="kpi-lbl">Protocol Cost</div><div class="kpi-val">$0.65</div><div class="kpi-unit">/ t FW — One-Shot</div></div>
+  <div class="kpi"><div class="kpi-lbl">NH₃ N Retained</div><div class="kpi-val g">+50%</div><div class="kpi-unit">via Saccharomyces · NH₄⁺ locked</div></div>
+  <div class="kpi"><div class="kpi-lbl">Lignin Reduction</div><div class="kpi-val t">−15–20%</div><div class="kpi-unit">ADL by Day 14</div></div>
+  <div class="kpi"><div class="kpi-lbl">Crude Protein</div><div class="kpi-val">52%</div><div class="kpi-unit">9-Org Stack · No Algae</div></div>
+  <div class="kpi"><div class="kpi-lbl">CMCase Peak Activity</div><div class="kpi-val t">20–35</div><div class="kpi-unit">U/g DM · Trichoderma · Day 7</div></div>
+  <div class="kpi"><div class="kpi-lbl">BSF Handoff Criteria</div><div class="kpi-val" style="color:var(--amber)">6 Gates</div><div class="kpi-unit">All must pass before S4</div></div>
+  <div class="kpi"><div class="kpi-lbl">1:1 Synthetic Replacement</div><div class="kpi-val g">$7.11</div><div class="kpi-unit">/ t FW &middot; Day 14 &middot; +$1.25 uplift</div></div>
+  <div class="kpi"><div class="kpi-lbl">Organisms Deployed</div><div class="kpi-val t">9</div><div class="kpi-unit">Wave 1A &middot; 1B &middot; Wave 2</div></div>
+  <div class="kpi"><div class="kpi-lbl">Biological Minimum</div><div class="kpi-val">14</div><div class="kpi-unit">Days optimal &middot; Hard floor 5 days</div></div>
+  <div class="kpi"><div class="kpi-lbl">Bt Titre Ceiling</div><div class="kpi-val" style="color:var(--red)">&lt;10&#x2074;</div><div class="kpi-unit">CFU/g &middot; Must clear before S4</div></div>
+</div>
+
+<div class="sec-hdr sh-t">Modules — Click To Open</div>
+<div class="module-grid">
+  <div class="mod-btn" style="--mc:var(--teal)" onclick="showTab('library',document.querySelectorAll('.s3-nav-btn')[1])">
+    <span class="mod-status ms-live">Live</span>
+    <div class="mod-num">Module 1</div>
+    <div class="mod-title">Organism Library</div>
+    <div class="mod-desc">Full lab reference table — 21 organisms, expandable rows with mechanism, contributions, measurement protocols, print function.</div>
+    <div class="mod-tags"><span class="mod-tag">21 Organisms</span><span class="mod-tag">Expandable Rows</span><span class="mod-tag">Print</span></div>
+  </div>
+  <div class="mod-btn" style="--mc:var(--amber)" onclick="showTab('protocol',document.querySelectorAll('.s3-nav-btn')[2])">
+    <span class="mod-status ms-db">DB Ready</span>
+    <div class="mod-num">Module 2</div>
+    <div class="mod-title">Protocols + Dosage</div>
+    <div class="mod-desc">One-Shot / 9-Org / Budget stacks. Auto-calculates monthly kg, cost, supplier sourcing from s3_nine_org_dosing.</div>
+    <div class="mod-tags"><span class="mod-tag">4 Protocols</span><span class="mod-tag">Live Cost Calc</span><span class="mod-tag">s3_nine_org_dosing</span></div>
+  </div>
+  <div class="mod-btn" style="--mc:var(--green)" onclick="showTab('timeline',document.querySelectorAll('.s3-nav-btn')[3])">
+    <span class="mod-status ms-db">DB Ready</span>
+    <div class="mod-num">Module 3</div>
+    <div class="mod-title">Inoculation Timeline</div>
+    <div class="mod-desc">Day-by-day wave schedule — Wave 1A Day 0, Wave 1B Day 3+, Wave 2 Day 5+. Temperature gates, pH checkpoints, visual confirmations.</div>
+    <div class="mod-tags"><span class="mod-tag">Day-by-Day</span><span class="mod-tag">Temp Gates</span><span class="mod-tag">s3_inoculation_timeline</span></div>
+  </div>
+  <div class="mod-btn" style="--mc:var(--red)" onclick="showTab('gate',document.querySelectorAll('.s3-nav-btn')[4])">
+    <span class="mod-status ms-db">Hard Gate</span>
+    <div class="mod-num">Module 4</div>
+    <div class="mod-title">BSF Handoff Gate</div>
+    <div class="mod-desc">Enter live readings — C:N, moisture, pH, temperature, Bt titre. All 6 criteria must pass before S4 is unlocked. No overrides.</div>
+    <div class="mod-tags"><span class="mod-tag">6 Criteria</span><span class="mod-tag">Live Input</span><span class="mod-tag">Bt Check</span></div>
+  </div>
+  <div class="mod-btn" style="--mc:var(--green)" onclick="showTab('algae',document.querySelectorAll('.s3-nav-btn')[5])">
+    <span class="mod-status ms-new">New Mar 2026</span>
+    <div class="mod-num">Module 5</div>
+    <div class="mod-title">Algae Hydrator — Stream B</div>
+    <div class="mod-desc">Spirulina or Chlorella in POME raceway ponds. 1,850 L/t EFB DM. BSF meal 56% CP. $0 OpEx. CapEx ~$32,400, payback &lt;6 months.</div>
+    <div class="mod-tags"><span class="mod-tag">$0 OpEx</span><span class="mod-tag">+22% Neonates</span><span class="mod-tag">s3_algae_uplift</span></div>
+  </div>
+  <div class="mod-btn" style="--mc:var(--blue)" onclick="showTab('npk',document.querySelectorAll('.s3-nav-btn')[6])">
+    <span class="mod-status ms-db">DB Ready</span>
+    <div class="mod-num">Module 6</div>
+    <div class="mod-title">NPK + Gas Emissions</div>
+    <div class="mod-desc">N fixed by Azotobacter ($1.50–3/t FW value), P solubilised by PSB, K from PKSA. CH4 ↓70–80%, NH3 ↓50%. N value retained = $4–8/t.</div>
+    <div class="mod-tags"><span class="mod-tag">N Fixed $/t</span><span class="mod-tag">CH4 Control</span><span class="mod-tag">s3_npk_contribution</span></div>
+  </div>
+</div>
+
+<div class="sec-hdr sh-r" style="margin-top:28px">BSF Handoff Gate — Current Batch</div>
+<div class="gate-strip">
+  <div class="gate-item"><span style="font-size:13px">🌡</span><span class="gate-lbl">Temp</span>&nbsp;<span class="gate-val gv-pend">Pending</span></div>
+  <div class="gate-sep"></div>
+  <div class="gate-item"><span style="font-size:13px">⚗</span><span class="gate-lbl">pH</span>&nbsp;<span class="gate-val gv-pend">Pending</span></div>
+  <div class="gate-sep"></div>
+  <div class="gate-item"><span style="font-size:13px">💧</span><span class="gate-lbl">Moisture</span>&nbsp;<span class="gate-val gv-pend">Pending</span></div>
+  <div class="gate-sep"></div>
+  <div class="gate-item"><span style="font-size:13px">🔬</span><span class="gate-lbl">C:N Ratio</span>&nbsp;<span class="gate-val gv-pend">Pending</span></div>
+  <div class="gate-sep"></div>
+  <div class="gate-item"><span style="color:var(--red);font-size:13px">⚠</span><span class="gate-lbl">Bt Titre</span>&nbsp;<span class="gate-val gv-pend">Pending</span></div>
+  <div class="gate-sep"></div>
+  <div class="gate-item"><span style="font-size:13px">👁</span><span class="gate-lbl">Visual Texture</span>&nbsp;<span class="gate-val gv-pend">Pending</span></div>
+  <div class="gate-sep"></div>
+  <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--grey);margin-left:auto">Overall: <span class="gate-val gv-pend">Awaiting measurements</span></span>
+</div>
+
+<div class="sec-hdr sh-a" style="margin-top:28px">Protocol — This Batch</div>
+<div class="proto-grid">
+  <div class="proto-card psel"><div class="pc-name">One-Shot (Default)</div><div class="pc-cost">$0.65 / t FW</div><div class="pc-desc">5 organisms · Day 0 · $5,302/month · Ganoderma compliant</div></div>
+  <div class="proto-card"><div class="pc-name">9-Org Premium Stack</div><div class="pc-cost">$3.56 / t FW</div><div class="pc-desc">9 organisms · 3-wave · BSF CP 52–56% · $29,035/month</div></div>
+  <div class="proto-card"><div class="pc-name">9-Org + Spirulina</div><div class="pc-cost">$3.56 / t FW</div><div class="pc-desc">All 9 + algae hydration · BSF CP 56% · $4,500–6,500/t</div></div>
+  <div class="proto-card"><div class="pc-name">Budget Powerhouse</div><div class="pc-cost">$0.32 / t FW</div><div class="pc-desc">Pleurotus + Azotobacter + Saccharomyces · Proof-of-concept</div></div>
+</div>
+
+</div><!-- lp -->
+</div><!-- tab-overview -->
+
+<!-- ══════ TAB: ORGANISM LIBRARY ══════ -->
+<div class="tab-pane" id="tab-library">
+  <input type="text" id="searchQ" placeholder="Search organism, nutrient, function..." oninput="applyFilter()"/>
+  <div class="sep"></div>
+  <button class="fb on" onclick="filterCat('all',this)">All</button>
+  <button class="fb" onclick="filterCat('thermophilic',this)">Thermophilic</button>
+  <button class="fb" onclick="filterCat('fungi',this)">Fungi</button>
+  <button class="fb" onclick="filterCat('bacteria',this)">Bacteria</button>
+  <button class="fb" onclick="filterCat('nfixer',this)">N-Fixers</button>
+  <button class="fb" onclick="filterCat('psolubiliser',this)">P-Solubilisers</button>
+  <button class="fb" onclick="filterCat('enzyme',this)">Enzymes</button>
+  <button class="fb" onclick="filterCat('algae',this)">Algae</button>
+  <div class="sep"></div>
+  <button class="col-all" onclick="collapseAll()">Collapse All</button>
+  <span class="count-lbl" id="countLbl">21 shown</span>
+</div>
+
+<!-- Filter active indicator -->
+<div class="filter-active-bar no-print" id="filterBar">
+  Showing: <strong id="filterBarLabel">—</strong>
+  <button class="fab-clear" onclick="clearFilter()">✕ Show All</button>
+</div>
+
+<div class="twrap">
+<table id="mainTbl">
+<thead>
+  <tr class="cg-hdr">
+    <th colspan="2" class="cg-id">Identity</th>
+    <th class="cg-bio" style="color:var(--amberLt)">Type</th>
+    <th class="cg-bio">Conditions</th>
+    <th colspan="2" class="cg-bio">Function + Timeline</th>
+    <th colspan="4" class="cg-nut">Nutrient + Substrate Contributions</th>
+    <th class="cg-bsf">BSF Output</th>
+    <th class="cg-info">Detail</th>
+  </tr>
+  <tr class="col-hdr">
+    <th class="lft" style="width:32px">#</th>
+    <th class="lft" style="min-width:180px">Organism Name · ICBB</th>
+    <th style="min-width:130px">Classification</th>
+    <th style="min-width:140px">Wave · Temp · BSF</th>
+    <th class="lft" style="min-width:200px;max-width:240px">Primary Function</th>
+    <th style="min-width:130px">Activity Timeline</th>
+    <th style="min-width:90px">N Added</th>
+    <th style="min-width:90px">P Effect</th>
+    <th style="min-width:100px">Lignin ↓</th>
+    <th style="min-width:90px">CP Uplift</th>
+    <th style="min-width:110px">BSF Meal CP</th>
+    <th style="min-width:120px">More Info</th>
+  </tr>
+</thead>
+<tbody id="tBody"></tbody>
+</table>
+</div>
+
+<script>
+const SC={active:'var(--teal)',peak:'var(--amber)',danger:'var(--red)',fade:'rgba(0,201,177,.28)',inactive:'rgba(30,107,140,.15)'};
+
+// ── DATA ──────────────────────────────────────────────────────────────────
+const D=[
+{id:1,sec:'Wave 1A — Day 0 · Applied Together On Fresh EFB + OPDC Substrate',
+  name:'Lactobacillus sp. (EM-4)',icbb:'ICBB 6099',
+  cat:'bacteria',catLabel:'Bacteria · LAB',wave:'W1 · D0',waveFull:'Wave 1 · Day 0',
+  temp:'25–40°C',tempColor:'var(--greyMd)',role:'pH Buffer — CH4 Suppression — Foundation Organism',
+  row:'',bsf:'✓',bsfColor:'var(--green)',
+  n:'+7–15 kg/tDM',p:'—',lig:0,ligStr:'—',cp:'Indirect',bsfcp:'Indirect',
+  pills:[{l:'Wave 1 · Day 0',c:'pl-a'},{l:'LAB',c:'pl-gr'},{l:'CH4 ↓70–80%',c:'pl-t'}],
+  wd:['D0','D1','D3','D5','D7'],ws:['active','peak','active','fade','inactive'],
+  contribs:[
+    {label:'CH4 Reduced',val:'70–80%',unit:'vs uncontrolled',cls:'g'},
+    {label:'N Value Retained',val:'$4–8',unit:'per t FW (indirect)',cls:'a'},
+    {label:'pH Achieved',val:'5.5–6.0',unit:'enables all fungi',cls:'t'},
+    {label:'Pathogen Suppression',val:'Active',unit:'Salmonella · E. coli',cls:'t'},
+  ],
+  bars:[{l:'CH4 Suppression',v:80,c:'var(--teal)'},{l:'NH3 N Retention',v:65,c:'var(--green)'},{l:'pH Buffering Precision',v:90,c:'var(--amber)'}],
+  desc:`<strong>Lactobacillus EM-4</strong> is the keystone pH engineer of the entire consortium — the first organism applied at Day 0. It immediately ferments sugars in the EFB + OPDC substrate, driving pH from post-PKSA alkalinity of 8–10 down to <em>5.5–6.0 within 24–48 hours</em>.<p>This pH drop kills methanogens (archaea responsible for CH4) which cannot survive below pH 6.5, reducing methane emissions by <em>70–80%</em>. It simultaneously creates the exact pH window needed for Rhizopus oligosporus and Aspergillus niger to establish mycelium (pH 5.5–7.5).</p><p>Without Lactobacillus confirmed first, none of the Wave 1 fungi can colonise properly. The acid environment traps NH4⁺ in substrate rather than volatilising as NH3 gas — retaining <em>7–15 kg N per tonne DM</em>.</p>`,
+  mech:`Homofermentative pathway: C₆H₁₂O₆ → 2 CH₃CHOHCOOH (lactic acid) + energy. H⁺ ions lower pH. At pH <6.5, methanogenesis stops — methanogens require neutral-alkaline conditions for F420 cofactor function. Lactic acid competitively excludes Salmonella, E. coli, and Listeria. pH 5.5–6.0 buffer maintained until Wave 2 CO2 carbonation raises pH back to 6.5–7.5 for BSF.`},
+
+{id:2,sec:null,
+  name:'Saccharomyces cerevisiae',icbb:'ICBB 8808',
+  cat:'bacteria',catLabel:'Yeast',wave:'W1 · D0',waveFull:'Wave 1 · Day 0',
+  temp:'25–35°C',tempColor:'var(--greyMd)',role:'NH3 Retention — N Conservation — CO2 Reduction',
+  row:'',bsf:'✓',bsfColor:'var(--green)',
+  n:'+7–15 kg/tDM',p:'—',lig:0,ligStr:'—',cp:'Indirect',bsfcp:'Indirect',
+  pills:[{l:'Wave 1 · D0',c:'pl-a'},{l:'Yeast',c:'pl-gr'},{l:'NH3 ↓50%',c:'pl-g'},{l:'N Saver',c:'pl-t'}],
+  wd:['D0','D1','D3','D7','D14','D21'],ws:['active','peak','active','active','fade','inactive'],
+  contribs:[
+    {label:'N Retained',val:'+7–15 kg',unit:'N / t DM',cls:'g'},
+    {label:'N Value Saved',val:'$4–8',unit:'per t FW',cls:'a'},
+    {label:'NH3 Reduction',val:'50%',unit:'vs no yeast',cls:'g'},
+    {label:'CO2 Reduction',val:'20–30%',unit:'via ethanol pathway',cls:'t'},
+  ],
+  bars:[{l:'NH3 Retention',v:50,c:'var(--green)'},{l:'N Dollar Conservation',v:65,c:'var(--amber)'},{l:'CO2 Reduction',v:25,c:'var(--teal)'}],
+  desc:`<strong>Saccharomyces cerevisiae</strong> (brewer's yeast) solves composting's largest nutrient loss: <em>ammonia (NH3) volatilisation</em>. During the thermophilic phase, heated substrate converts NH4⁺ to gaseous NH3 which permanently escapes to atmosphere — taking fertiliser nitrogen with it.<p>Yeast cells actively consume ammonium (NH4⁺) and <em>convert it directly into yeast protein biomass</em>. Nitrogen becomes locked inside microbial cell walls. This retains approximately <em>7–15 kg N per tonne DM</em> — worth $4–8/t FW at urea replacement price.</p><p>Saccharomyces also shifts carbon toward ethanol fermentation, reducing CO2 by <em>20–30%</em> during week one. It operates in high synergy with Lactobacillus — the acidic pH 5.5–7.0 environment suits both species perfectly.</p>`,
+  mech:`NH4⁺ assimilation via glutamate dehydrogenase: α-ketoglutarate + NH4⁺ + NADPH → glutamate → glutamine → yeast protein. Nitrogen locked in microbial biomass. Carbon metabolism: glucose → pyruvate → acetaldehyde → ethanol (Embden-Meyerhof-Parnas pathway), diverting 20–30% of carbon from CO2 to ethanol. Upon yeast lysis, nitrogen re-mineralises slowly as organic N — a controlled-release fertiliser effect.`},
+
+{id:3,sec:null,
+  name:'Bacillus subtilis',icbb:'ICBB 8780',
+  cat:'bacteria',catLabel:'Bacteria · PGPR',wave:'W1 · D0–21',waveFull:'Wave 1 · Day 0–21',
+  temp:'25–50°C',tempColor:'var(--greyMd)',role:'Cellulase Producer + PGPR + Antimicrobial Iturin A',
+  row:'',bsf:'✓',bsfColor:'var(--green)',
+  n:'—',p:'Indirect',lig:0,ligStr:'—',cp:'NDF −5–15%',bsfcp:'Indirect',
+  pills:[{l:'Wave 1',c:'pl-a'},{l:'Cellulase',c:'pl-t'},{l:'PGPR',c:'pl-b'},{l:'Best Value',c:'pl-g'}],
+  wd:['D0','D3','D7','D14','D21'],ws:['active','active','active','active','fade'],
+  contribs:[
+    {label:'NDF Reduction',val:'5–15%',unit:'DM basis vs Day 0',cls:'g'},
+    {label:'CMCase Activity',val:'5–15 U/g',unit:'DM at Day 7',cls:'a'},
+    {label:'IAA Hormone',val:'0.5–2 µg/mL',unit:'root growth stimulant',cls:'t'},
+    {label:'Antimicrobial',val:'Iturin A',unit:'Fusarium + Ganoderma',cls:'t'},
+  ],
+  bars:[{l:'Cellulase NDF Reduction',v:55,c:'var(--teal)'},{l:'Pathogen Suppression',v:45,c:'var(--green)'},{l:'Cost Efficiency',v:98,c:'var(--amber)'}],
+  desc:`<strong>Bacillus subtilis</strong> is the workhorse bacterium — robust, long-lived, and multifunctional. Endospores survive pH 4–10 and temperatures to 55°C, persisting through the full S3 period from thermophilic peak to mesophilic maturation.<p>Primary role: <em>cellulase production</em> — secreting endo- and exo-cellulases that attack EFB crystalline cellulose, releasing glucose for BSF larvae. NDF is reduced <em>5–15% DM</em> by Day 14. CMCase reaches 5–15 U/g by Day 7.</p><p>As a PGPR it also produces <em>IAA (indole-3-acetic acid)</em>, gibberellins, and antimicrobial iturin A suppressing Fusarium and Ganoderma in the final compost. At only <em>$0.02/t FW</em> it delivers exceptional cost-to-benefit.</p>`,
+  mech:`Endo-β-1,4-glucanase attacks internal glycosidic bonds. Exo-glucanase cleaves cellobiose from chain ends. β-glucosidase converts cellobiose → glucose. CMCase activity: DNS assay (3,5-dinitrosalicylic acid), 5–15 U/g at Day 7. IAA biosynthesis: tryptophan → indole-3-pyruvate → IAA (IPyA route). Iturin A lipopeptide: disrupts fungal plasma membranes via pore formation, suppressing Fusarium oxysporum and Ganoderma boninense.`},
+
+{id:4,sec:null,
+  name:'Bacillus licheniformis',icbb:'Commercial',
+  cat:'bacteria thermophilic',catLabel:'Bacteria · Thermo',wave:'W1A · D0',waveFull:'Wave 1A · Day 0 — 50–65°C Active',
+  temp:'50–65°C',tempColor:'var(--red)',role:'Thermophilic Protease + Heat-Stable Amylase',
+  row:'',bsf:'✓',bsfColor:'var(--green)',
+  n:'—',p:'—',lig:0,ligStr:'—',cp:'+1–3% DM',bsfcp:'Indirect',
+  pills:[{l:'Thermophilic',c:'pl-r'},{l:'W1A · D0',c:'pl-a'},{l:'Protease',c:'pl-a'}],
+  wd:['D0','D1','D3','D5','D7'],ws:['active','peak','active','fade','inactive'],
+  contribs:[
+    {label:'Protein Released',val:'+1–3%',unit:'bioavailable CP DM',cls:'g'},
+    {label:'Protease Activity',val:'15–25 U/g',unit:'at 55–65°C',cls:'a'},
+    {label:'Amylase Activity',val:'10–20 U/g',unit:'starch → BSF sugars',cls:'t'},
+    {label:'Active Window',val:'Day 0–5',unit:'thermophilic peak',cls:'gr'},
+  ],
+  bars:[{l:'Thermophilic Protease',v:70,c:'var(--amber)'},{l:'Protein Accessibility',v:55,c:'var(--green)'},{l:'Starch Breakdown',v:45,c:'var(--teal)'}],
+  desc:`<strong>Bacillus licheniformis</strong> is the heat-stable protease specialist. Most organisms die above 50°C, but it thrives in the <em>50–65°C thermophilic peak</em>, producing high-activity alkaline protease and amylase exactly when the substrate is hottest.<p>Its protease attacks protein-lignin bonds in EFB cell walls, releasing protein previously locked in the lignocellulose matrix — increasing bioavailable crude protein by <em>+1–3% DM</em>. Amylase breaks down starch in OPDC, releasing BSF-accessible sugars.</p><p>In the 9-org stack its dose is <em>locked at 0.04% DM ($1.15/t FW)</em> — most expensive single organism in the stack. Effective Days 0–5 before temperature drops.</p>`,
+  mech:`Alkaline serine protease (subtilisin-type, EC 3.4.21.62): cleaves peptide bonds at pH 7–10, optimal at 55–65°C. Protein release: EFB cell wall protein → alkaline protease hydrolysis → free amino acids + short peptides accessible to BSF digestive enzymes. Thermostable α-amylase (EC 3.2.1.1): hydrolyses starch α-1,4-glycosidic bonds → maltose + dextrins → fermentable BSF carbon sources.`},
+
+{id:5,sec:null,
+  name:'Bacillus coagulans',icbb:'Commercial',
+  cat:'bacteria',catLabel:'Bacteria · Bridge',wave:'W1A · D0',waveFull:'Wave 1A · Day 0',
+  temp:'30–55°C',tempColor:'var(--greyMd)',role:'Lactic + Spore Bridge — pH Stability at High Temperatures',
+  row:'',bsf:'✓',bsfColor:'var(--green)',
+  n:'—',p:'+0.02–0.05%',lig:0,ligStr:'—',cp:'—',bsfcp:'—',
+  pills:[{l:'W1A · D0',c:'pl-a'},{l:'Bridge Org',c:'pl-b'},{l:'Spore-Forming',c:'pl-gr'}],
+  wd:['D0','D3','D7','D14','D21'],ws:['active','active','active','fade','inactive'],
+  contribs:[
+    {label:'pH Bridge Range',val:'5.0–8.5',unit:'wider than Lactobacillus',cls:'a'},
+    {label:'P Mobilised',val:'+0.02–0.05%',unit:'P DM (gluconic acid)',cls:'g'},
+    {label:'Lactic Acid Backup',val:'Active',unit:'when Lactobacillus stressed',cls:'t'},
+    {label:'Endospore Survival',val:'>80°C',unit:'thermal tolerance',cls:'t'},
+  ],
+  bars:[{l:'pH Bridging',v:55,c:'var(--amber)'},{l:'P Solubilisation (secondary)',v:28,c:'var(--green)'},{l:'Thermal Resilience',v:75,c:'var(--teal)'}],
+  desc:`<strong>Bacillus coagulans</strong> is the bridge organism active at higher temperatures than Lactobacillus but producing similar lactic acid. It fills the pH-control niche between pure LAB (25–40°C) and thermophiles (50–65°C), operating from <em>30–55°C</em>.<p>Its spore-forming ability means it survives pH swings from 5–8.5 and short temperature spikes — acting as a safety net for pH stability when Lactobacillus is stressed. Its gluconic acid production also contributes secondary P-solubilisation.</p>`,
+  mech:`Homofermentative lactic acid producer under anaerobic zones; facultative aerobe otherwise. Gluconic acid pathway: glucose + O2 → gluconic acid + H2O2 (via membrane-bound GDH). Gluconic acid chelates Fe³⁺ and Al³⁺, releasing bound HPO4²⁻ from soil mineral complexes. Endospore: dipicolinic acid + calcium complex in spore core provides thermotolerance above 80°C.`},
+
+{id:6,sec:'Wave 1A Fungi — Rhizopus First, Then Aspergillus',
+  name:'Rhizopus oligosporus',icbb:'Tempeh strain',
+  cat:'fungi',catLabel:'Fungi · Protein',wave:'W1A D0 — FIRST',waveFull:'Wave 1A · Day 0 — BEFORE Trichoderma',
+  temp:'28–37°C',tempColor:'var(--green)',role:'Mycelial Protein Biosynthesis + Phytase (P Release)',
+  row:'alg',bsf:'✓',bsfColor:'var(--green)',flag:'NEW — Mar 2026',flagCls:'new',
+  n:'—',p:'+0.02–0.05%',lig:0,ligStr:'—',cp:'+2–5% DM',bsfcp:'+2–5%',
+  pills:[{l:'Protein Fungi',c:'pl-g'},{l:'W1A — FIRST',c:'pl-t'},{l:'Vulnerable to Tricho',c:'pl-r'},{l:'NEW Mar 2026',c:'pl-b'}],
+  wd:['D0','D1','D2','D3','D5'],ws:['active','peak','peak','danger','fade'],
+  contribs:[
+    {label:'CP Uplift',val:'+2–5%',unit:'DM basis by Day 5',cls:'g'},
+    {label:'Protease Activity',val:'15–30 U/g',unit:'DM (azocasein assay)',cls:'a'},
+    {label:'Phytase (P Release)',val:'+0.02–0.05%',unit:'P DM',cls:'g'},
+    {label:'Lipase',val:'Detectable',unit:'fat accessibility for BSF',cls:'t'},
+  ],
+  bars:[{l:'Protein Biosynthesis (mycelium)',v:80,c:'var(--green)'},{l:'P Bioavailability (phytase)',v:40,c:'var(--amber)'},{l:'Fibre Binding Cohesion',v:65,c:'var(--teal)'}],
+  desc:`<strong>Rhizopus oligosporus</strong> is the tempeh fungus — one of the most powerful protein-enriching organisms in the CFI library. In traditional tempeh it converts raw soybeans into a dense mycelial cake with dramatically improved protein bioavailability. In S3 it does the same to EFB fibres.<p>Its hyphae physically penetrate and <em>bind EFB fibres into a cohesive matrix</em> while producing protease, lipase, and phytase that break down protein-lignin bonds and release bound phosphorus. Crude protein increases <em>+2–5% DM</em> by Day 5 — fungal biomass protein synthesised from EFB nitrogen and carbon.</p><p><em>Critical timing:</em> Rhizopus MUST establish visible white mycelium ("tempeh fuzz") for <strong>48–72 hours BEFORE Trichoderma is added</strong>. Trichoderma is a mycoparasite that will destroy Rhizopus if added simultaneously.</p>`,
+  mech:`Glucoamylase, protease (subtilisin-type), lipase, and acid phytase (EC 3.1.3.26) secreted extracellularly. Hyphae grow through EFB fibre bundles at 1–3 mm/hour. Phytase hydrolyses phytate (IP6) → IP5 → inorganic phosphate — releasing bound P unavailable to plants. Net BSF impact: substrate entering S4 contains 2–5% more bioavailable protein per DM. White mycelium visual gate is mandatory before Wave 1B Trichoderma application (ref: Gupta et al. 2019, Biological Control 134: 80–89).`},
+
+{id:7,sec:null,
+  name:'Aspergillus niger',icbb:'Commercial',
+  cat:'fungi',catLabel:'Fungi · Cellulase',wave:'W1A · D0',waveFull:'Wave 1A · Day 0 — PPE required',
+  temp:'30–37°C',tempColor:'var(--amber)',role:'Deep Fibre Cleavage + Citric Acid P Mobilisation',
+  row:'alg',bsf:'✓',bsfColor:'var(--green)',
+  n:'—',p:'+0.02–0.04%',lig:12,ligStr:'−8–15%',cp:'Indirect',bsfcp:'Indirect',
+  pills:[{l:'W1A · D0',c:'pl-a'},{l:'Fungi',c:'pl-gr'},{l:'Cellulase Suite',c:'pl-t'},{l:'PPE Required',c:'pl-r'}],
+  wd:['D0','D1','D3','D5','D7','D14'],ws:['active','active','peak','active','active','fade'],
+  contribs:[
+    {label:'NDF Reduction',val:'8–15%',unit:'DM by Day 7',cls:'g'},
+    {label:'CMCase Activity',val:'10–25 U/g',unit:'DM',cls:'a'},
+    {label:'P Released (citric acid)',val:'+0.02–0.04%',unit:'P DM',cls:'g'},
+    {label:'Pectinase Activity',val:'5–15 U/g',unit:'DM',cls:'t'},
+  ],
+  bars:[{l:'Fibre Deconstruction',v:72,c:'var(--teal)'},{l:'P Mobilisation (citric)',v:42,c:'var(--green)'},{l:'Synergy With Rhizopus',v:80,c:'var(--amber)'}],
+  desc:`<strong>Aspergillus niger</strong> is the industrial workhorse fungus — source of most commercial cellulase and pectinase preparations. In CFI S3 it provides direct enzymatic attack on the EFB fibre structure, working synergistically with Rhizopus to break open the lignocellulose matrix.<p>Its cellulase, xylanase, and pectinase suite attacks the full fibre hierarchy. Pectinase dissolves the pectin-lignin interface first; xylanase strips the hemicellulose shield; cellulase attacks exposed cellulose. Combined NDF reduction is <em>8–15% DM</em> by Day 7.</p><p>A. niger also produces <em>citric acid</em> which chelates iron/aluminium, mobilising bound phosphorus. <strong>Safety note:</strong> black conidia (spores) are respiratory sensitisers — P2/N95 mask + gloves mandatory at all inoculation events.</p>`,
+  mech:`Endoglucanase + cellobiohydrolase + β-glucosidase (full cellulase complex). Xylanase depolymerises xylan backbone. Pectinase (polygalacturonase + pectin lyase) dissolves pectin bridges. Citric acid via TCA cycle overflow: excess glucose → citrate accumulation → secretion. Citric acid chelates Fe³⁺/Al³⁺, releasing HPO4²⁻. Result: Day 0 NDF ~68% DM → Day 7 NDF ~53–60% DM.`},
+
+{id:8,sec:'Wave 1B — Day 3+ · Only After Rhizopus White Fuzz Confirmed',
+  name:'Trichoderma harzianum',icbb:'ICBB 9127',
+  cat:'fungi biocontrol',catLabel:'Fungi · Biocontrol',wave:'W1B · D3+',waveFull:'Wave 1B · Day 3+ ONLY (9-org) · Wave 1 Day 0 (standard)',
+  temp:'25–35°C',tempColor:'var(--green)',role:'Ganoderma Biocontrol + Peak Cellulase — MANDATORY for Plantations',
+  row:'wrn',bsf:'✓',bsfColor:'var(--green)',flag:'MANDATORY — All Plantations',flagCls:'mandatory',
+  n:'—',p:'—',lig:15,ligStr:'−10–20%',cp:'Indirect',bsfcp:'Indirect',
+  pills:[{l:'MANDATORY',c:'pl-r'},{l:'Ganoderma Kill',c:'pl-r'},{l:'W1B D3+',c:'pl-t'},{l:'CMCase Peak 20–35 U/g',c:'pl-a'}],
+  wd:['D0','D1','D3','D5','D7','D14'],ws:['inactive','inactive','active','peak','active','fade'],
+  contribs:[
+    {label:'ADL Lignin Reduction',val:'10–20%',unit:'DM by Day 14',cls:'g'},
+    {label:'CMCase (Peak)',val:'20–35 U/g',unit:'DM — highest in library',cls:'a'},
+    {label:'Xylanase Activity',val:'12–22 U/g',unit:'DM',cls:'t'},
+    {label:'Ganoderma Inhibition',val:'>10mm halo',unit:'PDA plate test',cls:'g'},
+  ],
+  bars:[{l:'Ganoderma Biocontrol',v:92,c:'var(--red)'},{l:'Cellulase (highest in library)',v:88,c:'var(--amber)'},{l:'ADL Lignin Reduction',v:65,c:'var(--green)'}],
+  desc:`<strong>Trichoderma harzianum</strong> is the single non-negotiable organism in the CFI system. <em>No major Indonesian plantation company will accept compost without Ganoderma biocontrol certification.</em> PTPN, Lonsum, Sinar Mas SMART, and Astra Agro all require it.<p>Ganoderma boninense causes Basal Stem Rot — the #1 yield-destroying disease in oil palm, causing 50–80% yield loss with no cure once established. Trichoderma colonises palm roots before Ganoderma can, producing lytic enzymes that directly destroy Ganoderma hyphae.</p><p>Beyond biocontrol, Trichoderma produces the <em>most aggressive cellulase complex in the library</em> — CMCase 20–35 U/g DM at peak, plus xylanase 12–22 U/g. ADL reduced 10–20% DM by Day 14.</p>`,
+  mech:`Mycoparasitism: Trichoderma hyphae recognise Ganoderma via lectin-sugar recognition, coil around them, and secrete chitinase + β-1,3-glucanase — Ganoderma hyphae lyse within 24–48h. Cellulase complex: CBH I (Cel7A) + CBH II (Cel6A) + EG (Cel7B/12A) + BG (Cel3A) — among highest specific activities in the fungal kingdom. Green spore pigmentation (viridiol) visible Day 5–10 confirms active sporulation and successful colonisation.`},
+
+{id:9,sec:'Lignin Fungi — White-Rot Specialists',
+  name:'Phanerochaete sp.',icbb:'ICBB 9182',
+  cat:'fungi',catLabel:'Fungi · White-Rot',wave:'W1 · D0',waveFull:'Wave 1 · Day 0',
+  temp:'25–42°C',tempColor:'var(--greyMd)',role:'Primary White-Rot Lignin Destroyer — LiP + MnP + Laccase',
+  row:'',bsf:'✓',bsfColor:'var(--green)',
+  n:'—',p:'—',lig:20,ligStr:'−15–25%',cp:'—',bsfcp:'Indirect',
+  pills:[{l:'Wave 1 · D0',c:'pl-a'},{l:'White-Rot',c:'pl-g'},{l:'LiP + MnP + Laccase',c:'pl-t'}],
+  wd:['D0','D3','D7','D14','D21'],ws:['active','active','active','active','fade'],
+  contribs:[
+    {label:'ADL Lignin Reduction',val:'15–25%',unit:'DM by Day 21',cls:'g'},
+    {label:'LiP Activity',val:'10–50 nmol/min',unit:'per g DM',cls:'a'},
+    {label:'Cellulose Preserved',val:'Selective',unit:'lignin-preferential',cls:'t'},
+    {label:'Laccase Activity',val:'5–25 U/g',unit:'DM',cls:'t'},
+  ],
+  bars:[{l:'Lignin Degradation (selective)',v:82,c:'var(--purple)'},{l:'Cellulose Preservation',v:75,c:'var(--teal)'},{l:'Enzyme System Diversity',v:90,c:'var(--amber)'}],
+  desc:`<strong>Phanerochaete sp.</strong> (ICBB 9182) is the most powerful lignin-degrading organism in the CFI library. White-rot basidiomycetes are the <em>only organisms in nature that can completely mineralise lignin</em> — a polymer otherwise nearly inert to biological attack.<p>It produces three complementary oxidative enzyme systems: Lignin Peroxidase (LiP) for non-phenolic aromatic ring cleavage, Mn-dependent Peroxidase (MnP) for phenolic lignin oxidation, and Laccase for phenolic radical cycling. Together: <em>15–25% ADL reduction</em> by Day 21.</p><p>Unlike Trichoderma's aggressive cellulase attack, Phanerochaete preferentially attacks lignin while <em>largely preserving cellulose</em> — leaving maximum carbohydrate available for BSF digestion.</p>`,
+  mech:`LiP (EC 1.11.1.14): H2O2-dependent oxidation of non-phenolic β-O-4 lignin units → aryl cation radicals. MnP (EC 1.11.1.13): oxidises Mn²⁺ → Mn³⁺ chelated by malonate; Mn³⁺ chelate oxidises phenolic lignin — diffuses into substrate matrix. Laccase (EC 1.10.3.2): copper oxidase, reduces O2 to H2O while oxidising phenols. Mediator system (veratryl alcohol) extends laccase activity to non-phenolic structures.`},
+
+{id:10,sec:null,
+  name:'Pleurotus ostreatus',icbb:'—',
+  cat:'fungi',catLabel:'Fungi · Selective',wave:'W1 · D0',waveFull:'Wave 1 · Day 0',
+  temp:'20–28°C',tempColor:'var(--greyMd)',role:'Selective Lignin Degrader — Cellulose Preserved · Cheapest White-Rot',
+  row:'',bsf:'⚠',bsfColor:'var(--amber)',
+  n:'—',p:'—',lig:14,ligStr:'−13–16%',cp:'—',bsfcp:'220–240 kg/t',
+  pills:[{l:'Wave 1 · D0',c:'pl-a'},{l:'Lignin-Selective',c:'pl-g'},{l:'Cheapest $0.30/kg',c:'pl-g'},{l:'BSF Caution',c:'pl-r'}],
+  wd:['D0','D3','D7','D14','D21'],ws:['active','active','active','active','fade'],
+  contribs:[
+    {label:'Lignin Reduction',val:'13–16%',unit:'DM by Day 21',cls:'g'},
+    {label:'Cellulose Retained',val:'>85%',unit:'of input cellulose',cls:'t'},
+    {label:'Larvae Yield (with Azotob.)',val:'220–240 kg',unit:'per tonne substrate',cls:'a'},
+    {label:'Cost',val:'$0.30/kg',unit:'retail Tokopedia',cls:'g'},
+  ],
+  bars:[{l:'Lignin Selectivity',v:78,c:'var(--green)'},{l:'Cellulose Preservation',v:85,c:'var(--teal)'},{l:'Cost Efficiency',v:95,c:'var(--amber)'}],
+  desc:`<strong>Pleurotus ostreatus</strong> (oyster mushroom) is the most cost-effective white-rot fungus at $0.30/kg retail from Tokopedia. It is highly selective: primarily attacking lignin while sparing cellulose, ideal for maximising BSF-accessible substrate.<p>Combined with Azotobacter in the "Biggest BSF" stack, larval yields reach <em>220–240 kg/t substrate</em> — the highest in the CFI consortium library.</p><p><strong>BSF caution:</strong> Pleurotus spores can compete with BSF gut microbiome. Do NOT inoculate after BSF introduction. S3 composting phase only.</p>`,
+  mech:`Selective delignification via laccase (EC 1.10.3.2) and versatile peroxidase (VP). Prefers phenolic over non-phenolic lignin subunits. Selectivity coefficient (lignin:cellulose degradation ratio) >3:1 for Pleurotus vs ~1:1 for Phanerochaete chrysosporium. High cellobiose dehydrogenase activity protects cellulose from oxidative damage. Net result: lignin matrix opens while cellulose microfibrils remain largely intact and BSF-accessible.`},
+
+{id:11,sec:'Wave 2 — Day 5+ · Apply Only After Substrate Cools Below 50°C',
+  name:'Azotobacter vinelandii',icbb:'ICBB 9098',
+  cat:'bacteria nfixer',catLabel:'Bacteria · N-Fixer',wave:'W2 · D5+ ONLY',waveFull:'Wave 2 · Day 5+ ONLY — dies above 50°C',
+  temp:'<50°C GATE',tempColor:'var(--red)',role:'Free-Living N₂ Fixer — Pulls Nitrogen From Atmosphere',
+  row:'w2',bsf:'✓',bsfColor:'var(--green)',
+  n:'+10–20 mg/kg/day',p:'—',lig:0,ligStr:'—',cp:'+0.2–0.4% DM',bsfcp:'+0.2–0.4%',
+  pills:[{l:'Wave 2 · D5+',c:'pl-t'},{l:'N-Fixer',c:'pl-b'},{l:'<50°C HARD GATE',c:'pl-r'},{l:'Free N From Air',c:'pl-g'}],
+  wd:['D0','D1','D3','D5','D7','D14','D21'],ws:['inactive','inactive','inactive','active','peak','active','active'],
+  contribs:[
+    {label:'N Fixed Per Day',val:'10–20 mg',unit:'N / kg DM / day',cls:'g'},
+    {label:'N Over 21 Days',val:'+0.2–0.4%',unit:'N DM total',cls:'g'},
+    {label:'Free N Value',val:'$1.50–3',unit:'per t FW at urea price',cls:'a'},
+    {label:'Source',val:'Atmosphere',unit:'$0 cost to CFI or farmer',cls:'g'},
+  ],
+  bars:[{l:'N Fixation Rate (highest free-living)',v:75,c:'var(--blue)'},{l:'N Dollar Value Added',v:60,c:'var(--green)'},{l:'Temp Sensitivity Risk',v:70,c:'var(--red)'}],
+  desc:`<strong>Azotobacter vinelandii</strong> performs one of the most economically valuable services in biology: converting <em>dinitrogen gas (N₂) from the atmosphere</em> into ammonium (NH4⁺) at no cost. At peak rate of <em>10–20 mg N fixed per kg substrate per day</em>, over 21-day S3 conditioning this adds approximately <em>0.2–0.4% N DM</em>.<p>At urea prices ($0.761/kg N), this represents <em>$1.50–3.00/t FW</em> of free fertiliser value.</p><p><strong>Temperature is the hard gate:</strong> nitrogenase is irreversibly denatured above 50°C. Must only be applied when substrate has cooled below 50°C. pH must be 6.0–7.5 — Lactobacillus must have neutralised from PKSA alkalinity.</p>`,
+  mech:`Nitrogenase complex: MoFe-protein (dinitrogenase) + Fe-protein (dinitrogenase reductase). Reaction: N2 + 8H⁺ + 8e⁻ + 16 ATP → 2NH3 + H2 + 16 ADP + 16 Pi. O2 protection: alginate capsule + high respiratory rate consumes local O2 before it can inactivate nitrogenase. NH4⁺ excreted into substrate. Confirmed by ARA assay (acetylene reduction assay — gold standard) and nifH gene qPCR (Ct <30).`},
+
+{id:12,sec:null,
+  name:'Azospirillum lipoferum',icbb:'ICBB 6088',
+  cat:'bacteria nfixer',catLabel:'Bacteria · N-Fixer',wave:'W2 · D5+',waveFull:'Wave 2 · Day 5+',
+  temp:'<50°C',tempColor:'var(--greyMd)',role:'Associative N-Fixer + IAA Phytohormone — Root Branching',
+  row:'w2',bsf:'✓',bsfColor:'var(--green)',
+  n:'+3–5 mg/kg/day',p:'—',lig:0,ligStr:'—',cp:'IAA +20–30%',bsfcp:'—',
+  pills:[{l:'Wave 2 · D5+',c:'pl-t'},{l:'N-Fixer',c:'pl-b'},{l:'IAA Hormone',c:'pl-b'}],
+  wd:['D0','D1','D3','D5','D7','D14'],ws:['inactive','inactive','inactive','active','peak','active'],
+  contribs:[
+    {label:'N Fixed Per Day',val:'3–5 mg',unit:'N / kg DM / day',cls:'g'},
+    {label:'IAA Hormone',val:'1–5 µg/mL',unit:'substrate',cls:'t'},
+    {label:'Root Branching',val:'+20–30%',unit:'lateral root density',cls:'g'},
+    {label:'Pairs With Azotobacter',val:'Complementary',unit:'spatial + temporal niches',cls:'a'},
+  ],
+  bars:[{l:'N Fixation Rate',v:40,c:'var(--blue)'},{l:'IAA Hormone Output',v:65,c:'var(--purple)'},{l:'Crop N Uptake Enhancement',v:70,c:'var(--green)'}],
+  desc:`<strong>Azospirillum lipoferum</strong> is an associative diazotroph with a dual contribution: N-fixation (3–5 mg N/kg/day) plus <em>IAA (indole-3-acetic acid)</em> production — a phytohormone that stimulates root branching and growth.<p>When applied as a compost inoculant, IAA triggers lateral root proliferation — increasing the soil volume explored for nutrients. Plants grown in Azospirillum-inoculated compost develop <em>20–30% more lateral roots</em>, improving NPK uptake efficiency from the compost.</p>`,
+  mech:`nifH-encoded nitrogenase for N2 fixation (same mechanism as Azotobacter at lower rate). IAA biosynthesis: tryptophan → indole-3-pyruvate → IAA (Trp-dependent IPyA pathway). Gibberellin A3 and cytokinin production secondary. Azospirillum colonises root surface (rhizoplane) preferentially — hence "associative" vs Azotobacter's "free-living" classification. Root surface colonisation confirmed by scanning electron microscopy in palm root studies.`},
+
+{id:13,sec:null,
+  name:'Pseudomonas fluorescens',icbb:'—',
+  cat:'bacteria psolubiliser biocontrol',catLabel:'Bacteria · P-Sol',wave:'W2 · D7+',waveFull:'Wave 2 · Day 7+',
+  temp:'25–30°C',tempColor:'var(--greyMd)',role:'P-Solubiliser (Gluconic Acid) + HCN Ganoderma Control',
+  row:'w2',bsf:'✓',bsfColor:'var(--green)',
+  n:'—',p:'+0.04–0.08%',lig:0,ligStr:'—',cp:'—',bsfcp:'—',
+  pills:[{l:'Wave 2 · D7+',c:'pl-t'},{l:'P-Solubiliser',c:'pl-b'},{l:'HCN Biocontrol',c:'pl-r'}],
+  wd:['D0','D7','D14','D21'],ws:['inactive','active','peak','active'],
+  contribs:[
+    {label:'P Released (Ultisol)',val:'+0.04–0.08%',unit:'P DM',cls:'g'},
+    {label:'P Bioavailability',val:'2–3×',unit:'vs unfertilised soil',cls:'g'},
+    {label:'Ganoderma HCN Control',val:'Active',unit:'respiratory block',cls:'t'},
+    {label:'2,4-DAPG Antibiotic',val:'Active',unit:'Fusarium + Pythium',cls:'a'},
+  ],
+  bars:[{l:'P Solubilisation',v:68,c:'var(--blue)'},{l:'Ganoderma HCN Control',v:55,c:'var(--red)'},{l:'Broad Pathogen Suppression',v:62,c:'var(--green)'}],
+  desc:`<strong>Pseudomonas fluorescens</strong> delivers a dual service: phosphate solubilisation and Ganoderma biocontrol via a completely different mechanism than Trichoderma.<p>P-solubilisation via gluconic acid chelation releases bound phosphate from Fe-Al-P complexes common in Indonesian Ultisols and Oxisols — plant-available P increases <em>2–3×</em> per unit of applied P.</p><p>Ganoderma control uses <em>hydrogen cyanide (HCN)</em> — a volatile compound that directly inhibits Ganoderma respiratory enzymes (cytochrome c oxidase). Complementary to Trichoderma's mycoparasitism — two independent attack pathways on the same disease.</p>`,
+  mech:`2-Ketogluconate pathway: glucose → gluconate (GDH) → 2-ketogluconate (2-KGA). Proton + organic acid chelation dissolves FePO4, AlPO4, Ca3(PO4)2. HCN synthase: glycine + O2 → HCN + CO2 + H2O. HCN inhibits cytochrome c oxidase (complex IV) in Ganoderma mitochondria — aerobic respiration blocked. 2,4-DAPG (diacetylphloroglucinol): disrupts plasma membrane integrity of Fusarium and Pythium.`},
+
+{id:14,sec:null,
+  name:'Bacillus megaterium',icbb:'—',
+  cat:'bacteria psolubiliser',catLabel:'Bacteria · P-Sol',wave:'W2 · D7+',waveFull:'Wave 2 · Day 7+',
+  temp:'25–37°C',tempColor:'var(--greyMd)',role:'Phosphate Solubiliser (Gluconic Acid) + PGPR',
+  row:'w2',bsf:'✓',bsfColor:'var(--green)',
+  n:'—',p:'+0.03–0.06%',lig:0,ligStr:'—',cp:'—',bsfcp:'—',
+  pills:[{l:'Wave 2 · D7+',c:'pl-t'},{l:'P-Solubiliser',c:'pl-b'},{l:'PGPR',c:'pl-gr'}],
+  wd:['D0','D7','D14','D21'],ws:['inactive','active','peak','active'],
+  contribs:[
+    {label:'P Solubilised',val:'+0.03–0.06%',unit:'P DM in substrate',cls:'g'},
+    {label:'P Bioavailability',val:'2–2.5×',unit:'vs mineral P alone',cls:'a'},
+    {label:'PSI (Pikovskaya agar)',val:'>3',unit:'high solubilisation index',cls:'g'},
+    {label:'Cytokinin (PGPR)',val:'Active',unit:'root growth hormone',cls:'t'},
+  ],
+  bars:[{l:'P Solubilisation Efficiency',v:60,c:'var(--blue)'},{l:'Gluconic Acid Output',v:55,c:'var(--green)'},{l:'Rhizosphere Persistence',v:70,c:'var(--teal)'}],
+  desc:`<strong>Bacillus megaterium</strong> is among the most studied phosphate-solubilising bacteria. It produces gluconic acid by oxidising glucose, dissolving tricalcium phosphate Ca₃(PO₄)₂ and iron phosphate complexes common in Indonesian palm soils.<p>In Indonesian Ultisols and Oxisols, <em>60–90% of applied phosphorus is typically fixed as insoluble complexes</em> within hours of soil application. Bacillus megaterium continuously releases this bound P back into plant-available form. Works additively with Pseudomonas fluorescens.</p>`,
+  mech:`Direct glucose oxidation: glucose → gluconate (via membrane-bound GDH) → 2-ketogluconate. Strong H⁺ + carboxyl group coordination attack on FePO4 and AlPO4 lattice structures. PSI (P-solubilisation index) on Pikovskaya agar: >3 = high solubiliser class. Cytokinin (zeatin-type) production contributes to PGPR effect. Combined with Pseudomonas: additive P-solubilisation via independent organic acid types.`},
+
+{id:15,sec:null,
+  name:'Streptomyces sp. (2 strains)',icbb:'ICBB 9155 + 9469',
+  cat:'bacteria',catLabel:'Actinomycete',wave:'W2 · D14–21',waveFull:'Wave 2 · Day 14–21 — Final Pathogen Control Dose',
+  temp:'25–37°C',tempColor:'var(--greyMd)',role:'Broad-Spectrum Antibiotic + Late-Phase Lignocellulose',
+  row:'w2',bsf:'✓',bsfColor:'var(--green)',
+  n:'—',p:'—',lig:5,ligStr:'−3–8%',cp:'—',bsfcp:'—',
+  pills:[{l:'Actinomycete',c:'pl-gr'},{l:'Wave 2 Final',c:'pl-t'},{l:'Antibiotic PKS+NRPS',c:'pl-r'},{l:'Earthy Aroma = Active',c:'pl-g'}],
+  wd:['D0','D7','D14','D21'],ws:['inactive','inactive','active','peak'],
+  contribs:[
+    {label:'Pathogen Suppression',val:'Broad-spectrum',unit:'Salmonella · Fusarium · Phytophthora',cls:'g'},
+    {label:'Antibiotic Classes',val:'PKS + NRPS',unit:'polyketide + peptide',cls:'a'},
+    {label:'Earthy Aroma (geosmin)',val:'Maturity indicator',unit:'positive sign Day 14+',cls:'t'},
+    {label:'Late Cellulase',val:'3–8 U/g',unit:'DM — supplementary',cls:'gr'},
+  ],
+  bars:[{l:'Pathogen Suppression',v:72,c:'var(--red)'},{l:'Antibiotic Breadth',v:80,c:'var(--purple)'},{l:'Late-Phase Lignocellulose',v:35,c:'var(--amber)'}],
+  desc:`<strong>Streptomyces sp.</strong> (two complementary ICBB strains: 9155 + 9469) are actinomycetes producing the widest range of antibiotics of any genus. The characteristic <em>earthy petrichor smell</em> of mature healthy compost is geosmin produced by Streptomyces — a reliable positive maturity indicator detectable at 5 parts per trillion.<p>Applied as a final dose Day 14–21, their role is <em>broad-spectrum antibiotic production</em> that suppresses residual Salmonella, Fusarium, and Phytophthora before BSF handoff. Two strains were selected for complementary antibiotic profiles — ensuring no pathogen escapes either coverage zone.</p>`,
+  mech:`Secondary metabolite biosynthesis via PKS (polyketide synthase) and NRPS (non-ribosomal peptide synthetase) pathways. Streptomycin (aminoglycoside — inhibits prokaryote 30S ribosome), natamycin (polyene — disrupts fungal membrane ergosterol), cycloheximide (inhibits eukaryote 60S ribosome). Chitinase production additionally attacks fungal pathogens. Geosmin (C12H22O): biosynthesised via germacradienol synthase from farnesyl pyrophosphate — detected by humans at 5 ppt, indicating active Streptomyces.`},
+
+{id:16,sec:'Enzymes — Industrial Grade · Immediate Action · No Lag Time',
+  name:'Cellulase (T. reesei)',icbb:'EC 3.2.1.4',
+  cat:'enzyme',catLabel:'Enzyme',wave:'W1 · D0',waveFull:'Wave 1 · Day 0 — Instant Activity',
+  temp:'45–55°C',tempColor:'var(--greyMd)',role:'β-1,4-Glycosidic Bond Cleavage — +35–45% IVDMD',
+  row:'',bsf:'✓',bsfColor:'var(--green)',
+  n:'—',p:'—',lig:0,ligStr:'—',cp:'IVDMD +35–45%',bsfcp:'+35–45%',
+  pills:[{l:'Enzyme',c:'pl-gr'},{l:'Wave 1 · D0',c:'pl-a'},{l:'IVDMD +35–45%',c:'pl-g'},{l:'Instant Action',c:'pl-t'}],
+  wd:['D0','D1','D3','D7','D14'],ws:['active','peak','active','fade','inactive'],
+  contribs:[
+    {label:'IVDMD Increase',val:'+35–45%',unit:'in vitro digestibility',cls:'g'},
+    {label:'NDF Reduction',val:'10–18%',unit:'DM vs Day 0',cls:'a'},
+    {label:'Glucose Released',val:'Immediate',unit:'Day 0 — no lag',cls:'t'},
+    {label:'BSF FCR Improvement',val:'0.3–0.5',unit:'feed conversion ratio',cls:'g'},
+  ],
+  bars:[{l:'Digestibility Improvement',v:90,c:'var(--green)'},{l:'Speed of Action',v:95,c:'var(--teal)'},{l:'NDF Reduction',v:65,c:'var(--amber)'}],
+  desc:`<strong>Cellulase (Trichoderma reesei)</strong> is the industrial enzyme standard used globally in bioethanol, paper, and animal feed industries. In CFI S3 it provides <em>immediate, consistent cellulose hydrolysis from Day 0</em> without requiring fungal establishment time.<p>The enzyme system comprises three synergistic components: endoglucanase (attacks internal bonds) → cellobiohydrolase (processes chain ends) → β-glucosidase (cleaves cellobiose to glucose). Together they increase <em>IVDMD by 35–45%</em> — directly translating to higher BSF feed conversion efficiency.</p>`,
+  mech:`Endo-β-1,4-glucanase (Cel7B): random hydrolysis of internal β-1,4-glycosidic bonds, creating new chain ends. Cellobiohydrolase I (Cel7A) + II (Cel6A): processively release cellobiose from reducing and non-reducing chain ends. β-glucosidase (Cel3A): converts cellobiose → 2 glucose, eliminating product inhibition. Synergism factor: the three enzymes together achieve 3–5× the activity of any single component alone.`},
+
+{id:17,sec:null,
+  name:'Xylanase',icbb:'EC 3.2.1.8',
+  cat:'enzyme',catLabel:'Enzyme',wave:'W1 · D0',waveFull:'Wave 1 · Day 0',
+  temp:'40–55°C',tempColor:'var(--greyMd)',role:'Hemicellulose Shield Removal — Opens Cellulose Access',
+  row:'',bsf:'✓',bsfColor:'var(--green)',
+  n:'—',p:'—',lig:0,ligStr:'—',cp:'NDF −3–8%',bsfcp:'Indirect',
+  pills:[{l:'Enzyme',c:'pl-gr'},{l:'Wave 1 · D0',c:'pl-a'},{l:'Hemi Shield',c:'pl-t'},{l:'2–3× Synergy',c:'pl-g'}],
+  wd:['D0','D1','D3','D7'],ws:['active','peak','active','fade'],
+  contribs:[
+    {label:'Cellulose Surface Exposed',val:'+25–40%',unit:'accessible area',cls:'g'},
+    {label:'NDF Reduction (hemi)',val:'3–8%',unit:'DM hemicellulose removed',cls:'a'},
+    {label:'Xylose Released',val:'Fermentable',unit:'BSF + Saccharomyces',cls:'t'},
+    {label:'Cellulase Synergy',val:'2–3×',unit:'combined vs single enzyme',cls:'g'},
+  ],
+  bars:[{l:'Hemicellulose Removal',v:78,c:'var(--teal)'},{l:'Synergy With Cellulase',v:85,c:'var(--green)'},{l:'Xylose Sugar Release',v:65,c:'var(--amber)'}],
+  desc:`<strong>Xylanase</strong> attacks hemicellulose — the polymer that acts as a <em>physical shield around cellulose microfibrils</em> in EFB cell walls. Without xylanase, cellulase cannot efficiently reach the crystalline cellulose core. The two enzymes are powerfully synergistic.<p>EFB hemicellulose is primarily xylan. Xylanase hydrolyses it into xylo-oligosaccharides and xylose — accessible carbon sources for BSF larvae and for fermentation by Saccharomyces. Combined treatment achieves <em>25–40% greater substrate accessible surface area</em> than cellulase alone.</p>`,
+  mech:`Endo-β-1,4-xylanase (EC 3.2.1.8): cleaves internal β-1,4-xylosidic bonds in xylan backbone → xylo-oligosaccharides. β-xylosidase: xylo-oligomers → xylose. α-arabinofuranosidase: removes arabinose side chains, improving xylanase processivity. Exposed cellulose surface area (m²/g substrate) increases 25–40% post-treatment. Synergism: removes physical barrier, allowing cellulase to access previously inaccessible crystalline cellulose regions.`},
+
+{id:18,sec:'Algae — Stream B Hydration · Pre-Wave 1A · $0 OpEx',
+  name:'Arthrospira platensis (Spirulina)',icbb:'Stream B Primary',
+  cat:'algae',catLabel:'Algae · Stream B',wave:'Pre-W1 Hydration',waveFull:'Stream B · Applied as 1,850L Hydration Liquor Before Wave 1A',
+  temp:'25–38°C',tempColor:'var(--green)',role:'BSF Neonate Starter Protein — BSF Meal 45% → 56% CP · $0 OpEx',
+  row:'alg',bsf:'✓',bsfColor:'var(--green)',flag:'NEW — Mar 2026 · $0 OpEx',flagCls:'new',
+  n:'0.15%DM direct',p:'+POME treat',lig:0,ligStr:'—',cp:'+11% BSF CP',bsfcp:'45%→56%',
+  pills:[{l:'Stream B · Primary',c:'pl-g'},{l:'$0 OpEx',c:'pl-g'},{l:'+22% Neonates',c:'pl-t'},{l:'BSF CP 56%',c:'pl-a'},{l:'NEW Mar 2026',c:'pl-b'}],
+  wd:['Pre','D0','D1'],ws:['active','fade','inactive'],
+  contribs:[
+    {label:'BSF Neonate Survival',val:'+22%',unit:'vs no algae baseline',cls:'g'},
+    {label:'BSF Meal CP',val:'45% → 56%',unit:'DM final product',cls:'g'},
+    {label:'FCR Improvement',val:'−0.7',unit:'feed conversion ratio',cls:'g'},
+    {label:'Direct Protein Added',val:'+1.50 kg',unit:'pure protein / t EFB DM',cls:'a'},
+    {label:'BSF Market Value',val:'$4,500–6,500',unit:'per tonne petfood premium',cls:'a'},
+    {label:'POME BOD Reduction',val:'40–55%',unit:'environmental co-benefit',cls:'t'},
+  ],
+  bars:[{l:'BSF Neonate Survival Boost',v:88,c:'var(--green)'},{l:'BSF Meal CP Uplift',v:95,c:'var(--amber)'},{l:'Economic ROI',v:98,c:'var(--teal)'}],
+  desc:`<strong>Arthrospira platensis (Spirulina)</strong> is grown on-site in shallow POME raceway ponds using <em>free tropical sunlight and POME as nutrient medium</em>. Zero ongoing cost — $0 OpEx. CapEx only (~$32,400). Payback under 6 months at $3,500/t BSF meal premium.<p>Rather than adding plain water to bring EFB from 35–40% moisture to BSF-optimal 65%, CFI adds <em>1,850 L of Spirulina-POME slurry per tonne EFB DM</em>. This delivers 2.31 kg DM algae containing 1.50 kg of pure protein — packed with methionine and lysine, the exact amino acids deficient in raw EFB.</p><p>The mechanism is biological leverage: algae protein acts as a <em>neonate BSF starter feed</em>. Baby BSF larvae gorge on soft Spirulina cells in their first 48 hours, boosting survival by +22%. Net result: BSF meal CP jumps from 45% to <em>56% DM</em> — moving from standard feed grade ($950/t) to premium aquafeed/petfood grade (<em>$4,500–6,500/t</em>).</p>`,
+  mech:`Single-cell protein (SCP) delivery: Spirulina cells (1–2 µm, no cell wall) consumed whole by BSF neonates within first 48h. 65% CP (phycocyanin + allophycocyanin proteins). High Met + Lys fills EFB amino acid deficit. Chlorophyll enhances BSF gut microbiome diversity (confirmed by 16S rRNA sequencing, Holman et al. 2012). POME BOD/COD reduced 40–55% by algae culture — simultaneous wastewater treatment. Raceway CapEx ~$32,400; payback <6 months at $3,500/t BSF meal premium above standard grade.`},
+
+{id:19,sec:null,
+  name:'Chlorella vulgaris',icbb:'Stream B Backup',
+  cat:'algae',catLabel:'Algae · Stream B',wave:'Pre-W1 Hydration',waveFull:'Stream B Backup · Faster Doubling, Lower CP Than Spirulina',
+  temp:'20–30°C',tempColor:'var(--greyMd)',role:'BSF Hydrator Backup — Faster Growth · BSF Meal 45% → 51% CP',
+  row:'alg',bsf:'✓',bsfColor:'var(--green)',flag:'NEW — Mar 2026 · Backup',flagCls:'new',
+  n:'0.09%DM direct',p:'+POME treat',lig:0,ligStr:'—',cp:'+6% BSF CP',bsfcp:'45%→51%',
+  pills:[{l:'Stream B · Backup',c:'pl-g'},{l:'$0 OpEx',c:'pl-g'},{l:'+15% Neonates',c:'pl-t'},{l:'BSF CP 51%',c:'pl-a'},{l:'Faster Doubling',c:'pl-gr'}],
+  wd:['Pre','D0','D1'],ws:['active','fade','inactive'],
+  contribs:[
+    {label:'BSF Neonate Survival',val:'+15%',unit:'vs no algae',cls:'g'},
+    {label:'BSF Meal CP',val:'45% → 51%',unit:'DM final product',cls:'a'},
+    {label:'FCR Improvement',val:'−0.5',unit:'feed conversion ratio',cls:'g'},
+    {label:'BSF Market Value',val:'$3,500–4,500',unit:'per tonne mid-premium',cls:'t'},
+    {label:'Direct Protein Added',val:'+0.91 kg',unit:'pure protein / t EFB DM',cls:'a'},
+    {label:'Doubling Time',val:'2–4 days',unit:'faster than Spirulina',cls:'t'},
+  ],
+  bars:[{l:'Neonate Survival Boost',v:70,c:'var(--green)'},{l:'BSF Meal CP Uplift',v:75,c:'var(--amber)'},{l:'Production Speed',v:85,c:'var(--teal)'}],
+  desc:`<strong>Chlorella vulgaris</strong> is the backup to Spirulina for Stream B hydration. Faster doubling time (2–4 days vs 3–5 for Spirulina), but lower crude protein (45% vs 65%). Where Spirulina excels in protein density, Chlorella excels in <em>production speed</em> — useful when algae supply needs rapid re-establishment.<p>Via 1,850 L hydration it delivers 2.03 kg DM algae per tonne EFB DM, adding 0.91 kg pure protein. BSF neonate survival improves +15%, and final BSF meal CP reaches <em>51% DM</em>. Market grade is mid-premium ($3,500–4,500/t).</p>`,
+  mech:`Same 1,850 L slurry delivery mechanism as Spirulina. 45% CP primarily as Rubisco (ribulose-1,5-bisphosphate carboxylase/oxygenase). High Lysine content, lower Methionine than Spirulina (Met:Lys ratio 0.3:1 vs 0.6:1 for Spirulina). POME BOD reduction 35–50%. Chlorella cell wall (sporopollenin) slightly reduces immediate digestibility vs Spirulina's wall-free structure — explains lower neonate survival boost (+15% vs +22%). May require centrifugation for harvest unlike gravity-settling Spirulina.`},
+
+{id:20,sec:'Conditional — Regulated Use · Hard Gate Before BSF',
+  name:'Bacillus thuringiensis (Bt)',icbb:'ICBB 6095',
+  cat:'bacteria',catLabel:'Bacteria · COND',wave:'S3 ONLY — Never with BSF',waveFull:'S3 Composting Phase ONLY — Hard Titre Gate Before S4',
+  temp:'25–45°C',tempColor:'var(--amber)',role:'CONDITIONAL — Cry Proteins Toxic to BSF Diptera at High Titre',
+  row:'wrn',bsf:'COND',bsfColor:'var(--red)',flag:'CONDITIONAL — CFI-BIO-2026-03',flagCls:'conditional',
+  n:'—',p:'—',lig:0,ligStr:'—',cp:'—',bsfcp:'TOXIC if >10⁴',
+  pills:[{l:'CONDITIONAL',c:'pl-r'},{l:'S3 ONLY',c:'pl-r'},{l:'Titre Gate <10⁴ CFU/g',c:'pl-r'},{l:'NEVER with BSF',c:'pl-r'}],
+  wd:['D0','D3','D5','D7','D14'],ws:['active','active','danger','fade','inactive'],
+  contribs:[
+    {label:'Pathogen Suppression',val:'Active',unit:'S3 composting phase only',cls:'a'},
+    {label:'BSF Titre Gate',val:'<10⁴ CFU/g',unit:'MANDATORY before S4',cls:'r'},
+    {label:'5-Day Bio Minimum',val:'Hard-coded',unit:'non-negotiable',cls:'r'},
+    {label:'Apply If BSF Present?',val:'NEVER',unit:'Absolute prohibition',cls:'r'},
+  ],
+  bars:[{l:'Pathogen Suppression (S3 phase)',v:55,c:'var(--amber)'},{l:'BSF Risk Level (if misused)',v:95,c:'var(--red)'},{l:'Regulatory Complexity',v:90,c:'var(--red)'}],
+  desc:`<strong>Bacillus thuringiensis (Bt) ICBB 6095</strong> was updated March 2026 (CFI-BIO-2026-03) from EXCLUDED to <em>CONDITIONAL — S3 composting phase only</em>.<p>Bt produces <em>Cry proteins (crystal proteins)</em> — insecticidal toxins binding to receptors in insect midgut cells, causing osmotic lysis. Black Soldier Fly (Hermetia illucens) is a Diptera — Cry proteins are toxic to Diptera larvae at high titres.</p><p>Conditional use allows Bt during S3 composting only, provided the <em>hard titre decay gate</em> is passed before S4: substrate titre must confirm &lt;10⁴ CFU/g by lab test. The 5-day biological minimum provides adequate Cry protein degradation time. <strong>NEVER apply if BSF larvae are present.</strong></p>`,
+  mech:`Cry proteins (δ-endotoxins) produced as parasporal crystals during sporulation. Upon ingestion by susceptible Diptera: alkaline midgut pH (>9.5) solubilises crystals → gut proteases activate protoxin → Cry protein binds to ABCC2 transporter receptor on brush border epithelium → transmembrane pore formation → cell osmotic lysis → larval death. Cry protein degradation in substrate: UV exposure + microbial proteolysis → titre decay below 10⁴ CFU/g within 5–7 days under S3 composting conditions.`},
+];
+
+// ── BUILD TABLE ──────────────────────────────────────────────────────────
+
+// Col 3 — Classification only: type label + flag badge
+function classCell(d){
+  const flag = d.flag
+    ? `<div class="cg-flag ${d.flagCls}" style="margin-top:6px">${d.flag}</div>`
+    : '';
+  return `<div>
+    <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;color:var(--white);line-height:1.4">${d.catLabel}</div>
+    ${flag}
+  </div>`;
+}
+
+// Col 4 — Conditions: Wave / Temp / BSF — max 3 rows, always same structure
+function condCell(d){
+  const bsfCls = d.bsf==='✓'?'green':d.bsf==='⚠'?'amber':'red';
+  const bsfTxt = d.bsf==='✓'?'✓ Safe':d.bsf==='⚠'?'⚠ Caution':'● Conditional';
+  const tempCls = (d.temp.includes('GATE')||d.temp.includes('ONLY')||d.temp.includes('<50'))?'red':'teal';
+  return `<div class="cat-grid">
+    <span class="cg-lbl">Wave</span><span class="cg-val mono amber">${d.wave}</span>
+    <span class="cg-div"></span>
+    <span class="cg-lbl">Temp</span><span class="cg-val mono ${tempCls}">${d.temp}</span>
+    <span class="cg-div"></span>
+    <span class="cg-lbl">BSF</span><span class="cg-val ${bsfCls}">${bsfTxt}</span>
+  </div>`;
+}
+
+function waveHtml(wd,ws){
+  const segs=wd.map((d,i)=>`<div class="ws" style="background:${SC[ws[i]]}" title="${d}: ${ws[i]}"></div>`).join('');
+  const days=wd.map(d=>`<span class="wsd">${d}</span>`).join('');
+  return `<div class="ws-strip">${segs}</div><div class="ws-days">${days}</div>`;
+}
+function contribHtml(contribs){
+  return contribs.map(c=>`<div class="cbox"><div class="cbox-lbl">${c.label}</div><div class="cbox-val ${c.cls}">${c.val}</div><div class="cbox-unit">${c.unit}</div></div>`).join('');
+}
+function barsHtml(bars){
+  return bars.map(b=>`<div class="brow"><div class="btop"><span class="blbl">${b.l}</span><span class="bval" style="color:${b.c}">${b.v}%</span></div><div class="btrack"><div class="bfill" data-w="${b.v}" style="background:${b.c}"></div></div></div>`).join('');
+}
+// Expand panel pills — all same neutral color
+function pillsHtml(pills){return pills.map(p=>`<span class="pill">${p.l}</span>`).join(' ')}
+
+function buildRows(data){
+  let html='';
+  data.forEach(d=>{
+    if(d.sec){
+      html+=`<tr class="sec-row no-print"><td colspan="12">${d.sec}</td></tr>`;
+    }
+    const ligCell=d.lig>0
+      ?`<td class="lval"><div class="lbar-wrap"><div class="lbar"><div class="lbar-fill" style="width:${Math.min(d.lig*4,100)}%"></div></div><span class="lbar-txt">${d.ligStr}</span></div></td>`
+      :`<td class="dash">—</td>`;
+    const nCell=d.n!=='—'?`<td class="nval">${d.n}</td>`:`<td class="dash">—</td>`;
+    const pCell=d.p!=='—'?`<td class="pval">${d.p}</td>`:`<td class="dash">—</td>`;
+    const cpCell=d.cp!=='—'?`<td class="cpval">${d.cp}</td>`:`<td class="dash">—</td>`;
+    const bsfcpCell=d.bsfcp!=='—'?`<td class="bsfcp" style="${d.bsfcp.includes('TOXIC')?'color:var(--red)':''}">${d.bsfcp}</td>`:`<td class="dash">—</td>`;
+
+    // Main data row — click anywhere to expand/collapse
+    html+=`<tr class="drow ${d.row}" id="row-${d.id}" data-cat="${d.cat}" data-id="${d.id}" onclick="toggleExpand(${d.id})">
+      <td class="num">${d.id}</td>
+      <td class="name"><div class="n1">${d.name}</div><div class="n2">${d.icbb}</div></td>
+      <td class="cls-col">${classCell(d)}</td>
+      <td class="cond-col">${condCell(d)}</td>
+      <td class="role">${d.role}</td>
+      <td class="wave">${waveHtml(d.wd,d.ws)}</td>
+      ${nCell}${pCell}${ligCell}${cpCell}
+      ${bsfcpCell}
+      <td class="action" onclick="event.stopPropagation()">
+        <button class="btn-more" id="btn-${d.id}" onclick="toggleExpand(${d.id})">
+          <span class="icon">⊞</span> More Info <span class="arr">▶</span>
+        </button>
+      </td>
+    </tr>`;
+
+    // Expand row (full width, 4 columns)
+    const expId=`exp-${d.id}`;
+    html+=`<tr class="exp-row" id="${expId}">
+      <td colspan="12" style="padding:0;border:none">
+        <div class="exp-panel" id="panel-${d.id}">
+          <div class="exp-inner">
+            <div class="exp-col">
+              <div class="exp-col-title ect-amber">What This Organism Does</div>
+              <div class="desc-text"><p>${d.desc.replace(/\n/g,'')}</p></div>
+              <div class="wave-mini">
+                <div class="wave-mini-lbl">Activity Timeline</div>
+                ${waveHtml(d.wd,d.ws)}
+              </div>
+              <div class="meta-pills">${pillsHtml(d.pills)}</div>
+            </div>
+            <div class="exp-col">
+              <div class="exp-col-title ect-teal">Biochemical Mechanism</div>
+              <div class="mech-box">${d.mech}</div>
+              <div style="margin-top:14px">
+                <div class="exp-col-title ect-amber">Operating Conditions</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px">
+                  <div class="cbox"><div class="cbox-lbl">Temperature</div><div class="cbox-val t">${d.temp}</div></div>
+                  <div class="cbox"><div class="cbox-lbl">Wave</div><div class="cbox-val a" style="font-size:12px">${d.wave}</div></div>
+                  <div class="cbox"><div class="cbox-lbl">Full Wave Description</div><div class="cbox-val gr" style="font-size:11px;line-height:1.4">${d.waveFull}</div></div>
+                  <div class="cbox"><div class="cbox-lbl">BSF Safe</div><div class="cbox-val ${d.bsf==='✓'?'g':d.bsf==='⚠'?'a':'r'}">${d.bsf==='✓'?'✓ Yes — Safe':d.bsf==='⚠'?'⚠ Caution':'● Conditional'}</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="exp-col">
+              <div class="exp-col-title ect-green">Contribution To Compost + BSF</div>
+              <div class="contrib-grid">${contribHtml(d.contribs)}</div>
+            </div>
+            <div class="exp-col">
+              <div class="exp-col-title ect-red">Performance Metrics</div>
+              ${barsHtml(d.bars)}
+            </div>
+            <div class="exp-actions no-print">
+              <button class="btn-print" onclick="printOrg(${d.id})">&#128438; Print This Organism</button>
+              <button class="btn-collapse" onclick="toggleExpand(${d.id})">&#8593; Collapse Row</button>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>`;
+  });
+  return html;
+}
+
+function render(data){
+  document.getElementById('tBody').innerHTML=buildRows(data);
+  updateCount();
+}
+render(D);
+
+// ── EXPAND / COLLAPSE ────────────────────────────────────────────────────
+function toggleExpand(id){
+  const panel  = document.getElementById(`panel-${id}`);
+  const btn    = document.getElementById(`btn-${id}`);
+  const mainRow= document.getElementById(`row-${id}`);
+  if(!panel) return;
+
+  const isOpen = panel.classList.contains('open');
+  if(isOpen){
+    panel.classList.remove('open');
+    btn && btn.classList.remove('open');
+    mainRow && mainRow.classList.remove('expanded');
+  } else {
+    panel.classList.add('open');
+    btn && btn.classList.add('open');
+    mainRow && mainRow.classList.add('expanded');
+    // animate bars after CSS transition starts
+    setTimeout(()=>{
+      panel.querySelectorAll('.bfill[data-w]').forEach(el=>{
+        el.style.width = el.dataset.w + '%';
+      });
+    },60);
+    // smooth scroll to row
+    mainRow && mainRow.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+}
+
+function collapseAll(){
+  document.querySelectorAll('.exp-panel.open').forEach(p=>p.classList.remove('open'));
+  document.querySelectorAll('.btn-more.open').forEach(b=>b.classList.remove('open'));
+  document.querySelectorAll('.drow.expanded').forEach(r=>r.classList.remove('expanded'));
+}
+
+// ── PRINT ORGANISM ───────────────────────────────────────────────────────
+function printOrg(id){
+  const d=D.find(x=>x.id===id);
+  if(!d) return;
+  const pw=window.open('','_blank','width=900,height=700');
+  pw.document.write(`<!DOCTYPE html><html><head>
+  <meta charset="UTF-8">
+  <title>CFI S3 — ${d.name}</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Sans:wght@400;600;700&family=DM+Mono:wght@500;700&display=swap"/>
+  <style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;background:#fff;color:#111;padding:30px;font-size:13px}
+  h1{font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:4px;color:#0B1422}
+  .sub{font-size:11px;color:#666;margin-bottom:20px}
+  .section-title{font-family:'DM Sans',sans-serif;font-weight:700;font-size:10px;color:#555;text-transform:uppercase;letter-spacing:.6px;margin:16px 0 8px;border-bottom:1px solid #e0e0e0;padding-bottom:4px}
+  .desc{font-size:13px;line-height:1.8;color:#333}
+  .desc strong{color:#000;font-weight:700}
+  .desc em{color:#e67e00;font-style:normal;font-weight:600}
+  .mbox{background:#f5f7fa;border-left:3px solid #00C9B1;border-radius:4px;padding:10px 13px;font-size:12px;color:#444;line-height:1.7}
+  .grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-top:8px}
+  .cbox{background:#f5f7fa;border:1px solid #e0e0e0;border-radius:5px;padding:8px 10px}
+  .cbox-lbl{font-size:10px;color:#666;margin-bottom:3px}
+  .cbox-val{font-family:'DM Mono',monospace;font-weight:700;font-size:15px;color:#111}
+  .cbox-unit{font-size:10px;color:#888;margin-top:1px}
+  .print-btn{margin-top:20px;padding:8px 16px;background:#0B1422;color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:12px;font-weight:700}
+  .pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;margin:2px;border:1px solid #ccc;background:#f0f0f0}
+  @media print{.print-btn{display:none}}
+  </style>
+  </head><body>
+  <h1>${d.name}</h1>
+  <div class="sub">${d.icbb} &nbsp;·&nbsp; ${d.catLabel} &nbsp;·&nbsp; ${d.waveFull} &nbsp;·&nbsp; ${d.temp} &nbsp;·&nbsp; CFI S3 Biological Library v2.0 Mar 2026</div>
+  <div class="section-title">What This Organism Does</div>
+  <div class="desc"><p>${d.desc.replace(/\n/g,'')}</p></div>
+  <div class="section-title">Biochemical Mechanism</div>
+  <div class="mbox">${d.mech}</div>
+  <div class="section-title">Contributions To Compost + BSF</div>
+  <div class="grid4">${d.contribs.map(c=>`<div class="cbox"><div class="cbox-lbl">${c.label}</div><div class="cbox-val">${c.val}</div><div class="cbox-unit">${c.unit}</div></div>`).join('')}</div>
+  <div class="section-title">Category Tags</div>
+  ${d.pills.map(p=>`<span class="pill">${p.l}</span>`).join('')}
+  <br/><button class="print-btn" onclick="window.print()">&#128438; Print / Save as PDF</button>
+  <script>
+var rdKey=null;
+function toggle(el,key){
+  document.querySelectorAll('.rd-field').forEach(function(f){f.classList.remove('active')});
+  document.querySelectorAll('.rd-note').forEach(function(n){n.classList.remove('show')});
+  if(rdKey===key){rdKey=null;return}
+  el.classList.add('active');
+  var n=document.getElementById('note-'+key);
+  if(n)n.classList.add('show');
+  rdKey=key;
+}
+</script>
+</body></html>`);
+  pw.document.close();
+}
+
+// ── FILTER ───────────────────────────────────────────────────────────────
+let activeCat='all';
+
+function updateCount(){
+  const n=document.querySelectorAll('.drow:not([style*="display:none"]):not(.hidden)').length;
+  document.getElementById('countLbl').textContent=`${n} shown`;
+}
+
+function applyFilter(){
+  const q=document.getElementById('searchQ').value.toLowerCase();
+  const isFiltered = activeCat!=='all' || q.length>0;
+  const tbl=document.getElementById('mainTbl');
+
+  // Mark table as compact when filtered
+  tbl.classList.toggle('compact',isFiltered);
+
+  let firstVisible=null;
+
+  // Show/hide data rows + their expand panels
+  document.querySelectorAll('.drow').forEach(r=>{
+    const catOk = activeCat==='all' || (r.dataset.cat||'').includes(activeCat);
+    const srchOk = !q || r.textContent.toLowerCase().includes(q);
+    const show = catOk && srchOk;
+
+    r.style.display = show ? '' : 'none';
+
+    // Hide the expand row/panel when row is hidden
+    const panel = document.getElementById(`panel-${r.dataset.id}`);
+    const expRow = document.getElementById(`exp-${r.dataset.id}`);
+    if(!show){
+      if(panel) panel.classList.remove('open');
+      if(expRow) expRow.style.display='none';
+      document.getElementById(`btn-${r.dataset.id}`)?.classList.remove('open');
+      r.classList.remove('expanded');
+    } else {
+      if(expRow) expRow.style.display='';
+      if(!firstVisible) firstVisible=r;
+    }
+  });
+
+  // Hide section header rows that have no visible data rows following them
+  const allRows=[...document.querySelectorAll('#tBody tr')];
+  allRows.forEach((tr,i)=>{
+    if(!tr.classList.contains('sec-row')) return;
+    // look ahead for the next visible drow before the next sec-row
+    let hasVisible=false;
+    for(let j=i+1;j<allRows.length;j++){
+      const next=allRows[j];
+      if(next.classList.contains('sec-row')) break;
+      if(next.classList.contains('drow') && next.style.display!=='none'){
+        hasVisible=true;break;
+      }
+    }
+    tr.style.display=hasVisible?'':'none';
+  });
+
+  updateCount();
+
+  // Update filter active bar
+  const bar=document.getElementById('filterBar');
+  const barLbl=document.getElementById('filterBarLabel');
+  const visCount=document.querySelectorAll('.drow:not([style*="display:none"])').length;
+  if(isFiltered){
+    bar.classList.add('show');
+    const catName = activeCat==='all'?'':activeCat.charAt(0).toUpperCase()+activeCat.slice(1);
+    const qPart = q?` matching "${q}"`:' ';
+    barLbl.textContent=`${catName}${qPart}— ${visCount} organism${visCount!==1?'s':''}`;
+  } else {
+    bar.classList.remove('show');
+  }
+
+  // Scroll to first visible row smoothly
+  if(isFiltered && firstVisible){
+    setTimeout(()=>{
+      firstVisible.scrollIntoView({behavior:'smooth',block:'nearest'});
+    },50);
+  }
+}
+
+function clearFilter(){
+  activeCat='all';
+  document.getElementById('searchQ').value='';
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));
+  document.querySelector('.fb').classList.add('on'); // re-activate "All"
+  applyFilter();
+}
+
+function filterCat(cat,btn){
+  activeCat=cat;
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  applyFilter();
+}
+
+// ── TAB SWITCHING ─────────────────────────────────────────────────────────
+function showTab(id,btn){
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.s3-nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn && btn.classList) btn.classList.add('active');
+}
+</script>
+
+<!-- ══════ Close library tab ══════ -->
+</div><!-- tab-library -->
+
+<!-- ══════ TAB: PROTOCOLS + DOSAGE ══════ -->
+<div class="tab-pane" id="tab-protocol">
+<div style="padding:20px 24px 40px">
+  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--teal);margin-bottom:4px">Protocols + Dosage Calculator</div>
+  <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--grey);margin-bottom:20px">Choose inoculation protocol · Auto-calculates monthly kg, cost, and procurement sourcing</div>
+
+  <div class="sec-hdr sh-a">One-Shot Protocol — $0.65 / t FW · $5,302 / month</div>
+  <div style="overflow-x:auto;border:1.5px solid var(--border);border-radius:8px">
+  <table style="width:100%;border-collapse:collapse;min-width:900px">
+    <thead><tr style="background:var(--navyDk);border-bottom:1.5px solid var(--border)">
+      <th style="padding:9px 12px;text-align:left;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--greyMd)">Organism</th>
+      <th style="padding:9px 12px;text-align:left;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--greyMd)">Primary Function</th>
+      <th style="padding:9px 12px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--greyMd)">$/kg</th>
+      <th style="padding:9px 12px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--greyMd)">Dose % DM</th>
+      <th style="padding:9px 12px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--green)">$/t FW</th>
+      <th style="padding:9px 12px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--amber)">Monthly Cost $</th>
+      <th style="padding:9px 12px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--greyMd)">Gas Control</th>
+    </tr></thead>
+    <tbody>
+      <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:9px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--amber)">Lactobacillus sp. (EM-4)</td><td style="padding:9px 12px;font-size:12px;color:var(--greyLt)">pH Buffer 5.5–6.0</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">$0.17</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">0.08</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">$0.05</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amberLt)">$408</td><td style="padding:9px 12px;text-align:center;font-size:11px;color:var(--teal)">CH4 ↓70–80%</td></tr>
+      <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:9px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--amber)">Saccharomyces cerevisiae</td><td style="padding:9px 12px;font-size:12px;color:var(--greyLt)">NH3 Retention 50%</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">$0.30</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">0.10</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">$0.11</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amberLt)">$898</td><td style="padding:9px 12px;text-align:center;font-size:11px;color:var(--green)">NH3 ↓50%</td></tr>
+      <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:9px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--amber)">Bacillus subtilis</td><td style="padding:9px 12px;font-size:12px;color:var(--greyLt)">Cellulase + PGPR</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">$0.20</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">0.03</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">$0.02</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amberLt)">$163</td><td style="padding:9px 12px;text-align:center;font-size:11px;color:var(--grey)">Aerobic</td></tr>
+      <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:9px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--amber)">Azotobacter vinelandii</td><td style="padding:9px 12px;font-size:12px;color:var(--greyLt)">N-Fixation +5 kg N/t</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">$0.40</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">0.10</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">$0.05</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amberLt)">$408</td><td style="padding:9px 12px;text-align:center;font-size:11px;color:var(--grey)">—</td></tr>
+      <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:9px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--amber)">Trichoderma harzianum</td><td style="padding:9px 12px;font-size:12px;color:var(--greyLt)">Ganoderma Biocontrol</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">$1.50</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">0.08</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">$0.42</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amberLt)">$3,426</td><td style="padding:9px 12px;text-align:center;font-size:11px;color:var(--grey)">—</td></tr>
+      <tr style="background:rgba(0,0,0,.3);border-top:1.5px solid var(--border)"><td colspan="4" style="padding:9px 12px;text-align:right;font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;color:var(--pastelGreen)">Total One-Shot</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:14px;color:var(--green)">$0.65</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:14px;color:var(--pastelGreen)">$5,302</td><td style="padding:9px 12px;text-align:center;font-size:11px;color:var(--teal)">CH4 ↓70% · NH3 ↓50%</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="sec-hdr sh-g" style="margin-top:28px">9-Org Stack — $3.56 / t FW · $29,035 / month</div>
+  <div style="padding:14px 18px;background:var(--navyMid);border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--greyLt);line-height:1.75">
+    <strong style="color:var(--white)">Wave 1A (Day 0):</strong> Lactobacillus EM-4 · Saccharomyces · Bacillus subtilis · Bacillus licheniformis (0.04% DM) · Bacillus coagulans · <span style="color:var(--green)">Rhizopus oligosporus</span> · Aspergillus niger<br>
+    <strong style="color:var(--white)">Wave 1B (Day 3+ — after Rhizopus fuzz confirmed):</strong> <span style="color:var(--red)">Trichoderma harzianum</span> · Azotobacter vinelandii<br>
+    <strong style="color:var(--amber)">Enzymes (Day 0 with Wave 1A):</strong> Cellulase 0.01–0.05% DM · Xylanase 0.01–0.05% DM · Pectinase 0.005–0.02% DM<br>
+    <strong style="color:var(--pastelGreen)">Stream B Algae (Pre-Wave — hydration liquor):</strong> Spirulina 1,850 L/t EFB DM → BSF meal 56% CP · $0 OpEx
+  </div>
+</div>
+</div>
+
+<!-- ══════ TAB: INOCULATION TIMELINE ══════ -->
+<div class="tab-pane" id="tab-timeline">
+<div style="padding:20px 24px 40px">
+  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--teal);margin-bottom:4px">Inoculation Timeline — Wave Schedule</div>
+  <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--grey);margin-bottom:20px">Standard 2-wave + 9-org 3-wave strategy · Temperature gates enforced · sourced from s3_inoculation_timeline</div>
+  <div style="display:flex;flex-direction:column;gap:5px">
+    <!-- Timeline rows -->
+    <div style="display:grid;grid-template-columns:110px 80px 110px 1fr;gap:12px;background:var(--navyDk);padding:8px 14px;border-radius:5px;border:1px solid rgba(30,107,140,.3);font-family:'DM Sans',sans-serif;font-weight:700;font-size:10px;color:var(--grey);text-transform:uppercase;letter-spacing:.5px"><span>Day / Phase</span><span>Temp °C</span><span>Wave</span><span>Organisms / Action</span></div>
+    <div style="display:grid;grid-template-columns:110px 80px 110px 1fr;gap:12px;background:rgba(80,20,0,.4);border:1px solid rgba(245,166,35,.2);border-radius:5px;padding:9px 14px;align-items:start">
+      <div style="font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amber)">Day 0 End S2</div>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--red)">28–35°C↑</div>
+      <div><span style="background:rgba(245,166,35,.15);color:var(--amber);border:1px solid var(--amber);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700">Wave 1A</span></div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--greyLt);line-height:1.6"><strong style="color:var(--white)">Apply:</strong> Lactobacillus EM-4 · Saccharomyces · Bacillus subtilis · B. licheniformis · B. coagulans · <span style="color:var(--green)">Rhizopus oligosporus</span> · Aspergillus niger<br><span style="color:var(--red);font-weight:700">DO NOT add Trichoderma yet — will kill Rhizopus</span><br>Enzymes: Cellulase + Xylanase + Pectinase 0.01–0.05% DM</div>
+    </div>
+    <div style="display:grid;grid-template-columns:110px 80px 110px 1fr;gap:12px;background:rgba(0,20,40,.4);border:1px solid rgba(30,107,140,.2);border-radius:5px;padding:9px 14px;align-items:start">
+      <div style="font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amber)">Day 1–2</div>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--greyMd)">40–55°C</div>
+      <div><span style="background:rgba(139,160,180,.08);color:var(--grey);border:1px solid rgba(139,160,180,.28);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700">No New</span></div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--greyLt);line-height:1.6">Rhizopus + Aspergillus establishing mycelium. Lactobacillus buffering pH 5.5–6.5.<br><strong style="color:var(--amberLt)">MANDATORY CHECK: Wait for white mycelium fuzz before Wave 1B.</strong></div>
+    </div>
+    <div style="display:grid;grid-template-columns:110px 80px 110px 1fr;gap:12px;background:rgba(0,30,60,.45);border:1px solid rgba(0,201,177,.2);border-radius:5px;padding:9px 14px;align-items:start">
+      <div style="font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amber)">Day 3 (after fuzz)</div>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--teal)">&lt;55°C</div>
+      <div><span style="background:rgba(0,201,177,.15);color:var(--teal);border:1px solid var(--teal);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700">Wave 1B</span></div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--greyLt);line-height:1.6"><strong style="color:var(--white)">Add:</strong> <span style="color:var(--red)">Trichoderma harzianum ICBB 9127</span> · <span style="color:var(--blue)">Azotobacter vinelandii ICBB 9098</span><br>Confirm substrate &lt;50°C before Azotobacter — nitrogenase dies above 50°C.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:110px 80px 110px 1fr;gap:12px;background:rgba(0,25,50,.45);border:1px solid rgba(74,158,219,.2);border-radius:5px;padding:9px 14px;align-items:start">
+      <div style="font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amber)">Day 5–7</div>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">&lt;50°C GATE</div>
+      <div><span style="background:rgba(74,158,219,.15);color:var(--blue);border:1px solid var(--blue);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700">Wave 2</span></div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--greyLt);line-height:1.6">Optional: Azospirillum lipoferum ICBB 6088 · Bradyrhizobium japonicum ICBB 9251<br>pH 6.5–7.5 confirmed · substrate below 50°C confirmed · N-fixers active</div>
+    </div>
+    <div style="display:grid;grid-template-columns:110px 80px 110px 1fr;gap:12px;background:rgba(0,25,50,.3);border:1px solid rgba(30,107,140,.2);border-radius:5px;padding:9px 14px;align-items:start">
+      <div style="font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amber)">Day 14–21</div>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--greyMd)">35–42°C</div>
+      <div><span style="background:rgba(139,160,180,.08);color:var(--grey);border:1px solid rgba(139,160,180,.28);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700">Optional</span></div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--greyLt);line-height:1.6">B. megaterium + Pseudomonas fluorescens (P-solubilisers) · Streptomyces sp. ICBB 9155+9469 (final pathogen control)</div>
+    </div>
+    <div style="display:grid;grid-template-columns:110px 80px 110px 1fr;gap:12px;background:rgba(0,60,30,.45);border:1px solid rgba(61,203,122,.3);border-radius:5px;padding:9px 14px;align-items:start">
+      <div style="font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">Day 21+ BSF</div>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green)">&lt;40°C</div>
+      <div><span style="background:rgba(61,203,122,.15);color:var(--green);border:1px solid var(--green);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700">Handoff</span></div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--greyLt);line-height:1.6"><strong style="color:var(--green)">ALL 6 BSF HANDOFF GATE CRITERIA MUST PASS before transfer to S4.</strong> C:N 15–25:1 · Moisture 60–70% · pH 6.5–7.5 · Temp &lt;40°C · Bt &lt;10⁴ CFU/g · Visual crumbly</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════ TAB: BSF HANDOFF GATE ══════ -->
+<div class="tab-pane" id="tab-gate">
+<div style="padding:20px 24px 40px">
+  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--red);margin-bottom:4px">BSF Handoff Gate — 6-Criteria Pass/Fail</div>
+  <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--grey);margin-bottom:20px">ALL 6 CRITERIA MUST PASS (GREEN) BEFORE SUBSTRATE TRANSFER TO S4. Any single FAIL = hold.</div>
+  <div style="overflow-x:auto;border:1.5px solid var(--border);border-radius:8px">
+  <table style="width:100%;border-collapse:collapse;min-width:900px">
+    <thead><tr style="background:var(--navyDk);border-bottom:1.5px solid var(--border)">
+      <th style="padding:9px 12px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--greyMd)">#</th>
+      <th style="padding:9px 12px;text-align:left;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--greyMd)">Criterion</th>
+      <th style="padding:9px 12px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--green)">Target</th>
+      <th style="padding:9px 12px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--amber)">Your Measurement</th>
+      <th style="padding:9px 12px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--greyMd)">Method</th>
+      <th style="padding:9px 12px;text-align:left;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--greyMd)">Action If Fail</th>
+    </tr></thead>
+    <tbody id="gateBody">
+      <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">1</td><td style="padding:9px 12px;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amber)">C:N Ratio</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">15:1 – 25:1</td><td style="padding:9px 12px;text-align:center"><input type="text" placeholder="Enter" style="background:var(--navyDk);border:1.5px solid var(--border);border-radius:4px;padding:4px 8px;color:var(--amber);font-family:'DM Mono',monospace;font-size:12px;width:80px;outline:none"></td><td style="padding:9px 12px;text-align:center;font-size:12px;color:var(--greyMd)">Kjeldahl + CHNS</td><td style="padding:9px 12px;font-size:12px;color:var(--greyLt)">Add N source or extend conditioning</td></tr>
+      <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">2</td><td style="padding:9px 12px;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amber)">Moisture %</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">60 – 70%</td><td style="padding:9px 12px;text-align:center"><input type="text" placeholder="Enter" style="background:var(--navyDk);border:1.5px solid var(--border);border-radius:4px;padding:4px 8px;color:var(--amber);font-family:'DM Mono',monospace;font-size:12px;width:80px;outline:none"></td><td style="padding:9px 12px;text-align:center;font-size:12px;color:var(--greyMd)">Gravimetric 105°C</td><td style="padding:9px 12px;font-size:12px;color:var(--greyLt)">Add water (too low) or drain (too high)</td></tr>
+      <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">3</td><td style="padding:9px 12px;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amber)">pH</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">6.5 – 7.5</td><td style="padding:9px 12px;text-align:center"><input type="text" placeholder="Enter" style="background:var(--navyDk);border:1.5px solid var(--border);border-radius:4px;padding:4px 8px;color:var(--amber);font-family:'DM Mono',monospace;font-size:12px;width:80px;outline:none"></td><td style="padding:9px 12px;text-align:center;font-size:12px;color:var(--greyMd)">pH Meter</td><td style="padding:9px 12px;font-size:12px;color:var(--greyLt)">Lime (low pH) or sulfur (high pH)</td></tr>
+      <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">4</td><td style="padding:9px 12px;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amber)">Temperature</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">&lt; 40°C</td><td style="padding:9px 12px;text-align:center"><input type="text" placeholder="Enter °C" style="background:var(--navyDk);border:1.5px solid var(--border);border-radius:4px;padding:4px 8px;color:var(--amber);font-family:'DM Mono',monospace;font-size:12px;width:80px;outline:none"></td><td style="padding:9px 12px;text-align:center;font-size:12px;color:var(--greyMd)">Probe 15cm</td><td style="padding:9px 12px;font-size:12px;color:var(--greyLt)">Wait or aerate pile</td></tr>
+      <tr style="background:rgba(80,0,0,.3);border-bottom:1px solid rgba(232,64,64,.25)"><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--red)">5</td><td style="padding:9px 12px;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--red)">Bt ICBB 6095</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--red)">NOT PRESENT</td><td style="padding:9px 12px;text-align:center"><input type="text" placeholder="Titre" style="background:var(--navyDk);border:1.5px solid var(--red);border-radius:4px;padding:4px 8px;color:var(--red);font-family:'DM Mono',monospace;font-size:12px;width:80px;outline:none"></td><td style="padding:9px 12px;text-align:center;font-size:12px;color:var(--greyMd)">Batch record + Bt agar</td><td style="padding:9px 12px;font-size:12px;color:var(--red)">MUST be &lt;10⁴ CFU/g — S3 composting ONLY. Cry proteins toxic to BSF Diptera.</td></tr>
+      <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">6</td><td style="padding:9px 12px;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amber)">Visual Texture</td><td style="padding:9px 12px;text-align:center;font-size:12px;color:var(--green)">Dark, crumbly, no EFB</td><td style="padding:9px 12px;text-align:center"><input type="text" placeholder="Pass/Fail" style="background:var(--navyDk);border:1.5px solid var(--border);border-radius:4px;padding:4px 8px;color:var(--amber);font-family:'DM Mono',monospace;font-size:12px;width:80px;outline:none"></td><td style="padding:9px 12px;text-align:center;font-size:12px;color:var(--greyMd)">Visual</td><td style="padding:9px 12px;font-size:12px;color:var(--greyLt)">Extend composting time</td></tr>
+      <tr style="background:rgba(0,0,0,.3);border-top:1.5px solid var(--border)"><td colspan="3" style="padding:9px 12px;text-align:right;font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;color:var(--pastelGreen)">Overall Decision</td><td colspan="3" style="padding:9px 12px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--red)">All 6 Pass → Transfer To S4 &nbsp;|&nbsp; Any Fail → DO NOT TRANSFER</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+</div>
+
+<!-- ══════ TAB: ALGAE STREAM B ══════ -->
+<div class="tab-pane" id="tab-algae">
+<div style="padding:20px 24px 40px">
+  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--green);margin-bottom:4px">Algae Hydrator — Stream B · Spirulina vs Chlorella</div>
+  <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--grey);margin-bottom:6px">$0 ongoing OpEx · CapEx ~$32,400 · Payback &lt;6 months · Grown in POME raceways using free tropical sunlight</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:9px;margin-bottom:20px">
+    <div class="kpi"><div class="kpi-lbl">Spirulina Yield</div><div class="kpi-val g">1.25 g/L</div><div class="kpi-unit">DM per L POME</div></div>
+    <div class="kpi"><div class="kpi-lbl">Algae Per t EFB DM</div><div class="kpi-val">2.31 kg</div><div class="kpi-unit">via 1,850 L hydration</div></div>
+    <div class="kpi"><div class="kpi-lbl">Spirulina CP</div><div class="kpi-val" style="color:var(--amber)">65%</div><div class="kpi-unit">DM basis</div></div>
+    <div class="kpi"><div class="kpi-lbl">BSF Neonate Survival</div><div class="kpi-val g">+22%</div><div class="kpi-unit">vs no algae</div></div>
+    <div class="kpi"><div class="kpi-lbl">Final BSF Meal CP</div><div class="kpi-val" style="color:var(--amber)">56%</div><div class="kpi-unit">from 45% baseline</div></div>
+    <div class="kpi"><div class="kpi-lbl">BSF Market Value</div><div class="kpi-val" style="color:var(--green)">$4,500</div><div class="kpi-unit">–$6,500 / tonne petfood</div></div>
+    <div class="kpi"><div class="kpi-lbl">FCR Improvement</div><div class="kpi-val g">−0.7</div><div class="kpi-unit">feed conversion ratio</div></div>
+    <div class="kpi"><div class="kpi-lbl">POME BOD Reduction</div><div class="kpi-val t">40–55%</div><div class="kpi-unit">environmental co-benefit</div></div>
+  </div>
+  <div style="overflow-x:auto;border:1.5px solid var(--border);border-radius:8px">
+  <table style="width:100%;border-collapse:collapse;min-width:700px">
+    <thead><tr style="background:var(--navyDk);border-bottom:1.5px solid var(--border)">
+      <th style="padding:9px 12px;text-align:left;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--greyMd)">Metric</th>
+      <th style="padding:9px 12px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--green)">Spirulina (Primary)</th>
+      <th style="padding:9px 12px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--pastelGreen)">Chlorella (Backup)</th>
+      <th style="padding:9px 12px;text-align:left;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--greyMd)">Notes</th>
+    </tr></thead>
+    <tbody>
+      <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:9px 12px;font-size:12px;color:var(--greyLt)">Biomass Yield / L POME</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">1.25 g DM/L</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">1.10 g DM/L</td><td style="padding:9px 12px;font-size:11px;color:var(--grey)">POME as nutrient medium, tropical sunlight</td></tr>
+      <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:9px 12px;font-size:12px;color:var(--greyLt)">Crude Protein % DM</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:13px;color:var(--amber)">65%</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">45%</td><td style="padding:9px 12px;font-size:11px;color:var(--grey)">Spirulina significantly higher</td></tr>
+      <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:9px 12px;font-size:12px;color:var(--greyLt)">BSF Neonate Survival Boost</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:13px;color:var(--green)">+22%</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">+15%</td><td style="padding:9px 12px;font-size:11px;color:var(--grey)">Neonates gorge on soft algae cells first 48h</td></tr>
+      <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:9px 12px;font-size:12px;color:var(--greyLt)">Final BSF Meal CP (from 45%)</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:13px;color:var(--amber)">→ 56%</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">→ 51%</td><td style="padding:9px 12px;font-size:11px;color:var(--grey)">Unlocks EFB protein, not just adds its own</td></tr>
+      <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:9px 12px;font-size:12px;color:var(--greyLt)">FCR Improvement</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">−0.7</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">−0.5</td><td style="padding:9px 12px;font-size:11px;color:var(--grey)">BSF gut flora boosted</td></tr>
+      <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:9px 12px;font-size:12px;color:var(--greyLt)">BSF Market Value</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amber)">$4,500–6,500/t</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">$3,500–4,500/t</td><td style="padding:9px 12px;font-size:11px;color:var(--grey)">Petfood / aquafeed premium grade</td></tr>
+      <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:9px 12px;font-size:12px;color:var(--greyLt)">Optimal Temp</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--green)">25–38°C</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">20–30°C</td><td style="padding:9px 12px;font-size:11px;color:var(--grey)">Spirulina better suited to Indonesian heat</td></tr>
+      <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:9px 12px;font-size:12px;color:var(--greyLt)">Ongoing OpEx</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">$0</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">$0</td><td style="padding:9px 12px;font-size:11px;color:var(--grey)">Raceway + POME = zero marginal cost</td></tr>
+      <tr style="background:rgba(0,50,30,.3)"><td style="padding:9px 12px;font-size:12px;font-weight:700;color:var(--teal)">CFI Recommendation</td><td style="padding:9px 12px;text-align:center;font-size:12px;font-weight:700;color:var(--green)">PRIMARY CHOICE</td><td style="padding:9px 12px;text-align:center;font-size:12px;color:var(--greyMd)">Backup Option</td><td style="padding:9px 12px;font-size:11px;color:var(--grey)">Spirulina = higher protein + tropical temp tolerance</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+</div>
+
+<!-- ══════ TAB: NPK + GAS ══════ -->
+<div class="tab-pane" id="tab-npk">
+<div style="padding:20px 24px 40px">
+  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--green);margin-bottom:4px">NPK Contribution + Gas Emissions Control</div>
+  <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--grey);margin-bottom:20px">Nitrogen fixed from air · Phosphorus released from bound complexes · Potassium from PKSA · Gas emissions controlled by biological organisms</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+    <div>
+      <div class="sec-hdr sh-g">NPK Contributions By Organism</div>
+      <div style="overflow-x:auto;border:1.5px solid var(--border);border-radius:8px">
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr style="background:var(--navyDk);border-bottom:1.5px solid var(--border)"><th style="padding:8px 12px;text-align:left;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--greyMd)">Organism</th><th style="padding:8px 12px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--green)">N</th><th style="padding:8px 12px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--blue)">P</th><th style="padding:8px 12px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--amber)">K</th><th style="padding:8px 12px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--amberLt)">$/t FW</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:8px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--amber)">Azotobacter vinelandii</td><td style="padding:8px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">+0.2–0.4% DM</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:rgba(139,160,180,.4)">—</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:rgba(139,160,180,.4)">—</td><td style="padding:8px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amberLt)">$1.50–3</td></tr>
+          <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:8px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--amber)">Azospirillum lipoferum</td><td style="padding:8px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">+0.06–0.10%</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:rgba(139,160,180,.4)">—</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:rgba(139,160,180,.4)">—</td><td style="padding:8px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">$0.40</td></tr>
+          <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:8px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--amber)">Saccharomyces (NH3 trap)</td><td style="padding:8px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">+7–15 kg/t DM</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:rgba(139,160,180,.4)">—</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:rgba(139,160,180,.4)">—</td><td style="padding:8px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amberLt)">$4–8</td></tr>
+          <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:8px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--amber)">Pseudomonas fluorescens</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:rgba(139,160,180,.4)">—</td><td style="padding:8px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--blue)">+0.04–0.08%</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:rgba(139,160,180,.4)">—</td><td style="padding:8px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">$1.20</td></tr>
+          <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:8px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--amber)">Bacillus megaterium</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:rgba(139,160,180,.4)">—</td><td style="padding:8px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--blue)">+0.03–0.06%</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:rgba(139,160,180,.4)">—</td><td style="padding:8px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--greyMd)">$0.45</td></tr>
+          <tr style="background:rgba(80,40,0,.3)"><td style="padding:8px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--amber)">PKSA ($0/kg)</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:rgba(139,160,180,.4)">—</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:rgba(139,160,180,.4)">—</td><td style="padding:8px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--amber)">K₂O 35–45% DM</td><td style="padding:8px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">$0.00</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <div>
+      <div class="sec-hdr sh-t">Gas Emissions Control By Organism</div>
+      <div style="overflow-x:auto;border:1.5px solid var(--border);border-radius:8px">
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr style="background:var(--navyDk);border-bottom:1.5px solid var(--border)"><th style="padding:8px 12px;text-align:left;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--greyMd)">Organism</th><th style="padding:8px 12px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--teal)">Target Gas</th><th style="padding:8px 12px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--green)">Reduction</th><th style="padding:8px 12px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--greyMd)">Days Active</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:8px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--amber)">Lactobacillus EM-4</td><td style="padding:8px 12px;text-align:center;font-size:11px;color:var(--teal)">CH4</td><td style="padding:8px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">70–80%</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:var(--greyMd)">Day 1–7</td></tr>
+          <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:8px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--amber)">Saccharomyces cerevisiae</td><td style="padding:8px 12px;text-align:center;font-size:11px;color:var(--amber)">NH3</td><td style="padding:8px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">50%</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:var(--greyMd)">Day 1–14</td></tr>
+          <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:8px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--amber)">Saccharomyces cerevisiae</td><td style="padding:8px 12px;text-align:center;font-size:11px;color:var(--grey)">CO2</td><td style="padding:8px 12px;text-align:center;font-family:'DM Mono',monospace;font-weight:700;font-size:12px;color:var(--green)">20–30%</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:var(--greyMd)">Day 1–7</td></tr>
+          <tr style="border-bottom:1px solid rgba(30,107,140,.15)"><td style="padding:8px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--amber)">Bacillus subtilis</td><td style="padding:8px 12px;text-align:center;font-size:11px;color:var(--teal)">CH4 indirect</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:var(--grey)">Aerobic maintenance</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:var(--greyMd)">Day 1–21</td></tr>
+          <tr><td style="padding:8px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--amber)">Trichoderma harzianum</td><td style="padding:8px 12px;text-align:center;font-size:11px;color:var(--grey)">CO2 indirect</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:var(--grey)">Shorter thermophilic phase</td><td style="padding:8px 12px;text-align:center;font-size:12px;color:var(--greyMd)">Day 3–14</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div style="margin-top:14px;padding:12px 14px;background:rgba(0,0,0,.3);border:1.5px solid var(--border);border-radius:8px">
+        <div style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;color:var(--amber);margin-bottom:8px">N Value Saved By Gas Control</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div><div style="font-size:10px;color:var(--grey)">NH3 N Retained</div><div style="font-family:'DM Mono',monospace;font-weight:700;font-size:15px;color:var(--green)">7–15 kg N/tDM</div></div>
+          <div><div style="font-size:10px;color:var(--grey)">N $ Value Saved</div><div style="font-family:'DM Mono',monospace;font-weight:700;font-size:15px;color:var(--amber)">$4–8 / t FW</div></div>
+          <div><div style="font-size:10px;color:var(--grey)">CH4 Reduction</div><div style="font-family:'DM Mono',monospace;font-weight:700;font-size:15px;color:var(--teal)">70–80%</div></div>
+          <div><div style="font-size:10px;color:var(--grey)">Carbon Credit Impact</div><div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--green)">Credits Retained</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════ TAB: DB STATUS ══════ -->
+<div class="tab-pane" id="tab-db">
+<div style="padding:20px 24px 40px">
+  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--teal);margin-bottom:4px">Supabase Database Status — S3 Tables</div>
+  <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--grey);margin-bottom:20px">Green = populated · Amber = schema exists, no data · Red = field/table missing entirely</div>
+  <div class="audit-grid">
+    <div class="audit-card"><div class="au-hdr"><span class="au-tbl">biological_library</span><span class="au-cnt">19 rows · 25 cols</span></div><div class="au-body">
+      <div class="af-row"><div class="af-dot af-ok"></div><span class="af-name">organism_name, category, icbb, bsf_safe, guardrail_flag</span><span class="af-note">✓ populated</span></div>
+      <div class="af-row"><div class="af-dot af-warn"></div><span class="af-name">price_usd_per_kg, dose_cfu_per_g</span><span class="af-note">⚠ sparse</span></div>
+      <div class="af-row"><div class="af-dot af-miss"></div><span class="af-name">wave_number, wave_day_start</span><span class="af-note">✗ not in schema</span></div>
+      <div class="af-row"><div class="af-dot af-miss"></div><span class="af-name">dose_pct_dm_low/high, cost_per_t_fw</span><span class="af-note">✗ not in schema</span></div>
+      <div class="af-row"><div class="af-dot af-miss"></div><span class="af-name">cp_uplift_pct, ndf_reduction_pct, lignin_reduction_pct</span><span class="af-note">✗ not in schema</span></div>
+    </div></div>
+    <div class="audit-card"><div class="au-hdr"><span class="au-tbl">s3_nine_org_dosing</span><span class="au-cnt">0 rows</span></div><div class="au-body">
+      <div class="af-row"><div class="af-dot af-warn"></div><span class="af-name">organism_id, protocol_name</span><span class="af-note">⚠ schema only — no data</span></div>
+      <div class="af-row"><div class="af-dot af-miss"></div><span class="af-name">protocol_type (one_shot/9_org/budget)</span><span class="af-note">✗ selector field missing</span></div>
+      <div class="af-row"><div class="af-dot af-miss"></div><span class="af-name">monthly_kg_at_60tph</span><span class="af-note">✗ pre-calculated value</span></div>
+    </div></div>
+    <div class="audit-card"><div class="au-hdr"><span class="au-tbl">s3_inoculation_timeline</span><span class="au-cnt">0 rows · 12 cols</span></div><div class="au-body">
+      <div class="af-row"><div class="af-dot af-ok"></div><span class="af-name">day_number, time_window, organisms[], ph_target, temp_target_c</span><span class="af-note">✓ schema ready</span></div>
+      <div class="af-row"><div class="af-dot af-warn"></div><span class="af-name">All 21 timeline entries</span><span class="af-note">⚠ needs seeding</span></div>
+      <div class="af-row"><div class="af-dot af-miss"></div><span class="af-name">wave_label (W1A/W1B/W2)</span><span class="af-note">✗ not in schema</span></div>
+    </div></div>
+    <div class="audit-card"><div class="au-hdr"><span class="au-tbl">s3_antagonism_matrix</span><span class="au-cnt">0 rows · 7 cols</span></div><div class="au-body">
+      <div class="af-row"><div class="af-dot af-ok"></div><span class="af-name">org_a, org_b, relationship, safe_to_co_dose</span><span class="af-note">✓ schema complete</span></div>
+      <div class="af-row"><div class="af-dot af-warn"></div><span class="af-name">All conflict pairs</span><span class="af-note">⚠ needs seeding (Tricho/Rhizopus, Bt gate)</span></div>
+    </div></div>
+    <div class="audit-card"><div class="au-hdr"><span class="au-tbl">s3_algae_uplift</span><span class="au-cnt">New Mar 2026</span></div><div class="au-body">
+      <div class="af-row"><div class="af-dot af-warn"></div><span class="af-name">spirulina vs chlorella rows</span><span class="af-note">⚠ needs seeding</span></div>
+      <div class="af-row"><div class="af-dot af-miss"></div><span class="af-name">bsf_neonate_survival_boost_pct</span><span class="af-note">✗ +22%/+15% not stored</span></div>
+      <div class="af-row"><div class="af-dot af-miss"></div><span class="af-name">bsf_meal_cp_after, fcr_improvement, raceway_capex_usd</span><span class="af-note">✗ not stored</span></div>
+    </div></div>
+    <div class="audit-card"><div class="au-hdr"><span class="au-tbl">s3_procurement</span><span class="au-cnt">0 rows</span></div><div class="au-body">
+      <div class="af-row"><div class="af-dot af-warn"></div><span class="af-name">All 28 supplier rows</span><span class="af-note">⚠ needs inserting</span></div>
+      <div class="af-row"><div class="af-dot af-miss"></div><span class="af-name">priority_region (IDN/SEA/IND/CHN)</span><span class="af-note">✗ not in schema</span></div>
+    </div></div>
+    <div class="audit-card" style="border-color:rgba(245,166,35,.4)"><div class="au-hdr" style="background:rgba(245,166,35,.08)"><span class="au-tbl" style="color:var(--amber)">Missing Tables — Not In DB Yet</span><span class="au-cnt" style="color:var(--amber)">7 tables</span></div><div class="au-body">
+      <div class="af-row"><div class="af-dot af-miss"></div><span class="af-name">s3_bsf_handoff_gate</span><span class="af-note">✗ 6 criteria + live batch readings</span></div>
+      <div class="af-row"><div class="af-dot af-miss"></div><span class="af-name">s3_batch_log</span><span class="af-note">✗ per-batch inoculation record</span></div>
+      <div class="af-row"><div class="af-dot af-miss"></div><span class="af-name">s3_lab_output</span><span class="af-note">✗ end-of-S3 substrate lab values</span></div>
+      <div class="af-row"><div class="af-dot af-miss"></div><span class="af-name">s3_gas_emissions</span><span class="af-note">✗ CH4/NH3 by phase by organism</span></div>
+      <div class="af-row"><div class="af-dot af-miss"></div><span class="af-name">s3_consortium_groups</span><span class="af-note">✗ 18 pre-built stacks not stored</span></div>
+      <div class="af-row"><div class="af-dot af-miss"></div><span class="af-name">s3_pksa_calculator</span><span class="af-note">✗ K₂O contribution, dose calc</span></div>
+    </div></div>
+  </div>
+</div>
+</div>
+
+<script>
+var rdKey=null;
+function toggle(el,key){
+  document.querySelectorAll('.rd-field').forEach(function(f){f.classList.remove('active')});
+  document.querySelectorAll('.rd-note').forEach(function(n){n.classList.remove('show')});
+  if(rdKey===key){rdKey=null;return}
+  el.classList.add('active');
+  var n=document.getElementById('note-'+key);
+  if(n)n.classList.add('show');
+  rdKey=key;
+}
+</script>
+</body>
+</html>

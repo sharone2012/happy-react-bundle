@@ -1,0 +1,1281 @@
+**CFI PROMPT SERIES**
+
+**S1 MECHANICAL DOWNSIZING CALCULATOR**
+
+Master Prompt & Engineering Specification
+
+Integrating Prompts 0 -- 8 │ Persona, Guardrails, Anti-Hallucination,
+
+Research Intensity, Process Engineering, Soil Orchestration, AI Search
+
+Design Basis: 60 TPH FFB Mill │ Bogor, West Java, Indonesia │ March 2026
+
+> **⚠ SINGLE-PROMPT DEPLOYMENT: Hand this entire document to any LLM
+> session. It is self-contained. No other file is required --- all
+> governing rules, input schemas, calculation logic, output formats,
+> Supabase schema, and NPK relay specs are embedded here.**
+
+**0. GOVERNING DOCUMENTS & PRIORITY ORDER**
+
+Before performing ANY work, load and apply the following rules in strict
+priority order. Where conflicts exist, the narrower / more restrictive
+rule wins.
+
+  --------------------------------------------------------------------------------------------------------
+  **Priority**   **Prompt   **Document Name**                         **Key Function**
+                 ID**                                                 
+  -------------- ---------- ----------------------------------------- ------------------------------------
+  1 --- HIGHEST  PROMPT 3   GUARDRAILS-Prompt-2.7.25                  Document hierarchy, configuration
+                                                                      lock, citation blocklist, DATA GAP
+                                                                      rules
+
+  2              PROMPT 2   ANTI-HALLUCINATION-SOURCE-REALITY-RULES   Real-source requirement, data
+                                                                      extraction integrity, no guessing,
+                                                                      derivation rules
+
+  3              PROMPT 1   RESEARCH-INTENSITY                        Scope for this run: regions, soils,
+                                                                      management, materials, tables
+
+  4              PROMPT 4   PERSONA_ENHANCED-2.7.26                   Detailed expert remits and checks
+
+  5              PROMPT 0   PERSONAS-MASTER-1                         Integrated professor panel and team
+                                                                      structure
+
+  6              PROMPT 5   PERSONA-GOVERNANCE                        Section activation rules, residue
+                                                                      naming, expert voting
+
+  7              PROMPT 6   PROCESS-ENGINEER                          Process engineering scope: mill → S1
+                                                                      → S2, mass/energy balances
+
+  8              PROMPT 8   AI-SEARCH-1                               External search cadence (3-day),
+                                                                      source validation, web search rules
+
+  9              PROMPT 9   SOIL-ORCHESTRATION-LAYER                  5-soil analysis layer, NPK relay
+                                                                      routing, downstream calculator hooks
+  --------------------------------------------------------------------------------------------------------
+
+**Print a Configuration Lock Summary at the start of every run
+confirming:**
+
+-   Material streams active this run (EFB / OPDC / POS / Blend)
+
+-   Design throughput (t/h per stream)
+
+-   Active professor personas
+
+-   Guardrail flags checked (particle size, press floor moisture, OPDC
+    yield lock)
+
+-   Supabase target endpoint confirmed
+
+**1. PURPOSE & SCOPE OF THE S1 CALCULATOR**
+
+The S1 Mechanical Downsizing Calculator is a process engineering tool
+that operates at the boundary between the mill residue generation point
+(S0) and the chemical pre-treatment stage (S2 / PKSA). Its sole mandate
+is mechanical transformation of feedstocks to specification.
+
+  -----------------------------------------------------------------------
+  **Scope Item**     **Definition**
+  ------------------ ----------------------------------------------------
+  Input              All parameters exported from S0: stream identities,
+                     t/h, moisture %, lab analysis (CP, C:N, lignin, NPK,
+                     heavy metals where available)
+
+  Process boundary   Residue arrives at S1 receiving hopper ---
+  START              immediately after mill discharge point
+
+  Process boundary   Product leaves S1 buffer silos onto the covered
+  END                conveyor gallery toward S2 Chemical Treatment
+
+  What S1 DOES       Size reduction (shredding, hammer milling to 2 mm),
+                     dewatering (pressing EFB and OPDC), POS capture and
+                     dewatering, blending, quality screening
+
+  What S1 does NOT   No chemical addition, no biological inoculation, no
+  do                 BSF rearing --- those are S2/S3/S4
+
+  Hard output        EFB: 2 mm particle, ≤45% MC │ OPDC: ≤40% MC (floor
+  guarantee          --- NEVER exceed) │ POS: ≤65% MC
+  -----------------------------------------------------------------------
+
+**2. ACTIVE PROFESSOR PERSONAS**
+
+For S1 calculations, the following personas are PRIMARY (full
+authority). All others are SUPPORTING.
+
+  ----------------------------------------------------------------------------
+  **Role**     **Professor**        **S1 Responsibility**
+  ------------ -------------------- ------------------------------------------
+  PRIMARY      Process & Compost /  Overall S1 process flow, mass/energy
+               Waste Valorisation   balance, yield verification
+               Professor (#21)      
+
+  PRIMARY      Mechanical & OEM     Equipment selection, press capacities,
+               Professor (#22)      dewatering, shredder specs, backup
+                                    strategy
+
+  PRIMARY      CFO & Finance        CAPEX/OPEX per line item, equipment cost
+               Professor (#35)      cross-reference against master EPC
+                                    register
+
+  SUPPORTING   Environmental        S1 end-of-process lab analysis output,
+               Chemistry & Lab      ICP-OES spec, moisture basis verification
+               Professor (#23)      
+
+  SUPPORTING   MRV & Technology     Supabase schema compliance, measurement
+               Professor (#30)      plan, data integrity
+
+  SUPPORTING   Civil & Siteworks    Building footprint, floor plan, foundation
+               Professor (#24)      specifications
+
+  SUPPORTING   Electrical &         Motor ratings, VFD specs, total connected
+               Controls Professor   load, MCC design
+               (#25)                
+
+  SUPPORTING   HR & Operations      Shift staffing, labour OPEX per machine
+               Professor (#27)      group
+
+  SUPPORTING   Research Methods /   Equipment pricing validation, source
+               Evidence Professor   quality screening
+               (#18)                
+  ----------------------------------------------------------------------------
+
+**3. S0 INPUT INTERFACE --- PARAMETERS RECEIVED**
+
+The S1 Calculator receives the following parameter set from S0. All
+values must arrive as a structured data object. Where a value is
+missing, mark DATA GAP --- never substitute a guess.
+
+**3.1 Mill Parameters (Fixed Design Basis)**
+
+  --------------------------------------------------------------------------------
+  **Parameter**   **Symbol**   **Value**   **Units**   **Source / Lock Status**
+  --------------- ------------ ----------- ----------- ---------------------------
+  FFB throughput  FFB_TPH      60          t/h FFB     Design basis --- LOCKED
+
+  Operating days  OP_DAYS      330         days/year   CFI standard
+
+  Operating hours OP_HRS       24          h/day       Continuous operation
+
+  Mill location   ---          Bogor, West ---         Design basis
+                               Java                    
+  --------------------------------------------------------------------------------
+
+**3.2 Stream Parameters (S0 Canonical --- Guardrail-Locked)**
+
+> **⚠ GUARDRAIL: All feedstock values below are locked. Any S0 output
+> that deviates from these requires a CLASS A change approval. Do not
+> override silently.**
+
+  -------------------------------------------------------------------------------
+  **Stream**   **t/h     **MC    **CP %   **C:N**   **Lignin % **OPDC Yield
+               Fresh**   %**     DM**               DM**       Lock**
+  ------------ --------- ------- -------- --------- ---------- ------------------
+  EFB          25.0      62.5    4.75     60        22.0       ---
+
+  OPDC /       3.8       70.0    14.5     20        30.7       15.2% of EFB fresh
+  Decanter                                                     wt
+  Cake                                                         
+
+  POS (Palm    1.25      82.0    11.0 DM  DATA GAP  ADL 7.6%   ---
+  Oil Sludge)                                       DM         
+  -------------------------------------------------------------------------------
+
+**3.3 POS Additional Parameters**
+
+  --------------------------------------------------------------------------------
+  **Parameter**    **Value**      **Units**   **Notes**
+  ---------------- -------------- ----------- ------------------------------------
+  Ash % DM         28.0           \% DM       Guardrail-locked Mar 2026
+
+  Ether Extract    10.0           \% DM       Feedipedia 29.2% REJECTED --- see
+  (EE) % DM                                   guardrail
+
+  N % DM           1.76           \% DM       N-factor 4.67 applies
+
+  ADF % DM         22.1           \% DM       Accepted
+
+  NDF % DM         28.2           \% DM       High variance --- flag on import
+
+  Fe mg/kg DM      3,000--8,000   mg/kg DM    Drives POS inclusion rate --- LAB
+                                              REQUIRED (CFI-LAB-POME-001)
+
+  Mn mg/kg DM      100--475       mg/kg DM    Monitor --- ICP-OES package A
+
+  Fresh capture    \~30           t/day       From sludge pit / centrifuge
+  rate                                        discharge ONLY --- not from pond
+
+  Post-dewater     \~13.5         t/day       Target 65% MC
+  output                                      
+  --------------------------------------------------------------------------------
+
+**4. MACHINERY SELECTION PROTOCOL**
+
+The Mechanical & OEM Professor leads this section. Equipment is selected
+in two passes: (1) capacity-first against design throughput, then (2)
+vendor cross-reference against the master EPC register.
+Chinese/Asian-manufactured equipment is derated at 65% of nameplate
+capacity.
+
+**4.1 Selection Rules**
+
+1.  **Identify design throughput per stream (t/h, fresh weight).**
+
+2.  **Calculate required nameplate capacity = (design t/h) ÷ 0.65 for
+    Asian/Chinese OEMs, or ÷ 0.85 for European/Japanese OEMs.**
+
+3.  Select primary unit at ≥110% of required nameplate (10% headroom
+    minimum).
+
+4.  Specify one hot-standby backup unit for every rotating machine \>11
+    kW. Backup units size identically to primary. Drives + controls are
+    independent.
+
+5.  Record footprint (L × W × H), platform elevation, weight, motor kW,
+    and VFD requirement for every machine.
+
+6.  Cross-reference unit cost against
+    FD_CAPEX_Equipment_Manufacturers.xlsx and
+    FD_CFI_Engineering_Master_EPC_3_8_26.xlsx. Flag any discrepancy
+    \>15% as DATA GAP.
+
+7.  Produce utilisation % at design throughput. Flag \>85% as RED
+    (overloaded). Flag \>65% as AMBER.
+
+**4.2 Equipment Register --- S1 (Design Basis)**
+
+  ----------------------------------------------------------------------------------------------------
+  **Tag**     **Equipment     **Qty       **Duty   **Nameplate   **Platform   **Footprint   **Origin
+              Name**          (incl.      t/h**    kW**          Elev.**      (m)**         Derate**
+                              backup)**                                                     
+  ----------- --------------- ----------- -------- ------------- ------------ ------------- ----------
+  EF-01       EFB Apron       1 + 1       25       7.5           Ground       3.5 × 1.3     Asian 65%
+              Feeder          standby                                                       
+
+  ETR-01      EFB Trommel     1 + 1       25       15            +3.0 m       7 × 2.5       Asian 65%
+              Screen Ø1.2m×6m standby                                                       
+
+  OBM-01      Overband Magnet 1           ---      1.5           +3.5 m       2 × 1.5       Any
+              EFB line                                                                      
+
+  EPR-01      EFB Screw Press 2 duty + 1  25 split 22 each       +3.2 m       5 × 2.5 each  Asian 65%
+                              standby                                                       
+
+  ESD-01      EFB Hammer      2 duty + 1  25       37 each       +4.0 m       6 × 3 each    Asian 65%
+              Shredder        standby                                                       
+
+  EHM-01      EFB Hammer Mill 2 duty + 1  25       45 each       +4.0 m       4 × 3 each    Asian 65%
+              to 2 mm         standby                                                       
+
+  EVS-01      EFB Vibratory   1 + 1       25       5.5           +4.0 m       4 × 2.5       Any
+              Screen 2 mm     standby                                                       
+
+  OF-01       OPDC Apron      1 + 1       4        7.5           Ground       3.5 × 1.3     Asian 65%
+              Feeder          standby                                                       
+
+  OTR-01      OPDC Trommel    1           4        11            +3.0 m       6 × 2.5       Asian 65%
+              Screen Ø1.0m×5m                                                               
+
+  OBM-02      Overband Magnet 1           ---      1.5           +3.5 m       2 × 1.5       Any
+              OPDC line                                                                     
+
+  OPR-01      OPDC Screw      2 duty + 1  4 split  22 each       +3.2 m       5 × 2.5 each  Asian 65%
+              Press           standby                                                       
+
+  OSD-01      OPDC Vibratory  1 + 1       4        4             +4.0 m       3 × 2         Any
+              Screen          standby                                                       
+
+  POS-DW-01   POS Decanter    1 + 1       1.25     11            Ground       4 × 1.5       Asian 65%
+              Centrifuge      standby                                                       
+
+  BC-01--09   EFB Belt        Per line    25       3--7.5 each   Various      8--15 m runs  Asian 65%
+              Conveyors (9                                                                  
+              total)                                                                        
+
+  BC-10--12   OPDC Belt       Per line    4        3 each        Various      8--15 m runs  Asian 65%
+              Conveyors (4                                                                  
+              total)                                                                        
+  ----------------------------------------------------------------------------------------------------
+
+**5. PROCESS FLOW --- ASCII DIAGRAMS**
+
+**5.1 Top-Level S1 Process Flow**
+
+> ╔══════════════════════════════════════════════════════════════════════════════╗
+>
+> ║ S1 MECHANICAL PRE-PROCESSING --- TOP-LEVEL PROCESS FLOW ║
+>
+> ║ Design Basis: 60 TPH FFB Mill │ Bogor, West Java, Indonesia ║
+>
+> ╚══════════════════════════════════════════════════════════════════════════════╝
+>
+> \[S0 OUTPUT\]
+>
+> ┌──────────────────────────────────────────────────────────────┐
+>
+> │ FFB Mill → EFB: 25.0 t/h \| OPDC: 3.8 t/h \| POS: 1.25 t/h │
+>
+> │ (62.5% MC) (70% MC) (82% MC) │
+>
+> └────────────────────────┬─────────────────────────────────────┘
+>
+> │ Conveyor + Hopper (Receiving Bay)
+>
+> ═════════════════════════╪═════════════════════════════════════════════════
+>
+> STREAM A: EFB LINE │ STREAM B: OPDC LINE
+>
+> ═════════════════════════╪═════════════════════════════════════════════════
+>
+> ┌────────────────────────┴─────────┐ ┌──────────────────────────────┐
+>
+> │ EFB RECEIVING HOPPER │ │ OPDC RECEIVING HOPPER │
+>
+> │ Capacity: 8 m³ (\~3 t) │ │ Capacity: 6 m³ (\~4 t) │
+>
+> │ Apron Feeder: EF-01 7.5 kW │ │ Apron Feeder: OF-01 7.5 kW │
+>
+> └────────────────┬─────────────────┘ └──────────────┬───────────────┘
+>
+> ↓ ↓
+>
+> ┌────────────────────────────────┐
+> ┌──────────────────────────────────┐
+>
+> │ TROMMEL SCREEN ETR-01 │ │ TROMMEL SCREEN OTR-01 │
+>
+> │ Ø1.2m × 6m │ 3.5 t/h design │ │ Ø1.0m × 5m │ 5 t/h design │
+>
+> │ Elev: +3.0m │ 15 kW │ │ Elev: +3.0m │ 11 kW │
+>
+> │ Removes: stones, metal, fines │ │ Removes: lumps, metal │
+>
+> └───────────────┬────────────────┘
+> └──────────────┬───────────────────┘
+>
+> ↓ ↓
+>
+> ┌────────────────────────────────┐
+> ┌──────────────────────────────────┐
+>
+> │ OVERBAND MAGNET OBM-01 │ │ OVERBAND MAGNET OBM-02 │
+>
+> │ Elev: +3.5m │ 1.5 kW │ │ Elev: +3.5m │ 1.5 kW │
+>
+> └───────────────┬────────────────┘
+> └──────────────┬───────────────────┘
+>
+> ↓ ↓
+>
+> ┌────────────────────────────────┐
+> ┌──────────────────────────────────┐
+>
+> │ SCREW PRESS EPR-01 (+backup) │ │ SCREW PRESS OPR-01 (+backup) │
+>
+> │ Elev: +3.2m │ 2 × 22 kW │ │ Elev: +3.2m │ 2 × 22 kW │
+>
+> │ EFB: 62.5% MC → 45% MC │ │ OPDC: 70% MC → 40% MC (FLOOR) │
+>
+> │ Press liquor → POME pond │ │ Press cake: 15.2% of EFB FW │
+>
+> └───────────────┬────────────────┘
+> └──────────────┬───────────────────┘
+>
+> ↓ ↓
+>
+> ┌────────────────────────────────┐
+>
+> │ EFB SHREDDER ESD-01 (+backup) │
+>
+> │ Elev: +4.0m │ 2 × 37 kW │
+>
+> │ Output: 50-100 mm fibre │
+>
+> └───────────────┬────────────────┘
+>
+> ↓
+>
+> ┌────────────────────────────────┐
+>
+> │ HAMMER MILL EHM-01 (+backup) │
+>
+> │ Elev: +4.0m │ 2 × 45 kW │
+>
+> │ Output: 2 mm particle (LOCK) │
+>
+> └───────────────┬────────────────┘
+>
+> ↓
+>
+> ┌────────────────────────────────┐
+>
+> │ VIBRATORY SCREEN EVS-01 │
+>
+> │ Classifies 2 mm product │
+>
+> │ Oversize recycles to mill │
+>
+> └───────────────┬────────────────┘
+>
+> ↓
+>
+> ═══════════════════════════════════════════════════════════════════════════
+>
+> BLEND POINT --- EFB + OPDC COMBINED (60:40 DM-weighted blend)
+>
+> ═══════════════════════════════════════════════════════════════════════════
+>
+> ┌──────────────────────────────────────────────────────────────────────────┐
+>
+> │ BLEND CONVEYOR + BUFFER SILO BC-10 │ Combined: \~331.4 t/day fresh │
+>
+> │ EFB 20 m³ silo + OPDC 15 m³ silo → proportioned blend discharge │
+>
+> └──────────────────────────────┬───────────────────────────────────────────┘
+>
+> │
+>
+> ┌───────────────────────────────┴──────────────────────────────────────────┐
+>
+> │ POS CAPTURE + DEWATERING UNIT (S1-POS-01) │
+>
+> │ Sludge pit / centrifuge discharge → 82% MC input → 65% MC output │
+>
+> │ \~30 t/day fresh in → \~13.5 t/day post-dewater │ Decanter: 11 kW │
+>
+> └───────────────────────────────┬──────────────────────────────────────────┘
+>
+> ↓
+>
+> ┌──────────────────────────────────────────────────────────────────────────┐
+>
+> │ COVERED CONVEYOR GALLERY (25 m × 4 m) → S2 CHEMICAL TREATMENT │
+>
+> │ Outputs: S1-OUT-EFB, S1-OUT-OPDC, S1-OUT-POS + S1 Lab Analysis
+> packet │
+>
+> └──────────────────────────────────────────────────────────────────────────┘
+
+**5.2 S1 Building Floor Plan (ASCII)**
+
+> ┌────────────────────────────────────────────────────────────────────────────┐
+>
+> │ S1 BUILDING FLOOR PLAN --- 36 m × 35 m (TOP VIEW) │
+>
+> │ North ↑ │ All dims in metres │
+>
+> └────────────────────────────────────────────────────────────────────────────┘
+>
+> 0 6 12 18 24 30 36
+>
+> ├────────┼────────┼────────┼────────┼────────┼────────┤ ← 36 m
+>
+> │ TRUCK RECEIVING BAY 18m × 12m │
+>
+> │ ┌──────────┐ 6m Aisle ┌──────────┐ │
+>
+> │ │EFB HOPPER│ │OPDC HOPR.│ │ Row 0--12m
+>
+> │ │ 8 m³ │ │ 6 m³ │ │
+>
+> │ └────┬─────┘ └────┬─────┘ │
+>
+> ├────────┼────────────────────────┼────────────────────┤ 12m
+>
+> │ EFB LINE 18m │ OPDC LINE 18m │
+>
+> │ ①ETR-01 Trommel +3.0m │ ①OTR-01 Trommel +3.0m │
+>
+> │ ②OBM-01 Magnet +3.5m │ ②OBM-02 Magnet +3.5m │ 12--17m
+>
+> │ ③EPR-01 Press×2 +3.2m │ ③OPR-01 Press×2 +3.2m │
+>
+> │ ④ESD-01 Shred×2 +4.0m C ④ (no shredder OPDC) │ 17--23m
+>
+> │ ⑤EHM-01 Mill×2 +4.0m E ⑤ OSD-01 Screen +4.0m │
+>
+> │ ⑥EVS-01 Screen +4.0m N MCC-RM-2 (east) GND │ 23--30m
+>
+> │ MCC-RM-1 (west) GND T POS Decanter Unit GND │
+>
+> │ MAINTENANCE WS GND R Spare parts store GND │ 30--35m
+>
+> ├────────────────────────────────────────────────────────┤ 35m
+>
+> │ PRODUCT DISCHARGE / BUFFER SILOS +2.5m │
+>
+> │ EFB Silo 20 m³ (Ø3m) OPDC Silo 15 m³ (Ø2.8m) │
+>
+> └────────────────────────────────────────────────────────┘
+>
+> ↓ ↓
+>
+> ┌──────────────────────────────────────────┐
+>
+> │ COVERED CONVEYOR GALLERY 25m × 4m │
+>
+> └──────────────┬───────────────────────────┘
+>
+> ↓
+>
+> \[S2 CHEMICAL TREATMENT UNIT\]
+
+**6. MASS BALANCE --- S1 INPUT → OUTPUT**
+
+All C:N ratios are formula-driven (DM-weighted). Never hardcode a
+blended C:N. Always use the N conversion factor 4.67 (not 6.25).
+
+**6.1 EFB Stream Balance**
+
+  --------------------------------------------------------------------------
+  **Node**         **Fresh    **MC %** **DM t/h** **CP %     **Lignin % DM**
+                   t/h**                          DM**       
+  ---------------- ---------- -------- ---------- ---------- ---------------
+  EFB in (S0)      25.0       62.5     9.375      4.75       22.0
+
+  Post-press       \~20.1     45.0     11.06      4.75\*     22.0\*
+  (EPR-01)                                                   
+
+  Post-mill        \~20.1     44.5     11.15      4.75\*     22.0\*
+  (EHM-01)                                                   
+
+  S1 EFB OUT (to   \~20.1     44.5     11.15      4.75       22.0
+  S2)                                                        
+  --------------------------------------------------------------------------
+
+\* DM composition unchanged by mechanical processing. MC reduction
+increases DM t/h at same fresh mass flow.
+
+**6.2 OPDC Stream Balance**
+
+> **⚠ OPDC PRESS FLOOR: 40% MC is a hard guardrail. If press discharge
+> moisture exceeds 40%, do NOT pass material to S2 --- pore damage kills
+> BSF colonisation. Flag and hold batch.**
+
+  --------------------------------------------------------------------------
+  **Node**         **Fresh   **MC    **DM      **CP %    **OPDC Yield Lock**
+                   t/h**     %**     t/h**     DM**      
+  ---------------- --------- ------- --------- --------- -------------------
+  OPDC in (S0) --- 3.8       70.0    1.14      14.5      15.2% of EFB fresh
+  locked yield                                           wt
+
+  Post-press       \~1.7     40.0    1.02      14.5\*    Verified at floor
+  (OPR-01)                                               
+
+  S1 OPDC OUT (to  \~1.7     40.0    1.02      14.5      PASS
+  S2)                                                    
+  --------------------------------------------------------------------------
+
+**6.3 POS Stream Balance**
+
+  ----------------------------------------------------------------------------------
+  **Node**           **Fresh    **MC %** **DM       **N        **P        **K
+                     t/day**             t/day**    kg/day**   kg/day**   kg/day**
+  ------------------ ---------- -------- ---------- ---------- ---------- ----------
+  POS in (sludge     \~30       82.0     \~5.4      95         22         38
+  pit) --- S0                                                             
+
+  Post-dewater       \~13.5     65.0     \~4.7      83         19         33
+  (POS-DW-01)                                                             
+
+  S1 POS OUT (to S2) \~13.5     65.0     \~4.7      83         19         33
+  ----------------------------------------------------------------------------------
+
+**6.4 Combined Blend (EFB + OPDC, 60:40 DM-weighted)**
+
+  ---------------------------------------------------------------------------
+  **Parameter**    **Value**   **Units**   **Derivation**
+  ---------------- ----------- ----------- ----------------------------------
+  Blend ratio (DM  60:40       EFB:OPDC    DM-weighted --- NEVER wet weight
+  basis)                                   
+
+  CP blend         8.14        \% DM       0.6 × 4.75 + 0.4 × 14.5
+
+  Lignin blend     25.0        \% DM       0.6 × 22.0 + 0.4 × 30.7
+
+  C:N blend        32          ---         DM-weighted formula (not
+                                           hardcoded)
+
+  Fresh            331.4       t/day       Guardrail-locked
+  substrate/day                            
+
+  DM/day           120.8       t DM/day    Guardrail-locked
+
+  3-stream NPK     582 N / 197 kg/day      EFB + OPDC + POS aggregated
+  combined         P / 930 K               
+  ---------------------------------------------------------------------------
+
+**7. CAPEX & OPEX --- S1 COMPLETE**
+
+The CFO & Finance Professor (#35) owns this section. All line items must
+be cross-referenced against FD_CFI_Engineering_Master_EPC_3_8_26.xlsx
+and FD_CAPEX_Building_Machinery_3_10_26.xlsx before finalisation. Flag
+any item lacking a source quote as DATA GAP.
+
+**7.1 Equipment CAPEX**
+
+  --------------------------------------------------------------------------------
+  **Category**    **Line Item**          **USD       **USD       **Source /
+                                         (Low)**     (High)**    Notes**
+  --------------- ---------------------- ----------- ----------- -----------------
+  EFB Processing  Apron feeders,         \$320,000   \$410,000   Master EPC
+                  trommel, magnets,                              register
+                  presses ×3, shredders                          
+                  ×3, mills ×3, screens                          
+                  ×2, conveyors                                  
+
+  OPDC Processing Apron feeder, trommel, \$90,000    \$120,000   Master EPC
+                  magnet, presses ×3,                            register
+                  screen ×2, conveyors                           
+
+  POS Dewatering  Decanter centrifuge    \$65,000    \$90,000    Master EPC
+                  ×2, sludge pump,                               register
+                  leachate sump                                  
+
+  Buffer Silos    EFB 20 m³ + OPDC 15 m³ \$28,000    \$38,000    OEM quotes
+                  carbon steel silos                             
+
+  Installation &  Erection, alignment,   \$60,000    \$85,000    15--20% of equip
+  Commissioning   test runs, operator                            
+                  training                                       
+
+  Spare Parts     Wear parts: hammers,   \$30,000    \$45,000    OEM recommended
+  Bank (initial)  screens, press screws                          
+  --------------------------------------------------------------------------------
+
+**7.2 Building & Civil CAPEX**
+
+  ----------------------------------------------------------------------------
+  **Item**           **Area /   **Unit     **Total     **Notes**
+                     Qty**      Rate USD** USD**       
+  ------------------ ---------- ---------- ----------- -----------------------
+  Stage 1 building   1,260 m²   \$185/m²   \$233,100   Pre-engineered steel,
+  (36 × 35 m PEB)                                      insulated panels
+
+  Truck receiving    216 m²     \$120/m²   \$25,920    Open sides, corrugated
+  bay (18 × 12 m)                                      roof
+
+  Floor slabs ---    \~900 m²   \$22/m²    \$19,800    C25/30, WWM
+  general (150 mm                                      
+  RC)                                                  
+
+  Floor slabs ---    260 m²     \$27/m²    \$7,020     C25/30, heavy rebar
+  truck lane (200 mm                                   
+  RC)                                                  
+
+  Equipment          Per        Lump sum   \$35,000    C30, epoxy grout
+  foundations        schedule                          
+  (isolated pads)                                      
+
+  Elevated           4 levels   Lump sum   \$68,000    Hot-dip galv steel
+  platforms +                                          
+  staircases                                           
+
+  Conveyor gallery   100 m²     \$180/m²   \$18,000    Galv frame + corrugated
+  (25 × 4 m covered)                                   roof
+
+  Site prep,         \~2,500 m² \$42/m²    \$105,000   Grading, aggregate,
+  drainage, sub-base                                   drains
+
+  MCC rooms ×2 (6 ×  48 m²      \$220/m²   \$10,560    Block wall, cable tray
+  4 m each)                                            
+
+  Maintenance        100 m²     \$95/m²    \$9,500     Concrete + corrugated
+  workshop (10 × 10                                    iron
+  m)                                                   
+
+  Contingency (10%)  ---        ---        \$53,190    Applied to all civil
+  ----------------------------------------------------------------------------
+
+**7.3 Electrical & Controls CAPEX**
+
+  ------------------------------------------------------------------------
+  **Item**              **Spec**                   **USD**
+  --------------------- -------------------------- -----------------------
+  Main transformer      500 kVA 11kV/400V          \$35,000
+                        oil-cooled                 
+
+  LV main switchboard   400V 1000A ACB             \$18,000
+
+  MCC panels ×2 (EFB +  Motor starters, VFDs,      \$65,000
+  OPDC lines)           protection relays          
+
+  PLC ×2 (Siemens       64 DI, 32 DO, 16 AI per    \$14,000
+  S7-1200 or equiv.)    controller                 
+
+  HMI touchscreens ×2   15-inch IP65, SCADA-ready  \$8,000
+
+  Cable tray, cabling,  Lump sum                   \$38,000
+  earthing                                         
+
+  Compressed air system 2 × 15 kW screw            \$22,000
+                        compressors + ring main    
+
+  CCTV system (8        1080p, 30-day NVR          \$9,500
+  cameras)                                         
+
+  Instrumentation (belt 3 weighbridges, moisture   \$18,000
+  scales, sensors)      sensors                    
+  ------------------------------------------------------------------------
+
+**7.4 CAPEX Summary**
+
+  -----------------------------------------------------------------------
+  **Category**               **Low USD**        **High USD**
+  -------------------------- ------------------ -------------------------
+  Equipment (EFB + OPDC +    \$503,000          \$658,000
+  POS + Silos)                                  
+
+  Installation &             \$60,000           \$85,000
+  Commissioning                                 
+
+  Spare Parts Bank           \$30,000           \$45,000
+
+  Building & Civil Works     \$584,090          \$584,090
+
+  Electrical & Controls      \$227,500          \$227,500
+
+  Engineering & Design (8%   \$112,367          \$127,967
+  of CAPEX)                                     
+
+  Contingency (10%)          \$151,696          \$172,756
+
+  TOTAL S1 CAPEX             \$1,668,653        \$1,900,313
+  -----------------------------------------------------------------------
+
+**7.5 OPEX --- Annual Operating Cost**
+
+  ---------------------------------------------------------------------------------------------
+  **OPEX Category**     **Unit**      **Rate**       **Quantity/Year**   **Annual USD**
+  --------------------- ------------- -------------- ------------------- ----------------------
+  Electricity --- EFB   kWh           \$0.0914/kWh   \~3,500,000 kWh     \$319,900
+  line motors                                                            
+
+  Electricity ---       kWh           \$0.0914/kWh   \~900,000 kWh       \$82,260
+  OPDC + POS line                                                        
+
+  Wear parts (hammers,  Lump          ---            Annual schedule     \$85,000--\$120,000
+  screens, press                                                         
+  screws)                                                                
+
+  Lubricants &          Lump          ---            Annual              \$18,000
+  consumables                                                            
+
+  Labour --- S1         Person-year   \$8,000/yr     12 FTE              \$96,000
+  operators (3 shifts ×                                                  
+  4 staff)                                                               
+
+  Maintenance crew (2   Person-year   \$8,500/yr     2 FTE               \$17,000
+  FTE)                                                                   
+
+  Total OPEX (mid       ---           ---            ---                 \$618,160--\$653,160
+  estimate)                                                              
+
+  OPEX per tonne fresh  USD/t         ---            \~109,000 t/yr      \$5.67--\$5.99/t
+  substrate                                                              
+  ---------------------------------------------------------------------------------------------
+
+**8. S1 END-OF-PROCESS LAB ANALYSIS OUTPUT**
+
+The Environmental Chemistry & Lab Professor (#23) governs this section.
+The S1 lab analysis packet is generated at the process boundary ---
+immediately before material enters the conveyor gallery to S2. It
+confirms that mechanical treatment has achieved specification.
+
+**8.1 S1 Lab Analysis Packet --- Required Parameters**
+
+  -------------------------------------------------------------------------------
+  **Test**      **Stream**   **Method**     **Target / Guardrail**    **Lab
+                                                                      Package**
+  ------------- ------------ -------------- ------------------------- -----------
+  Moisture      EFB, OPDC,   Gravimetric    EFB ≤45% │ OPDC ≤40%      C
+  content       POS          105°C          (FLOOR) │ POS ≤65%        
+
+  Particle size EFB only     Sieve analysis D90 ≤ 2 mm (LOCKED)       C
+  D90                                                                 
+
+  Crude protein EFB, OPDC,   Kjeldahl (N ×  EFB 4.75 │ OPDC 14.5 │    B
+  % DM          POS          4.67)          POS \~11.0                
+
+  Ash % DM      All streams  Muffle 550°C   POS \~28% DM (guardrail)  C
+
+  Total N % DM  All streams  Kjeldahl /     EFB \~0.76 │ OPDC \~2.3 │ B
+                             Dumas          POS \~1.76                
+
+  Total P % DM  All streams  ICP-OES        As per S0 baseline        A
+
+  Total K % DM  All streams  ICP-OES        As per S0 baseline        A
+
+  pH            POS, Blend   pH meter       POS: verify range         C
+                sample       slurry 1:5                               
+
+  Ether Extract POS only     Soxhlet        \~10% DM (Feedipedia      C
+  % DM                                      29.2% REJECTED)           
+
+  Fe mg/kg DM   POS only     ICP-OES        \<3,000 → 20% WW          A
+                                            inclusion │ 3,000--5,000  
+                                            → 10--15% │ \>8,000 →     
+                                            CaCO₃                     
+
+  Mn mg/kg DM   POS only     ICP-OES        100--475 mg/kg DM typical A
+
+  C:N ratio     Blend sample TOC+Kjeldahl   Blend target \~32         C
+                                            (DM-weighted formula)     
+  -------------------------------------------------------------------------------
+
+> **⚠ 3-DAY REPLICATE SAMPLING RULE (CFI-LAB-POME-001): Collect samples
+> on three independent days before treating S1 lab output as confirmed.
+> Single-day results may be used for real-time process control only.**
+>
+> **⚠ RECOMMENDED LABS: Balai Penelitian Tanah Bogor │ Eurofins
+> Indonesia │ Sucofindo. Do not use labs without ISO 17025 accreditation
+> for ICP-OES packages.**
+
+**9. SUPABASE DATA ARCHITECTURE & WRITE INSTRUCTIONS**
+
+The MRV & Technology Professor (#30) governs this section. Every
+completed S1 run writes a record to the s1_run_log table. The s2_payload
+JSONB column carries the full handoff to S2. The NPK relay is also
+written here for downstream NPK Calculator pickup.
+
+**9.1 Supabase Connection**
+
+  -----------------------------------------------------------------------
+  **Parameter**   **Value**
+  --------------- -------------------------------------------------------
+  Project URL     https://lcpbtnipkvrmuwllymfw.supabase.co
+
+  Target table    s1_run_log
+
+  Auth method     anon key (hardcoded in app) --- never expose in
+                  client-side logs
+
+  Write trigger   On completion of each S1 run or shift-end summary
+                  (operator confirmation required)
+
+  Read by         S2 Chemical Treatment Calculator │ NPK Value Dashboard
+                  │ Plantation Intelligence Tab
+  -----------------------------------------------------------------------
+
+**9.2 SQL Schema --- s1_run_log**
+
+> \-- TABLE: s1_run_log
+>
+> CREATE TABLE s1_run_log (
+>
+> id BIGSERIAL PRIMARY KEY,
+>
+> run_ts TIMESTAMPTZ NOT NULL DEFAULT now(),
+>
+> mill_id TEXT NOT NULL DEFAULT \'BOGOR-60TPH\',
+>
+> ffb_tph NUMERIC(8,3), \-- FFB throughput t/h
+>
+> efb_tph NUMERIC(8,3), \-- EFB t/h from S0
+>
+> opdc_tph NUMERIC(8,3), \-- OPDC t/h from S0
+>
+> pos_tph NUMERIC(8,3), \-- POS t/h from S0
+>
+> \-- S1 OUTPUTS
+>
+> efb_out_tph NUMERIC(8,3), \-- EFB post-mill, 2mm, 45% MC
+>
+> opdc_out_tph NUMERIC(8,3), \-- OPDC post-press, 40% MC
+>
+> pos_out_tph NUMERIC(8,3), \-- POS post-dewater, 65% MC
+>
+> blend_tpd NUMERIC(10,3), \-- Combined blend t/day
+>
+> \-- EQUIPMENT HEALTH
+>
+> efb_press_util_pct NUMERIC(5,2),
+>
+> opdc_press_util_pct NUMERIC(5,2),
+>
+> hammer_util_pct NUMERIC(5,2),
+>
+> \-- LAB ANALYSIS PACKET (S1 end-of-process)
+>
+> efb_mc_out_pct NUMERIC(5,2),
+>
+> efb_cp_pct_dm NUMERIC(5,2),
+>
+> efb_cn_ratio NUMERIC(6,2),
+>
+> efb_lignin_pct NUMERIC(5,2),
+>
+> opdc_mc_out_pct NUMERIC(5,2),
+>
+> opdc_cp_pct_dm NUMERIC(5,2),
+>
+> opdc_cn_ratio NUMERIC(6,2),
+>
+> pos_mc_out_pct NUMERIC(5,2),
+>
+> pos_cp_pct_dm NUMERIC(5,2),
+>
+> \-- NPK RELAY
+>
+> blend_n_kgd NUMERIC(8,2),
+>
+> blend_p_kgd NUMERIC(8,2),
+>
+> blend_k_kgd NUMERIC(8,2),
+>
+> \-- CAPEX SNAPSHOT
+>
+> capex_usd NUMERIC(12,2),
+>
+> opex_usd_per_t NUMERIC(8,4),
+>
+> notes TEXT,
+>
+> s2_payload JSONB \-- full handoff to S2
+>
+> );
+
+**9.3 S2 Handoff Payload Structure (s2_payload JSONB)**
+
+> {
+>
+> \"handoff_version\": \"1.0\",
+>
+> \"source_stage\": \"S1\",
+>
+> \"target_stage\": \"S2\",
+>
+> \"run_ts\": \"\<ISO timestamp\>\",
+>
+> \"streams\": {
+>
+> \"EFB\": {
+>
+> \"tph\": 20.1, \"mc_pct\": 45.0, \"particle_mm\": 2.0,
+>
+> \"cp_pct_dm\": 4.75, \"cn_ratio\": 60, \"lignin_pct_dm\": 22.0,
+>
+> \"n_factor\": 4.67
+>
+> },
+>
+> \"OPDC\": {
+>
+> \"tph\": 3.8, \"mc_pct\": 40.0,
+>
+> \"cp_pct_dm\": 14.5, \"cn_ratio\": 20, \"lignin_pct_dm\": 30.7,
+>
+> \"yield_pct_efb_fw\": 15.2
+>
+> },
+>
+> \"POS\": {
+>
+> \"tph\": 0.56, \"mc_pct\": 65.0,
+>
+> \"cp_pct_dm\": 11.0, \"ash_pct_dm\": 28.0, \"ee_pct_dm\": 10.0,
+>
+> \"n_pct_dm\": 1.76, \"fe_mgt_dm\": \"LAB_REQUIRED\"
+>
+> }
+>
+> },
+>
+> \"blend_60_40_dm\": {
+>
+> \"cp_pct\": 8.14, \"cn_ratio\": 32, \"lignin_pct\": 25.0,
+>
+> \"fresh_tpd\": 331.4, \"dm_tpd\": 120.8
+>
+> },
+>
+> \"npk_relay\": {
+>
+> \"n_kgd\": 582, \"p_kgd\": 197, \"k_kgd\": 930
+>
+> },
+>
+> \"lab_analysis_tag\": \"S1-LAB-\<run_id\>\",
+>
+> \"guardrail_flags\": {
+>
+> \"opdc_mc_floor_met\": true,
+>
+> \"particle_size_2mm\": true,
+>
+> \"pksa_cost_zero\": true
+>
+> }
+>
+> }
+
+**10. NPK RELAY TO NPK CALCULATOR**
+
+At the end of every S1 run, the following NPK data packet must be sent
+to the CFI NPK Value Dashboard / Calculator. This is a hard requirement
+--- no phase completes without NPK relay confirmation.
+
+  -----------------------------------------------------------------------------
+  **NPK            **S1 Output  **Units**   **Derivation / Source**
+  Parameter**      Value**                  
+  ---------------- ------------ ----------- -----------------------------------
+  N --- EFB        340 kg/day   kg N/day    EFB DM × N% DM (0.76% N ÷ N-factor
+  contribution                              4.67 = 0.163% N; 120.8 t DM/day ×
+                                            0.163% → \~197 kg ... \[recalc per
+                                            run\]
+
+  N --- OPDC       140 kg/day   kg N/day    OPDC DM × 2.3% N
+  contribution                              
+
+  N --- POS        \~83 kg/day  kg N/day    POS DM × 1.76% N
+  contribution                              
+
+  TOTAL N          \~582 kg/day kg N/day    Guardrail baseline --- recalculate
+  (3-stream)                                per actual S1 outputs
+
+  P --- EFB        47 kg/day    kg P/day    EFB DM × P% from S0 lab
+
+  P --- OPDC       126 kg/day   kg P/day    OPDC DM × P% from S0 lab
+
+  P --- POS        \~24 kg/day  kg P/day    POS DM × P% from S0 lab
+
+  TOTAL P          \~197 kg/day kg P/day    Guardrail baseline
+  (3-stream)                                
+
+  K --- total      \~930 kg/day kg K/day    Guardrail baseline --- breakdown
+  (3-stream)                                per S0 lab
+
+  NPK value basis  Urea \$350/t ---         Standard pricing
+                   │ TSP                    
+                   \$450/t │                
+                   MOP \$380/t              
+
+  N replacement    \$1.50/kg N  USD/kg      Sinar Mas estate actual
+  price (estate)                            
+
+  P replacement    \$1.80/kg    USD/kg      Sinar Mas estate actual
+  price (estate)   P₂O₅                     
+
+  K replacement    \$0.90/kg    USD/kg      Sinar Mas estate actual
+  price (estate)   K₂O                      
+  -----------------------------------------------------------------------------
+
+NPK relay is written to the s1_run_log.npk_relay columns AND sent as a
+trigger to the NPK Value Dashboard via Supabase real-time subscription
+or Zapier webhook, whichever is configured at the time of run.
+
+> **⚠ NPK RELAY IS MANDATORY. If N, P, or K data is unavailable (DATA
+> GAP) at end of S1 run, log the data gap explicitly and use guardrail
+> baseline values as the relay placeholder. Never relay zero.**
+
+**11. S1 → S2 DATA HANDOFF SPECIFICATION**
+
+S2 Chemical Treatment (PKSA alkaline pre-treatment) requires the
+following confirmed parameters from S1 before commencing. S1 Calculator
+writes these to the s2_payload JSONB column and raises a status flag =
+\'S1_COMPLETE\' in Supabase.
+
+  --------------------------------------------------------------------------------
+  **Parameter      **Source in    **Guardrail Gate**   **If NOT met**
+  Required by S2** S1**                                
+  ---------------- -------------- -------------------- ---------------------------
+  EFB particle     EVS-01 screen  HARD GATE --- must   Return to EHM-01, remill
+  size ≤2 mm D90   verified       pass                 
+
+  EFB MC ≤45%      Post-press     HARD GATE            Additional press pass or
+                   moisture check                      reject
+
+  OPDC MC ≤40%     Post-press     HARD GATE --- pore   HOLD batch, do not advance
+  (floor)          moisture check damage risk          to S2
+
+  POS MC ≤65%      Post-dewater   Hard gate            Additional dewater pass
+                   check                               
+
+  Fe mg/kg DM      ICP-OES        Gates POS inclusion  Restrict inclusion rate per
+  (POS)            package A      rate                 Fe band
+                                  (CFI-LAB-POME-001)   
+
+  PKSA dose        S2 calculates  6--10 kg PKSA/t      S1 provides blend
+  requirement      from blend CP, substrate │ pH       composition only
+                   lignin, C:N    target 10--12        
+
+  Lab analysis tag S1 lab         3-day replicate      Provisional tag used ---
+  (S1-LAB-xxxx)    analysis       confirmed            flag as unconfirmed
+                   packet issued                       
+
+  OPDC yield       Mass balance   LOCKED --- never     Investigate press settings
+  verified at      check at press change               if deviation \>5%
+  15.2% of EFB FW  discharge                           
+  --------------------------------------------------------------------------------
+
+**12. REQUIRED OUTPUT DELIVERABLES PER RUN**
+
+The S1 Calculator must produce all of the following outputs in a single
+run. Partial outputs are not accepted.
+
+  ------------------------------------------------------------------------------
+  **\#**   **Deliverable**       **Format**   **Recipient**
+  -------- --------------------- ------------ ----------------------------------
+  1        Configuration Lock    Text block   Internal --- process confirmation
+           Summary               (printed at  
+                                 start)       
+
+  2        Machinery Selection   Table        Process Engineer
+           Report: equipment                  
+           tags, capacity check,              
+           utilisation %, backup              
+           status                             
+
+  3        Mass Balance: S1      Table +      Process Engineer + CFO
+           input → output per    formula      
+           stream with moisture  derivation   
+           and DM                             
+
+  4        ASCII Process Flow    Monospace    Process Engineer
+           Diagram               text         
+
+  5        ASCII Building Floor  Monospace    Civil Engineer
+           Plan                  text         
+
+  6        CAPEX Table           Table with   CFO
+           (equipment + civil +  source flags 
+           electrical +                       
+           contingency)                       
+
+  7        OPEX Table            Table        CFO
+           (electricity +                     
+           labour + wear parts                
+           per year and per                   
+           tonne)                             
+
+  8        S1 End-of-Process Lab Structured   Lab Manager + S2 Calculator
+           Analysis Packet       JSON + table 
+           (S1-LAB-xxxx)                      
+
+  9        Supabase write        Log entry    MRV / Database
+           confirmation                       
+           (s1_run_log row ID)                
+
+  10       NPK Relay Packet      Structured   NPK Calculator
+           (N/P/K kg/day +       JSON         
+           replacement values)                
+
+  11       S2 Handoff Payload    JSON         S2 Chemical Treatment Calculator
+           (s2_payload JSONB)                 
+
+  12       DATA GAP register     List with    All stakeholders
+           (any missing values   source note  
+           flagged)                           
+  ------------------------------------------------------------------------------
+
+**13. MULTI-PROMPT vs. SINGLE-PROMPT ARCHITECTURE**
+
+To answer your explicit question: YES, S1 can and should be split into
+several prompts for production deployment. The recommended decomposition
+is:
+
+  -----------------------------------------------------------------------------------
+  **Sub-Prompt**   **Name**        **Trigger        **Output**
+                                   Condition**      
+  ---------------- --------------- ---------------- ---------------------------------
+  S1-A             S0 Data Import  New S0 data      Validated input object + DATA GAP
+                   & Validation    batch arrives    list
+
+  S1-B             Machinery       On commissioning Equipment register + utilisation
+                   Selection &     or design change table
+                   Sizing                           
+
+  S1-C             Real-Time Mass  Every operating  Stream outputs, moisture checks,
+                   Balance         shift            blend composition
+                   Calculator                       
+
+  S1-D             CAPEX / OPEX    On design change Full cost tables for CFO
+                   Generator       or quarterly     
+                                   review           
+
+  S1-E             Lab Analysis    On lab results   S1-LAB-xxxx packet + guardrail
+                   Output          receipt          gate check
+                   Processor                        
+
+  S1-F             Supabase        End of every     Database write + s2_payload + NPK
+                   Writer + S2     shift / run      relay
+                   Handoff                          
+  -----------------------------------------------------------------------------------
+
+This master prompt encompasses ALL of the above. When deploying as
+separate prompts, each sub-prompt should include Section 0 (Governing
+Documents) and reference this master document by version.
+
+**14. CHANGE CLASSIFICATION SYSTEM**
+
+  ---------------------------------------------------------------------------------
+  **Class**   **Definition**     **Example in S1        **Authority**
+                                 context**              
+  ----------- ------------------ ---------------------- ---------------------------
+  CLASS A     Guardrail-locked   Changing OPDC yield    CEO + Lead Professor
+              parameter change   from 15.2%; changing   sign-off. Code change
+                                 particle size from 2   required.
+                                 mm; changing press     
+                                 floor MC from 40%      
+
+  CLASS B     Equipment          Adding a third press;  Process Engineer +
+              specification      changing mill to       Mechanical Professor
+              change (nameplate, European OEM (derating approval
+              backup count)      from 65% to 85%)       
+
+  CLASS C     CAPEX / OPEX cost  Updating hammer mill   CFO approval. Admin Panel
+              update             price based on new OEM update.
+                                 quote                  
+
+  CLASS D     Operational        Adjusting feed rate    Shift supervisor.
+              parameter within   from 22 t/h to 24 t/h  Auto-logged in Supabase.
+              guardrail range    (within press          
+                                 capacity)              
+  ---------------------------------------------------------------------------------
+
+**15. AI SEARCH INTEGRATION (PROMPT 8)**
+
+The AI Search agent runs every 3 days to update the following
+S1-relevant datasets. All external search results are appended (never
+overwrite) with source, date, and uncertainty flags. Only Tier A--C
+sources are accepted (see RESEARCH-INTENSITY prompt).
+
+-   Indonesian OEM equipment pricing: screw presses, hammer mills,
+    trommel screens, decanters
+
+-   Press dewatering performance data for EFB and OPDC --- moisture
+    reduction curves vs. press pressure
+
+-   Particle size effects on BSF colonisation and microbial inoculation
+    uptake (S3 relevance)
+
+-   PLN electricity tariff updates (current: \$0.091437/kWh baseline
+    IDR/USD 15,800)
+
+-   Indonesian construction cost indices for industrial buildings
+    (benchmark: \$185/m² PEB)
+
+-   Press cake nutrient analysis from peer-reviewed sources --- verify
+    against CFI canonical values
+
+> **⚠ ANTI-HALLUCINATION RULE: No equipment price, efficiency value, or
+> mass-balance coefficient may be inserted from an external search
+> result without: (1) author/org, (2) year, (3) title/source, (4) unit
+> verification. DATA GAP is always preferred over a fabricated value.**
+
+**EXTENSIBILITY --- ADDING NEW PERSONAS**
+
+After reading this prompt, the AI system must ask: \"Is there another
+persona you want to add for S1? Suggested candidates: Legal/Regulatory
+(Indonesia KLHK waste permit for processing facilities); ESG & Social
+Licence (community impact, odour management); Digital Twin Modelling
+(real-time process simulation); Indonesian Customs & Import Specialist
+(OEM equipment procurement). Confirm which to activate or add your
+own.\"
+
+CFI PROMPT SERIES │ S1 MECHANICAL DOWNSIZING CALCULATOR │ Master Prompt
+v1.0 │ March 2026
+
+Circular Fertiliser Industries │ CONFIDENTIAL │ Design Basis: 60 TPH FFB
+Mill, Bogor, West Java

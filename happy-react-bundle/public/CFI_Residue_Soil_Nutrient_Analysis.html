@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFI — Palm Residue Lab Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#060C14;--navyMid:#0A1628;--navyCard:#111E33;--navyField:#142030;--navyDeep:#0C1E33;--navyLt:#1A3A5C;
+  --teal:#40D7C5;--tealDim:rgba(64,215,197,0.12);--tealBdr:rgba(64,215,197,0.55);--tealFaint:rgba(64,215,197,0.18);
+  --amber:#F5A623;--amberDim:rgba(245,166,35,0.14);
+  --green:#00A249;--greenDim:rgba(0,162,73,0.10);--greenBdr:rgba(0,162,73,0.40);
+  --red:#E84040;--redDim:rgba(232,64,64,0.10);--redBdr:rgba(232,64,64,0.35);
+  --grey:#A8BDD0;--greyLt:rgba(168,189,208,0.65);--greyFaint:rgba(168,189,208,0.20);
+  --bdrCalc:rgba(139,160,180,0.18);
+}
+body{background:var(--navy);color:var(--grey);font-family:'DM Sans',sans-serif;font-size:13px;padding:20px 24px 48px}
+/* ── NAV ── */
+.topbar{background:var(--navyMid);border-bottom:1px solid var(--tealFaint);padding:14px 24px 12px;margin:-20px -24px 20px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.brand{display:flex;align-items:baseline;gap:8px}
+.brand-cfi{font-family:'DM Mono',monospace;font-weight:700;font-size:22px;color:#fff}
+.brand-dt{font-family:'DM Mono',monospace;font-weight:700;font-size:16px;color:var(--teal);letter-spacing:.08em}
+.brand-sub{font-size:11px;color:var(--teal);margin-top:3px;font-family:'DM Sans',sans-serif}
+.doc-title{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--amber);letter-spacing:.02em}
+.doc-sub{font-size:11px;color:var(--greyLt);margin-top:3px}
+
+/* ── INTRO ── */
+.intro{background:var(--navyCard);border:1.5px solid var(--tealBdr);border-radius:10px;padding:16px 20px;margin-bottom:18px}
+.intro-title{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--teal);margin-bottom:10px;letter-spacing:.04em}
+.intro p{font-size:12px;color:var(--greyLt);line-height:1.75;margin-bottom:7px}
+.intro p:last-child{margin-bottom:0}
+.intro strong{color:var(--amber)}
+
+/* ── TABS ── */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.tab{background:var(--navyDeep);border:1.5px solid var(--bdrCalc);border-radius:7px;padding:6px 14px;cursor:pointer;font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--grey);transition:all .12s;white-space:nowrap}
+.tab:hover:not(.on){border-color:rgba(64,215,197,0.45);color:var(--teal)}
+.tab.on{background:var(--tealDim);border-color:var(--tealBdr);color:var(--amber)}
+.tab .src{font-size:9px;background:rgba(245,166,35,0.18);color:var(--amber);border:1px solid rgba(245,166,35,0.3);border-radius:3px;padding:1px 4px;margin-left:5px}
+.tab .est{font-size:9px;background:var(--greyFaint);color:var(--greyLt);border:1px solid rgba(168,189,208,0.2);border-radius:3px;padding:1px 4px;margin-left:5px}
+
+/* ── PANEL LAYOUT ── */
+#pnl{display:flex;flex-direction:column;gap:12px}
+.p-header{background:var(--navyCard);border:1.5px solid var(--tealBdr);border-radius:10px;padding:14px 18px}
+.p-name{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;color:var(--teal)}
+.p-tag{font-size:11px;color:var(--greyLt);margin-top:4px;line-height:1.6}
+.p-badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.bdg{font-family:'DM Mono',monospace;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;border:1px solid;white-space:nowrap}
+.bdg-mill{color:var(--green);border-color:var(--greenBdr);background:var(--greenDim)}
+.bdg-ext{color:var(--amber);border-color:rgba(245,166,35,0.35);background:var(--amberDim)}
+.bdg-liq{color:var(--teal);border-color:rgba(64,215,197,0.35);background:var(--tealDim)}
+.bdg-info{color:var(--grey);border-color:var(--bdrCalc);background:rgba(168,189,208,0.06)}
+
+/* ── SECTION GROUPS ── */
+.groups{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.group{background:var(--navyDeep);border:1px solid var(--bdrCalc);border-radius:8px;padding:10px 12px}
+.group-title{font-family:'DM Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--teal);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid rgba(64,215,197,0.15)}
+.field{display:flex;justify-content:space-between;align-items:baseline;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.field:last-child{border-bottom:none}
+.f-lbl{font-family:'DM Mono',monospace;font-size:11px;color:var(--grey)}
+.f-val{font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:var(--amber)}
+.f-val.green{color:var(--green)}
+.f-val.red{color:var(--red)}
+.f-val.teal{color:var(--teal)}
+.f-val.gap{color:var(--greyFaint);font-size:10px;font-weight:400}
+.f-unit{font-family:'DM Mono',monospace;font-size:10px;color:var(--greyLt);margin-left:3px}
+
+/* ── SOIL BENEFITS ── */
+.soil-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.soil-card{background:var(--navyDeep);border:1px solid var(--greenBdr);border-radius:7px;padding:10px 13px}
+.soil-card h4{font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--teal);margin-bottom:5px}
+.soil-card p{font-size:11px;color:var(--greyLt);line-height:1.6}
+
+/* ── GATES ── */
+.gates{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.gate{border-radius:7px;padding:9px 12px;border:1px solid}
+.gate-pass{border-color:var(--greenBdr);background:var(--greenDim)}
+.gate-fail{border-color:var(--redBdr);background:var(--redDim)}
+.gate-warn{border-color:rgba(245,166,35,0.40);background:var(--amberDim)}
+.gate-na{border-color:var(--bdrCalc);opacity:.6}
+.gate-lbl{font-family:'DM Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.07em;margin-bottom:4px}
+.gate-pass .gate-lbl{color:var(--green)}
+.gate-fail .gate-lbl{color:var(--red)}
+.gate-warn .gate-lbl{color:var(--amber)}
+.gate-na .gate-lbl{color:var(--greyLt)}
+.gate-val{font-family:'DM Mono',monospace;font-size:13px;font-weight:700;margin-bottom:2px}
+.gate-pass .gate-val{color:var(--green)}
+.gate-fail .gate-val{color:var(--red)}
+.gate-warn .gate-val{color:var(--amber)}
+.gate-na .gate-val{color:var(--greyLt)}
+.gate-txt{font-size:10px;line-height:1.5}
+.gate-pass .gate-txt{color:rgba(0,162,73,0.8)}
+.gate-fail .gate-txt{color:rgba(232,64,64,0.8)}
+.gate-warn .gate-txt{color:rgba(245,166,35,0.8)}
+.gate-na .gate-txt{color:var(--greyLt)}
+
+/* ── SEC HEADER ── */
+.sec-hdr{font-family:'DM Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--teal);border-left:3px solid var(--teal);padding-left:8px;margin:14px 0 8px}
+
+/* ── ALL COMPARISON ── */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;font-size:11px;border-collapse:collapse;min-width:600px}
+th{padding:7px 9px;text-align:left;font-family:'DM Mono',monospace;font-size:10px;font-weight:700;color:var(--greyLt);letter-spacing:.05em;background:var(--navyDeep);border-bottom:1px solid rgba(64,215,197,0.2)}
+td{padding:6px 9px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--grey);font-family:'DM Mono',monospace}
+tr:last-child td{border-bottom:none}
+.hi{color:var(--green);font-weight:700}
+.lo{color:var(--red)}
+.tbl-card{background:var(--navyCard);border:1px solid var(--bdrCalc);border-radius:8px;padding:12px 14px;margin-bottom:10px}
+
+/* ── FOOTER ── */
+.footer{margin-top:28px;padding-top:14px;border-top:1px solid var(--bdrCalc);font-size:11px;color:var(--greyLt);line-height:1.7}
+.footer strong{color:var(--amber)}
+
+@media(max-width:900px){.groups{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.groups{grid-template-columns:1fr}.soil-grid{grid-template-columns:1fr}.gates{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <div class="brand"><span class="brand-cfi">CFI</span><span class="brand-dt">DEEP TECH</span></div>
+    <div class="brand-sub">Circular Fertiliser Industries · Bogor, West Java, Indonesia</div>
+  </div>
+  <div style="text-align:right">
+    <div class="doc-title">Palm Residue Lab Analysis — Soil Nutrient Profiles</div>
+    <div class="doc-sub">12 residues · All values DM basis · Canonical CFI values · March 2026</div>
+  </div>
+</div>
+
+<div class="intro">
+  <div class="intro-title">WHAT MAKES PALM RESIDUES VALUABLE FOR SOIL?</div>
+  <p><strong>CFI processes 12 palm oil residues</strong> into premium organic biofertilisers. Every residue delivers a distinct soil benefit profile — from EFB's unmatched potassium and organic matter, to OPDC's balanced NPK, to PKE's best-in-class phosphorus and trace elements.</p>
+  <p><strong>Macronutrients (NPK):</strong> OPDC and PKE lead on nitrogen (2.3–3.2% N DM) — comparable to high-quality poultry manure. EFB leads on potassium (2.0–2.4% K DM = 24–29 kg K₂O/t DM). PKE leads on phosphorus (0.24–0.79% P DM), critical for P-fixing Oxisol and Andisol soils across Sumatra and Kalimantan.</p>
+  <p><strong>Micronutrients:</strong> OPF leads for Mn (100–300 mg/kg) and B (15–25 mg/kg) — both commonly deficient in intensively managed oil palm. PKE leads for Zn (50–100 mg/kg) and Cu (20–35 mg/kg). OPDC has the highest Fe (2,000–10,000 mg/kg). The full CFI blended product delivers the complete micronutrient spectrum in a single application.</p>
+  <p><strong>Critical blending principle:</strong> EFB alone fails SNI 19-7030-2004 — its C:N of 49–70 is too high for direct application. Blending EFB + OPDC at 70:30 brings C:N to 25–30 and boosts N+P to compliant levels. Adding PKE enriches P and trace elements. BSF frass adds chitin. The result is a complete certified organic biofertiliser superior to any single residue alone.</p>
+  <p><strong>DATA badge</strong> = confirmed CFI canonical values (peer-reviewed) &nbsp;|&nbsp; <strong>EST badge</strong> = literature estimates, lab confirmation recommended before use.</p>
+</div>
+
+<div class="tabs" id="tabRow"></div>
+<div id="pnl"></div>
+
+<div class="footer">
+  <strong>Data sources:</strong> MPOB TT No. 508 (2012), MPOB TT No. 533 (2014), Zaharah &amp; Lim 2000, Yahya et al. 2010, Habib et al. 1997, Wan Zahari et al. 2003, Feedipedia (confirmed values only — POME EE 29.2% permanently rejected) | 
+  <strong>Analytical methods:</strong> AOAC 930.15 (moisture), AOAC 942.05 (ash), AOAC 984.13 (CP), AOAC 920.39 (EE/Soxhlet), Van Soest NDF/ADF/ADL, 72% H₂SO₄ (Klason lignin), ICP-OES Agilent 5110, CHNS Elementar/LECO, Kjeldahl N (factor 4.67 not 6.25) | 
+  <strong>Standards:</strong> SNI 19-7030-2004 · Permentan 01/2020 · <strong>Prepared by:</strong> Circular Fertiliser Industries Pty Ltd · March 2026
+</div>
+
+<script>
+var GAP = '<span class="f-val gap">DATA GAP</span>';
+
+function fv(v, unit, cls) {
+  if (v === null || v === undefined || v === 'DATA GAP') return GAP + (unit ? '<span class="f-unit">'+unit+'</span>' : '');
+  return '<span class="f-val '+(cls||'')+'">' + v + '</span>' + (unit ? '<span class="f-unit">'+unit+'</span>' : '');
+}
+
+var D = {
+  EFB: {
+    label:'EFB', full:'Empty Fruit Bunches', src:'DATA', mill:'mill',
+    tag:'22.7% of FFB fresh weight · Mill gate, zero cost · Primary CFI stream',
+    badges:[{t:'CPO MILL',c:'bdg-mill'},{t:'22.7% FFB',c:'bdg-info'},{t:'ZERO COST',c:'bdg-mill'},{t:'CANONICAL',c:'bdg-info'}],
+    physical:[['MC','62.5','% WB'],['DM','37.5','% WB'],['Bulk Density','~120','kg/m³'],['pH (wet)','5.1',''],['Delivery State','Whole bunches','']],
+    proximate:[['Crude Protein (CP)','4.75','% DM'],['Ether Extract (EE)','2.8','% DM'],['Ash','5.2','% DM'],['Org. Matter','94.8','% DM'],['N (Kjeldahl ×4.67)','0.76','% DM'],['C:N','60','DM-wtd']],
+    fibre:[['NDF','82.0','% DM'],['ADF','62.8','% DM'],['ADL (Lignin)','22.0','% DM'],['Cellulose (ADF−ADL)','40.8','% DM'],['Hemicellulose (NDF−ADF)','19.2','% DM']],
+    elemental:[['N','0.76','% DM'],['P','0.14','% DM'],['K','2.34','% DM'],['Ca','0.27','% DM'],['Mg','0.09','% DM'],['S',null,'% DM'],['Fe','200–800','mg/kg DM'],['Mn','20–100','mg/kg DM'],['Zn','10–50','mg/kg DM'],['Cu','5–20','mg/kg DM'],['B','5–15','mg/kg DM']],
+    agronomic:[['N equivalent','0.76','% DM'],['P₂O₅','0.32','% DM'],['K₂O','2.82','% DM'],['K₂O/t DM','28.2','kg/t'],['N conv. factor','4.67','×'],['BSF Protein Index','LOW','']],
+    soil:[['Potassium Powerhouse','2.0–2.4% K DM — highest K of all residues. 24–29 kg K₂O/t DM. Substantially reduces MOP (muriate of potash) requirements.'],['OM Builder','High cellulose+hemicellulose (46–70% DM) feeds soil microbiome. Increases water-holding capacity 15–30%.'],['pH Buffer','Ash fraction (3–7% DM) raises soil pH. Benefits acidic Ultisols and Oxisols common in Sumatra and Kalimantan.'],['Soil Structure','Fibre matrix improves aggregation, aeration, and drainage. Critical for heavy-clay or compacted plantation soils.']],
+    gates:[{l:'PROTEIN GATE',v:'4.75% CP',t:'✕ Below 8% BSF floor — blend with OPDC',c:'gate-fail'},{l:'C:N GATE (BSF 16–25)',v:'C:N 60',t:'✕ Too high — must blend with OPDC to reduce',c:'gate-fail'},{l:'MOISTURE GATE',v:'62.5% MC',t:'✓ Processable — S1 press required',c:'gate-warn'}]
+  },
+  OPDC: {
+    label:'OPDC', full:'Oil Palm Decanter Cake', src:'DATA', mill:'mill',
+    tag:'15.2% of EFB fresh weight = 4.2% of FFB · LOCKED yield · Press discharge floor MC: 40%',
+    badges:[{t:'CPO MILL',c:'bdg-mill'},{t:'4.2% FFB',c:'bdg-info'},{t:'ZERO COST',c:'bdg-mill'},{t:'YIELD LOCKED',c:'bdg-info'}],
+    physical:[['MC','70.0','% WB'],['DM','30.0','% WB'],['Bulk Density','~700','kg/m³'],['pH (wet)','4.8',''],['Press discharge floor','40% MC','CLASS A']],
+    proximate:[['Crude Protein (CP)','14.5','% DM'],['Ether Extract (EE)','10.0','% DM'],['Ash','28.0','% DM'],['Org. Matter','72.0','% DM'],['N (Kjeldahl ×4.67)','2.31','% DM'],['C:N','20','DM-wtd']],
+    fibre:[['NDF','28.0','% DM'],['ADF','22.0','% DM'],['ADL (Lignin)','4.0','% DM'],['Cellulose (ADF−ADL)','18.0','% DM'],['Hemicellulose (NDF−ADF)','6.0','% DM']],
+    elemental:[['N','2.31','% DM'],['P','0.50','% DM'],['K','1.23','% DM'],['Ca','0.65','% DM'],['Mg','0.28','% DM'],['S',null,'% DM'],['Fe','2,000–10,000','mg/kg DM'],['Mn','50–200','mg/kg DM'],['Zn','20–80','mg/kg DM'],['Cu','10–30','mg/kg DM'],['B','5–20','mg/kg DM']],
+    agronomic:[['N equivalent','2.31','% DM'],['P₂O₅','1.15','% DM'],['K₂O','1.48','% DM'],['Ca+Mg combined','0.93','% DM'],['N conv. factor','4.67','×'],['BSF Protein Index','HIGH','']],
+    soil:[['Best Balanced NPK','N 2.31%, P 0.50%, K 1.23% DM — most complete solid organic fertiliser. Reduces urea + TSP + MOP simultaneously.'],['High N Supply','23 kg N/t DM — comparable to high-quality poultry manure. Immediate partial urea replacement.'],['Ca + Mg for pH','Ca 0.65% + Mg 0.28% improve CEC and pH buffer on highly weathered tropical soils. Critical for Ultisols.'],['Residual Oil Benefit','~10% residual oil provides slow-release energy for soil microbial communities and improves moisture retention.']],
+    gates:[{l:'PROTEIN GATE',v:'14.5% CP',t:'✓ Above 8% BSF floor — Ready',c:'gate-pass'},{l:'C:N GATE (BSF 16–25)',v:'C:N 20',t:'✓ In range — BSF Ready',c:'gate-pass'},{l:'MOISTURE GATE',v:'70% MC',t:'✓ Processable — S1 press floor 40%',c:'gate-pass'}]
+  },
+  POS: {
+    label:'POS', full:'Palm Oil Sludge', src:'DATA', mill:'mill',
+    tag:'~1.5% of FFB · Capture at centrifuge discharge, NOT pond · POME ≠ POS',
+    badges:[{t:'CPO MILL',c:'bdg-mill'},{t:'CENTRIFUGE EXIT',c:'bdg-info'},{t:'NOT POND',c:'bdg-info'},{t:'FE GATE APPLIES',c:'bdg-ext'}],
+    physical:[['MC','82.0','% WB'],['DM','18.0','% WB'],['Ash','28.0','% DM'],['pH (wet)','4.6',''],['Delivery State','Slurry / wet cake','']],
+    proximate:[['Crude Protein (CP)','11.0','% DM'],['Ether Extract (EE)','10.0','% DM'],['Ash','28.0','% DM'],['Org. Matter','72.0','% DM'],['N (Kjeldahl ×4.67)','1.76','% DM'],['C:N',null,'']],
+    fibre:[['NDF','28.2','% DM'],['ADF','22.1','% DM'],['ADL (Lignin)','7.6','% DM'],['Cellulose (ADF−ADL)','14.5','% DM'],['Hemicellulose (NDF−ADF)','6.1','% DM']],
+    elemental:[['N','1.76','% DM'],['P','0.32','% DM'],['K','1.10','% DM'],['Ca','0.48','% DM'],['Mg','0.18','% DM'],['S',null,'% DM'],['Fe','3,000–8,000 ★','mg/kg DM'],['Mn','100–475','mg/kg DM'],['Zn','20–60','mg/kg DM'],['Cu','8–25','mg/kg DM'],['B',null,'mg/kg DM']],
+    agronomic:[['N equivalent','1.76','% DM'],['P₂O₅','0.73','% DM'],['K₂O','1.33','% DM'],['Fe Gate','CFI-LAB-POME-001',''],['Inclusion rate','Fe-dependent',''],['C:N',null,'']],
+    soil:[['Fe-Dependent Inclusion','Fe drives POS inclusion rate via CFI-LAB-POME-001. <3,000 mg/kg=20% WW; 3,000–5,000=10–15%; 5,000–8,000=5–10%; >8,000=CaCO₃ amendment.'],['Good N+P Supply','1.76% N + 0.32% P DM. When Fe is acceptable, POS adds meaningful N+P to the blend at zero cost.'],['Soil Microbial Stimulant','Residual lipids and organics in POS stimulate soil biological activity when applied within Fe limits.'],['Lab Required Before Use','ICP-OES Package A mandatory — Fe result determines whether POS is included and at what rate.']],
+    gates:[{l:'PROTEIN GATE',v:'11.0% CP',t:'✓ Above 8% BSF floor',c:'gate-pass'},{l:'C:N GATE (BSF)',v:'DATA GAP',t:'⚠ Lab required — 3-day replacement',c:'gate-warn'},{l:'Fe GATE (POS)',v:'Pending ICP-OES',t:'Run CFI-LAB-POME-001 first',c:'gate-warn'}]
+  },
+  PMF: {
+    label:'PMF', full:'Palm Mesocarp Fibre', src:'DATA', mill:'mill',
+    tag:'~14.5% of FFB · Often used as boiler fuel — availability depends on mill configuration',
+    badges:[{t:'CPO MILL',c:'bdg-mill'},{t:'14.5% FFB',c:'bdg-info'},{t:'BOILER FUEL RISK',c:'bdg-ext'},{t:'EST VALUES',c:'bdg-ext'}],
+    physical:[['MC','40.0','% WB'],['DM','60.0','% WB'],['Bulk Density','~180','kg/m³'],['pH (wet)','~5.5',''],['Delivery State','Pressed fibre mat','']],
+    proximate:[['Crude Protein (CP)','3.6','% DM'],['Ether Extract (EE)','7.0','% DM'],['Ash','4.5','% DM'],['Org. Matter','95.5','% DM'],['N (Kjeldahl)','0.58','% DM'],['C:N','~55','DM-wtd']],
+    fibre:[['NDF','~67.0','% DM'],['ADF','~51.0','% DM'],['ADL (Lignin)','~28.0','% DM'],['Cellulose (ADF−ADL)','~23.0','% DM'],['Hemicellulose (NDF−ADF)','~16.0','% DM']],
+    elemental:[['N','0.58','% DM'],['P','0.10','% DM'],['K','0.40','% DM'],['Ca','0.20','% DM'],['Mg','0.07','% DM'],['S',null,'% DM'],['Fe',null,'mg/kg DM'],['Mn',null,'mg/kg DM'],['Zn',null,'mg/kg DM'],['Cu',null,'mg/kg DM'],['B',null,'mg/kg DM']],
+    agronomic:[['N equivalent','0.58','% DM'],['P₂O₅','0.23','% DM'],['K₂O','0.48','% DM'],['Lignin barrier','HIGH — 28%',''],['Best Use','S2 bulking agent',''],['BSF Protein Index','LOW','']],
+    soil:[['S2 Bulking Agent','High lignin (28% ADL) makes PMF poor alone but excellent as S2 bulking agent to improve EFB+OPDC blend structure and porosity.'],['Low Direct Soil Value','Low N (0.58%) and very high C:N (~55) mean slow mineralisation. Not recommended as standalone fertiliser.'],['Boiler Fuel Competitor','Calorific value ~18 MJ/kg means PMF is valuable as boiler fuel — availability at many mills is limited for CFI.'],['Dry — Easy To Handle','40% MC is the lowest of the mill streams. Excellent handling properties and stackable if biochar pathway is selected.']],
+    gates:[{l:'PROTEIN GATE',v:'3.6% CP',t:'✕ Far below 8% — bulking only',c:'gate-fail'},{l:'C:N GATE (BSF)',v:'~55',t:'✕ Too high — not for BSF alone',c:'gate-fail'},{l:'MOISTURE GATE',v:'40% MC',t:'✓ Low — easy to process',c:'gate-pass'}]
+  },
+  POME: {
+    label:'POME', full:'Palm Oil Mill Effluent (Liquid)', src:'DATA', mill:'liq',
+    tag:'~0.67 m³/t FFB · Liquid to pond — NOT a solid substrate · Emissions pathway only · POME ≠ POS',
+    badges:[{t:'LIQUID EFFLUENT',c:'bdg-liq'},{t:'NOT SOLID',c:'bdg-info'},{t:'CH₄ CAPTURE',c:'bdg-liq'},{t:'POME ≠ POS',c:'bdg-ext'}],
+    physical:[['Volume per FFB','~0.67','m³/t FFB'],['COD','50,000–80,000','mg/L'],['BOD','25,000–35,000','mg/L'],['pH','3.4–4.5','liquid'],['Delivery State','Liquid to pond','']],
+    proximate:[['Total Solids (TS)','3.5–5.0','% wt'],['Volatile Solids (VS)','~85','% of TS'],['Oil & Grease','0.4–0.6','% vol'],['EE (DM basis)','10.0','% DM'],['CP (DM basis)','11.0','% DM'],['Feedipedia 29.2% EE','REJECTED','— mismatch']],
+    fibre:[['NDF','28.2','% DM'],['ADF','22.1','% DM'],['ADL','7.6','% DM'],['NOTE','Liquid stream',''],['Fibre values','DM basis','from sludge']],
+    elemental:[['N (vol basis)','0.06–0.15','% vol'],['P (vol basis)','0.009–0.03','% vol'],['K (vol basis)','0.15–0.25','% vol'],['COD load','~950','t/month @ 60TPH'],['B₀ (CH₄)','0.25','kg CH₄/kg COD'],['Frac_GASM','0.20',''],['Na (DM)','~1.2','% DM — monitor!'],['Fe (DM)',null,'mg/kg DM']],
+    agronomic:[['MCF','0.20','Frac_GASM'],['GWP CH₄','28','AR5'],['Methodology','AMS-III.H / VM0041',''],['Solid sludge','→ POS',''],['Liquid pH','3.4–4.5','acid — treat before spray'],['Spray SOP','Facultative pond only','NOT raw POME']],
+    soil:[['Liquid Fertigation','Biogas effluent 200–400 m³/ha/yr delivers N+P+K directly. Most rapid nutrient delivery route of all streams.'],['High P Bioavailability','P in POME is primarily soluble/colloidal — higher plant availability than compost P or rock phosphate.'],['Microbial Stimulant','BOD 25,000–35,000 mg/L = rich C source. Massively stimulates soil microbial activity when diluted and applied.'],['Na Caution','1.2% Na DM — highest of all residues. Do not exceed 400 m³/ha/yr on sandy soils. Monitor Na accumulation.']],
+    gates:[{l:'SOLID SUBSTRATE',v:'N/A',t:'Liquid — no protein gate applies',c:'gate-na'},{l:'EMISSIONS SIGNAL',v:'Active',t:'CH₄ capture — AMS-III.H pathway',c:'gate-pass'},{l:'SPRAY SOP',v:'Facultative pond',t:'Must use treated effluent, not raw',c:'gate-warn'}]
+  },
+  PKE: {
+    label:'PKE', full:'Palm Kernel Expeller', src:'DATA', mill:'ext',
+    tag:'External purchase ~$160/t · N multiplier 38.6 kg N/t DM LOCKED (not 29.0) · PKSA: $0.00 mill waste',
+    badges:[{t:'EXTERNAL',c:'bdg-ext'},{t:'~$160/T',c:'bdg-ext'},{t:'N ×38.6 LOCKED',c:'bdg-info'},{t:'CANONICAL',c:'bdg-info'}],
+    physical:[['MC','12.0','% WB'],['DM','88.0','% WB'],['Bulk Density','~630','kg/m³'],['pH (wet)','6.0',''],['Form','Pellet / cake','']],
+    proximate:[['Crude Protein (CP)','15.0','% DM'],['Ether Extract (EE)','8.5','% DM'],['Ash','5.0','% DM'],['Org. Matter','95.0','% DM'],['N (Kjeldahl ×4.67)','2.20','% DM'],['C:N','~18','DM-wtd']],
+    fibre:[['NDF','~68.0','% DM'],['ADF',null,'% DM'],['ADL (Lignin)','~5.0','% DM'],['Cellulose',null,'% DM'],['Hemicellulose',null,'% DM']],
+    elemental:[['N','2.20','% DM'],['P','0.62','% DM'],['K','1.30','% DM'],['Ca','0.30','% DM'],['Mg','0.12','% DM'],['S',null,'% DM'],['Fe','400–4,050','mg/kg DM'],['Mn','150–300','mg/kg DM'],['Zn','50–100','mg/kg DM'],['Cu','20–35','mg/kg DM'],['B','10–25','mg/kg DM']],
+    agronomic:[['N equivalent','2.20','% DM'],['P₂O₅','1.42','% DM'],['K₂O','1.57','% DM'],['N released (38.6kg/t)','38.6','kg N/t DM'],['Best Use','BSF substrate + P booster',''],['BSF Protein Index','HIGH','']],
+    soil:[['Highest Phosphorus','P 0.24–0.79% DM — highest of all residues. 5.5–18 kg P₂O₅/t DM. Critical for P-fixing Andisol and Ultisol soils.'],['Best C:N For Composting','C:N 14–20 — ideal for rapid composting. Blending PKE with high-C residues (EFB, OPT) corrects their excessive C:N.'],['Broadest Trace Spectrum','Zn 50–100 + Cu 20–35 + Mn 150–300 mg/kg — highest trace element content of any residue. Reduces micronutrient deficiency risk.'],['Fastest N Release','High N% + low C:N = rapid mineralisation in soil within 4–8 weeks. Fastest-release of all solid residues.']],
+    gates:[{l:'PROTEIN GATE',v:'15.0% CP',t:'✓ Well above 8% — BSF Ready',c:'gate-pass'},{l:'C:N GATE (BSF 16–25)',v:'C:N ~18',t:'✓ In range — BSF Ready',c:'gate-pass'},{l:'MOISTURE GATE',v:'12% MC',t:'✓ Very dry — easy to store',c:'gate-pass'}]
+  },
+  OPF: {
+    label:'OPF', full:'Oil Palm Fronds', src:'EST', mill:'ext',
+    tag:'Estate source · ~40 fronds/palm/yr · High silica · Not co-located at mill · ICP-OES required',
+    badges:[{t:'ESTATE FIELD',c:'bdg-ext'},{t:'EST VALUES',c:'bdg-ext'},{t:'HIGH SILICA',c:'bdg-info'},{t:'ICP-OES NEEDED',c:'bdg-ext'}],
+    physical:[['MC','~65–70','% WB'],['DM','~30–35','% WB'],['Bulk Density','~60–80','kg/m³'],['pH (wet)','~5.8',''],['Si (SiO₂)','~3.2','% DM']],
+    proximate:[['Crude Protein (CP)','~6–8','% DM'],['Ether Extract (EE)',null,'% DM'],['Ash','~8–12','% DM'],['Org. Matter','~88–92','% DM'],['N (est.)','~0.9','% DM'],['C:N','~55–65','DM-wtd']],
+    fibre:[['NDF',null,'% DM'],['ADF',null,'% DM'],['ADL (Lignin)','~20–25','% DM'],['Cellulose (est.)','~30–35','% DM'],['Hemicellulose (est.)','~15–20','% DM']],
+    elemental:[['N','~0.5–1.2','% DM'],['P','0.05–0.15','% DM'],['K','0.80–2.50','% DM'],['Ca','0.25–0.80','% DM'],['Mg','0.10–0.35','% DM'],['S',null,'% DM'],['Fe','80–150','mg/kg DM'],['Mn','100–300','mg/kg DM'],['Zn','15–25','mg/kg DM'],['Cu','5–10','mg/kg DM'],['B','15–25','mg/kg DM']],
+    agronomic:[['N equivalent','~0.9','% DM'],['P₂O₅','~0.23','% DM'],['K₂O','~1.45–3.01','% DM'],['K return/replant cycle','2–5','t K/ha'],['Best Use','Field mulch',''],['Si benefit','Disease resistance','']],
+    soil:[['Best Mulch Material','High C:N (55–80) = ideal mulching. Applied inter-row: suppresses weeds, reduces evaporation by 20–30%, cools soil.'],['Mn + B Leaders','Mn 100–300 mg/kg + B 15–25 mg/kg — highest of all residues. Both commonly deficient in intensively managed oil palm.'],['Silica Benefit','3.2% SiO₂ limits BSF use but benefits soil — silica improves crop disease resistance and stem strength in palms.'],['Massive K Return at Replant','Largest volume stream. Field-returned OPF contributes 2–5 t K/ha per replanting cycle over 25 years.']],
+    gates:[{l:'PROTEIN GATE',v:'~6–8% CP',t:'Marginal — blend required for BSF',c:'gate-warn'},{l:'C:N GATE (BSF)',v:'~55–65',t:'✕ Too high — requires OPDC addition',c:'gate-fail'},{l:'ICP-OES',v:'Si + metals',t:'Lab Package B required before use',c:'gate-warn'}]
+  },
+  OPT: {
+    label:'OPT', full:'Oil Palm Trunk', src:'EST', mill:'ext',
+    tag:'Replanting residue only — every 25 years · Very high moisture at cutting · Highly seasonal supply',
+    badges:[{t:'REPLANTING ONLY',c:'bdg-ext'},{t:'25-YR CYCLE',c:'bdg-ext'},{t:'EST VALUES',c:'bdg-ext'},{t:'VERY HIGH MC',c:'bdg-info'}],
+    physical:[['MC','~70–75','% WB'],['DM','~25–30','% WB'],['Bulk Density','~200','kg/m³'],['pH (wet)','~5.5',''],['Starch (DM)','3–24','% DM']],
+    proximate:[['Crude Protein (CP)','~3–5','% DM'],['Ether Extract (EE)',null,'% DM'],['Ash','~4–8','% DM'],['Org. Matter','~92–96','% DM'],['N (est.)','~0.6','% DM'],['C:N','~80–120','DM-wtd']],
+    fibre:[['NDF',null,'% DM'],['ADF',null,'% DM'],['ADL (Lignin)','~15–20','% DM'],['Cellulose (est.)','~30–40','% DM'],['Hemicellulose (est.)','~20–30','% DM']],
+    elemental:[['N','0.40–0.70','% DM'],['P','0.04–0.08','% DM'],['K','1.50–2.20','% DM'],['Ca','0.20–0.50','% DM'],['Mg','0.10–0.20','% DM'],['S',null,'% DM'],['Fe','50–200','mg/kg DM'],['Mn','10–50','mg/kg DM'],['Zn','5–20','mg/kg DM'],['Cu','2–8','mg/kg DM'],['B','5–15','mg/kg DM']],
+    agronomic:[['N equivalent','~0.6','% DM'],['P₂O₅','~0.12','% DM'],['K₂O','~1.81–2.65','% DM'],['Starch+Sugar pulse','3–24%','DM — microbial stimulus'],['Best Use','Carbon amendment',''],['Composting time','2–3 years','windrow']],
+    soil:[['Carbon Sequestration','Highest OM content (95–97%). Windrowed OPT decomposes over 2–3 years, building long-term soil organic carbon reserves.'],['Starch + Sugar C Pulse','3–24% starch + 2–10% free glucose provides rapid carbon pulse to soil microbial communities during initial decomposition.'],['K Return to Soil','1.5–2.2% K DM returned during decomposition. Critical for long-term K balance in replanted blocks.'],['Very Slow N Release','C:N 65–110 = very slow N mineralisation. Acts as carbon amendment. Must blend with OPDC to compost efficiently.']],
+    gates:[{l:'PROTEIN GATE',v:'~3–5% CP',t:'✕ Well below 8% floor',c:'gate-fail'},{l:'C:N GATE (BSF)',v:'~80–120',t:'✕ Far too high — not for BSF',c:'gate-fail'},{l:'SEASONAL SUPPLY',v:'Replant only',t:'Not continuous — plan in advance',c:'gate-warn'}]
+  },
+  PKS: {
+    label:'PKS', full:'Palm Kernel Shell', src:'EST', mill:'mill',
+    tag:'~6% of FFB · Primarily boiler fuel or road material · Very high lignin · Biochar potential',
+    badges:[{t:'CPO MILL',c:'bdg-mill'},{t:'BOILER FUEL',c:'bdg-ext'},{t:'HIGH LIGNIN',c:'bdg-info'},{t:'BIOCHAR PATH',c:'bdg-liq'}],
+    physical:[['MC','~10–15','% WB'],['DM','~85–90','% WB'],['Bulk Density','~650','kg/m³'],['Calorific Value','~18–20','MJ/kg'],['pH (wet)','~6.5','']],
+    proximate:[['Crude Protein (CP)','~2–3','% DM'],['Ether Extract (EE)',null,'% DM'],['Ash','~3–5','% DM'],['Org. Matter','~95–97','% DM'],['N (est.)','~0.4','% DM'],['C:N','~100+','DM-wtd']],
+    fibre:[['NDF',null,'% DM'],['ADF',null,'% DM'],['ADL (Lignin)','~45–55','% DM'],['Cellulose (est.)','~25–30','% DM'],['Hemicellulose (est.)','~10–15','% DM']],
+    elemental:[['N','~0.3–0.5','% DM'],['P',null,'% DM'],['K',null,'% DM'],['Ca',null,'% DM'],['Mg',null,'% DM'],['Si (SiO₂)','~3–5','% DM'],['Fe',null,'mg/kg DM'],['Mn',null,'mg/kg DM'],['Zn',null,'mg/kg DM'],['Cu',null,'mg/kg DM'],['B',null,'mg/kg DM']],
+    agronomic:[['N equivalent','~0.4','% DM'],['P₂O₅',null,'% DM'],['K₂O',null,'% DM'],['Biochar yield','~30–35','% of dry weight'],['Biochar pH','9–10','alkaline — pH raiser'],['Best Use','Pyrolysis → biochar','']],
+    soil:[['Biochar Soil Amendment','Pyrolysis of PKS produces biochar with pH 9–10. Applied to acidic Ultisols and Oxisols raises pH, increases CEC, and sequesters C for 100+ years.'],['Low Direct Fertiliser Value','Very low N (0.4%) + very high C:N (100+) = almost no short-term N mineralisation. Not a fertiliser on its own.'],['pH Raising Potential','Ash after combustion is highly alkaline — raises soil pH in acidic soils. Alternative to lime applications.'],['Boiler Fuel Competitor','PKS typically sold as boiler fuel or exported. Availability for biochar processing depends on mill energy balance.']],
+    gates:[{l:'PROTEIN GATE',v:'~2–3% CP',t:'✕ Far below 8% floor',c:'gate-fail'},{l:'LIGNIN BARRIER',v:'~45–55%',t:'✕ Recalcitrant — S2 treatment only',c:'gate-fail'},{l:'BIOCHAR PATH',v:'Pyrolysis option',t:'High-value alternative use',c:'gate-warn'}]
+  },
+  PK: {
+    label:'PK', full:'Palm Kernel (Whole)', src:'EST', mill:'mill',
+    tag:'~2.5% of FFB · High oil value — typically sold · Only available if on-site crushing',
+    badges:[{t:'CPO MILL',c:'bdg-mill'},{t:'SOLD COMMODITY',c:'bdg-ext'},{t:'ON-SITE CRUSH ONLY',c:'bdg-info'},{t:'EST VALUES',c:'bdg-ext'}],
+    physical:[['MC','~7–9','% WB'],['DM','~91–93','% WB'],['Oil content','~44–48','% DM'],['Shell fraction','~55','% of nut'],['Bulk Density','~600','kg/m³']],
+    proximate:[['Crude Protein (CP)','~8–9','% DM'],['Ether Extract (EE)','~44–48','% DM'],['Ash','~2–3','% DM'],['Org. Matter','~97–98','% DM'],['N (est.)','~1.2','% DM'],['C:N','~20–25','DM-wtd']],
+    fibre:[['NDF',null,'% DM'],['ADF',null,'% DM'],['ADL (Lignin)','~3–5','% DM'],['NOTE','Nut — mostly oil',''],['After crush','→ PKE + PKS','']],
+    elemental:[['N','~1.0–1.4','% DM'],['P',null,'% DM'],['K',null,'% DM'],['Ca',null,'% DM'],['Mg',null,'% DM'],['S',null,'% DM'],['Fe',null,'mg/kg DM'],['Mn',null,'mg/kg DM'],['Zn',null,'mg/kg DM'],['Cu',null,'mg/kg DM'],['B',null,'mg/kg DM']],
+    agronomic:[['Primary value','CPO + PKO oil',''],['After crush','→ PKE + PKS',''],[' Process as','PKE post-crush',''],['N equivalent','~1.2','% DM'],['On-site crush','Rare',''],['Economic value','Sell as-is','']],
+    soil:[['Higher Value Than Processing','PK typically sold at commodity price. Processing it destroys more value than composting would create.'],['Post-Crush Residues Are Valuable','After crushing, PKE is the highest-value fertiliser residue (P leader) and PKS has biochar potential.'],['Borderline Protein','~8–9% CP is borderline for BSF — not recommended when OPDC or PKE (both higher protein) are available.'],['Rare On-Site Availability','Most mills sell PK to external crushers. CFI would only see PK if the mill has an on-site crusher.']],
+    gates:[{l:'PROTEIN GATE',v:'~8–9% CP',t:'Borderline — prefer OPDC or PKE',c:'gate-warn'},{l:'ECONOMIC GATE',v:'Sell as-is',t:'Higher value than processing',c:'gate-na'},{l:'CRUSHING REQUIRED',v:'Off-site usually',t:'Not standard mill output',c:'gate-na'}]
+  },
+  PKC: {
+    label:'PKC', full:'Palm Kernel Cake (Solvent)', src:'EST', mill:'ext',
+    tag:'Post-solvent-extraction residue · Higher protein than PKE · Solvent contamination risk — mandatory test',
+    badges:[{t:'EXTERNAL',c:'bdg-ext'},{t:'SOLVENT RISK',c:'bdg-ext'},{t:'HIGH PROTEIN',c:'bdg-liq'},{t:'LAB MANDATORY',c:'bdg-ext'}],
+    physical:[['MC','~8–10','% WB'],['DM','~90–92','% WB'],['Oil residual','~1–3','% DM'],['Solvent residual','Must test','ppm — hexane'],['Bulk Density','~600','kg/m³']],
+    proximate:[['Crude Protein (CP)','~16–18','% DM'],['Ether Extract (EE)','~1–3','% DM'],['Ash','~4–6','% DM'],['Org. Matter','~94–96','% DM'],['N (est.)','~2.6','% DM'],['C:N','~15–18','DM-wtd']],
+    fibre:[['NDF',null,'% DM'],['ADF',null,'% DM'],['ADL (Lignin)','~5–8','% DM'],['Cellulose',null,'% DM'],['Hemicellulose',null,'% DM']],
+    elemental:[['N','~2.4–2.8','% DM'],['P',null,'% DM'],['K',null,'% DM'],['Ca',null,'% DM'],['Mg',null,'% DM'],['S',null,'% DM'],['Hexane residual','Must test','ppm'],['Fe',null,'mg/kg DM'],['Mn',null,'mg/kg DM'],['Zn',null,'mg/kg DM'],['Cu',null,'mg/kg DM']],
+    agronomic:[['N equivalent','~2.6','% DM'],['P₂O₅',null,'% DM'],['K₂O',null,'% DM'],['vs PKE','Higher CP','lower EE'],['Solvent check','Mandatory',''],['BSF safety','Conditional','lab clearance required']],
+    soil:[['Higher Protein Than PKE','~16–18% CP DM — highest protein of external residues. Excellent N supplement for the BSF substrate blend.'],['Solvent Test Is Mandatory','Hexane residual from solvent extraction must be tested before ANY use. Contaminated batches must be rejected.'],['Similar Cost To PKE','Slightly lower price per tonne than PKE in some markets, but solvent testing adds cost and lead time.'],['P Data Gap','Phosphorus data not confirmed for PKC specifically — ICP-OES required before finalising P replacement value.']],
+    gates:[{l:'PROTEIN GATE',v:'~16–18% CP',t:'✓ Well above 8% floor',c:'gate-pass'},{l:'SOLVENT TEST',v:'Required',t:'Hexane residual check mandatory',c:'gate-warn'},{l:'BSF SAFETY',v:'Conditional',t:'Lab clearance required before loading',c:'gate-warn'}]
+  },
+  CPO: {
+    label:'CPO By-product', full:'CPO Processing By-product', src:'EST', mill:'mill',
+    tag:'Clarification sludge / spent bleaching earth · Not a primary stream · Contamination risk high',
+    badges:[{t:'CPO MILL',c:'bdg-mill'},{t:'MINOR VOLUME',c:'bdg-info'},{t:'CONTAMINATION RISK',c:'bdg-ext'},{t:'ICP-OES MANDATORY',c:'bdg-ext'}],
+    physical:[['Volume','Minor',''],[' Oil content','~10–20','% DM'],['Spent bleach earth','Possible','contaminant'],['pH',null,''],['Form','Sludge / spent earth','']],
+    proximate:[['Crude Protein (CP)',null,'% DM'],['Ether Extract (EE)','~10–20','% DM'],['Ash','~30–50','% DM'],['Org. Matter',null,'% DM'],['N',null,'% DM'],['C:N',null,'']],
+    fibre:[['NDF',null,'% DM'],['ADF',null,'% DM'],['ADL',null,'% DM'],['NOTE','All values','DATA GAP'],['ICP-OES','Required first','']],
+    elemental:[['N',null,'% DM'],['P',null,'% DM'],['K',null,'% DM'],['Ca',null,'% DM'],['Mg',null,'% DM'],['Heavy metals','RISK','spent earth'],['Fe',null,'mg/kg DM'],['Mn',null,'mg/kg DM'],['Zn',null,'mg/kg DM'],['Cu',null,'mg/kg DM'],['Pb / Cd','Must test','regulatory concern']],
+    agronomic:[['Primary concern','Contaminants',''],['Spent earth','Heavy metal risk',''],['Recommendation','ICP-OES Package B',''],['Volume','Minor','not a primary stream'],['Current CFI priority','LOW',''],['Use case','Assess only','']],
+    soil:[['Contamination Risk Dominant','Spent bleaching earth from CPO clarification contains heavy metals. ICP-OES mandatory before any soil application consideration.'],['Very Minor Volume','Not a significant stream — minor sludge volumes from clarification tanks. Low priority for CFI.'],['If Clean, Oil Value','If heavy metals pass limits, residual oil provides microbial energy for soil organisms.'],['Do Not Use Until Lab Results','All values are DATA GAP until ICP-OES Package B results are available. Do not apply to soil without lab clearance.']],
+    gates:[{l:'CONTAMINATION GATE',v:'Spent earth risk',t:'Heavy metal test mandatory first',c:'gate-warn'},{l:'VOLUME GATE',v:'Minor stream',t:'Low priority — not primary CFI stream',c:'gate-na'},{l:'ICP-OES',v:'Mandatory',t:'Before any soil application',c:'gate-warn'}]
+  }
+};
+
+var ORDER = ['EFB','OPDC','POS','PMF','POME','PKE','OPF','OPT','PKS','PK','PKC','CPO','ALL'];
+
+function buildTabs() {
+  var row = document.getElementById('tabRow');
+  ORDER.forEach(function(k) {
+    var btn = document.createElement('button');
+    btn.className = 'tab' + (k==='EFB'?' on':'');
+    if (k === 'ALL') {
+      btn.innerHTML = 'All Residues<span class="src">COMPARE</span>';
+    } else {
+      var d = D[k];
+      btn.innerHTML = d.label + '<span class="' + (d.src==='DATA'?'src':'est') + '">' + d.src + '</span>';
+    }
+    btn.onclick = (function(key, el){ return function(){ go(key, el); }; })(k, btn);
+    row.appendChild(btn);
+  });
+}
+
+function grpHTML(title, rows) {
+  var h = '<div class="group"><div class="group-title">' + title + '</div>';
+  rows.forEach(function(r) {
+    var val = r[1];
+    var isGap = (val === null || val === undefined || val === 'DATA GAP');
+    var cls = '';
+    if (!isGap) {
+      var lo = r[0];
+      if (lo === 'Feedipedia 29.2% EE') cls = 'red';
+      else if (lo === 'BSF Protein Index') cls = val==='HIGH'?'green':val==='LOW'?'red':'amber';
+      else if (lo === 'NOTE' || lo === 'After crush' || lo === 'Best Use') cls = 'teal';
+      else if (lo === 'REJECTED' || lo === 'Heavy metals' || lo === 'Solvent residual') cls = 'red';
+    }
+    h += '<div class="field">';
+    h += '<span class="f-lbl">' + r[0] + '</span>';
+    if (isGap) {
+      h += GAP;
+    } else {
+      h += '<span><span class="f-val ' + cls + '">' + r[1] + '</span>';
+      if (r[2]) h += '<span class="f-unit">' + r[2] + '</span>';
+      h += '</span>';
+    }
+    h += '</div>';
+  });
+  return h + '</div>';
+}
+
+function residueHTML(k) {
+  var d = D[k];
+  var h = '';
+
+  // Header
+  h += '<div class="p-header">';
+  h += '<div class="p-name">' + d.full + '</div>';
+  h += '<div class="p-tag">' + d.tag + '</div>';
+  h += '<div class="p-badges">';
+  d.badges.forEach(function(b) { h += '<span class="bdg ' + b.c + '">' + b.t + '</span>'; });
+  h += '</div></div>';
+
+  // 4 analysis groups
+  h += '<div class="groups">';
+  h += grpHTML('PHYSICAL PROPERTIES', d.physical);
+  h += grpHTML('PROXIMATE ANALYSIS', d.proximate);
+  h += grpHTML('FIBRE FRACTIONS — DM', d.fibre);
+  h += grpHTML('ELEMENTAL VALUES — DM', d.elemental);
+  h += '</div>';
+
+  // Agronomic
+  h += '<div class="groups" style="grid-template-columns:1fr 1fr">';
+  h += grpHTML('AGRONOMIC VALUE', d.agronomic);
+
+  // Soil benefits
+  var sb = '<div class="group"><div class="group-title">SOIL BENEFITS</div><div class="soil-grid">';
+  d.soil.forEach(function(s) {
+    sb += '<div class="soil-card"><h4>' + s[0] + '</h4><p>' + s[1] + '</p></div>';
+  });
+  sb += '</div></div>';
+  h += sb;
+  h += '</div>';
+
+  // Readiness gates
+  h += '<div class="sec-hdr">READINESS GATES</div>';
+  h += '<div class="gates">';
+  d.gates.forEach(function(g) {
+    h += '<div class="gate ' + g.c + '">';
+    h += '<div class="gate-lbl">' + g.l + '</div>';
+    h += '<div class="gate-val">' + g.v + '</div>';
+    h += '<div class="gate-txt">' + g.t + '</div>';
+    h += '</div>';
+  });
+  h += '</div>';
+
+  return h;
+}
+
+function allHTML() {
+  var keys = ['EFB','OPDC','POS','PMF','POME','PKE','OPF','OPT','PKS','PK','PKC'];
+  var vals = {
+    EFB:  [0.76, 0.14, 2.34, 0.27, 0.09, 62.5, 60,   'K + OM'],
+    OPDC: [2.31, 0.50, 1.23, 0.65, 0.28, 70.0, 20,   'Balanced NPK'],
+    POS:  [1.76, 0.32, 1.10, 0.48, 0.18, 82.0, null, 'N+P (Fe-gated)'],
+    PMF:  [0.58, 0.10, 0.40, 0.20, 0.07, 40.0, 55,   'Bulking agent'],
+    POME: [0.60, 0.38, 0.37, 0.19, 0.25, null, 22,   'Liquid N+P'],
+    PKE:  [2.20, 0.62, 1.30, 0.30, 0.12, 12.0, 18,   'P + trace elements'],
+    OPF:  [0.90, 0.08, 1.20, 0.50, 0.20, 67.5, 60,   'Mn+B mulch'],
+    OPT:  [0.58, 0.06, 1.86, 0.38, 0.15, 72.5, 90,   'Carbon sequestration'],
+    PKS:  [0.40, null, null, null, null, 12.5, 100,  'Biochar precursor'],
+    PK:   [1.20, null, null, null, null,  8.0, 22,   'Sell as-is'],
+    PKC:  [2.60, null, null, null, null,  9.0, 16,   'High protein (with solvent test)']
+  };
+
+  var h = '<div class="tbl-card">';
+  h += '<div class="sec-hdr" style="margin-top:0">MACRONUTRIENT COMPARISON — ALL RESIDUES (% DM)</div>';
+  h += '<div class="tbl-wrap"><table>';
+  h += '<tr><th>Residue</th><th>N %</th><th>P %</th><th>K %</th><th>Ca %</th><th>Mg %</th><th>MC % WB</th><th>C:N</th><th>Best For</th></tr>';
+  keys.forEach(function(k) {
+    var r = vals[k]; var d = D[k];
+    function td(v, hiVal, loVal) {
+      if (v===null) return '<td>'+GAP+'</td>';
+      var cls = v>=hiVal?'hi':v<=loVal?'lo':'';
+      return '<td class="'+cls+'">'+v.toFixed(2)+'</td>';
+    }
+    h += '<tr>';
+    h += '<td style="font-weight:700;color:var(--teal)">'+k+'</td>';
+    h += td(r[0],2.20,0.58);
+    h += td(r[1],0.50,0.08);
+    h += td(r[2],2.00,0.40);
+    h += td(r[3],0.65,0.19);
+    h += td(r[4],0.28,0.07);
+    h += r[5]===null?'<td>'+GAP+'</td>':'<td class="'+(r[5]<=20?'hi':r[5]>=70?'lo':'')+'">'+r[5]+'</td>';
+    h += r[6]===null?'<td>'+GAP+'</td>':'<td class="'+(r[6]<=22?'hi':r[6]>=70?'lo':'')+'">'+r[6]+'</td>';
+    h += '<td style="font-size:10px;color:var(--greyLt)">'+r[7]+'</td>';
+    h += '</tr>';
+  });
+  h += '</table></div>';
+  h += '<div style="font-size:10px;color:var(--greyLt);margin-top:6px"><span style="color:var(--green);font-weight:700">Green</span> = highest value in column &nbsp;|&nbsp; <span style="color:var(--red);font-weight:700">Red</span> = lowest value in column</div>';
+  h += '</div>';
+
+  h += '<div class="tbl-card">';
+  h += '<div class="sec-hdr" style="margin-top:0">MICRONUTRIENT LEADERS</div>';
+  h += '<div class="tbl-wrap"><table>';
+  h += '<tr><th>Micronutrient</th><th>Leader</th><th>Range</th><th>Soil Significance</th></tr>';
+  [
+    ['Iron (Fe)',    'OPDC', '2,000–10,000 mg/kg', 'Enzyme cofactor; soil redox chemistry. Too high in POS = inclusion restriction.'],
+    ['Manganese (Mn)','OPF','100–300 mg/kg',       'Commonly deficient in oil palm; photosynthesis; enzyme activation.'],
+    ['Zinc (Zn)',   'PKE',  '50–100 mg/kg',        'Enzyme function; growth hormone synthesis. PKC also high.'],
+    ['Copper (Cu)', 'PKE',  '20–35 mg/kg',         'Lignin synthesis; disease resistance. PKC comparable.'],
+    ['Boron (B)',   'OPF',  '15–25 mg/kg',         'Cell wall structure; pollen germination; commonly deficient on peat soils.'],
+  ].forEach(function(r) {
+    h += '<tr><td style="font-weight:700;color:var(--grey)">'+r[0]+'</td>';
+    h += '<td style="font-weight:700;color:var(--teal)">'+r[1]+'</td>';
+    h += '<td>'+r[2]+'</td>';
+    h += '<td style="font-size:10px;color:var(--greyLt)">'+r[3]+'</td></tr>';
+  });
+  h += '</table></div></div>';
+
+  h += '<div class="tbl-card">';
+  h += '<div class="sec-hdr" style="margin-top:0">SNI 19-7030-2004 COMPLIANCE CHECK</div>';
+  h += '<div class="tbl-wrap"><table>';
+  h += '<tr><th>Parameter</th><th>SNI Minimum</th><th>EFB (raw)</th><th>OPDC</th><th>CFI Blended</th><th>Status</th></tr>';
+  [
+    ['N total',     '>0.4%',     '0.76–1.0%',     '2.3–2.6%',  '~1.5%',  'PASS'],
+    ['C:N ratio',   '10–20',     '49–70 — FAIL',  '16–22',     '20–30',  'PASS (blended)'],
+    ['Moisture',    '<50%',      '25–35%',         '30–40%',    '~30%',   'PASS'],
+    ['pH',          '6.8–7.49',  '6.5–7.5',        '6.0–7.5',   '6.8–7.5','PASS'],
+    ['Organic C',   '>9.8%',     '38–45%',         '35–42%',    '~40%',   'PASS'],
+  ].forEach(function(r) {
+    var ok = r[5].indexOf('PASS')>=0;
+    h += '<tr><td style="font-weight:700">'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td>';
+    h += '<td style="font-weight:700;color:'+(ok?'var(--green)':'var(--red)')+'">'+r[5]+'</td></tr>';
+  });
+  h += '</table></div></div>';
+
+  h += '<div class="tbl-card">';
+  h += '<div class="sec-hdr" style="margin-top:0">RECOMMENDED BLENDING STRATEGIES</div>';
+  h += '<div class="soil-grid">';
+  [
+    ['EFB + OPDC (70:30)','Corrects EFB C:N from 60 to 25–30. Boosts N and P to SNI-compliant levels. Best all-round compost blend for biofertiliser production.'],
+    ['EFB + OPDC + PKE','Add 10–15% PKE to boost P and trace elements. Ideal for P-fixing Oxisol and Andisol soils.'],
+    ['POME liquid + EFB compost','Fertigated POME adds bioavailable N+P; EFB compost adds K+OM. Rapid plant-available nutrient spectrum.'],
+    ['Full CFI blend + BSF frass','BSF frass adds chitin (soil biology), N, and Zn. Combined with EFB+OPDC = premium Biofertiliser+ meeting all SNI requirements.'],
+  ].forEach(function(b) {
+    h += '<div class="soil-card"><h4>'+b[0]+'</h4><p>'+b[1]+'</p></div>';
+  });
+  h += '</div></div>';
+
+  return h;
+}
+
+function go(k, el) {
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});
+  el.classList.add('on');
+  document.getElementById('pnl').innerHTML = k==='ALL' ? allHTML() : residueHTML(k);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+buildTabs();
+document.getElementById('pnl').innerHTML = residueHTML('EFB');
+</script>
+</body>
+</html>
