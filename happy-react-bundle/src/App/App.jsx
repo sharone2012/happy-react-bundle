@@ -1,6 +1,7 @@
 import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SiteSetup from "../pages/SiteSetup/SiteSetup.jsx";
+import S1Hub from "../pages/S1Hub/S1Hub.jsx";
 import LoginPage from "../LoginPage/LoginPage.jsx";
 import { supabase } from "@/integrations/supabase/client";
 import CFI_PriceRefreshBadge from "@/components/CFI_PriceRefreshBadge/CFI_PriceRefreshBadge.jsx";
@@ -2383,7 +2384,10 @@ export default function CFI() {
         </>)}
 
         {/* ════════════════════ S T A G E  1 ════════════════════ */}
-        {stage===1 && (
+        {stage===1 && <S1Hub />}
+
+        {/* (old inline S1 content replaced by S1Hub component above) */}
+        {false && (
           <div>
             <div style={{display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:10, marginBottom:16}}>
               <KPI label="EFB Monthly (wet)" value={efbMonthWet.toLocaleString()} unit="t/month"/>
