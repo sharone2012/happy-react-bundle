@@ -39,6 +39,8 @@
  */
 
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { setStreamState } from '@/store/store';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import CFI_SoilAcidity_ProfileCard from "@/components/CFI_SoilAcidity_ProfileCard/CFI_SoilAcidity_ProfileCard.jsx";
@@ -637,6 +639,12 @@ export default function SiteSetup() {
     if (!siteId) return;
     await supabase.from('cfi_sites').update({ soil_type: id }).eq('id', siteId);
   }
+
+  // ─── SYNC active streams → Redux s0 slice (used by S1Hub ResidueRow) ───
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setStreamState(activeStreams));
+  }, [activeStreams]);
 
   // ═══════════════════════════════════════════════════════
   // BLEND CALCULATION (DM-weighted, never hardcoded)

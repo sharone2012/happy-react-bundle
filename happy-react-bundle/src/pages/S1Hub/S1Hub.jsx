@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   C, Fnt, LINE_COLORS, S1_CSS,
@@ -558,6 +559,301 @@ const MODULE_DETAIL = {
   },
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
+// S1 RESIDUE ROW — shows residues selected in S0, reads Redux s0.activeStreams
+// ─────────────────────────────────────────────────────────────────────────────
+
+const RESIDUE_DEFS = [
+  {
+    key: 'efb', abbr: 'EFB', label: 'Empty Fruit Bunches', tag: 'Zero Cost',
+    accent: C.teal,
+    mcIn: '62–82%', mcOut: '45–50%', cn: '60:1', tph: '20 t/h', nodes: 10, power: '298 kW',
+    specs: [
+      { code: 'B.1', lbl: 'Inlet MC',               val: '62.5 % wb',          flag: null },
+      { code: 'B.2', lbl: 'Post-Press MC Target',     val: '45–50 % wb',         flag: null },
+      { code: 'B.3', lbl: 'Particle Size Target (D90)',val: '≤ 2 mm',            flag: null },
+      { code: 'B.4', lbl: 'Press Water Expelled',     val: '143 kg / t EFB',     flag: null },
+      { code: 'B.5', lbl: 'Total Press Water',        val: '1,181 t / month',    flag: null },
+      { code: 'B.6', lbl: 'Press Water Routing',      val: '→ POME Pond Only',   flag: null },
+      { code: 'B.7', lbl: 'EFB Post-Press (FW)',      val: '7,081 t / month',    flag: 'green' },
+      { code: 'B.G1', lbl: 'Particle Size Gate',      val: 'D90 ≤ 2mm — enter shift result', flag: 'amber' },
+      { code: 'B.G2', lbl: 'Post-Press MC Gate',      val: 'Operator confirms ≤ 50%',        flag: 'amber' },
+    ],
+  },
+  {
+    key: 'opdc', abbr: 'OPDC', label: 'Decanter Cake', tag: 'Zero Cost',
+    accent: C.amber,
+    mcIn: '70–75%', mcOut: '≤35%', cn: '20:1', tph: '5 t/h', nodes: 10, power: '206 kW',
+    specs: [
+      { code: 'C.1', lbl: 'Inlet MC',                  val: '70–75 % wb',              flag: null },
+      { code: 'C.2', lbl: 'Post-Press MC Floor (CLASS A)', val: '≥ 40 % wb — LOCKED', flag: 'red' },
+      { code: 'C.3', lbl: 'Buffer Dwell (Mandatory Min)', val: '≥ 24 hrs',             flag: 'red' },
+      { code: 'C.4', lbl: 'Post-Buffer pH Target',      val: '8.0–9.0',               flag: null },
+      { code: 'C.5', lbl: 'OPDC Filtrate Out',          val: '180 t / month',          flag: null },
+      { code: 'C.6', lbl: 'Filtrate Routing',           val: '→ POME Pond Only',       flag: null },
+      { code: 'C.7', lbl: 'OPDC Post-Press (FW)',       val: '1,076 t / month',        flag: 'green' },
+      { code: 'C.G1', lbl: 'MC Floor — CLASS A',        val: 'Math.max(40, reading)',  flag: 'amber' },
+      { code: 'C.G2', lbl: 'pH Gate',                   val: 'No blend until 8.0–9.0', flag: 'amber' },
+      { code: 'C.G3', lbl: 'Buffer Dwell Gate',         val: 'Enter actual hours logged', flag: 'amber' },
+    ],
+  },
+  {
+    key: 'pos', abbr: 'POS', label: 'Palm Oil Sludge', tag: 'ICP-OES Required',
+    accent: '#3B82F6',
+    mcIn: '82%', mcOut: '65–70%', cn: '19:1', tph: '1.25 t/h', nodes: '4–7', power: '62 kW',
+    specs: [
+      { code: 'D.1', lbl: 'Fe Result (ICP-OES, mg/kg DM)',  val: 'ENTER RESULT',      flag: 'blue' },
+      { code: 'D.2', lbl: 'Inclusion Rate (Auto-Calculated)', val: '— Awaiting Fe',   flag: 'blue' },
+      { code: 'D.3', lbl: 'POS Inlet MC',                    val: '82 % wb',          flag: null },
+      { code: 'D.4', lbl: 'POS Ash Content',                 val: '28 % DM',          flag: null },
+      { code: 'D.5', lbl: 'POS Crude Protein',               val: '11 % DM',          flag: null },
+      { code: 'D.6', lbl: 'POS Ether Extract (EE)',          val: '10 % DM',          flag: null },
+      { code: 'D.7', lbl: 'POS To Blend (FW)',               val: 'DATA GAP',         flag: 'red' },
+      { code: 'D.8',  lbl: 'Fe < 3,000 mg/kg',   val: '→ 20% WW inclusion', flag: null },
+      { code: 'D.9',  lbl: 'Fe 3,000–5,000',      val: '→ 10–15% WW',       flag: null },
+      { code: 'D.10', lbl: 'Fe 5,000–8,000',      val: '→ 5–10% WW',        flag: null },
+      { code: 'D.11', lbl: 'Fe > 8,000',          val: '→ CaCO₃ amendment req.', flag: 'red' },
+    ],
+  },
+  {
+    key: 'pmf', abbr: 'PMF', label: 'Palm Mesocarp Fibre', tag: 'Zero Cost',
+    accent: '#9B59B6',
+    mcIn: '35–45%', mcOut: '30–40%', cn: '55:1', tph: '—', nodes: '—', power: '—',
+    specs: [
+      { code: 'E.1', lbl: 'Inlet MC',         val: '35–45 % wb',    flag: null },
+      { code: 'E.2', lbl: 'Lignin ADL',        val: '26–31 % DM',    flag: null },
+      { code: 'E.3', lbl: 'Crude Protein',     val: '4.5–5.5 % DM',  flag: null },
+      { code: 'E.4', lbl: 'C:N Ratio',         val: '~55:1',         flag: null },
+      { code: 'E.5', lbl: 'Pre-Treatment',     val: 'S2 Chemical required', flag: 'amber' },
+    ],
+  },
+  {
+    key: 'pome', abbr: 'POME', label: 'POME (Liquid)', tag: 'Emissions Avoidance',
+    accent: '#60A5FA',
+    mcIn: '95–98%', mcOut: 'n/a', cn: '—', tph: '—', nodes: '—', power: '—',
+    specs: [
+      { code: 'F.1', lbl: 'Stream Type',     val: 'Liquid only — not in solid blend', flag: null },
+      { code: 'F.2', lbl: 'pH',              val: '3.5–4.5 (highly acidic)',          flag: 'red' },
+      { code: 'F.3', lbl: 'BOD',             val: '25,000–35,000 mg/L',               flag: null },
+      { code: 'F.4', lbl: 'CH₄ Avoidance',  val: 'Primary value pathway',            flag: 'green' },
+      { code: 'F.5', lbl: 'Routing',         val: '→ Biogas / Biofertiliser',         flag: null },
+    ],
+  },
+  {
+    key: 'pke', abbr: 'PKE', label: 'Palm Kernel Expeller', tag: '$160/t Purchased',
+    accent: '#F59E0B',
+    mcIn: '10–12%', mcOut: '10–12%', cn: '30:1', tph: '—', nodes: '—', power: '—',
+    specs: [
+      { code: 'G.1', lbl: 'Cost',           val: '$160 / tonne — purchased', flag: 'amber' },
+      { code: 'G.2', lbl: 'Inlet MC',       val: '10–12 % wb (already dry)', flag: null },
+      { code: 'G.3', lbl: 'Crude Protein',  val: '14–16 % DM',               flag: null },
+      { code: 'G.4', lbl: 'C:N Ratio',      val: '~30:1',                    flag: null },
+      { code: 'G.5', lbl: 'Use Case',       val: 'N-supplement when OPDC short', flag: null },
+    ],
+  },
+  {
+    key: 'opf', abbr: 'OPF', label: 'Oil Palm Fronds', tag: 'Seasonal · Zero Cost',
+    accent: '#34D399',
+    mcIn: '60–70%', mcOut: '50–60%', cn: '40:1', tph: '—', nodes: '—', power: '—',
+    specs: [
+      { code: 'H.1', lbl: 'Inlet MC',      val: '60–70 % wb (seasonal)',   flag: null },
+      { code: 'H.2', lbl: 'Lignin ADL',    val: '18–22 % DM',              flag: null },
+      { code: 'H.3', lbl: 'C:N Ratio',     val: '~40:1',                   flag: null },
+      { code: 'H.4', lbl: 'Availability',  val: 'Pruning schedule only',   flag: 'amber' },
+      { code: 'H.5', lbl: 'Pre-Treatment', val: 'Shredding + size reduction required', flag: null },
+    ],
+  },
+  {
+    key: 'opt', abbr: 'OPT', label: 'Oil Palm Trunks', tag: 'Replanting Only',
+    accent: '#6EE7B7',
+    mcIn: '65–75%', mcOut: '—', cn: '80:1', tph: '—', nodes: '—', power: '—',
+    specs: [
+      { code: 'I.1', lbl: 'Inlet MC',      val: '65–75 % wb',             flag: null },
+      { code: 'I.2', lbl: 'Lignin ADL',    val: '28–34 % DM (very high)', flag: 'amber' },
+      { code: 'I.3', lbl: 'C:N Ratio',     val: '~80:1 (C-heavy)',        flag: 'amber' },
+      { code: 'I.4', lbl: 'Availability',  val: 'Replanting cycle only',  flag: 'amber' },
+      { code: 'I.5', lbl: 'Pre-Treatment', val: 'Chipper + extended hydrolysis req.', flag: 'red' },
+    ],
+  },
+];
+
+// Flag colours matching S0 design spec
+const FLAG_COLORS = {
+  red:   '#E84040',
+  amber: '#F5A623',
+  green: '#00A249',
+  blue:  '#3B82F6',
+};
+
+function ResidueCard({ def, volume, selected, expanded, onToggleExpand }) {
+  const ac = def.accent;
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      {/* CARD — S0 toggleCard design */}
+      <div
+        onClick={onToggleExpand}
+        style={{
+          background: selected ? 'rgba(64,215,197,0.15)' : '#000000',
+          border: `1.5px solid ${selected ? 'rgba(64,215,197,0.60)' : '#1E6B8C'}`,
+          borderRadius: expanded ? '8px 8px 0 0' : 8,
+          borderBottom: expanded ? 'none' : undefined,
+          padding: '10px 13px',
+          cursor: 'pointer',
+          transition: 'all 0.12s',
+          opacity: selected ? 1 : 0.55,
+          minHeight: 52,
+          flex: 1,
+        }}
+      >
+        {/* Top row: abbr + tag + expand arrow */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 3 }}>
+          <span style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 12, color: selected ? ac : '#B0BEC5', letterSpacing: '0.05em' }}>
+            {def.abbr}
+          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            {selected && (
+              <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 9, padding: '1px 6px', borderRadius: 3, background: ac + '22', border: `1px solid ${ac}55`, color: ac }}>
+                {def.tag}
+              </span>
+            )}
+            <span style={{ color: selected ? 'rgba(64,215,197,0.60)' : '#1E6B8C', fontSize: 10, lineHeight: 1 }}>
+              {expanded ? '▲' : '▼'}
+            </span>
+          </div>
+        </div>
+        {/* Full name */}
+        <div style={{ fontFamily: Fnt.dm, fontWeight: 700, fontSize: 13, color: selected ? '#F5A623' : '#B0BEC5', marginBottom: 4 }}>
+          {def.label}
+        </div>
+        {/* Volume + quick stats */}
+        {selected && (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 2 }}>
+            {volume != null && (
+              <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 10, color: '#40D7C5', background: 'rgba(64,215,197,0.10)', border: '1px solid rgba(64,215,197,0.25)', borderRadius: 3, padding: '1px 6px' }}>
+                {typeof volume === 'number' ? `${Math.round(volume).toLocaleString()} t/mo` : volume}
+              </span>
+            )}
+            {def.mcIn !== '—' && (
+              <span style={{ fontFamily: Fnt.mono, fontSize: 9, color: '#A8BDD0', background: 'rgba(168,189,208,0.07)', border: '1px solid rgba(168,189,208,0.18)', borderRadius: 3, padding: '1px 5px' }}>
+                MC {def.mcIn}
+              </span>
+            )}
+            {def.cn !== '—' && (
+              <span style={{ fontFamily: Fnt.mono, fontSize: 9, color: '#A8BDD0', background: 'rgba(168,189,208,0.07)', border: '1px solid rgba(168,189,208,0.18)', borderRadius: 3, padding: '1px 5px' }}>
+                C:N {def.cn}
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* EXPANDED DETAIL PANEL */}
+      {expanded && (
+        <div style={{
+          background: '#070D1A',
+          border: `1.5px solid ${selected ? 'rgba(64,215,197,0.60)' : '#1E6B8C'}`,
+          borderTop: 'none',
+          borderRadius: '0 0 8px 8px',
+          padding: '10px 13px 12px',
+        }}>
+          {/* Stat chips row */}
+          {(def.tph !== '—' || def.power !== '—') && (
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 8 }}>
+              {def.tph   !== '—' && <span style={{ fontFamily: Fnt.mono, fontSize: 9, fontWeight: 700, color: '#40D7C5', background: 'rgba(64,215,197,0.08)', border: '1px solid rgba(64,215,197,0.25)', borderRadius: 3, padding: '2px 7px' }}>{def.tph}</span>}
+              {def.nodes !== '—' && <span style={{ fontFamily: Fnt.mono, fontSize: 9, fontWeight: 700, color: '#A8BDD0', background: 'rgba(168,189,208,0.07)', border: '1px solid rgba(168,189,208,0.18)', borderRadius: 3, padding: '2px 7px' }}>{def.nodes} nodes</span>}
+              {def.power !== '—' && <span style={{ fontFamily: Fnt.mono, fontSize: 9, fontWeight: 700, color: '#A8BDD0', background: 'rgba(168,189,208,0.07)', border: '1px solid rgba(168,189,208,0.18)', borderRadius: 3, padding: '2px 7px' }}>{def.power}</span>}
+              {def.mcOut !== '—' && <span style={{ fontFamily: Fnt.mono, fontSize: 9, fontWeight: 700, color: '#F5A623', background: 'rgba(245,166,35,0.08)', border: '1px solid rgba(245,166,35,0.25)', borderRadius: 3, padding: '2px 7px' }}>Out {def.mcOut}</span>}
+            </div>
+          )}
+          {/* Spec table */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            {def.specs.map((sp, i) => {
+              const flagColor = sp.flag ? FLAG_COLORS[sp.flag] : null;
+              return (
+                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8, padding: '2px 0', borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
+                  <span style={{ fontFamily: Fnt.mono, fontSize: 10, color: '#4A6075', flexShrink: 0, minWidth: 32 }}>{sp.code}</span>
+                  <span style={{ fontFamily: Fnt.dm, fontSize: 10, color: '#8BA0B4', flex: 1 }}>{sp.lbl}</span>
+                  <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 10, color: flagColor || '#A8BDD0', textAlign: 'right', flexShrink: 0 }}>{sp.val}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function S1ResidueRow({ site, derived }) {
+  const activeStreams = useSelector(s => s.s0.activeStreams);
+  const [showAll, setShowAll] = useState(false);
+  const [expanded, setExpanded] = useState({});
+
+  const toggleExpand = (key) => setExpanded(prev => ({ ...prev, [key]: !prev[key] }));
+
+  // Volume lookup from MillContext derived/site
+  const volumeFor = (key) => {
+    if (key === 'efb')  return derived?.monthlyEfb  ?? null;
+    if (key === 'opdc') return derived?.monthlyOpdc ?? null;
+    if (key === 'pos')  return derived?.monthlyPos  ?? null;
+    const raw = site?.[`${key}_volume_t`];
+    return raw != null ? parseFloat(raw) : null;
+  };
+
+  const visibleDefs = showAll
+    ? RESIDUE_DEFS
+    : RESIDUE_DEFS.filter(d => activeStreams[d.key]);
+
+  const selectedCount = RESIDUE_DEFS.filter(d => activeStreams[d.key]).length;
+
+  if (!showAll && selectedCount === 0) return null;
+
+  return (
+    <div style={{ margin: '20px 28px 0' }}>
+      {/* Section header */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ width: 3, height: 14, borderRadius: 2, background: C.teal, flexShrink: 0 }} />
+          <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 13, color: C.teal, textTransform: 'uppercase', letterSpacing: '.06em' }}>
+            S0 Residues Selected
+          </div>
+          {selectedCount > 0 && (
+            <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 10, color: C.teal, background: 'rgba(64,215,197,0.12)', border: '1px solid rgba(64,215,197,0.30)', borderRadius: 4, padding: '1px 7px' }}>
+              {selectedCount} active
+            </span>
+          )}
+        </div>
+        <button
+          onClick={() => setShowAll(v => !v)}
+          style={{
+            fontFamily: Fnt.mono, fontWeight: 700, fontSize: 10,
+            background: showAll ? 'rgba(64,215,197,0.15)' : 'rgba(168,189,208,0.07)',
+            border: `1px solid ${showAll ? 'rgba(64,215,197,0.60)' : 'rgba(168,189,208,0.25)'}`,
+            borderRadius: 5, color: showAll ? C.teal : '#8BA0B4',
+            padding: '4px 12px', cursor: 'pointer', transition: 'all 0.12s',
+          }}
+        >
+          {showAll ? 'Selected Only ▲' : 'All Residues ▼'}
+        </button>
+      </div>
+
+      {/* Residue card grid — auto-fit, max 5 columns */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(195px, 1fr))', gap: 10, alignItems: 'start' }}>
+        {visibleDefs.map(def => (
+          <ResidueCard
+            key={def.key}
+            def={def}
+            selected={!!activeStreams[def.key]}
+            expanded={!!expanded[def.key]}
+            volume={volumeFor(def.key)}
+            onToggleExpand={() => toggleExpand(def.key)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function S1Hub() {
   const nav = useNavigate();
   const { site, derived } = useMill();
@@ -859,6 +1155,9 @@ export default function S1Hub() {
           outflows={S1_OUTFLOWS}
         />
       </div>
+
+      {/* S0 RESIDUE ROW — streams selected in S0, wired to Redux */}
+      <S1ResidueRow site={site} derived={derived} />
 
       <div style={{ margin: '20px 28px 0' }}>
         {/* Quick-access link grid (3 × 2) */}
