@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+﻿import { useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -9,31 +9,31 @@ import { useMill } from "../../contexts/MillContext";
 import S1ResidueModal from "../../components/S1ResidueModal/S1ResidueModal.jsx";
 
 /*
- * S1Hub.jsx — S1 Mechanical Pre-Processing Hub (S3Landing pattern)
+ * S1Hub.jsx ג€” S1 Mechanical Pre-Processing Hub (S3Landing pattern)
  * Route: /s1
  */
 
-// ── S1 SUBSTRATE FLOW DATA ──
+// ג”€ג”€ S1 SUBSTRATE FLOW DATA ג”€ג”€
 const S1_INFLOWS = [
-  { title: 'Monthly Volume', val: '8,262', suffix: ' t', unit: 'FW / month · S0 Handoff' },
-  { title: 'Moisture', val: '62–82', suffix: '%', unit: 'MC wb · Mixed Residues' },
-  { title: 'Crude Protein', val: '4.75–14.5', suffix: '%', unit: 'DM · EFB / OPDC Range' },
-  { title: 'Lignin ADL', val: '22–31', suffix: '%', unit: 'DM · EFB / OPDC Range' },
+  { title: 'Monthly Volume', val: '8,262', suffix: ' t', unit: 'FW / month ֲ· S0 Handoff' },
+  { title: 'Moisture', val: '62ג€“82', suffix: '%', unit: 'MC wb ֲ· Mixed Residues' },
+  { title: 'Crude Protein', val: '4.75ג€“14.5', suffix: '%', unit: 'DM ֲ· EFB / OPDC Range' },
+  { title: 'Lignin ADL', val: '22ג€“31', suffix: '%', unit: 'DM ֲ· EFB / OPDC Range' },
 ];
 
 const S1_OUTFLOWS = [
-  { title: 'Monthly Volume', val: '6,800', suffix: ' t', unit: 'FW / month · Post-Press', dir: 'dn' },
-  { title: 'Moisture', val: '35–50', suffix: '%', unit: 'MC wb · Post-Press', dir: 'dn' },
-  { title: 'Particle Size', val: '≤2–3', suffix: 'mm', unit: 'D90 · Hammer Mill', dir: 'dn' },
-  { title: 'Lignin ADL', val: '22–31', suffix: '%', unit: 'DM · Unchanged', dir: 'eq' },
+  { title: 'Monthly Volume', val: '6,800', suffix: ' t', unit: 'FW / month ֲ· Post-Press', dir: 'dn' },
+  { title: 'Moisture', val: '35ג€“50', suffix: '%', unit: 'MC wb ֲ· Post-Press', dir: 'dn' },
+  { title: 'Particle Size', val: 'ג‰₪2ג€“3', suffix: 'mm', unit: 'D90 ֲ· Hammer Mill', dir: 'dn' },
+  { title: 'Lignin ADL', val: '22ג€“31', suffix: '%', unit: 'DM ֲ· Unchanged', dir: 'eq' },
 ];
 
-// ── S1 LEADERBOARD — one entry per processing line ──
+// ג”€ג”€ S1 LEADERBOARD ג€” one entry per processing line ג”€ג”€
 const LEADERBOARD_LINES = [
   {
     name: 'EFB',
     subTitle: 'EFB Pre-Processing Line',
-    desc: '10-node mechanical line · 20 t/h · 600mm belt · 298 kW · Shred → Press → Mill → Screen',
+    desc: '10-node mechanical line ֲ· 20 t/h ֲ· 600mm belt ֲ· 298 kW ֲ· Shred ג†’ Press ג†’ Mill ג†’ Screen',
     accent: C.teal,
     tonnes: 275,
     mcIn: '62.5%',
@@ -42,98 +42,98 @@ const LEADERBOARD_LINES = [
     linFrac: '70.0%',
     cn: '60:1',
     bf: '18:1',
-    npk: { N: '0.76–2.32', P: '0.20–0.30', K: '1.90–2.20' },
+    npk: { N: '0.76ג€“2.32', P: '0.20ג€“0.30', K: '1.90ג€“2.20' },
     guardrail: 'DM < 5mm | MC 63.5%',
     route: '/s1/efb',
   },
   {
     name: 'OPDC',
     subTitle: 'OPDC Pre-Processing Line',
-    desc: '10-node mechanical line · 5 t/h · 500mm belt · 206 kW · CLASS A Gate · 24hr Dwell',
+    desc: '10-node mechanical line ֲ· 5 t/h ֲ· 500mm belt ֲ· 206 kW ֲ· CLASS A Gate ֲ· 24hr Dwell',
     accent: C.amber,
     tonnes: 42,
-    mcIn: '70–75%',
-    mcOut: '≤35%',
+    mcIn: '70ג€“75%',
+    mcOut: 'ג‰₪35%',
     mcReduction: '54.0%',
     linFrac: '14.5%',
     cn: '20:1',
     bf: '18:1',
     npk: { N: '2.32', P: '0.30', K: '1.90' },
-    guardrail: 'MC ≥ 40% CLASS A | pH 8–9',
+    guardrail: 'MC ג‰¥ 40% CLASS A | pH 8ג€“9',
     route: '/s1/opdc',
   },
   {
     name: 'POS',
     subTitle: 'POS Pre-Skimming Line',
-    desc: '4–7 node liquid/semi line · 1.25 t/h · ICP-OES Fe Gate · Decanter · Filter Press',
+    desc: '4ג€“7 node liquid/semi line ֲ· 1.25 t/h ֲ· ICP-OES Fe Gate ֲ· Decanter ֲ· Filter Press',
     accent: '#3B82F6',
     tonnes: 31,
     mcIn: '82%',
-    mcOut: '65–70%',
+    mcOut: '65ג€“70%',
     mcReduction: '18.0%',
     linFrac: '11.0%',
     cn: '19:1',
     bf: '10:1',
-    npk: { N: '1.76', P: '—', K: '—' },
-    guardrail: 'Fe gated | Decanted 70–75% MC',
+    npk: { N: '1.76', P: 'ג€”', K: 'ג€”' },
+    guardrail: 'Fe gated | Decanted 70ג€“75% MC',
     route: '/s1/pos',
   },
   {
     name: 'Block 4',
-    subTitle: 'Block 4 — Pending',
-    desc: 'Specification pending · Not yet commissioned',
+    subTitle: 'Block 4 ג€” Pending',
+    desc: 'Specification pending ֲ· Not yet commissioned',
     accent: C.grey,
     tonnes: null,
-    mcIn: '—',
-    mcOut: '—',
-    mcReduction: '—',
-    linFrac: '—',
-    cn: '—',
-    bf: '—',
-    npk: { N: '—', P: '—', K: '—' },
+    mcIn: 'ג€”',
+    mcOut: 'ג€”',
+    mcReduction: 'ג€”',
+    linFrac: 'ג€”',
+    cn: 'ג€”',
+    bf: 'ג€”',
+    npk: { N: 'ג€”', P: 'ג€”', K: 'ג€”' },
     guardrail: 'Pending specification',
     route: null,
     placeholder: true,
   },
 ];
 
-// ── S1 QUICK-ACCESS LINKS ──
+// ג”€ג”€ S1 QUICK-ACCESS LINKS ג”€ג”€
 const QUICK_LINKS = [
-  { title: 'EFB ASCII Process Flow', sub: '10 nodes · 20 t/h · 600mm belt', accent: C.teal, live: true, key: 'efb-ascii' },
-  { title: 'EFB Floor Plan', sub: 'Building dimensions · Node cards', accent: C.teal, live: false, key: 'efb-floor' },
+  { title: 'EFB ASCII Process Flow', sub: '10 nodes ֲ· 20 t/h ֲ· 600mm belt', accent: C.teal, live: true, key: 'efb-ascii' },
+  { title: 'EFB Floor Plan', sub: 'Building dimensions ֲ· Node cards', accent: C.teal, live: false, key: 'efb-floor' },
   { title: 'EFB 1-Pager (PL,P)', sub: 'Single-page engineering summary', accent: C.teal, live: true, key: 'efb-1pager' },
-  { title: 'OPDC ASCII Process Flow', sub: '10 nodes · 5 t/h · CLASS A gate', accent: C.amber, live: true, key: 'opdc-ascii' },
-  { title: 'OPDC Floor Plan', sub: 'Building dimensions · Node cards', accent: C.amber, live: false, key: 'opdc-floor' },
+  { title: 'OPDC ASCII Process Flow', sub: '10 nodes ֲ· 5 t/h ֲ· CLASS A gate', accent: C.amber, live: true, key: 'opdc-ascii' },
+  { title: 'OPDC Floor Plan', sub: 'Building dimensions ֲ· Node cards', accent: C.amber, live: false, key: 'opdc-floor' },
   { title: 'OPDC 1-Page (PL,P)', sub: 'Single-page engineering summary', accent: C.amber, live: true, key: 'opdc-1pager' },
 ];
 
-// ── QUICK LINK POPUP CONTENT ──
+// ג”€ג”€ QUICK LINK POPUP CONTENT ג”€ג”€
 const QUICK_LINK_DETAIL = {
   'efb-ascii': {
     title: 'EFB ASCII Process Flow',
     accent: C.teal,
     ticker: [
       { label: 'Daily In', val: '~300 t' }, { label: 'Daily Out', val: '~195 t' },
-      { label: 'MC In', val: '62.5%' }, { label: 'MC Out', val: '45–50%' },
+      { label: 'MC In', val: '62.5%' }, { label: 'MC Out', val: '45ג€“50%' },
       { label: 'Belt', val: '600mm' }, { label: 'Power', val: '298 kW' },
     ],
     ascii: `
-  ┌──────────────────────────────────────────────────────────────────┐
-  │  S1C  EFB  PRE-PROCESSING  ·  10 nodes  ·  298 kW  ·  20 t/h  │
-  └──────────────────────────────────────────────────────────────────┘
+  ג”ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”
+  ג”‚  S1C  EFB  PRE-PROCESSING  ֲ·  10 nodes  ֲ·  298 kW  ֲ·  20 t/h  ג”‚
+  ג””ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”˜
 
-  [RH-EFB-101]──▶[CV-EFB-101]──▶[ETR-01  Trommel 50mm]──▶[OBM-01  Overband Magnet]
-  Recip Feeder    Incline Apron   +3.0m · 11 kW             +3.5m · 3 kW
-  7.5 kW          7.5 kW · 600mm                                    │
-                                                                     ▼
-  [BIN-EFB-201]◀──[EVS-01  Vib. Screen 2mm]◀──[EHM-01  Hammer Mill]◀──[EPR-01  Screw Press]
-  Buffer 50m³      +4.0m · 7.5 kW · Oversize→HM  +4.0m · 37 kW        +3.2m · 37 kW
-  +2.5m · 3 kW                                    SPRING ISO ONLY       ⚠ GATE B.G2
-        │
-        ▼
-  [EDC-01  Baghouse]  East wall · 15 kW · 99% dust capture
+  [RH-EFB-101]ג”€ג”€ג–¶[CV-EFB-101]ג”€ג”€ג–¶[ETR-01  Trommel 50mm]ג”€ג”€ג–¶[OBM-01  Overband Magnet]
+  Recip Feeder    Incline Apron   +3.0m ֲ· 11 kW             +3.5m ֲ· 3 kW
+  7.5 kW          7.5 kW ֲ· 600mm                                    ג”‚
+                                                                     ג–¼
+  [BIN-EFB-201]ג—€ג”€ג”€[EVS-01  Vib. Screen 2mm]ג—€ג”€ג”€[EHM-01  Hammer Mill]ג—€ג”€ג”€[EPR-01  Screw Press]
+  Buffer 50mֲ³      +4.0m ֲ· 7.5 kW ֲ· Oversizeג†’HM  +4.0m ֲ· 37 kW        +3.2m ֲ· 37 kW
+  +2.5m ֲ· 3 kW                                    SPRING ISO ONLY       ג  GATE B.G2
+        ג”‚
+        ג–¼
+  [EDC-01  Baghouse]  East wall ֲ· 15 kW ֲ· 99% dust capture
 
-  S2 HANDOFF: 45–50% MC · D90 ≤ 2mm · 20 t/h · NPK: N 582 · P 197 · K 930 kg/day`,
+  S2 HANDOFF: 45ג€“50% MC ֲ· D90 ג‰₪ 2mm ֲ· 20 t/h ֲ· NPK: N 582 ֲ· P 197 ֲ· K 930 kg/day`,
     stats: [
       { lbl: 'Nodes', val: '10' }, { lbl: 'Power', val: '298 kW' },
       { lbl: 'Throughput', val: '20 t/h' }, { lbl: 'Belt', val: '600mm' },
@@ -144,21 +144,21 @@ const QUICK_LINK_DETAIL = {
     title: 'EFB Floor Plan',
     accent: C.teal,
     ticker: [
-      { label: 'Building', val: 'A5' }, { label: 'Size', val: '30×60×12m' },
-      { label: 'Area', val: '1,800 m²' }, { label: 'Nodes', val: '10' },
+      { label: 'Building', val: 'A5' }, { label: 'Size', val: '30ֳ—60ֳ—12m' },
+      { label: 'Area', val: '1,800 mֲ²' }, { label: 'Nodes', val: '10' },
     ],
     nodes: [
-      { code: 'RCV-EFB-01', name: 'EFB Receiving Hopper', spec: '50 m³ · Carbon steel · 60° sidewalls · Hydraulic gate' },
-      { code: 'CVB-EFB-01', name: 'Apron Conveyor', spec: '15m × 600mm · 15–20° · 7.5 kW VFD · ±0.0 → +3.0m' },
-      { code: 'ESD-01', name: 'Primary Shredder', spec: 'Twin-shaft · 20 t/h · 74 kW VFD · 100–150mm output' },
-      { code: 'ETR-EFB-01', name: 'Trommel Screen', spec: 'Ø1500mm × 4000mm · 50mm perforations · 5.5 kW' },
-      { code: 'ESP-EFB-01', name: 'Screw Press', spec: '20 t/h · 62.5% → 55% MC · 15 kW VFD · 3–5 bar' },
-      { code: 'EHM-EFB-01', name: 'Hammer Mill', spec: '13 t/h · 24 swing hammers · 1500 RPM · 110 kW' },
-      { code: 'EVS-EFB-01', name: 'Vibrating Screen', spec: '13 t/h · 2mm mesh · Oversize return · 2.2 kW' },
-      { code: 'EDC-EFB-01', name: 'Baghouse Dust Collector', spec: '5000 m³/h · 50 m² filter · <50 mg/Nm³ · 7.5 kW fan' },
-      { code: 'BIN-EFB-201', name: 'Buffer Storage Bin', spec: '80 m³ · ~32 t @ 55% MC · 8hr buffer · 2×3.7 kW' },
+      { code: 'RCV-EFB-01', name: 'EFB Receiving Hopper', spec: '50 mֲ³ ֲ· Carbon steel ֲ· 60ֲ° sidewalls ֲ· Hydraulic gate' },
+      { code: 'CVB-EFB-01', name: 'Apron Conveyor', spec: '15m ֳ— 600mm ֲ· 15ג€“20ֲ° ֲ· 7.5 kW VFD ֲ· ֲ±0.0 ג†’ +3.0m' },
+      { code: 'ESD-01', name: 'Primary Shredder', spec: 'Twin-shaft ֲ· 20 t/h ֲ· 74 kW VFD ֲ· 100ג€“150mm output' },
+      { code: 'ETR-EFB-01', name: 'Trommel Screen', spec: 'ֳ˜1500mm ֳ— 4000mm ֲ· 50mm perforations ֲ· 5.5 kW' },
+      { code: 'ESP-EFB-01', name: 'Screw Press', spec: '20 t/h ֲ· 62.5% ג†’ 55% MC ֲ· 15 kW VFD ֲ· 3ג€“5 bar' },
+      { code: 'EHM-EFB-01', name: 'Hammer Mill', spec: '13 t/h ֲ· 24 swing hammers ֲ· 1500 RPM ֲ· 110 kW' },
+      { code: 'EVS-EFB-01', name: 'Vibrating Screen', spec: '13 t/h ֲ· 2mm mesh ֲ· Oversize return ֲ· 2.2 kW' },
+      { code: 'EDC-EFB-01', name: 'Baghouse Dust Collector', spec: '5000 mֲ³/h ֲ· 50 mֲ² filter ֲ· <50 mg/Nmֲ³ ֲ· 7.5 kW fan' },
+      { code: 'BIN-EFB-201', name: 'Buffer Storage Bin', spec: '80 mֲ³ ֲ· ~32 t @ 55% MC ֲ· 8hr buffer ֲ· 2ֳ—3.7 kW' },
     ],
-    building: { label: 'Building A5 — EFB Processing Hall', dim: '30m × 60m × 12m H = 1,800 m²' },
+    building: { label: 'Building A5 ג€” EFB Processing Hall', dim: '30m ֳ— 60m ֳ— 12m H = 1,800 mֲ²' },
   },
   'efb-1pager': {
     title: 'EFB 1-Pager (PL,P)',
@@ -169,7 +169,7 @@ const QUICK_LINK_DETAIL = {
     ],
     summary: [
       { section: 'Processing Line', items: [
-        ['Line ID', 'S1C — EFB Line'], ['Throughput', '20 t/h @ 62.5% MC'],
+        ['Line ID', 'S1C ג€” EFB Line'], ['Throughput', '20 t/h @ 62.5% MC'],
         ['Daily Input', '~300 t fresh EFB'], ['Daily Output', '~195 t milled fibre'],
         ['Belt Width', '600mm standard'], ['Total Nodes', '10 machines'],
       ]},
@@ -179,7 +179,7 @@ const QUICK_LINK_DETAIL = {
         ['Building', '$45,000 (A5 share)'], ['Maintenance/mo', '~$3,680'],
       ]},
       { section: 'Product Quality', items: [
-        ['MC Out', '45–50%'], ['Particle Size', 'D90 ≤ 2mm'],
+        ['MC Out', '45ג€“50%'], ['Particle Size', 'D90 ג‰₪ 2mm'],
         ['C:N Ratio', '60:1'], ['Lignin ADL', '22% DM'],
         ['N per day', '582 kg'], ['K per day', '930 kg'],
       ]},
@@ -190,30 +190,30 @@ const QUICK_LINK_DETAIL = {
     accent: C.amber,
     ticker: [
       { label: 'Daily In', val: '~42 t' }, { label: 'Daily Out', val: '~28 t' },
-      { label: 'MC In', val: '70–75%' }, { label: 'MC Out', val: '≤35%' },
+      { label: 'MC In', val: '70ג€“75%' }, { label: 'MC Out', val: 'ג‰₪35%' },
       { label: 'Belt', val: '500mm' }, { label: 'Power', val: '206 kW' },
     ],
     ascii: `
-  ┌─────────────────────────────────────────────────────────────────────┐
-  │  S1B  OPDC  PRE-PROCESSING  ·  10 nodes  ·  206 kW  ·  5 t/h    │
-  │  Anti-bridging throughout · Paste form handling                   │
-  └─────────────────────────────────────────────────────────────────────┘
+  ג”ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”
+  ג”‚  S1B  OPDC  PRE-PROCESSING  ֲ·  10 nodes  ֲ·  206 kW  ֲ·  5 t/h    ג”‚
+  ג”‚  Anti-bridging throughout ֲ· Paste form handling                   ג”‚
+  ג””ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”˜
 
-  [RH-OPDC-101]──▶[CV-OPDC-101]──▶[OPR-01  Screw Press]
-  Recip Feeder      Belt +3.5m       ⚠ CLASS A GATE — MC floor ≥ 40% LOCKED
-  SS304 · 0.75 kW   1.1 kW · 500mm  Non-negotiable · pore damage above 40%
-                                               │
-                                               ▼
-  [OLB-01  Lump Breaker]──▶[CV-OPDC-201]──▶[OTR-01  Trommel]──▶[ODR-01  Rotary Dryer]
-  Twin-roll · 3 kW           Belt +1.5m      2.2 kW              11 kW · ⚠ MC ≤ 35%
+  [RH-OPDC-101]ג”€ג”€ג–¶[CV-OPDC-101]ג”€ג”€ג–¶[OPR-01  Screw Press]
+  Recip Feeder      Belt +3.5m       ג  CLASS A GATE ג€” MC floor ג‰¥ 40% LOCKED
+  SS304 ֲ· 0.75 kW   1.1 kW ֲ· 500mm  Non-negotiable ֲ· pore damage above 40%
+                                               ג”‚
+                                               ג–¼
+  [OLB-01  Lump Breaker]ג”€ג”€ג–¶[CV-OPDC-201]ג”€ג”€ג–¶[OTR-01  Trommel]ג”€ג”€ג–¶[ODR-01  Rotary Dryer]
+  Twin-roll ֲ· 3 kW           Belt +1.5m      2.2 kW              11 kW ֲ· ג  MC ג‰₪ 35%
   30mm output
-                                                                          │
-                                                                          ▼
-  [OVS-01  Vib. Screen]◀──[OHM-01  Hammer Mill]──▶[BIN-OPDC-301  Product Bin]
-  +0.5m · 2.2 kW             +0.8m · 22 kW SPRING ISO   ⚠ 24HR DWELL GATE
-  Oversize → HM               only                       pH 8.0–9.0 required
+                                                                          ג”‚
+                                                                          ג–¼
+  [OVS-01  Vib. Screen]ג—€ג”€ג”€[OHM-01  Hammer Mill]ג”€ג”€ג–¶[BIN-OPDC-301  Product Bin]
+  +0.5m ֲ· 2.2 kW             +0.8m ֲ· 22 kW SPRING ISO   ג  24HR DWELL GATE
+  Oversize ג†’ HM               only                       pH 8.0ג€“9.0 required
 
-  S2 HANDOFF: ≤35% MC · D90 ≤ 3mm · pH 8.0–9.0 · dwell ≥ 24hrs`,
+  S2 HANDOFF: ג‰₪35% MC ֲ· D90 ג‰₪ 3mm ֲ· pH 8.0ג€“9.0 ֲ· dwell ג‰¥ 24hrs`,
     stats: [
       { lbl: 'Nodes', val: '10' }, { lbl: 'Power', val: '206 kW' },
       { lbl: 'Throughput', val: '5 t/h' }, { lbl: 'Belt', val: '500mm' },
@@ -224,32 +224,32 @@ const QUICK_LINK_DETAIL = {
     title: 'OPDC Floor Plan',
     accent: C.amber,
     ticker: [
-      { label: 'Building', val: 'A4' }, { label: 'Size', val: '20×40×10m' },
-      { label: 'Area', val: '800 m²' }, { label: 'Nodes', val: '10' },
+      { label: 'Building', val: 'A4' }, { label: 'Size', val: '20ֳ—40ֳ—10m' },
+      { label: 'Area', val: '800 mֲ²' }, { label: 'Nodes', val: '10' },
     ],
     nodes: [
-      { code: 'RH-OPDC-101', name: 'Reciprocating Feeder', spec: '10m³ SS304 · Anti-bridging · 5.5 kW VFD · Wet paste' },
-      { code: 'CV-OPDC-101', name: 'Feed Belt Conveyor', spec: '8m × 500mm · +1.0 → +3.5m · 1.1 kW' },
-      { code: 'OPR-OPDC-01', name: 'Screw Press', spec: '5 t/h · 72.5% → 61% MC · 7.5 kW · CLASS A GATE' },
-      { code: 'OLB-OPDC-01', name: 'Lump Breaker', spec: 'Twin-roll · 3 kW · 30mm output' },
-      { code: 'OTR-OPDC-01', name: 'Trommel Screen', spec: 'Ø1200mm × 3000mm · 50mm perforations · 2.2 kW' },
-      { code: 'ODR-OPDC-01', name: 'Rotary Dryer', spec: '5 t/h · 61% → 35% MC · 11 kW · Air temp <120°C' },
-      { code: 'OHM-OPDC-01', name: 'Hammer Mill', spec: '5 t/h · 22 kW SPRING ISO · 3mm screen' },
-      { code: 'OVS-OPDC-01', name: 'Vibrating Screen', spec: '5 t/h · 3mm mesh · Oversize return · 2.2 kW' },
-      { code: 'BIN-OPDC-301', name: 'Product Bin 85m³', spec: '85m³ · Sealed · Rake agitator · 5.5 kW · 24hr dwell' },
+      { code: 'RH-OPDC-101', name: 'Reciprocating Feeder', spec: '10mֲ³ SS304 ֲ· Anti-bridging ֲ· 5.5 kW VFD ֲ· Wet paste' },
+      { code: 'CV-OPDC-101', name: 'Feed Belt Conveyor', spec: '8m ֳ— 500mm ֲ· +1.0 ג†’ +3.5m ֲ· 1.1 kW' },
+      { code: 'OPR-OPDC-01', name: 'Screw Press', spec: '5 t/h ֲ· 72.5% ג†’ 61% MC ֲ· 7.5 kW ֲ· CLASS A GATE' },
+      { code: 'OLB-OPDC-01', name: 'Lump Breaker', spec: 'Twin-roll ֲ· 3 kW ֲ· 30mm output' },
+      { code: 'OTR-OPDC-01', name: 'Trommel Screen', spec: 'ֳ˜1200mm ֳ— 3000mm ֲ· 50mm perforations ֲ· 2.2 kW' },
+      { code: 'ODR-OPDC-01', name: 'Rotary Dryer', spec: '5 t/h ֲ· 61% ג†’ 35% MC ֲ· 11 kW ֲ· Air temp <120ֲ°C' },
+      { code: 'OHM-OPDC-01', name: 'Hammer Mill', spec: '5 t/h ֲ· 22 kW SPRING ISO ֲ· 3mm screen' },
+      { code: 'OVS-OPDC-01', name: 'Vibrating Screen', spec: '5 t/h ֲ· 3mm mesh ֲ· Oversize return ֲ· 2.2 kW' },
+      { code: 'BIN-OPDC-301', name: 'Product Bin 85mֲ³', spec: '85mֲ³ ֲ· Sealed ֲ· Rake agitator ֲ· 5.5 kW ֲ· 24hr dwell' },
     ],
-    building: { label: 'Building A4 — OPDC Processing Hall', dim: '20m × 40m × 10m H = 800 m²' },
+    building: { label: 'Building A4 ג€” OPDC Processing Hall', dim: '20m ֳ— 40m ֳ— 10m H = 800 mֲ²' },
   },
   'opdc-1pager': {
     title: 'OPDC 1-Page (PL,P)',
     accent: C.amber,
     ticker: [
       { label: 'CapEx', val: '$38,000' }, { label: 'Power', val: '206 kW' },
-      { label: 'Elec/mo', val: '$4,200' }, { label: 'CLASS A', val: 'MC ≥40%' },
+      { label: 'Elec/mo', val: '$4,200' }, { label: 'CLASS A', val: 'MC ג‰¥40%' },
     ],
     summary: [
       { section: 'Processing Line', items: [
-        ['Line ID', 'S1B — OPDC Line'], ['Throughput', '5 t/h @ 70–75% MC'],
+        ['Line ID', 'S1B ג€” OPDC Line'], ['Throughput', '5 t/h @ 70ג€“75% MC'],
         ['Daily Input', '~42 t OPDC paste'], ['Daily Output', '~28 t dried cake'],
         ['Belt Width', '500mm standard'], ['Total Nodes', '10 machines'],
       ]},
@@ -259,107 +259,107 @@ const QUICK_LINK_DETAIL = {
         ['Key Item', 'Buffer Bin $15,000'], ['Maintenance/mo', '~$950'],
       ]},
       { section: 'Product Quality', items: [
-        ['MC Out', '≤35%'], ['Particle Size', 'D90 ≤ 3mm'],
-        ['C:N Ratio', '20:1'], ['pH Target', '8.0–9.0'],
-        ['Dwell Gate', '≥24 hrs'], ['N content', '2.32% DM'],
+        ['MC Out', 'ג‰₪35%'], ['Particle Size', 'D90 ג‰₪ 3mm'],
+        ['C:N Ratio', '20:1'], ['pH Target', '8.0ג€“9.0'],
+        ['Dwell Gate', 'ג‰¥24 hrs'], ['N content', '2.32% DM'],
       ]},
     ],
   },
 };
 
-// ── GUARDRAILS ──
+// ג”€ג”€ GUARDRAILS ג”€ג”€
 const guardrails = [
-  { icon: '💧', label: 'MC ≥40%', val: 'LOCKED', cls: 'red', note: 'CLASS A · OPDC screw press' },
-  { icon: '🔩', label: 'Fe <3,000', val: 'mg/kg DM', cls: 'amber', note: 'POS ICP-OES gate' },
-  { icon: '🌿', label: 'ADL <12%', val: 'DM target', cls: 'teal', note: 'For BSF palatability' },
-  { icon: '⚖', label: 'C:N 15–22', val: 'optimal', cls: 'teal', note: 'Post-S2 blend target' },
-  { icon: '⚗', label: 'pH 4.0–5.0', val: 'range', cls: 'amber', note: 'POS pre-treatment' },
-  { icon: '🧪', label: 'CEC >20', val: 'cmol/kg', cls: 'teal', note: 'Soil quality target' },
-  { icon: '⚠', label: 'No Cr >20', val: 'mg/kg', cls: 'red', note: 'Heavy metal limit' },
-  { icon: '🔧', label: 'Belt speed', val: 'locked at spec', cls: 'teal', note: 'Per equipment OEM' },
-  { icon: '🌡', label: 'All temps', val: '<85°C', cls: 'amber', note: 'Motor + bearing limit' },
+  { icon: 'נ’§', label: 'MC ג‰¥40%', val: 'LOCKED', cls: 'red', note: 'CLASS A ֲ· OPDC screw press' },
+  { icon: 'נ”©', label: 'Fe <3,000', val: 'mg/kg DM', cls: 'amber', note: 'POS ICP-OES gate' },
+  { icon: 'נ¿', label: 'ADL <12%', val: 'DM target', cls: 'teal', note: 'For BSF palatability' },
+  { icon: 'ג–', label: 'C:N 15ג€“22', val: 'optimal', cls: 'teal', note: 'Post-S2 blend target' },
+  { icon: 'ג—', label: 'pH 4.0ג€“5.0', val: 'range', cls: 'amber', note: 'POS pre-treatment' },
+  { icon: 'נ§×', label: 'CEC >20', val: 'cmol/kg', cls: 'teal', note: 'Soil quality target' },
+  { icon: 'ג ', label: 'No Cr >20', val: 'mg/kg', cls: 'red', note: 'Heavy metal limit' },
+  { icon: 'נ”§', label: 'Belt speed', val: 'locked at spec', cls: 'teal', note: 'Per equipment OEM' },
+  { icon: 'נ¡', label: 'All temps', val: '<85ֲ°C', cls: 'amber', note: 'Motor + bearing limit' },
 ];
 
-// ── LINE DETAIL DATA (popup) ──
+// ג”€ג”€ LINE DETAIL DATA (popup) ג”€ג”€
 const LINE_DETAIL = {
   EFB: {
     inflows: [
-      { title: 'Monthly Volume', val: '8,262', suffix: ' t', unit: 'FW / month · EFB @ 22% FFB' },
-      { title: 'Moisture', val: '62.5', suffix: '%', unit: 'MC wb · Press Discharge' },
-      { title: 'Crude Protein', val: '4.75', suffix: '%', unit: 'DM · N × 6.25' },
-      { title: 'Lignin ADL', val: '22', suffix: '%', unit: 'DM · EFB Canonical' },
+      { title: 'Monthly Volume', val: '8,262', suffix: ' t', unit: 'FW / month ֲ· EFB @ 22% FFB' },
+      { title: 'Moisture', val: '62.5', suffix: '%', unit: 'MC wb ֲ· Press Discharge' },
+      { title: 'Crude Protein', val: '4.75', suffix: '%', unit: 'DM ֲ· N ֳ— 6.25' },
+      { title: 'Lignin ADL', val: '22', suffix: '%', unit: 'DM ֲ· EFB Canonical' },
     ],
     outflows: [
-      { title: 'Monthly Volume', val: '5,370', suffix: ' t', unit: 'FW / month · Post-Press', dir: 'dn' },
-      { title: 'Moisture', val: '45–50', suffix: '%', unit: 'MC wb · D90 ≤ 2mm', dir: 'dn' },
-      { title: 'Particle Size', val: '≤2', suffix: 'mm', unit: 'D90 · Vibrating Screen', dir: 'dn' },
+      { title: 'Monthly Volume', val: '5,370', suffix: ' t', unit: 'FW / month ֲ· Post-Press', dir: 'dn' },
+      { title: 'Moisture', val: '45ג€“50', suffix: '%', unit: 'MC wb ֲ· D90 ג‰₪ 2mm', dir: 'dn' },
+      { title: 'Particle Size', val: 'ג‰₪2', suffix: 'mm', unit: 'D90 ֲ· Vibrating Screen', dir: 'dn' },
       { title: 'Daily Output', val: '~195', suffix: ' t', unit: 'Milled fibre to S2', dir: 'dn' },
     ],
     equipment: [
       { code: 'AF-01', name: 'Hydraulic Feeder', tph: '20 tph', kw: '18 kW', cost: '$15,000' },
       { code: 'BC-01/02', name: 'Incline Conveyor 600mm', tph: '20 tph', kw: '22 kW', cost: '$18,000' },
       { code: 'TR-2060', name: 'Trommel Screen 50mm', tph: '19 tph', kw: '11 kW', cost: '$8,000' },
-      { code: 'OBM-01', name: 'Overband Magnet', tph: '19 tph', kw: '3 kW', cost: '—' },
-      { code: 'PR-01', name: 'Screw Press + PKSA', tph: '14 tph', kw: '30 kW', cost: '—' },
+      { code: 'OBM-01', name: 'Overband Magnet', tph: '19 tph', kw: '3 kW', cost: 'ג€”' },
+      { code: 'PR-01', name: 'Screw Press + PKSA', tph: '14 tph', kw: '30 kW', cost: 'ג€”' },
       { code: 'SD-01', name: 'Primary Shredder', tph: '14 tph', kw: '75 kW', cost: '$45,000' },
       { code: 'HM-01', name: 'Hammer Mill', tph: '14 tph', kw: '110 kW', cost: '$35,000' },
       { code: 'VS-01', name: 'Vibrating Screen 2mm', tph: '13 tph', kw: '11 kW', cost: '$12,000' },
-      { code: 'DC-01', name: 'Baghouse (Shared)', tph: '13 tph', kw: '18 kW', cost: '—' },
-      { code: 'BIN-EFB-01', name: 'Buffer Bin 50m³', tph: '13 tph', kw: '0 kW', cost: '$25,000' },
+      { code: 'DC-01', name: 'Baghouse (Shared)', tph: '13 tph', kw: '18 kW', cost: 'ג€”' },
+      { code: 'BIN-EFB-01', name: 'Buffer Bin 50mֲ³', tph: '13 tph', kw: '0 kW', cost: '$25,000' },
     ],
   },
   OPDC: {
     inflows: [
-      { title: 'Monthly Volume', val: '1,256', suffix: ' t', unit: 'FW / month · OPDC @ 15.2% EFB' },
-      { title: 'Moisture', val: '70–75', suffix: '%', unit: 'MC wb · Paste Form' },
-      { title: 'Crude Protein', val: '14.5', suffix: '%', unit: 'DM · N 2.32% DM' },
-      { title: 'Lignin ADL', val: '30.7', suffix: '%', unit: 'DM · OPDC Canonical' },
+      { title: 'Monthly Volume', val: '1,256', suffix: ' t', unit: 'FW / month ֲ· OPDC @ 15.2% EFB' },
+      { title: 'Moisture', val: '70ג€“75', suffix: '%', unit: 'MC wb ֲ· Paste Form' },
+      { title: 'Crude Protein', val: '14.5', suffix: '%', unit: 'DM ֲ· N 2.32% DM' },
+      { title: 'Lignin ADL', val: '30.7', suffix: '%', unit: 'DM ֲ· OPDC Canonical' },
     ],
     outflows: [
-      { title: 'Monthly Volume', val: '~830', suffix: ' t', unit: 'FW / month · Post-Press', dir: 'dn' },
-      { title: 'Moisture', val: '≤35', suffix: '%', unit: 'MC wb · Post-Dryer', dir: 'dn' },
-      { title: 'Particle Size', val: '≤3', suffix: 'mm', unit: 'D90 · Vibrating Screen', dir: 'dn' },
-      { title: 'CLASS A Gate', val: 'MC ≥40%', suffix: '', unit: 'LOCKED · Non-Negotiable', dir: 'eq' },
+      { title: 'Monthly Volume', val: '~830', suffix: ' t', unit: 'FW / month ֲ· Post-Press', dir: 'dn' },
+      { title: 'Moisture', val: 'ג‰₪35', suffix: '%', unit: 'MC wb ֲ· Post-Dryer', dir: 'dn' },
+      { title: 'Particle Size', val: 'ג‰₪3', suffix: 'mm', unit: 'D90 ֲ· Vibrating Screen', dir: 'dn' },
+      { title: 'CLASS A Gate', val: 'MC ג‰¥40%', suffix: '', unit: 'LOCKED ֲ· Non-Negotiable', dir: 'eq' },
     ],
     equipment: [
       { code: 'SF-01', name: 'Reciprocating Feeder', tph: '5 tph', kw: '7.5 kW', cost: '$10,000' },
       { code: 'BC-10/11', name: 'Incline Conveyor 500mm', tph: '5 tph', kw: '15 kW', cost: '$8,000' },
       { code: 'TR-OPDC-01', name: 'Trommel Screen 50mm', tph: '4.8 tph', kw: '9 kW', cost: '$5,000' },
-      { code: 'OBM-02', name: 'Overband Magnet', tph: '4.8 tph', kw: '3 kW', cost: '—' },
-      { code: 'DC-PRESS-01', name: 'Screw Press + PKSA', tph: '3.5 tph', kw: '30 kW', cost: '—' },
-      { code: 'LB-01', name: 'Lump Breaker', tph: '3.5 tph', kw: '37 kW', cost: '—' },
-      { code: 'HM-02', name: 'Hammer Mill', tph: '3.5 tph', kw: '90 kW', cost: '—' },
-      { code: 'VS-02', name: 'Vibrating Screen 2mm', tph: '3.3 tph', kw: '9 kW', cost: '—' },
-      { code: 'DC-01', name: 'Baghouse (Shared)', tph: '3.3 tph', kw: '0 kW', cost: '—' },
-      { code: 'BIN-OPDC-24HR', name: 'Buffer Bin 85m³ + Rake', tph: '3.3 tph', kw: '5.5 kW', cost: '$15,000' },
+      { code: 'OBM-02', name: 'Overband Magnet', tph: '4.8 tph', kw: '3 kW', cost: 'ג€”' },
+      { code: 'DC-PRESS-01', name: 'Screw Press + PKSA', tph: '3.5 tph', kw: '30 kW', cost: 'ג€”' },
+      { code: 'LB-01', name: 'Lump Breaker', tph: '3.5 tph', kw: '37 kW', cost: 'ג€”' },
+      { code: 'HM-02', name: 'Hammer Mill', tph: '3.5 tph', kw: '90 kW', cost: 'ג€”' },
+      { code: 'VS-02', name: 'Vibrating Screen 2mm', tph: '3.3 tph', kw: '9 kW', cost: 'ג€”' },
+      { code: 'DC-01', name: 'Baghouse (Shared)', tph: '3.3 tph', kw: '0 kW', cost: 'ג€”' },
+      { code: 'BIN-OPDC-24HR', name: 'Buffer Bin 85mֲ³ + Rake', tph: '3.3 tph', kw: '5.5 kW', cost: '$15,000' },
     ],
   },
   POS: {
     inflows: [
-      { title: 'Monthly Volume', val: '900', suffix: ' t', unit: 'FW / month · POS Sludge' },
-      { title: 'Moisture', val: '82', suffix: '%', unit: 'MC wb · Liquid/Semi' },
-      { title: 'Crude Protein', val: '11', suffix: '%', unit: 'DM · N 1.76% DM' },
-      { title: 'Fe Content', val: 'Variable', suffix: '', unit: 'mg/kg DM · ICP-OES Gate', color: '#3B82F6' },
+      { title: 'Monthly Volume', val: '900', suffix: ' t', unit: 'FW / month ֲ· POS Sludge' },
+      { title: 'Moisture', val: '82', suffix: '%', unit: 'MC wb ֲ· Liquid/Semi' },
+      { title: 'Crude Protein', val: '11', suffix: '%', unit: 'DM ֲ· N 1.76% DM' },
+      { title: 'Fe Content', val: 'Variable', suffix: '', unit: 'mg/kg DM ֲ· ICP-OES Gate', color: '#3B82F6' },
     ],
     outflows: [
-      { title: 'Monthly Volume', val: '~405', suffix: ' t', unit: 'Cake / month · Post-Press', dir: 'dn' },
-      { title: 'Moisture', val: '65–70', suffix: '%', unit: 'MC wb · Post-Filter Press', dir: 'dn' },
-      { title: 'pH', val: '5.5–6.0', suffix: '', unit: 'Post-CaCO₃ Conditioning', dir: 'up' },
+      { title: 'Monthly Volume', val: '~405', suffix: ' t', unit: 'Cake / month ֲ· Post-Press', dir: 'dn' },
+      { title: 'Moisture', val: '65ג€“70', suffix: '%', unit: 'MC wb ֲ· Post-Filter Press', dir: 'dn' },
+      { title: 'pH', val: '5.5ג€“6.0', suffix: '', unit: 'Post-CaCOג‚ƒ Conditioning', dir: 'up' },
       { title: 'Fe Status', val: 'Gated', suffix: '', unit: 'ICP-OES Protocol', dir: 'eq' },
     ],
     equipment: [
-      { code: 'RH-OPDC-101', name: 'Sludge Pit 15m³', tph: '1.25 tph', kw: '0 kW', cost: '—' },
-      { code: 'DRS-SLD-01', name: 'Rotary Drum Screen', tph: '1.17 tph', kw: '7 kW', cost: '—' },
-      { code: 'DEC-SLD-101', name: 'Decanter Centrifuge', tph: '0.56 tph', kw: '55 kW', cost: '$80K–$150K' },
-      { code: 'BIN-OPDC-301', name: 'Buffer Tank 15m³', tph: '0.56 tph', kw: '0 kW', cost: '—' },
+      { code: 'RH-OPDC-101', name: 'Sludge Pit 15mֲ³', tph: '1.25 tph', kw: '0 kW', cost: 'ג€”' },
+      { code: 'DRS-SLD-01', name: 'Rotary Drum Screen', tph: '1.17 tph', kw: '7 kW', cost: 'ג€”' },
+      { code: 'DEC-SLD-101', name: 'Decanter Centrifuge', tph: '0.56 tph', kw: '55 kW', cost: '$80Kג€“$150K' },
+      { code: 'BIN-OPDC-301', name: 'Buffer Tank 15mֲ³', tph: '0.56 tph', kw: '0 kW', cost: 'ג€”' },
     ],
   },
 };
 
-// ── MODULE POPUP DETAIL ──
+// ג”€ג”€ MODULE POPUP DETAIL ג”€ג”€
 const MODULE_DETAIL = {
   'efb': {
-    num: 'Line 1', title: 'EFB Pre-Processing Line', accent: C.teal, icon: '⚙',
+    num: 'Line 1', title: 'EFB Pre-Processing Line', accent: C.teal, icon: 'ג™',
     stats: [
       { lbl: 'Nodes', val: '10' }, { lbl: 'Power', val: '298 kW' },
       { lbl: 'Throughput', val: '20 t/h' }, { lbl: 'Belt', val: '600mm' },
@@ -368,16 +368,16 @@ const MODULE_DETAIL = {
     sections: [
       { title: 'Process Flow', rows: [
         ['Feed', 'EFB @ 62.5% MC from mill press discharge'],
-        ['Step 1', 'RH-EFB-101 Hydraulic Feeder → Apron Conveyor (7.5 kW)'],
-        ['Step 2', 'ETR-01 Trommel Screen 50mm → OBM-01 Overband Magnet'],
-        ['Step 3', 'EPR-01 Screw Press + PKSA  ⚠ GATE B.G2 · MC floor 40%'],
-        ['Step 4', 'ESD-01 Primary Shredder (75 kW) → EHM-01 Hammer Mill (110 kW)'],
-        ['Step 5', 'EVS-01 Vibrating Screen 2mm → EDC-01 Baghouse'],
-        ['Output', 'BIN-EFB-201 Buffer Bin 50m³ → S2 Handoff'],
+        ['Step 1', 'RH-EFB-101 Hydraulic Feeder ג†’ Apron Conveyor (7.5 kW)'],
+        ['Step 2', 'ETR-01 Trommel Screen 50mm ג†’ OBM-01 Overband Magnet'],
+        ['Step 3', 'EPR-01 Screw Press + PKSA  ג  GATE B.G2 ֲ· MC floor 40%'],
+        ['Step 4', 'ESD-01 Primary Shredder (75 kW) ג†’ EHM-01 Hammer Mill (110 kW)'],
+        ['Step 5', 'EVS-01 Vibrating Screen 2mm ג†’ EDC-01 Baghouse'],
+        ['Output', 'BIN-EFB-201 Buffer Bin 50mֲ³ ג†’ S2 Handoff'],
       ]},
       { title: 'Key Specs', rows: [
-        ['MC In', '62.5%'], ['MC Out', '45–50%'],
-        ['Particle Size', 'D90 ≤ 2mm'], ['Belt Width', '600mm'],
+        ['MC In', '62.5%'], ['MC Out', '45ג€“50%'],
+        ['Particle Size', 'D90 ג‰₪ 2mm'], ['Belt Width', '600mm'],
         ['Daily In', '~300 t FW'], ['Daily Out', '~195 t FW'],
         ['C:N Ratio', '60:1'], ['Lignin ADL', '22% DM'],
         ['N/day', '582 kg'], ['K/day', '930 kg'],
@@ -391,7 +391,7 @@ const MODULE_DETAIL = {
     ],
   },
   'opdc': {
-    num: 'Line 2', title: 'OPDC Pre-Processing Line', accent: C.amber, icon: '⚙',
+    num: 'Line 2', title: 'OPDC Pre-Processing Line', accent: C.amber, icon: 'ג™',
     stats: [
       { lbl: 'Nodes', val: '10' }, { lbl: 'Power', val: '206 kW' },
       { lbl: 'Throughput', val: '5 t/h' }, { lbl: 'Belt', val: '500mm' },
@@ -399,64 +399,64 @@ const MODULE_DETAIL = {
     ],
     sections: [
       { title: 'Process Flow', rows: [
-        ['Feed', 'OPDC paste @ 70–75% MC · Anti-bridging throughout'],
-        ['Step 1', 'RH-OPDC-101 Reciprocating Feeder (SS304 · anti-bridging)'],
-        ['Step 2', 'CV-OPDC-101 Belt Conveyor → OPR-01 Screw Press'],
-        ['⚠ CLASS A GATE', 'MC floor ≥ 40% LOCKED · NON-NEGOTIABLE'],
-        ['Step 3', 'OLB-01 Lump Breaker → OTR-01 Trommel → ODR-01 Rotary Dryer'],
-        ['Step 4', 'OHM-01 Hammer Mill (SPRING ISO) → OVS-01 Vib. Screen 3mm'],
-        ['⚠ 24HR DWELL', 'BIN-OPDC-301 Product Bin · pH 8.0–9.0 required'],
-        ['Output', '≤35% MC · D90 ≤ 3mm · pH 8.0–9.0 · to S2'],
+        ['Feed', 'OPDC paste @ 70ג€“75% MC ֲ· Anti-bridging throughout'],
+        ['Step 1', 'RH-OPDC-101 Reciprocating Feeder (SS304 ֲ· anti-bridging)'],
+        ['Step 2', 'CV-OPDC-101 Belt Conveyor ג†’ OPR-01 Screw Press'],
+        ['ג  CLASS A GATE', 'MC floor ג‰¥ 40% LOCKED ֲ· NON-NEGOTIABLE'],
+        ['Step 3', 'OLB-01 Lump Breaker ג†’ OTR-01 Trommel ג†’ ODR-01 Rotary Dryer'],
+        ['Step 4', 'OHM-01 Hammer Mill (SPRING ISO) ג†’ OVS-01 Vib. Screen 3mm'],
+        ['ג  24HR DWELL', 'BIN-OPDC-301 Product Bin ֲ· pH 8.0ג€“9.0 required'],
+        ['Output', 'ג‰₪35% MC ֲ· D90 ג‰₪ 3mm ֲ· pH 8.0ג€“9.0 ֲ· to S2'],
       ]},
       { title: 'Key Specs', rows: [
-        ['MC In', '70–75%'], ['MC Out', '≤35%'],
-        ['Particle Size', 'D90 ≤ 3mm'], ['Belt Width', '500mm'],
+        ['MC In', '70ג€“75%'], ['MC Out', 'ג‰₪35%'],
+        ['Particle Size', 'D90 ג‰₪ 3mm'], ['Belt Width', '500mm'],
         ['Daily In', '~42 t FW'], ['Daily Out', '~28 t FW'],
-        ['C:N Ratio', '20:1'], ['pH Gate', '8.0–9.0'],
-        ['Dwell Gate', '≥24 hrs'], ['N content', '2.32% DM'],
+        ['C:N Ratio', '20:1'], ['pH Gate', '8.0ג€“9.0'],
+        ['Dwell Gate', 'ג‰¥24 hrs'], ['N content', '2.32% DM'],
       ]},
       { title: 'Equipment & Cost', rows: [
         ['SF-01 Reciprocating Feeder', '$10,000'], ['BC-10/11 Incline Conveyor', '$8,000'],
         ['TR-OPDC-01 Trommel Screen', '$5,000'], ['BIN-OPDC-24HR Buffer Bin', '$15,000'],
-        ['OBM-02 Overband Magnet', '—'], ['Screw Press + PKSA', '—'],
-        ['Lump Breaker', '—'], ['Total CapEx', '$38,000'],
+        ['OBM-02 Overband Magnet', 'ג€”'], ['Screw Press + PKSA', 'ג€”'],
+        ['Lump Breaker', 'ג€”'], ['Total CapEx', '$38,000'],
       ]},
     ],
   },
   'pos': {
-    num: 'Line 3', title: 'POS Pre-Skimming Line', accent: '#3B82F6', icon: '💧',
+    num: 'Line 3', title: 'POS Pre-Skimming Line', accent: '#3B82F6', icon: 'נ’§',
     stats: [
-      { lbl: 'Nodes', val: '4–7' }, { lbl: 'Power', val: '62 kW' },
+      { lbl: 'Nodes', val: '4ג€“7' }, { lbl: 'Power', val: '62 kW' },
       { lbl: 'Throughput', val: '1.25 t/h' }, { lbl: 'Type', val: 'Liquid/Semi' },
       { lbl: 'Fe Gate', val: 'ICP-OES' }, { lbl: 'Elec/mo', val: '$1,806' },
     ],
     sections: [
       { title: 'Process Flow', rows: [
         ['Feed', 'POS Sludge @ 82% MC from mill effluent stream'],
-        ['Step 1', 'Sludge Pit 15m³ → Progressive Cavity Pump'],
+        ['Step 1', 'Sludge Pit 15mֲ³ ג†’ Progressive Cavity Pump'],
         ['Step 2', 'DRS-SLD-01 Rotary Drum Screen (78% MC out)'],
-        ['⚠ ICP-OES Fe GATE', 'Fe result sets CaCO₃ dose + S2 inclusion'],
-        ['Step 3', 'DEC-SLD-101 Decanter Centrifuge (55 kW · 65% MC out)'],
-        ['Step 4', 'CaCO₃ conditioning · pH 4.4 → 5.5–6.0'],
-        ['Output', 'Cake ~405 t/mo · 65–70% MC · Gated · to S2'],
+        ['ג  ICP-OES Fe GATE', 'Fe result sets CaCOג‚ƒ dose + S2 inclusion'],
+        ['Step 3', 'DEC-SLD-101 Decanter Centrifuge (55 kW ֲ· 65% MC out)'],
+        ['Step 4', 'CaCOג‚ƒ conditioning ֲ· pH 4.4 ג†’ 5.5ג€“6.0'],
+        ['Output', 'Cake ~405 t/mo ֲ· 65ג€“70% MC ֲ· Gated ֲ· to S2'],
       ]},
       { title: 'Key Specs', rows: [
-        ['MC In', '82%'], ['MC Out', '65–70%'],
-        ['pH In', '4.4 (acidic)'], ['pH Out', '5.5–6.0'],
+        ['MC In', '82%'], ['MC Out', '65ג€“70%'],
+        ['pH In', '4.4 (acidic)'], ['pH Out', '5.5ג€“6.0'],
         ['Daily In', '~30 t FW'], ['Daily Out', '~13.5 t cake'],
-        ['Fe Gate', 'ICP-OES protocol'], ['CaCO₃ Dose', '5–20% w/w'],
-        ['Screen Reject', '→ EFB Line'], ['Filtrate', '→ POME system'],
+        ['Fe Gate', 'ICP-OES protocol'], ['CaCOג‚ƒ Dose', '5ג€“20% w/w'],
+        ['Screen Reject', 'ג†’ EFB Line'], ['Filtrate', 'ג†’ POME system'],
       ]},
       { title: 'Equipment & Cost', rows: [
-        ['Sludge Pit 15m³', '—'], ['Rotary Drum Screen', '—'],
-        ['Decanter Centrifuge', '$80K–$150K RFQ'], ['Buffer Tank 15m³', '—'],
-        ['Progressive Cavity Pump', '0.75 kW'], ['CaCO₃ Dosing', 'Batch manual'],
+        ['Sludge Pit 15mֲ³', 'ג€”'], ['Rotary Drum Screen', 'ג€”'],
+        ['Decanter Centrifuge', '$80Kג€“$150K RFQ'], ['Buffer Tank 15mֲ³', 'ג€”'],
+        ['Progressive Cavity Pump', '0.75 kW'], ['CaCOג‚ƒ Dosing', 'Batch manual'],
         ['ICP-OES Sampling', 'Lab gate'], ['Total CapEx', 'RFQ pending'],
       ]},
     ],
   },
   'eng': {
-    num: 'Eng', title: 'Engineering Overview', accent: C.grey, icon: '📐',
+    num: 'Eng', title: 'Engineering Overview', accent: C.grey, icon: 'נ“',
     stats: [
       { lbl: 'Total Nodes', val: '24' }, { lbl: 'Lines', val: '3' },
       { lbl: 'Total kW', val: '566 kW' }, { lbl: 'CapEx', val: '$594,000' },
@@ -464,27 +464,27 @@ const MODULE_DETAIL = {
     ],
     sections: [
       { title: 'Line Summary', rows: [
-        ['S1C — EFB Line', '10 nodes · 298 kW · 20 t/h · 600mm belt · $184K'],
-        ['S1B — OPDC Line', '10 nodes · 206 kW · 5 t/h · 500mm belt · $38K'],
-        ['S1A — POS Line', '4–7 nodes · 62 kW · 1.25 t/h · liquid/semi'],
+        ['S1C ג€” EFB Line', '10 nodes ֲ· 298 kW ֲ· 20 t/h ֲ· 600mm belt ֲ· $184K'],
+        ['S1B ג€” OPDC Line', '10 nodes ֲ· 206 kW ֲ· 5 t/h ֲ· 500mm belt ֲ· $38K'],
+        ['S1A ג€” POS Line', '4ג€“7 nodes ֲ· 62 kW ֲ· 1.25 t/h ֲ· liquid/semi'],
         ['Total Power', '566 kW installed across all 3 lines'],
         ['Total CAPEX', '~$372,000 equipment (excl. building + Eng)'],
       ]},
       { title: '9 Hard Guardrails', rows: [
-        ['B.G1 — Vib. Screen', 'DM particle size ≤ 2mm (EFB) / ≤ 3mm (OPDC)'],
-        ['B.G2 — Screw Press', 'MC floor ≥ 40% LOCKED · CLASS A · NON-NEGOTIABLE'],
-        ['B.G3 — Dwell', 'OPDC ≥ 24hrs in bin · pH 8.0–9.0 achieved'],
-        ['B.G4 — Temp', 'All motors < 85°C · SPRING ISO hammer mills only'],
-        ['B.G5 — Fe Gate', 'POS ICP-OES · Fe < 3,000 mg/kg DM for S2'],
-        ['B.G6 — Belt', 'Belt speed locked per OEM · No field override'],
-        ['B.G7 — ADL', 'Target ADL < 12% DM for BSF palatability'],
-        ['B.G8 — C:N', 'C:N 15–22:1 optimal at S2 blending stage'],
-        ['B.G9 — CEC', 'CEC > 20 cmol/kg soil target · post-S3 output'],
+        ['B.G1 ג€” Vib. Screen', 'DM particle size ג‰₪ 2mm (EFB) / ג‰₪ 3mm (OPDC)'],
+        ['B.G2 ג€” Screw Press', 'MC floor ג‰¥ 40% LOCKED ֲ· CLASS A ֲ· NON-NEGOTIABLE'],
+        ['B.G3 ג€” Dwell', 'OPDC ג‰¥ 24hrs in bin ֲ· pH 8.0ג€“9.0 achieved'],
+        ['B.G4 ג€” Temp', 'All motors < 85ֲ°C ֲ· SPRING ISO hammer mills only'],
+        ['B.G5 ג€” Fe Gate', 'POS ICP-OES ֲ· Fe < 3,000 mg/kg DM for S2'],
+        ['B.G6 ג€” Belt', 'Belt speed locked per OEM ֲ· No field override'],
+        ['B.G7 ג€” ADL', 'Target ADL < 12% DM for BSF palatability'],
+        ['B.G8 ג€” C:N', 'C:N 15ג€“22:1 optimal at S2 blending stage'],
+        ['B.G9 ג€” CEC', 'CEC > 20 cmol/kg soil target ֲ· post-S3 output'],
       ]},
       { title: 'OPEX Summary', rows: [
-        ['EFB line elec.', '$14,191/mo · 155,199 kWh'],
-        ['OPDC line elec.', '$6,651/mo · ~42,000 kWh'],
-        ['POS line elec.', '$1,806/mo · ~11,000 kWh'],
+        ['EFB line elec.', '$14,191/mo ֲ· 155,199 kWh'],
+        ['OPDC line elec.', '$6,651/mo ֲ· ~42,000 kWh'],
+        ['POS line elec.', '$1,806/mo ֲ· ~11,000 kWh'],
         ['Total electricity', '$22,648/mo'],
         ['Labour (5 roles)', '$3,576/mo'],
         ['Maintenance', '$11,733/mo'],
@@ -493,41 +493,41 @@ const MODULE_DETAIL = {
     ],
   },
   'fp': {
-    num: 'FP', title: 'Combined Floor Plans', accent: C.teal, icon: '🏭',
+    num: 'FP', title: 'Combined Floor Plans', accent: C.teal, icon: 'נ­',
     stats: [
-      { lbl: 'Buildings', val: '3' }, { lbl: 'Total Area', val: '~3,200 m²' },
-      { lbl: 'EFB Hall', val: '30×60×12m' }, { lbl: 'OPDC Hall', val: '20×40×10m' },
-      { lbl: 'POS Bay', val: '12×24×6m' }, { lbl: 'Node Cards', val: '24 total' },
+      { lbl: 'Buildings', val: '3' }, { lbl: 'Total Area', val: '~3,200 mֲ²' },
+      { lbl: 'EFB Hall', val: '30ֳ—60ֳ—12m' }, { lbl: 'OPDC Hall', val: '20ֳ—40ֳ—10m' },
+      { lbl: 'POS Bay', val: '12ֳ—24ֳ—6m' }, { lbl: 'Node Cards', val: '24 total' },
     ],
     sections: [
-      { title: 'Building A5 — EFB Hall', rows: [
-        ['Dimensions', '30m × 60m × 12m H = 1,800 m²'],
-        ['Structure', 'PEB steel · ASTM A36 · 7 portal frames @ 6m'],
-        ['Conveyors', '6 segments · 600mm belt · total ~20.8 kW'],
-        ['Elevation', 'GFL ±0.0m to +4.0m process platform'],
-        ['Noise zone', 'Hammer mill bay: 85+ dBA · PPE mandatory'],
-        ['Dust zone', 'Baghouse EDC-EFB-01 · east wall · 7.5 kW fan'],
+      { title: 'Building A5 ג€” EFB Hall', rows: [
+        ['Dimensions', '30m ֳ— 60m ֳ— 12m H = 1,800 mֲ²'],
+        ['Structure', 'PEB steel ֲ· ASTM A36 ֲ· 7 portal frames @ 6m'],
+        ['Conveyors', '6 segments ֲ· 600mm belt ֲ· total ~20.8 kW'],
+        ['Elevation', 'GFL ֲ±0.0m to +4.0m process platform'],
+        ['Noise zone', 'Hammer mill bay: 85+ dBA ֲ· PPE mandatory'],
+        ['Dust zone', 'Baghouse EDC-EFB-01 ֲ· east wall ֲ· 7.5 kW fan'],
       ]},
-      { title: 'Building A4 — OPDC Hall', rows: [
-        ['Dimensions', '20m × 40m × 10m H = 800 m²'],
-        ['Structure', 'PEB steel · SS304 contact surfaces'],
-        ['Elevation', '+1.0m → +3.5m · anti-bridging throughout'],
-        ['Class A Zone', 'Screw press bay · classified process area'],
-        ['Dwell bay', 'BIN-OPDC-301 · sealed · moisture-controlled'],
-        ['Ventilation', 'Forced ventilation · odour management'],
+      { title: 'Building A4 ג€” OPDC Hall', rows: [
+        ['Dimensions', '20m ֳ— 40m ֳ— 10m H = 800 mֲ²'],
+        ['Structure', 'PEB steel ֲ· SS304 contact surfaces'],
+        ['Elevation', '+1.0m ג†’ +3.5m ֲ· anti-bridging throughout'],
+        ['Class A Zone', 'Screw press bay ֲ· classified process area'],
+        ['Dwell bay', 'BIN-OPDC-301 ֲ· sealed ֲ· moisture-controlled'],
+        ['Ventilation', 'Forced ventilation ֲ· odour management'],
       ]},
       { title: 'POS Liquid Bay (A-POS)', rows: [
-        ['Dimensions', '12m × 24m × 6m H = 288 m²'],
-        ['Structure', 'Concrete bund · epoxy-lined · 110% containment'],
-        ['Sludge pit', 'At-grade EL 0.0m · 60° walls · 15m³'],
-        ['Decanter', 'SS316 · isolated · VFD-controlled'],
-        ['ICP-OES', 'Sampling point at DRS outlet · lab submission'],
-        ['Drainage', '150mm HDPE → POME system'],
+        ['Dimensions', '12m ֳ— 24m ֳ— 6m H = 288 mֲ²'],
+        ['Structure', 'Concrete bund ֲ· epoxy-lined ֲ· 110% containment'],
+        ['Sludge pit', 'At-grade EL 0.0m ֲ· 60ֲ° walls ֲ· 15mֲ³'],
+        ['Decanter', 'SS316 ֲ· isolated ֲ· VFD-controlled'],
+        ['ICP-OES', 'Sampling point at DRS outlet ֲ· lab submission'],
+        ['Drainage', '150mm HDPE ג†’ POME system'],
       ]},
     ],
   },
   'cap': {
-    num: 'CAP', title: 'Financials — CAPEX / OPEX', accent: C.amber, icon: '💰',
+    num: 'CAP', title: 'Financials ג€” CAPEX / OPEX', accent: C.amber, icon: 'נ’°',
     stats: [
       { lbl: 'Building CapEx', val: '$1.37M' }, { lbl: 'Equip. CapEx', val: '$372K' },
       { lbl: 'Labour/mo', val: '$3,576' }, { lbl: 'Elec/mo', val: '$22,648' },
@@ -535,23 +535,23 @@ const MODULE_DETAIL = {
     ],
     sections: [
       { title: 'Building CAPEX', rows: [
-        ['A1 — Site Works', '$79,540'], ['A2 — Civil & Concrete', '$105,900'],
-        ['A3 — Structural Steel', '$336,790'], ['A4 — Welfare Fit-out', '$107,650'],
-        ['A5 — MEP Power', '$140,000'], ['A6 — HVAC', '$28,000'],
-        ['A7 — Plumbing', '$42,000'], ['A8 — Process Items', '$44,000'],
+        ['A1 ג€” Site Works', '$79,540'], ['A2 ג€” Civil & Concrete', '$105,900'],
+        ['A3 ג€” Structural Steel', '$336,790'], ['A4 ג€” Welfare Fit-out', '$107,650'],
+        ['A5 ג€” MEP Power', '$140,000'], ['A6 ג€” HVAC', '$28,000'],
+        ['A7 ג€” Plumbing', '$42,000'], ['A8 ג€” Process Items', '$44,000'],
         ['Sub-total (base)', '$883,880'], ['+8% Contingency +20% EPC +20% Dev', '$1,374,610'],
       ]},
       { title: 'Equipment CAPEX', rows: [
         ['EFB Line (7 items)', '$158,000'], ['OPDC Line (4 items)', '$38,000'],
-        ['Shared — Limestone Dosing', '$6,000'], ['2× Wheel Loaders', '$170,000'],
+        ['Shared ג€” Limestone Dosing', '$6,000'], ['2ֳ— Wheel Loaders', '$170,000'],
         ['Total Equipment', '$372,000'],
         ['EFB largest item', 'SD-01 Primary Shredder $45,000'],
         ['OPDC largest item', 'BIN-OPDC-301 Buffer Bin $15,000'],
       ]},
       { title: 'Monthly OPEX', rows: [
-        ['Plant Operator ×2', '$1,600'], ['Equipment Tech ×1', '$900'],
-        ['Lab Technician ×1', '$700'], ['Logistics / Loader ×1', '$550'],
-        ['Supervisor ×1', '$826'], ['Labour total', '$3,576'],
+        ['Plant Operator ֳ—2', '$1,600'], ['Equipment Tech ֳ—1', '$900'],
+        ['Lab Technician ֳ—1', '$700'], ['Logistics / Loader ֳ—1', '$550'],
+        ['Supervisor ֳ—1', '$826'], ['Labour total', '$3,576'],
         ['EFB + OPDC + POS elec.', '$22,648'], ['Maintenance', '$11,733'],
         ['TOTAL OPEX/month', '$37,957'],
       ]},
@@ -560,294 +560,302 @@ const MODULE_DETAIL = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// S1 RESIDUE ROW — shows residues selected in S0, reads Redux s0.activeStreams
+// PROCESS ENGINEERING — full-width table, always shows all 8 residue streams
 // ─────────────────────────────────────────────────────────────────────────────
 
-const RESIDUE_DEFS = [
+const PE_COLS = '200px 1fr 80px 1fr 1fr 190px';
+
+const PE_DEFS = [
   {
-    key: 'efb', abbr: 'EFB', label: 'Empty Fruit Bunches', tag: 'Zero Cost',
-    accent: C.teal,
-    mcIn: '62–82%', mcOut: '45–50%', cn: '60:1', tph: '20 t/h', nodes: 10, power: '298 kW',
-    specs: [
-      { code: 'B.1', lbl: 'Inlet MC',               val: '62.5 % wb',          flag: null },
-      { code: 'B.2', lbl: 'Post-Press MC Target',     val: '45–50 % wb',         flag: null },
-      { code: 'B.3', lbl: 'Particle Size Target (D90)',val: '≤ 2 mm',            flag: null },
-      { code: 'B.4', lbl: 'Press Water Expelled',     val: '143 kg / t EFB',     flag: null },
-      { code: 'B.5', lbl: 'Total Press Water',        val: '1,181 t / month',    flag: null },
-      { code: 'B.6', lbl: 'Press Water Routing',      val: '→ POME Pond Only',   flag: null },
-      { code: 'B.7', lbl: 'EFB Post-Press (FW)',      val: '7,081 t / month',    flag: 'green' },
-      { code: 'B.G1', lbl: 'Particle Size Gate',      val: 'D90 ≤ 2mm — enter shift result', flag: 'amber' },
-      { code: 'B.G2', lbl: 'Post-Press MC Gate',      val: 'Operator confirms ≤ 50%',        flag: 'amber' },
+    key: 'efb', code: 'EFB', name: 'Empty Fruit Bunches', cost: '$0/t · 60% of blend',
+    accent: '#40D7C5', accentDim: 'rgba(64,215,197,0.12)', accentBdr: 'rgba(64,215,197,0.55)',
+    fw: { val: '4,900', unit: 't FW/month', mc: 'MC 62.5% wb · DM 37.5%', dm: '1,838 t DM' },
+    s1: { val: '2,695', unit: 't FW/month', mc: 'MC ≤45% wb · DM ≥55%',   dm: '1,482 t DM', mcRed: false },
+    equipment: [
+      { icon: '✂', name: 'Shredder',    spec: '50–100mm' },
+      { icon: '⚙', name: 'Hammer Mill', spec: '→ 2mm screen' },
+      { icon: '▼', name: 'Screw Press', spec: 'Dewater ≤45%', amber: true },
+      { icon: '📦', name: 'Buffer Silo', spec: '+ S2 Conv.', green: true },
     ],
+    procNote: <>Shredder: <span style={{color:'#F5A623',fontWeight:700}}>65%</span> nameplate derate (Asian OEM). Hammer mill: 2mm screen enforced. Screw press: <span style={{color:'#00A249',fontWeight:700}}>≤45% MC</span> target. Press liquor → POME pond. EFB DM retained: <span style={{color:'#00A249',fontWeight:700}}>~97%</span>. Fibre 50–80mm → 2mm.</>,
+    ps: { val: '2',    unit: 'mm target',    note: '≤ 2mm — S2 Spec Met',        ok: true,  accentPs: '#40D7C5' },
   },
   {
-    key: 'opdc', abbr: 'OPDC', label: 'Decanter Cake', tag: 'Zero Cost',
-    accent: C.amber,
-    mcIn: '70–75%', mcOut: '≤35%', cn: '20:1', tph: '5 t/h', nodes: 10, power: '206 kW',
-    specs: [
-      { code: 'C.1', lbl: 'Inlet MC',                  val: '70–75 % wb',              flag: null },
-      { code: 'C.2', lbl: 'Post-Press MC Floor (CLASS A)', val: '≥ 40 % wb — LOCKED', flag: 'red' },
-      { code: 'C.3', lbl: 'Buffer Dwell (Mandatory Min)', val: '≥ 24 hrs',             flag: 'red' },
-      { code: 'C.4', lbl: 'Post-Buffer pH Target',      val: '8.0–9.0',               flag: null },
-      { code: 'C.5', lbl: 'OPDC Filtrate Out',          val: '180 t / month',          flag: null },
-      { code: 'C.6', lbl: 'Filtrate Routing',           val: '→ POME Pond Only',       flag: null },
-      { code: 'C.7', lbl: 'OPDC Post-Press (FW)',       val: '1,076 t / month',        flag: 'green' },
-      { code: 'C.G1', lbl: 'MC Floor — CLASS A',        val: 'Math.max(40, reading)',  flag: 'amber' },
-      { code: 'C.G2', lbl: 'pH Gate',                   val: 'No blend until 8.0–9.0', flag: 'amber' },
-      { code: 'C.G3', lbl: 'Buffer Dwell Gate',         val: 'Enter actual hours logged', flag: 'amber' },
+    key: 'opdc', code: 'OPDC', name: 'Oil Palm Decanter Cake', cost: '$0/t · 4.2% of FFB',
+    accent: '#F5A623', accentDim: 'rgba(245,166,35,0.14)', accentBdr: 'rgba(245,166,35,0.50)',
+    fw: { val: '2,016', unit: 't FW/month', mc: 'MC 70% wb · DM 30%',     dm: '605 t DM' },
+    s1: { val: '1,008', unit: 't FW/month', mc: 'MC ≤40% wb — CLASS A',   dm: '605 t DM', mcRed: true },
+    equipment: [
+      { icon: '▼', name: 'Screw Press', spec: '≤40% MC', amber: true },
+      { icon: '📦', name: 'Buffer Silo', spec: '+ S2 Conv.', green: true },
     ],
+    procNote: <>No size reduction needed — decanter cake already <span style={{color:'#E84040',fontWeight:700}}>fine (&lt;1mm)</span> from CPO centrifuge. Screw press: <span style={{color:'#E84040',fontWeight:700}}>≤40% MC CLASS A guardrail — hard floor.</span> Press liquor → POME pond. DM retention: <span style={{color:'#00A249',fontWeight:700}}>~99%</span>.</>,
+    ps: { val: '<1',   unit: 'mm fine cake', note: 'No Size Reduction Needed',    ok: true,  accentPs: '#F5A623' },
   },
   {
-    key: 'pos', abbr: 'POS', label: 'Palm Oil Sludge', tag: 'ICP-OES Required',
-    accent: '#3B82F6',
-    mcIn: '82%', mcOut: '65–70%', cn: '19:1', tph: '1.25 t/h', nodes: '4–7', power: '62 kW',
-    specs: [
-      { code: 'D.1', lbl: 'Fe Result (ICP-OES, mg/kg DM)',  val: 'ENTER RESULT',      flag: 'blue' },
-      { code: 'D.2', lbl: 'Inclusion Rate (Auto-Calculated)', val: '— Awaiting Fe',   flag: 'blue' },
-      { code: 'D.3', lbl: 'POS Inlet MC',                    val: '82 % wb',          flag: null },
-      { code: 'D.4', lbl: 'POS Ash Content',                 val: '28 % DM',          flag: null },
-      { code: 'D.5', lbl: 'POS Crude Protein',               val: '11 % DM',          flag: null },
-      { code: 'D.6', lbl: 'POS Ether Extract (EE)',          val: '10 % DM',          flag: null },
-      { code: 'D.7', lbl: 'POS To Blend (FW)',               val: 'DATA GAP',         flag: 'red' },
-      { code: 'D.8',  lbl: 'Fe < 3,000 mg/kg',   val: '→ 20% WW inclusion', flag: null },
-      { code: 'D.9',  lbl: 'Fe 3,000–5,000',      val: '→ 10–15% WW',       flag: null },
-      { code: 'D.10', lbl: 'Fe 5,000–8,000',      val: '→ 5–10% WW',        flag: null },
-      { code: 'D.11', lbl: 'Fe > 8,000',          val: '→ CaCO₃ amendment req.', flag: 'red' },
+    key: 'pos', code: 'POS', name: 'Palm Oil Sludge', cost: '$0/t · centrifuge exit',
+    accent: '#3B82F6', accentDim: 'rgba(59,130,246,0.12)', accentBdr: 'rgba(59,130,246,0.50)',
+    fw: { val: '—', unit: 't FW/month', mc: 'MC 82% wb · DM 18%',    dm: '—' },
+    s1: { val: '—', unit: 't FW/month', mc: 'MC ≤65% wb target',      dm: 'Centrifuge dewatered', mcRed: false },
+    equipment: [
+      { icon: '◎', name: 'Centrifuge',   spec: 'Sludge pit exit' },
+      { icon: '▼', name: 'Decanter',     spec: '≤65% MC wb', amber: true },
+      { icon: '💧', name: 'POME Sep.',   spec: 'Liquid → pond' },
+      { icon: '📦', name: 'Buffer Tank', spec: '+ S2 Conv.', green: true },
     ],
+    procNote: <>POS capture: sludge pit / centrifuge discharge — <span style={{color:'#E84040',fontWeight:700}}>NOT pond.</span> ICP-OES Fe gate: <span style={{color:'#F5A623',fontWeight:700}}>&lt;3,000 mg/kg → 20% WW; 3,000–5,000 → 10–15%; &gt;8,000 → CaCO₃.</span> Enable in S0 §D.</>,
+    ps: { val: '<0.5', unit: 'mm slurry',  note: 'Inactive — Enable in S0',     ok: false, accentPs: '#A8BDD0' },
   },
   {
-    key: 'pmf', abbr: 'PMF', label: 'Palm Mesocarp Fibre', tag: 'Zero Cost',
-    accent: '#9B59B6',
-    mcIn: '35–45%', mcOut: '30–40%', cn: '55:1', tph: '—', nodes: '—', power: '—',
-    specs: [
-      { code: 'E.1', lbl: 'Inlet MC',         val: '35–45 % wb',    flag: null },
-      { code: 'E.2', lbl: 'Lignin ADL',        val: '26–31 % DM',    flag: null },
-      { code: 'E.3', lbl: 'Crude Protein',     val: '4.5–5.5 % DM',  flag: null },
-      { code: 'E.4', lbl: 'C:N Ratio',         val: '~55:1',         flag: null },
-      { code: 'E.5', lbl: 'Pre-Treatment',     val: 'S2 Chemical required', flag: 'amber' },
+    key: 'pmf', code: 'PMF', name: 'Palm Mesocarp Fibre', cost: '$0/t · mill fibre press',
+    accent: '#9B59B6', accentDim: 'rgba(155,89,182,0.12)', accentBdr: 'rgba(155,89,182,0.50)',
+    fw: { val: '—', unit: 't FW/month', mc: 'MC 35–45% wb',     dm: '—' },
+    s1: { val: '—', unit: 't FW/month', mc: 'MC 30–40% target', dm: '— S2 amendment req.', mcRed: false },
+    equipment: [
+      { icon: '✂', name: 'Shredder',    spec: '50–100mm' },
+      { icon: '⚙', name: 'Hammer Mill', spec: '→ 2mm screen' },
     ],
+    procNote: <>High lignin ADL 26–31%. No pressing needed — MC already in range. <span style={{color:'#F5A623',fontWeight:700}}>S2 Chemical pre-treatment (PKSA) mandatory</span> before blending.</>,
+    ps: { val: '≤2',  unit: 'mm target',   note: 'Inactive — Enable in S0',     ok: false, accentPs: '#A8BDD0' },
   },
   {
-    key: 'pome', abbr: 'POME', label: 'POME (Liquid)', tag: 'Emissions Avoidance',
-    accent: '#60A5FA',
-    mcIn: '95–98%', mcOut: 'n/a', cn: '—', tph: '—', nodes: '—', power: '—',
-    specs: [
-      { code: 'F.1', lbl: 'Stream Type',     val: 'Liquid only — not in solid blend', flag: null },
-      { code: 'F.2', lbl: 'pH',              val: '3.5–4.5 (highly acidic)',          flag: 'red' },
-      { code: 'F.3', lbl: 'BOD',             val: '25,000–35,000 mg/L',               flag: null },
-      { code: 'F.4', lbl: 'CH₄ Avoidance',  val: 'Primary value pathway',            flag: 'green' },
-      { code: 'F.5', lbl: 'Routing',         val: '→ Biogas / Biofertiliser',         flag: null },
+    key: 'pome', code: 'POME', name: 'POME Liquid', cost: 'Emissions avoidance pathway',
+    accent: '#60A5FA', accentDim: 'rgba(96,165,250,0.12)', accentBdr: 'rgba(96,165,250,0.50)',
+    fw: { val: '—', unit: 'liquid stream', mc: 'MC 95–98% (liquid)', dm: 'Not blended' },
+    s1: { val: '—', unit: 'liquid stream', mc: 'pH 3.5–4.5 — acidic', dm: '→ Biogas / Biofert.', mcRed: false },
+    equipment: [
+      { icon: '🔄', name: 'Pond Routing', spec: 'CH₄ avoidance' },
+      { icon: '⚡', name: 'Biogas AD',    spec: 'Anaerobic digestion' },
     ],
+    procNote: <>Liquid stream — <span style={{color:'#E84040',fontWeight:700}}>NOT blended into solid substrate.</span> Primary value = methane avoidance credits. Routes to anaerobic digestion or biofertiliser application.</>,
+    ps: { val: 'Liq', unit: 'no size red.',  note: 'Liquid — No Processing',    ok: false, accentPs: '#A8BDD0' },
   },
   {
-    key: 'pke', abbr: 'PKE', label: 'Palm Kernel Expeller', tag: '$160/t Purchased',
-    accent: '#F59E0B',
-    mcIn: '10–12%', mcOut: '10–12%', cn: '30:1', tph: '—', nodes: '—', power: '—',
-    specs: [
-      { code: 'G.1', lbl: 'Cost',           val: '$160 / tonne — purchased', flag: 'amber' },
-      { code: 'G.2', lbl: 'Inlet MC',       val: '10–12 % wb (already dry)', flag: null },
-      { code: 'G.3', lbl: 'Crude Protein',  val: '14–16 % DM',               flag: null },
-      { code: 'G.4', lbl: 'C:N Ratio',      val: '~30:1',                    flag: null },
-      { code: 'G.5', lbl: 'Use Case',       val: 'N-supplement when OPDC short', flag: null },
+    key: 'pke', code: 'PKE', name: 'Palm Kernel Expeller', cost: '$160/t purchased input',
+    accent: '#F59E0B', accentDim: 'rgba(245,158,11,0.12)', accentBdr: 'rgba(245,158,11,0.50)',
+    fw: { val: '—', unit: 't FW/month', mc: 'MC 10–12% (already dry)', dm: '— purchased' },
+    s1: { val: '—', unit: 't FW/month', mc: 'MC 10–12% — no drying',   dm: '— direct to blend', mcRed: false },
+    equipment: [
+      { icon: '📥', name: 'Receiving', spec: 'Purchased ($160/t)' },
+      { icon: '🔀', name: 'Conveyor',  spec: 'Direct to blend' },
     ],
+    procNote: <>Purchased feedstock — pellet form ~10mm, no size reduction needed. <span style={{color:'#F5A623',fontWeight:700}}>Use only when OPDC short for C:N correction.</span> Cost entry in S0 required.</>,
+    ps: { val: '~10', unit: 'mm pellets', note: 'Inactive — Enable in S0',     ok: false, accentPs: '#A8BDD0' },
   },
   {
-    key: 'opf', abbr: 'OPF', label: 'Oil Palm Fronds', tag: 'Seasonal · Zero Cost',
-    accent: '#34D399',
-    mcIn: '60–70%', mcOut: '50–60%', cn: '40:1', tph: '—', nodes: '—', power: '—',
-    specs: [
-      { code: 'H.1', lbl: 'Inlet MC',      val: '60–70 % wb (seasonal)',   flag: null },
-      { code: 'H.2', lbl: 'Lignin ADL',    val: '18–22 % DM',              flag: null },
-      { code: 'H.3', lbl: 'C:N Ratio',     val: '~40:1',                   flag: null },
-      { code: 'H.4', lbl: 'Availability',  val: 'Pruning schedule only',   flag: 'amber' },
-      { code: 'H.5', lbl: 'Pre-Treatment', val: 'Shredding + size reduction required', flag: null },
+    key: 'opf', code: 'OPF', name: 'Oil Palm Fronds', cost: '$0/t · pruning — seasonal',
+    accent: '#34D399', accentDim: 'rgba(52,211,153,0.12)', accentBdr: 'rgba(52,211,153,0.50)',
+    fw: { val: '—', unit: 't FW/month', mc: 'MC 60–70% wb (seasonal)', dm: '—' },
+    s1: { val: '—', unit: 't FW/month', mc: 'MC 50–60% target',        dm: '— S2 req.', mcRed: false },
+    equipment: [
+      { icon: '✂', name: 'Chipper',     spec: '50–100mm' },
+      { icon: '⚙', name: 'Hammer Mill', spec: '→ 5mm screen' },
     ],
+    procNote: <>High lignin 18–22%. Available only during pruning cycles. <span style={{color:'#F5A623',fontWeight:700}}>S2 Chemical pre-treatment required</span> before blending.</>,
+    ps: { val: '≤5',  unit: 'mm shredded', note: 'Inactive — Enable in S0',     ok: false, accentPs: '#A8BDD0' },
   },
   {
-    key: 'opt', abbr: 'OPT', label: 'Oil Palm Trunks', tag: 'Replanting Only',
-    accent: '#6EE7B7',
-    mcIn: '65–75%', mcOut: '—', cn: '80:1', tph: '—', nodes: '—', power: '—',
-    specs: [
-      { code: 'I.1', lbl: 'Inlet MC',      val: '65–75 % wb',             flag: null },
-      { code: 'I.2', lbl: 'Lignin ADL',    val: '28–34 % DM (very high)', flag: 'amber' },
-      { code: 'I.3', lbl: 'C:N Ratio',     val: '~80:1 (C-heavy)',        flag: 'amber' },
-      { code: 'I.4', lbl: 'Availability',  val: 'Replanting cycle only',  flag: 'amber' },
-      { code: 'I.5', lbl: 'Pre-Treatment', val: 'Chipper + extended hydrolysis req.', flag: 'red' },
+    key: 'opt', code: 'OPT', name: 'Oil Palm Trunks', cost: '$0/t · replanting cycle only',
+    accent: '#6EE7B7', accentDim: 'rgba(110,231,183,0.12)', accentBdr: 'rgba(110,231,183,0.50)',
+    fw: { val: '—', unit: 't FW/month', mc: 'MC 65–75% wb',            dm: '— replanting only' },
+    s1: { val: '—', unit: 't FW/month', mc: 'Extended hydrolysis req.', dm: '— S2 + extended', mcRed: false },
+    equipment: [
+      { icon: '🪚', name: 'Chipper',     spec: 'Trunk sections' },
+      { icon: '⚙', name: 'Hammer Mill', spec: '→ 15mm screen' },
     ],
+    procNote: <>Very high lignin ADL 28–34%, C:N ~80:1. Replanting cycle only. <span style={{color:'#E84040',fontWeight:700}}>Extended hydrolysis + S2 Chemical pre-treatment mandatory.</span></>,
+    ps: { val: '5–15', unit: 'mm chips', note: 'Inactive — Enable in S0',     ok: false, accentPs: '#A8BDD0' },
   },
 ];
 
-// Flag colours matching S0 design spec
-const FLAG_COLORS = {
-  red:   '#E84040',
-  amber: '#F5A623',
-  green: '#00A249',
-  blue:  '#3B82F6',
-};
-
-function ResidueCard({ def, volume, selected, expanded, onToggleExpand }) {
-  const ac = def.accent;
+function PERow({ def, active }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-      {/* CARD — S0 toggleCard design */}
-      <div
-        onClick={onToggleExpand}
-        style={{
-          background: selected ? 'rgba(64,215,197,0.15)' : '#000000',
-          border: `1.5px solid ${selected ? 'rgba(64,215,197,0.60)' : '#1E6B8C'}`,
-          borderRadius: expanded ? '8px 8px 0 0' : 8,
-          borderBottom: expanded ? 'none' : undefined,
-          padding: '10px 13px',
-          cursor: 'pointer',
-          transition: 'all 0.12s',
-          opacity: selected ? 1 : 0.55,
-          minHeight: 52,
-          flex: 1,
-        }}
-      >
-        {/* Top row: abbr + tag + expand arrow */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 3 }}>
-          <span style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 12, color: selected ? ac : '#B0BEC5', letterSpacing: '0.05em' }}>
-            {def.abbr}
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: PE_COLS,
+      gap: 0,
+      padding: '18px 16px',
+      borderBottom: '1px solid rgba(255,255,255,0.04)',
+      alignItems: 'center',
+      background: active ? 'rgba(64,215,197,0.025)' : 'transparent',
+      opacity: active ? 1 : 0.45,
+      transition: 'opacity 0.15s',
+    }}>
+
+      {/* ── Col 1: Residue name ── */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 5, paddingRight: 16 }}>
+        <div style={{ fontFamily: Fnt.mono, fontWeight: 800, fontSize: 15, color: active ? def.accent : '#8BA0B4', letterSpacing: '0.02em' }}>
+          {def.code}
+        </div>
+        <div style={{ fontFamily: Fnt.dm, fontWeight: 700, fontSize: 12, color: active ? 'rgba(232,240,254,0.90)' : 'rgba(176,190,197,0.70)', lineHeight: 1.4 }}>
+          {def.name}
+        </div>
+        <div style={{
+          display: 'inline-flex', alignItems: 'center',
+          padding: '2px 8px', borderRadius: 20, width: 'fit-content',
+          background: active ? def.accentDim : 'rgba(139,160,180,0.07)',
+          border: `1px solid ${active ? def.accentBdr : 'rgba(139,160,180,0.20)'}`,
+        }}>
+          <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 9, color: active ? def.accent : '#8BA0B4', whiteSpace: 'nowrap' }}>
+            {active ? 'Active ✓' : 'Inactive — Toggle in S0'}
           </span>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            {selected && (
-              <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 9, padding: '1px 6px', borderRadius: 3, background: ac + '22', border: `1px solid ${ac}55`, color: ac }}>
-                {def.tag}
-              </span>
-            )}
-            <span style={{ color: selected ? 'rgba(64,215,197,0.60)' : '#1E6B8C', fontSize: 10, lineHeight: 1 }}>
-              {expanded ? '▲' : '▼'}
-            </span>
-          </div>
         </div>
-        {/* Full name */}
-        <div style={{ fontFamily: Fnt.dm, fontWeight: 700, fontSize: 13, color: selected ? '#F5A623' : '#B0BEC5', marginBottom: 4 }}>
-          {def.label}
+        <div style={{ fontFamily: Fnt.mono, fontSize: 10, color: active ? 'rgba(168,189,208,0.80)' : 'rgba(168,189,208,0.40)' }}>
+          {def.cost}
         </div>
-        {/* Volume + quick stats */}
-        {selected && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 2 }}>
-            {volume != null && (
-              <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 10, color: '#40D7C5', background: 'rgba(64,215,197,0.10)', border: '1px solid rgba(64,215,197,0.25)', borderRadius: 3, padding: '1px 6px' }}>
-                {typeof volume === 'number' ? `${Math.round(volume).toLocaleString()} t/mo` : volume}
-              </span>
-            )}
-            {def.mcIn !== '—' && (
-              <span style={{ fontFamily: Fnt.mono, fontSize: 9, color: '#A8BDD0', background: 'rgba(168,189,208,0.07)', border: '1px solid rgba(168,189,208,0.18)', borderRadius: 3, padding: '1px 5px' }}>
-                MC {def.mcIn}
-              </span>
-            )}
-            {def.cn !== '—' && (
-              <span style={{ fontFamily: Fnt.mono, fontSize: 9, color: '#A8BDD0', background: 'rgba(168,189,208,0.07)', border: '1px solid rgba(168,189,208,0.18)', borderRadius: 3, padding: '1px 5px' }}>
-                C:N {def.cn}
-              </span>
-            )}
-          </div>
-        )}
       </div>
 
-      {/* EXPANDED DETAIL PANEL */}
-      {expanded && (
+      {/* ── Col 2: S0 FW input — all on one no-wrap row ── */}
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, flexWrap: 'nowrap', paddingRight: 8 }}>
+        <span style={{ fontFamily: Fnt.mono, fontWeight: 800, fontSize: 14, color: active ? '#F5A623' : '#8BA0B4', whiteSpace: 'nowrap', lineHeight: 1 }}>
+          {def.fw.val}
+        </span>
+        <span style={{ fontFamily: Fnt.dm, fontSize: 12, color: active ? 'rgba(168,189,208,0.90)' : 'rgba(168,189,208,0.45)', whiteSpace: 'nowrap' }}>
+          {def.fw.unit}
+        </span>
+        <span style={{ fontFamily: Fnt.mono, fontSize: 11, color: active ? 'rgba(168,189,208,0.75)' : 'rgba(168,189,208,0.35)', whiteSpace: 'nowrap' }}>
+          · {def.fw.mc}
+        </span>
+        <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 11, color: active ? 'rgba(245,166,35,0.75)' : 'rgba(168,189,208,0.30)', whiteSpace: 'nowrap' }}>
+          · {def.fw.dm}
+        </span>
+      </div>
+
+      {/* ── Col 3: Circle arrow ── */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{
-          background: '#070D1A',
-          border: `1.5px solid ${selected ? 'rgba(64,215,197,0.60)' : '#1E6B8C'}`,
-          borderTop: 'none',
-          borderRadius: '0 0 8px 8px',
-          padding: '10px 13px 12px',
+          width: 62, height: 62, borderRadius: '50%',
+          border: `3px solid ${active ? 'rgba(64,215,197,0.55)' : 'rgba(139,160,180,0.25)'}`,
+          background: active ? 'rgba(64,215,197,0.07)' : 'rgba(139,160,180,0.04)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
         }}>
-          {/* Stat chips row */}
-          {(def.tph !== '—' || def.power !== '—') && (
-            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 8 }}>
-              {def.tph   !== '—' && <span style={{ fontFamily: Fnt.mono, fontSize: 9, fontWeight: 700, color: '#40D7C5', background: 'rgba(64,215,197,0.08)', border: '1px solid rgba(64,215,197,0.25)', borderRadius: 3, padding: '2px 7px' }}>{def.tph}</span>}
-              {def.nodes !== '—' && <span style={{ fontFamily: Fnt.mono, fontSize: 9, fontWeight: 700, color: '#A8BDD0', background: 'rgba(168,189,208,0.07)', border: '1px solid rgba(168,189,208,0.18)', borderRadius: 3, padding: '2px 7px' }}>{def.nodes} nodes</span>}
-              {def.power !== '—' && <span style={{ fontFamily: Fnt.mono, fontSize: 9, fontWeight: 700, color: '#A8BDD0', background: 'rgba(168,189,208,0.07)', border: '1px solid rgba(168,189,208,0.18)', borderRadius: 3, padding: '2px 7px' }}>{def.power}</span>}
-              {def.mcOut !== '—' && <span style={{ fontFamily: Fnt.mono, fontSize: 9, fontWeight: 700, color: '#F5A623', background: 'rgba(245,166,35,0.08)', border: '1px solid rgba(245,166,35,0.25)', borderRadius: 3, padding: '2px 7px' }}>Out {def.mcOut}</span>}
-            </div>
-          )}
-          {/* Spec table */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-            {def.specs.map((sp, i) => {
-              const flagColor = sp.flag ? FLAG_COLORS[sp.flag] : null;
-              return (
-                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8, padding: '2px 0', borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
-                  <span style={{ fontFamily: Fnt.mono, fontSize: 10, color: '#4A6075', flexShrink: 0, minWidth: 32 }}>{sp.code}</span>
-                  <span style={{ fontFamily: Fnt.dm, fontSize: 10, color: '#8BA0B4', flex: 1 }}>{sp.lbl}</span>
-                  <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 10, color: flagColor || '#A8BDD0', textAlign: 'right', flexShrink: 0 }}>{sp.val}</span>
-                </div>
-              );
-            })}
-          </div>
+          <span style={{
+            fontFamily: Fnt.mono, fontWeight: 900, fontSize: 26, lineHeight: 1,
+            color: active ? '#40D7C5' : 'rgba(139,160,180,0.45)', userSelect: 'none',
+          }}>→</span>
         </div>
-      )}
+      </div>
+
+      {/* ── Col 4: S1 DM exit — all on one no-wrap row ── */}
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, flexWrap: 'nowrap', paddingLeft: 8 }}>
+        <span style={{ fontFamily: Fnt.mono, fontWeight: 800, fontSize: 14, color: active ? '#40D7C5' : '#8BA0B4', whiteSpace: 'nowrap', lineHeight: 1 }}>
+          {def.s1.val}
+        </span>
+        <span style={{ fontFamily: Fnt.dm, fontSize: 12, color: active ? 'rgba(168,189,208,0.90)' : 'rgba(168,189,208,0.45)', whiteSpace: 'nowrap' }}>
+          {def.s1.unit}
+        </span>
+        <span style={{ fontFamily: Fnt.mono, fontSize: 11, color: def.s1.mcRed && active ? '#E84040' : (active ? 'rgba(168,189,208,0.75)' : 'rgba(168,189,208,0.35)'), whiteSpace: 'nowrap' }}>
+          · {def.s1.mc}
+        </span>
+        <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 11, color: active ? 'rgba(64,215,197,0.75)' : 'rgba(168,189,208,0.30)', whiteSpace: 'nowrap' }}>
+          · {def.s1.dm}
+        </span>
+      </div>
+
+      {/* ── Col 5: Mechanical process ── */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: '4px 16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'nowrap', overflowX: 'auto' }}>
+          {def.equipment.map((eq, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
+              <div style={{
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
+                background: C.navyDeep,
+                border: `1px solid ${eq.amber ? 'rgba(245,166,35,0.40)' : eq.green ? 'rgba(0,162,73,0.40)' : 'rgba(139,160,180,0.22)'}`,
+                borderRadius: 8, padding: '12px 18px', minWidth: 90, flexShrink: 0,
+              }}>
+                <span style={{ fontSize: 18, lineHeight: 1 }}>{eq.icon}</span>
+                <span style={{
+                  fontFamily: Fnt.mono, fontWeight: 700, fontSize: 12,
+                  color: eq.amber ? '#F5A623' : eq.green ? '#00A249' : '#40D7C5',
+                  whiteSpace: 'nowrap',
+                }}>{eq.name}</span>
+                <span style={{
+                  fontFamily: Fnt.dm, fontSize: 11,
+                  color: eq.amber ? 'rgba(245,166,35,0.75)' : eq.green ? 'rgba(0,162,73,0.75)' : 'rgba(168,189,208,0.70)',
+                  whiteSpace: 'nowrap',
+                }}>{eq.spec}</span>
+              </div>
+              {i < def.equipment.length - 1 && (
+                <span style={{ fontFamily: Fnt.mono, fontWeight: 900, fontSize: 18, color: 'rgba(64,215,197,0.45)', flexShrink: 0 }}>→</span>
+              )}
+            </div>
+          ))}
+        </div>
+        <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: active ? 'rgba(168,189,208,0.80)' : 'rgba(168,189,208,0.35)', lineHeight: 1.6, paddingLeft: 2 }}>
+          {def.procNote}
+        </div>
+      </div>
+
+      {/* ── Col 6: Particle Size Out ── */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+        <div style={{
+          background: C.navyDeep,
+          border: `1.5px solid ${def.ps.ok && active ? def.ps.accentPs + '55' : 'rgba(139,160,180,0.20)'}`,
+          borderRadius: 8, padding: '12px 18px', textAlign: 'center', width: '100%',
+        }}>
+          <div style={{ fontFamily: Fnt.mono, fontWeight: 800, fontSize: 14, color: def.ps.ok && active ? def.ps.accentPs : '#8BA0B4', lineHeight: 1 }}>
+            {def.ps.val}
+          </div>
+          <div style={{ fontFamily: Fnt.mono, fontSize: 11, color: 'rgba(168,189,208,0.60)', marginTop: 4 }}>{def.ps.unit}</div>
+        </div>
+        <div style={{
+          fontFamily: Fnt.mono, fontWeight: 700, fontSize: 9,
+          color: def.ps.ok && active ? '#00A249' : (active ? '#A8BDD0' : 'rgba(168,189,208,0.40)'),
+          padding: '2px 7px',
+          background: def.ps.ok && active ? 'rgba(0,162,73,0.12)' : 'rgba(139,160,180,0.06)',
+          border: `1px solid ${def.ps.ok && active ? 'rgba(0,162,73,0.30)' : 'rgba(139,160,180,0.15)'}`,
+          borderRadius: 4, whiteSpace: 'nowrap', textAlign: 'center',
+        }}>
+          {def.ps.note}
+        </div>
+      </div>
     </div>
   );
 }
 
 function S1ResidueRow({ site, derived }) {
   const activeStreams = useSelector(s => s.s0.activeStreams);
-  const [showAll, setShowAll] = useState(false);
-  const [expanded, setExpanded] = useState({});
-
-  const toggleExpand = (key) => setExpanded(prev => ({ ...prev, [key]: !prev[key] }));
-
-  // Volume lookup from MillContext derived/site
-  const volumeFor = (key) => {
-    if (key === 'efb')  return derived?.monthlyEfb  ?? null;
-    if (key === 'opdc') return derived?.monthlyOpdc ?? null;
-    if (key === 'pos')  return derived?.monthlyPos  ?? null;
-    const raw = site?.[`${key}_volume_t`];
-    return raw != null ? parseFloat(raw) : null;
-  };
-
-  const visibleDefs = showAll
-    ? RESIDUE_DEFS
-    : RESIDUE_DEFS.filter(d => activeStreams[d.key]);
-
-  const selectedCount = RESIDUE_DEFS.filter(d => activeStreams[d.key]).length;
-
-  if (!showAll && selectedCount === 0) return null;
 
   return (
-    <div style={{ margin: '20px 28px 0' }}>
+    <div style={{ margin: '24px 0 0' }}>
       {/* Section header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ width: 3, height: 14, borderRadius: 2, background: C.teal, flexShrink: 0 }} />
-          <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 13, color: C.teal, textTransform: 'uppercase', letterSpacing: '.06em' }}>
-            S0 Residues Selected
-          </div>
-          {selectedCount > 0 && (
-            <span style={{ fontFamily: Fnt.mono, fontWeight: 700, fontSize: 10, color: C.teal, background: 'rgba(64,215,197,0.12)', border: '1px solid rgba(64,215,197,0.30)', borderRadius: 4, padding: '1px 7px' }}>
-              {selectedCount} active
-            </span>
-          )}
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 12,
+        padding: '10px 28px',
+        borderBottom: '1px solid rgba(64,215,197,0.15)',
+      }}>
+        <div style={{ width: 3, height: 16, borderRadius: 2, background: '#40D7C5', flexShrink: 0 }} />
+        <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 14, color: '#40D7C5', textTransform: 'uppercase', letterSpacing: '.07em' }}>
+          Process Engineering
         </div>
-        <button
-          onClick={() => setShowAll(v => !v)}
-          style={{
-            fontFamily: Fnt.mono, fontWeight: 700, fontSize: 10,
-            background: showAll ? 'rgba(64,215,197,0.15)' : 'rgba(168,189,208,0.07)',
-            border: `1px solid ${showAll ? 'rgba(64,215,197,0.60)' : 'rgba(168,189,208,0.25)'}`,
-            borderRadius: 5, color: showAll ? C.teal : '#8BA0B4',
-            padding: '4px 12px', cursor: 'pointer', transition: 'all 0.12s',
-          }}
-        >
-          {showAll ? 'Selected Only ▲' : 'All Residues ▼'}
-        </button>
+        <div style={{ fontFamily: Fnt.mono, fontSize: 11, color: 'rgba(168,189,208,0.60)' }}>
+          Mechanical Downsizing · S0 → S1 → S2 · All 8 residue streams
+        </div>
       </div>
 
-      {/* Residue card grid — auto-fit, max 5 columns */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(195px, 1fr))', gap: 10, alignItems: 'start' }}>
-        {visibleDefs.map(def => (
-          <ResidueCard
-            key={def.key}
-            def={def}
-            selected={!!activeStreams[def.key]}
-            expanded={!!expanded[def.key]}
-            volume={volumeFor(def.key)}
-            onToggleExpand={() => toggleExpand(def.key)}
-          />
+      {/* Column header bar */}
+      <div style={{
+        display: 'grid', gridTemplateColumns: PE_COLS, gap: 0,
+        padding: '9px 16px',
+        background: '#0C1E33',
+        border: '1.5px solid rgba(64,215,197,0.18)',
+        borderTop: 'none',
+      }}>
+        {['Residue', 'S0 Input (FW)', '', 'S1 Exit (DM)', 'Mechanical Downsizing Process', 'Particle Size Out'].map((h, i) => (
+          <div key={i} style={{
+            fontFamily: Fnt.mono, fontWeight: 700, fontSize: 10,
+            color: 'rgba(168,189,208,0.55)', textTransform: 'uppercase', letterSpacing: '0.07em',
+            textAlign: i === 5 ? 'center' : 'left',
+          }}>
+            {h}
+          </div>
+        ))}
+      </div>
+
+      {/* Data rows */}
+      <div style={{ border: '1.5px solid rgba(64,215,197,0.18)', borderTop: 'none', borderRadius: '0 0 10px 10px', overflow: 'hidden' }}>
+        {PE_DEFS.map(def => (
+          <PERow key={def.key} def={def} active={!!activeStreams[def.key]} />
         ))}
       </div>
     </div>
@@ -881,19 +889,19 @@ export default function S1Hub() {
   }, [derived]);
 
   const modules = [
-    { key: 'efb',  num: 'Line 1', title: 'EFB Pre-Processing Line', desc: '10-node mechanical line · 20 t/h · 600mm belt · 298 kW · Shred → Press → Mill → Screen', accent: C.teal, icon: '⚙', tags: ['10 Machines', '600mm Belt', '20 t/h', 'Trommel + Hammer Mill'] },
-    { key: 'opdc', num: 'Line 2', title: 'OPDC Pre-Processing Line', desc: '10-node mechanical line · 5 t/h · 500mm belt · 206 kW · CLASS A Gate · 24hr Dwell', accent: C.amber, icon: '⚙', tags: ['10 Machines', '500mm Belt', 'CLASS A', '24hr Dwell Gate'] },
-    { key: 'pos',  num: 'Line 3', title: 'POS Pre-Skimming Line', desc: '4–7 node liquid/semi line · 1.25 t/h · ICP-OES Fe Gate · Decanter · Filter Press', accent: '#3B82F6', icon: '💧', tags: ['4–7 Machines', 'ICP-OES Fe', 'Decanter', 'Filter Press'] },
-    { key: 'eng',  num: 'Eng', title: 'Engineering Overview', desc: '24 equipment nodes · 3 processing lines · Full engineering spec with CAPEX + OPEX + Greenhouse + Guardrails', accent: C.grey, icon: '📐', tags: ['24 Nodes', '3 Lines', 'Full Spec'] },
-    { key: 'fp',   num: 'FP', title: 'Combined Floor Plans', desc: 'Tabbed floor plans · EFB · OPDC · POS · Building dimensions · Node cards with specs', accent: C.teal, icon: '🏭', tags: ['3 Floor Plans', 'Node Cards', 'Dimensions'] },
-    { key: 'cap',  num: 'CAP', title: 'Financials — CAPEX / OPEX', desc: 'Building $1.37M · Equipment $372K · Labour $3,576 · Electricity $22,648 · Maintenance $11,733 · Total $37,957/mo', accent: C.amber, icon: '💰', tags: ['Building CAPEX', 'Equipment', 'OpEx', 'Site Metrics'] },
+    { key: 'efb',  num: 'Line 1', title: 'EFB Pre-Processing Line', desc: '10-node mechanical line ֲ· 20 t/h ֲ· 600mm belt ֲ· 298 kW ֲ· Shred ג†’ Press ג†’ Mill ג†’ Screen', accent: C.teal, icon: 'ג™', tags: ['10 Machines', '600mm Belt', '20 t/h', 'Trommel + Hammer Mill'] },
+    { key: 'opdc', num: 'Line 2', title: 'OPDC Pre-Processing Line', desc: '10-node mechanical line ֲ· 5 t/h ֲ· 500mm belt ֲ· 206 kW ֲ· CLASS A Gate ֲ· 24hr Dwell', accent: C.amber, icon: 'ג™', tags: ['10 Machines', '500mm Belt', 'CLASS A', '24hr Dwell Gate'] },
+    { key: 'pos',  num: 'Line 3', title: 'POS Pre-Skimming Line', desc: '4ג€“7 node liquid/semi line ֲ· 1.25 t/h ֲ· ICP-OES Fe Gate ֲ· Decanter ֲ· Filter Press', accent: '#3B82F6', icon: 'נ’§', tags: ['4ג€“7 Machines', 'ICP-OES Fe', 'Decanter', 'Filter Press'] },
+    { key: 'eng',  num: 'Eng', title: 'Engineering Overview', desc: '24 equipment nodes ֲ· 3 processing lines ֲ· Full engineering spec with CAPEX + OPEX + Greenhouse + Guardrails', accent: C.grey, icon: 'נ“', tags: ['24 Nodes', '3 Lines', 'Full Spec'] },
+    { key: 'fp',   num: 'FP', title: 'Combined Floor Plans', desc: 'Tabbed floor plans ֲ· EFB ֲ· OPDC ֲ· POS ֲ· Building dimensions ֲ· Node cards with specs', accent: C.teal, icon: 'נ­', tags: ['3 Floor Plans', 'Node Cards', 'Dimensions'] },
+    { key: 'cap',  num: 'CAP', title: 'Financials ג€” CAPEX / OPEX', desc: 'Building $1.37M ֲ· Equipment $372K ֲ· Labour $3,576 ֲ· Electricity $22,648 ֲ· Maintenance $11,733 ֲ· Total $37,957/mo', accent: C.amber, icon: 'נ’°', tags: ['Building CAPEX', 'Equipment', 'OpEx', 'Site Metrics'] },
   ];
 
   return (
     <>
       <style>{S1_CSS}</style>
 
-      {/* ── LINE DETAIL MODAL ── */}
+      {/* ג”€ג”€ LINE DETAIL MODAL ג”€ג”€ */}
       {lineModal && LINE_DETAIL[lineModal] && (() => {
         const line = LEADERBOARD_LINES.find(l => l.name === lineModal);
         const detail = LINE_DETAIL[lineModal];
@@ -931,13 +939,13 @@ export default function S1Hub() {
                 <button
                   onClick={() => setLineModal(null)}
                   style={{ background: 'rgba(139,160,180,.12)', border: '1px solid rgba(139,160,180,.25)', borderRadius: 6, padding: '4px 12px', color: C.grey, fontFamily: Fnt.mono, fontSize: 11, cursor: 'pointer' }}
-                >ESC ✕</button>
+                >ESC ג•</button>
               </div>
 
               {/* Key metrics strip */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 8, marginBottom: 20 }}>
                 {[
-                  { lbl: 'T/DAY', val: line.tonnes ?? '—' },
+                  { lbl: 'T/DAY', val: line.tonnes ?? 'ג€”' },
                   { lbl: 'MC IN', val: line.mcIn },
                   { lbl: 'MC OUT', val: line.mcOut },
                   { lbl: 'MC REDUC.', val: line.mcReduction },
@@ -993,7 +1001,7 @@ export default function S1Hub() {
       {/* BREADCRUMB */}
       <S1Breadcrumb />
 
-      {/* ── QUICK LINK MODAL ── */}
+      {/* ג”€ג”€ QUICK LINK MODAL ג”€ג”€ */}
       {quickModal && QUICK_LINK_DETAIL[quickModal] && (() => {
         const d = QUICK_LINK_DETAIL[quickModal];
         return (
@@ -1011,7 +1019,7 @@ export default function S1Hub() {
                   <div style={{ width: 4, height: 26, borderRadius: 2, background: d.accent, flexShrink: 0 }} />
                   <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 17, color: d.accent }}>{d.title}</div>
                 </div>
-                <button onClick={() => setQuickModal(null)} style={{ background: 'rgba(139,160,180,.12)', border: '1px solid rgba(139,160,180,.25)', borderRadius: 6, padding: '4px 12px', color: C.grey, fontFamily: Fnt.mono, fontSize: 11, cursor: 'pointer' }}>ESC ✕</button>
+                <button onClick={() => setQuickModal(null)} style={{ background: 'rgba(139,160,180,.12)', border: '1px solid rgba(139,160,180,.25)', borderRadius: 6, padding: '4px 12px', color: C.grey, fontFamily: Fnt.mono, fontSize: 11, cursor: 'pointer' }}>ESC ג•</button>
               </div>
 
               {/* Ticker strip */}
@@ -1091,7 +1099,7 @@ export default function S1Hub() {
         );
       })()}
 
-      {/* ── MODULE DETAIL MODAL ── */}
+      {/* ג”€ג”€ MODULE DETAIL MODAL ג”€ג”€ */}
       {moduleModal && MODULE_DETAIL[moduleModal] && (() => {
         const d = MODULE_DETAIL[moduleModal];
         return (
@@ -1112,7 +1120,7 @@ export default function S1Hub() {
                     <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 17, color: '#E8F0F8' }}>{d.title}</div>
                   </div>
                 </div>
-                <button onClick={() => setModuleModal(null)} style={{ background: 'rgba(139,160,180,.12)', border: '1px solid rgba(139,160,180,.25)', borderRadius: 6, padding: '4px 12px', color: C.grey, fontFamily: Fnt.mono, fontSize: 11, cursor: 'pointer' }}>ESC ✕</button>
+                <button onClick={() => setModuleModal(null)} style={{ background: 'rgba(139,160,180,.12)', border: '1px solid rgba(139,160,180,.25)', borderRadius: 6, padding: '4px 12px', color: C.grey, fontFamily: Fnt.mono, fontSize: 11, cursor: 'pointer' }}>ESC ג•</button>
               </div>
 
               {/* Stats ticker */}
@@ -1150,17 +1158,17 @@ export default function S1Hub() {
       {/* SUBSTRATE FLOW STRIP */}
       <div style={{ marginTop: 20 }}>
         <SubstrateFlowStrip
-          stageLabel="Substrate Flow — S0 Feedstock → S1 Mechanical Output"
+          stageLabel="Substrate Flow ג€” S0 Feedstock ג†’ S1 Mechanical Output"
           inflows={S1_INFLOWS}
           outflows={S1_OUTFLOWS}
         />
       </div>
 
-      {/* S0 RESIDUE ROW — streams selected in S0, wired to Redux */}
+      {/* S0 RESIDUE ROW ג€” streams selected in S0, wired to Redux */}
       <S1ResidueRow site={site} derived={derived} />
 
       <div style={{ margin: '20px 28px 0' }}>
-        {/* Quick-access link grid (3 × 2) */}
+        {/* Quick-access link grid (3 ֳ— 2) */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginTop: 14 }}>
           {QUICK_LINKS.map((lnk, i) => (
             <div
@@ -1194,21 +1202,21 @@ export default function S1Hub() {
                 color: lnk.live ? '#3DCB7A' : C.amber,
                 whiteSpace: 'nowrap',
               }}>
-                {lnk.live ? 'LIVE ✓' : 'COMING SOON'}
+                {lnk.live ? 'LIVE ג“' : 'COMING SOON'}
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* ── PROCESS ENGINEERING ROW ── */}
+      {/* ג”€ג”€ PROCESS ENGINEERING ROW ג”€ג”€ */}
       <div style={{ margin: '20px 28px 0' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
           <div style={{ width: 3, height: 14, borderRadius: 2, background: C.teal, flexShrink: 0 }} />
           <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 13, color: C.teal, textTransform: 'uppercase', letterSpacing: '.06em' }}>
             Process Engineering
           </div>
-          <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, marginLeft: 4 }}>All residues shown · S0 selection dims inactive lines</div>
+          <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, marginLeft: 4 }}>All residues shown ֲ· S0 selection dims inactive lines</div>
         </div>
         {[
           {
@@ -1336,7 +1344,7 @@ export default function S1Hub() {
         })}
       </div>
 
-      {/* ── ACTION BUTTONS ── */}
+      {/* ג”€ג”€ ACTION BUTTONS ג”€ג”€ */}
       {site && (site.efb_enabled || site.opdc_enabled || site.pos_enabled) && (
         <div style={{ margin: '16px 28px 8px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
@@ -1398,7 +1406,7 @@ export default function S1Hub() {
                 letterSpacing: '.02em',
               }}
             >
-              &#128196; Complete Engineering — Print / PDF
+              &#128196; Complete Engineering ג€” Print / PDF
             </button>
           </div>
         </div>
@@ -1415,7 +1423,7 @@ export default function S1Hub() {
               style={{ '--accent': m.accent }}
               onClick={() => m.key && setModuleModal(m.key)}
             >
-              <span className="mb-status ms-live">Live ✓</span>
+              <span className="mb-status ms-live">Live ג“</span>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div className="mb-icon" style={{ background: `${m.accent}22`, color: m.accent }}>{m.icon}</div>
                 <div>
@@ -1429,7 +1437,7 @@ export default function S1Hub() {
           ))}
         </div>
 
-        {/* ── FLOOR PLAN PRINT BUTTONS ── */}
+        {/* ג”€ג”€ FLOOR PLAN PRINT BUTTONS ג”€ג”€ */}
         <div style={{ marginTop: 20, marginBottom: 8 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
             <div style={{ width: 3, height: 14, borderRadius: 2, background: C.teal, flexShrink: 0 }} />
@@ -1516,7 +1524,7 @@ export default function S1Hub() {
         </div>
 
         {/* GUARDRAILS */}
-        <div className="sec-title st-red" style={{ marginTop: 32 }}>9 Hard Guardrails — S1 Processing</div>
+        <div className="sec-title st-red" style={{ marginTop: 32 }}>9 Hard Guardrails ג€” S1 Processing</div>
         <div className="guardrail-grid">
           {guardrails.map((g, i) => {
             const colors = { red: C.red, amber: C.amber, teal: C.teal };
@@ -1570,7 +1578,7 @@ export default function S1Hub() {
             onMouseEnter={e => { e.currentTarget.style.background = C.teal; e.currentTarget.style.color = C.navy; }}
             onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = C.teal; }}
           >
-            📄 View S0 Residue Selector 1-Pager
+            נ“„ View S0 Residue Selector 1-Pager
           </a>
         </div>
       </div>
