@@ -88,7 +88,8 @@ export default function GlobalLayout() {
 
   const handleTabClick = (i) => {
     if (i === 3) { navigate("/s3"); return; }
-    // Stages that live inside App.jsx — pass via sessionStorage then navigate to /
+    // Fire event so App.jsx can react even when already on /
+    window.dispatchEvent(new CustomEvent("cfi-stage-change", { detail: i }));
     try { sessionStorage.setItem("cfi-target-stage", String(i)); } catch {}
     navigate("/");
   };

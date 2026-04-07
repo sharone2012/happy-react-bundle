@@ -2344,14 +2344,22 @@ export default function CFI() {
 
   // ─── READ TARGET STAGE SET BY GlobalLayout (cross-route navigation) ───
   useEffect(() => {
+    // On mount: pick up stage set before navigation
     try {
       const target = sessionStorage.getItem("cfi-target-stage");
       if (target !== null) {
         sessionStorage.removeItem("cfi-target-stage");
         const i = parseInt(target, 10);
-        if (!isNaN(i)) setStage(i);
+        if (!isNaN(i)) { setStage(i); setTabsSeen(p => new Set([...p, i])); }
       }
     } catch {}
+    // Live: fired when already on / so navigate() is a no-op
+    const onStageChange = (e) => {
+      const i = e.detail;
+      if (!isNaN(i)) { setStage(i); setTabsSeen(p => new Set([...p, i])); }
+    };
+    window.addEventListener("cfi-stage-change", onStageChange);
+    return () => window.removeEventListener("cfi-stage-change", onStageChange);
   }, []);
 
   // Auth guard disabled for preview
