@@ -860,43 +860,7 @@ export default function S1Hub() {
         />
       </div>
 
-      {/* ── S1 LEADERBOARD ── */}
       <div style={{ margin: '20px 28px 0' }}>
-        {/* Section title */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-          <div style={{ width: 3, height: 14, borderRadius: 2, background: '#F5C842', flexShrink: 0 }} />
-          <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 13, color: '#F5C842', textTransform: 'uppercase', letterSpacing: '.06em' }}>
-            S1 Processing Lines — Live Status
-          </div>
-        </div>
-
-        {/* 4-column stream cards */}
-        <div className="module-grid">
-          {LEADERBOARD_LINES.map((line, i) => (
-            <div
-              key={i}
-              className="module-btn"
-              style={{ '--accent': line.accent, opacity: line.placeholder ? 0.45 : 1, cursor: line.placeholder ? 'default' : 'pointer' }}
-              onClick={() => !line.placeholder && setLineModal(line.name)}
-            >
-              <span className={`mb-status ${line.placeholder ? '' : 'ms-live'}`}>{line.placeholder ? 'COMING' : 'Live ✓'}</span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div className="mb-icon" style={{ background: `${line.accent}22`, color: line.accent }}>⚙</div>
-                <div>
-                  <div className="mb-num">{line.name}</div>
-                  <div className="mb-title">{line.subTitle ?? line.name + ' Processing Line'}</div>
-                </div>
-              </div>
-              <div className="mb-desc">{line.desc ?? `${line.mcIn} → ${line.mcOut} · ${line.cn} C:N · ${line.guardrail}`}</div>
-              <div className="mb-tags">
-                {[line.mcIn && `MC IN ${line.mcIn}`, line.mcOut && `MC OUT ${line.mcOut}`, line.cn && `C:N ${line.cn}`, line.bf && `B:F ${line.bf}`].filter(Boolean).map((t, j) => (
-                  <span key={j} className="mb-tag">{t}</span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
         {/* Quick-access link grid (3 × 2) */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginTop: 14 }}>
           {QUICK_LINKS.map((lnk, i) => (
