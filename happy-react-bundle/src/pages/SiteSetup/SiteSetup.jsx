@@ -40,7 +40,7 @@
 
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { setStreamState } from '@/store/store';
+import { setStreamState, setStreamVolumes, setCustomStreamNames } from '@/store/store';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import CFI_SoilAcidity_ProfileCard from "@/components/CFI_SoilAcidity_ProfileCard/CFI_SoilAcidity_ProfileCard.jsx";
@@ -645,6 +645,19 @@ export default function SiteSetup() {
   useEffect(() => {
     dispatch(setStreamState(activeStreams));
   }, [activeStreams]);
+
+  // ─── SYNC slider volumes → Redux s0 slice ───
+  useEffect(() => {
+    if (Object.keys(sliders).length === 0) return;
+    dispatch(setStreamVolumes(sliders));
+  }, [sliders]);
+
+  // ─── SYNC custom stream names → Redux s0 slice ───
+  useEffect(() => {
+    const names = {};
+    customStreams.forEach(c => { names[c.key] = c.name; });
+    dispatch(setCustomStreamNames(names));
+  }, [customStreams]);
 
   // ═══════════════════════════════════════════════════════
   // BLEND CALCULATION (DM-weighted, never hardcoded)

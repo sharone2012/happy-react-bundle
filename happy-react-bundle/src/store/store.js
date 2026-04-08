@@ -10,15 +10,25 @@ const s0Slice = createSlice({
       efb: false, opdc: false, pos: false, pmf: false,
       pke: false, pome: false, opf: false, opt: false,
     },
+    // streamVolumes: { efb: 8262, opdc: 1256, ... } — t/month from S0 sliders
+    streamVolumes: {},
+    // customStreamNames: { custom_1: 'My Residue', custom_2: '...' } — user-defined labels
+    customStreamNames: {},
   },
   reducers: {
     setStreamState(state, action) {
       state.activeStreams = { ...state.activeStreams, ...action.payload };
     },
+    setStreamVolumes(state, action) {
+      state.streamVolumes = { ...state.streamVolumes, ...action.payload };
+    },
+    setCustomStreamNames(state, action) {
+      state.customStreamNames = { ...state.customStreamNames, ...action.payload };
+    },
   },
 });
 
-export const { setStreamState } = s0Slice.actions;
+export const { setStreamState, setStreamVolumes, setCustomStreamNames } = s0Slice.actions;
 
 const store = configureStore({
   reducer: {
