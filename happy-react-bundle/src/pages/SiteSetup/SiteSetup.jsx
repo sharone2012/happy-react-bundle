@@ -40,6 +40,7 @@
 
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import S1ResidueCards from '@/components/S1ResidueCards/S1ResidueCards';
 import { setStreamState, setStreamVolumes, setCustomStreamNames } from '@/store/store';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -1904,6 +1905,9 @@ export default function SiteSetup() {
 
         {/* ════ ROW 5: SOIL ACIDITY PROFILE ════ */}
         <CFI_SoilAcidity_ProfileCard millName={site.millName} />
+
+        {/* ════ S1 RESIDUE CARDS — inline, no routing ════ */}
+        <S1ResidueCards />
 
       </div>
     </div>

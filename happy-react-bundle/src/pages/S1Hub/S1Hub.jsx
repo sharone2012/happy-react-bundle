@@ -1,6 +1,6 @@
-import { useState, useMemo } from "react";
+﻿import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import S1ResidueCards from "../../components/S1ResidueCards/S1ResidueCards.jsx";
 import {
   C, Fnt, LINE_COLORS, S1_CSS,
   S0Header, S1Breadcrumb, SubstrateFlowStrip,
@@ -118,19 +118,19 @@ const QUICK_LINK_DETAIL = {
       { label: 'Belt', val: '600mm' }, { label: 'Power', val: '298 kW' },
     ],
     ascii: `
-  ┌──────────────────────────────────────────────────────────────────┐
+  ג”──────────────────────────────────────────────────────────────────ג”
   │  S1C  EFB  PRE-PROCESSING  ·  10 nodes  ·  298 kW  ·  20 t/h  │
-  └──────────────────────────────────────────────────────────────────┘
+  ═──────────────────────────────────────────────────────────────────ג”˜
 
-  [RH-EFB-101]──▶[CV-EFB-101]──▶[ETR-01  Trommel 50mm]──▶[OBM-01  Overband Magnet]
+  [RH-EFB-101]──┤[CV-EFB-101]──┤[ETR-01  Trommel 50mm]──┤[OBM-01  Overband Magnet]
   Recip Feeder    Incline Apron   +3.0m · 11 kW             +3.5m · 3 kW
   7.5 kW          7.5 kW · 600mm                                    │
-                                                                     ▼
-  [BIN-EFB-201]◀──[EVS-01  Vib. Screen 2mm]◀──[EHM-01  Hammer Mill]◀──[EPR-01  Screw Press]
+                                                                     └
+  [BIN-EFB-201]───[EVS-01  Vib. Screen 2mm]───[EHM-01  Hammer Mill]───[EPR-01  Screw Press]
   Buffer 50m³      +4.0m · 7.5 kW · Oversize→HM  +4.0m · 37 kW        +3.2m · 37 kW
-  +2.5m · 3 kW                                    SPRING ISO ONLY       ⚠ GATE B.G2
+  +2.5m · 3 kW                                    SPRING ISO ONLY       ■ GATE B.G2
         │
-        ▼
+        └
   [EDC-01  Baghouse]  East wall · 15 kW · 99% dust capture
 
   S2 HANDOFF: 45–50% MC · D90 ≤ 2mm · 20 t/h · NPK: N 582 · P 197 · K 930 kg/day`,
@@ -194,23 +194,23 @@ const QUICK_LINK_DETAIL = {
       { label: 'Belt', val: '500mm' }, { label: 'Power', val: '206 kW' },
     ],
     ascii: `
-  ┌─────────────────────────────────────────────────────────────────────┐
+  ג”─────────────────────────────────────────────────────────────────────ג”
   │  S1B  OPDC  PRE-PROCESSING  ·  10 nodes  ·  206 kW  ·  5 t/h    │
   │  Anti-bridging throughout · Paste form handling                   │
-  └─────────────────────────────────────────────────────────────────────┘
+  ═─────────────────────────────────────────────────────────────────────ג”˜
 
-  [RH-OPDC-101]──▶[CV-OPDC-101]──▶[OPR-01  Screw Press]
-  Recip Feeder      Belt +3.5m       ⚠ CLASS A GATE — MC floor ≥ 40% LOCKED
+  [RH-OPDC-101]──┤[CV-OPDC-101]──┤[OPR-01  Screw Press]
+  Recip Feeder      Belt +3.5m       ■ CLASS A GATE — MC floor ≥ 40% LOCKED
   SS304 · 0.75 kW   1.1 kW · 500mm  Non-negotiable · pore damage above 40%
                                                │
-                                               ▼
-  [OLB-01  Lump Breaker]──▶[CV-OPDC-201]──▶[OTR-01  Trommel]──▶[ODR-01  Rotary Dryer]
-  Twin-roll · 3 kW           Belt +1.5m      2.2 kW              11 kW · ⚠ MC ≤ 35%
+                                               └
+  [OLB-01  Lump Breaker]──┤[CV-OPDC-201]──┤[OTR-01  Trommel]──┤[ODR-01  Rotary Dryer]
+  Twin-roll · 3 kW           Belt +1.5m      2.2 kW              11 kW · ■ MC ≤ 35%
   30mm output
                                                                           │
-                                                                          ▼
-  [OVS-01  Vib. Screen]◀──[OHM-01  Hammer Mill]──▶[BIN-OPDC-301  Product Bin]
-  +0.5m · 2.2 kW             +0.8m · 22 kW SPRING ISO   ⚠ 24HR DWELL GATE
+                                                                          └
+  [OVS-01  Vib. Screen]───[OHM-01  Hammer Mill]──┤[BIN-OPDC-301  Product Bin]
+  +0.5m · 2.2 kW             +0.8m · 22 kW SPRING ISO   ■ 24HR DWELL GATE
   Oversize → HM               only                       pH 8.0–9.0 required
 
   S2 HANDOFF: ≤35% MC · D90 ≤ 3mm · pH 8.0–9.0 · dwell ≥ 24hrs`,
@@ -377,15 +377,15 @@ const STREAM_META = {
 
 // ── GUARDRAILS ──
 const guardrails = [
-  { icon: '💧', label: 'MC ≥40%', val: 'LOCKED', cls: 'red', note: 'CLASS A · OPDC screw press' },
-  { icon: '🔩', label: 'Fe <3,000', val: 'mg/kg DM', cls: 'amber', note: 'POS ICP-OES gate' },
+  { icon: '🔒', label: 'MC ≥40%', val: 'LOCKED', cls: 'red', note: 'CLASS A · OPDC screw press' },
+  { icon: '🧪', label: 'Fe <3,000', val: 'mg/kg DM', cls: 'amber', note: 'POS ICP-OES gate' },
   { icon: '🌿', label: 'ADL <12%', val: 'DM target', cls: 'teal', note: 'For BSF palatability' },
-  { icon: '⚖', label: 'C:N 15–22', val: 'optimal', cls: 'teal', note: 'Post-S2 blend target' },
-  { icon: '⚗', label: 'pH 4.0–5.0', val: 'range', cls: 'amber', note: 'POS pre-treatment' },
-  { icon: '🧪', label: 'CEC >20', val: 'cmol/kg', cls: 'teal', note: 'Soil quality target' },
-  { icon: '⚠', label: 'No Cr >20', val: 'mg/kg', cls: 'red', note: 'Heavy metal limit' },
-  { icon: '🔧', label: 'Belt speed', val: 'locked at spec', cls: 'teal', note: 'Per equipment OEM' },
-  { icon: '🌡', label: 'All temps', val: '<85°C', cls: 'amber', note: 'Motor + bearing limit' },
+  { icon: '⚖️', label: 'C:N 15–22', val: 'optimal', cls: 'teal', note: 'Post-S2 blend target' },
+  { icon: '💧', label: 'pH 4.0–5.0', val: 'range', cls: 'amber', note: 'POS pre-treatment' },
+  { icon: '🔬', label: 'CEC >20', val: 'cmol/kg', cls: 'teal', note: 'Soil quality target' },
+  { icon: '■', label: 'No Cr >20', val: 'mg/kg', cls: 'red', note: 'Heavy metal limit' },
+  { icon: '⚙️', label: 'Belt speed', val: 'locked at spec', cls: 'teal', note: 'Per equipment OEM' },
+  { icon: '🌡️', label: 'All temps', val: '<85°C', cls: 'amber', note: 'Motor + bearing limit' },
 ];
 
 // ── LINE DETAIL DATA (popup) ──
@@ -452,7 +452,7 @@ const LINE_DETAIL = {
     outflows: [
       { title: 'Monthly Volume', val: '~405', suffix: ' t', unit: 'Cake / month · Post-Press', dir: 'dn' },
       { title: 'Moisture', val: '65–70', suffix: '%', unit: 'MC wb · Post-Filter Press', dir: 'dn' },
-      { title: 'pH', val: '5.5–6.0', suffix: '', unit: 'Post-CaCO₃ Conditioning', dir: 'up' },
+      { title: 'pH', val: '5.5–6.0', suffix: '', unit: 'Post-CaCOƒ Conditioning', dir: 'up' },
       { title: 'Fe Status', val: 'Gated', suffix: '', unit: 'ICP-OES Protocol', dir: 'eq' },
     ],
     equipment: [
@@ -467,7 +467,7 @@ const LINE_DETAIL = {
 // ── MODULE POPUP DETAIL ──
 const MODULE_DETAIL = {
   'efb': {
-    num: 'Line 1', title: 'EFB Pre-Processing Line', accent: C.teal, icon: '⚙',
+    num: 'Line 1', title: 'EFB Pre-Processing Line', accent: C.teal, icon: '🏭',
     stats: [
       { lbl: 'Nodes', val: '10' }, { lbl: 'Power', val: '298 kW' },
       { lbl: 'Throughput', val: '20 t/h' }, { lbl: 'Belt', val: '600mm' },
@@ -478,7 +478,7 @@ const MODULE_DETAIL = {
         ['Feed', 'EFB @ 62.5% MC from mill press discharge'],
         ['Step 1', 'RH-EFB-101 Hydraulic Feeder → Apron Conveyor (7.5 kW)'],
         ['Step 2', 'ETR-01 Trommel Screen 50mm → OBM-01 Overband Magnet'],
-        ['Step 3', 'EPR-01 Screw Press + PKSA  ⚠ GATE B.G2 · MC floor 40%'],
+        ['Step 3', 'EPR-01 Screw Press + PKSA  ■ GATE B.G2 · MC floor 40%'],
         ['Step 4', 'ESD-01 Primary Shredder (75 kW) → EHM-01 Hammer Mill (110 kW)'],
         ['Step 5', 'EVS-01 Vibrating Screen 2mm → EDC-01 Baghouse'],
         ['Output', 'BIN-EFB-201 Buffer Bin 50m³ → S2 Handoff'],
@@ -499,7 +499,7 @@ const MODULE_DETAIL = {
     ],
   },
   'opdc': {
-    num: 'Line 2', title: 'OPDC Pre-Processing Line', accent: C.amber, icon: '⚙',
+    num: 'Line 2', title: 'OPDC Pre-Processing Line', accent: C.amber, icon: '🏭',
     stats: [
       { lbl: 'Nodes', val: '10' }, { lbl: 'Power', val: '206 kW' },
       { lbl: 'Throughput', val: '5 t/h' }, { lbl: 'Belt', val: '500mm' },
@@ -510,10 +510,10 @@ const MODULE_DETAIL = {
         ['Feed', 'OPDC paste @ 70–75% MC · Anti-bridging throughout'],
         ['Step 1', 'RH-OPDC-101 Reciprocating Feeder (SS304 · anti-bridging)'],
         ['Step 2', 'CV-OPDC-101 Belt Conveyor → OPR-01 Screw Press'],
-        ['⚠ CLASS A GATE', 'MC floor ≥ 40% LOCKED · NON-NEGOTIABLE'],
+        ['■ CLASS A GATE', 'MC floor ≥ 40% LOCKED · NON-NEGOTIABLE'],
         ['Step 3', 'OLB-01 Lump Breaker → OTR-01 Trommel → ODR-01 Rotary Dryer'],
         ['Step 4', 'OHM-01 Hammer Mill (SPRING ISO) → OVS-01 Vib. Screen 3mm'],
-        ['⚠ 24HR DWELL', 'BIN-OPDC-301 Product Bin · pH 8.0–9.0 required'],
+        ['■ 24HR DWELL', 'BIN-OPDC-301 Product Bin · pH 8.0–9.0 required'],
         ['Output', '≤35% MC · D90 ≤ 3mm · pH 8.0–9.0 · to S2'],
       ]},
       { title: 'Key Specs', rows: [
@@ -532,7 +532,7 @@ const MODULE_DETAIL = {
     ],
   },
   'pos': {
-    num: 'Line 3', title: 'POS Pre-Skimming Line', accent: '#3B82F6', icon: '💧',
+    num: 'Line 3', title: 'POS Pre-Skimming Line', accent: '#3B82F6', icon: '🔒',
     stats: [
       { lbl: 'Nodes', val: '4–7' }, { lbl: 'Power', val: '62 kW' },
       { lbl: 'Throughput', val: '1.25 t/h' }, { lbl: 'Type', val: 'Liquid/Semi' },
@@ -543,22 +543,22 @@ const MODULE_DETAIL = {
         ['Feed', 'POS Sludge @ 82% MC from mill effluent stream'],
         ['Step 1', 'Sludge Pit 15m³ → Progressive Cavity Pump'],
         ['Step 2', 'DRS-SLD-01 Rotary Drum Screen (78% MC out)'],
-        ['⚠ ICP-OES Fe GATE', 'Fe result sets CaCO₃ dose + S2 inclusion'],
+        ['■ ICP-OES Fe GATE', 'Fe result sets CaCOƒ dose + S2 inclusion'],
         ['Step 3', 'DEC-SLD-101 Decanter Centrifuge (55 kW · 65% MC out)'],
-        ['Step 4', 'CaCO₃ conditioning · pH 4.4 → 5.5–6.0'],
+        ['Step 4', 'CaCOƒ conditioning · pH 4.4 → 5.5–6.0'],
         ['Output', 'Cake ~405 t/mo · 65–70% MC · Gated · to S2'],
       ]},
       { title: 'Key Specs', rows: [
         ['MC In', '82%'], ['MC Out', '65–70%'],
         ['pH In', '4.4 (acidic)'], ['pH Out', '5.5–6.0'],
         ['Daily In', '~30 t FW'], ['Daily Out', '~13.5 t cake'],
-        ['Fe Gate', 'ICP-OES protocol'], ['CaCO₃ Dose', '5–20% w/w'],
+        ['Fe Gate', 'ICP-OES protocol'], ['CaCOƒ Dose', '5–20% w/w'],
         ['Screen Reject', '→ EFB Line'], ['Filtrate', '→ POME system'],
       ]},
       { title: 'Equipment & Cost', rows: [
         ['Sludge Pit 15m³', '—'], ['Rotary Drum Screen', '—'],
         ['Decanter Centrifuge', '$80K–$150K RFQ'], ['Buffer Tank 15m³', '—'],
-        ['Progressive Cavity Pump', '0.75 kW'], ['CaCO₃ Dosing', 'Batch manual'],
+        ['Progressive Cavity Pump', '0.75 kW'], ['CaCOƒ Dosing', 'Batch manual'],
         ['ICP-OES Sampling', 'Lab gate'], ['Total CapEx', 'RFQ pending'],
       ]},
     ],
@@ -601,7 +601,7 @@ const MODULE_DETAIL = {
     ],
   },
   'fp': {
-    num: 'FP', title: 'Combined Floor Plans', accent: C.teal, icon: '🏭',
+    num: 'FP', title: 'Combined Floor Plans', accent: C.teal, icon: '🗺️',
     stats: [
       { lbl: 'Buildings', val: '3' }, { lbl: 'Total Area', val: '~3,200 m²' },
       { lbl: 'EFB Hall', val: '30×60×12m' }, { lbl: 'OPDC Hall', val: '20×40×10m' },
@@ -675,19 +675,6 @@ export default function S1Hub() {
   const [quickModal, setQuickModal] = useState(null);
   const [moduleModal, setModuleModal] = useState(null);
 
-  // ── S0 → Redux state ──
-  const s0ActiveStreams   = useSelector(s => s.s0.activeStreams);
-  const s0StreamVolumes  = useSelector(s => s.s0.streamVolumes);
-  const s0CustomNames    = useSelector(s => s.s0.customStreamNames);
-
-  // Build the list of currently selected residue keys (standard + custom)
-  const selectedResidueKeys = useMemo(() => {
-    const standard = Object.keys(s0ActiveStreams).filter(k => s0ActiveStreams[k]);
-    const custom   = Object.keys(s0CustomNames).filter(k => s0ActiveStreams[k]);
-    // Merge, dedup, keep stable order
-    return [...new Set([...standard, ...custom])];
-  }, [s0ActiveStreams, s0CustomNames]);
-
   const s1Calc = useMemo(() => {
     const efbFW  = derived?.monthlyEfb  || 0;
     const opdcFW = derived?.monthlyOpdc || 0;
@@ -707,11 +694,11 @@ export default function S1Hub() {
   }, [derived]);
 
   const modules = [
-    { key: 'efb',  num: 'Line 1', title: 'EFB Pre-Processing Line', desc: '10-node mechanical line · 20 t/h · 600mm belt · 298 kW · Shred → Press → Mill → Screen', accent: C.teal, icon: '⚙', tags: ['10 Machines', '600mm Belt', '20 t/h', 'Trommel + Hammer Mill'] },
-    { key: 'opdc', num: 'Line 2', title: 'OPDC Pre-Processing Line', desc: '10-node mechanical line · 5 t/h · 500mm belt · 206 kW · CLASS A Gate · 24hr Dwell', accent: C.amber, icon: '⚙', tags: ['10 Machines', '500mm Belt', 'CLASS A', '24hr Dwell Gate'] },
-    { key: 'pos',  num: 'Line 3', title: 'POS Pre-Skimming Line', desc: '4–7 node liquid/semi line · 1.25 t/h · ICP-OES Fe Gate · Decanter · Filter Press', accent: '#3B82F6', icon: '💧', tags: ['4–7 Machines', 'ICP-OES Fe', 'Decanter', 'Filter Press'] },
+    { key: 'efb',  num: 'Line 1', title: 'EFB Pre-Processing Line', desc: '10-node mechanical line · 20 t/h · 600mm belt · 298 kW · Shred → Press → Mill → Screen', accent: C.teal, icon: '🏭', tags: ['10 Machines', '600mm Belt', '20 t/h', 'Trommel + Hammer Mill'] },
+    { key: 'opdc', num: 'Line 2', title: 'OPDC Pre-Processing Line', desc: '10-node mechanical line · 5 t/h · 500mm belt · 206 kW · CLASS A Gate · 24hr Dwell', accent: C.amber, icon: '🏭', tags: ['10 Machines', '500mm Belt', 'CLASS A', '24hr Dwell Gate'] },
+    { key: 'pos',  num: 'Line 3', title: 'POS Pre-Skimming Line', desc: '4–7 node liquid/semi line · 1.25 t/h · ICP-OES Fe Gate · Decanter · Filter Press', accent: '#3B82F6', icon: '🔒', tags: ['4–7 Machines', 'ICP-OES Fe', 'Decanter', 'Filter Press'] },
     { key: 'eng',  num: 'Eng', title: 'Engineering Overview', desc: '24 equipment nodes · 3 processing lines · Full engineering spec with CAPEX + OPEX + Greenhouse + Guardrails', accent: C.grey, icon: '📐', tags: ['24 Nodes', '3 Lines', 'Full Spec'] },
-    { key: 'fp',   num: 'FP', title: 'Combined Floor Plans', desc: 'Tabbed floor plans · EFB · OPDC · POS · Building dimensions · Node cards with specs', accent: C.teal, icon: '🏭', tags: ['3 Floor Plans', 'Node Cards', 'Dimensions'] },
+    { key: 'fp',   num: 'FP', title: 'Combined Floor Plans', desc: 'Tabbed floor plans · EFB · OPDC · POS · Building dimensions · Node cards with specs', accent: C.teal, icon: '🗺️', tags: ['3 Floor Plans', 'Node Cards', 'Dimensions'] },
     { key: 'cap',  num: 'CAP', title: 'Financials — CAPEX / OPEX', desc: 'Building $1.37M · Equipment $372K · Labour $3,576 · Electricity $22,648 · Maintenance $11,733 · Total $37,957/mo', accent: C.amber, icon: '💰', tags: ['Building CAPEX', 'Equipment', 'OpEx', 'Site Metrics'] },
   ];
 
@@ -982,380 +969,7 @@ export default function S1Hub() {
         />
       </div>
 
-      {/* ── S0 SELECTED RESIDUES ROW ── */}
-      <div style={{ margin: '20px 28px 0' }}>
-        {/* Section heading */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
-          <div style={{ width: 3, height: 14, borderRadius: 2, background: C.teal, flexShrink: 0 }} />
-          <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 13, color: C.teal, textTransform: 'uppercase', letterSpacing: '.06em' }}>
-            S0 Selected Residues — Pre-Processing Input
-          </div>
-          <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, marginLeft: 4 }}>
-            {selectedResidueKeys.length > 0
-              ? `${selectedResidueKeys.length} residue${selectedResidueKeys.length > 1 ? 's' : ''} confirmed from S0`
-              : 'No residues selected in S0'}
-          </div>
-          <div style={{ flex: 1 }} />
-          {/* All Residues button — only shown when at least one is selected */}
-          {selectedResidueKeys.length > 0 && (
-            <button
-              onClick={() => setActiveModal({ residue: 'combined', tab: 0 })}
-              style={{
-                padding: '6px 16px',
-                background: 'rgba(0,162,73,.1)',
-                border: '1.5px solid rgba(0,162,73,.4)',
-                borderRadius: 7,
-                fontFamily: Fnt.dm,
-                fontSize: 12,
-                fontWeight: 700,
-                color: C.green,
-                cursor: 'pointer',
-                flexShrink: 0,
-              }}
-            >
-              All Residues Combined →
-            </button>
-          )}
-        </div>
-
-        {/* Empty state */}
-        {selectedResidueKeys.length === 0 ? (
-          <div style={{
-            background: C.navyCard,
-            border: `1px dashed rgba(139,160,180,.25)`,
-            borderRadius: 10,
-            padding: '24px 20px',
-            textAlign: 'center',
-            color: C.grey,
-            fontFamily: Fnt.dm,
-            fontSize: 12,
-          }}>
-            No residues selected — configure in S0 Site Setup
-          </div>
-        ) : (
-          /* Residue card grid — auto-fit, min 260px, max ~5 per row */
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-            gap: 12,
-          }}>
-            {selectedResidueKeys.map(key => {
-              const meta   = STREAM_META[key] ?? {
-                name:   s0CustomNames[key] ?? key,
-                abbr:   key.toUpperCase().slice(0, 6),
-                accent: C.grey,
-                route:  null,
-                specs:  [],
-                gates:  [],
-              };
-              const volume = s0StreamVolumes[key];
-              const volDisplay = volume != null ? Number(volume).toLocaleString() : '—';
-              const specs = meta.specs ?? [];
-              const gates = meta.gates ?? [];
-
-              return (
-                <div
-                  key={key}
-                  style={{
-                    background: 'rgba(64,215,197,0.15)',
-                    border: `1.5px solid rgba(64,215,197,0.60)`,
-                    borderLeft: `4px solid ${meta.accent}`,
-                    borderRadius: 8,
-                    padding: '12px 14px 10px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 0,
-                    transition: 'box-shadow .15s',
-                  }}
-                >
-                  {/* ── Header: name + abbr badge ── */}
-                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 6, marginBottom: 10 }}>
-                    <div style={{ fontFamily: Fnt.dm, fontSize: 14, fontWeight: 700, color: C.amber, lineHeight: 1.3 }}>
-                      {meta.name}
-                    </div>
-                    <span style={{
-                      fontFamily: Fnt.mono, fontSize: 10, fontWeight: 700,
-                      padding: '2px 7px', borderRadius: 4,
-                      background: `${meta.accent}20`, border: `1px solid ${meta.accent}55`,
-                      color: meta.accent, flexShrink: 0, letterSpacing: '.04em',
-                    }}>
-                      {meta.abbr}
-                    </span>
-                  </div>
-
-                  {/* ── S0 volume (from slider) ── */}
-                  <div style={{
-                    display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
-                    padding: '5px 0', marginBottom: 2,
-                    borderBottom: `1px solid rgba(64,215,197,0.20)`,
-                  }}>
-                    <span style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey }}>S0 Input Volume</span>
-                    <span style={{ fontFamily: Fnt.mono, fontSize: 13, fontWeight: 700, color: C.amber }}>
-                      {volDisplay}{volume != null ? ' t/mo' : ''}
-                    </span>
-                  </div>
-
-                  {/* ── Spec field rows ── */}
-                  {specs.length > 0 && (
-                    <div style={{ marginTop: 4, marginBottom: 6 }}>
-                      {specs.map((sp, si) => (
-                        <div key={si} style={{
-                          display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
-                          gap: 8, padding: '4px 0',
-                          borderBottom: si < specs.length - 1 ? '1px solid rgba(30,107,140,0.15)' : 'none',
-                        }}>
-                          <span style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, flexShrink: 0 }}>
-                            {sp.lbl}
-                          </span>
-                          <span style={{
-                            fontFamily: Fnt.mono, fontSize: 11, fontWeight: 700,
-                            textAlign: 'right',
-                            color: sp.warn ? C.red : sp.hi ? C.green : C.white,
-                          }}>
-                            {sp.val}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* ── Gate indicators ── */}
-                  {gates.length > 0 && (
-                    <div style={{
-                      marginTop: 4, marginBottom: 8,
-                      padding: '6px 8px',
-                      background: 'rgba(0,0,0,0.25)',
-                      borderRadius: 6,
-                      border: '1px solid rgba(245,166,35,0.20)',
-                    }}>
-                      {gates.map((g, gi) => (
-                        <div key={gi} style={{
-                          display: 'flex', alignItems: 'flex-start', gap: 6,
-                          marginBottom: gi < gates.length - 1 ? 5 : 0,
-                        }}>
-                          <span style={{
-                            width: 7, height: 7, borderRadius: '50%', flexShrink: 0,
-                            background: C.amber, marginTop: 3,
-                            display: 'inline-block',
-                          }} />
-                          <div>
-                            <span style={{ fontFamily: Fnt.mono, fontSize: 10, fontWeight: 700, color: C.amber }}>{g.id} </span>
-                            <span style={{ fontFamily: Fnt.dm, fontSize: 10, color: C.grey }}>{g.note}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* ── push detail button to bottom ── */}
-                  <div style={{ flex: 1 }} />
-
-                  {/* ── Detail button ── */}
-                  <button
-                    onClick={() => meta.route ? nav(meta.route) : undefined}
-                    disabled={!meta.route}
-                    style={{
-                      marginTop: 6,
-                      padding: '6px 0',
-                      background: meta.route ? `${meta.accent}18` : 'rgba(139,160,180,.06)',
-                      border: `1px solid ${meta.route ? meta.accent + '55' : 'rgba(139,160,180,.2)'}`,
-                      borderRadius: 6,
-                      fontFamily: Fnt.dm,
-                      fontSize: 12,
-                      fontWeight: 700,
-                      color: meta.route ? meta.accent : C.grey,
-                      cursor: meta.route ? 'pointer' : 'not-allowed',
-                      opacity: meta.route ? 1 : 0.5,
-                      transition: 'background .15s',
-                      width: '100%',
-                      letterSpacing: '.02em',
-                    }}
-                  >
-                    {meta.route ? `↗ View ${meta.abbr} Process Flow` : 'Detail — Coming Soon'}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-
-      <div style={{ margin: '20px 28px 0' }}>
-        {/* Quick-access link grid (3 × 2) */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginTop: 14 }}>
-          {QUICK_LINKS.map((lnk, i) => (
-            <div
-              key={i}
-              onClick={() => setQuickModal(lnk.key)}
-              style={{
-                background: C.navyDeep,
-                border: `1.5px solid ${lnk.live ? lnk.accent + '55' : 'rgba(139,160,180,.2)'}`,
-                borderRadius: 8,
-                padding: '10px 14px',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: 12,
-              }}
-            >
-              <div>
-                <div style={{ fontFamily: Fnt.dm, fontSize: 12, fontWeight: 700, color: C.white, marginBottom: 2 }}>{lnk.title}</div>
-                <div style={{ fontFamily: Fnt.dm, fontSize: 10, color: C.grey }}>{lnk.sub}</div>
-              </div>
-              <div style={{
-                flexShrink: 0,
-                padding: '3px 8px',
-                borderRadius: 4,
-                fontFamily: Fnt.mono,
-                fontSize: 9,
-                fontWeight: 700,
-                background: lnk.live ? 'rgba(61,203,122,.12)' : 'rgba(245,166,35,.1)',
-                border: `1px solid ${lnk.live ? 'rgba(61,203,122,.4)' : 'rgba(245,166,35,.3)'}`,
-                color: lnk.live ? '#3DCB7A' : C.amber,
-                whiteSpace: 'nowrap',
-              }}>
-                {lnk.live ? 'LIVE ✓' : 'COMING SOON'}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── PROCESS ENGINEERING ROW ── */}
-      <div style={{ margin: '20px 28px 0' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-          <div style={{ width: 3, height: 14, borderRadius: 2, background: C.teal, flexShrink: 0 }} />
-          <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 13, color: C.teal, textTransform: 'uppercase', letterSpacing: '.06em' }}>
-            Process Engineering
-          </div>
-          <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, marginLeft: 4 }}>All residues shown · S0 selection dims inactive lines</div>
-        </div>
-        {[
-          {
-            key: 'efb', name: 'EFB', accent: C.teal,
-            fw: site ? `${Math.round(s1Calc.efbFW).toLocaleString()} t/mo` : '\u2014',
-            dm: site ? `${Math.round(s1Calc.efbDM).toLocaleString()} t DM/mo` : '\u2014',
-            mcIn: '62.5%', mcOut: '47.5%',
-            nodes: ['Shredder', 'Hammer Mill', 'Screw Press', 'Buffer Silo'],
-            nodesSub: ['450 kW', '37 kW', '110 kW', '5,000 L'],
-            outLabel: '\u226435% MC', outSub: 'After press',
-          },
-          {
-            key: 'opdc', name: 'OPDC', accent: C.amber,
-            fw: site ? `${Math.round(s1Calc.opdcFW).toLocaleString()} t/mo` : '\u2014',
-            dm: site ? `${Math.round(s1Calc.opdcDM).toLocaleString()} t DM/mo` : '\u2014',
-            mcIn: '70\u201375%', mcOut: '\u226435%',
-            nodes: ['Screw Press', 'Buffer Silo'],
-            nodesSub: ['110 kW', '5,000 L'],
-            outLabel: '\u226435% MC', outSub: 'CLASS A gate',
-          },
-          {
-            key: 'pos', name: 'POS', accent: '#3B82F6',
-            fw: site ? `${Math.round(s1Calc.posFW).toLocaleString()} t/mo` : '\u2014',
-            dm: site ? `${Math.round(s1Calc.posDM).toLocaleString()} t DM/mo` : '\u2014',
-            mcIn: '82%', mcOut: '65\u201370%',
-            nodes: ['Centrifuge', 'Decanter', 'POME Sep', 'Buffer Tank'],
-            nodesSub: ['15 kW', '37 kW', '7.5 kW', '10,000 L'],
-            outLabel: '65\u201370% MC', outSub: 'Post-skim',
-          },
-        ].map((r) => {
-          const enabled = site?.[`${r.key}_enabled`] ?? false;
-          return (
-            <div key={r.key} style={{
-              display: 'flex',
-              background: C.navyCard,
-              border: `1.5px solid ${C.bdrIdle}`,
-              borderLeft: `4px solid ${r.accent}`,
-              borderRadius: 10,
-              overflow: 'hidden',
-              marginBottom: 10,
-              opacity: enabled ? 1 : 0.45,
-              transition: 'opacity .2s',
-            }}>
-              {/* Zone A: Stream data */}
-              <div style={{
-                width: 260,
-                flexShrink: 0,
-                padding: '16px 20px',
-                borderRight: '2px solid rgba(30,107,140,0.3)',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                gap: 8,
-              }}>
-                <div style={{ fontFamily: Fnt.syne, fontSize: 14, fontWeight: 700, color: C.white, marginBottom: 2 }}>{r.name}</div>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-                  <div style={{ fontFamily: Fnt.mono, fontSize: 14, fontWeight: 700, color: C.amber }}>{r.fw}</div>
-                  <div style={{ fontFamily: Fnt.dm, fontSize: 12, color: 'rgba(168,189,208,0.75)' }}>FW / month</div>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-                  <div style={{ fontFamily: Fnt.mono, fontSize: 14, fontWeight: 700, color: C.teal }}>{r.dm}</div>
-                  <div style={{ fontFamily: Fnt.dm, fontSize: 12, color: 'rgba(168,189,208,0.75)' }}>dry matter</div>
-                </div>
-                <div style={{ display: 'flex', gap: 20, marginTop: 4 }}>
-                  <div>
-                    <div style={{ fontFamily: Fnt.dm, fontSize: 9, fontWeight: 700, color: C.grey, textTransform: 'uppercase', marginBottom: 2 }}>MC IN</div>
-                    <div style={{ fontFamily: Fnt.mono, fontSize: 13, fontWeight: 700, color: C.amber }}>{r.mcIn}</div>
-                  </div>
-                  <div>
-                    <div style={{ fontFamily: Fnt.dm, fontSize: 9, fontWeight: 700, color: C.grey, textTransform: 'uppercase', marginBottom: 2 }}>MC OUT</div>
-                    <div style={{ fontFamily: Fnt.mono, fontSize: 13, fontWeight: 700, color: C.amber }}>{r.mcOut}</div>
-                  </div>
-                </div>
-              </div>
-              {/* Zone B: Process flow nodes */}
-              <div style={{
-                flex: 1,
-                padding: '16px 20px',
-                display: 'flex',
-                alignItems: 'center',
-                overflowX: 'auto',
-              }}>
-                {r.nodes.flatMap((node, ni) => {
-                  const nodeEl = (
-                    <div key={`node-${ni}`} style={{
-                      flexShrink: 0,
-                      background: 'rgba(0,0,0,.3)',
-                      border: `1.5px solid ${r.accent}33`,
-                      borderRadius: 8,
-                      padding: '10px 16px',
-                      textAlign: 'center',
-                    }}>
-                      <div style={{ fontFamily: Fnt.dm, fontSize: 12, fontWeight: 700, color: C.white, whiteSpace: 'nowrap' }}>{node}</div>
-                      <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: 'rgba(168,189,208,0.75)', marginTop: 3, whiteSpace: 'nowrap' }}>{r.nodesSub[ni]}</div>
-                    </div>
-                  );
-                  if (ni < r.nodes.length - 1) {
-                    return [nodeEl, (
-                      <svg key={`arrow-${ni}`} width="48" height="20" style={{ flexShrink: 0 }}>
-                        <path d="M0,10 L44,10 M38,4 L44,10 L38,16" stroke={r.accent} strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    )];
-                  }
-                  return [nodeEl];
-                })}
-              </div>
-              {/* Zone C: Output */}
-              <div style={{
-                width: 120,
-                flexShrink: 0,
-                padding: '16px 14px',
-                borderLeft: '2px solid rgba(30,107,140,0.3)',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'flex-end',
-                gap: 4,
-              }}>
-                <div style={{ fontFamily: Fnt.dm, fontSize: 9, fontWeight: 700, color: C.grey, textTransform: 'uppercase', letterSpacing: '.05em' }}>OUTPUT</div>
-                <div style={{ fontFamily: Fnt.mono, fontSize: 14, fontWeight: 700, color: r.accent, textAlign: 'right' }}>{r.outLabel}</div>
-                <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: 'rgba(168,189,208,0.75)', textAlign: 'right' }}>{r.outSub}</div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      <S1ResidueCards />
 
       {/* ── ACTION BUTTONS ── */}
       {site && (site.efb_enabled || site.opdc_enabled || site.pos_enabled) && (
@@ -1436,7 +1050,7 @@ export default function S1Hub() {
               style={{ '--accent': m.accent }}
               onClick={() => m.key && setModuleModal(m.key)}
             >
-              <span className="mb-status ms-live">Live ✓</span>
+              <span className="mb-status ms-live">Live ↗</span>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div className="mb-icon" style={{ background: `${m.accent}22`, color: m.accent }}>{m.icon}</div>
                 <div>
@@ -1591,7 +1205,7 @@ export default function S1Hub() {
             onMouseEnter={e => { e.currentTarget.style.background = C.teal; e.currentTarget.style.color = C.navy; }}
             onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = C.teal; }}
           >
-            📄 View S0 Residue Selector 1-Pager
+            נ“„ View S0 Residue Selector 1-Pager
           </a>
         </div>
       </div>
