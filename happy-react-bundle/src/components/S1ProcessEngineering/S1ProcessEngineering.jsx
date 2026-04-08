@@ -122,8 +122,9 @@ function EqChainNode({ eq, accent }) {
       background: bg,
       border: `1.5px solid ${bdr}`,
       borderRadius: 7,
-      padding: "16px 14px 9px",
-      minWidth: 110,
+      padding: "18px 14px 12px",
+      minWidth: 118,
+      minHeight: 112,
     }}>
       {/* Step badge */}
       <div style={{
@@ -215,13 +216,13 @@ function StreamRow({ stream, isLast }) {
     <div style={{
       display: "flex",
       alignItems: "center",
-      padding: "20px 22px",
+      padding: "24px 22px",
       borderBottom: isLast ? "none" : `1px solid ${C.bdrIdle}`,
-      minHeight: 130,
+      minHeight: 140,
     }}>
 
       {/* LEFT — residue stats */}
-      <div style={{ width: 410, flexShrink: 0, paddingRight: 20 }}>
+      <div style={{ width: 460, flexShrink: 0, paddingRight: 20, overflow: "hidden" }}>
 
         {/* Row 1: badge · name · code · form */}
         <div style={{
@@ -253,7 +254,7 @@ function StreamRow({ stream, isLast }) {
         </div>
 
         {/* Row 2: all stats on ONE horizontal row — main numbers 14px, brightness +20% */}
-        <div style={{ display: "flex", alignItems: "flex-end", gap: 20, whiteSpace: "nowrap" }}>
+        <div style={{ display: "flex", alignItems: "flex-end", gap: 14, whiteSpace: "nowrap" }}>
           {stream.stats.map(({ lbl, val }) => (
             <div key={lbl} style={{ display: "flex", flexDirection: "column", gap: 3, flexShrink: 0 }}>
               <div style={{
@@ -306,13 +307,14 @@ function StreamRow({ stream, isLast }) {
       {/* RIGHT — equipment chain, increased padding + 2× gap */}
       <div style={{
         flex: 1,
+        minWidth: 0,
         overflowX: "auto",
-        overflowY: "visible",
+        overflowY: "clip",
         paddingLeft: 32,
-        paddingTop: 14,
+        paddingTop: 22,
         paddingBottom: 14,
         display: "flex",
-        alignItems: "center",
+        alignItems: "flex-start",
         gap: 32,
         scrollbarWidth: "thin",
         scrollbarColor: `${stream.accent}55 transparent`,
