@@ -1,6 +1,7 @@
 ﻿import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import S1ResidueCards from "../../components/S1ResidueCards/S1ResidueCards.jsx";
+import S1ProcessEngineering from "../../components/S1ProcessEngineering/S1ProcessEngineering.jsx";
 import {
   C, Fnt, LINE_COLORS, S1_CSS,
   S0Header, S1Breadcrumb, SubstrateFlowStrip,
@@ -970,6 +971,7 @@ export default function S1Hub() {
       </div>
 
       <S1ResidueCards />
+      <S1ProcessEngineering />
 
       {/* ── ACTION BUTTONS ── */}
       {site && (site.efb_enabled || site.opdc_enabled || site.pos_enabled) && (
