@@ -1,10 +1,16 @@
 ﻿import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import './S1Hub.css';
+import S1LineDetailModal from './S1LineDetailModal.jsx';
+import S1QuickLinkModal from './S1QuickLinkModal.jsx';
+import S1ModuleDetailModal from './S1ModuleDetailModal.jsx';
+import S1MassBalanceTable from './S1MassBalanceTable.jsx';
+import S0ResidueStreamCards from './S0ResidueStreamCards.jsx';
 import S1ResidueCards from "../../components/S1ResidueCards/S1ResidueCards.jsx";
 import S1ProcessEngineering from "../../components/S1ProcessEngineering/S1ProcessEngineering.jsx";
 import {
-  C, Fnt, LINE_COLORS, S1_CSS,
-  S0Header, S1Breadcrumb, SubstrateFlowStrip,
+  C, Fnt, S1_CSS, CANONICAL_MC,
+  S1Breadcrumb, SubstrateFlowStrip,
 } from "../../components/S1Shared/S1Shared.jsx";
 import { useMill } from "../../contexts/MillContext";
 import S1ResidueModal from "../../components/S1ResidueModal/S1ResidueModal.jsx";
@@ -675,6 +681,8 @@ export default function S1Hub() {
   const [lineModal, setLineModal] = useState(null);
   const [quickModal, setQuickModal] = useState(null);
   const [moduleModal, setModuleModal] = useState(null);
+  // Per-stream moisture content overrides (null = use canonical lab default)
+  const [mcOverride, setMcOverride] = useState({ efb: null, opdc: null, pos: null });
 
   const s1Calc = useMemo(() => {
     const efbFW  = derived?.monthlyEfb  || 0;
@@ -694,6 +702,50 @@ export default function S1Hub() {
     return { efbFW, opdcFW, posFW, totalFW, efbDM, opdcDM, posDM, totalDM, waterRemoved, dmRecovery, efbTPH, opdcTPH, posTPH };
   }, [derived]);
 
+  // ── Daily mass-balance with per-stream MC override ──
+  const mb = useMemo(() => {
+    const efbMCIn   = mcOverride.efb  ?? CANONICAL_MC.efb;
+    const opdcMCIn  = mcOverride.opdc ?? CANONICAL_MC.opdc;
+    const posMCIn   = mcOverride.pos  ?? CANONICAL_MC.pos;
+    const efbMCOut  = 45.0;   // gate target
+    const opdcMCOut = 40.0;   // CLASS A hard floor — never changes
+    const posMCOut  = 65.0;   // post-decanter target
+
+    const efbFreshTPD  = (derived?.monthlyEfb  || 0) / 30;
+    const opdcFreshTPD = (derived?.monthlyOpdc || 0) / 30;
+    const posFreshTPD  = (derived?.monthlyPos  || 0) / 30;
+
+    const efbDMTPD   = efbFreshTPD  * (1 - efbMCIn  / 100);
+    const opdcDMTPD  = opdcFreshTPD * (1 - opdcMCIn / 100);
+    const posDMTPD   = posFreshTPD  * (1 - posMCIn  / 100);
+
+    const efbS1Out   = efbDMTPD  / (1 - efbMCOut  / 100);
+    const opdcS1Out  = opdcDMTPD / (1 - opdcMCOut / 100);
+    const posS1Out   = posDMTPD  / (1 - posMCOut  / 100);
+
+    const efbH2O     = efbFreshTPD  - efbS1Out;
+    const opdcH2O    = opdcFreshTPD - opdcS1Out;
+    const posH2O     = posFreshTPD  - posS1Out;
+
+    const totalFreshTPD = efbFreshTPD + opdcFreshTPD + posFreshTPD;
+    const totalDMTPD    = efbDMTPD   + opdcDMTPD   + posDMTPD;
+    const totalS1Out    = efbS1Out   + opdcS1Out   + posS1Out;
+    const totalH2O      = efbH2O     + opdcH2O     + posH2O;
+
+    const f1 = v => isFinite(v) && v > 0 ? v.toFixed(1) : '\u2014';
+    return {
+      efb:  { fresh: f1(efbFreshTPD),  mcIn: efbMCIn.toFixed(1),  dm: f1(efbDMTPD),  s1Out: f1(efbS1Out),  mcOut: efbMCOut.toFixed(1),  h2o: f1(efbH2O),  dmRaw: efbDMTPD  },
+      opdc: { fresh: f1(opdcFreshTPD), mcIn: opdcMCIn.toFixed(1), dm: f1(opdcDMTPD), s1Out: f1(opdcS1Out), mcOut: opdcMCOut.toFixed(1), h2o: f1(opdcH2O), dmRaw: opdcDMTPD },
+      pos:  { fresh: f1(posFreshTPD),  mcIn: posMCIn.toFixed(1),  dm: f1(posDMTPD),  s1Out: f1(posS1Out),  mcOut: posMCOut.toFixed(1),  h2o: f1(posH2O),  dmRaw: posDMTPD  },
+      tot:  { fresh: f1(totalFreshTPD), dm: f1(totalDMTPD), s1Out: f1(totalS1Out), h2o: f1(totalH2O),
+              dmConserved: totalDMTPD > 0 && Math.abs(efbDMTPD + opdcDMTPD + posDMTPD - totalDMTPD) < 0.01 },
+      efbFreshTPD, opdcFreshTPD, posFreshTPD,
+      efbDMTPD, opdcDMTPD, posDMTPD,
+      efbS1Out, opdcS1Out, posS1Out,
+      efbH2O, opdcH2O, posH2O,
+    };
+  }, [derived, mcOverride]);
+
   const modules = [
     { key: 'efb',  num: 'Line 1', title: 'EFB Pre-Processing Line', desc: '10-node mechanical line · 20 t/h · 600mm belt · 298 kW · Shred → Press → Mill → Screen', accent: C.teal, icon: '🏭', tags: ['10 Machines', '600mm Belt', '20 t/h', 'Trommel + Hammer Mill'] },
     { key: 'opdc', num: 'Line 2', title: 'OPDC Pre-Processing Line', desc: '10-node mechanical line · 5 t/h · 500mm belt · 206 kW · CLASS A Gate · 24hr Dwell', accent: C.amber, icon: '🏭', tags: ['10 Machines', '500mm Belt', 'CLASS A', '24hr Dwell Gate'] },
@@ -708,258 +760,26 @@ export default function S1Hub() {
       <style>{S1_CSS}</style>
 
       {/* ── LINE DETAIL MODAL ── */}
-      {lineModal && LINE_DETAIL[lineModal] && (() => {
-        const line = LEADERBOARD_LINES.find(l => l.name === lineModal);
-        const detail = LINE_DETAIL[lineModal];
-        return (
-          <div
-            onClick={() => setLineModal(null)}
-            style={{
-              position: 'fixed', inset: 0, zIndex: 1000,
-              background: 'rgba(5,12,25,0.82)', backdropFilter: 'blur(4px)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              padding: '20px',
-            }}
-          >
-            <div
-              onClick={e => e.stopPropagation()}
-              style={{
-                background: '#0D1E33',
-                border: `1.5px solid ${line.accent}44`,
-                borderTop: `3px solid ${line.accent}`,
-                borderRadius: 14,
-                width: '100%', maxWidth: 820,
-                maxHeight: '88vh', overflowY: 'auto',
-                padding: '24px 28px',
-              }}
-            >
-              {/* Header */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{ width: 4, height: 28, borderRadius: 2, background: line.accent, flexShrink: 0 }} />
-                  <div>
-                    <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 18, color: line.accent }}>{line.name} Processing Line</div>
-                    <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, marginTop: 2 }}>{line.guardrail}</div>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setLineModal(null)}
-                  style={{ background: 'rgba(139,160,180,.12)', border: '1px solid rgba(139,160,180,.25)', borderRadius: 6, padding: '4px 12px', color: C.grey, fontFamily: Fnt.mono, fontSize: 11, cursor: 'pointer' }}
-                >ESC ✕</button>
-              </div>
-
-              {/* Key metrics strip */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 8, marginBottom: 20 }}>
-                {[
-                  { lbl: 'T/DAY', val: line.tonnes ?? '—' },
-                  { lbl: 'MC IN', val: line.mcIn },
-                  { lbl: 'MC OUT', val: line.mcOut },
-                  { lbl: 'MC REDUC.', val: line.mcReduction },
-                  { lbl: 'C:N', val: line.cn },
-                  { lbl: 'B:F', val: line.bf },
-                ].map((m, i) => (
-                  <div key={i} style={{ background: 'rgba(0,0,0,.3)', borderRadius: 7, padding: '8px 10px' }}>
-                    <div style={{ fontFamily: Fnt.dm, fontSize: 9, fontWeight: 700, color: C.grey, textTransform: 'uppercase', letterSpacing: '.05em', marginBottom: 3 }}>{m.lbl}</div>
-                    <div style={{ fontFamily: Fnt.mono, fontSize: 14, fontWeight: 700, color: C.amber }}>{m.val}</div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Substrate flow */}
-              <SubstrateFlowStrip
-                stageLabel={`${line.name} Substrate Flow`}
-                inflows={detail.inflows}
-                outflows={detail.outflows}
-              />
-
-              {/* Equipment register */}
-              <div style={{ marginTop: 18 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-                  <div style={{ width: 3, height: 13, borderRadius: 2, background: line.accent, flexShrink: 0 }} />
-                  <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 12, color: line.accent, textTransform: 'uppercase', letterSpacing: '.06em' }}>Equipment Register</div>
-                </div>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: Fnt.dm, fontSize: 11 }}>
-                  <thead>
-                    <tr style={{ borderBottom: `1px solid ${line.accent}44` }}>
-                      {['Code', 'Equipment', 't/h', 'kW', 'Cost'].map(h => (
-                        <th key={h} style={{ padding: '6px 10px', textAlign: 'left', fontWeight: 700, fontSize: 9, color: C.grey, textTransform: 'uppercase', letterSpacing: '.05em' }}>{h}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {detail.equipment.map((eq, i) => (
-                      <tr key={i} style={{ borderBottom: '1px solid rgba(139,160,180,.08)', background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,.15)' }}>
-                        <td style={{ padding: '7px 10px', color: line.accent, fontFamily: Fnt.mono, fontSize: 10, fontWeight: 700 }}>{eq.code}</td>
-                        <td style={{ padding: '7px 10px', color: C.white }}>{eq.name}</td>
-                        <td style={{ padding: '7px 10px', color: C.grey }}>{eq.tph}</td>
-                        <td style={{ padding: '7px 10px', color: C.amber, fontFamily: Fnt.mono }}>{eq.kw}</td>
-                        <td style={{ padding: '7px 10px', color: C.grey }}>{eq.cost}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        );
-      })()}
+      <S1LineDetailModal lineModal={lineModal} setLineModal={setLineModal} />
 
       {/* BREADCRUMB */}
       <S1Breadcrumb />
 
       {/* ── QUICK LINK MODAL ── */}
-      {quickModal && QUICK_LINK_DETAIL[quickModal] && (() => {
-        const d = QUICK_LINK_DETAIL[quickModal];
-        return (
-          <div
-            onClick={() => setQuickModal(null)}
-            style={{ position: 'fixed', inset: 0, zIndex: 1001, background: 'rgba(5,12,25,0.82)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}
-          >
-            <div
-              onClick={e => e.stopPropagation()}
-              style={{ background: '#0D1E33', border: `1.5px solid ${d.accent}44`, borderTop: `3px solid ${d.accent}`, borderRadius: 14, width: '100%', maxWidth: 860, maxHeight: '88vh', overflowY: 'auto', padding: '24px 28px' }}
-            >
-              {/* Header */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{ width: 4, height: 26, borderRadius: 2, background: d.accent, flexShrink: 0 }} />
-                  <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 17, color: d.accent }}>{d.title}</div>
-                </div>
-                <button onClick={() => setQuickModal(null)} style={{ background: 'rgba(139,160,180,.12)', border: '1px solid rgba(139,160,180,.25)', borderRadius: 6, padding: '4px 12px', color: C.grey, fontFamily: Fnt.mono, fontSize: 11, cursor: 'pointer' }}>ESC ✕</button>
-              </div>
-
-              {/* Ticker strip */}
-              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 18 }}>
-                {d.ticker.map((t, i) => (
-                  <div key={i} style={{ background: 'rgba(0,0,0,.3)', borderRadius: 6, padding: '6px 12px' }}>
-                    <div style={{ fontFamily: Fnt.dm, fontSize: 9, fontWeight: 700, color: C.grey, textTransform: 'uppercase', letterSpacing: '.05em' }}>{t.label}</div>
-                    <div style={{ fontFamily: Fnt.mono, fontSize: 13, fontWeight: 700, color: C.amber }}>{t.val}</div>
-                  </div>
-                ))}
-              </div>
-
-              {/* ASCII flow */}
-              {d.ascii && (
-                <>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                    <div style={{ width: 3, height: 13, borderRadius: 2, background: d.accent, flexShrink: 0 }} />
-                    <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 12, color: d.accent, textTransform: 'uppercase', letterSpacing: '.06em' }}>Process Flow</div>
-                  </div>
-                  <pre style={{ fontFamily: Fnt.mono, fontSize: 11, color: C.greyMd ?? '#8bafc8', background: 'rgba(0,0,0,.3)', border: `1px solid ${d.accent}33`, borderRadius: 8, padding: '14px 16px', overflowX: 'auto', lineHeight: 1.6, whiteSpace: 'pre', margin: 0 }}>{d.ascii}</pre>
-                  {d.stats && (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 8, marginTop: 12 }}>
-                      {d.stats.map((s, i) => (
-                        <div key={i} style={{ background: 'rgba(0,0,0,.25)', borderRadius: 6, padding: '7px 10px' }}>
-                          <div style={{ fontFamily: Fnt.dm, fontSize: 9, fontWeight: 700, color: C.grey, textTransform: 'uppercase', marginBottom: 2 }}>{s.lbl}</div>
-                          <div style={{ fontFamily: Fnt.mono, fontSize: 12, fontWeight: 700, color: C.amber }}>{s.val}</div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </>
-              )}
-
-              {/* Floor plan nodes */}
-              {d.nodes && (
-                <>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-                    <div style={{ width: 3, height: 13, borderRadius: 2, background: d.accent, flexShrink: 0 }} />
-                    <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 12, color: d.accent, textTransform: 'uppercase', letterSpacing: '.06em' }}>Equipment Layout</div>
-                  </div>
-                  {d.building && (
-                    <div style={{ background: 'rgba(0,0,0,.25)', border: `1px solid ${d.accent}44`, borderRadius: 8, padding: '10px 16px', marginBottom: 12, display: 'flex', gap: 16, alignItems: 'center' }}>
-                      <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 13, color: d.accent }}>{d.building.label}</div>
-                      <div style={{ fontFamily: Fnt.mono, fontSize: 13, color: C.amber }}>{d.building.dim}</div>
-                    </div>
-                  )}
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: 10 }}>
-                    {d.nodes.map((n, i) => (
-                      <div key={i} style={{ background: 'rgba(13,30,51,.8)', border: `1px solid ${d.accent}33`, borderLeft: `3px solid ${d.accent}`, borderRadius: 8, padding: '12px 14px' }}>
-                        <div style={{ fontFamily: Fnt.mono, fontSize: 10, fontWeight: 700, color: d.accent, marginBottom: 3 }}>{n.code}</div>
-                        <div style={{ fontFamily: Fnt.syne, fontSize: 11, fontWeight: 700, color: C.white, marginBottom: 5 }}>{n.name}</div>
-                        <div style={{ fontFamily: Fnt.dm, fontSize: 10, color: C.grey, lineHeight: 1.5 }}>{n.spec}</div>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-
-              {/* 1-pager summary */}
-              {d.summary && (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14 }}>
-                  {d.summary.map((sec, i) => (
-                    <div key={i} style={{ background: 'rgba(0,0,0,.25)', border: `1px solid ${d.accent}33`, borderRadius: 8, padding: '14px 16px' }}>
-                      <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 11, color: d.accent, textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 10 }}>{sec.section}</div>
-                      {sec.items.map(([label, val], j) => (
-                        <div key={j} style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginBottom: 7, borderBottom: '1px solid rgba(139,160,180,.08)', paddingBottom: 7 }}>
-                          <div style={{ fontFamily: Fnt.dm, fontSize: 10, color: C.grey }}>{label}</div>
-                          <div style={{ fontFamily: Fnt.mono, fontSize: 10, fontWeight: 700, color: C.white, textAlign: 'right' }}>{val}</div>
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        );
-      })()}
+      <S1QuickLinkModal quickModal={quickModal} setQuickModal={setQuickModal} />
 
       {/* ── MODULE DETAIL MODAL ── */}
-      {moduleModal && MODULE_DETAIL[moduleModal] && (() => {
-        const d = MODULE_DETAIL[moduleModal];
-        return (
-          <div
-            onClick={() => setModuleModal(null)}
-            style={{ position: 'fixed', inset: 0, zIndex: 1002, background: 'rgba(5,12,25,0.85)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}
-          >
-            <div
-              onClick={e => e.stopPropagation()}
-              style={{ background: '#0D1E33', border: `1.5px solid ${d.accent}44`, borderTop: `3px solid ${d.accent}`, borderRadius: 14, width: '100%', maxWidth: 860, maxHeight: '88vh', overflowY: 'auto', padding: '24px 28px' }}
-            >
-              {/* Header */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{ width: 4, height: 26, borderRadius: 2, background: d.accent, flexShrink: 0 }} />
-                  <div>
-                    <div style={{ fontFamily: Fnt.mono, fontSize: 10, fontWeight: 700, color: d.accent, textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 2 }}>{d.num}</div>
-                    <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 17, color: '#E8F0F8' }}>{d.title}</div>
-                  </div>
-                </div>
-                <button onClick={() => setModuleModal(null)} style={{ background: 'rgba(139,160,180,.12)', border: '1px solid rgba(139,160,180,.25)', borderRadius: 6, padding: '4px 12px', color: C.grey, fontFamily: Fnt.mono, fontSize: 11, cursor: 'pointer' }}>ESC ✕</button>
-              </div>
+      <S1ModuleDetailModal moduleModal={moduleModal} setModuleModal={setModuleModal} />
 
-              {/* Stats ticker */}
-              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 20 }}>
-                {d.stats.map((s, i) => (
-                  <div key={i} style={{ background: 'rgba(0,0,0,.3)', borderRadius: 6, padding: '6px 12px' }}>
-                    <div style={{ fontFamily: Fnt.dm, fontSize: 9, fontWeight: 700, color: C.grey, textTransform: 'uppercase', letterSpacing: '.05em' }}>{s.lbl}</div>
-                    <div style={{ fontFamily: Fnt.mono, fontSize: 13, fontWeight: 700, color: C.amber }}>{s.val}</div>
-                  </div>
-                ))}
-              </div>
+      {/* ══════════════════════════════════════════════════════
+          S1 MASS BALANCE SUMMARY TABLE
+      ══════════════════════════════════════════════════════ */}
+      <S1MassBalanceTable mb={mb} site={site} />
 
-              {/* Sections */}
-              {d.sections.map((sec, si) => (
-                <div key={si} style={{ marginBottom: 22 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-                    <div style={{ width: 3, height: 13, borderRadius: 2, background: d.accent, flexShrink: 0 }} />
-                    <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 12, color: d.accent, textTransform: 'uppercase', letterSpacing: '.06em' }}>{sec.title}</div>
-                  </div>
-                  <div style={{ background: 'rgba(0,0,0,.2)', border: `1px solid ${d.accent}22`, borderRadius: 8, overflow: 'hidden' }}>
-                    {sec.rows.map(([label, val], ri) => (
-                      <div key={ri} style={{ display: 'flex', justifyContent: 'space-between', gap: 12, padding: '8px 14px', borderBottom: ri < sec.rows.length - 1 ? '1px solid rgba(139,160,180,.08)' : 'none', background: ri % 2 === 0 ? 'transparent' : 'rgba(255,255,255,.02)' }}>
-                        <div style={{ fontFamily: Fnt.dm, fontSize: 11, color: C.grey, flexShrink: 0 }}>{label}</div>
-                        <div style={{ fontFamily: Fnt.mono, fontSize: 11, fontWeight: 700, color: C.white, textAlign: 'right' }}>{val}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      })()}
+      {/* ══════════════════════════════════════════════════════
+          S0 RESIDUE STREAM CARDS   (up to 4 per row)
+      ══════════════════════════════════════════════════════ */}
+      <S0ResidueStreamCards mb={mb} site={site} mcOverride={mcOverride} setMcOverride={setMcOverride} />
 
       {/* SUBSTRATE FLOW STRIP */}
       <div style={{ marginTop: 20 }}>
@@ -975,9 +795,9 @@ export default function S1Hub() {
 
       {/* ── ACTION BUTTONS ── */}
       {site && (site.efb_enabled || site.opdc_enabled || site.pos_enabled) && (
-        <div style={{ margin: '16px 28px 8px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-            <div style={{ fontFamily: Fnt.dm, fontSize: 12, fontWeight: 700, color: C.grey, marginRight: 4 }}>Open detailed view:</div>
+        <div className="s1hub-actions-wrap">
+          <div className="s1hub-actions-row">
+            <div className="s1hub-actions-lbl">Open detailed view:</div>
             {[
               { key: 'efb',  name: 'EFB',  accent: C.teal,    enabledKey: 'efb_enabled'  },
               { key: 'opdc', name: 'OPDC', accent: C.amber,   enabledKey: 'opdc_enabled' },
@@ -986,54 +806,23 @@ export default function S1Hub() {
               <button
                 key={r.key}
                 onClick={() => setActiveModal({ residue: r.key, tab: 0 })}
-                style={{
-                  padding: '8px 18px',
-                  background: `${r.accent}18`,
-                  border: `1.5px solid ${r.accent}66`,
-                  borderRadius: 7,
-                  fontFamily: Fnt.dm,
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: r.accent,
-                  cursor: 'pointer',
-                  letterSpacing: '.02em',
-                  transition: 'background .15s',
-                }}
+                className="s1hub-action-btn"
+                style={{ background: `${r.accent}18`, border: `1.5px solid ${r.accent}66`, color: r.accent }}
               >
-                {r.name} Detail \u2192
+                {r.name} Detail →
               </button>
             ))}
             <button
               onClick={() => setActiveModal({ residue: 'combined', tab: 0 })}
-              style={{
-                padding: '8px 18px',
-                background: 'rgba(0,162,73,.1)',
-                border: '1.5px solid rgba(0,162,73,.4)',
-                borderRadius: 7,
-                fontFamily: Fnt.dm,
-                fontSize: 13,
-                fontWeight: 700,
-                color: C.green,
-                cursor: 'pointer',
-                letterSpacing: '.02em',
-              }}
+              className="s1hub-action-btn"
+              style={{ background: 'rgba(0,162,73,.1)', border: '1.5px solid rgba(0,162,73,.4)', color: C.green }}
             >
               All Residues Combined
             </button>
             <button
               onClick={() => window.open('/s1-engineering-print?print', '_blank')}
-              style={{
-                padding: '8px 18px',
-                background: 'rgba(0,137,123,.1)',
-                border: '1.5px solid rgba(0,137,123,.4)',
-                borderRadius: 7,
-                fontFamily: Fnt.dm,
-                fontSize: 13,
-                fontWeight: 700,
-                color: C.teal,
-                cursor: 'pointer',
-                letterSpacing: '.02em',
-              }}
+              className="s1hub-action-btn"
+              style={{ background: 'rgba(0,137,123,.1)', border: '1.5px solid rgba(0,137,123,.4)', color: C.teal }}
             >
               &#128196; Complete Engineering — Print / PDF
             </button>
@@ -1067,46 +856,24 @@ export default function S1Hub() {
         </div>
 
         {/* ── FLOOR PLAN PRINT BUTTONS ── */}
-        <div style={{ marginTop: 20, marginBottom: 8 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-            <div style={{ width: 3, height: 14, borderRadius: 2, background: C.teal, flexShrink: 0 }} />
-            <div style={{ fontFamily: Fnt.syne, fontWeight: 700, fontSize: 13, color: C.teal, textTransform: 'uppercase', letterSpacing: '.06em' }}>
-              Floor Plan Print / PDF
-            </div>
+        <div className="s1hub-fp-section">
+          <div className="s1hub-fp-hdr">
+            <div className="s1hub-section-bar" />
+            <div className="s1hub-section-title">Floor Plan Print / PDF</div>
           </div>
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+          <div className="s1hub-fp-btn-row">
             <button
               onClick={() => window.open('/s1-floor-plan-print?line=all&print', '_blank')}
-              style={{
-                padding: '8px 18px',
-                background: 'rgba(0,137,123,.12)',
-                border: '1.5px solid rgba(0,137,123,.45)',
-                borderRadius: 7,
-                fontFamily: Fnt.dm,
-                fontSize: 13,
-                fontWeight: 700,
-                color: C.teal,
-                cursor: 'pointer',
-                letterSpacing: '.02em',
-              }}
+              className="s1hub-fp-btn"
+              style={{ background: 'rgba(0,137,123,.12)', border: '1.5px solid rgba(0,137,123,.45)', color: C.teal }}
             >
               &#128196; All Residues Combined
             </button>
             {site?.efb_enabled && (
               <button
                 onClick={() => window.open('/s1-floor-plan-print?line=efb&print', '_blank')}
-                style={{
-                  padding: '8px 18px',
-                  background: `${C.teal}14`,
-                  border: `1.5px solid ${C.teal}55`,
-                  borderRadius: 7,
-                  fontFamily: Fnt.dm,
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: C.teal,
-                  cursor: 'pointer',
-                  letterSpacing: '.02em',
-                }}
+                className="s1hub-fp-btn"
+                style={{ background: `${C.teal}14`, border: `1.5px solid ${C.teal}55`, color: C.teal }}
               >
                 EFB Line
               </button>
@@ -1114,18 +881,8 @@ export default function S1Hub() {
             {site?.opdc_enabled && (
               <button
                 onClick={() => window.open('/s1-floor-plan-print?line=opdc&print', '_blank')}
-                style={{
-                  padding: '8px 18px',
-                  background: `${C.amber}14`,
-                  border: `1.5px solid ${C.amber}55`,
-                  borderRadius: 7,
-                  fontFamily: Fnt.dm,
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: C.amber,
-                  cursor: 'pointer',
-                  letterSpacing: '.02em',
-                }}
+                className="s1hub-fp-btn"
+                style={{ background: `${C.amber}14`, border: `1.5px solid ${C.amber}55`, color: C.amber }}
               >
                 OPDC Line
               </button>
@@ -1133,18 +890,8 @@ export default function S1Hub() {
             {site?.pos_enabled && (
               <button
                 onClick={() => window.open('/s1-floor-plan-print?line=pos&print', '_blank')}
-                style={{
-                  padding: '8px 18px',
-                  background: 'rgba(59,130,246,.12)',
-                  border: '1.5px solid rgba(59,130,246,.4)',
-                  borderRadius: 7,
-                  fontFamily: Fnt.dm,
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: '#3B82F6',
-                  cursor: 'pointer',
-                  letterSpacing: '.02em',
-                }}
+                className="s1hub-fp-btn"
+                style={{ background: 'rgba(59,130,246,.12)', border: '1.5px solid rgba(59,130,246,.4)', color: '#3B82F6' }}
               >
                 POS Line
               </button>
@@ -1173,39 +920,30 @@ export default function S1Hub() {
 
         {/* STREAMS SUMMARY */}
         <div className="sec-title st-teal" style={{ marginTop: 32 }}>Daily Stream Summary</div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14 }}>
+        <div className="s1hub-streams-grid">
           {[
-            { name: 'EFB', fresh: '300 t/day', dm: '112 t/day', mc: '62.5%', color: C.teal },
-            { name: 'OPDC', fresh: '45 t/day', dm: '13.5 t/day', mc: '70%', color: C.amber },
-            { name: 'POS', fresh: '30 t/day', dm: '6 t/day', mc: '82%', color: '#3B82F6' },
+            { name: 'EFB',  fresh: '300 t/day', dm: '112 t/day',  mc: '62.5%', color: C.teal    },
+            { name: 'OPDC', fresh: '45 t/day',  dm: '13.5 t/day', mc: '70%',   color: C.amber   },
+            { name: 'POS',  fresh: '30 t/day',  dm: '6 t/day',    mc: '82%',   color: '#3B82F6' },
           ].map((st, i) => (
-            <div key={i} style={{ background: C.navyCard, border: `1.5px solid ${C.bdrIdle}`, borderLeft: `4px solid ${st.color}`, borderRadius: 8, padding: '16px 20px' }}>
-              <div style={{ fontFamily: Fnt.syne, fontSize: 14, fontWeight: 700, color: st.color, marginBottom: 10 }}>{st.name}</div>
-              <div style={{ display: 'flex', gap: 16 }}>
-                <div><div style={{ fontFamily: Fnt.dm, fontSize: 10, fontWeight: 700, color: C.grey, textTransform: 'uppercase', marginBottom: 3 }}>Fresh</div><div style={{ fontFamily: Fnt.mono, fontSize: 15, fontWeight: 700, color: C.amber }}>{st.fresh}</div></div>
-                <div><div style={{ fontFamily: Fnt.dm, fontSize: 10, fontWeight: 700, color: C.grey, textTransform: 'uppercase', marginBottom: 3 }}>Dry Matter</div><div style={{ fontFamily: Fnt.mono, fontSize: 15, fontWeight: 700, color: C.teal }}>{st.dm}</div></div>
-                <div><div style={{ fontFamily: Fnt.dm, fontSize: 10, fontWeight: 700, color: C.grey, textTransform: 'uppercase', marginBottom: 3 }}>MC</div><div style={{ fontFamily: Fnt.mono, fontSize: 15, fontWeight: 700, color: C.white }}>{st.mc}</div></div>
+            <div key={i} className="s1hub-stream-sm-card" style={{ '--stream-color': st.color }}>
+              <div className="s1hub-stream-sm-name">{st.name}</div>
+              <div className="s1hub-stream-sm-metrics">
+                <div><div className="s1hub-stream-sm-lbl">Fresh</div><div className="s1hub-stream-val-fw">{st.fresh}</div></div>
+                <div><div className="s1hub-stream-sm-lbl">Dry Matter</div><div className="s1hub-stream-val-dm">{st.dm}</div></div>
+                <div><div className="s1hub-stream-sm-lbl">MC</div><div className="s1hub-stream-val-mc">{st.mc}</div></div>
               </div>
             </div>
           ))}
         </div>
 
         {/* 1-PAGER LINK */}
-        <div style={{ marginTop: 28, display: 'flex', justifyContent: 'flex-end' }}>
+        <div className="s1hub-1pager-row">
           <a
             href="/CFI_S0_Residue_Selector.html"
             target="_blank"
             rel="noopener noreferrer"
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              padding: '10px 22px', borderRadius: 6,
-              border: `1.5px solid ${C.teal}`,
-              background: 'transparent', color: C.teal,
-              fontFamily: Fnt.dm, fontSize: 13, fontWeight: 700,
-              textDecoration: 'none', letterSpacing: '.02em',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = C.teal; e.currentTarget.style.color = C.navy; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = C.teal; }}
+            className="s1hub-1pager-link"
           >
             נ“„ View S0 Residue Selector 1-Pager
           </a>

@@ -47,6 +47,9 @@ export const LINE_COLORS = {
   POS:  '#3B82F6',
 };
 
+// ── Canonical lab MC values (% WB) — single source of truth ──
+export const CANONICAL_MC = { efb: 62.5, opdc: 70.0, pos: 82.0 };
+
 // ── S1 CSS (matches S3Landing exactly) ──
 export const S1_CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;600;700&family=DM+Mono:wght@500;700&family=EB+Garamond:wght@400;700&display=swap');
