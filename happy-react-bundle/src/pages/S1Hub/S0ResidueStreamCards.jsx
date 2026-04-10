@@ -211,8 +211,11 @@ function StreamModal({ streamKey, mb, site, onClose }) {
   const asciiSrc = (() => {
     const ffb    = site?.ffb_capacity_tph || 60;
     const opsDay = site?.operating_hrs_day || 20;
-    const daysM  = site?.operating_days_month || 25;
-    const cpoAnn = Math.round(ffb * opsDay * daysM * 12 * 0.21);
+    const daysM  = site?.operating_days_month || 30;
+    const util   = site?.utilisation_pct || 85;
+    // S0 Section B formula: effFFB × hrs × days × (OER/100)
+    const monthlyFFB = ffb * (util / 100) * opsDay * daysM;
+    const cpoAnn = Math.round(monthlyFFB * 0.21 * 12);
     const loc    = [site?.district, site?.province].filter(Boolean).join(', ') || '';
     const params = new URLSearchParams({
       estate: site?.estate_name || '',

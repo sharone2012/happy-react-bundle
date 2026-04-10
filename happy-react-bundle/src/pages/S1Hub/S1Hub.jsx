@@ -1008,10 +1008,14 @@ export default function S1Hub() {
             const _ffb  = parseFloat(ffbTPHEdit)  || site?.ffb_capacity_tph       || 60;
             const _ops  = parseFloat(opsHEdit)    || site?.operating_hrs_day      || 20;
             const _days = parseFloat(daysMonthEdit) || site?.operating_days_month || 30;
-            const cpoDaily    = _ffb * _ops * (cpoOER / 100);
+            const _util = parseFloat(utilEdit)    || site?.utilisation_pct        || 85;
+            // S0 Section B formula: effFFB = FFB × (util/100), monthlyFFB = effFFB × hrs × days
+            const effFFB      = _ffb * (_util / 100);
+            const monthlyFFB  = effFFB * _ops * _days;
+            const monthlyCPO  = Math.round(monthlyFFB * (cpoOER / 100));
             const cpoProdCalc = cpoPeriod === 'annual'
-              ? Math.round(cpoDaily * _days * 12)
-              : Math.round(cpoDaily * _days);
+              ? monthlyCPO * 12
+              : monthlyCPO;
             const fmtCPO = (n) => n >= 1e6 ? `${(n/1e6).toFixed(2)}M` : n >= 1e3 ? `${(n/1e3).toFixed(1)}K` : String(n);
             return (
               <>
