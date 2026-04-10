@@ -746,3 +746,119 @@
   font-family: var(--fnt-mono); font-size: 14px; font-weight: 700; color: var(--c-amber);
 }
 .s1hub-modal-iframe { width: 100%; flex: 1; border: none; background: #fff; min-height: 400px; }
+
+/* ?? STREAM DETAIL TAB: OVERVIEW ?????????????????????????????? */
+/* .sdt-* prefix = stream-detail-tab, scoped to modal overview  */
+
+.sdt-section-hdr {
+  font-family: var(--fnt-syne); font-size: 12px; font-weight: 700;
+  color: var(--modal-accent, var(--c-teal));
+  text-transform: uppercase; letter-spacing: .06em;
+  margin: 0 0 12px 0;
+}
+.sdt-section-hdr--table { margin-top: 20px; }
+
+/* Equipment nodes row */
+.sdt-equip-row {
+  display: flex; align-items: center; gap: 0;
+  margin-bottom: 14px; flex-wrap: wrap; gap: 4px;
+}
+.sdt-equip-node {
+  display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0;
+}
+.sdt-equip-card {
+  flex: 1; min-width: 80px;
+  background: #0D1E33;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-top: 2px solid var(--modal-accent, var(--c-teal));
+  border-radius: 6px; padding: 8px 10px;
+}
+.sdt-equip-name {
+  font-family: var(--fnt-dm); font-size: 11px; font-weight: 700;
+  color: var(--modal-accent, var(--c-teal)); margin-bottom: 4px;
+}
+.sdt-equip-spec {
+  font-family: var(--fnt-mono); font-size: 13px; font-weight: 700;
+  color: var(--c-amber);
+}
+.sdt-equip-arrow {
+  font-family: var(--fnt-mono); font-size: 14px; color: rgba(168,189,208,0.4);
+  flex-shrink: 0; padding: 0 2px;
+}
+
+/* Open full line button */
+.sdt-open-line-btn {
+  display: inline-block; margin-bottom: 14px;
+  padding: 7px 14px; border-radius: 6px;
+  border: 1.5px solid var(--modal-accent, var(--c-teal));
+  background: transparent;
+  color: var(--modal-accent, var(--c-teal));
+  font-family: var(--fnt-mono); font-size: 11px; font-weight: 700;
+  text-decoration: none; transition: background .15s;
+}
+.sdt-open-line-btn:hover { background: rgba(64,215,197,0.08); }
+
+/* Data table */
+.sdt-table-wrap { overflow-x: auto; border-radius: 8px; }
+.sdt-table {
+  width: 100%; border-collapse: collapse;
+  background: #060C14; font-size: 11px;
+  min-width: 520px;
+}
+.sdt-table th {
+  background: #111827; color: #fff;
+  padding: 7px 8px; text-align: left;
+  font-family: var(--fnt-dm); font-size: 10px; font-weight: 700;
+  border-bottom: 2px solid rgba(255,255,255,0.10);
+  white-space: nowrap;
+}
+.sdt-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-family: var(--fnt-dm); font-size: 11px; color: #C8D8E4;
+  vertical-align: middle;
+}
+.sdt-table tr:last-child td { border-bottom: none; }
+.sdt-row-locked { background: rgba(255,255,255,0.025); }
+
+.sdt-td-param {
+  color: var(--modal-accent, var(--c-teal));
+  font-weight: 700; white-space: nowrap;
+}
+.sdt-td-unit {
+  font-family: var(--fnt-mono); font-size: 10px;
+  color: #5A7A96; white-space: nowrap;
+}
+
+/* Data gap cell */
+.sdt-cell-gap {
+  color: #cc2222; font-style: italic; font-weight: 600;
+}
+
+/* Lock badge cells */
+.sdt-lock-a {
+  font-family: var(--fnt-mono); font-size: 9px; font-weight: 700;
+  color: var(--c-amber); letter-spacing: .04em; white-space: nowrap;
+}
+.sdt-lock-b {
+  font-family: var(--fnt-mono); font-size: 10px;
+  color: #5A7A96;
+}
+.sdt-lock-icp {
+  font-family: var(--fnt-mono); font-size: 9px; font-weight: 700;
+  color: #60A5FA; letter-spacing: .04em;
+}
+
+/* Floor plans placeholder */
+.sdt-placeholder {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 320px; gap: 10px;
+}
+.sdt-placeholder-icon { font-size: 36px; opacity: 0.25; }
+.sdt-placeholder-title {
+  font-family: var(--fnt-syne); font-size: 16px; font-weight: 700;
+  color: rgba(255,255,255,0.4);
+}
+.sdt-placeholder-sub {
+  font-family: var(--fnt-dm); font-size: 12px; color: rgba(255,255,255,0.2);
+}

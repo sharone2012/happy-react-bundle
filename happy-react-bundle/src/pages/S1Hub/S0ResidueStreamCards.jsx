@@ -99,46 +99,125 @@ function BadgeChip({ label, chipColor, chipBg, chipBdr }) {
 const STREAM_CONFIG = {
   efb: {
     label: 'EFB — Empty Fruit Bunch',
-    processUrl:  '/CFI_S1_EFB_Processing_Line_1Pager.html',
-    asciiUrl:    '/CFI_S1_EFB_Process_Engineering_Ascii.html',
+    shortLabel: 'EFB Mechanical Downsizing',
+    processUrl: '/CFI_S1_EFB_Processing_Line_1Pager.html',
+    asciiUrl:   '/CFI_S1_EFB_Process_Engineering_Ascii.html',
     accentColor: C.teal,
+    equipNodes: [
+      { name: 'Screw Press',       spec: '30 kW' },
+      { name: 'Primary Shredder',  spec: '75 kW' },
+      { name: 'Hammer Mill',       spec: '110 kW' },
+      { name: 'Buffer Bin',        spec: '50,000 L' },
+    ],
+    // col4Label used in table header
+    col3Label: 'Post-Press (Gate B.G2)',
+    col4Label: 'Post-Mill (Gate B.G1)',
+    streamRows: [
+      { param: 'Moisture Content', liveInput: true,  postPress: '45–50% (max 50%)', postMill: '45–50%',       unit: '% wb',   lock: 'A' },
+      { param: 'Throughput',       liveFlow:  true,  postPress: '~14 t/h',           postMill: '~14 t/h',      unit: 't/h FW', lock: 'A' },
+      { param: 'Particle Size',    input: 'Bale (compressed)',  postPress: '50–100mm post-shred', postMill: 'D90 ≤ 2mm', unit: 'mm',     lock: 'A' },
+      { param: 'Nitrogen (N)',     input: '0.76% DM',  postPress: '0.76% DM', postMill: '0.76% DM', unit: '% DM', lock: 'A' },
+      { param: 'Lignin (ADL)',     input: '22.0% DM',  postPress: '22.0% DM', postMill: '22.0% DM', unit: '% DM', lock: 'A' },
+      { param: 'Potassium (K)',    input: '2.0% DM',   postPress: '2.0% DM',  postMill: '2.0% DM',  unit: '% DM', lock: 'A' },
+      { param: 'Phosphorus (P)',   input: '0.06% DM',  postPress: '0.06% DM', postMill: '0.06% DM', unit: '% DM', lock: 'A' },
+      { param: 'C:N Ratio',        input: '60',         postPress: '60',        postMill: '60',        unit: 'ratio', lock: 'A' },
+      { param: 'Crude Protein',    input: '4.75% DM',  postPress: '4.75% DM', postMill: '4.75% DM', unit: '% DM', lock: 'A' },
+      { param: 'Ash',              input: '5.0% DM',   postPress: '5.0% DM',  postMill: '5.0% DM',  unit: '% DM', lock: 'B' },
+      { param: 'pH',               input: '5.75',       postPress: '5.75',      postMill: '5.75',      unit: 'pH',   lock: 'B' },
+      { param: 'Bulk Density',     input: '140 kg/m³ (bale)', postPress: null,  postMill: '~280 kg/m³ (est.)', unit: 'kg/m³', lock: 'B' },
+    ],
   },
   opdc: {
     label: 'OPDC — Oil Palm Decanter Cake',
-    processUrl:  '/CFI_S1_OPDC_Processing_Line_1Pager.html',
-    asciiUrl:    '/CFI_S1_OPDC_Process_Engineering_Ascii.html',
+    shortLabel: 'OPDC Mechanical Processing',
+    processUrl: '/CFI_S1_OPDC_Processing_Line_1Pager.html',
+    asciiUrl:   '/CFI_S1_OPDC_Process_Engineering_Ascii.html',
     accentColor: C.amber,
+    equipNodes: [
+      { name: 'Screw Press',   spec: '30 kW' },
+      { name: 'Lump Breaker',  spec: '37 kW' },
+      { name: 'Hammer Mill',   spec: '110 kW' },
+      { name: 'Buffer Bin',    spec: '50,000 L' },
+    ],
+    col3Label: 'Post-Press (Gate B.G2)',
+    col4Label: 'Post-24hr Dwell (Gate C.G2/G3)',
+    streamRows: [
+      { param: 'Moisture Content', liveInput: true,  postPress: '60–62% (floor 40%)', postMill: '60–62%',           unit: '% wb',   lock: 'A' },
+      { param: 'Throughput',       liveFlow:  true,  postPress: '~3.5 t/h',            postMill: '~3.5 t/h',         unit: 't/h FW', lock: 'A' },
+      { param: 'Particle Size',    input: 'Cake/chunks',        postPress: '50–100mm post-lump', postMill: 'D90 ≤ 2mm', unit: 'mm',   lock: 'A' },
+      { param: 'Nitrogen (N)',     input: '2.32% DM',  postPress: '2.32% DM', postMill: '2.32% DM', unit: '% DM', lock: 'A' },
+      { param: 'Lignin (ADL)',     input: '10.78% DM', postPress: '10.78% DM', postMill: '10.78% DM', unit: '% DM', lock: 'B' },
+      { param: 'Potassium (K)',    input: '1.20% DM',  postPress: '1.20% DM', postMill: '1.20% DM',  unit: '% DM', lock: 'A' },
+      { param: 'Phosphorus (P)',   input: null,         postPress: null,        postMill: null,         unit: '% DM', lock: '—' },
+      { param: 'C:N Ratio',        input: '17.85',      postPress: '17.85',     postMill: '17.85',      unit: 'ratio', lock: 'B' },
+      { param: 'Crude Protein',    input: '14.5% DM',  postPress: '14.5% DM', postMill: '14.5% DM',  unit: '% DM', lock: 'B' },
+      { param: 'pH',               input: '4.40',       postPress: '4.40',      postMill: '8.0–9.0 (PKSA)', unit: 'pH', lock: 'A' },
+      { param: 'BSF Score',        input: '4.275/5.0 (Cond. Pass)', postPress: '—', postMill: 'Post-PKSA: Pass', unit: '/ 5.0', lock: 'B' },
+    ],
   },
   pos: {
     label: 'POS — Palm Oil Sludge',
-    processUrl:  '/CFI_S1_POS_Processing_Line_1Pager.html',
-    asciiUrl:    '/CFI_S1_POS_Process_Engineering_Ascii.html',
+    shortLabel: 'POS S1A Dewatering',
+    processUrl: '/CFI_S1_POS_Processing_Line_1Pager.html',
+    asciiUrl:   '/CFI_S1_POS_Process_Engineering_Ascii.html',
     accentColor: '#3B82F6',
+    equipNodes: [
+      { name: 'Drum Screen',           spec: '2mm mesh' },
+      { name: 'Decanter Centrifuge',   spec: '55 kW' },
+      { name: 'Buffer Tank',           spec: '15,000 L' },
+    ],
+    col3Label: 'Post-Dewater (Centrifuge)',
+    col4Label: null, // POS has no 4th gate column
+    streamRows: [
+      { param: 'Moisture Content',          liveInput: true,  postPress: '65% wb',                    unit: '% wb',     lock: 'A' },
+      { param: 'Throughput',                liveFlow:  true,  postPress: '~13.5 t/day FW',            unit: 't/day',    lock: 'A' },
+      { param: 'Nitrogen (N)',              input: '1.76% DM',  postPress: '1.76% DM',               unit: '% DM',     lock: 'B' },
+      { param: 'Phosphorus (P)',            input: null,         postPress: null,                      unit: '% DM',     lock: '—' },
+      { param: 'Potassium (K)',             input: null,         postPress: null,                      unit: '% DM',     lock: '—' },
+      { param: 'Crude Protein',             input: '11% DM',    postPress: '11% DM',                  unit: '% DM',     lock: 'B' },
+      { param: 'Ash',                       input: '28% DM',    postPress: '28% DM',                  unit: '% DM',     lock: 'B' },
+      { param: 'Ether Extract (CPO res.)',  input: '10% DM',    postPress: '10% DM',                  unit: '% DM',     lock: 'B' },
+      { param: 'C:N Ratio',                 input: null,         postPress: null,                      unit: 'ratio',    lock: '—' },
+      { param: 'Fe (ICP-OES required)',     input: '3,000–8,000 mg/kg DM (est.)', postPress: '3,000–8,000 mg/kg DM (est.)', unit: 'mg/kg DM', lock: 'ICP' },
+      { param: 'Mn',                        input: '100–475 mg/kg DM (est.)',      postPress: '100–475 mg/kg DM (est.)',      unit: 'mg/kg DM', lock: 'B' },
+    ],
   },
 };
 
 const MODAL_TABS = [
-  { key: 'data',    label: 'Stream Data' },
-  { key: 'process', label: 'Process Engineering' },
-  { key: 'ascii',   label: 'ASCII' },
+  { key: 'overview',   label: 'Overview' },
+  { key: 'machinery',  label: 'Machinery' },
+  { key: 'process',    label: 'Eng. Process' },
+  { key: 'floorplans', label: 'Floor Plans' },
+  { key: 'ascii',      label: 'ASCII' },
 ];
 
 function StreamModal({ streamKey, mb, site, onClose }) {
-  const [tab, setTab] = useState('data');
+  const [tab, setTab] = useState('overview');
   const cfg = STREAM_CONFIG[streamKey];
   const s = mb[streamKey];
-  const days = site?.operating_days_month || 30;
   const opsH = site?.operating_hrs_day || 20;
 
-  const fmtM = (tpd) => {
-    const v = parseFloat(tpd);
-    return isFinite(v) && v > 0 ? (v * days).toFixed(0) : '—';
+  // Per-row cell renderer
+  const renderCell = (val) => {
+    if (val === null || val === undefined) return <span className="sdt-cell-gap">DATA GAP</span>;
+    return val;
   };
+
+  const renderLock = (lock) => {
+    if (lock === 'A') return <span className="sdt-lock-a">CLASS A</span>;
+    if (lock === 'B') return <span className="sdt-lock-b">B</span>;
+    if (lock === 'ICP') return <span className="sdt-lock-icp">ICP-OES</span>;
+    return <span className="sdt-lock-b">{lock}</span>;
+  };
+
+  const iframeUrl = tab === 'machinery' ? cfg.processUrl : cfg.asciiUrl;
 
   return (
     <div className="s1hub-modal-overlay" onClick={onClose}>
       <div className="s1hub-modal" onClick={e => e.stopPropagation()}
            style={{ '--modal-accent': cfg.accentColor }}>
+        {/* Header */}
         <div className="s1hub-modal-hdr">
           <div>
             <div className="s1hub-modal-title">{cfg.label}</div>
@@ -146,6 +225,7 @@ function StreamModal({ streamKey, mb, site, onClose }) {
           </div>
           <button className="s1hub-modal-close" onClick={onClose}>×</button>
         </div>
+        {/* Tab bar */}
         <div className="s1hub-modal-tabs">
           {MODAL_TABS.map(t => (
             <button key={t.key}
@@ -153,32 +233,96 @@ function StreamModal({ streamKey, mb, site, onClose }) {
                     onClick={() => setTab(t.key)}>{t.label}</button>
           ))}
         </div>
+        {/* Body */}
         <div className="s1hub-modal-body">
-          {tab === 'data' && (
+
+          {/* ── OVERVIEW ── */}
+          {tab === 'overview' && (
             <div className="s1hub-modal-data">
-              <div className="s1hub-modal-section-title">{cfg.label}</div>
-              {[
-                { lbl: 'Fresh Weight / month', val: `${fmtM(s.fresh)} t` },
-                { lbl: 'Dry Matter / month',   val: `${fmtM(s.dm)} t DM` },
-                { lbl: 'Flow rate',            val: `${(parseFloat(s.fresh) / opsH).toFixed(1)} t/h` },
-                { lbl: 'Moisture IN',          val: `${s.mcIn}%` },
-                { lbl: 'Moisture OUT',         val: `${s.mcOut}%` },
-                { lbl: 'SO Status',            val: 'ACTIVE', valColor: '#3DCB7A' },
-              ].map(row => (
-                <div key={row.lbl} className="s1hub-modal-row">
-                  <span className="s1hub-modal-row-lbl">{row.lbl}</span>
-                  <span className="s1hub-modal-row-val" style={row.valColor ? { color: row.valColor } : undefined}>{row.val}</span>
-                </div>
-              ))}
+              {/* Equipment nodes */}
+              <div className="sdt-section-hdr">{cfg.label} — Equipment Nodes</div>
+              <div className="sdt-equip-row">
+                {cfg.equipNodes.map((node, i) => (
+                  <div key={node.name} className="sdt-equip-node">
+                    {i > 0 && <div className="sdt-equip-arrow">→</div>}
+                    <div className="sdt-equip-card">
+                      <div className="sdt-equip-name">{node.name}</div>
+                      <div className="sdt-equip-spec">{node.spec}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <a className="sdt-open-line-btn"
+                 href={cfg.processUrl}
+                 target="_blank"
+                 rel="noopener noreferrer">
+                Open Full {streamKey.toUpperCase()} Line →
+              </a>
+
+              {/* Data table */}
+              <div className="sdt-section-hdr sdt-section-hdr--table">
+                S1 Overview: {cfg.shortLabel}
+              </div>
+              <div className="sdt-table-wrap">
+                <table className="sdt-table">
+                  <thead>
+                    <tr>
+                      <th>Parameter</th>
+                      <th>Input State</th>
+                      <th>{cfg.col3Label}</th>
+                      {cfg.col4Label && <th>{cfg.col4Label}</th>}
+                      <th>Unit</th>
+                      <th>Lock</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cfg.streamRows.map((row) => {
+                      // Live input state calculation
+                      let inputCell;
+                      if (row.liveInput) {
+                        inputCell = `${parseFloat(s?.mcIn ?? 0).toFixed(1)}%`;
+                      } else if (row.liveFlow) {
+                        const fw = parseFloat(s?.fresh ?? 0);
+                        inputCell = fw > 0 ? `${(fw / opsH).toFixed(1)} t/h` : '—';
+                      } else {
+                        inputCell = row.input;
+                      }
+                      const isLocked = row.lock === 'A';
+                      return (
+                        <tr key={row.param} className={isLocked ? 'sdt-row-locked' : ''}>
+                          <td className="sdt-td-param">{row.param}</td>
+                          <td>{renderCell(inputCell)}</td>
+                          <td>{renderCell(row.postPress)}</td>
+                          {cfg.col4Label && <td>{renderCell(row.postMill ?? null)}</td>}
+                          <td className="sdt-td-unit">{row.unit}</td>
+                          <td>{renderLock(row.lock)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
-          {(tab === 'process' || tab === 'ascii') && (
+
+          {/* ── MACHINERY / ENG. PROCESS / ASCII → iframes ── */}
+          {(tab === 'machinery' || tab === 'process' || tab === 'ascii') && (
             <iframe
               className="s1hub-modal-iframe"
-              src={tab === 'process' ? cfg.processUrl : cfg.asciiUrl}
+              src={iframeUrl}
               title={`${cfg.label} ${tab}`}
             />
           )}
+
+          {/* ── FLOOR PLANS → placeholder ── */}
+          {tab === 'floorplans' && (
+            <div className="sdt-placeholder">
+              <div className="sdt-placeholder-icon">⬜</div>
+              <div className="sdt-placeholder-title">Floor Plans</div>
+              <div className="sdt-placeholder-sub">Coming soon — engineering drawings will appear here</div>
+            </div>
+          )}
+
         </div>
       </div>
     </div>
