@@ -870,7 +870,7 @@ export default function S1Hub() {
   // Per-stream moisture content overrides (null = use canonical lab default)
   const [mcOverride, setMcOverride] = useState({ efb: null, opdc: null, pos: null });
   // ── Sidebar state ─────────────────────────────────────
-  const [cpoProd, setCpoProd] = useState(3000);
+  const [cpoOER, setCpoOER] = useState(21);
   const [cpoPeriod, setCpoPeriod] = useState('annual');
   const [ffbTPHEdit, setFfbTPHEdit] = useState('');
   const [opsHEdit, setOpsHEdit] = useState('');
@@ -1000,22 +1000,42 @@ export default function S1Hub() {
         <aside className="s1hub-sb">
           {/* MILL PARAMETERS */}
           <span className="s1hub-sb-lbl">Mill Parameters</span>
-          <div className="s1hub-sb-iw">
-            <span className="s1hub-sb-ll">CPO Production</span>
-            <div style={{ display:'flex', alignItems:'center', gap:3, flexShrink:0 }}>
-              <div className="s1hub-sb-irow">
-                <input type="number" className="s1hub-sb-input" value={cpoProd}
-                       onChange={e => setCpoProd(+e.target.value || 0)} />
-                <span className="s1hub-sb-un">t</span>
-              </div>
-              <div className="s1hub-sb-toggle-row">
-                <button className={`s1hub-sb-toggle${cpoPeriod === 'annual' ? ' s1hub-sb-toggle--active' : ''}`}
-                        onClick={() => setCpoPeriod('annual')}>Annual</button>
-                <button className={`s1hub-sb-toggle${cpoPeriod === 'month' ? ' s1hub-sb-toggle--active' : ''}`}
-                        onClick={() => setCpoPeriod('month')}>Month</button>
-              </div>
-            </div>
-          </div>
+          {(() => {
+            const _ffb  = parseFloat(ffbTPHEdit) || site?.ffb_capacity_tph  || 60;
+            const _ops  = parseFloat(opsHEdit)   || site?.operating_hrs_day || 20;
+            const _days = site?.operating_days_month || 30;
+            const cpoDaily    = _ffb * _ops * (cpoOER / 100);
+            const cpoProdCalc = cpoPeriod === 'annual'
+              ? Math.round(cpoDaily * _days * 12)
+              : Math.round(cpoDaily * _days);
+            return (
+              <>
+                <div className="s1hub-sb-iw">
+                  <span className="s1hub-sb-ll">CPO Production</span>
+                  <div style={{ display:'flex', alignItems:'center', gap:3, flexShrink:0 }}>
+                    <div className="s1hub-sb-lkd">
+                      <span className="s1hub-sb-lv">{cpoProdCalc.toLocaleString()}</span>
+                      <span className="s1hub-sb-lu">t</span>
+                    </div>
+                    <div className="s1hub-sb-toggle-row">
+                      <button className={`s1hub-sb-toggle${cpoPeriod === 'annual' ? ' s1hub-sb-toggle--active' : ''}`}
+                              onClick={() => setCpoPeriod('annual')}>Annual</button>
+                      <button className={`s1hub-sb-toggle${cpoPeriod === 'month' ? ' s1hub-sb-toggle--active' : ''}`}
+                              onClick={() => setCpoPeriod('month')}>Month</button>
+                    </div>
+                  </div>
+                </div>
+                <div className="s1hub-sb-iw">
+                  <span className="s1hub-sb-ll">CPO OER</span>
+                  <div className="s1hub-sb-irow">
+                    <input type="number" className="s1hub-sb-input" value={cpoOER}
+                           onChange={e => setCpoOER(+e.target.value || 0)} />
+                    <span className="s1hub-sb-un">% FFB</span>
+                  </div>
+                </div>
+              </>
+            );
+          })()}
           <div className="s1hub-sb-iw">
             <span className="s1hub-sb-ll">FFB Throughput</span>
             <div className="s1hub-sb-irow">
