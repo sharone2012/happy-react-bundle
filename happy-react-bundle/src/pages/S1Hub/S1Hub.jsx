@@ -1068,54 +1068,6 @@ export default function S1Hub() {
               <span className="s1hub-sb-un">hr/day</span>
             </div>
           </div>
-
-          {/* FEEDSTOCK RATIOS */}
-          <span className="s1hub-sb-lbl">Feedstock Ratios</span>
-          <div className="s1hub-sb-iw">
-            <span className="s1hub-sb-ll">EFB Yield</span>
-            <div className="s1hub-sb-irow">
-              <input type="number" className="s1hub-sb-input" value={efbYield}
-                     min="1" max="50"
-                     onChange={e => setEfbYield(Math.min(50, Math.max(1, +e.target.value || 23)))} />
-              <span className="s1hub-sb-un">% FFB</span>
-            </div>
-          </div>
-          <div className="s1hub-sb-iw">
-            <span className="s1hub-sb-ll">OPDC Yield (CLASS A)</span>
-            <div className="s1hub-sb-lkd">
-              <span className="s1hub-sb-lv">15.2% EFB</span>
-            </div>
-          </div>
-          <div className="s1hub-sb-iw">
-            <span className="s1hub-sb-ll">POS Sludge Input</span>
-            <div className="s1hub-sb-irow">
-              <input type="number" className="s1hub-sb-input" value={posSludge}
-                     min="0" max="500"
-                     onChange={e => setPosSludge(Math.min(500, Math.max(0, +e.target.value || 0)))} />
-              <span className="s1hub-sb-un">T/day</span>
-            </div>
-          </div>
-
-          {/* EQUIPMENT (OEM TYPE) */}
-          <span className="s1hub-sb-lbl">Equipment (OEM Type)</span>
-          <div className="s1hub-sb-iw">
-            <span className="s1hub-sb-ll">Press NP Cap</span>
-            <div className="s1hub-sb-irow">
-              <input type="number" className="s1hub-sb-input" value={pressNpCap}
-                     min="1" max="200"
-                     onChange={e => setPressNpCap(Math.min(200, Math.max(1, +e.target.value || 15)))} />
-              <span className="s1hub-sb-un">T/hr</span>
-            </div>
-          </div>
-          <div className="s1hub-sb-iw">
-            <span className="s1hub-sb-ll">Mill NP Cap</span>
-            <div className="s1hub-sb-irow">
-              <input type="number" className="s1hub-sb-input" value={millNpCap}
-                     min="1" max="50"
-                     onChange={e => setMillNpCap(Math.min(50, Math.max(1, +e.target.value || 5)))} />
-              <span className="s1hub-sb-un">T/hr</span>
-            </div>
-          </div>
         </aside>
 
         {/* ── MAIN CONTENT ── */}
