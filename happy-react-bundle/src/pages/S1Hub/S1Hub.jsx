@@ -1006,16 +1006,18 @@ export default function S1Hub() {
           <span className="s1hub-sb-lbl">Mill Parameters</span>
           <div className="s1hub-sb-iw">
             <span className="s1hub-sb-ll">CPO Production</span>
-            <div className="s1hub-sb-irow">
-              <input type="number" className="s1hub-sb-input" value={cpoProd}
-                     onChange={e => setCpoProd(+e.target.value || 0)} />
-              <span className="s1hub-sb-un">t</span>
-            </div>
-            <div className="s1hub-sb-toggle-row">
-              <button className={`s1hub-sb-toggle${cpoPeriod === 'annual' ? ' s1hub-sb-toggle--active' : ''}`}
-                      onClick={() => setCpoPeriod('annual')}>Annual</button>
-              <button className={`s1hub-sb-toggle${cpoPeriod === 'month' ? ' s1hub-sb-toggle--active' : ''}`}
-                      onClick={() => setCpoPeriod('month')}>Month</button>
+            <div style={{ display:'flex', alignItems:'center', gap:3, flexShrink:0 }}>
+              <div className="s1hub-sb-irow">
+                <input type="number" className="s1hub-sb-input" value={cpoProd}
+                       onChange={e => setCpoProd(+e.target.value || 0)} />
+                <span className="s1hub-sb-un">t</span>
+              </div>
+              <div className="s1hub-sb-toggle-row">
+                <button className={`s1hub-sb-toggle${cpoPeriod === 'annual' ? ' s1hub-sb-toggle--active' : ''}`}
+                        onClick={() => setCpoPeriod('annual')}>Annual</button>
+                <button className={`s1hub-sb-toggle${cpoPeriod === 'month' ? ' s1hub-sb-toggle--active' : ''}`}
+                        onClick={() => setCpoPeriod('month')}>Month</button>
+              </div>
             </div>
           </div>
           <div className="s1hub-sb-iw">
@@ -1056,10 +1058,9 @@ export default function S1Hub() {
             </div>
           </div>
           <div className="s1hub-sb-iw">
-            <span className="s1hub-sb-ll">OPDC Yield</span>
+            <span className="s1hub-sb-ll">OPDC Yield (CLASS A)</span>
             <div className="s1hub-sb-lkd">
-              <span className="s1hub-sb-lv">15.2% of EFB FW</span>
-              <span className="s1hub-sb-lu">CLASS A</span>
+              <span className="s1hub-sb-lv">15.2% EFB</span>
             </div>
           </div>
           <div className="s1hub-sb-iw">

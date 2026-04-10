@@ -663,19 +663,19 @@
 .s1hub-sb { width: 228px; flex-shrink: 0; background: #0B1422; border-right: 1px solid rgba(30,107,140,0.4); overflow-y: auto; padding-bottom: 24px; }
 .s1hub-main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; min-width: 0; }
 .s1hub-sb-lbl { font-family: var(--fnt-syne); font-weight: 700; font-size: 10px; color: #40D7C5; letter-spacing: 2px; text-transform: uppercase; border-left: 3px solid #40D7C5; padding-left: 7px; margin: 14px 0 6px 10px; display: block; }
-.s1hub-sb-iw { margin-bottom: 6px; padding-left: 10px; }
-.s1hub-sb-ll { font-size: 10px; font-weight: 600; color: #8BA0B4; display: block; margin-bottom: 2px; }
-.s1hub-sb-irow { display: flex; align-items: center; width: 208px; background: #0B1828; border: 1.5px solid rgba(64,215,197,0.55); border-radius: 5px; overflow: hidden; }
-.s1hub-sb-input { flex: 1; background: transparent; border: none; outline: none; color: #F5A623; font-family: var(--fnt-mono); font-weight: 700; font-size: 13px; text-align: center; padding: 5px 6px; -moz-appearance: textfield; min-width: 0; }
+.s1hub-sb-iw { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; padding: 2px 8px 2px 10px; gap: 6px; min-height: 26px; }
+.s1hub-sb-ll { font-size: 10px; font-weight: 600; color: #8BA0B4; flex: 1; white-space: nowrap; }
+.s1hub-sb-irow { display: flex; align-items: center; background: #0B1828; border: 1.5px solid rgba(64,215,197,0.55); border-radius: 5px; overflow: hidden; flex-shrink: 0; }
+.s1hub-sb-input { width: 46px; background: transparent; border: none; outline: none; color: #F5A623; font-family: var(--fnt-mono); font-weight: 700; font-size: 12px; text-align: center; padding: 4px 4px; -moz-appearance: textfield; min-width: 0; }
 .s1hub-sb-input::-webkit-outer-spin-button,
 .s1hub-sb-input::-webkit-inner-spin-button { -webkit-appearance: none; }
-.s1hub-sb-un { background: #1A3A5C; padding: 5px 8px; font-size: 9px; color: #A8BDD0; border-left: 1px solid rgba(30,107,140,0.4); white-space: nowrap; font-family: var(--fnt-mono); }
-.s1hub-sb-lkd { display: flex; align-items: center; width: 208px; background: #060C14; border: 1.5px solid rgba(30,107,140,0.4); border-radius: 5px; overflow: hidden; margin-bottom: 3px; }
-.s1hub-sb-lv { flex: 1; color: #3DCB7A; font-family: var(--fnt-mono); font-weight: 700; font-size: 11px; text-align: center; padding: 5px 8px; }
-.s1hub-sb-lu { background: #1A3A5C; padding: 5px 7px; font-size: 9px; color: #A8BDD0; border-left: 1px solid rgba(30,107,140,0.4); white-space: nowrap; font-family: var(--fnt-mono); }
-.s1hub-sb-badge { display: inline-flex; align-items: center; border-radius: 4px; padding: 2px 7px; font-family: var(--fnt-mono); font-weight: 700; font-size: 9px; margin-top: 3px; }
+.s1hub-sb-un { background: #1A3A5C; padding: 4px 6px; font-size: 9px; color: #A8BDD0; border-left: 1px solid rgba(30,107,140,0.4); white-space: nowrap; font-family: var(--fnt-mono); }
+.s1hub-sb-lkd { display: flex; align-items: center; background: #060C14; border: 1.5px solid rgba(30,107,140,0.4); border-radius: 5px; overflow: hidden; flex-shrink: 0; }
+.s1hub-sb-lv { color: #F5A623; font-family: var(--fnt-mono); font-weight: 700; font-size: 11px; text-align: center; padding: 4px 8px; }
+.s1hub-sb-lu { background: #1A3A5C; padding: 4px 6px; font-size: 9px; color: #40D7C5; border-left: 1px solid rgba(30,107,140,0.4); white-space: nowrap; font-family: var(--fnt-mono); font-weight: 700; }
+.s1hub-sb-badge { display: inline-flex; align-items: center; border-radius: 4px; padding: 2px 7px; font-family: var(--fnt-mono); font-weight: 700; font-size: 9px; }
 .s1hub-sb-badge--locked { background: rgba(232,64,64,.12); border: 1.5px solid #E84040; color: #E84040; }
 .s1hub-sb-badge--alt    { background: rgba(74,158,219,.12); border: 1.5px solid #4A9EDB; color: #4A9EDB; }
-.s1hub-sb-toggle-row { display: flex; gap: 4px; margin-top: 4px; }
-.s1hub-sb-toggle { padding: 3px 10px; border-radius: 4px; border: 1.5px solid rgba(64,215,197,0.35); background: transparent; color: #8BA0B4; font-family: var(--fnt-mono); font-size: 10px; font-weight: 700; cursor: pointer; }
+.s1hub-sb-toggle-row { display: flex; gap: 3px; flex-shrink: 0; }
+.s1hub-sb-toggle { padding: 3px 7px; border-radius: 4px; border: 1.5px solid rgba(64,215,197,0.35); background: transparent; color: #8BA0B4; font-family: var(--fnt-mono); font-size: 9px; font-weight: 700; cursor: pointer; }
 .s1hub-sb-toggle--active { background: rgba(64,215,197,0.14); border-color: rgba(64,215,197,0.7); color: #40D7C5; }

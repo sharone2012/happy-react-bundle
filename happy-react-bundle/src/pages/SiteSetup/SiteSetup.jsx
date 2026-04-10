@@ -1219,10 +1219,10 @@ export default function SiteSetup() {
                   </div>
                 </div>
                 {[
-                  { lbl:'FFB Capacity',     key:'ffb',  unit:'T / hr',   max:3 },
-                  { lbl:'Utilization Rate', key:'util', unit:'%',        max:3 },
-                  { lbl:'Operating Hours',  key:'hrs',  unit:'hr / day', max:2 },
-                  { lbl:'Days / Month',     key:'days', unit:'days',     max:2 },
+                  { lbl:'FFB Capacity',     key:'ffb',  unit:'TPH',         max:3 },
+                  { lbl:'Operating Hours',  key:'hrs',  unit:'Hours / Day',  max:2 },
+                  { lbl:'Days / Month',     key:'days', unit:'Days',         max:2 },
+                  { lbl:'Utilization',      key:'util', unit:'%',            max:3 },
                 ].map(row=>(
                 <div key={row.key} style={{ display:'flex', alignItems:'center', justifyContent:'space-between', background:C.navyField, border:`1px solid rgba(168,189,208,0.12)`, borderRadius:8, padding:'10px 14px', gap:12, minHeight:48 }}>
                     <span style={{ flex:1, fontSize:14, fontWeight:700, color:C.grey, whiteSpace:'nowrap' }}>{row.lbl}</span>
