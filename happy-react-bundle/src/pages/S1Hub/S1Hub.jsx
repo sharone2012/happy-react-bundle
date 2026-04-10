@@ -1013,17 +1013,17 @@ export default function S1Hub() {
               <>
                 <div className="s1hub-sb-iw">
                   <span className="s1hub-sb-ll">CPO Production</span>
-                  <div style={{ display:'flex', alignItems:'center', gap:3, flexShrink:0 }}>
-                    <div className="s1hub-sb-lkd">
-                      <span className="s1hub-sb-lv">{fmtCPO(cpoProdCalc)}</span>
-                      <span className="s1hub-sb-lu">t</span>
-                    </div>
-                    <div className="s1hub-sb-toggle-row">
-                      <button className={`s1hub-sb-toggle${cpoPeriod === 'annual' ? ' s1hub-sb-toggle--active' : ''}`}
-                              onClick={() => setCpoPeriod('annual')}>Annual</button>
-                      <button className={`s1hub-sb-toggle${cpoPeriod === 'month' ? ' s1hub-sb-toggle--active' : ''}`}
-                              onClick={() => setCpoPeriod('month')}>Month</button>
-                    </div>
+                  <div className="s1hub-sb-lkd">
+                    <span className="s1hub-sb-lv">{fmtCPO(cpoProdCalc)}</span>
+                    <span className="s1hub-sb-lu">t</span>
+                  </div>
+                </div>
+                <div className="s1hub-sb-iw" style={{ justifyContent:'flex-end' }}>
+                  <div className="s1hub-sb-toggle-row">
+                    <button className={`s1hub-sb-toggle${cpoPeriod === 'annual' ? ' s1hub-sb-toggle--active' : ''}`}
+                            onClick={() => setCpoPeriod('annual')}>Annual</button>
+                    <button className={`s1hub-sb-toggle${cpoPeriod === 'month' ? ' s1hub-sb-toggle--active' : ''}`}
+                            onClick={() => setCpoPeriod('month')}>Month</button>
                   </div>
                 </div>
                 <div className="s1hub-sb-iw">
