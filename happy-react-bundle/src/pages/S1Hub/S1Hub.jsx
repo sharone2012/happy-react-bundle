@@ -874,6 +874,8 @@ export default function S1Hub() {
   const [cpoPeriod, setCpoPeriod] = useState('annual');
   const [ffbTPHEdit, setFfbTPHEdit] = useState('');
   const [opsHEdit, setOpsHEdit] = useState('');
+  const [daysMonthEdit, setDaysMonthEdit] = useState('30');
+  const [utilEdit, setUtilEdit] = useState('85');
   const [efbYield, setEfbYield] = useState(23);
 
   // Sync edit fields when site loads / changes from Supabase
@@ -881,8 +883,10 @@ export default function S1Hub() {
     if (site) {
       setFfbTPHEdit(String(site.ffb_capacity_tph ?? 60));
       setOpsHEdit(String(site.operating_hrs_day ?? 20));
+      setDaysMonthEdit(String(site.operating_days_month ?? 30));
+      setUtilEdit(String(site.utilisation_pct ?? 85));
     }
-  }, [site?.ffb_capacity_tph, site?.operating_hrs_day]);
+  }, [site?.ffb_capacity_tph, site?.operating_hrs_day, site?.operating_days_month, site?.utilisation_pct]);
   const [posSludge, setPosSludge] = useState(30);
   const [pressNpCap, setPressNpCap] = useState(15);
   const [millNpCap, setMillNpCap] = useState(5);
@@ -1001,9 +1005,9 @@ export default function S1Hub() {
           {/* MILL PARAMETERS */}
           <span className="s1hub-sb-lbl">Mill Parameters</span>
           {(() => {
-            const _ffb  = parseFloat(ffbTPHEdit) || site?.ffb_capacity_tph  || 60;
-            const _ops  = parseFloat(opsHEdit)   || site?.operating_hrs_day || 20;
-            const _days = site?.operating_days_month || 30;
+            const _ffb  = parseFloat(ffbTPHEdit)  || site?.ffb_capacity_tph       || 60;
+            const _ops  = parseFloat(opsHEdit)    || site?.operating_hrs_day      || 20;
+            const _days = parseFloat(daysMonthEdit) || site?.operating_days_month || 30;
             const cpoDaily    = _ffb * _ops * (cpoOER / 100);
             const cpoProdCalc = cpoPeriod === 'annual'
               ? Math.round(cpoDaily * _days * 12)
@@ -1066,6 +1070,36 @@ export default function S1Hub() {
                        if (siteId) supabase.from('cfi_sites').update({ operating_hrs_day: v }).eq('id', siteId);
                      }} />
               <span className="s1hub-sb-un">hr/day</span>
+            </div>
+          </div>
+          <div className="s1hub-sb-iw">
+            <span className="s1hub-sb-ll">Days / Month</span>
+            <div className="s1hub-sb-irow">
+              <input type="number" className="s1hub-sb-input"
+                     value={daysMonthEdit}
+                     min="1" max="31"
+                     onChange={e => setDaysMonthEdit(e.target.value)}
+                     onBlur={e => {
+                       const v = Math.min(31, Math.max(1, parseFloat(e.target.value) || 30));
+                       setDaysMonthEdit(String(v));
+                       if (siteId) supabase.from('cfi_sites').update({ operating_days_month: v }).eq('id', siteId);
+                     }} />
+              <span className="s1hub-sb-un">days</span>
+            </div>
+          </div>
+          <div className="s1hub-sb-iw">
+            <span className="s1hub-sb-ll">Utilization</span>
+            <div className="s1hub-sb-irow">
+              <input type="number" className="s1hub-sb-input"
+                     value={utilEdit}
+                     min="1" max="100"
+                     onChange={e => setUtilEdit(e.target.value)}
+                     onBlur={e => {
+                       const v = Math.min(100, Math.max(1, parseFloat(e.target.value) || 85));
+                       setUtilEdit(String(v));
+                       if (siteId) supabase.from('cfi_sites').update({ utilisation_pct: v }).eq('id', siteId);
+                     }} />
+              <span className="s1hub-sb-un">%</span>
             </div>
           </div>
         </aside>
