@@ -679,3 +679,70 @@
 .s1hub-sb-toggle-row { display: flex; gap: 3px; flex-shrink: 0; }
 .s1hub-sb-toggle { padding: 3px 6px; border-radius: 4px; border: 1.5px solid rgba(64,215,197,0.35); background: transparent; color: #8BA0B4; font-family: var(--fnt-mono); font-size: 9px; font-weight: 700; cursor: pointer; white-space: nowrap; }
 .s1hub-sb-toggle--active { background: rgba(64,215,197,0.14); border-color: rgba(64,215,197,0.7); color: #40D7C5; }
+
+
+/* ?? STREAM CARD ACTION BUTTONS ?????????????????????????????? */
+.s1hub-card-actions {
+  display: flex; flex-direction: column; gap: 6px; margin-top: 12px;
+}
+.s1hub-card-action-btn {
+  width: 100%; padding: 8px 12px; border-radius: 6px; box-sizing: border-box;
+  background: rgba(64,215,197,0.10); border: 1.5px solid rgba(64,215,197,0.40);
+  color: #40D7C5; font-family: var(--fnt-mono); font-size: 11px; font-weight: 700;
+  cursor: pointer; text-align: center; transition: background .15s;
+}
+.s1hub-card-action-btn:hover { background: rgba(64,215,197,0.20); }
+.s1hub-card-action-link {
+  display: block; width: 100%; padding: 7px 12px; border-radius: 6px;
+  background: transparent; border: 1.5px solid rgba(168,189,208,0.25);
+  color: #8BA0B4; font-family: var(--fnt-mono); font-size: 11px; font-weight: 700;
+  text-decoration: none; text-align: center; box-sizing: border-box;
+  transition: border-color .15s, color .15s;
+}
+.s1hub-card-action-link:hover { border-color: rgba(168,189,208,0.5); color: #C8D8E8; }
+
+/* ?? STREAM DETAIL MODAL (stream card variant) ??????????????? */
+.s1hub-modal-overlay { z-index: 9000; }
+.s1hub-modal {
+  width: min(680px, 96vw); max-height: 88vh;
+  background: #0B1828; border: 1.5px solid var(--modal-accent, rgba(64,215,197,0.5));
+  border-top: 3px solid var(--modal-accent, #40D7C5);
+  border-radius: 12px; display: flex; flex-direction: column; overflow: hidden;
+}
+.s1hub-modal-title {
+  font-family: var(--fnt-syne); font-size: 14px; font-weight: 700;
+  color: var(--modal-accent, #40D7C5); letter-spacing: .04em;
+}
+.s1hub-modal-sub {
+  font-family: var(--fnt-dm); font-size: 11px; color: #8BA0B4; margin-top: 3px;
+}
+.s1hub-modal-close {
+  background: transparent; border: none; color: #8BA0B4;
+  font-size: 22px; line-height: 1; cursor: pointer; padding: 0 4px; flex-shrink: 0;
+}
+.s1hub-modal-close:hover { color: #fff; }
+.s1hub-modal-tabs {
+  display: flex; border-bottom: 1px solid rgba(255,255,255,0.07); padding: 0 20px;
+}
+.s1hub-modal-tab {
+  padding: 10px 14px; background: transparent; border: none;
+  border-bottom: 2px solid transparent; color: #8BA0B4;
+  font-family: var(--fnt-dm); font-size: 12px; font-weight: 700; cursor: pointer;
+  margin-bottom: -1px; transition: color .15s;
+}
+.s1hub-modal-tab--active {
+  color: var(--modal-accent, #40D7C5);
+  border-bottom-color: var(--modal-accent, #40D7C5);
+}
+.s1hub-modal-body { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+.s1hub-modal-data { padding: 16px 20px; overflow-y: auto; max-height: calc(88vh - 120px); }
+.s1hub-modal-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.s1hub-modal-row:last-child { border-bottom: none; }
+.s1hub-modal-row-lbl { font-family: var(--fnt-dm); font-size: 13px; color: #8BA0B4; }
+.s1hub-modal-row-val {
+  font-family: var(--fnt-mono); font-size: 14px; font-weight: 700; color: var(--c-amber);
+}
+.s1hub-modal-iframe { width: 100%; flex: 1; border: none; background: #fff; min-height: 400px; }

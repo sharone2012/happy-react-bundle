@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { C, CANONICAL_MC } from "../../components/S1Shared/S1Shared.jsx";
 
 // ── MC Input field: editable with override indicator ──
@@ -94,7 +95,99 @@ function BadgeChip({ label, chipColor, chipBg, chipBdr }) {
   );
 }
 
+// ── Stream detail modal ──
+const STREAM_CONFIG = {
+  efb: {
+    label: 'EFB — Empty Fruit Bunch',
+    processUrl:  '/CFI_S1_EFB_Processing_Line_1Pager.html',
+    asciiUrl:    '/CFI_S1_EFB_Process_Engineering_Ascii.html',
+    accentColor: C.teal,
+  },
+  opdc: {
+    label: 'OPDC — Oil Palm Decanter Cake',
+    processUrl:  '/CFI_S1_OPDC_Processing_Line_1Pager.html',
+    asciiUrl:    '/CFI_S1_OPDC_Process_Engineering_Ascii.html',
+    accentColor: C.amber,
+  },
+  pos: {
+    label: 'POS — Palm Oil Sludge',
+    processUrl:  '/CFI_S1_POS_Processing_Line_1Pager.html',
+    asciiUrl:    '/CFI_S1_POS_Process_Engineering_Ascii.html',
+    accentColor: '#3B82F6',
+  },
+};
+
+const MODAL_TABS = [
+  { key: 'data',    label: 'Stream Data' },
+  { key: 'process', label: 'Process Engineering' },
+  { key: 'ascii',   label: 'ASCII' },
+];
+
+function StreamModal({ streamKey, mb, site, onClose }) {
+  const [tab, setTab] = useState('data');
+  const cfg = STREAM_CONFIG[streamKey];
+  const s = mb[streamKey];
+  const days = site?.operating_days_month || 30;
+  const opsH = site?.operating_hrs_day || 20;
+
+  const fmtM = (tpd) => {
+    const v = parseFloat(tpd);
+    return isFinite(v) && v > 0 ? (v * days).toFixed(0) : '—';
+  };
+
+  return (
+    <div className="s1hub-modal-overlay" onClick={onClose}>
+      <div className="s1hub-modal" onClick={e => e.stopPropagation()}
+           style={{ '--modal-accent': cfg.accentColor }}>
+        <div className="s1hub-modal-hdr">
+          <div>
+            <div className="s1hub-modal-title">{cfg.label}</div>
+            <div className="s1hub-modal-sub">S1 Mechanical Pre-Processing · Detailed view</div>
+          </div>
+          <button className="s1hub-modal-close" onClick={onClose}>×</button>
+        </div>
+        <div className="s1hub-modal-tabs">
+          {MODAL_TABS.map(t => (
+            <button key={t.key}
+                    className={`s1hub-modal-tab${tab === t.key ? ' s1hub-modal-tab--active' : ''}`}
+                    onClick={() => setTab(t.key)}>{t.label}</button>
+          ))}
+        </div>
+        <div className="s1hub-modal-body">
+          {tab === 'data' && (
+            <div className="s1hub-modal-data">
+              <div className="s1hub-modal-section-title">{cfg.label}</div>
+              {[
+                { lbl: 'Fresh Weight / month', val: `${fmtM(s.fresh)} t` },
+                { lbl: 'Dry Matter / month',   val: `${fmtM(s.dm)} t DM` },
+                { lbl: 'Flow rate',            val: `${(parseFloat(s.fresh) / opsH).toFixed(1)} t/h` },
+                { lbl: 'Moisture IN',          val: `${s.mcIn}%` },
+                { lbl: 'Moisture OUT',         val: `${s.mcOut}%` },
+                { lbl: 'SO Status',            val: 'ACTIVE', valColor: '#3DCB7A' },
+              ].map(row => (
+                <div key={row.lbl} className="s1hub-modal-row">
+                  <span className="s1hub-modal-row-lbl">{row.lbl}</span>
+                  <span className="s1hub-modal-row-val" style={row.valColor ? { color: row.valColor } : undefined}>{row.val}</span>
+                </div>
+              ))}
+            </div>
+          )}
+          {(tab === 'process' || tab === 'ascii') && (
+            <iframe
+              className="s1hub-modal-iframe"
+              src={tab === 'process' ? cfg.processUrl : cfg.asciiUrl}
+              title={`${cfg.label} ${tab}`}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function S0ResidueStreamCards({ mb, site, mcOverride, setMcOverride, efbPressDuty = 2, efbMillDuty = 5, opdcPressDuty = 1 }) {
+  const [activeModal, setActiveModal] = useState(null);
+
   const showEfb  = !site || site.efb_enabled  !== false;
   const showOpdc = !site || site.opdc_enabled !== false;
   const showPos  = !site || site.pos_enabled  !== false;
@@ -134,6 +227,10 @@ export default function S0ResidueStreamCards({ mb, site, mcOverride, setMcOverri
         <div className="s1hub-badge-chips">
           <BadgeChip label="MC ≤ 45% PASS" chipColor="#3DCB7A" chipBg="rgba(61,203,122,.12)" chipBdr="rgba(61,203,122,.5)" />
           <BadgeChip label="D90 ≤ 2mm PASS" chipColor="#3DCB7A" chipBg="rgba(61,203,122,.12)" chipBdr="rgba(61,203,122,.5)" />
+        </div>
+        <div className="s1hub-card-actions">
+          <button className="s1hub-card-action-btn" onClick={() => setActiveModal('efb')}>Open EFB Details</button>
+          <a className="s1hub-card-action-link" href="/CFI_S1_EFB_Processing_Line_1Pager.html" target="_blank" rel="noopener noreferrer">↗ View EFB Process Flow</a>
         </div>
       </div>
     ),
@@ -181,6 +278,10 @@ export default function S0ResidueStreamCards({ mb, site, mcOverride, setMcOverri
         <div className="s1hub-opdc-note">
           OPDC MC floor = 40%. Below this &rarr; pore damage &rarr; BSF colonisation failure.
         </div>
+        <div className="s1hub-card-actions">
+          <button className="s1hub-card-action-btn" onClick={() => setActiveModal('opdc')}>Open OPDC Details</button>
+          <a className="s1hub-card-action-link" href="/CFI_S1_OPDC_Processing_Line_1Pager.html" target="_blank" rel="noopener noreferrer">↗ View OPDC Process Flow</a>
+        </div>
       </div>
     ),
 
@@ -215,6 +316,10 @@ export default function S0ResidueStreamCards({ mb, site, mcOverride, setMcOverri
           <BadgeChip label="MC ≤ 65% PASS" chipColor="#3DCB7A" chipBg="rgba(61,203,122,.12)" chipBdr="rgba(61,203,122,.5)" />
           <BadgeChip label="Fe CFI-LAB-POME-001" chipColor={C.amber} chipBg="rgba(245,166,35,.10)" chipBdr="rgba(245,166,35,.40)" />
         </div>
+        <div className="s1hub-card-actions">
+          <button className="s1hub-card-action-btn" onClick={() => setActiveModal('pos')}>Open POS Details</button>
+          <a className="s1hub-card-action-link" href="/CFI_S1_POS_Processing_Line_1Pager.html" target="_blank" rel="noopener noreferrer">↗ View POS Process Flow</a>
+        </div>
       </div>
     ),
   ].filter(Boolean);
@@ -236,6 +341,14 @@ export default function S0ResidueStreamCards({ mb, site, mcOverride, setMcOverri
       <div className="s1hub-stream-cards-grid" style={{ gridTemplateColumns: `repeat(${Math.min(cards.length, 4)}, 1fr)` }}>
         {cards}
       </div>
+      {activeModal && (
+        <StreamModal
+          streamKey={activeModal}
+          mb={mb}
+          site={site}
+          onClose={() => setActiveModal(null)}
+        />
+      )}
     </div>
   );
 }
