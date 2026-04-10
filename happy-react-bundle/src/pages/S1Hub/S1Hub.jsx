@@ -886,10 +886,6 @@ export default function S1Hub() {
   const [posSludge, setPosSludge] = useState(30);
   const [pressNpCap, setPressNpCap] = useState(15);
   const [millNpCap, setMillNpCap] = useState(5);
-  const [nPrice, setNPrice] = useState(1.50);
-  const [pPrice, setPPrice] = useState(1.80);
-  const [kPrice, setKPrice] = useState(0.80);
-  const [powerRate, setPowerRate] = useState(0.15);
 
   const s1Calc = useMemo(() => {
     const ffbTPH  = parseFloat(ffbTPHEdit) || site?.ffb_capacity_tph  || 60;
@@ -1072,36 +1068,6 @@ export default function S1Hub() {
             </div>
           </div>
 
-          {/* INLET MOISTURE */}
-          <span className="s1hub-sb-lbl">Inlet Moisture (S0)</span>
-          <div className="s1hub-sb-iw">
-            <span className="s1hub-sb-ll">EFB MC</span>
-            <div className="s1hub-sb-irow">
-              <input type="number" className="s1hub-sb-input"
-                     value={mcOverride.efb ?? 62.5}
-                     onChange={e => setMcOverride(o => ({ ...o, efb: +e.target.value }))} />
-              <span className="s1hub-sb-un">%</span>
-            </div>
-          </div>
-          <div className="s1hub-sb-iw">
-            <span className="s1hub-sb-ll">OPDC MC</span>
-            <div className="s1hub-sb-irow">
-              <input type="number" className="s1hub-sb-input"
-                     value={mcOverride.opdc ?? 70}
-                     onChange={e => setMcOverride(o => ({ ...o, opdc: +e.target.value }))} />
-              <span className="s1hub-sb-un">%</span>
-            </div>
-          </div>
-          <div className="s1hub-sb-iw">
-            <span className="s1hub-sb-ll">POS MC</span>
-            <div className="s1hub-sb-irow">
-              <input type="number" className="s1hub-sb-input"
-                     value={mcOverride.pos ?? 82}
-                     onChange={e => setMcOverride(o => ({ ...o, pos: +e.target.value }))} />
-              <span className="s1hub-sb-un">%</span>
-            </div>
-          </div>
-
           {/* EQUIPMENT (OEM TYPE) */}
           <span className="s1hub-sb-lbl">Equipment (OEM Type)</span>
           <div className="s1hub-sb-iw">
@@ -1118,78 +1084,6 @@ export default function S1Hub() {
               <input type="number" className="s1hub-sb-input" value={millNpCap}
                      onChange={e => setMillNpCap(+e.target.value || 0)} />
               <span className="s1hub-sb-un">T / hr</span>
-            </div>
-          </div>
-          <div className="s1hub-sb-iw">
-            <div className="s1hub-sb-lkd">
-              <span className="s1hub-sb-lv">Asian OEM — 65%</span>
-              <span className="s1hub-sb-lu">Nameplate</span>
-            </div>
-            <span className="s1hub-sb-badge s1hub-sb-badge--locked">LOCKED</span>
-          </div>
-          <div className="s1hub-sb-iw">
-            <div className="s1hub-sb-lkd">
-              <span className="s1hub-sb-lv">EU / JP OEM — 85%</span>
-              <span className="s1hub-sb-lu">Nameplate</span>
-            </div>
-            <span className="s1hub-sb-badge s1hub-sb-badge--alt">ALT</span>
-          </div>
-
-          {/* S1 EXIT GATES (LOCKED) */}
-          <span className="s1hub-sb-lbl">S1 Exit Gates (Locked)</span>
-          <div className="s1hub-sb-iw">
-            <div className="s1hub-sb-lkd"><span className="s1hub-sb-lv">EFB MC ≤ 45.0%</span></div>
-          </div>
-          <div className="s1hub-sb-iw">
-            <div className="s1hub-sb-lkd">
-              <span className="s1hub-sb-lv">OPDC MC Floor 40.0%</span>
-              <span className="s1hub-sb-lu">FLOOR</span>
-            </div>
-            <span className="s1hub-sb-badge s1hub-sb-badge--locked">HARD</span>
-          </div>
-          <div className="s1hub-sb-iw">
-            <div className="s1hub-sb-lkd"><span className="s1hub-sb-lv">POS MC ≤ 65.0%</span></div>
-          </div>
-          <div className="s1hub-sb-iw">
-            <div className="s1hub-sb-lkd">
-              <span className="s1hub-sb-lv">EFB D90 ≤ 2 mm</span>
-              <span className="s1hub-sb-lu">Particle</span>
-            </div>
-            <span className="s1hub-sb-badge s1hub-sb-badge--locked">HARD GATE</span>
-          </div>
-
-          {/* PRICING (S0K) */}
-          <span className="s1hub-sb-lbl">Pricing (S0K)</span>
-          <div className="s1hub-sb-iw">
-            <span className="s1hub-sb-ll">N Replacement</span>
-            <div className="s1hub-sb-irow">
-              <input type="number" step="0.01" className="s1hub-sb-input" value={nPrice}
-                     onChange={e => setNPrice(+e.target.value || 0)} />
-              <span className="s1hub-sb-un">$ / kg N</span>
-            </div>
-          </div>
-          <div className="s1hub-sb-iw">
-            <span className="s1hub-sb-ll">P₂O₅ Replacement</span>
-            <div className="s1hub-sb-irow">
-              <input type="number" step="0.01" className="s1hub-sb-input" value={pPrice}
-                     onChange={e => setPPrice(+e.target.value || 0)} />
-              <span className="s1hub-sb-un">$ / kg</span>
-            </div>
-          </div>
-          <div className="s1hub-sb-iw">
-            <span className="s1hub-sb-ll">K₂O Replacement</span>
-            <div className="s1hub-sb-irow">
-              <input type="number" step="0.01" className="s1hub-sb-input" value={kPrice}
-                     onChange={e => setKPrice(+e.target.value || 0)} />
-              <span className="s1hub-sb-un">$ / kg</span>
-            </div>
-          </div>
-          <div className="s1hub-sb-iw">
-            <span className="s1hub-sb-ll">Power Rate</span>
-            <div className="s1hub-sb-irow">
-              <input type="number" step="0.01" className="s1hub-sb-input" value={powerRate}
-                     onChange={e => setPowerRate(+e.target.value || 0)} />
-              <span className="s1hub-sb-un">$ / kWh</span>
             </div>
           </div>
         </aside>
