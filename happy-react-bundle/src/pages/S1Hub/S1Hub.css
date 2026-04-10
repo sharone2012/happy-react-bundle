@@ -660,7 +660,7 @@
 
 /* ── SIDEBAR ── */
 .s1hub-body { display: flex; flex: 1; overflow: hidden; }
-.s1hub-sb { width: 228px; flex-shrink: 0; background: #0B1422; border-right: 1px solid rgba(30,107,140,0.4); overflow-y: auto; padding-bottom: 24px; }
+.s1hub-sb { width: 256px; flex-shrink: 0; background: #0B1422; border-right: 1px solid rgba(30,107,140,0.4); overflow-y: auto; padding-bottom: 24px; }
 .s1hub-main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; min-width: 0; }
 .s1hub-sb-lbl { font-family: var(--fnt-syne); font-weight: 700; font-size: 10px; color: #40D7C5; letter-spacing: 2px; text-transform: uppercase; border-left: 3px solid #40D7C5; padding-left: 7px; margin: 14px 0 6px 10px; display: block; }
 .s1hub-sb-iw { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; padding: 2px 8px 2px 10px; gap: 6px; min-height: 26px; }
@@ -677,5 +677,5 @@
 .s1hub-sb-badge--locked { background: rgba(232,64,64,.12); border: 1.5px solid #E84040; color: #E84040; }
 .s1hub-sb-badge--alt    { background: rgba(74,158,219,.12); border: 1.5px solid #4A9EDB; color: #4A9EDB; }
 .s1hub-sb-toggle-row { display: flex; gap: 3px; flex-shrink: 0; }
-.s1hub-sb-toggle { padding: 3px 7px; border-radius: 4px; border: 1.5px solid rgba(64,215,197,0.35); background: transparent; color: #8BA0B4; font-family: var(--fnt-mono); font-size: 9px; font-weight: 700; cursor: pointer; }
+.s1hub-sb-toggle { padding: 3px 6px; border-radius: 4px; border: 1.5px solid rgba(64,215,197,0.35); background: transparent; color: #8BA0B4; font-family: var(--fnt-mono); font-size: 9px; font-weight: 700; cursor: pointer; white-space: nowrap; }
 .s1hub-sb-toggle--active { background: rgba(64,215,197,0.14); border-color: rgba(64,215,197,0.7); color: #40D7C5; }

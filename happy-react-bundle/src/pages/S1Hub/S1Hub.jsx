@@ -1026,7 +1026,7 @@ export default function S1Hub() {
                        const v = parseFloat(e.target.value);
                        if (siteId && v > 0) supabase.from('cfi_sites').update({ ffb_capacity_tph: v }).eq('id', siteId);
                      }} />
-              <span className="s1hub-sb-un">T / hr</span>
+              <span className="s1hub-sb-un">TPH</span>
             </div>
           </div>
           <div className="s1hub-sb-iw">
@@ -1039,7 +1039,7 @@ export default function S1Hub() {
                        const v = parseFloat(e.target.value);
                        if (siteId && v > 0) supabase.from('cfi_sites').update({ operating_hrs_day: v }).eq('id', siteId);
                      }} />
-              <span className="s1hub-sb-un">hr / day</span>
+              <span className="s1hub-sb-un">hr/day</span>
             </div>
           </div>
 
@@ -1064,7 +1064,7 @@ export default function S1Hub() {
             <div className="s1hub-sb-irow">
               <input type="number" className="s1hub-sb-input" value={posSludge}
                      onChange={e => setPosSludge(+e.target.value || 0)} />
-              <span className="s1hub-sb-un">T / Day</span>
+              <span className="s1hub-sb-un">T/day</span>
             </div>
           </div>
 
@@ -1075,7 +1075,7 @@ export default function S1Hub() {
             <div className="s1hub-sb-irow">
               <input type="number" className="s1hub-sb-input" value={pressNpCap}
                      onChange={e => setPressNpCap(+e.target.value || 0)} />
-              <span className="s1hub-sb-un">T / hr</span>
+              <span className="s1hub-sb-un">T/hr</span>
             </div>
           </div>
           <div className="s1hub-sb-iw">
@@ -1083,7 +1083,7 @@ export default function S1Hub() {
             <div className="s1hub-sb-irow">
               <input type="number" className="s1hub-sb-input" value={millNpCap}
                      onChange={e => setMillNpCap(+e.target.value || 0)} />
-              <span className="s1hub-sb-un">T / hr</span>
+              <span className="s1hub-sb-un">T/hr</span>
             </div>
           </div>
         </aside>
