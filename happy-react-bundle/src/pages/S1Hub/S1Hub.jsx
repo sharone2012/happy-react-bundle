@@ -14,11 +14,194 @@ import {
 } from "../../components/S1Shared/S1Shared.jsx";
 import { useMill } from "../../contexts/MillContext";
 import S1ResidueModal from "../../components/S1ResidueModal/S1ResidueModal.jsx";
+import S1ResidueWindow from './S1ResidueWindow.jsx';
 
 /*
  * S1Hub.jsx — S1 Mechanical Pre-Processing Hub (S3Landing pattern)
  * Route: /s1
  */
+
+// ── TABS ──
+const TABS = [
+  { key: 'overview',    label: 'Overview — S0 Selected Residues' },
+  { key: 'engineering', label: 'Engineering' },
+  { key: 'machinery',   label: 'Machinery' },
+  { key: 'handoff',     label: 'Handoff to S2' },
+];
+const ENG_SUBTABS = [
+  { key: 'flow',  label: 'Display Flow' },
+  { key: 'ascii', label: 'ASCII Flow' },
+];
+
+// ── ASCII FLOW CONTENT ──
+const S1_ASCII_FLOWS = {
+  efb: `EFB LINE — S1A PRE-PROCESSING
+══════════════════════════════════════════════════════════════
+ Feed: EFB @ 62.5% MC · 300 t/day fresh weight · 20 t/h
+
+ MILL EXIT ──┐
+             │
+   ┌─────────▼────────────────────────────────────────────┐
+   │  TR-EFB-101  TRUCK RECEIVING BAY                     │
+   │  1× unit | No motor                                  │
+   └─────────────────────────────────────────────────────┘
+             │
+   ┌─────────▼────────────────────────────────────────────┐
+   │  RH-EFB-101  HYDRAULIC RECIPROCATING FEEDER          │
+   │  1×D + 1×Bkp | 7.5 kW                               │
+   └─────────────────────────────────────────────────────┘
+             │
+   ┌─────────▼────────────────────────────────────────────┐
+   │  OBM-EFB-201  OVERBAND MAGNET (Tramp Metal Removal)  │
+   │  1× pass-through | 2.2 kW                            │
+   └─────────────────────────────────────────────────────┘
+             │  [300 t/day | MC: 62.5%]
+   ┌─────────▼────────────────────────────────────────────┐
+   │  PR-EFB-201  EFB SCREW PRESS (CB Series)             │
+   │  2×D + 1×Bkp | 15 T/H nameplate | 9.75 T/H derated  │
+   │  37 kW each  ■ MC GATE ≤ 45% PASS                    │
+   └─────────────────────────────────────────────────────┘
+             │  [~195 t/day | MC: 45%]
+   ┌─────────▼────────────────────────────────────────────┐
+   │  SD-EFB-201  EFB SHREDDER (KH-777)                   │
+   │  5×D + 1×Bkp | 8 T/H nameplate | 5.2 T/H derated    │
+   │  75 kW each                                          │
+   └─────────────────────────────────────────────────────┘
+             │
+   ┌─────────▼────────────────────────────────────────────┐  ┌─────────────────┐
+   │  HM-EFB-201  HAMMER MILL                             │◄─│ OVERSIZE RECYCLE│
+   │  5×D + 1×Bkp | 5 T/H nameplate | 3.25 T/H derated   │  │ 10–20% of flow  │
+   │  110 kW each  SPRING-ISO ZONE                        │  └─────────────────┘
+   └─────────────────────────────────────────────────────┘
+             │
+   ┌─────────▼────────────────────────────────────────────┐
+   │  VS-EFB-201  VIBRATING SCREEN (2mm Aperture — SWECO) │──── OVERSIZE → HM-EFB-201
+   │  3×D + 1×Bkp | 10 T/H nameplate | 3 kW each         │
+   └─────────────────────────────────────────────────────┘
+             │  ■ PARTICLE GATE D90 ≤ 2mm PASS
+             │  [EFB PRODUCT | ~195 t/day | ≤ 2mm | 45% MC]
+   ┌─────────▼────────────────────────────────────────────┐
+   │  BIN-EFB-201  EFB BUFFER SILO (20m³)                 │
+   └─────────────────────────────────────────────────────┘
+             │
+             └──► EFB EXITS TO DISPATCH HOPPERS → BLEND POINT`,
+
+  opdc: `OPDC LINE — S1B PRE-PROCESSING
+══════════════════════════════════════════════════════════════
+ Feed: OPDC paste @ 70–75% MC · ~42 t/day | Yield: 15.2% of EFB FW
+
+ MILL EXIT ──┐
+             │
+   ┌─────────▼────────────────────────────────────────────┐
+   │  TR-OPDC-101  OPDC RECEIVING BAY                     │
+   └─────────────────────────────────────────────────────┘
+             │
+   ┌─────────▼────────────────────────────────────────────┐
+   │  PR-OPDC-301  OPDC SCREW PRESS (CB-15TC) ★ NEW       │
+   │  1×D + 1×Bkp | 15 T/H nameplate | 9.75 T/H derated  │
+   │  30 kW  ■ MC FLOOR = 40% LOCKED (CLASS A)            │
+   └─────────────────────────────────────────────────────┘
+             │  [~28 t/day | MC: 40%]  ■ MC FLOOR GATE PASS
+   ┌─────────▼────────────────────────────────────────────┐
+   │  SD-OPDC-301  OPTIONAL DE-LUMPER / SHREDDER          │
+   │  Breaks consolidated paste bricks | 1×D | 11 kW     │
+   └─────────────────────────────────────────────────────┘
+             │
+   ┌─────────▼────────────────────────────────────────────┐
+   │  HM-OPDC-301  HAMMER MILL (SPRING-ISO)               │
+   │  1×D + 1×Bkp | 5 T/H nameplate | 3.25 T/H derated   │
+   │  35 kW each                                          │
+   └─────────────────────────────────────────────────────┘
+             │
+   ┌─────────▼────────────────────────────────────────────┐
+   │  VS-OPDC-301  VIBRATING SCREEN (2mm)                 │
+   │  1×D + 1×Bkp | 10 T/H nameplate | 3 kW each         │
+   └─────────────────────────────────────────────────────┘
+             │
+   ┌─────────▼────────────────────────────────────────────┐
+   │  BIN-OPDC-301  OPDC BUFFER BIN (30m³ Dual Feed)      │
+   │  Receives OPDC + POS decanter cake (co-feed)         │
+   │  ■ 24HR DWELL GATE  ■ pH 8.0–9.0 required           │
+   └─────────────────────────────────────────────────────┘
+             │
+             └──► OPDC EXITS TO DISPATCH HOPPER → BLEND POINT`,
+
+  pos: `POS LINE — S1C PRE-PROCESSING (SLUDGE)
+══════════════════════════════════════════════════════════════
+ Feed: POS Sludge @ 82% MC · ~30 t/day  |  NOTE: POS ≠ POME
+
+ MILL EFFLUENT ──┐
+                 │
+   ┌─────────────▼────────────────────────────────────────┐
+   │  P-SLD-101A/B  SLUDGE FEED PUMPS (Duty/Standby)      │
+   │  2× Duty + 1×Bkp | 7.5 kW each                      │
+   └─────────────────────────────────────────────────────┘
+                 │
+   ┌─────────────▼────────────────────────────────────────┐
+   │  T-SLD-101  SLUDGE BUFFER TANK (5–8m³)               │
+   └─────────────────────────────────────────────────────┘
+                 │  [~30 t/day | MC: 82%]
+   ┌─────────────▼────────────────────────────────────────┐
+   │  DEC-SLD-101  3-PHASE DECANTER                       │
+   │  1×D + 1×Bkp | 5 T/H DM nameplate | 3.25 T/H derated│
+   │  45 kW each                                          │
+   └─────────────────────────────────────────────────────┘
+                 │                          │
+   [~13.5 t/day cake | MC: 65%]    CENTRATE → RETURN TO POND
+   ■ MC GATE ≤ 65% PASS
+   ■ Fe GATE: ICP-OES CFI-LAB-POME-001
+                 │
+   ┌─────────────▼────────────────────────────────────────┐
+   │  CV-SLD-CAKE-01  SLUDGE CAKE CONVEYOR ★ NEW          │
+   │  Transfers cake to BIN-OPDC-301 (co-feed)            │
+   └─────────────────────────────────────────────────────┘
+                 │
+                 └──► JOINS OPDC LINE AT BIN-OPDC-301
+
+   ┌──────────────────────────────────────────────────────┐
+   │  P-CENT-101  DECANTER CENTRATE RETURN PUMP ★ NEW     │
+   │  Returns centrate to POME pond | 3 kW                │
+   └─────────────────────────────────────────────────────┘`,
+
+  blend: `BLEND POINT — END OF S1 / ENTRY TO S2
+══════════════════════════════════════════════════════════════
+ Three residue streams converge at the Blend Point.
+
+         ┌──────────────────────┐   ┌──────────────────────┐
+         │  H-EFB-301/302       │   │  H-OPDC-301          │
+         │  EFB DISPATCH HOPPERS│   │  OPDC DISPATCH HOPPER│
+         │  ×2  Live Bottom     │   │  Live Bottom         │
+         └──────────┬───────────┘   └──────────┬───────────┘
+                    │                           │
+         ┌──────────▼───────────┐   ┌──────────▼───────────┐
+         │  WB-EFB-01           │   │  WB-OPDC-01          │
+         │  EFB Weigh Belt      │   │  OPDC Weigh Belt     │
+         │  (Ratio Control)     │   │  (Ratio Control)     │
+         └──────────┬───────────┘   └──────────┬───────────┘
+                    └──────────────┬────────────┘
+                                   │
+         ┌─────────────────────────▼──────────────────────┐
+         │  S-LIME-BLEND-01  LIMESTONE AUTO-AUGER          │
+         │  Injects at blender inlet for neutralisation    │
+         └─────────────────────────┬──────────────────────┘
+                                   │
+         ┌─────────────────────────▼──────────────────────┐
+         │  B-BLEND-01  PADDLE BLENDER #1                 │
+         │  B-BLEND-02  PADDLE BLENDER #2 (N+1)           │
+         │  15 T/H rated | 9.75 T/H derated               │
+         └─────────────────────────┬──────────────────────┘
+                                   │
+         ┌─────────────────────────▼──────────────────────┐
+         │  pH-SENS-01/02  INLINE pH SENSORS               │
+         │  pH 6.5–8.0 → Wave 1 Trigger (S3 Entry)        │
+         └─────────────────────────┬──────────────────────┘
+                                   │
+         ┌─────────────────────────▼──────────────────────┐
+         │  COVERED CONVEYOR GALLERY  →  S2               │
+         │  Blend spec: ~38% DM | Lignin: ~25% DM         │
+         │  C:N ~45:1 | pH 6.5–8.0                        │
+         └────────────────────────────────────────────────┘`,
+};
 
 // ── S1 SUBSTRATE FLOW DATA ──
 const S1_INFLOWS = [
@@ -677,12 +860,25 @@ const MODULE_DETAIL = {
 export default function S1Hub() {
   const nav = useNavigate();
   const { site, derived } = useMill();
+  const [activeTab, setActiveTab] = useState('overview');
+  const [engSubTab, setEngSubTab] = useState('flow');
   const [activeModal, setActiveModal] = useState(null);
   const [lineModal, setLineModal] = useState(null);
   const [quickModal, setQuickModal] = useState(null);
   const [moduleModal, setModuleModal] = useState(null);
   // Per-stream moisture content overrides (null = use canonical lab default)
   const [mcOverride, setMcOverride] = useState({ efb: null, opdc: null, pos: null });
+  // ── Sidebar state ─────────────────────────────────────
+  const [cpoProd, setCpoProd] = useState(3000);
+  const [cpoPeriod, setCpoPeriod] = useState('annual');
+  const [efbYield, setEfbYield] = useState(23);
+  const [posSludge, setPosSludge] = useState(30);
+  const [pressNpCap, setPressNpCap] = useState(15);
+  const [millNpCap, setMillNpCap] = useState(5);
+  const [nPrice, setNPrice] = useState(1.50);
+  const [pPrice, setPPrice] = useState(1.80);
+  const [kPrice, setKPrice] = useState(0.80);
+  const [powerRate, setPowerRate] = useState(0.15);
 
   const s1Calc = useMemo(() => {
     const efbFW  = derived?.monthlyEfb  || 0;
@@ -759,196 +955,10 @@ export default function S1Hub() {
     <>
       <style>{S1_CSS}</style>
 
-      {/* ── LINE DETAIL MODAL ── */}
+      {/* ── ALWAYS-MOUNTED MODALS (outside tabs) ── */}
       <S1LineDetailModal lineModal={lineModal} setLineModal={setLineModal} />
-
-      {/* BREADCRUMB */}
-      <S1Breadcrumb />
-
-      {/* ── QUICK LINK MODAL ── */}
       <S1QuickLinkModal quickModal={quickModal} setQuickModal={setQuickModal} />
-
-      {/* ── MODULE DETAIL MODAL ── */}
       <S1ModuleDetailModal moduleModal={moduleModal} setModuleModal={setModuleModal} />
-
-      {/* ══════════════════════════════════════════════════════
-          S1 MASS BALANCE SUMMARY TABLE
-      ══════════════════════════════════════════════════════ */}
-      <S1MassBalanceTable mb={mb} site={site} />
-
-      {/* ══════════════════════════════════════════════════════
-          S0 RESIDUE STREAM CARDS   (up to 4 per row)
-      ══════════════════════════════════════════════════════ */}
-      <S0ResidueStreamCards mb={mb} site={site} mcOverride={mcOverride} setMcOverride={setMcOverride} />
-
-      {/* SUBSTRATE FLOW STRIP */}
-      <div style={{ marginTop: 20 }}>
-        <SubstrateFlowStrip
-          stageLabel="Substrate Flow — S0 Feedstock → S1 Mechanical Output"
-          inflows={S1_INFLOWS}
-          outflows={S1_OUTFLOWS}
-        />
-      </div>
-
-      <S1ResidueCards />
-      <S1ProcessEngineering />
-
-      {/* ── ACTION BUTTONS ── */}
-      {site && (site.efb_enabled || site.opdc_enabled || site.pos_enabled) && (
-        <div className="s1hub-actions-wrap">
-          <div className="s1hub-actions-row">
-            <div className="s1hub-actions-lbl">Open detailed view:</div>
-            {[
-              { key: 'efb',  name: 'EFB',  accent: C.teal,    enabledKey: 'efb_enabled'  },
-              { key: 'opdc', name: 'OPDC', accent: C.amber,   enabledKey: 'opdc_enabled' },
-              { key: 'pos',  name: 'POS',  accent: '#3B82F6', enabledKey: 'pos_enabled'  },
-            ].filter(r => site?.[r.enabledKey]).map(r => (
-              <button
-                key={r.key}
-                onClick={() => setActiveModal({ residue: r.key, tab: 0 })}
-                className="s1hub-action-btn"
-                style={{ background: `${r.accent}18`, border: `1.5px solid ${r.accent}66`, color: r.accent }}
-              >
-                {r.name} Detail →
-              </button>
-            ))}
-            <button
-              onClick={() => setActiveModal({ residue: 'combined', tab: 0 })}
-              className="s1hub-action-btn"
-              style={{ background: 'rgba(0,162,73,.1)', border: '1.5px solid rgba(0,162,73,.4)', color: C.green }}
-            >
-              All Residues Combined
-            </button>
-            <button
-              onClick={() => window.open('/s1-engineering-print?print', '_blank')}
-              className="s1hub-action-btn"
-              style={{ background: 'rgba(0,137,123,.1)', border: '1.5px solid rgba(0,137,123,.4)', color: C.teal }}
-            >
-              &#128196; Complete Engineering — Print / PDF
-            </button>
-          </div>
-        </div>
-      )}
-
-      <div className="content">
-        {/* MODULE GRID */}
-        <div className="sec-title st-teal">Select A Module</div>
-        <div className="module-grid">
-          {modules.map((m, i) => (
-            <div
-              key={i}
-              className="module-btn"
-              style={{ '--accent': m.accent }}
-              onClick={() => m.key && setModuleModal(m.key)}
-            >
-              <span className="mb-status ms-live">Live ↗</span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div className="mb-icon" style={{ background: `${m.accent}22`, color: m.accent }}>{m.icon}</div>
-                <div>
-                  <div className="mb-num">{m.num}</div>
-                  <div className="mb-title">{m.title}</div>
-                </div>
-              </div>
-              <div className="mb-desc">{m.desc}</div>
-              <div className="mb-tags">{m.tags.map((t, j) => <span key={j} className="mb-tag">{t}</span>)}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* ── FLOOR PLAN PRINT BUTTONS ── */}
-        <div className="s1hub-fp-section">
-          <div className="s1hub-fp-hdr">
-            <div className="s1hub-section-bar" />
-            <div className="s1hub-section-title">Floor Plan Print / PDF</div>
-          </div>
-          <div className="s1hub-fp-btn-row">
-            <button
-              onClick={() => window.open('/s1-floor-plan-print?line=all&print', '_blank')}
-              className="s1hub-fp-btn"
-              style={{ background: 'rgba(0,137,123,.12)', border: '1.5px solid rgba(0,137,123,.45)', color: C.teal }}
-            >
-              &#128196; All Residues Combined
-            </button>
-            {site?.efb_enabled && (
-              <button
-                onClick={() => window.open('/s1-floor-plan-print?line=efb&print', '_blank')}
-                className="s1hub-fp-btn"
-                style={{ background: `${C.teal}14`, border: `1.5px solid ${C.teal}55`, color: C.teal }}
-              >
-                EFB Line
-              </button>
-            )}
-            {site?.opdc_enabled && (
-              <button
-                onClick={() => window.open('/s1-floor-plan-print?line=opdc&print', '_blank')}
-                className="s1hub-fp-btn"
-                style={{ background: `${C.amber}14`, border: `1.5px solid ${C.amber}55`, color: C.amber }}
-              >
-                OPDC Line
-              </button>
-            )}
-            {site?.pos_enabled && (
-              <button
-                onClick={() => window.open('/s1-floor-plan-print?line=pos&print', '_blank')}
-                className="s1hub-fp-btn"
-                style={{ background: 'rgba(59,130,246,.12)', border: '1.5px solid rgba(59,130,246,.4)', color: '#3B82F6' }}
-              >
-                POS Line
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* GUARDRAILS */}
-        <div className="sec-title st-red" style={{ marginTop: 32 }}>9 Hard Guardrails — S1 Processing</div>
-        <div className="guardrail-grid">
-          {guardrails.map((g, i) => {
-            const colors = { red: C.red, amber: C.amber, teal: C.teal };
-            const color = colors[g.cls] || C.teal;
-            return (
-              <div key={i} className="guardrail">
-                <div className="gr-icon" style={{ background: `${color}22`, color }}>{g.icon}</div>
-                <div>
-                  <div className="gr-lbl">{g.label}</div>
-                  <div className="gr-val" style={{ color }}>{g.val}</div>
-                  <div className="gr-note">{g.note}</div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* STREAMS SUMMARY */}
-        <div className="sec-title st-teal" style={{ marginTop: 32 }}>Daily Stream Summary</div>
-        <div className="s1hub-streams-grid">
-          {[
-            { name: 'EFB',  fresh: '300 t/day', dm: '112 t/day',  mc: '62.5%', color: C.teal    },
-            { name: 'OPDC', fresh: '45 t/day',  dm: '13.5 t/day', mc: '70%',   color: C.amber   },
-            { name: 'POS',  fresh: '30 t/day',  dm: '6 t/day',    mc: '82%',   color: '#3B82F6' },
-          ].map((st, i) => (
-            <div key={i} className="s1hub-stream-sm-card" style={{ '--stream-color': st.color }}>
-              <div className="s1hub-stream-sm-name">{st.name}</div>
-              <div className="s1hub-stream-sm-metrics">
-                <div><div className="s1hub-stream-sm-lbl">Fresh</div><div className="s1hub-stream-val-fw">{st.fresh}</div></div>
-                <div><div className="s1hub-stream-sm-lbl">Dry Matter</div><div className="s1hub-stream-val-dm">{st.dm}</div></div>
-                <div><div className="s1hub-stream-sm-lbl">MC</div><div className="s1hub-stream-val-mc">{st.mc}</div></div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* 1-PAGER LINK */}
-        <div className="s1hub-1pager-row">
-          <a
-            href="/CFI_S0_Residue_Selector.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="s1hub-1pager-link"
-          >
-            נ“„ View S0 Residue Selector 1-Pager
-          </a>
-        </div>
-      </div>
       {activeModal != null && (
         <S1ResidueModal
           active={activeModal}
@@ -957,6 +967,618 @@ export default function S1Hub() {
           calc={s1Calc}
         />
       )}
+
+      {/* BREADCRUMB */}
+      <S1Breadcrumb />
+
+      {/* ── BODY: SIDEBAR + MAIN ── */}
+      <div className="s1hub-body">
+        {/* ────────── LEFT SIDEBAR ────────── */}
+        <aside className="s1hub-sb">
+          {/* MILL PARAMETERS */}
+          <span className="s1hub-sb-lbl">Mill Parameters</span>
+          <div className="s1hub-sb-iw">
+            <span className="s1hub-sb-ll">CPO Production</span>
+            <div className="s1hub-sb-irow">
+              <input type="number" className="s1hub-sb-input" value={cpoProd}
+                     onChange={e => setCpoProd(+e.target.value || 0)} />
+              <span className="s1hub-sb-un">t</span>
+            </div>
+            <div className="s1hub-sb-toggle-row">
+              <button className={`s1hub-sb-toggle${cpoPeriod === 'annual' ? ' s1hub-sb-toggle--active' : ''}`}
+                      onClick={() => setCpoPeriod('annual')}>Annual</button>
+              <button className={`s1hub-sb-toggle${cpoPeriod === 'month' ? ' s1hub-sb-toggle--active' : ''}`}
+                      onClick={() => setCpoPeriod('month')}>Month</button>
+            </div>
+          </div>
+          <div className="s1hub-sb-iw">
+            <span className="s1hub-sb-ll">FFB Throughput</span>
+            <div className="s1hub-sb-irow">
+              <input type="number" className="s1hub-sb-input" defaultValue={site?.ffb_capacity_tph ?? 60} readOnly />
+              <span className="s1hub-sb-un">T / hr</span>
+            </div>
+          </div>
+          <div className="s1hub-sb-iw">
+            <span className="s1hub-sb-ll">Operating Hours</span>
+            <div className="s1hub-sb-irow">
+              <input type="number" className="s1hub-sb-input" defaultValue={site?.operating_hrs_day ?? 20} readOnly />
+              <span className="s1hub-sb-un">hr / day</span>
+            </div>
+          </div>
+
+          {/* FEEDSTOCK RATIOS */}
+          <span className="s1hub-sb-lbl">Feedstock Ratios</span>
+          <div className="s1hub-sb-iw">
+            <span className="s1hub-sb-ll">EFB Yield</span>
+            <div className="s1hub-sb-irow">
+              <input type="number" className="s1hub-sb-input" value={efbYield}
+                     onChange={e => setEfbYield(+e.target.value || 0)} />
+              <span className="s1hub-sb-un">% FFB</span>
+            </div>
+          </div>
+          <div className="s1hub-sb-iw">
+            <span className="s1hub-sb-ll">OPDC Yield</span>
+            <div className="s1hub-sb-lkd">
+              <span className="s1hub-sb-lv">15.2% of EFB FW</span>
+              <span className="s1hub-sb-lu">CLASS A</span>
+            </div>
+          </div>
+          <div className="s1hub-sb-iw">
+            <span className="s1hub-sb-ll">POS Sludge Input</span>
+            <div className="s1hub-sb-irow">
+              <input type="number" className="s1hub-sb-input" value={posSludge}
+                     onChange={e => setPosSludge(+e.target.value || 0)} />
+              <span className="s1hub-sb-un">T / Day</span>
+            </div>
+          </div>
+
+          {/* INLET MOISTURE */}
+          <span className="s1hub-sb-lbl">Inlet Moisture (S0)</span>
+          <div className="s1hub-sb-iw">
+            <span className="s1hub-sb-ll">EFB MC</span>
+            <div className="s1hub-sb-irow">
+              <input type="number" className="s1hub-sb-input"
+                     value={mcOverride.efb ?? 62.5}
+                     onChange={e => setMcOverride(o => ({ ...o, efb: +e.target.value }))} />
+              <span className="s1hub-sb-un">%</span>
+            </div>
+          </div>
+          <div className="s1hub-sb-iw">
+            <span className="s1hub-sb-ll">OPDC MC</span>
+            <div className="s1hub-sb-irow">
+              <input type="number" className="s1hub-sb-input"
+                     value={mcOverride.opdc ?? 70}
+                     onChange={e => setMcOverride(o => ({ ...o, opdc: +e.target.value }))} />
+              <span className="s1hub-sb-un">%</span>
+            </div>
+          </div>
+          <div className="s1hub-sb-iw">
+            <span className="s1hub-sb-ll">POS MC</span>
+            <div className="s1hub-sb-irow">
+              <input type="number" className="s1hub-sb-input"
+                     value={mcOverride.pos ?? 82}
+                     onChange={e => setMcOverride(o => ({ ...o, pos: +e.target.value }))} />
+              <span className="s1hub-sb-un">%</span>
+            </div>
+          </div>
+
+          {/* EQUIPMENT (OEM TYPE) */}
+          <span className="s1hub-sb-lbl">Equipment (OEM Type)</span>
+          <div className="s1hub-sb-iw">
+            <span className="s1hub-sb-ll">Press NP Cap</span>
+            <div className="s1hub-sb-irow">
+              <input type="number" className="s1hub-sb-input" value={pressNpCap}
+                     onChange={e => setPressNpCap(+e.target.value || 0)} />
+              <span className="s1hub-sb-un">T / hr</span>
+            </div>
+          </div>
+          <div className="s1hub-sb-iw">
+            <span className="s1hub-sb-ll">Mill NP Cap</span>
+            <div className="s1hub-sb-irow">
+              <input type="number" className="s1hub-sb-input" value={millNpCap}
+                     onChange={e => setMillNpCap(+e.target.value || 0)} />
+              <span className="s1hub-sb-un">T / hr</span>
+            </div>
+          </div>
+          <div className="s1hub-sb-iw">
+            <div className="s1hub-sb-lkd">
+              <span className="s1hub-sb-lv">Asian OEM — 65%</span>
+              <span className="s1hub-sb-lu">Nameplate</span>
+            </div>
+            <span className="s1hub-sb-badge s1hub-sb-badge--locked">LOCKED</span>
+          </div>
+          <div className="s1hub-sb-iw">
+            <div className="s1hub-sb-lkd">
+              <span className="s1hub-sb-lv">EU / JP OEM — 85%</span>
+              <span className="s1hub-sb-lu">Nameplate</span>
+            </div>
+            <span className="s1hub-sb-badge s1hub-sb-badge--alt">ALT</span>
+          </div>
+
+          {/* S1 EXIT GATES (LOCKED) */}
+          <span className="s1hub-sb-lbl">S1 Exit Gates (Locked)</span>
+          <div className="s1hub-sb-iw">
+            <div className="s1hub-sb-lkd"><span className="s1hub-sb-lv">EFB MC ≤ 45.0%</span></div>
+          </div>
+          <div className="s1hub-sb-iw">
+            <div className="s1hub-sb-lkd">
+              <span className="s1hub-sb-lv">OPDC MC Floor 40.0%</span>
+              <span className="s1hub-sb-lu">FLOOR</span>
+            </div>
+            <span className="s1hub-sb-badge s1hub-sb-badge--locked">HARD</span>
+          </div>
+          <div className="s1hub-sb-iw">
+            <div className="s1hub-sb-lkd"><span className="s1hub-sb-lv">POS MC ≤ 65.0%</span></div>
+          </div>
+          <div className="s1hub-sb-iw">
+            <div className="s1hub-sb-lkd">
+              <span className="s1hub-sb-lv">EFB D90 ≤ 2 mm</span>
+              <span className="s1hub-sb-lu">Particle</span>
+            </div>
+            <span className="s1hub-sb-badge s1hub-sb-badge--locked">HARD GATE</span>
+          </div>
+
+          {/* PRICING (S0K) */}
+          <span className="s1hub-sb-lbl">Pricing (S0K)</span>
+          <div className="s1hub-sb-iw">
+            <span className="s1hub-sb-ll">N Replacement</span>
+            <div className="s1hub-sb-irow">
+              <input type="number" step="0.01" className="s1hub-sb-input" value={nPrice}
+                     onChange={e => setNPrice(+e.target.value || 0)} />
+              <span className="s1hub-sb-un">$ / kg N</span>
+            </div>
+          </div>
+          <div className="s1hub-sb-iw">
+            <span className="s1hub-sb-ll">P₂O₅ Replacement</span>
+            <div className="s1hub-sb-irow">
+              <input type="number" step="0.01" className="s1hub-sb-input" value={pPrice}
+                     onChange={e => setPPrice(+e.target.value || 0)} />
+              <span className="s1hub-sb-un">$ / kg</span>
+            </div>
+          </div>
+          <div className="s1hub-sb-iw">
+            <span className="s1hub-sb-ll">K₂O Replacement</span>
+            <div className="s1hub-sb-irow">
+              <input type="number" step="0.01" className="s1hub-sb-input" value={kPrice}
+                     onChange={e => setKPrice(+e.target.value || 0)} />
+              <span className="s1hub-sb-un">$ / kg</span>
+            </div>
+          </div>
+          <div className="s1hub-sb-iw">
+            <span className="s1hub-sb-ll">Power Rate</span>
+            <div className="s1hub-sb-irow">
+              <input type="number" step="0.01" className="s1hub-sb-input" value={powerRate}
+                     onChange={e => setPowerRate(+e.target.value || 0)} />
+              <span className="s1hub-sb-un">$ / kWh</span>
+            </div>
+          </div>
+        </aside>
+
+        {/* ── MAIN CONTENT ── */}
+        <div className="s1hub-main">
+
+      {/* ── PRIMARY TAB BAR ── */}
+      <div className="s1hub-tab-bar">
+        {TABS.map(t => (
+          <button
+            key={t.key}
+            className={`s1hub-tab-btn${activeTab === t.key ? ' s1hub-tab-btn--active' : ''}`}
+            onClick={() => setActiveTab(t.key)}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* ══════════════════════════════════════════════════════
+          TAB 1 — OVERVIEW (S0 Selected Residues)
+      ══════════════════════════════════════════════════════ */}
+      {activeTab === 'overview' && (
+        <div className="s1hub-tab-content">
+          <S1MassBalanceTable mb={mb} site={site} />
+          <S0ResidueStreamCards mb={mb} site={site} mcOverride={mcOverride} setMcOverride={setMcOverride} />
+
+          <div style={{ marginTop: 20 }}>
+            <SubstrateFlowStrip
+              stageLabel="Substrate Flow — S0 Feedstock → S1 Mechanical Output"
+              inflows={S1_INFLOWS}
+              outflows={S1_OUTFLOWS}
+            />
+          </div>
+
+          <S1ResidueCards />
+
+          <div className="content">
+            <div className="sec-title st-teal" style={{ marginTop: 24 }}>Daily Stream Summary</div>
+            <div className="s1hub-streams-grid">
+              {[
+                { name: 'EFB',  fresh: '300 t/day', dm: '112 t/day',  mc: '62.5%', color: C.teal    },
+                { name: 'OPDC', fresh: '45 t/day',  dm: '13.5 t/day', mc: '70%',   color: C.amber   },
+                { name: 'POS',  fresh: '30 t/day',  dm: '6 t/day',    mc: '82%',   color: '#3B82F6' },
+              ].map((st, i) => (
+                <div key={i} className="s1hub-stream-sm-card" style={{ '--stream-color': st.color }}>
+                  <div className="s1hub-stream-sm-name">{st.name}</div>
+                  <div className="s1hub-stream-sm-metrics">
+                    <div><div className="s1hub-stream-sm-lbl">Fresh</div><div className="s1hub-stream-val-fw">{st.fresh}</div></div>
+                    <div><div className="s1hub-stream-sm-lbl">Dry Matter</div><div className="s1hub-stream-val-dm">{st.dm}</div></div>
+                    <div><div className="s1hub-stream-sm-lbl">MC</div><div className="s1hub-stream-val-mc">{st.mc}</div></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="sec-title st-red" style={{ marginTop: 32 }}>9 Hard Guardrails — S1 Processing</div>
+            <div className="guardrail-grid">
+              {guardrails.map((g, i) => {
+                const colors = { red: C.red, amber: C.amber, teal: C.teal };
+                const color = colors[g.cls] || C.teal;
+                return (
+                  <div key={i} className="guardrail">
+                    <div className="gr-icon" style={{ background: `${color}22`, color }}>{g.icon}</div>
+                    <div>
+                      <div className="gr-lbl">{g.label}</div>
+                      <div className="gr-val" style={{ color }}>{g.val}</div>
+                      <div className="gr-note">{g.note}</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* ── RESIDUE WINDOWS ── */}
+          <div className="s1win-section-title">S1 Residue Windows</div>
+          <div className="s1win-row">
+            <S1ResidueWindow
+              residueKey="efb"
+              site={site}
+              calc={s1Calc}
+              mb={mb.efb}
+              equipment={LINE_DETAIL.EFB?.equipment}
+              asciiText={S1_ASCII_FLOWS.efb}
+              processFlow={[
+                ['Feed',    'EFB @ 62.5% MC from mill press discharge'],
+                ['Step 1',  'RH-EFB-101 Hydraulic Feeder → Apron Conveyor (7.5 kW)'],
+                ['Step 2',  'ETR-01 Trommel Screen 50mm → OBM-01 Overband Magnet'],
+                ['Step 3',  'EPR-01 Screw Press + PKSA  ■ GATE B.G2 · MC floor 40%'],
+                ['Step 4',  'ESD-01 Primary Shredder (75 kW) → EHM-01 Hammer Mill (110 kW)'],
+                ['Step 5',  'EVS-01 Vibrating Screen 2mm → EDC-01 Baghouse'],
+                ['Output',  'BIN-EFB-201 Buffer Bin 50m³ → S2 Handoff'],
+              ]}
+              keySpecs={[
+                ['MC In', '62.5%'], ['MC Out', '45–50%'],
+                ['Particle Size', 'D90 ≤ 2mm'], ['Belt Width', '600mm'],
+                ['Daily In', '~300 t FW'], ['Daily Out', '~195 t FW'],
+                ['C:N Ratio', '60:1'], ['Lignin ADL', '22% DM'],
+                ['N/day', '582 kg'], ['K/day', '930 kg'],
+              ]}
+            />
+            <S1ResidueWindow
+              residueKey="opdc"
+              site={site}
+              calc={s1Calc}
+              mb={mb.opdc}
+              equipment={LINE_DETAIL.OPDC?.equipment}
+              asciiText={S1_ASCII_FLOWS.opdc}
+              processFlow={[
+                ['Feed',         'OPDC paste @ 70–75% MC · Anti-bridging throughout'],
+                ['Step 1',       'RH-OPDC-101 Reciprocating Feeder (SS304 · anti-bridging)'],
+                ['Step 2',       'CV-OPDC-101 Belt Conveyor → OPR-01 Screw Press'],
+                ['■ CLASS A',    'MC floor ≥ 40% LOCKED · NON-NEGOTIABLE'],
+                ['Step 3',       'OLB-01 Lump Breaker → OTR-01 Trommel → ODR-01 Rotary Dryer'],
+                ['Step 4',       'OHM-01 Hammer Mill (SPRING ISO) → OVS-01 Vib. Screen 3mm'],
+                ['■ 24HR DWELL', 'BIN-OPDC-301 Product Bin · pH 8.0–9.0 required'],
+                ['Output',       '≤35% MC · D90 ≤ 3mm · pH 8.0–9.0 · to S2'],
+              ]}
+              keySpecs={[
+                ['MC In', '70–75%'], ['MC Out', '≤35%'],
+                ['Particle Size', 'D90 ≤ 3mm'], ['Belt Width', '500mm'],
+                ['Daily In', '~42 t FW'], ['Daily Out', '~28 t FW'],
+                ['C:N Ratio', '20:1'], ['pH Gate', '8.0–9.0'],
+                ['Dwell Gate', '≥24 hrs'], ['N content', '2.32% DM'],
+              ]}
+            />
+            <S1ResidueWindow
+              residueKey="pos"
+              site={site}
+              calc={s1Calc}
+              mb={mb.pos}
+              equipment={LINE_DETAIL.POS?.equipment}
+              asciiText={S1_ASCII_FLOWS.pos}
+              processFlow={[
+                ['Feed',           'POS Sludge @ 82% MC from mill effluent stream'],
+                ['Step 1',         'Sludge Pit 15m³ → Progressive Cavity Pump'],
+                ['Step 2',         'DRS-SLD-01 Rotary Drum Screen (78% MC out)'],
+                ['■ ICP-OES Fe',   'Fe result sets CaCO₃ dose + S2 inclusion'],
+                ['Step 3',         'DEC-SLD-101 Decanter Centrifuge (55 kW · 65% MC out)'],
+                ['Step 4',         'CaCO₃ conditioning · pH 4.4 → 5.5–6.0'],
+                ['Output',         'Cake ~405 t/mo · 65–70% MC · Gated · to S2'],
+              ]}
+              keySpecs={[
+                ['MC In', '82%'], ['MC Out', '65–70%'],
+                ['pH In', '4.4 (acidic)'], ['pH Out', '5.5–6.0'],
+                ['Daily In', '~30 t FW'], ['Daily Out', '~13.5 t cake'],
+                ['Fe Gate', 'ICP-OES protocol'], ['CaCO₃ Dose', '5–20% w/w'],
+                ['Screen Reject', '→ EFB Line'], ['Filtrate', '→ POME system'],
+              ]}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════
+          TAB 2 — ENGINEERING
+      ══════════════════════════════════════════════════════ */}
+      {activeTab === 'engineering' && (
+        <div className="s1hub-tab-content">
+          <div className="s1hub-subtab-bar">
+            {ENG_SUBTABS.map(s => (
+              <button
+                key={s.key}
+                className={`s1hub-subtab-btn${engSubTab === s.key ? ' s1hub-subtab-btn--active' : ''}`}
+                onClick={() => setEngSubTab(s.key)}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
+
+          {engSubTab === 'flow' && <S1ProcessEngineering />}
+
+          {engSubTab === 'ascii' && (
+            <div>
+              {[
+                { key: 'efb',   label: 'EFB Line — S1A',          color: C.teal    },
+                { key: 'opdc',  label: 'OPDC Line — S1B',         color: C.amber   },
+                { key: 'pos',   label: 'POS Line — S1C (Sludge)', color: '#3B82F6' },
+                { key: 'blend', label: 'Blend Point → S2',        color: '#3DCB7A' },
+              ].map(({ key, label, color }) => (
+                <div key={key} className="s1hub-ascii-wrap">
+                  <div className="s1hub-ascii-section-hdr">
+                    <div className="s1hub-ascii-section-bar" style={{ background: color }} />
+                    <div className="s1hub-ascii-section-title" style={{ color }}>{label}</div>
+                  </div>
+                  <pre className="s1hub-ascii-pre">{S1_ASCII_FLOWS[key]}</pre>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════
+          TAB 3 — MACHINERY
+      ══════════════════════════════════════════════════════ */}
+      {activeTab === 'machinery' && (
+        <div className="s1hub-tab-content">
+          {[
+            { lineKey: 'EFB',  label: 'EFB Line — S1A Equipment Register',  color: C.teal    },
+            { lineKey: 'OPDC', label: 'OPDC Line — S1B Equipment Register', color: C.amber   },
+            { lineKey: 'POS',  label: 'POS Line — S1C Equipment Register',  color: '#3B82F6' },
+          ].map(({ lineKey, label, color }) => {
+            const eq = LINE_DETAIL[lineKey]?.equipment || [];
+            return (
+              <div key={lineKey} className="s1hub-mach-section">
+                <div className="s1hub-mach-section-hdr">
+                  <div className="s1hub-mach-section-bar" style={{ background: color }} />
+                  <div className="s1hub-mach-section-title" style={{ color }}>{label}</div>
+                </div>
+                <div className="s1hub-mach-table-wrap" style={{ overflowX: 'auto' }}>
+                  <table className="s1hub-mach-table">
+                    <thead>
+                      <tr>
+                        <th className="s1hub-mach-th" style={{ color }}>Tag</th>
+                        <th className="s1hub-mach-th">Equipment</th>
+                        <th className="s1hub-mach-th s1hub-mach-th--right">T/H</th>
+                        <th className="s1hub-mach-th s1hub-mach-th--right">kW</th>
+                        <th className="s1hub-mach-th s1hub-mach-th--right">Unit Cost</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {eq.map((row, ri) => (
+                        <tr key={ri} className={ri % 2 === 1 ? 's1hub-mach-tr-alt' : ''}>
+                          <td className="s1hub-mach-td s1hub-mach-td--code" style={{ color }}>{row.code}</td>
+                          <td className="s1hub-mach-td s1hub-mach-td--name">{row.name}</td>
+                          <td className="s1hub-mach-td s1hub-mach-td--tph">{row.tph}</td>
+                          <td className="s1hub-mach-td s1hub-mach-td--kw">{row.kw}</td>
+                          <td className="s1hub-mach-td s1hub-mach-td--cost">{row.cost}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            );
+          })}
+
+          <div className="content" style={{ marginTop: 8 }}>
+            <div className="sec-title st-teal">Select A Module</div>
+            <div className="module-grid">
+              {modules.map((m, i) => (
+                <div
+                  key={i}
+                  className="module-btn"
+                  style={{ '--accent': m.accent }}
+                  onClick={() => m.key && setModuleModal(m.key)}
+                >
+                  <span className="mb-status ms-live">Live ↗</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div className="mb-icon" style={{ background: `${m.accent}22`, color: m.accent }}>{m.icon}</div>
+                    <div>
+                      <div className="mb-num">{m.num}</div>
+                      <div className="mb-title">{m.title}</div>
+                    </div>
+                  </div>
+                  <div className="mb-desc">{m.desc}</div>
+                  <div className="mb-tags">{m.tags.map((t, j) => <span key={j} className="mb-tag">{t}</span>)}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="s1hub-fp-section">
+              <div className="s1hub-fp-hdr">
+                <div className="s1hub-section-bar" />
+                <div className="s1hub-section-title">Floor Plan Print / PDF</div>
+              </div>
+              <div className="s1hub-fp-btn-row">
+                <button
+                  onClick={() => window.open('/s1-floor-plan-print?line=all&print', '_blank')}
+                  className="s1hub-fp-btn"
+                  style={{ background: 'rgba(0,137,123,.12)', border: '1.5px solid rgba(0,137,123,.45)', color: C.teal }}
+                >
+                  &#128196; All Residues Combined
+                </button>
+                {site?.efb_enabled && (
+                  <button
+                    onClick={() => window.open('/s1-floor-plan-print?line=efb&print', '_blank')}
+                    className="s1hub-fp-btn"
+                    style={{ background: `${C.teal}14`, border: `1.5px solid ${C.teal}55`, color: C.teal }}
+                  >
+                    EFB Line
+                  </button>
+                )}
+                {site?.opdc_enabled && (
+                  <button
+                    onClick={() => window.open('/s1-floor-plan-print?line=opdc&print', '_blank')}
+                    className="s1hub-fp-btn"
+                    style={{ background: `${C.amber}14`, border: `1.5px solid ${C.amber}55`, color: C.amber }}
+                  >
+                    OPDC Line
+                  </button>
+                )}
+                {site?.pos_enabled && (
+                  <button
+                    onClick={() => window.open('/s1-floor-plan-print?line=pos&print', '_blank')}
+                    className="s1hub-fp-btn"
+                    style={{ background: 'rgba(59,130,246,.12)', border: '1.5px solid rgba(59,130,246,.4)', color: '#3B82F6' }}
+                  >
+                    POS Line
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════
+          TAB 4 — HANDOFF TO S2
+      ══════════════════════════════════════════════════════ */}
+      {activeTab === 'handoff' && (
+        <div className="s1hub-tab-content">
+          <div className="s1hub-handoff-kpi-strip">
+            {[
+              { lbl: 'Total FW Out',  val: mb.tot.s1Out,         unit: 't/day · All Streams' },
+              { lbl: 'Total DM',      val: mb.tot.dm,            unit: 't DM / day' },
+              { lbl: 'Water Removed', val: mb.tot.h2o,           unit: 't H₂O / day · Pressed' },
+              { lbl: 'EFB MC Out',    val: `${mb.efb.mcOut}%`,   unit: 'Post-Press Gate' },
+              { lbl: 'OPDC MC Floor', val: `${mb.opdc.mcOut}%`,  unit: 'CLASS A LOCKED' },
+            ].map((k, i) => (
+              <div key={i} className="s1hub-handoff-kpi-card">
+                <div className="s1hub-handoff-kpi-lbl">{k.lbl}</div>
+                <div className="s1hub-handoff-kpi-val">{k.val}</div>
+                <div className="s1hub-handoff-kpi-unit">{k.unit}</div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ margin: '20px 28px 0' }}>
+            <SubstrateFlowStrip
+              stageLabel="S1 Output → S2 Entry — Substrate Transition"
+              inflows={S1_INFLOWS}
+              outflows={S1_OUTFLOWS}
+            />
+          </div>
+
+          <div className="s1hub-mach-section">
+            <div className="s1hub-mach-section-hdr">
+              <div className="s1hub-mach-section-bar" style={{ background: '#3DCB7A' }} />
+              <div className="s1hub-mach-section-title" style={{ color: '#3DCB7A' }}>S1 → S2 Blend Specification</div>
+            </div>
+            <div className="s1hub-mach-table-wrap" style={{ overflowX: 'auto' }}>
+              <table className="s1hub-mach-table">
+                <thead>
+                  <tr>
+                    <th className="s1hub-mach-th">Parameter</th>
+                    <th className="s1hub-mach-th" style={{ color: C.teal }}>EFB</th>
+                    <th className="s1hub-mach-th" style={{ color: C.amber }}>OPDC</th>
+                    <th className="s1hub-mach-th" style={{ color: '#3B82F6' }}>POS</th>
+                    <th className="s1hub-mach-th s1hub-mach-th--right" style={{ color: '#3DCB7A' }}>Blend Target</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    ['MC Out %',      '45–50%',    '40% floor',   '65–70%',    '~45–50%'],
+                    ['Particle D90',  '≤ 2mm',     '≤ 3mm',       'Cake',      '≤ 3mm'],
+                    ['C:N Ratio',     '60:1',      '20:1',        '19:1',      '~45:1'],
+                    ['Lignin ADL',    '22% DM',    '30.7% DM',    '—',         '~25% DM'],
+                    ['N content',     '0.76% DM',  '2.32% DM',    '1.76% DM',  '~1.0% DM'],
+                    ['pH range',      '6–7',       '8.0–9.0',     '5.5–6.0',   '6.5–8.0'],
+                    ['Gate status',   'D90 + MC',  'MC CLASS A',  'Fe ICP-OES','All gates PASS'],
+                  ].map(([param, efb, opdc, pos, blend], ri) => (
+                    <tr key={ri} className={ri % 2 === 1 ? 's1hub-mach-tr-alt' : ''}>
+                      <td className="s1hub-mach-td s1hub-mach-td--name">{param}</td>
+                      <td className="s1hub-mach-td s1hub-mach-td--tph">{efb}</td>
+                      <td className="s1hub-mach-td s1hub-mach-td--kw">{opdc}</td>
+                      <td className="s1hub-mach-td" style={{ color: '#3B82F6', fontFamily: 'var(--fnt-mono)', fontSize: 11 }}>{pos}</td>
+                      <td className="s1hub-mach-td s1hub-mach-td--cost" style={{ color: '#3DCB7A', fontWeight: 700 }}>{blend}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {site && (site.efb_enabled || site.opdc_enabled || site.pos_enabled) && (
+            <div className="s1hub-actions-wrap" style={{ marginTop: 20 }}>
+              <div className="s1hub-actions-row">
+                <div className="s1hub-actions-lbl">Open detailed view:</div>
+                {[
+                  { key: 'efb',  name: 'EFB',  accent: C.teal,    enabledKey: 'efb_enabled'  },
+                  { key: 'opdc', name: 'OPDC', accent: C.amber,   enabledKey: 'opdc_enabled' },
+                  { key: 'pos',  name: 'POS',  accent: '#3B82F6', enabledKey: 'pos_enabled'  },
+                ].filter(r => site?.[r.enabledKey]).map(r => (
+                  <button
+                    key={r.key}
+                    onClick={() => setActiveModal({ residue: r.key, tab: 0 })}
+                    className="s1hub-action-btn"
+                    style={{ background: `${r.accent}18`, border: `1.5px solid ${r.accent}66`, color: r.accent }}
+                  >
+                    {r.name} Detail →
+                  </button>
+                ))}
+                <button
+                  onClick={() => setActiveModal({ residue: 'combined', tab: 0 })}
+                  className="s1hub-action-btn"
+                  style={{ background: 'rgba(0,162,73,.1)', border: '1.5px solid rgba(0,162,73,.4)', color: C.green }}
+                >
+                  All Residues Combined
+                </button>
+                <button
+                  onClick={() => window.open('/s1-engineering-print?print', '_blank')}
+                  className="s1hub-action-btn"
+                  style={{ background: 'rgba(0,137,123,.1)', border: '1.5px solid rgba(0,137,123,.4)', color: C.teal }}
+                >
+                  &#128196; Complete Engineering — Print / PDF
+                </button>
+              </div>
+            </div>
+          )}
+
+          <div className="s1hub-1pager-row" style={{ margin: '28px 28px 32px' }}>
+            <a
+              href="/CFI_S0_Residue_Selector.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="s1hub-1pager-link"
+            >
+              &#128196; View S0 Residue Selector 1-Pager
+            </a>
+          </div>
+        </div>
+      )}
+        </div>{/* /s1hub-main */}
+      </div>{/* /s1hub-body */}
     </>
   );
 }

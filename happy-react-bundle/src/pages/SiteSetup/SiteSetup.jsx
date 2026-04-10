@@ -175,6 +175,8 @@ export default function SiteSetup() {
 
   // ── Section B state ──────────────────────────────────
   const [mill, setMill] = useState({ ffb:60, util:85, hrs:20, days:30 });
+  const [cpoProd, setCpoProd] = useState(3000);
+  const [cpoPeriod, setCpoPeriod] = useState('annual');
   const [bConfirmed, setBConfirmed] = useState(false);
   const upMill = (k,v) => setMill(m=>({...m,[k]:+v||0}));
 
@@ -1206,6 +1208,16 @@ export default function SiteSetup() {
             <div style={secSub}>Auto-Detected · Override Available</div>
             <div style={cbody}>
               <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                {/* CPO Production — Annual/Monthly toggle */}
+                <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', background:C.navyField, border:`1px solid rgba(168,189,208,0.12)`, borderRadius:8, padding:'10px 14px', gap:12, minHeight:48 }}>
+                  <span style={{ flex:1, fontSize:14, fontWeight:700, color:C.grey, whiteSpace:'nowrap' }}>CPO Production</span>
+                  <div style={{ display:'flex', alignItems:'center', gap:6, flexShrink:0 }}>
+                    <input type="number" value={cpoProd} onChange={e=>setCpoProd(+e.target.value||0)} style={bInput} />
+                    <span style={{ fontSize:11, fontFamily:Fnt.mono, color:C.greyLt }}>t</span>
+                    <button onClick={()=>setCpoPeriod('annual')} style={{ padding:'4px 10px', borderRadius:5, border:`1.5px solid ${cpoPeriod==='annual' ? C.tealBdr : 'rgba(139,160,180,0.25)'}`, background: cpoPeriod==='annual' ? C.tealDim : 'transparent', color: cpoPeriod==='annual' ? C.teal : C.grey, fontFamily:Fnt.mono, fontSize:10, fontWeight:700, cursor:'pointer' }}>Annual</button>
+                    <button onClick={()=>setCpoPeriod('month')} style={{ padding:'4px 10px', borderRadius:5, border:`1.5px solid ${cpoPeriod==='month' ? C.tealBdr : 'rgba(139,160,180,0.25)'}`, background: cpoPeriod==='month' ? C.tealDim : 'transparent', color: cpoPeriod==='month' ? C.teal : C.grey, fontFamily:Fnt.mono, fontSize:10, fontWeight:700, cursor:'pointer' }}>Month</button>
+                  </div>
+                </div>
                 {[
                   { lbl:'FFB Capacity',     key:'ffb',  unit:'T / hr',   max:3 },
                   { lbl:'Utilization Rate', key:'util', unit:'%',        max:3 },

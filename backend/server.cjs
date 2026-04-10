@@ -14,6 +14,7 @@ const calcGhHandler       = require('./api/calc-gh.js');
 const calcS1S2Handler     = require('./api/calc-s1s2.js');
 const calcNpkValueHandler = require('./api/calc-npk-value.js');
 const calcAgMgmtHandler   = require('./api/calc-ag-management.js');
+const labAnalysisHandler  = require('./api/lab-analysis.js');
 
 const app  = express();
 const PORT = process.env.PORT || 3001;
@@ -34,6 +35,9 @@ app.post('/api/calc/gh',            calcGhHandler);
 app.post('/api/calc/s1s2',          calcS1S2Handler);
 app.post('/api/calc/npk-value',     calcNpkValueHandler);
 app.post('/api/calc/ag-management', calcAgMgmtHandler);
+
+// Lab analysis route
+app.get('/api/lab/latest', labAnalysisHandler);
 
 // Health check
 app.get('/api/health', (_req, res) =>
