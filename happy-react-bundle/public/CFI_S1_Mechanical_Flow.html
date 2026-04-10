@@ -312,7 +312,7 @@ body{background:var(--navy);color:var(--white);font-family:var(--font-b);font-si
   </div>
 
   <!-- ══ ROW 1 — EFB ══ -->
-  <div class="res-row">
+  <div class="res-row" id="row-efb">
 
     <!-- Name -->
     <div class="rn">
@@ -387,7 +387,7 @@ body{background:var(--navy);color:var(--white);font-family:var(--font-b);font-si
   </div>
 
   <!-- ══ ROW 2 — OPDC ══ -->
-  <div class="res-row">
+  <div class="res-row" id="row-opdc">
 
     <!-- Name -->
     <div class="rn">
@@ -451,7 +451,7 @@ body{background:var(--navy);color:var(--white);font-family:var(--font-b);font-si
   </div>
 
   <!-- ══ ROW 3 — POS ══ -->
-  <div class="res-row" style="opacity:0.65">
+  <div class="res-row" id="row-pos" style="opacity:0.65">
 
     <!-- Name -->
     <div class="rn">
@@ -571,5 +571,26 @@ body{background:var(--navy);color:var(--white);font-family:var(--font-b);font-si
   <button class="ho-btn">Confirm S1 → Cascade To S2</button>
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var hash = (window.location.hash || '').replace('#','').toLowerCase();
+  if (!['efb','opdc','pos'].includes(hash)) return;
+  // Hide page chrome
+  ['pg-hdr','breadcrumb','guardrail','s0-hero','streams-lbl','mb-strip','total-bar','handoff-box'].forEach(function(cls) {
+    var el = document.querySelector('.'+cls);
+    if (el) el.style.display = 'none';
+  });
+  // Show only matching row
+  document.querySelectorAll('.res-row').forEach(function(row) {
+    if (row.id === 'row-' + hash) {
+      row.style.opacity = '1';
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+  document.body.style.padding = '12px';
+});
+</script>
 </body>
 </html>

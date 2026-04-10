@@ -101,6 +101,7 @@ const STREAM_CONFIG = {
     label: 'EFB — Empty Fruit Bunch',
     shortLabel: 'EFB Mechanical Downsizing',
     machineryUrl: '/CFI_S1_Machinery_Combined.html#efb',
+    engProcessUrl: '/CFI_S1_Mechanical_Flow.html#efb',
     processUrl: '/CFI_S1_EFB_Processing_Line_1Pager.html',
     asciiUrl:   '/CFI_S1_EFB_Process_Engineering_Ascii.html',
     accentColor: C.teal,
@@ -132,6 +133,7 @@ const STREAM_CONFIG = {
     label: 'OPDC — Oil Palm Decanter Cake',
     shortLabel: 'OPDC Mechanical Processing',
     machineryUrl: '/CFI_S1_Machinery_Combined.html#opdc',
+    engProcessUrl: '/CFI_S1_Mechanical_Flow.html#opdc',
     processUrl: '/CFI_S1_OPDC_Processing_Line_1Pager.html',
     asciiUrl:   '/CFI_S1_OPDC_Process_Engineering_Ascii.html',
     accentColor: C.amber,
@@ -161,6 +163,7 @@ const STREAM_CONFIG = {
     label: 'POS — Palm Oil Sludge',
     shortLabel: 'POS S1A Dewatering',
     machineryUrl: '/CFI_S1_Machinery_Combined.html#pos',
+    engProcessUrl: '/CFI_S1_Mechanical_Flow.html#pos',
     processUrl: '/CFI_S1_POS_Processing_Line_1Pager.html',
     asciiUrl:   '/CFI_S1_POS_Process_Engineering_Ascii.html',
     accentColor: '#3B82F6',
@@ -214,7 +217,9 @@ function StreamModal({ streamKey, mb, site, onClose }) {
     return <span className="sdt-lock-b">{lock}</span>;
   };
 
-  const iframeUrl = tab === 'machinery' ? cfg.machineryUrl : cfg.asciiUrl;
+  const iframeUrl = tab === 'machinery' ? cfg.machineryUrl
+    : tab === 'process' ? cfg.engProcessUrl
+    : cfg.asciiUrl;
 
   return (
     <div className="s1hub-modal-overlay" onClick={onClose}>
