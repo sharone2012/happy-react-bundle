@@ -1008,13 +1008,14 @@ export default function S1Hub() {
             const cpoProdCalc = cpoPeriod === 'annual'
               ? Math.round(cpoDaily * _days * 12)
               : Math.round(cpoDaily * _days);
+            const fmtCPO = (n) => n >= 1e6 ? `${(n/1e6).toFixed(2)}M` : n >= 1e3 ? `${(n/1e3).toFixed(1)}K` : String(n);
             return (
               <>
                 <div className="s1hub-sb-iw">
                   <span className="s1hub-sb-ll">CPO Production</span>
                   <div style={{ display:'flex', alignItems:'center', gap:3, flexShrink:0 }}>
                     <div className="s1hub-sb-lkd">
-                      <span className="s1hub-sb-lv">{cpoProdCalc.toLocaleString()}</span>
+                      <span className="s1hub-sb-lv">{fmtCPO(cpoProdCalc)}</span>
                       <span className="s1hub-sb-lu">t</span>
                     </div>
                     <div className="s1hub-sb-toggle-row">
@@ -1029,7 +1030,8 @@ export default function S1Hub() {
                   <span className="s1hub-sb-ll">CPO OER</span>
                   <div className="s1hub-sb-irow">
                     <input type="number" className="s1hub-sb-input" value={cpoOER}
-                           onChange={e => setCpoOER(+e.target.value || 0)} />
+                           min="1" max="30"
+                           onChange={e => setCpoOER(Math.min(30, Math.max(1, +e.target.value || 21)))} />
                     <span className="s1hub-sb-un">% FFB</span>
                   </div>
                 </div>
@@ -1041,10 +1043,12 @@ export default function S1Hub() {
             <div className="s1hub-sb-irow">
               <input type="number" className="s1hub-sb-input"
                      value={ffbTPHEdit}
+                     min="1" max="500"
                      onChange={e => setFfbTPHEdit(e.target.value)}
                      onBlur={e => {
-                       const v = parseFloat(e.target.value);
-                       if (siteId && v > 0) supabase.from('cfi_sites').update({ ffb_capacity_tph: v }).eq('id', siteId);
+                       const v = Math.min(500, Math.max(1, parseFloat(e.target.value) || 60));
+                       setFfbTPHEdit(String(v));
+                       if (siteId) supabase.from('cfi_sites').update({ ffb_capacity_tph: v }).eq('id', siteId);
                      }} />
               <span className="s1hub-sb-un">TPH</span>
             </div>
@@ -1054,10 +1058,12 @@ export default function S1Hub() {
             <div className="s1hub-sb-irow">
               <input type="number" className="s1hub-sb-input"
                      value={opsHEdit}
+                     min="1" max="24"
                      onChange={e => setOpsHEdit(e.target.value)}
                      onBlur={e => {
-                       const v = parseFloat(e.target.value);
-                       if (siteId && v > 0) supabase.from('cfi_sites').update({ operating_hrs_day: v }).eq('id', siteId);
+                       const v = Math.min(24, Math.max(1, parseFloat(e.target.value) || 20));
+                       setOpsHEdit(String(v));
+                       if (siteId) supabase.from('cfi_sites').update({ operating_hrs_day: v }).eq('id', siteId);
                      }} />
               <span className="s1hub-sb-un">hr/day</span>
             </div>
@@ -1069,7 +1075,8 @@ export default function S1Hub() {
             <span className="s1hub-sb-ll">EFB Yield</span>
             <div className="s1hub-sb-irow">
               <input type="number" className="s1hub-sb-input" value={efbYield}
-                     onChange={e => setEfbYield(+e.target.value || 0)} />
+                     min="1" max="50"
+                     onChange={e => setEfbYield(Math.min(50, Math.max(1, +e.target.value || 23)))} />
               <span className="s1hub-sb-un">% FFB</span>
             </div>
           </div>
@@ -1083,7 +1090,8 @@ export default function S1Hub() {
             <span className="s1hub-sb-ll">POS Sludge Input</span>
             <div className="s1hub-sb-irow">
               <input type="number" className="s1hub-sb-input" value={posSludge}
-                     onChange={e => setPosSludge(+e.target.value || 0)} />
+                     min="0" max="500"
+                     onChange={e => setPosSludge(Math.min(500, Math.max(0, +e.target.value || 0)))} />
               <span className="s1hub-sb-un">T/day</span>
             </div>
           </div>
@@ -1094,7 +1102,8 @@ export default function S1Hub() {
             <span className="s1hub-sb-ll">Press NP Cap</span>
             <div className="s1hub-sb-irow">
               <input type="number" className="s1hub-sb-input" value={pressNpCap}
-                     onChange={e => setPressNpCap(+e.target.value || 0)} />
+                     min="1" max="200"
+                     onChange={e => setPressNpCap(Math.min(200, Math.max(1, +e.target.value || 15)))} />
               <span className="s1hub-sb-un">T/hr</span>
             </div>
           </div>
@@ -1102,7 +1111,8 @@ export default function S1Hub() {
             <span className="s1hub-sb-ll">Mill NP Cap</span>
             <div className="s1hub-sb-irow">
               <input type="number" className="s1hub-sb-input" value={millNpCap}
-                     onChange={e => setMillNpCap(+e.target.value || 0)} />
+                     min="1" max="50"
+                     onChange={e => setMillNpCap(Math.min(50, Math.max(1, +e.target.value || 5)))} />
               <span className="s1hub-sb-un">T/hr</span>
             </div>
           </div>
