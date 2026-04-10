@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CFI S1A — POS ASCII Process Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;700&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#f0f0f0;padding:24px;font-family:'DM Mono',monospace}
+.page{background:#fff;border:3px solid #111;width:1000px;margin:0 auto}
+.topbar{background:#0B1422;color:#3B82F6;padding:7px 18px;font-size:10px;display:flex;justify-content:space-between;font-family:'DM Mono',monospace}
+.body{display:flex}
+.elev{width:76px;flex-shrink:0;border-right:1px solid #ddd;padding:0 8px 0 4px;font-size:9px;color:#888;text-align:right;font-family:'DM Mono',monospace;line-height:1.7}
+.flow{flex:1;padding:14px 20px 20px 14px;overflow-x:auto}
+pre{font-family:'DM Mono',monospace;font-size:11px;line-height:1.7;color:#111;margin:0;padding:0;background:none;white-space:pre}
+.side{color:#999}
+.gate-blue{background:rgba(59,130,246,.05);color:#185FA5}
+.gate-red{background:rgba(204,34,34,.06);color:#8b0000}
+.final{background:#0B1422;color:#3B82F6}
+.leg{margin-top:14px;border-top:1px solid #ddd;padding-top:10px;font-size:10px;color:#666;line-height:1.9}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="topbar">
+  <span>CFI S1A — POS LINE · ASCII PROCESS FLOW</span>
+  <span>60 TPH FFB Mill · 1.25 t/h · Liquid/Slurry · Bogor, West Java · March 2026 · CFI-S1-POS-ASCII-001 Rev 01</span>
+</div>
+<div class="body">
+
+<!-- ELEVATION AXIS -->
+<div class="elev">
+  <div style="padding-top:68px">GL+0m</div>
+  <div style="padding-top:72px">GL+0m</div>
+  <div style="padding-top:72px">GL+1.5m</div>
+  <div style="padding-top:72px">GL+3.0m</div>
+  <div style="padding-top:72px">GL+3.0m</div>
+  <div style="padding-top:20px"></div>
+</div>
+
+<!-- FLOW -->
+<div class="flow">
+
+<pre>
+  CFI S1A — POS LINE PROCESS FLOW
+  ═══════════════════════════════════════════════════════════════════════════════════
+
+  SOURCE : Mill decanter centrifuge discharge or sludge pit · truck / pump delivery
+           ~30 t/day FW  ·  82% MC  ·  liquid/slurry form  ·  Building: 12m × 18m × 6m
+</pre>
+
+<pre class="gate-blue">
+  ┌─────────────────────────────────────────────────────────────────────────────────┐
+  │  ① PIT-POS-01   Sludge Reception Pit                     GL+0m in-ground       │
+  │  RC concrete body + epoxy oil-resistant lining · 15 m³ capacity               │
+  │  Lip: EL +0.8–1.0m above grade for truck discharge                            │
+  │  Drainage: 150mm bottom valve → POME pond · deep sump                         │
+  │  IN : POS sludge from mill decanter discharge via truck · 82% MC · slurry     │
+  │  [ICP-OES GATE]  Fe result sets S2 inclusion rate before any transfer         │</pre>
+<pre class="side" style="background:rgba(59,130,246,.05)">  │  Out of spec (Fe &gt; 8,000 mg/kg) ───────────────────────────────────────────────▶ Hold — CaCO₃ amendment required
+</pre>
+<pre class="gate-blue">  └────────────────────────────┬────────────────────────────────────────────────────┘
+                               │  pump suction → T-SLD-101 holding tank
+                               ▼
+</pre>
+
+<pre>
+  ┌─────────────────────────────────────────────────────────────────────────────────┐
+  │  T-SLD-101   Sludge Holding Tank                         GL+0m                  │
+  │  5–8 m³ vertical SS304 tank · sealed dome top                                 │
+  │  Agitator: 3.7 kW slow-speed paddle · VFD controlled                          │
+  │  Dwell: ~6–12hr homogenisation before decanter                                │
+  │  Vent: Biofilter odour control (optional if complaints)                        │
+  │  IN : POS from pit ① via pump · ~1.25 t/h average · 80–92% MC                │
+  │  OUT: Controlled feed → PMP-POS-01 pump                                       │
+  └────────────────────────────┬────────────────────────────────────────────────────┘
+                               │  PMP-POS-01 · Sludge Transfer Pump · 3.7 kW
+                               ▼
+</pre>
+
+<pre>
+  ┌─────────────────────────────────────────────────────────────────────────────────┐
+  │  PMP-POS-01   Sludge Transfer Pump                       GL+0m                  │
+  │  3.7 kW · progressive cavity or centrifugal · VFD speed control               │
+  │  Homogenised sludge → DRS-SLD-01 rotary drum screen                           │
+  │  IN : 82% MC slurry · ~1.25 t/h                                               │
+  └────────────────────────────┬────────────────────────────────────────────────────┘
+                               │  feed line → DRS-SLD-01
+                               ▼
+</pre>
+
+<pre>
+  ┌─────────────────────────────────────────────────────────────────────────────────┐
+  │  DRS-SLD-01   Rotary Drum Screen                         GL+1.5m platform       │
+  │  7 kW · 2mm aperture mesh · 1.17 t/h throughput                               │
+  │  IN : 82% MC slurry · coarse solids + fibrous debris                          │
+  │  OUT: Screened slurry 78% MC → feed to decanter                               │</pre>
+<pre class="side">  │  Reject coarse debris (skip) ──────────────────────────────────────────────────▶ waste skip — not to substrate
+</pre>
+<pre>  └────────────────────────────┬────────────────────────────────────────────────────┘
+                               │  screened sludge → DEC-SLD-101 decanter centrifuge
+                               ▼
+</pre>
+
+<pre class="gate-blue">
+  ┌─────────────────────────────────────────────────────────────────────────────────┐
+  │  DEC-SLD-101   Decanter Centrifuge (3-phase)             GL+3.0m platform       │
+  │  55 kW · 0.56 t/h solid cake output · Alfa Laval preferred (RFQ $80k–$150k)  │
+  │  IN : 78% MC slurry · 1.17 t/h screened sludge                               │
+  │  OUT solids: cake ~65–70% MC · ~0.56 t/h · → BIN-POS-301 buffer tank         │
+  │  [Fe GATE]  ICP-OES result must be confirmed before S2 transfer               │</pre>
+<pre class="side" style="background:rgba(59,130,246,.05)">  │  Press water / centrate (~0.6 t/h, 92% MC) ───────────────────────────────────▶ POME pond ONLY · NEVER to substrate
+</pre>
+<pre class="gate-blue">  └────────────────────────────┬────────────────────────────────────────────────────┘
+                               │  cake conveyor / pump → BIN-POS-301
+                               ▼
+</pre>
+
+<pre>
+  ┌─────────────────────────────────────────────────────────────────────────────────┐
+  │  BIN-POS-301   Buffer/Surge Tank                         GL+3.0m               │
+  │  15 m³ capacity · 0 kW passive hold (gravity drain)                           │
+  │  CaCO₃ dosing point · pH 5.5–6.0 neutralisation                              │
+  │  IN : dewatered POS cake · 65–70% MC · 0.56 t/h                              │
+  │  OUT: metered feed to S2 conveyor                                              │
+  └────────────────────────────┬────────────────────────────────────────────────────┘
+                               │  conveyor → S2 handoff
+                               ▼
+</pre>
+
+<pre class="final">  ╔═════════════════════════════════════════════════════════════════════════════════╗
+  ║  S2 DISCHARGE — POS DEWATERED CAKE TO S2 CHEMICAL TREATMENT                   ║
+  ║  Handoff state:  65–70% MC  ·  &lt;0.5mm (slurry form)  ·  1.25 t/h            ║
+  ║  Daily NPK approx:  N 102 kg · P 24 kg · K 42 kg  (if Fe gate PASS)          ║
+  ╚═════════════════════════════════════════════════════════════════════════════════╝
+</pre>
+
+<div class="leg">
+  <strong>Legend</strong><br>
+  ┌───┐  Process unit / vessel<br>
+  ═════  S2 discharge / final handoff (blue on dark bg)<br>
+  ─────  Primary POS liquid/solid flow path<br>
+  <span style="color:#999">──▶  Side stream — centrate/press water to POME pond · coarse debris to waste skip</span><br>
+  <span style="color:#185FA5">[ICP-OES GATE]  Blue — Fe result sets S2 inclusion rate. Must be tested before transfer.</span><br>
+  &lt;3,000 mg/kg DM → 20% WW inclusion · 3,000–5,000 → 10–15% · 5,000–8,000 → 5–10% · &gt;8,000 → CaCO₃ amendment<br>
+  <span style="color:#8b0000">CRITICAL: POS = mill exit sludge (centrifuge/pit) — NOT POME pond</span>
+</div>
+
+</div><!-- end flow -->
+</div><!-- end body -->
+</div><!-- end page -->
+</body>
+</html>

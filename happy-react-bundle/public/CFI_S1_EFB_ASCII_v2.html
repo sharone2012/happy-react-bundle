@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CFI S1C — EFB ASCII Process Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;700&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#f0f0f0;padding:24px;font-family:'DM Mono',monospace}
+.page{background:#fff;border:3px solid #111;width:1000px;margin:0 auto}
+.topbar{background:#0B3A4A;color:#40C8C0;padding:7px 18px;font-size:10px;display:flex;justify-content:space-between;font-family:'DM Mono',monospace}
+.body{display:flex}
+.elev{width:76px;flex-shrink:0;border-right:1px solid #ddd;padding:0 8px 0 4px;font-size:9px;color:#888;text-align:right;font-family:'DM Mono',monospace;line-height:1.7}
+.flow{flex:1;padding:14px 20px 20px 14px;overflow-x:auto}
+pre{font-family:'DM Mono',monospace;font-size:11px;line-height:1.7;color:#111;margin:0;padding:0;background:none;white-space:pre}
+.side{color:#999}
+.noise{background:rgba(204,34,34,.05);color:#cc2222}
+.gate-amber{background:rgba(200,134,10,.06);color:#7a4800}
+.gate-red{background:rgba(204,34,34,.06);color:#8b0000}
+.final{background:#0B3A4A;color:#40C8C0}
+.leg{margin-top:14px;border-top:1px solid #ddd;padding-top:10px;font-size:10px;color:#666;line-height:1.9}
+</style>
+</head>
+<body>
+<!-- ══ CFI CROSS-NAV STRIP ══ -->
+<div style="width:100%;background:#060C14;border-bottom:2px solid #1E2A3A;padding:0;font-family:'DM Mono',monospace">
+  <div style="width:1280px;margin:0 auto;display:flex;align-items:center;height:36px;padding:0 12px;gap:0">
+    <a href="CFI_S1_INDEX.html" style="color:#40D7C5;font-size:10px;font-weight:700;text-decoration:none;letter-spacing:.06em;padding:0 14px 0 0;border-right:1px solid #1E2A3A;margin-right:14px;white-space:nowrap">← S1 INDEX</a>
+    <a href="CFI_S1_MASTER_v3.html" style="color:#8BA0B4;font-size:10px;text-decoration:none;padding:0 12px;border-right:1px solid #1E2A3A;margin-right:6px;white-space:nowrap;transition:color .15s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#8BA0B4'">Master (all panes)</a>
+    <a href="CFI_S1_Combined_v2.html" style="color:#8BA0B4;font-size:10px;text-decoration:none;padding:0 12px;border-right:1px solid #1E2A3A;margin-right:6px;white-space:nowrap" onmouseover="this.style.color='#40C8C0'" onmouseout="this.style.color='#8BA0B4'">Floor Plans</a>
+    <a href="CFI_S1_EFB_ASCII_v2.html" style="color:#8BA0B4;font-size:10px;text-decoration:none;padding:0 12px;border-right:1px solid #1E2A3A;margin-right:6px;white-space:nowrap" onmouseover="this.style.color='#40C8C0'" onmouseout="this.style.color='#8BA0B4'">EFB ASCII</a>
+    <a href="CFI_S1_OPDC_ASCII_v2.html" style="color:#8BA0B4;font-size:10px;text-decoration:none;padding:0 12px;border-right:1px solid #1E2A3A;margin-right:6px;white-space:nowrap" onmouseover="this.style.color='#F5A623'" onmouseout="this.style.color='#8BA0B4'">OPDC ASCII</a>
+    <a href="CFI_S1_POS_ASCII_v1.html" style="color:#8BA0B4;font-size:10px;text-decoration:none;padding:0 12px;white-space:nowrap" onmouseover="this.style.color='#40D7C5'" onmouseout="this.style.color='#8BA0B4'">POS ASCII</a>
+    <div style="flex:1"></div>
+    <span style="color:#3a4a5a;font-size:9px">CFI · S1 Pre-Processing · Rev 02 · Mar 2026</span>
+  </div>
+</div>
+<!-- ══ END CROSS-NAV STRIP ══ -->
+
+<div class="page">
+<div class="topbar">
+  <span>CFI S1C — EFB LINE · ASCII PROCESS FLOW</span>
+  <span>60 TPH FFB Mill · 20 t/h · 600mm belt · Bogor, West Java · March 2026 · CFI-S1-EFB-ASCII-001 Rev 01</span>
+</div>
+<div class="body">
+
+<!-- ELEVATION AXIS -->
+<div class="elev">
+  <div style="padding-top:68px">±0.0m</div>
+  <div style="padding-top:52px">±0.0m</div>
+  <div style="padding-top:56px">+3.0m</div>
+  <div style="padding-top:44px">+3.5m</div>
+  <div style="padding-top:84px">+3.2m</div>
+  <div style="padding-top:68px">+4.0m</div>
+  <div style="padding-top:84px">+4.0m</div>
+  <div style="padding-top:84px">+4.0m</div>
+  <div style="padding-top:44px">outside</div>
+  <div style="padding-top:56px">+2.5m</div>
+  <div style="padding-top:20px"></div>
+</div>
+
+<!-- FLOW -->
+<div class="flow">
+
+<pre>
+  CFI S1C — EFB LINE PROCESS FLOW
+  ═══════════════════════════════════════════════════════════════════════════════════
+
+  SOURCE : Mill EFB trucks · truck receiving bay · 15m wide receiving area
+           8,262 t FW/month  ·  62.5% MC  ·  22% lignin DM  ·  C:N 60  ·  4.75% CP
+</pre>
+
+<pre>
+  ┌─────────────────────────────────────────────────────────────────────────────────┐
+  │  RH-EFB-101   Hydraulic Reciprocating Feeder              ±0.0m                │
+  │  Carbon steel · 7.5kW · VFD · anti-bridging design                            │
+  │  IN : 62.5% MC  ·  20 t/h  ·  EFB raw bunches from truck bay                 │
+  └────────────────────────────┬────────────────────────────────────────────────────┘
+                               │  CV-EFB-101 · incline apron conveyor
+                               │  15m · 15–20° · 7.5kW · 600mm belt · ±0.0 → +3.0m
+                               ▼
+  ┌─────────────────────────────────────────────────────────────────────────────────┐
+  │  CV-EFB-101   Incline Apron Conveyor                      ±0.0 → +3.0m         │
+  │  7.5kW · 600mm belt · 15m · 15–20° inclination · rubber-lined chute at head   │
+  │  IN : 62.5% MC  ·  20 t/h                                                     │
+  └────────────────────────────┬────────────────────────────────────────────────────┘
+                               │  EB-02 · 8m level belt · 3.0kW
+                               ▼
+  ┌─────────────────────────────────────────────────────────────────────────────────┐
+  │  ETR-01   Trommel Screen                                  +3.0m                 │
+  │  11kW · 20 t/h · rubber isolators ×4 corners · pad 8m × 3m × 0.4m            │
+  │  IN : 62.5% MC  ·  20 t/h  ·  removes stones + tramp metal                   │
+  │  OUT: EFB forward  ·  stone/metal reject → waste skip                         │
+  └────────────────────────────┬────────────────────────────────────────────────────┘
+                               │  EB-03 · 8m level belt · 3.0kW
+                               ▼
+  ┌─────────────────────────────────────────────────────────────────────────────────┐
+  │  OBM-01   Overband Magnet                                 +3.5m suspended       │
+  │  3kW · 3m × 2m · suspended from structure · ferrous removal only               │
+  │  IN : 62.5% MC  ·  20 t/h  ·  no t/h capacity limit                          │</pre>
+
+<pre class="side">  │  Ferrous metal ───────────────────────────────────────────────────────────────▶ waste skip
+</pre>
+<pre>  └────────────────────────────┬────────────────────────────────────────────────────┘
+                               │  EB-04 · 10m level belt · 3.0kW
+                               ▼
+</pre>
+
+<pre class="gate-amber">  ┌─────────────────────────────────────────────────────────────────────────────────┐
+  │  EPR-01   Screw Press                                     +3.2m                 │
+  │  37kW · M24×8 anchor bolts · 600mm embedment · pad 3m × 2m × 0.5m             │
+  │  IN : 70% MC  ·  20 t/h  ·  pressed EFB                                       │
+  │  OUT: 45–50% MC cake  +  press water                                           │
+  │  [GATE B.G2]  Operator confirms MC ≤ 50% before proceeding to shredder         │</pre>
+<pre class="side" style="background:rgba(200,134,10,.06)">  │  Press water ──────────────────────────────────────────────────────────────────▶ POME pond ONLY · never to substrate
+</pre>
+<pre class="gate-amber">  └────────────────────────────┬────────────────────────────────────────────────────┘
+                               │  EB-05 · 10m level belt · 3.0kW
+                               ▼
+</pre>
+
+<pre>
+  ┌─────────────────────────────────────────────────────────────────────────────────┐
+  │  ESD-01   Primary Shredder                                +4.0m                 │
+  │  37kW · M30×8 anchor bolts · 800mm embedment · pad 4m × 3m × 0.6m             │
+  │  IN : 45–50% MC  ·  20 t/h  ·  pressed EFB                                    │
+  │  OUT: 50–100mm particle size                                                   │
+  └────────────────────────────┬────────────────────────────────────────────────────┘
+                               │  EB-06 · 8m level belt · 2.2kW
+                               ▼
+</pre>
+
+<pre class="noise">  ░░░░░░░░░░░░░░░░░░░░░░  NOISE ZONE  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+  ░  Hearing protection + dust mask mandatory beyond this line                    ░░
+  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+</pre>
+
+<pre class="gate-red">
+  ┌─────────────────────────────────────────────────────────────────────────────────┐
+  │  EHM-01   Hammer Mill                                     +4.0m                 │
+  │  37kW · SPRING ISOLATION ONLY — never rigid-anchor to slab                     │
+  │  Pad 3m × 2.5m × 0.6m · spring mounts · flexible exhaust duct                 │
+  │  IN : 45–50% MC  ·  15 t/h derated (65% of nameplate · 37kW motor)             │
+  │  OUT: target D90 ≤ 2mm · exhaust → EDC-01 baghouse east wall                  │
+  │  [GUARDRAIL]  Spring isolation only · flexible duct only · never rigid mount   │</pre>
+<pre style="background:rgba(204,34,34,.06)">                 │ PASS ≤ 2mm              │ OVERSIZE > 2mm
+                 │ → vibrating screen      │ EB-07 return conveyor</pre>
+<pre class="side" style="background:rgba(204,34,34,.06)">                 │                         └──────────────────────────────────────────▶ ↩ return to EHM-01 ⑦ (re-mill — not back to shredder)
+</pre>
+<pre class="gate-red">  │  [GATE B.G1]  Shift sieve confirms D90 ≤ 2mm before S2 transfer               │
+  └────────────────────────────┬────────────────────────────────────────────────────┘
+                               │  EB-06 pass · 8m · 2.2kW → vibrating screen
+                               ▼  (exhaust → EDC-01 ducted separately)
+</pre>
+
+<pre>
+  ┌─────────────────────────────────────────────────────────────────────────────────┐
+  │  EVS-01   Vibrating Screen                                +4.0m                 │
+  │  7.5kW · FLEXIBLE MOUNT ONLY · pad 2m × 2m × 0.3m · 2mm aperture             │
+  │  IN : 45–50% MC  ·  15 t/h  ·  milled EFB                                    │</pre>
+<pre class="side">  │  Reject > 2mm ─────────────────────────────────────────────────────────────────▶ EB-07 return → EHM-01 ⑦ (re-mill cycle)
+</pre>
+<pre>  │  PASS ≤ 2mm → forward                                                          │
+  └────────────────────────────┬────────────────────────────────────────────────────┘
+                               │  EB-08 · 8m · -5° slope · 2.2kW → buffer bin
+                               ▼
+</pre>
+
+<pre>
+  ┌─────────────────────────────────────────────────────────────────────────────────┐
+  │  EDC-01   Baghouse Dust Filter                            outside east wall     │
+  │  15kW · 3,000 m³/hr · 99% dust capture · carbon steel housing                 │
+  │  Connected by flexible duct from EHM-01 ⑦ hammer mill exhaust                 │
+  │  Dust discharge → solid waste skip or back-blend to EFB stream                │
+  │  NOTE: parallel unit — operates simultaneously with hammer mill, not in series │
+  └──────────────────── (parallel to main flow — duct feed only) ──────────────────┘
+                               │  EB-08 · 8m · -5° slope · 2.2kW → buffer bin
+                               ▼
+</pre>
+
+<pre>
+  ┌─────────────────────────────────────────────────────────────────────────────────┐
+  │  BIN-EFB-201   Buffer Bin — EFB                           +2.5m                 │
+  │  50 m³  ·  3kW live-bottom auger  ·  4–6hr buffer at 20 t/h                   │
+  │  IN : 45–50% MC  ·  D90 ≤ 2mm  ·  particle size confirmed                    │
+  │  OUT: metered feed to S2 conveyor gallery                                      │
+  └────────────────────────────┬────────────────────────────────────────────────────┘
+                               │  BC-10 · 10m → conveyor gallery (25m × 4m covered)
+                               ▼
+</pre>
+
+<pre class="final">  ╔═════════════════════════════════════════════════════════════════════════════════╗
+  ║  S2 DISCHARGE — EFB MILLED TO S2 CHEMICAL TREATMENT                            ║
+  ║  Handoff state:  45–50% MC  ·  D90 ≤ 2mm  ·  20 t/h  ·  600mm belt           ║
+  ║  Daily NPK contribution at 60 TPH:  N 582 kg · P 197 kg · K 930 kg (3 streams)║
+  ╚═════════════════════════════════════════════════════════════════════════════════╝
+</pre>
+
+<div class="leg">
+  <strong>Legend</strong><br>
+  ┌───┐  Process unit / vessel<br>
+  ═════  S2 discharge / final handoff (teal on dark bg)<br>
+  ─────  Primary EFB solid flow path · 600mm belt<br>
+  <span style="color:#999">──▶  Side stream — press water to POME pond · metal/stone to waste skip · oversize return</span><br>
+  ↩ EB-07  Oversize return conveyor loop — back into EHM-01 ⑦ hammer mill for re-milling (not back to shredder ⑥)<br>
+  <span style="color:#cc2222">░░░  Noise zone boundary — spring isolation + flexible mounts mandatory inside</span><br>
+  <span style="color:#7a4800">[GATE B.G2]  Amber — operator MC check ≤ 50% before screw press discharge proceeds</span><br>
+  <span style="color:#8b0000">[GATE B.G1]  Red — shift sieve confirms D90 ≤ 2mm before S2 transfer</span>
+</div>
+
+</div><!-- end flow -->
+</div><!-- end body -->
+</div><!-- end page -->
+</body>
+</html>

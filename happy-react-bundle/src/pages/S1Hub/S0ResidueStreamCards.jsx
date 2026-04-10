@@ -104,7 +104,7 @@ const STREAM_CONFIG = {
     engProcessUrl: '/CFI_S1_Mechanical_Flow.html#efb',
     floorPlanUrl:  '/CFI_S1_ARCH_FloorPlan.html',
     processUrl: '/CFI_S1_EFB_Processing_Line_1Pager.html',
-    asciiUrl:   '/CFI_S1_EFB_Process_Engineering_Ascii.html',
+    asciiUrl:   '/CFI_S1_EFB_ASCII_v2.html',
     accentColor: C.teal,
     equipNodes: [
       { name: 'Screw Press',       spec: '30 kW' },
@@ -168,7 +168,7 @@ const STREAM_CONFIG = {
     engProcessUrl: '/CFI_S1_Mechanical_Flow.html#pos',
     floorPlanUrl:  '/CFI_S1_ARCH_FloorPlan.html',
     processUrl: '/CFI_S1_POS_Processing_Line_1Pager.html',
-    asciiUrl:   '/CFI_S1_POS_Process_Engineering_Ascii.html',
+    asciiUrl:   '/CFI_S1_POS_ASCII_v2.html',
     accentColor: '#3B82F6',
     equipNodes: [
       { name: 'Drum Screen',           spec: '2mm mesh' },
