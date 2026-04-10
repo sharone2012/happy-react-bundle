@@ -575,7 +575,8 @@ body{background:var(--navy);color:var(--white);font-family:var(--font-b);font-si
 body.single-mode { padding: 16px !important; }
 body.single-mode .res-table-wrap { border-radius: 10px; }
 body.single-mode .res-col-hdr { display: none !important; }
-body.single-mode .res-row {
+body.single-mode .res-row { display: none !important; }
+body.single-mode .res-row.row-active {
   display: flex !important;
   flex-direction: column !important;
   gap: 0 !important;
@@ -631,8 +632,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Show only matching row
   document.querySelectorAll('.res-row').forEach(function(row) {
     if (row.id === 'row-' + hash) {
+      row.classList.add('row-active');
       row.style.opacity = '1';
-      row.style.display = '';
       // Wrap rn + fw + dm into a .row-top div, leave mech-cell below
       var children = Array.from(row.children);
       var mechCell = row.querySelector('.mech-cell');
@@ -642,8 +643,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!c.classList.contains('mech-cell')) topDiv.appendChild(c);
       });
       row.insertBefore(topDiv, mechCell);
-    } else {
-      row.style.display = 'none';
     }
   });
 
