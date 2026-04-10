@@ -571,25 +571,83 @@ body{background:var(--navy);color:var(--white);font-family:var(--font-b);font-si
   <button class="ho-btn">Confirm S1 → Cascade To S2</button>
 </div>
 
+<style>
+body.single-mode { padding: 16px !important; }
+body.single-mode .res-table-wrap { border-radius: 10px; }
+body.single-mode .res-col-hdr { display: none !important; }
+body.single-mode .res-row {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  padding: 0 !important;
+}
+/* Top stats bar: name + fw + dm in a flex row */
+body.single-mode .rn,
+body.single-mode .fw-cell,
+body.single-mode .c-arrow,
+body.single-mode .dm-cell {
+  display: inline-flex;
+}
+body.single-mode .row-top {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 18px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-wrap: wrap;
+}
+body.single-mode .mech-cell {
+  padding: 18px 18px 16px !important;
+  flex-direction: column;
+}
+body.single-mode .eq-chain {
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  overflow-x: visible !important;
+}
+body.single-mode .eq-step {
+  min-width: 100px !important;
+  padding: 10px 14px !important;
+}
+body.single-mode .eq-name { font-size: 12px !important; }
+body.single-mode .eq-spec { font-size: 11px !important; }
+body.single-mode .proc-note {
+  font-size: 12px !important;
+  line-height: 1.7 !important;
+  margin-top: 14px !important;
+}
+</style>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   var hash = (window.location.hash || '').replace('#','').toLowerCase();
   if (!['efb','opdc','pos'].includes(hash)) return;
+
   // Hide page chrome
   ['pg-hdr','breadcrumb','guardrail','s0-hero','streams-lbl','mb-strip','total-bar','handoff-box'].forEach(function(cls) {
     var el = document.querySelector('.'+cls);
     if (el) el.style.display = 'none';
   });
+
   // Show only matching row
   document.querySelectorAll('.res-row').forEach(function(row) {
     if (row.id === 'row-' + hash) {
       row.style.opacity = '1';
       row.style.display = '';
+      // Wrap rn + fw + dm into a .row-top div, leave mech-cell below
+      var children = Array.from(row.children);
+      var mechCell = row.querySelector('.mech-cell');
+      var topDiv = document.createElement('div');
+      topDiv.className = 'row-top';
+      children.forEach(function(c) {
+        if (!c.classList.contains('mech-cell')) topDiv.appendChild(c);
+      });
+      row.insertBefore(topDiv, mechCell);
     } else {
       row.style.display = 'none';
     }
   });
-  document.body.style.padding = '12px';
+
+  document.body.classList.add('single-mode');
 });
 </script>
 </body>
