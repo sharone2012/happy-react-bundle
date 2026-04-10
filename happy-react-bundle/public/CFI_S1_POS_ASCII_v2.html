@@ -9,6 +9,7 @@
 html,body{background:#f0f0f0;padding:24px;font-family:'DM Mono',monospace}
 .page{background:#fff;border:3px solid #111;width:1000px;margin:0 auto}
 .topbar{background:#0B1422;color:#3B82F6;padding:7px 18px;font-size:10px;display:flex;justify-content:space-between;font-family:'DM Mono',monospace}
+.topbar-meta{color:rgba(255,255,255,0.55)}
 .body{display:flex}
 .elev{width:76px;flex-shrink:0;border-right:1px solid #ddd;padding:0 8px 0 4px;font-size:9px;color:#888;text-align:right;font-family:'DM Mono',monospace;line-height:1.7}
 .flow{flex:1;padding:14px 20px 20px 14px;overflow-x:auto}
@@ -25,8 +26,25 @@ pre{font-family:'DM Mono',monospace;font-size:11px;line-height:1.7;color:#111;ma
 <div class="page">
 <div class="topbar">
   <span>CFI S1A — POS LINE · ASCII PROCESS FLOW</span>
-  <span>60 TPH FFB Mill · 1.25 t/h · Liquid/Slurry · Bogor, West Java · March 2026 · CFI-S1-POS-ASCII-001 Rev 01</span>
+  <span class="topbar-meta" id="site-meta">60 TPH FFB Mill · 1.25 t/h · Liquid/Slurry · Bogor, West Java · March 2026 · CFI-S1-POS-ASCII-001 Rev 01</span>
 </div>
+<script>
+(function(){
+  var p = new URLSearchParams(window.location.search);
+  var estate = p.get('estate'); var mill = p.get('mill');
+  var loc = p.get('loc'); var ffb = p.get('ffb'); var cpo = p.get('cpo');
+  if (estate || mill || loc || ffb) {
+    var parts = [];
+    if (estate) parts.push(estate);
+    if (mill)   parts.push(mill);
+    if (loc)    parts.push(loc);
+    if (ffb)    parts.push('FFB ' + ffb + ' t/h');
+    if (cpo)    parts.push(Number(cpo).toLocaleString() + ' t CPO/yr');
+    var el = document.getElementById('site-meta');
+    if (el && parts.length) el.textContent = parts.join(' · ');
+  }
+})();
+</script>
 <div class="body">
 
 <!-- ELEVATION AXIS -->

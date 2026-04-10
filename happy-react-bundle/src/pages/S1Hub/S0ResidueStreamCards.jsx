@@ -137,7 +137,7 @@ const STREAM_CONFIG = {
     engProcessUrl: '/CFI_S1_Mechanical_Flow.html#opdc',
     floorPlanUrl:  '/CFI_S1_ARCH_FloorPlan.html',
     processUrl: '/CFI_S1_OPDC_Processing_Line_1Pager.html',
-    asciiUrl:   '/CFI_S1_OPDC_Process_Engineering_Ascii.html',
+    asciiUrl:   '/CFI_S1_OPDC_ASCII_v2.html',
     accentColor: C.amber,
     equipNodes: [
       { name: 'Screw Press',   spec: '30 kW' },
@@ -207,6 +207,23 @@ function StreamModal({ streamKey, mb, site, onClose }) {
   const s = mb[streamKey];
   const opsH = site?.operating_hrs_day || 20;
 
+  // Build site query params for ASCII iframe (auto-populated from S0 Section A)
+  const asciiSrc = (() => {
+    const ffb    = site?.ffb_capacity_tph || 60;
+    const opsDay = site?.operating_hrs_day || 20;
+    const daysM  = site?.operating_days_month || 25;
+    const cpoAnn = Math.round(ffb * opsDay * daysM * 12 * 0.21);
+    const loc    = [site?.district, site?.province].filter(Boolean).join(', ') || '';
+    const params = new URLSearchParams({
+      estate: site?.estate_name || '',
+      mill:   site?.mill_name   || '',
+      loc,
+      ffb:    String(ffb),
+      cpo:    cpoAnn > 0 ? String(cpoAnn) : '',
+    }).toString();
+    return `${cfg.asciiUrl}?${params}`;
+  })();
+
   // Per-row cell renderer
   const renderCell = (val) => {
     if (val === null || val === undefined) return <span className="sdt-cell-gap">DATA GAP</span>;
@@ -222,7 +239,7 @@ function StreamModal({ streamKey, mb, site, onClose }) {
 
   const iframeUrl = tab === 'machinery' ? cfg.machineryUrl
     : tab === 'process' ? cfg.engProcessUrl
-    : cfg.asciiUrl;
+    : asciiSrc;
 
   return (
     <div className="s1hub-modal-overlay" onClick={onClose}>
