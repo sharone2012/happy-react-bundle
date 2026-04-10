@@ -1091,21 +1091,6 @@ export default function S1Hub() {
               <span className="s1hub-sb-un">days</span>
             </div>
           </div>
-          <div className="s1hub-sb-iw">
-            <span className="s1hub-sb-ll">Utilization</span>
-            <div className="s1hub-sb-irow">
-              <input type="number" className="s1hub-sb-input"
-                     value={utilEdit}
-                     min="1" max="100"
-                     onChange={e => setUtilEdit(e.target.value)}
-                     onBlur={e => {
-                       const v = Math.min(100, Math.max(1, parseFloat(e.target.value) || 85));
-                       setUtilEdit(String(v));
-                       if (siteId) supabase.from('cfi_sites').update({ utilisation_pct: v }).eq('id', siteId);
-                     }} />
-              <span className="s1hub-sb-un">%</span>
-            </div>
-          </div>
         </aside>
 
         {/* ── MAIN CONTENT ── */}
