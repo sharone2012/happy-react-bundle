@@ -704,17 +704,18 @@
 /* ?? STREAM DETAIL MODAL (stream card variant) ??????????????? */
 .s1hub-modal-overlay { z-index: 9000; }
 .s1hub-modal {
-  width: min(680px, 96vw); max-height: 88vh;
-  background: #0B1828; border: 1.5px solid var(--modal-accent, rgba(64,215,197,0.5));
+  width: min(960px, 96vw); max-height: 92vh;
+  background: #0A1525; border: 1.5px solid var(--modal-accent, rgba(64,215,197,0.5));
   border-top: 3px solid var(--modal-accent, #40D7C5);
   border-radius: 12px; display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.75);
 }
 .s1hub-modal-title {
-  font-family: var(--fnt-syne); font-size: 14px; font-weight: 700;
+  font-family: var(--fnt-syne); font-size: 20px; font-weight: 700;
   color: var(--modal-accent, #40D7C5); letter-spacing: .04em;
 }
 .s1hub-modal-sub {
-  font-family: var(--fnt-dm); font-size: 11px; color: #8BA0B4; margin-top: 3px;
+  font-family: var(--fnt-dm); font-size: 13px; color: #8BA0B4; margin-top: 3px;
 }
 .s1hub-modal-close {
   background: transparent; border: none; color: #8BA0B4;
@@ -725,9 +726,9 @@
   display: flex; border-bottom: 1px solid rgba(255,255,255,0.07); padding: 0 20px;
 }
 .s1hub-modal-tab {
-  padding: 10px 14px; background: transparent; border: none;
+  padding: 14px 20px; background: transparent; border: none;
   border-bottom: 2px solid transparent; color: #8BA0B4;
-  font-family: var(--fnt-dm); font-size: 12px; font-weight: 700; cursor: pointer;
+  font-family: var(--fnt-dm); font-size: 13px; font-weight: 700; cursor: pointer;
   margin-bottom: -1px; transition: color .15s;
 }
 .s1hub-modal-tab--active {
@@ -735,7 +736,7 @@
   border-bottom-color: var(--modal-accent, #40D7C5);
 }
 .s1hub-modal-body { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
-.s1hub-modal-data { padding: 16px 20px; overflow-y: auto; max-height: calc(88vh - 120px); }
+.s1hub-modal-data { padding: 24px 28px; overflow-y: auto; max-height: calc(92vh - 130px); }
 .s1hub-modal-row {
   display: flex; justify-content: space-between; align-items: center;
   padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -745,7 +746,7 @@
 .s1hub-modal-row-val {
   font-family: var(--fnt-mono); font-size: 14px; font-weight: 700; color: var(--c-amber);
 }
-.s1hub-modal-iframe { width: 100%; flex: 1; border: none; background: #fff; min-height: 400px; }
+.s1hub-modal-iframe { width: 100%; flex: 1; border: none; background: #fff; min-height: 600px; }
 
 /* ?? STREAM DETAIL TAB: OVERVIEW ?????????????????????????????? */
 /* .sdt-* prefix = stream-detail-tab, scoped to modal overview  */
@@ -771,14 +772,14 @@
   background: #0D1E33;
   border: 1px solid rgba(255,255,255,0.08);
   border-top: 2px solid var(--modal-accent, var(--c-teal));
-  border-radius: 6px; padding: 8px 10px;
+  border-radius: 6px; padding: 14px 16px;
 }
 .sdt-equip-name {
   font-family: var(--fnt-dm); font-size: 11px; font-weight: 700;
   color: var(--modal-accent, var(--c-teal)); margin-bottom: 4px;
 }
 .sdt-equip-spec {
-  font-family: var(--fnt-mono); font-size: 13px; font-weight: 700;
+  font-family: var(--fnt-mono); font-size: 15px; font-weight: 700;
   color: var(--c-amber);
 }
 .sdt-equip-arrow {
@@ -789,7 +790,7 @@
 /* Open full line button */
 .sdt-open-line-btn {
   display: inline-block; margin-bottom: 14px;
-  padding: 7px 14px; border-radius: 6px;
+  padding: 10px 20px; border-radius: 6px;
   border: 1.5px solid var(--modal-accent, var(--c-teal));
   background: transparent;
   color: var(--modal-accent, var(--c-teal));
@@ -807,15 +808,15 @@
 }
 .sdt-table th {
   background: #111827; color: #fff;
-  padding: 7px 8px; text-align: left;
-  font-family: var(--fnt-dm); font-size: 10px; font-weight: 700;
+  padding: 11px 14px; text-align: left;
+  font-family: var(--fnt-dm); font-size: 11px; font-weight: 700;
   border-bottom: 2px solid rgba(255,255,255,0.10);
   white-space: nowrap;
 }
 .sdt-table td {
-  padding: 6px 8px;
+  padding: 10px 14px;
   border-bottom: 1px solid rgba(255,255,255,0.05);
-  font-family: var(--fnt-dm); font-size: 11px; color: #C8D8E4;
+  font-family: var(--fnt-dm); font-size: 13px; color: #C8D8E4;
   vertical-align: middle;
 }
 .sdt-table tr:last-child td { border-bottom: none; }
