@@ -102,6 +102,7 @@ const STREAM_CONFIG = {
     shortLabel: 'EFB Mechanical Downsizing',
     machineryUrl: '/CFI_S1_Machinery_Combined.html#efb',
     engProcessUrl: '/CFI_S1_Mechanical_Flow.html#efb',
+    floorPlanUrl:  '/CFI_S1_ARCH_FloorPlan.html',
     processUrl: '/CFI_S1_EFB_Processing_Line_1Pager.html',
     asciiUrl:   '/CFI_S1_EFB_Process_Engineering_Ascii.html',
     accentColor: C.teal,
@@ -134,6 +135,7 @@ const STREAM_CONFIG = {
     shortLabel: 'OPDC Mechanical Processing',
     machineryUrl: '/CFI_S1_Machinery_Combined.html#opdc',
     engProcessUrl: '/CFI_S1_Mechanical_Flow.html#opdc',
+    floorPlanUrl:  '/CFI_S1_ARCH_FloorPlan.html',
     processUrl: '/CFI_S1_OPDC_Processing_Line_1Pager.html',
     asciiUrl:   '/CFI_S1_OPDC_Process_Engineering_Ascii.html',
     accentColor: C.amber,
@@ -164,6 +166,7 @@ const STREAM_CONFIG = {
     shortLabel: 'POS S1A Dewatering',
     machineryUrl: '/CFI_S1_Machinery_Combined.html#pos',
     engProcessUrl: '/CFI_S1_Mechanical_Flow.html#pos',
+    floorPlanUrl:  '/CFI_S1_ARCH_FloorPlan.html',
     processUrl: '/CFI_S1_POS_Processing_Line_1Pager.html',
     asciiUrl:   '/CFI_S1_POS_Process_Engineering_Ascii.html',
     accentColor: '#3B82F6',
@@ -322,13 +325,13 @@ function StreamModal({ streamKey, mb, site, onClose }) {
             />
           )}
 
-          {/* ── FLOOR PLANS → placeholder ── */}
+          {/* ── FLOOR PLANS → iframe ── */}
           {tab === 'floorplans' && (
-            <div className="sdt-placeholder">
-              <div className="sdt-placeholder-icon">⬜</div>
-              <div className="sdt-placeholder-title">Floor Plans</div>
-              <div className="sdt-placeholder-sub">Coming soon — engineering drawings will appear here</div>
-            </div>
+            <iframe
+              className="s1hub-modal-iframe"
+              src={cfg.floorPlanUrl}
+              title={`${cfg.label} Floor Plan`}
+            />
           )}
 
         </div>
