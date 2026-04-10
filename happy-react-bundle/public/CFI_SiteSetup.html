@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFI — Site Setup</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100vh;background:#030D1A;font-family:'DM Sans','DM Mono',sans-serif;display:flex;flex-direction:column}
+
+/* ─── TOPBAR ──────────────────────────────────────────────────────────────── */
+#topbar{width:100%;background:#060C14;border-bottom:1px solid #0D1E2E;padding:0;flex-shrink:0}
+#topbar-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;height:38px;padding:0 20px;gap:12px}
+.tb-logo{font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:#40D7C5;letter-spacing:.02em;text-decoration:none}
+.tb-logo span{color:#8BA0B4;font-weight:400}
+.tb-div{width:1px;height:18px;background:#1A2A3A;flex-shrink:0}
+.tb-tag{font-size:9px;font-family:'DM Mono',monospace;color:#1E3A52;letter-spacing:.1em;text-transform:uppercase}
+.tb-step{display:flex;align-items:center;gap:6px;margin-left:auto}
+.tb-step-item{font-size:8.5px;font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:2px;color:#1A3040}
+.tb-step-item.active{color:#40D7C5;background:rgba(64,215,197,.07);border:1px solid rgba(64,215,197,.18)}
+.tb-step-sep{color:#1A3040;font-size:10px}
+
+/* ─── MAIN LAYOUT ─────────────────────────────────────────────────────────── */
+#main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:44px 20px 64px}
+
+/* ─── CARD ────────────────────────────────────────────────────────────────── */
+#setup-card{background:#0B1E34;border:1px solid #1A3350;border-radius:10px;width:100%;max-width:480px;padding:34px 38px 30px;box-shadow:0 0 80px rgba(64,215,197,.06),0 12px 80px rgba(0,0,0,.7)}
+.s-section-tag{font-size:13.5px;font-weight:700;color:#40D7C5;font-family:'DM Mono',monospace;margin-bottom:3px;letter-spacing:.02em}
+#setup-card h1{font-size:19px;font-weight:700;color:#EDF3FF;margin-bottom:4px;letter-spacing:-.025em;line-height:1.2}
+#setup-card .s-sub{color:#2E4F6A;font-size:11px;line-height:1.5;margin-bottom:18px;font-family:'DM Mono',monospace}
+.s-hr{border:none;border-top:1px solid #0F2030;margin:0 0 16px}
+
+/* ─── FIELDS ──────────────────────────────────────────────────────────────── */
+.s-field{margin-bottom:13px}
+.s-field label{display:block;font-size:8.5px;font-weight:700;color:#40D7C5;letter-spacing:.13em;text-transform:uppercase;margin-bottom:4px;font-family:'DM Mono',monospace}
+.s-field .req{color:#F5A623}
+.s-field input[type=text]{width:100%;background:#060F1E;border:1.5px solid #1A3350;border-radius:4px;color:#CDDFF0;font-size:12.5px;font-family:'DM Mono',monospace;padding:10px 12px;outline:none;transition:border-color .18s,box-shadow .18s,opacity .2s}
+.s-field input[type=text]:focus{border-color:#40D7C5;box-shadow:0 0 0 3px rgba(64,215,197,.11)}
+.s-field input[type=text]:disabled{opacity:.2;cursor:not-allowed}
+.s-field input::placeholder{color:#2A4A68}
+.s-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.s-country{width:100%;background:#030E1B;border:1.5px solid #40D7C5;border-radius:4px;color:#40D7C5;font-size:12.5px;font-family:'DM Mono',monospace;padding:10px 12px;display:flex;align-items:center;gap:9px;user-select:none;box-shadow:0 0 14px rgba(64,215,197,.07)}
+.s-country-flag{font-size:17px;line-height:1;flex-shrink:0}
+.s-country-label{flex:1}
+.s-country-badge{font-size:7.5px;font-weight:700;letter-spacing:.12em;color:#0E3830;background:#041510;padding:2px 7px;border-radius:2px;text-transform:uppercase;flex-shrink:0}
+
+/* ─── ERROR + BUTTON ──────────────────────────────────────────────────────── */
+#s-error{background:rgba(190,35,35,.1);border:1px solid rgba(190,35,35,.3);border-radius:4px;color:#F08080;font-size:11px;padding:9px 12px;margin-bottom:12px;display:none;font-family:'DM Mono',monospace;line-height:1.5}
+#setup-confirm-btn{width:100%;background:linear-gradient(135deg,#40D7C5,#33C4B5);color:#030810;border:none;border-radius:5px;font-size:12.5px;font-weight:700;font-family:'DM Mono',monospace;letter-spacing:.09em;padding:13px 20px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .18s,box-shadow .18s,transform .1s;margin-top:4px;text-transform:uppercase}
+#setup-confirm-btn:hover{opacity:.9;box-shadow:0 0 24px rgba(64,215,197,.28)}
+#setup-confirm-btn:active{transform:scale(.99)}
+
+/* ─── ALREADY SETUP NOTICE ───────────────────────────────────────────────── */
+#already-set{display:none;text-align:center;padding:48px 0 0}
+#already-set .as-icon{font-size:32px;margin-bottom:14px}
+#already-set h2{font-size:17px;font-weight:700;color:#EDF3FF;margin-bottom:8px;font-family:'DM Mono',monospace}
+#already-set p{color:#2E4F6A;font-size:12px;font-family:'DM Mono',monospace;margin-bottom:22px;line-height:1.6}
+#already-set .as-mill{background:#040E1C;border:1px solid #0F2030;border-radius:6px;padding:14px 16px;margin-bottom:22px;text-align:left}
+#already-set .as-mill span{display:block;font-size:9px;color:#1A3350;font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+#already-set .as-mill strong{font-size:12px;color:#40D7C5;font-family:'DM Mono',monospace;letter-spacing:.02em}
+.as-btn-row{display:flex;gap:10px}
+#proceed-btn{flex:1;background:linear-gradient(135deg,#40D7C5,#33C4B5);color:#030810;border:none;border-radius:5px;font-size:12px;font-weight:700;font-family:'DM Mono',monospace;letter-spacing:.09em;padding:12px 16px;cursor:pointer;transition:opacity .18s;text-transform:uppercase}
+#proceed-btn:hover{opacity:.9}
+#re-setup-btn{background:none;border:1px solid #1A3350;color:#466A88;border-radius:5px;font-size:11px;font-family:'DM Mono',monospace;letter-spacing:.08em;padding:12px 16px;cursor:pointer;transition:color .18s,border-color .18s;text-transform:uppercase;white-space:nowrap}
+#re-setup-btn:hover{color:#40D7C5;border-color:#40D7C5}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div id="topbar-inner">
+    <a class="tb-logo" href="/">CFI <span>Deep Tech</span></a>
+    <div class="tb-div"></div>
+    <span class="tb-tag">Mill Management Dashboard</span>
+    <div class="tb-step">
+      <span class="tb-step-item active">A &nbsp;Site Setup</span>
+      <span class="tb-step-sep">›</span>
+      <span class="tb-step-item">B &nbsp;Process View</span>
+      <span class="tb-step-sep">›</span>
+      <span class="tb-step-item">C &nbsp;Calculations</span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+  <div id="setup-card">
+
+    <!-- ── ALREADY SET UP VIEW ── -->
+    <div id="already-set">
+      <div class="as-icon">&#x2713;</div>
+      <h2>Mill Already Configured</h2>
+      <p>Your site details are saved.<br>Proceed to the dashboard or re-enter details below.</p>
+      <div class="as-mill" id="as-mill-summary"></div>
+      <div class="as-btn-row">
+        <button id="proceed-btn">Go to Dashboard &nbsp;&#x279C;</button>
+        <button id="re-setup-btn">&#x21BA; Re-enter Details</button>
+      </div>
+    </div>
+
+    <!-- ── SETUP FORM VIEW ── -->
+    <div id="setup-form-wrap">
+      <div class="s-section-tag">A &#x2014; Enter Your Details</div>
+      <h1>Site Setup</h1>
+      <p class="s-sub">Mill Identity &middot; Location &middot; GPS Coordinates</p>
+      <hr class="s-hr">
+
+      <form id="setup-form" novalidate>
+
+        <div class="s-field">
+          <label for="s-owner">Plantation Owner / Company Name <span class="req">*</span></label>
+          <input id="s-owner" type="text" placeholder="Enter Company Name" required autocomplete="organization">
+        </div>
+
+        <div class="s-field">
+          <label for="s-estate">Plantation / Estate Name <span class="req">*</span></label>
+          <input id="s-estate" type="text" placeholder="Select company first" required disabled autocomplete="off">
+        </div>
+
+        <div class="s-field">
+          <label for="s-mill">Mill Name / Unit <span class="req">*</span></label>
+          <input id="s-mill" type="text" placeholder="Select estate first" required disabled autocomplete="off">
+        </div>
+
+        <div class="s-row">
+          <div class="s-field">
+            <label for="s-province">Province <span class="req">*</span></label>
+            <input id="s-province" type="text" placeholder="Province" required autocomplete="off">
+          </div>
+          <div class="s-field">
+            <label for="s-district">District / Kabupaten <span class="req">*</span></label>
+            <input id="s-district" type="text" placeholder="District / Kabupaten" required autocomplete="off">
+          </div>
+        </div>
+
+        <div class="s-row">
+          <div class="s-field">
+            <label for="s-lat">GPS (Optional)</label>
+            <input id="s-lat" type="text" placeholder="Latitude" autocomplete="off">
+          </div>
+          <div class="s-field">
+            <label for="s-lng">GPS Longitude <span class="req">*</span></label>
+            <input id="s-lng" type="text" placeholder="Longitude" required autocomplete="off">
+          </div>
+        </div>
+
+        <div class="s-field">
+          <label>Country</label>
+          <div class="s-country">
+            <span class="s-country-flag">&#x1F1EE;&#x1F1E9;</span>
+            <span class="s-country-label">Indonesia</span>
+            <span class="s-country-badge">Fixed</span>
+          </div>
+        </div>
+
+        <div id="s-error" role="alert"></div>
+
+        <button type="submit" id="setup-confirm-btn">
+          Confirm &amp; Go to Dashboard &nbsp;&#x279C;
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ══ CFI SITE SETUP — STANDALONE PAGE ══════════════════════════════════════ */
+(function(){
+'use strict';
+
+var KEY = 'cfi_mill_setup_v1';
+
+/* ─ Helpers ─────────────────────────────────────────────────────────────── */
+function esc(s){
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function load(){
+  try{
+    var d = sessionStorage.getItem(KEY) || localStorage.getItem(KEY);
+    return d ? JSON.parse(d) : null;
+  }catch(e){ return null; }
+}
+function save(d){
+  try{
+    var j = JSON.stringify(d);
+    localStorage.setItem(KEY, j);
+    sessionStorage.setItem(KEY, j);
+  }catch(e){}
+}
+function clearSave(){
+  try{
+    localStorage.removeItem(KEY);
+    sessionStorage.removeItem(KEY);
+  }catch(e){}
+}
+
+/* ─ Determine where to go after setup ──────────────────────────────────── */
+function getReturnUrl(){
+  var p = new URLSearchParams(window.location.search);
+  var r = p.get('return');
+  /* Only allow relative paths — prevent open-redirect */
+  if(r && /^[A-Za-z0-9_.\-\/]+\.html(\?.*)?$/.test(r)) return r;
+  return '/';
+}
+
+/* ─ Cascading input unlock ───────────────────────────────────────────────── */
+function wireChain(){
+  var owner  = document.getElementById('s-owner');
+  var estate = document.getElementById('s-estate');
+  var mill   = document.getElementById('s-mill');
+  owner.addEventListener('input', function(){
+    var has = owner.value.trim().length > 0;
+    estate.disabled = !has;
+    if(!has){ estate.value=''; mill.value=''; mill.disabled=true; }
+  });
+  estate.addEventListener('input', function(){
+    var has = estate.value.trim().length > 0;
+    mill.disabled = !has;
+    if(!has){ mill.value=''; }
+  });
+}
+
+/* ─ Form submit ─────────────────────────────────────────────────────────── */
+function onSubmit(ev){
+  ev.preventDefault();
+  var vals = {
+    owner   : document.getElementById('s-owner').value.trim(),
+    estate  : document.getElementById('s-estate').value.trim(),
+    mill    : document.getElementById('s-mill').value.trim(),
+    province: document.getElementById('s-province').value.trim(),
+    district: document.getElementById('s-district').value.trim(),
+    lat     : document.getElementById('s-lat').value.trim(),
+    lng     : document.getElementById('s-lng').value.trim()
+  };
+  var errEl = document.getElementById('s-error');
+  var msgs = [];
+  if(!vals.owner)    msgs.push('Plantation Owner / Company Name is required.');
+  if(!vals.estate)   msgs.push('Plantation / Estate Name is required.');
+  if(!vals.mill)     msgs.push('Mill Name / Unit is required.');
+  if(!vals.province) msgs.push('Province is required.');
+  if(!vals.district) msgs.push('District / Kabupaten is required.');
+  if(!vals.lng || !/^-?\d{1,3}(\.\d+)?$/.test(vals.lng))
+    msgs.push('Valid GPS Longitude is required (e.g. 106.816635).');
+  if(vals.lat && !/^-?\d{1,3}(\.\d+)?$/.test(vals.lat))
+    msgs.push('GPS Latitude format invalid (e.g. -6.595038).');
+  if(msgs.length){
+    errEl.textContent = msgs[0];
+    errEl.style.display = 'block';
+    errEl.scrollIntoView({block:'nearest'});
+    return;
+  }
+  errEl.style.display = 'none';
+  save(vals);
+  window.location.href = getReturnUrl();
+}
+
+/* ─ Show "already set" view ─────────────────────────────────────────────── */
+function showAlreadySet(d){
+  document.getElementById('setup-form-wrap').style.display = 'none';
+  var as = document.getElementById('already-set');
+  as.style.display = 'block';
+  var summary = document.getElementById('as-mill-summary');
+  summary.innerHTML =
+    '<span>Mill</span><strong>'+esc(d.owner)+' &middot; '+esc(d.estate)+' &middot; '+esc(d.mill)+'</strong>'+
+    '<span style="margin-top:8px">Location</span><strong>'+esc(d.province)+', '+esc(d.district)+'&ensp;&middot;&ensp;Indonesia</strong>';
+  document.getElementById('proceed-btn').addEventListener('click', function(){
+    window.location.href = getReturnUrl();
+  });
+  document.getElementById('re-setup-btn').addEventListener('click', function(){
+    clearSave();
+    as.style.display = 'none';
+    document.getElementById('setup-form-wrap').style.display = 'block';
+    document.getElementById('s-owner').focus();
+  });
+}
+
+/* ─ Init ─────────────────────────────────────────────────────────────────── */
+function init(){
+  var existing = load();
+  if(existing){
+    showAlreadySet(existing);
+    return;
+  }
+  wireChain();
+  document.getElementById('setup-form').addEventListener('submit', onSubmit);
+  document.getElementById('s-owner').focus();
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+}else{
+  init();
+}
+
+})();
+/* ══ END SITE SETUP ════════════════════════════════════════════════════════ */
+</script>
+
+</body>
+</html>

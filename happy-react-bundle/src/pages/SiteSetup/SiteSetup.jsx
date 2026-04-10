@@ -43,6 +43,7 @@ import { useDispatch } from 'react-redux';
 import S1ResidueCards from '@/components/S1ResidueCards/S1ResidueCards';
 import { setStreamState, setStreamVolumes, setCustomStreamNames } from '@/store/store';
 import { ChevronUp, ChevronDown } from 'lucide-react';
+import { AreaChart, Area, BarChart, Bar, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { supabase } from '@/integrations/supabase/client';
 import CFI_SoilAcidity_ProfileCard from "@/components/CFI_SoilAcidity_ProfileCard/CFI_SoilAcidity_ProfileCard.jsx";
 
@@ -178,7 +179,11 @@ export default function SiteSetup() {
   const [cpoProd, setCpoProd] = useState(3000);
   const [cpoPeriod, setCpoPeriod] = useState('annual');
   const [bConfirmed, setBConfirmed] = useState(false);
-  const upMill = (k,v) => setMill(m=>({...m,[k]:+v||0}));
+  const upMill = (k,v) => {
+    const limits = { hrs:24, days:31, util:100 };
+    const num = +v || 0;
+    setMill(m => ({...m, [k]: limits[k] ? Math.min(limits[k], num) : num}));
+  };
 
   // ── Section D state ──────────────────────────────────
   // Point 6: No stream pre-selected on load
@@ -257,10 +262,38 @@ export default function SiteSetup() {
   const [companyConfirmed, setCompanyConfirmed] = useState(false);
   const [estateConfirmed,  setEstateConfirmed]  = useState(false);
   const [millConfirmed,    setMillConfirmed]    = useState(false);
+  const [dashPage, setDashPage] = useState(0); // 0=landing+A  1=B/C/D+charts  2=full dashboard
   const [activeDropdown,   setActiveDropdown]   = useState(null);
   const [selectedMill, setSelectedMill] = useState(null); // full mill row
   const [companyMills, setCompanyMills] = useState([]); // all mill rows for selected company
   const [gpsManualDirty, setGpsManualDirty] = useState(false); // true when user manually edits GPS
+
+  // ── Landing chart data (animated) ─────────────────
+  const [chartData, setChartData] = useState(() =>
+    Array.from({length:22}, (_,i) => ({
+      t: i,
+      n:  +(55 + Math.random()*30).toFixed(1),
+      p:  +(30 + Math.random()*25).toFixed(1),
+      k:  +(60 + Math.random()*28).toFixed(1),
+      rec:+(62 + Math.random()*20).toFixed(1),
+    }))
+  );
+  useEffect(() => {
+    if (millConfirmed) return;
+    const id = setInterval(() => {
+      setChartData(prev => {
+        const last = prev[prev.length - 1];
+        return [...prev.slice(-28), {
+          t:   last.t + 1,
+          n:   +Math.max(40, Math.min(92, last.n   + (Math.random()-0.47)*4)).toFixed(1),
+          p:   +Math.max(20, Math.min(72, last.p   + (Math.random()-0.47)*3)).toFixed(1),
+          k:   +Math.max(45, Math.min(96, last.k   + (Math.random()-0.47)*4)).toFixed(1),
+          rec: +Math.max(52, Math.min(94, last.rec + (Math.random()-0.47)*2.5)).toFixed(1),
+        }];
+      });
+    }, 1400);
+    return () => clearInterval(id);
+  }, [millConfirmed]);
 
   // ── Site data cascade ──────────────────────────────
   const [siteDataMessage, setSiteDataMessage] = useState('');
@@ -821,10 +854,133 @@ export default function SiteSetup() {
       <div style={{ padding:'16px 22px 60px', display:'flex', flexDirection:'column', gap:14 }}>
 
         {/* ════ ROW 1: A | B | C | G ════ */}
-        <div style={row4}>
+        <div style={
+          dashPage === 0 ? { display:'grid', gridTemplateColumns:'1fr 460px', gap:28, alignItems:'start', padding:'24px 0 8px' } :
+          dashPage === 1 ? { display:'grid', gridTemplateColumns:'1fr 1fr 1fr 300px', gap:20, alignItems:'start' } :
+          row4
+        }>
+
+          {/* ── LANDING INFO + CHARTS (only before mill confirmed) ── */}
+          {dashPage === 0 && (
+            <div style={{ display:'flex', flexDirection:'column', gap:20, paddingLeft:8 }}>
+
+              {/* Hero text */}
+              <div>
+                <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.teal, letterSpacing:'0.12em', marginBottom:8 }}>CIRCULAR NUTRIENT RECOVERY PLATFORM</div>
+                <div style={{ fontSize:32, fontWeight:800, fontFamily:Fnt.syne, color:C.white, lineHeight:1.15, marginBottom:12 }}>
+                  Turn Palm Oil Mill<br/>Waste Into Fertiliser Value
+                </div>
+                <div style={{ fontSize:14, color:C.grey, fontFamily:Fnt.dm, lineHeight:1.65, maxWidth:520 }}>
+                  CFI Deep Tech models <strong style={{color:C.white}}>8 residue streams</strong> from your CPO mill — EFB, Decanter Cake, POS, Fibre, POME and more —
+                  calculating their real-time <strong style={{color:C.teal}}>NPK replacement value</strong>, soil-adaptive dosing rates,
+                  and <strong style={{color:C.amber}}>CO₂e reduction potential</strong> across 6 Indonesian soil types.
+                </div>
+              </div>
+
+              {/* Stat pills */}
+              <div style={{ display:'flex', flexWrap:'wrap', gap:10 }}>
+                {[
+                  { val:'8',        lbl:'Residue Streams',       col:C.teal  },
+                  { val:'6',        lbl:'Soil Types Modelled',   col:C.teal  },
+                  { val:'USD/ha',   lbl:'NPK Replacement Value', col:C.amber },
+                  { val:'CO₂e',     lbl:'Emission Accounting',   col:C.green },
+                  { val:'Live DB',  lbl:'Supabase Mill Registry',col:C.grey  },
+                  { val:'Reg.',     lbl:'Permentan 01/2019',      col:C.grey  },
+                ].map(s => (
+                  <div key={s.lbl} style={{ background:'rgba(255,255,255,0.03)', border:`1px solid rgba(168,189,208,0.12)`, borderRadius:8, padding:'8px 14px', display:'flex', flexDirection:'column', gap:2 }}>
+                    <span style={{ fontSize:16, fontWeight:800, fontFamily:Fnt.mono, color:s.col }}>{s.val}</span>
+                    <span style={{ fontSize:10, color:'rgba(168,189,208,0.55)', letterSpacing:'0.06em', fontFamily:Fnt.mono }}>{s.lbl.toUpperCase()}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Chart 1: NPK recovery live */}
+              <div style={{ background:C.navyCard, border:`1px solid rgba(64,215,197,0.18)`, borderRadius:12, padding:'14px 16px' }}>
+                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:10 }}>
+                  <div>
+                    <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.teal, letterSpacing:'0.08em' }}>NPK RECOVERY STREAMS — LIVE MODEL</div>
+                    <div style={{ fontSize:11, color:'rgba(168,189,208,0.50)', fontFamily:Fnt.dm, marginTop:2 }}>Nutrient recovery % by element · simulated real-time</div>
+                  </div>
+                  <div style={{ display:'flex', gap:12 }}>
+                    {[{lbl:'N',col:'#40D7C5'},{lbl:'P',col:'#F5A623'},{lbl:'K',col:'#00A249'}].map(x=>(
+                      <div key={x.lbl} style={{ display:'flex', alignItems:'center', gap:4 }}>
+                        <div style={{ width:10, height:10, borderRadius:'50%', background:x.col, opacity:0.85 }}/>
+                        <span style={{ fontSize:10, fontFamily:Fnt.mono, color:C.grey }}>{x.lbl}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <ResponsiveContainer width="100%" height={130}>
+                  <AreaChart data={chartData} margin={{top:4, right:4, bottom:0, left:-24}}>
+                    <defs>
+                      <linearGradient id="gN" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%"  stopColor="#40D7C5" stopOpacity={0.25}/>
+                        <stop offset="95%" stopColor="#40D7C5" stopOpacity={0}/>
+                      </linearGradient>
+                      <linearGradient id="gP" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%"  stopColor="#F5A623" stopOpacity={0.20}/>
+                        <stop offset="95%" stopColor="#F5A623" stopOpacity={0}/>
+                      </linearGradient>
+                      <linearGradient id="gK" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%"  stopColor="#00A249" stopOpacity={0.22}/>
+                        <stop offset="95%" stopColor="#00A249" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(168,189,208,0.06)" vertical={false}/>
+                    <XAxis dataKey="t" hide/>
+                    <YAxis domain={[0,100]} tick={{fill:'rgba(168,189,208,0.35)', fontSize:9}} tickLine={false} axisLine={false}/>
+                    <Tooltip contentStyle={{background:'#0C1E33',border:'1px solid rgba(64,215,197,0.30)',borderRadius:6,fontSize:11,fontFamily:"'DM Sans',sans-serif"}} itemStyle={{color:C.grey}} labelStyle={{display:'none'}} formatter={(v,n)=>[`${v}%`, n.toUpperCase()]}/>
+                    <Area type="monotone" dataKey="n" stroke="#40D7C5" strokeWidth={1.8} fill="url(#gN)" dot={false} isAnimationActive={false}/>
+                    <Area type="monotone" dataKey="p" stroke="#F5A623" strokeWidth={1.8} fill="url(#gP)" dot={false} isAnimationActive={false}/>
+                    <Area type="monotone" dataKey="k" stroke="#00A249" strokeWidth={1.8} fill="url(#gK)" dot={false} isAnimationActive={false}/>
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Chart 2: Stream N content bar comparison */}
+              <div style={{ background:C.navyCard, border:`1px solid rgba(245,166,35,0.18)`, borderRadius:12, padding:'14px 16px' }}>
+                <div style={{ marginBottom:10 }}>
+                  <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.amber, letterSpacing:'0.08em' }}>N CONTENT BY RESIDUE STREAM (% DM)</div>
+                  <div style={{ fontSize:11, color:'rgba(168,189,208,0.50)', fontFamily:Fnt.dm, marginTop:2 }}>Nitrogen available per dry-matter tonne</div>
+                </div>
+                <ResponsiveContainer width="100%" height={110}>
+                  <BarChart data={[
+                    {stream:'EFB',  n:0.76},{stream:'OPDC', n:2.31},{stream:'POS',  n:1.76},
+                    {stream:'PMF',  n:0.58},{stream:'PKE',  n:2.20},{stream:'OPF',  n:0.54},
+                    {stream:'OPT',  n:0.30},
+                  ]} margin={{top:4, right:4, bottom:4, left:-24}}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(168,189,208,0.06)" horizontal={false}/>
+                    <XAxis dataKey="stream" tick={{fill:'rgba(168,189,208,0.55)', fontSize:10, fontFamily:"'DM Sans',sans-serif"}} axisLine={false} tickLine={false}/>
+                    <YAxis tick={{fill:'rgba(168,189,208,0.35)', fontSize:9}} tickLine={false} axisLine={false}/>
+                    <Tooltip contentStyle={{background:'#0C1E33',border:'1px solid rgba(245,166,35,0.30)',borderRadius:6,fontSize:11,fontFamily:"'DM Sans',sans-serif"}} itemStyle={{color:C.amber}} formatter={(v)=>[`${v}% N (DM)`,'N Content']}/>
+                    <Bar dataKey="n" fill="#F5A623" radius={[4,4,0,0]} fillOpacity={0.80}/>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* How it works */}
+              <div style={{ background:'rgba(0,162,73,0.05)', border:`1px solid rgba(0,162,73,0.14)`, borderRadius:12, padding:'14px 16px' }}>
+                <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.green, letterSpacing:'0.08em', marginBottom:10 }}>HOW IT WORKS</div>
+                <div style={{ display:'flex', flexDirection:'column', gap:7 }}>
+                  {[
+                    ['01', 'Enter your mill identity & GPS location in Section A'],
+                    ['02', 'Platform auto-detects soil type, climate & agronomic zone'],
+                    ['03', 'Select active residue streams for your mill'],
+                    ['04', 'Receive NPK replacement values, dosing rates & CO₂e data'],
+                  ].map(([n,t])=>(
+                    <div key={n} style={{ display:'flex', gap:10, alignItems:'flex-start' }}>
+                      <span style={{ fontSize:11, fontWeight:800, fontFamily:Fnt.mono, color:C.green, minWidth:22 }}>{n}</span>
+                      <span style={{ fontSize:12, color:C.grey, fontFamily:Fnt.dm, lineHeight:1.5 }}>{t}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          )}
 
           {/* ── A: SITE DETAILS WITH CASCADE ── */}
-          <div id="sec-a" style={{...card, scrollMarginTop:180}}>
+          <div id="sec-a" style={{...card, scrollMarginTop:180, display: dashPage===1 ? 'none' : undefined}}>
             <div style={secTitle}>A — Enter Your Details</div>
             <div style={secSub}>Mill Identity · Location · GPS Coordinates</div>
             <div style={cbody}>
@@ -975,7 +1131,6 @@ export default function SiteSetup() {
                               if (m.latitude) upSite('gpsLat', String(m.latitude));
                               if (m.longitude) upSite('gpsLon', String(m.longitude));
                               if (m.capacity_tph) setMill(prev => ({...prev, ffb: m.capacity_tph}));
-                              setMillConfirmed(true);
                               setSelectedMill(m);
                               setActiveDropdown(null);
                               // Soil auto-select
@@ -1198,10 +1353,37 @@ export default function SiteSetup() {
                   </div>
                 )}
 
+                {/* ── CONTINUE BUTTON ── */}
+                <button
+                  onClick={() => {
+                    if (!millConfirmed) setMillConfirmed(true);
+                    setDashPage(1);
+                    window.scrollTo({ top:0, behavior:'smooth' });
+                  }}
+                  style={{
+                    marginTop:14,
+                    width:'100%',
+                    padding:'12px 0',
+                    background: site.millName ? C.teal : 'rgba(64,215,197,0.12)',
+                    border: `1.5px solid ${site.millName ? C.teal : 'rgba(64,215,197,0.25)'}`,
+                    borderRadius:8,
+                    color: site.millName ? C.navy : 'rgba(64,215,197,0.40)',
+                    fontSize:13,
+                    fontWeight:700,
+                    fontFamily:Fnt.mono,
+                    letterSpacing:'0.08em',
+                    cursor: 'pointer',
+                    transition:'all 0.15s',
+                  }}
+                >
+                  {dashPage > 0 ? '✓  CONFIRMED — VIEW DASHBOARD' : 'CONTINUE →'}
+                </button>
+
               </div>
             </div>
           </div>
 
+          {dashPage >= 1 && <>
           {/* ── B: CPO MILL PROCESSING ── */}
           <div id="sec-b" style={{...card, scrollMarginTop:180}}>
             <div style={secTitle}>B — CPO Mill Processing</div>
@@ -1219,10 +1401,10 @@ export default function SiteSetup() {
                   </div>
                 </div>
                 {[
-                  { lbl:'FFB Capacity',     key:'ffb',  unit:'TPH',         max:3 },
-                  { lbl:'Operating Hours',  key:'hrs',  unit:'Hours / Day',  max:2 },
-                  { lbl:'Days / Month',     key:'days', unit:'Days',         max:2 },
-                  { lbl:'Utilization',      key:'util', unit:'%',            max:3 },
+                  { lbl:'FFB Capacity',     key:'ffb',  unit:'TPH',         max:3    },
+                  { lbl:'Operating Hours',  key:'hrs',  unit:'Hours / Day',  max:24   },
+                  { lbl:'Days / Month',     key:'days', unit:'Days',         max:31   },
+                  { lbl:'Utilization',      key:'util', unit:'%',            max:100  },
                 ].map(row=>(
                 <div key={row.key} style={{ display:'flex', alignItems:'center', justifyContent:'space-between', background:C.navyField, border:`1px solid rgba(168,189,208,0.12)`, borderRadius:8, padding:'10px 14px', gap:12, minHeight:48 }}>
                     <span style={{ flex:1, fontSize:14, fontWeight:700, color:C.grey, whiteSpace:'nowrap' }}>{row.lbl}</span>
@@ -1230,6 +1412,8 @@ export default function SiteSetup() {
                       <input
                         type="number"
                         value={mill[row.key]}
+                        min={0}
+                        max={row.max}
                         onChange={e=>upMill(row.key, e.target.value)}
                         readOnly={false}
                         style={bInput}
@@ -1442,6 +1626,203 @@ export default function SiteSetup() {
               </div>
             </div>
           </div>
+          {/* ── PAGE 1: LIVE CHARTS PANEL ── */}
+          {dashPage === 1 && (() => {
+            const ffbM = mill.ffb * mill.hrs * mill.days * (mill.util / 100);
+            const residueBar = [
+              { s:'EFB',  t: Math.round(ffbM * 0.220) },
+              { s:'OPDC', t: Math.round(ffbM * 0.045) },
+              { s:'POS',  t: Math.round(ffbM * 0.120) },
+              { s:'PMF',  t: Math.round(ffbM * 0.135) },
+              { s:'POME', t: Math.round(ffbM * 0.650) },
+            ];
+            return (
+              <div style={{ display:'flex', flexDirection:'column', gap:14, paddingTop:2 }}>
+
+                {/* Header */}
+                <div>
+                  <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.teal, letterSpacing:'0.10em', marginBottom:4 }}>LIVE MODEL OUTPUT</div>
+                  <div style={{ fontSize:11, color:'rgba(168,189,208,0.55)', fontFamily:Fnt.dm, lineHeight:1.5 }}>
+                    Charts update in real-time based on your mill settings in B & D.
+                  </div>
+                </div>
+
+                {/* Chart: Residue generation trend */}
+                <div style={{ background:C.navyCard, border:`1px solid rgba(64,215,197,0.18)`, borderRadius:10, padding:'12px 14px' }}>
+                  <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.teal, letterSpacing:'0.08em', marginBottom:8 }}>
+                    PROCESSING STREAM TREND
+                  </div>
+                  <ResponsiveContainer width="100%" height={110}>
+                    <AreaChart data={chartData} margin={{top:2, right:4, bottom:0, left:-28}}>
+                      <defs>
+                        <linearGradient id="g2A" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%"  stopColor="#40D7C5" stopOpacity={0.28}/>
+                          <stop offset="95%" stopColor="#40D7C5" stopOpacity={0}/>
+                        </linearGradient>
+                        <linearGradient id="g2B" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%"  stopColor="#F5A623" stopOpacity={0.22}/>
+                          <stop offset="95%" stopColor="#F5A623" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(168,189,208,0.06)" vertical={false}/>
+                      <XAxis dataKey="t" hide/>
+                      <YAxis domain={[0,100]} tick={{fill:'rgba(168,189,208,0.30)', fontSize:8}} tickLine={false} axisLine={false}/>
+                      <Tooltip contentStyle={{background:'#0C1E33',border:'1px solid rgba(64,215,197,0.30)',borderRadius:6,fontSize:10,fontFamily:"'DM Sans',sans-serif"}} itemStyle={{color:C.grey}} labelStyle={{display:'none'}} formatter={(v,n)=>[`${v}%`, n==='rec'?'Recovery':n.toUpperCase()]}/>
+                      <Area type="monotone" dataKey="rec" stroke="#40D7C5" strokeWidth={2} fill="url(#g2A)" dot={false} isAnimationActive={false}/>
+                      <Area type="monotone" dataKey="p"   stroke="#F5A623" strokeWidth={1.5} fill="url(#g2B)" dot={false} isAnimationActive={false}/>
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* Chart: Monthly residue output from mill settings */}
+                <div style={{ background:C.navyCard, border:`1px solid rgba(245,166,35,0.18)`, borderRadius:10, padding:'12px 14px' }}>
+                  <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.amber, letterSpacing:'0.08em', marginBottom:2 }}>
+                    MONTHLY OUTPUT (t/month)
+                  </div>
+                  <div style={{ fontSize:9, color:'rgba(168,189,208,0.45)', fontFamily:Fnt.dm, marginBottom:8 }}>
+                    Calculated from your B settings
+                  </div>
+                  <ResponsiveContainer width="100%" height={100}>
+                    <BarChart data={residueBar} margin={{top:2, right:4, bottom:4, left:-28}}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(168,189,208,0.06)" horizontal={false}/>
+                      <XAxis dataKey="s" tick={{fill:'rgba(168,189,208,0.55)', fontSize:9, fontFamily:"'DM Sans',sans-serif"}} axisLine={false} tickLine={false}/>
+                      <YAxis tick={{fill:'rgba(168,189,208,0.30)', fontSize:8}} tickLine={false} axisLine={false}/>
+                      <Tooltip contentStyle={{background:'#0C1E33',border:'1px solid rgba(245,166,35,0.30)',borderRadius:6,fontSize:10,fontFamily:"'DM Sans',sans-serif"}} itemStyle={{color:C.amber}} formatter={(v)=>[`${v.toLocaleString()} t`, 'Monthly']}/>
+                      <Bar dataKey="t" fill="#F5A623" radius={[3,3,0,0]} fillOpacity={0.80}/>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* KPI stats */}
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
+                  {[
+                    { lbl:'FFB / Month',   val: ffbM > 0 ? `${Math.round(ffbM).toLocaleString()} t` : '—', col:C.teal  },
+                    { lbl:'Utilization',   val: `${mill.util}%`,  col:C.amber },
+                    { lbl:'Hours / Day',   val: `${mill.hrs}h`,   col:C.grey  },
+                    { lbl:'Days / Month',  val: `${mill.days}d`,  col:C.grey  },
+                  ].map(k => (
+                    <div key={k.lbl} style={{ background:'rgba(255,255,255,0.03)', border:`1px solid rgba(168,189,208,0.10)`, borderRadius:8, padding:'9px 12px' }}>
+                      <div style={{ fontSize:15, fontWeight:800, fontFamily:Fnt.mono, color:k.col }}>{k.val}</div>
+                      <div style={{ fontSize:9, color:'rgba(168,189,208,0.45)', letterSpacing:'0.06em', fontFamily:Fnt.mono, marginTop:2 }}>{k.lbl.toUpperCase()}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Back button */}
+                <button
+                  onClick={() => { setDashPage(0); window.scrollTo({ top:0, behavior:'smooth' }); }}
+                  style={{ width:'100%', padding:'9px 0', background:'transparent', border:`1px solid rgba(168,189,208,0.20)`, borderRadius:8, color:'rgba(168,189,208,0.55)', fontSize:11, fontWeight:700, fontFamily:Fnt.mono, letterSpacing:'0.06em', cursor:'pointer' }}
+                >
+                  ← BACK
+                </button>
+
+                {/* Continue to Dashboard */}
+                <button
+                  onClick={() => { setDashPage(2); window.scrollTo({ top:0, behavior:'smooth' }); }}
+                  style={{ width:'100%', padding:'13px 0', background:C.teal, border:`1.5px solid ${C.teal}`, borderRadius:8, color:C.navy, fontSize:13, fontWeight:700, fontFamily:Fnt.mono, letterSpacing:'0.08em', cursor:'pointer', transition:'all 0.15s' }}
+                >
+                  OPEN DASHBOARD →
+                </button>
+
+              </div>
+            );
+          })()}
+
+          </>}
+        </div>
+
+        {dashPage >= 2 && <>
+
+        {/* ════ PAGE 3: BACK + TITLE ════ */}
+        <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', marginBottom:14, paddingTop:4 }}>
+          <div>
+            <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:6 }}>
+              <button
+                onClick={() => { setDashPage(1); window.scrollTo({top:0,behavior:'smooth'}); }}
+                style={{ background:'transparent', border:`1px solid rgba(168,189,208,0.20)`, borderRadius:6, color:'rgba(168,189,208,0.55)', fontSize:11, fontWeight:700, fontFamily:Fnt.mono, padding:'5px 12px', cursor:'pointer' }}
+              >← BACK</button>
+              <span style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.teal, letterSpacing:'0.10em' }}>
+                STEP 3 — RESIDUE CONFIGURATION &amp; COMPOSITION
+              </span>
+            </div>
+            <div style={{ fontSize:12, color:'rgba(168,189,208,0.50)', fontFamily:Fnt.dm, maxWidth:900, lineHeight:1.65 }}>
+              Select which streams your mill produces, set monthly volumes, and review the blended NPK composition, structural fibre profile, biological signals, and regulatory status. All charts update live.
+            </div>
+          </div>
+        </div>
+
+        {/* ════ PAGE 3: LIVE OVERVIEW STRIP ════ */}
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr 2fr', gap:14, marginBottom:16 }}>
+
+          {/* Active streams */}
+          <div style={{ background:C.navyCard, border:`1px solid rgba(64,215,197,0.18)`, borderRadius:10, padding:'14px 16px' }}>
+            <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.teal, letterSpacing:'0.08em', marginBottom:8 }}>ACTIVE STREAMS</div>
+            <div style={{ fontSize:32, fontWeight:800, fontFamily:Fnt.mono, color:C.teal, lineHeight:1 }}>{Object.values(activeStreams).filter(Boolean).length}</div>
+            <div style={{ fontSize:10, color:'rgba(168,189,208,0.40)', fontFamily:Fnt.dm, marginTop:4 }}>of 10 available</div>
+            <div style={{ marginTop:8, display:'flex', flexWrap:'wrap', gap:4 }}>
+              {Object.entries(activeStreams).filter(([,v])=>v).map(([k])=>(
+                <span key={k} style={{ fontSize:9, fontWeight:700, fontFamily:Fnt.mono, color:C.teal, background:'rgba(64,215,197,0.10)', border:`1px solid rgba(64,215,197,0.25)`, borderRadius:4, padding:'2px 6px' }}>{k.toUpperCase()}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Total volume */}
+          <div style={{ background:C.navyCard, border:`1px solid rgba(0,162,73,0.18)`, borderRadius:10, padding:'14px 16px' }}>
+            <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.green, letterSpacing:'0.08em', marginBottom:8 }}>TOTAL VOLUME</div>
+            <div style={{ fontSize:32, fontWeight:800, fontFamily:Fnt.mono, color:C.green, lineHeight:1 }}>{grandTotal>0?fmtT(grandTotal):'—'}</div>
+            <div style={{ fontSize:10, color:'rgba(168,189,208,0.40)', fontFamily:Fnt.dm, marginTop:4 }}>tonnes / month</div>
+            {grandTotal>0 && <div style={{ fontSize:11, color:'rgba(168,189,208,0.38)', fontFamily:Fnt.dm, marginTop:4 }}>{(grandTotal*12/1000).toFixed(1)}K t / year</div>}
+          </div>
+
+          {/* NPK blend bars */}
+          <div style={{ background:C.navyCard, border:`1px solid rgba(245,166,35,0.18)`, borderRadius:10, padding:'14px 16px' }}>
+            <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.amber, letterSpacing:'0.08em', marginBottom:8 }}>BLEND NPK (% DM)</div>
+            {blend ? (
+              <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
+                {[['N', blend.N, C.teal],['P₂O₅', blend.P2O5, C.amber],['K₂O', blend.K2O, C.green]].map(([k,v,col])=>(
+                  <div key={k} style={{ display:'flex', alignItems:'center', gap:8 }}>
+                    <span style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:col, minWidth:30 }}>{k}</span>
+                    <div style={{ flex:1, height:6, background:'rgba(255,255,255,0.06)', borderRadius:3 }}>
+                      <div style={{ height:6, borderRadius:3, background:col, width:`${Math.min(100,(v||0)*40)}%`, transition:'width 0.4s' }}/>
+                    </div>
+                    <span style={{ fontSize:11, fontWeight:800, fontFamily:Fnt.mono, color:col, minWidth:36 }}>{v?.toFixed(2)||'—'}</span>
+                  </div>
+                ))}
+              </div>
+            ) : <div style={{ fontSize:11, color:'rgba(168,189,208,0.35)', fontFamily:Fnt.dm, marginTop:8 }}>Activate streams in E to see blend</div>}
+          </div>
+
+          {/* Live NPK trend chart */}
+          <div style={{ background:C.navyCard, border:`1px solid rgba(64,215,197,0.14)`, borderRadius:10, padding:'14px 16px' }}>
+            <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:8 }}>
+              <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.teal, letterSpacing:'0.08em' }}>LIVE NPK RECOVERY MODEL</div>
+              <div style={{ display:'flex', gap:10 }}>
+                {[{l:'N',c:'#40D7C5'},{l:'P',c:'#F5A623'},{l:'K',c:'#00A249'}].map(x=>(
+                  <div key={x.l} style={{ display:'flex', alignItems:'center', gap:3 }}>
+                    <div style={{ width:8, height:8, borderRadius:'50%', background:x.c }}/>
+                    <span style={{ fontSize:9, fontFamily:Fnt.mono, color:C.grey }}>{x.l}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <ResponsiveContainer width="100%" height={90}>
+              <AreaChart data={chartData} margin={{top:2,right:4,bottom:0,left:-28}}>
+                <defs>
+                  <linearGradient id="g3N" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#40D7C5" stopOpacity={0.22}/><stop offset="95%" stopColor="#40D7C5" stopOpacity={0}/></linearGradient>
+                  <linearGradient id="g3P" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#F5A623" stopOpacity={0.18}/><stop offset="95%" stopColor="#F5A623" stopOpacity={0}/></linearGradient>
+                  <linearGradient id="g3K" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#00A249" stopOpacity={0.18}/><stop offset="95%" stopColor="#00A249" stopOpacity={0}/></linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(168,189,208,0.05)" vertical={false}/>
+                <XAxis dataKey="t" hide/>
+                <YAxis domain={[0,100]} tick={{fill:'rgba(168,189,208,0.28)',fontSize:8}} tickLine={false} axisLine={false}/>
+                <Tooltip contentStyle={{background:'#0C1E33',border:'1px solid rgba(64,215,197,0.28)',borderRadius:6,fontSize:10,fontFamily:"'DM Sans',sans-serif"}} itemStyle={{color:C.grey}} labelStyle={{display:'none'}} formatter={(v,n)=>[`${v}%`,n.toUpperCase()]}/>
+                <Area type="monotone" dataKey="n" stroke="#40D7C5" strokeWidth={1.8} fill="url(#g3N)" dot={false} isAnimationActive={false}/>
+                <Area type="monotone" dataKey="p" stroke="#F5A623" strokeWidth={1.5} fill="url(#g3P)" dot={false} isAnimationActive={false}/>
+                <Area type="monotone" dataKey="k" stroke="#00A249" strokeWidth={1.5} fill="url(#g3K)" dot={false} isAnimationActive={false}/>
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+
         </div>
 
         {/* ════ ROW 2: D | E | F | G-TOTAL ════ */}
@@ -1665,6 +2046,74 @@ export default function SiteSetup() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* ════ BLEND ANALYSIS CHARTS ════ */}
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:14, margin:'14px 0' }}>
+
+          {/* Stream volume breakdown bar */}
+          <div style={{ background:C.navyCard, border:`1px solid rgba(245,166,35,0.18)`, borderRadius:10, padding:'14px 16px' }}>
+            <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.amber, letterSpacing:'0.08em', marginBottom:2 }}>ACTIVE STREAM VOLUMES (t/month)</div>
+            <div style={{ fontSize:9, color:'rgba(168,189,208,0.40)', fontFamily:Fnt.dm, marginBottom:8 }}>Adjust sliders in F to update in real-time</div>
+            <ResponsiveContainer width="100%" height={140}>
+              <BarChart data={Object.entries(streamT).map(([k,v])=>({ s:k.toUpperCase(), t:v }))} margin={{top:2,right:4,bottom:4,left:-28}}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(168,189,208,0.05)" horizontal={false}/>
+                <XAxis dataKey="s" tick={{fill:'rgba(168,189,208,0.50)',fontSize:9,fontFamily:"'DM Sans',sans-serif"}} axisLine={false} tickLine={false}/>
+                <YAxis tick={{fill:'rgba(168,189,208,0.28)',fontSize:8}} tickLine={false} axisLine={false}/>
+                <Tooltip contentStyle={{background:'#0C1E33',border:'1px solid rgba(245,166,35,0.30)',borderRadius:6,fontSize:10,fontFamily:"'DM Sans',sans-serif"}} itemStyle={{color:C.amber}} formatter={(v)=>[`${v.toLocaleString()} t`,'Monthly']}/>
+                <Bar dataKey="t" fill="#F5A623" radius={[3,3,0,0]} fillOpacity={0.80}/>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Blended NPK horizontal bars */}
+          <div style={{ background:C.navyCard, border:`1px solid rgba(64,215,197,0.18)`, borderRadius:10, padding:'14px 16px' }}>
+            <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.teal, letterSpacing:'0.08em', marginBottom:2 }}>BLENDED NPK + SECONDARY (% DM)</div>
+            <div style={{ fontSize:9, color:'rgba(168,189,208,0.40)', fontFamily:Fnt.dm, marginBottom:8 }}>Weighted average across active streams</div>
+            <ResponsiveContainer width="100%" height={140}>
+              <BarChart layout="vertical"
+                data={blend ? [
+                  {name:'N',    val:blend.N,    fill:'#40D7C5'},
+                  {name:'P₂O₅',val:blend.P2O5, fill:'#F5A623'},
+                  {name:'K₂O', val:blend.K2O,  fill:'#00A249'},
+                  {name:'Ca',   val:blend.Ca,   fill:'rgba(168,189,208,0.55)'},
+                  {name:'Mg',   val:blend.Mg,   fill:'rgba(168,189,208,0.38)'},
+                ] : []}
+                margin={{top:2,right:24,bottom:0,left:32}}>
+                <XAxis type="number" tick={{fill:'rgba(168,189,208,0.28)',fontSize:8}} tickLine={false} axisLine={false}/>
+                <YAxis type="category" dataKey="name" tick={{fill:'rgba(168,189,208,0.60)',fontSize:10,fontFamily:"'DM Sans',sans-serif"}} axisLine={false} tickLine={false}/>
+                <Tooltip contentStyle={{background:'#0C1E33',border:'1px solid rgba(64,215,197,0.28)',borderRadius:6,fontSize:10,fontFamily:"'DM Sans',sans-serif"}} formatter={(v)=>[`${v?.toFixed(2)||'—'}% DM`,'Value']}/>
+                <Bar dataKey="val" radius={[0,3,3,0]}>
+                  {blend && [{fill:'#40D7C5'},{fill:'#F5A623'},{fill:'#00A249'},{fill:'rgba(168,189,208,0.55)'},{fill:'rgba(168,189,208,0.38)'}].map((e,i)=>(
+                    <Cell key={`c-${i}`} fill={e.fill}/>
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Process readiness signals */}
+          <div style={{ background:C.navyCard, border:`1px solid rgba(0,162,73,0.18)`, borderRadius:10, padding:'14px 16px' }}>
+            <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.green, letterSpacing:'0.08em', marginBottom:10 }}>PROCESS READINESS SIGNALS</div>
+            <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
+              {[
+                { lbl:'C:N Ratio',     val:blend?.CN?.toFixed(1)||'—',                          good:blend?.CN>=16&&blend?.CN<=25, note:'Target 16–25 for BSF & compost' },
+                { lbl:'Blended N %',   val:blend?.N?.toFixed(2)||'—',                           good:(blend?.N||0)>=0.8,           note:'≥0.8% DM for reliable NPK return' },
+                { lbl:'Crude Protein', val:blend?.CP?`${blend.CP.toFixed(1)}%`:'—',             good:(blend?.CP||0)>=8,            note:'≥8% DM floor for biological use' },
+                { lbl:'Moisture',      val:blend?.MC?`${blend.MC.toFixed(1)}%`:'—',             good:(blend?.MC||0)<=70,           note:'≤70% WB preferred for handling' },
+                { lbl:'Lignin',        val:blend?.Lignin?`${blend.Lignin.toFixed(1)}%`:'—',     good:(blend?.Lignin||0)>=10,       note:'≥10% DM signals humate potential' },
+              ].map(item=>(
+                <div key={item.lbl} style={{ padding:'6px 10px', background:'rgba(255,255,255,0.02)', borderRadius:6, border:`1px solid ${item.val==='—'?'rgba(168,189,208,0.07)':item.good?'rgba(0,162,73,0.22)':'rgba(245,166,35,0.22)'}` }}>
+                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                    <span style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.grey }}>{item.lbl}</span>
+                    <span style={{ fontSize:12, fontWeight:800, fontFamily:Fnt.mono, color:item.val==='—'?'rgba(168,189,208,0.30)':item.good?C.green:C.amber }}>{item.val}</span>
+                  </div>
+                  <div style={{ fontSize:9, color:'rgba(168,189,208,0.35)', fontFamily:Fnt.dm, marginTop:2 }}>{item.note}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
 
         {/* ════ ROW 3: Residue Mix | Structural | Biological | Secondary ════ */}
@@ -1921,6 +2370,7 @@ export default function SiteSetup() {
         {/* ════ S1 RESIDUE CARDS — inline, no routing ════ */}
         <S1ResidueCards />
 
+        </>}
       </div>
     </div>
   );

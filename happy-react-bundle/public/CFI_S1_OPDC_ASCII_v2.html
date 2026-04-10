@@ -20,9 +20,29 @@ pre{font-family:'DM Mono',monospace;font-size:11px;line-height:1.7;color:#111;ma
 .gate-red{background:rgba(204,34,34,.06);color:#8b0000}
 .final{background:#1C0F00;color:#F5A623}
 .leg{margin-top:14px;border-top:1px solid #ddd;padding-top:10px;font-size:10px;color:#666;line-height:1.9}
+
+/* ─── MILL INFO HEADER ─────────────────────────────────────────────────────────── */
+#mill-info-header{width:100%;background:#030810;border-bottom:1px solid #0C1A28;display:none}
+#mill-info-inner{width:1280px;max-width:100%;margin:0 auto;display:flex;align-items:center;height:26px;padding:0 12px;gap:10px}
+#mill-info-text{color:#344E64;font-size:9px;font-family:'DM Mono',monospace;flex:1;letter-spacing:.025em;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+#mill-info-text strong{color:#40D7C5}
+#mill-reset-btn{background:none;border:1px solid #0F2030;color:#1E3A52;font-size:8px;font-family:'DM Mono',monospace;letter-spacing:.1em;padding:2px 9px;border-radius:2px;cursor:pointer;transition:color .18s,border-color .18s;white-space:nowrap;flex-shrink:0;text-transform:uppercase}
+#mill-reset-btn:hover{color:#40D7C5;border-color:#40D7C5}
 </style>
 </head>
 <body>
+
+<!-- No overlay — gatekeeper redirects to CFI_SiteSetup.html if needed -->
+
+<!-- ══ MILL INFO HEADER (revealed after setup) ══ -->
+<div id="mill-info-header">
+  <div id="mill-info-inner">
+    <span id="mill-info-text"></span>
+    <button id="mill-reset-btn" title="Clear setup and re-enter mill details">&#x21BA;&nbsp;Reset Mill</button>
+  </div>
+</div>
+<!-- ══ END MILL INFO HEADER ══ -->
+
 <!-- ══ CFI CROSS-NAV STRIP ══ -->
 <div style="width:100%;background:#060C14;border-bottom:2px solid #1E2A3A;padding:0;font-family:'DM Mono',monospace">
   <div style="width:1280px;margin:0 auto;display:flex;align-items:center;height:36px;padding:0 12px;gap:0">
@@ -233,6 +253,119 @@ pre{font-family:'DM Mono',monospace;font-size:11px;line-height:1.7;color:#111;ma
 </div>
 </div>
 </div>
+
+<script>
+/* ══ CFI MILL SETUP — GATEKEEPER v3 (redirect edition) ══════════════════════ */
+(function(){
+'use strict';
+
+var KEY='cfi_mill_setup_v1';
+var SETUP_PAGE='CFI_SiteSetup.html';
+
+/* ── Helpers ─────────────────────────────────────────────────────────────── */
+function esc(s){
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function load(){
+  try{
+    var d=sessionStorage.getItem(KEY)||localStorage.getItem(KEY);
+    return d?JSON.parse(d):null;
+  }catch(e){return null;}
+}
+function save(d){
+  try{
+    var j=JSON.stringify(d);
+    localStorage.setItem(KEY,j);
+    sessionStorage.setItem(KEY,j);
+  }catch(e){}
+}
+function clearSave(){
+  try{localStorage.removeItem(KEY);sessionStorage.removeItem(KEY);}catch(e){}
+}
+
+/* ── UI helpers ──────────────────────────────────────────────────────────── */
+function esc(s){
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function showMillHeader(d){
+  var h=document.getElementById('mill-info-header');
+  var t=document.getElementById('mill-info-text');
+  if(!h||!t)return;
+  var gps=d.lat&&d.lng?esc(d.lat)+'&thinsp;/&thinsp;'+esc(d.lng):'n/a';
+  t.innerHTML=
+    '<strong>MILL:</strong> '+esc(d.owner)+' &middot; '+esc(d.estate)+' &middot; '+esc(d.mill)+
+    ' &nbsp;<span style="color:#1A3350">&#x2502;</span>&nbsp; '+
+    '<strong>LOCATION:</strong> '+esc(d.province)+', '+esc(d.district)+
+    ' &nbsp;<span style="color:#1A3350">&#x2502;</span>&nbsp; '+
+    '<strong>GPS:</strong> '+gps+
+    ' &nbsp;<span style="color:#1A3350">&#x2502;</span>&nbsp; Indonesia';
+  h.style.display='block';
+}
+function updateSiteMeta(d){
+  var el=document.getElementById('site-meta');
+  if(el){
+    el.textContent=
+      d.estate+' \u00B7 '+d.mill+' \u00B7 '+
+      d.district+', '+d.province+' \u00B7 Indonesia';
+  }
+}
+
+/* ── Init — redirect to setup page if not configured ───────────────────── */
+function init(){
+  var resetBtn=document.getElementById('mill-reset-btn');
+  if(resetBtn){
+    resetBtn.addEventListener('click',function(){
+      if(confirm('Reset mill setup? You will be sent to the Site Setup page.')){
+        clearSave();
+        window.location.href=SETUP_PAGE+'?return=CFI_S1_OPDC_ASCII_v2.html';
+      }
+    });
+  }
+
+  var existing=load();
+  if(existing){
+    showMillHeader(existing);
+    updateSiteMeta(existing);
+    return;
+  }
+
+  /* Not set up — redirect immediately to the standalone setup page */
+  window.location.replace(
+    SETUP_PAGE+'?return=CFI_S1_OPDC_ASCII_v2.html'
+  );
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',init);
+}else{
+  init();
+}
+
+})();
+/* ══ END GATEKEEPER v3 ═══════════════════════════════════════════════════════ */
+</script>
+
+</body>
+</html>
+
+  /* Form submit */
+  var form=document.getElementById('setup-form');
+  if(form){form.addEventListener('submit',onSubmit);}
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',init);
+}else{
+  init();
+}
+
+})();
+/* ══ END GATEKEEPER v2 ═══════════════════════════════════════════════════════ */
+</script>
 
 </body>
 </html>
