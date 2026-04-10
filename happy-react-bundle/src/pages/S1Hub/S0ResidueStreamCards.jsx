@@ -94,7 +94,7 @@ function BadgeChip({ label, chipColor, chipBg, chipBdr }) {
   );
 }
 
-export default function S0ResidueStreamCards({ mb, site, mcOverride, setMcOverride }) {
+export default function S0ResidueStreamCards({ mb, site, mcOverride, setMcOverride, efbPressDuty = 2, efbMillDuty = 5, opdcPressDuty = 1 }) {
   const showEfb  = !site || site.efb_enabled  !== false;
   const showOpdc = !site || site.opdc_enabled !== false;
   const showPos  = !site || site.pos_enabled  !== false;
@@ -129,8 +129,8 @@ export default function S0ResidueStreamCards({ mb, site, mcOverride, setMcOverri
         <CardRow label="MC Out (Target)" value={`${mb.efb.mcOut}% WB`} valueColor={C.amber} />
         <CardRow label="Water Removed" subNote="← recalcs from MC" value={`${mb.efb.h2o} T/Day`} />
         <CardRow label="Particle Size" value="D90 ≤ 2 mm" />
-        <CardRow label="Presses (N+1)" value="2 Duty + 1 Backup" />
-        <CardRow label="Hammer Mills" value="5 Duty + 1 Backup" />
+        <CardRow label="Presses (N+1)" value={`${efbPressDuty} Duty + 1 Backup`} />
+        <CardRow label="Hammer Mills" value={`${efbMillDuty} Duty + 1 Backup`} />
         <div className="s1hub-badge-chips">
           <BadgeChip label="MC ≤ 45% PASS" chipColor="#3DCB7A" chipBg="rgba(61,203,122,.12)" chipBdr="rgba(61,203,122,.5)" />
           <BadgeChip label="D90 ≤ 2mm PASS" chipColor="#3DCB7A" chipBg="rgba(61,203,122,.12)" chipBdr="rgba(61,203,122,.5)" />
@@ -172,7 +172,7 @@ export default function S0ResidueStreamCards({ mb, site, mcOverride, setMcOverri
           setMcOverride={setMcOverride}
         />
         <CardRow label="Water Removed" subNote="← recalcs from MC" value={`${mb.opdc.h2o} T/Day`} />
-        <CardRow label="Press" value="1 Duty + 1 Backup" />
+        <CardRow label="Press" value={`${opdcPressDuty} Duty + 1 Backup`} />
         <CardRow label="CP% DM" value="14.5 Unchanged" />
         <div className="s1hub-badge-chips">
           <BadgeChip label="40% FLOOR HARD GATE" chipColor={C.red} chipBg="rgba(232,64,64,.12)" chipBdr="rgba(232,64,64,.5)" />

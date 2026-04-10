@@ -1,4 +1,5 @@
-﻿import { useState, useMemo } from "react";
+﻿import { useState, useMemo, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import './S1Hub.css';
 import S1LineDetailModal from './S1LineDetailModal.jsx';
@@ -859,7 +860,7 @@ const MODULE_DETAIL = {
 
 export default function S1Hub() {
   const nav = useNavigate();
-  const { site, derived } = useMill();
+  const { site, siteId, derived } = useMill();
   const [activeTab, setActiveTab] = useState('overview');
   const [engSubTab, setEngSubTab] = useState('flow');
   const [activeModal, setActiveModal] = useState(null);
@@ -871,7 +872,17 @@ export default function S1Hub() {
   // ── Sidebar state ─────────────────────────────────────
   const [cpoProd, setCpoProd] = useState(3000);
   const [cpoPeriod, setCpoPeriod] = useState('annual');
+  const [ffbTPHEdit, setFfbTPHEdit] = useState('');
+  const [opsHEdit, setOpsHEdit] = useState('');
   const [efbYield, setEfbYield] = useState(23);
+
+  // Sync edit fields when site loads / changes from Supabase
+  useEffect(() => {
+    if (site) {
+      setFfbTPHEdit(String(site.ffb_capacity_tph ?? 60));
+      setOpsHEdit(String(site.operating_hrs_day ?? 20));
+    }
+  }, [site?.ffb_capacity_tph, site?.operating_hrs_day]);
   const [posSludge, setPosSludge] = useState(30);
   const [pressNpCap, setPressNpCap] = useState(15);
   const [millNpCap, setMillNpCap] = useState(5);
@@ -881,9 +892,14 @@ export default function S1Hub() {
   const [powerRate, setPowerRate] = useState(0.15);
 
   const s1Calc = useMemo(() => {
-    const efbFW  = derived?.monthlyEfb  || 0;
-    const opdcFW = derived?.monthlyOpdc || 0;
-    const posFW  = derived?.monthlyPos  || 0;
+    const ffbTPH  = parseFloat(ffbTPHEdit) || site?.ffb_capacity_tph  || 60;
+    const opsH    = parseFloat(opsHEdit)   || site?.operating_hrs_day || 20;
+    const efbTPD  = ffbTPH * opsH * (efbYield / 100);
+    const opdcTPD = efbTPD * 0.152;     // locked: 15.2% of EFB FW
+    const posTPD  = posSludge;           // direct daily t/day input
+    const efbFW   = efbTPD  * 30;
+    const opdcFW  = opdcTPD * 30;
+    const posFW   = posTPD  * 30;
     const totalFW = efbFW + opdcFW + posFW;
     const efbDM   = efbFW  * 0.375 * 0.97;
     const opdcDM  = opdcFW * 0.30  * 0.99;
@@ -892,11 +908,11 @@ export default function S1Hub() {
     const waterRemoved = totalFW - totalDM;
     const inputDM = efbFW*0.375 + opdcFW*0.30 + posFW*0.18;
     const dmRecovery = inputDM > 0 ? ((totalDM/inputDM)*100).toFixed(1) : '\u2014';
-    const efbTPH  = efbFW  > 0 ? (efbFW  / 30 / 20).toFixed(1) : '\u2014';
-    const opdcTPH = opdcFW > 0 ? (opdcFW / 30 / 20).toFixed(1) : '\u2014';
-    const posTPH  = posFW  > 0 ? (posFW  / 30 / 20).toFixed(1) : '\u2014';
+    const efbTPH  = efbTPD  > 0 ? (efbTPD  / opsH).toFixed(1) : '\u2014';
+    const opdcTPH = opdcTPD > 0 ? (opdcTPD / opsH).toFixed(1) : '\u2014';
+    const posTPH  = posTPD  > 0 ? (posTPD  / opsH).toFixed(1) : '\u2014';
     return { efbFW, opdcFW, posFW, totalFW, efbDM, opdcDM, posDM, totalDM, waterRemoved, dmRecovery, efbTPH, opdcTPH, posTPH };
-  }, [derived]);
+  }, [site, ffbTPHEdit, opsHEdit, efbYield, posSludge]);
 
   // ── Daily mass-balance with per-stream MC override ──
   const mb = useMemo(() => {
@@ -907,9 +923,11 @@ export default function S1Hub() {
     const opdcMCOut = 40.0;   // CLASS A hard floor — never changes
     const posMCOut  = 65.0;   // post-decanter target
 
-    const efbFreshTPD  = (derived?.monthlyEfb  || 0) / 30;
-    const opdcFreshTPD = (derived?.monthlyOpdc || 0) / 30;
-    const posFreshTPD  = (derived?.monthlyPos  || 0) / 30;
+    const _ffbTPH = parseFloat(ffbTPHEdit) || site?.ffb_capacity_tph  || 60;
+    const _opsH    = parseFloat(opsHEdit)   || site?.operating_hrs_day || 20;
+    const efbFreshTPD  = _ffbTPH * _opsH * (efbYield / 100);
+    const opdcFreshTPD = efbFreshTPD * 0.152;    // locked: 15.2% of EFB FW
+    const posFreshTPD  = posSludge;               // direct daily t/day input
 
     const efbDMTPD   = efbFreshTPD  * (1 - efbMCIn  / 100);
     const opdcDMTPD  = opdcFreshTPD * (1 - opdcMCIn / 100);
@@ -940,7 +958,16 @@ export default function S1Hub() {
       efbS1Out, opdcS1Out, posS1Out,
       efbH2O, opdcH2O, posH2O,
     };
-  }, [derived, mcOverride]);
+  }, [site, ffbTPHEdit, opsHEdit, efbYield, posSludge, mcOverride]);
+
+  // ── Equipment counts driven by sidebar NP caps (Asian OEM 65% efficiency) ──
+  const NP_EFF     = 0.65;
+  const _opsHours  = parseFloat(opsHEdit) || site?.operating_hrs_day || 20;
+  const efbFlowTPH  = _opsHours > 0 ? mb.efbFreshTPD  / _opsHours : 0;
+  const opdcFlowTPH = _opsHours > 0 ? mb.opdcFreshTPD / _opsHours : 0;
+  const efbPressDuty  = Math.max(1, Math.ceil(efbFlowTPH  / ((pressNpCap || 15) * NP_EFF)));
+  const efbMillDuty   = Math.max(1, Math.ceil(efbFlowTPH  / ((millNpCap  || 5)  * NP_EFF)));
+  const opdcPressDuty = Math.max(1, Math.ceil(opdcFlowTPH / ((pressNpCap || 15) * NP_EFF)));
 
   const modules = [
     { key: 'efb',  num: 'Line 1', title: 'EFB Pre-Processing Line', desc: '10-node mechanical line · 20 t/h · 600mm belt · 298 kW · Shred → Press → Mill → Screen', accent: C.teal, icon: '🏭', tags: ['10 Machines', '600mm Belt', '20 t/h', 'Trommel + Hammer Mill'] },
@@ -994,14 +1021,26 @@ export default function S1Hub() {
           <div className="s1hub-sb-iw">
             <span className="s1hub-sb-ll">FFB Throughput</span>
             <div className="s1hub-sb-irow">
-              <input type="number" className="s1hub-sb-input" defaultValue={site?.ffb_capacity_tph ?? 60} readOnly />
+              <input type="number" className="s1hub-sb-input"
+                     value={ffbTPHEdit}
+                     onChange={e => setFfbTPHEdit(e.target.value)}
+                     onBlur={e => {
+                       const v = parseFloat(e.target.value);
+                       if (siteId && v > 0) supabase.from('cfi_sites').update({ ffb_capacity_tph: v }).eq('id', siteId);
+                     }} />
               <span className="s1hub-sb-un">T / hr</span>
             </div>
           </div>
           <div className="s1hub-sb-iw">
             <span className="s1hub-sb-ll">Operating Hours</span>
             <div className="s1hub-sb-irow">
-              <input type="number" className="s1hub-sb-input" defaultValue={site?.operating_hrs_day ?? 20} readOnly />
+              <input type="number" className="s1hub-sb-input"
+                     value={opsHEdit}
+                     onChange={e => setOpsHEdit(e.target.value)}
+                     onBlur={e => {
+                       const v = parseFloat(e.target.value);
+                       if (siteId && v > 0) supabase.from('cfi_sites').update({ operating_hrs_day: v }).eq('id', siteId);
+                     }} />
               <span className="s1hub-sb-un">hr / day</span>
             </div>
           </div>
@@ -1176,7 +1215,7 @@ export default function S1Hub() {
       {activeTab === 'overview' && (
         <div className="s1hub-tab-content">
           <S1MassBalanceTable mb={mb} site={site} />
-          <S0ResidueStreamCards mb={mb} site={site} mcOverride={mcOverride} setMcOverride={setMcOverride} />
+          <S0ResidueStreamCards mb={mb} site={site} mcOverride={mcOverride} setMcOverride={setMcOverride} efbPressDuty={efbPressDuty} efbMillDuty={efbMillDuty} opdcPressDuty={opdcPressDuty} />
 
           <div style={{ marginTop: 20 }}>
             <SubstrateFlowStrip
@@ -1192,9 +1231,9 @@ export default function S1Hub() {
             <div className="sec-title st-teal" style={{ marginTop: 24 }}>Daily Stream Summary</div>
             <div className="s1hub-streams-grid">
               {[
-                { name: 'EFB',  fresh: '300 t/day', dm: '112 t/day',  mc: '62.5%', color: C.teal    },
-                { name: 'OPDC', fresh: '45 t/day',  dm: '13.5 t/day', mc: '70%',   color: C.amber   },
-                { name: 'POS',  fresh: '30 t/day',  dm: '6 t/day',    mc: '82%',   color: '#3B82F6' },
+                { name: 'EFB',  fresh: `${mb.efb.fresh} t/day`,  dm: `${mb.efb.dm} t/day`,  mc: `${mb.efb.mcIn}%`,  color: C.teal    },
+                { name: 'OPDC', fresh: `${mb.opdc.fresh} t/day`, dm: `${mb.opdc.dm} t/day`, mc: `${mb.opdc.mcIn}%`, color: C.amber   },
+                { name: 'POS',  fresh: `${mb.pos.fresh} t/day`,  dm: `${mb.pos.dm} t/day`,  mc: `${mb.pos.mcIn}%`,  color: '#3B82F6' },
               ].map((st, i) => (
                 <div key={i} className="s1hub-stream-sm-card" style={{ '--stream-color': st.color }}>
                   <div className="s1hub-stream-sm-name">{st.name}</div>
