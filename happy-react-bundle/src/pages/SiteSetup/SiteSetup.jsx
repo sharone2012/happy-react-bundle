@@ -85,6 +85,35 @@ function fmtT(n) {
   return Math.round(n).toString();
 }
 
+/** Animated count-up number — rolls from 0 to `value` over `duration` ms */
+function AnimatedNumber({ value, duration = 1400, delay = 0 }) {
+  const [display, setDisplay] = useState(0);
+  const prev = useRef(0);
+  useEffect(() => {
+    if (!value || value <= 0) { setDisplay(0); prev.current = 0; return; }
+    const start = prev.current;
+    const end = value;
+    prev.current = end;
+    let raf;
+    let t0;
+    const delayMs = delay;
+    const timeout = setTimeout(() => {
+      t0 = performance.now();
+      const tick = (now) => {
+        const elapsed = now - t0;
+        const p = Math.min(elapsed / duration, 1);
+        // easeOutExpo for snappy start, smooth stop
+        const ease = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
+        setDisplay(start + (end - start) * ease);
+        if (p < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    }, delayMs);
+    return () => { clearTimeout(timeout); if (raf) cancelAnimationFrame(raf); };
+  }, [value, duration, delay]);
+  return <>{fmtT(Math.round(display))}</>;
+}
+
 // ── CANONICAL FEEDSTOCK DATA (locked values) ────────────
 // N factor 4.67 always. Never 6.25 in calculations.
 const FEEDSTOCK = {
@@ -179,6 +208,25 @@ export default function SiteSetup() {
   const [cpoProd, setCpoProd] = useState(3000);
   const [cpoPeriod, setCpoPeriod] = useState('annual');
   const [bConfirmed, setBConfirmed] = useState(false);
+  const cpoAnimRef = useRef(null);
+  /** Toggle Annual↔Month with animated value conversion */
+  const handlePeriodToggle = useCallback((newPeriod) => {
+    if (newPeriod === cpoPeriod) return;
+    if (cpoAnimRef.current) cancelAnimationFrame(cpoAnimRef.current);
+    const oldVal = cpoProd;
+    const newVal = newPeriod === 'month' ? Math.round(cpoProd / 12) : cpoProd * 12;
+    setCpoPeriod(newPeriod);
+    const dur = 1200;
+    const t0 = performance.now();
+    const tick = (now) => {
+      const p = Math.min((now - t0) / dur, 1);
+      const ease = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
+      setCpoProd(Math.round(oldVal + (newVal - oldVal) * ease));
+      if (p < 1) cpoAnimRef.current = requestAnimationFrame(tick);
+      else cpoAnimRef.current = null;
+    };
+    cpoAnimRef.current = requestAnimationFrame(tick);
+  }, [cpoProd, cpoPeriod]);
   const upMill = (k,v) => {
     const limits = { hrs:24, days:31, util:100 };
     const num = +v || 0;
@@ -283,15 +331,21 @@ export default function SiteSetup() {
     const id = setInterval(() => {
       setChartData(prev => {
         const last = prev[prev.length - 1];
+        // Smooth interpolation: smaller deltas + bias toward center for natural curves
+        const drift = (target, current, spread) => {
+          const pull = (target - current) * 0.04; // gentle mean reversion
+          const noise = (Math.random() - 0.5) * spread;
+          return +(Math.max(target - 30, Math.min(target + 30, current + pull + noise))).toFixed(1);
+        };
         return [...prev.slice(-28), {
           t:   last.t + 1,
-          n:   +Math.max(40, Math.min(92, last.n   + (Math.random()-0.47)*4)).toFixed(1),
-          p:   +Math.max(20, Math.min(72, last.p   + (Math.random()-0.47)*3)).toFixed(1),
-          k:   +Math.max(45, Math.min(96, last.k   + (Math.random()-0.47)*4)).toFixed(1),
-          rec: +Math.max(52, Math.min(94, last.rec + (Math.random()-0.47)*2.5)).toFixed(1),
+          n:   drift(66, last.n, 2.8),
+          p:   drift(46, last.p, 2.2),
+          k:   drift(70, last.k, 3.0),
+          rec: drift(73, last.rec, 1.8),
         }];
       });
-    }, 1400);
+    }, 900);
     return () => clearInterval(id);
   }, [millConfirmed]);
 
@@ -828,10 +882,11 @@ export default function SiteSetup() {
   const confirmBtn = { background:C.green, color:'#000', fontFamily:Fnt.brand, fontWeight:700, fontSize:15, letterSpacing:'0.04em', border:'none', borderRadius:8, padding:'0 28px', height:51, minWidth:260, display:'block', margin:'0 auto', cursor:'pointer' };
   const slItem     = { background:C.navyDeep, border:`1.5px solid ${C.bdrCalc}`, borderRadius:8, padding:'10px 26px 10px 13px', minHeight:52, marginBottom:6 };
   const toggleCard = (active, disabled=false) => ({
-    background: active ? 'rgba(64, 215, 197, 0.15)' : '#000000',
-    border: `1.5px solid ${active ? C.tealBdr : '#1E6B8C'}`,
-    borderRadius:8, padding:'10px 13px', cursor: disabled?'not-allowed':'pointer',
-    transition:'all 0.12s', minHeight:52, opacity: disabled ? 0.45 : 1,
+    background: active ? 'rgba(64, 215, 197, 0.12)' : '#000000',
+    border: `1.5px solid ${active ? C.tealBdr : 'rgba(30,107,140,0.6)'}`,
+    borderRadius:10, padding:'10px 13px', cursor: disabled?'not-allowed':'pointer',
+    transition:'all 0.3s cubic-bezier(0.4,0,0.2,1)', minHeight:52, opacity: disabled ? 0.40 : 1,
+    boxShadow: active ? '0 0 16px rgba(64,215,197,0.08)' : 'none',
   });
 
   // ═══════════════════════════════════════════════════════
@@ -842,12 +897,12 @@ export default function SiteSetup() {
 
       {/* ── FLOATING PREV/NEXT ARROWS (both sides, 15% from bottom) ── */}
       <div style={{ position:'fixed', left:14, bottom:'15%', display:'flex', flexDirection:'column', gap:5, zIndex:300 }}>
-        <div onClick={scrollPrev} style={{ width:30, height:30, borderRadius:7, background:'rgba(255,152,0,0.22)', border:'1px solid rgba(255,152,0,0.35)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity:0.85, transition:'opacity 0.15s' }}><ChevronUp size={16} color="#FF9800" /></div>
-        <div onClick={scrollNext} style={{ width:30, height:30, borderRadius:7, background:'rgba(255,152,0,0.22)', border:'1px solid rgba(255,152,0,0.35)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity:0.85, transition:'opacity 0.15s' }}><ChevronDown size={16} color="#FF9800" /></div>
+        <div onClick={scrollPrev} style={{ width:32, height:32, borderRadius:8, background:'rgba(255,152,0,0.15)', border:'1px solid rgba(255,152,0,0.25)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity:0.75, transition:'all 0.25s cubic-bezier(0.4,0,0.2,1)', backdropFilter:'blur(8px)' }} onMouseEnter={e=>{e.currentTarget.style.opacity='1';e.currentTarget.style.transform='scale(1.08)';e.currentTarget.style.background='rgba(255,152,0,0.25)';}} onMouseLeave={e=>{e.currentTarget.style.opacity='0.75';e.currentTarget.style.transform='scale(1)';e.currentTarget.style.background='rgba(255,152,0,0.15)';}}><ChevronUp size={16} color="#FF9800" /></div>
+        <div onClick={scrollNext} style={{ width:32, height:32, borderRadius:8, background:'rgba(255,152,0,0.15)', border:'1px solid rgba(255,152,0,0.25)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity:0.75, transition:'all 0.25s cubic-bezier(0.4,0,0.2,1)', backdropFilter:'blur(8px)' }} onMouseEnter={e=>{e.currentTarget.style.opacity='1';e.currentTarget.style.transform='scale(1.08)';e.currentTarget.style.background='rgba(255,152,0,0.25)';}} onMouseLeave={e=>{e.currentTarget.style.opacity='0.75';e.currentTarget.style.transform='scale(1)';e.currentTarget.style.background='rgba(255,152,0,0.15)';}}><ChevronDown size={16} color="#FF9800" /></div>
       </div>
       <div style={{ position:'fixed', right:14, bottom:'15%', display:'flex', flexDirection:'column', gap:5, zIndex:300 }}>
-        <div onClick={scrollPrev} style={{ width:30, height:30, borderRadius:7, background:'rgba(255,152,0,0.22)', border:'1px solid rgba(255,152,0,0.35)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity:0.85, transition:'opacity 0.15s' }}><ChevronUp size={16} color="#FF9800" /></div>
-        <div onClick={scrollNext} style={{ width:30, height:30, borderRadius:7, background:'rgba(255,152,0,0.22)', border:'1px solid rgba(255,152,0,0.35)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity:0.85, transition:'opacity 0.15s' }}><ChevronDown size={16} color="#FF9800" /></div>
+        <div onClick={scrollPrev} style={{ width:32, height:32, borderRadius:8, background:'rgba(255,152,0,0.15)', border:'1px solid rgba(255,152,0,0.25)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity:0.75, transition:'all 0.25s cubic-bezier(0.4,0,0.2,1)', backdropFilter:'blur(8px)' }} onMouseEnter={e=>{e.currentTarget.style.opacity='1';e.currentTarget.style.transform='scale(1.08)';e.currentTarget.style.background='rgba(255,152,0,0.25)';}} onMouseLeave={e=>{e.currentTarget.style.opacity='0.75';e.currentTarget.style.transform='scale(1)';e.currentTarget.style.background='rgba(255,152,0,0.15)';}}><ChevronUp size={16} color="#FF9800" /></div>
+        <div onClick={scrollNext} style={{ width:32, height:32, borderRadius:8, background:'rgba(255,152,0,0.15)', border:'1px solid rgba(255,152,0,0.25)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', opacity:0.75, transition:'all 0.25s cubic-bezier(0.4,0,0.2,1)', backdropFilter:'blur(8px)' }} onMouseEnter={e=>{e.currentTarget.style.opacity='1';e.currentTarget.style.transform='scale(1.08)';e.currentTarget.style.background='rgba(255,152,0,0.25)';}} onMouseLeave={e=>{e.currentTarget.style.opacity='0.75';e.currentTarget.style.transform='scale(1)';e.currentTarget.style.background='rgba(255,152,0,0.15)';}}><ChevronDown size={16} color="#FF9800" /></div>
       </div>
 
       {/* ── PAGE CONTENT ── */}
@@ -887,15 +942,18 @@ export default function SiteSetup() {
                   { val:'Live DB',  lbl:'Supabase Mill Registry',col:C.grey  },
                   { val:'Reg.',     lbl:'Permentan 01/2019',      col:C.grey  },
                 ].map(s => (
-                  <div key={s.lbl} style={{ background:'rgba(255,255,255,0.03)', border:`1px solid rgba(168,189,208,0.12)`, borderRadius:8, padding:'8px 14px', display:'flex', flexDirection:'column', gap:2 }}>
+                  <div key={s.lbl} style={{ background:'rgba(255,255,255,0.02)', border:`1px solid rgba(168,189,208,0.08)`, borderRadius:10, padding:'10px 16px', display:'flex', flexDirection:'column', gap:3, transition:'all 0.25s ease', cursor:'default', backdropFilter:'blur(4px)' }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = s.col + '40'; e.currentTarget.style.background = s.col + '08'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(168,189,208,0.08)'; e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                  >
                     <span style={{ fontSize:16, fontWeight:800, fontFamily:Fnt.mono, color:s.col }}>{s.val}</span>
-                    <span style={{ fontSize:10, color:'rgba(168,189,208,0.55)', letterSpacing:'0.06em', fontFamily:Fnt.mono }}>{s.lbl.toUpperCase()}</span>
+                    <span style={{ fontSize:9, color:'rgba(168,189,208,0.50)', letterSpacing:'0.07em', fontFamily:Fnt.mono, fontWeight:500 }}>{s.lbl.toUpperCase()}</span>
                   </div>
                 ))}
               </div>
 
               {/* Chart 1: NPK recovery live */}
-              <div style={{ background:C.navyCard, border:`1px solid rgba(64,215,197,0.18)`, borderRadius:12, padding:'14px 16px' }}>
+              <div style={{ background:`linear-gradient(180deg, ${C.navyCard} 0%, rgba(12,30,51,0.95) 100%)`, border:`1px solid rgba(64,215,197,0.15)`, borderRadius:14, padding:'16px 18px', boxShadow:'0 4px 24px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.02)', transition:'border-color 0.3s ease, box-shadow 0.3s ease' }}>
                 <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:10 }}>
                   <div>
                     <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.teal, letterSpacing:'0.08em' }}>NPK RECOVERY STREAMS — LIVE MODEL</div>
@@ -930,15 +988,15 @@ export default function SiteSetup() {
                     <XAxis dataKey="t" hide/>
                     <YAxis domain={[0,100]} tick={{fill:'rgba(168,189,208,0.35)', fontSize:9}} tickLine={false} axisLine={false}/>
                     <Tooltip contentStyle={{background:'#0C1E33',border:'1px solid rgba(64,215,197,0.30)',borderRadius:6,fontSize:11,fontFamily:"'DM Sans',sans-serif"}} itemStyle={{color:C.grey}} labelStyle={{display:'none'}} formatter={(v,n)=>[`${v}%`, n.toUpperCase()]}/>
-                    <Area type="monotone" dataKey="n" stroke="#40D7C5" strokeWidth={1.8} fill="url(#gN)" dot={false} isAnimationActive={false}/>
-                    <Area type="monotone" dataKey="p" stroke="#F5A623" strokeWidth={1.8} fill="url(#gP)" dot={false} isAnimationActive={false}/>
-                    <Area type="monotone" dataKey="k" stroke="#00A249" strokeWidth={1.8} fill="url(#gK)" dot={false} isAnimationActive={false}/>
+                    <Area type="natural" dataKey="n" stroke="#40D7C5" strokeWidth={2} fill="url(#gN)" dot={false} isAnimationActive={true} animationDuration={800} animationEasing="ease-in-out"/>
+                    <Area type="natural" dataKey="p" stroke="#F5A623" strokeWidth={2} fill="url(#gP)" dot={false} isAnimationActive={true} animationDuration={800} animationEasing="ease-in-out"/>
+                    <Area type="natural" dataKey="k" stroke="#00A249" strokeWidth={2} fill="url(#gK)" dot={false} isAnimationActive={true} animationDuration={800} animationEasing="ease-in-out"/>
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
 
               {/* Chart 2: Stream N content bar comparison */}
-              <div style={{ background:C.navyCard, border:`1px solid rgba(245,166,35,0.18)`, borderRadius:12, padding:'14px 16px' }}>
+              <div style={{ background:`linear-gradient(180deg, ${C.navyCard} 0%, rgba(12,30,51,0.95) 100%)`, border:`1px solid rgba(245,166,35,0.15)`, borderRadius:14, padding:'16px 18px', boxShadow:'0 4px 24px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.02)', transition:'border-color 0.3s ease' }}>
                 <div style={{ marginBottom:10 }}>
                   <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.amber, letterSpacing:'0.08em' }}>N CONTENT BY RESIDUE STREAM (% DM)</div>
                   <div style={{ fontSize:11, color:'rgba(168,189,208,0.50)', fontFamily:Fnt.dm, marginTop:2 }}>Nitrogen available per dry-matter tonne</div>
@@ -953,15 +1011,15 @@ export default function SiteSetup() {
                     <XAxis dataKey="stream" tick={{fill:'rgba(168,189,208,0.55)', fontSize:10, fontFamily:"'DM Sans',sans-serif"}} axisLine={false} tickLine={false}/>
                     <YAxis tick={{fill:'rgba(168,189,208,0.35)', fontSize:9}} tickLine={false} axisLine={false}/>
                     <Tooltip contentStyle={{background:'#0C1E33',border:'1px solid rgba(245,166,35,0.30)',borderRadius:6,fontSize:11,fontFamily:"'DM Sans',sans-serif"}} itemStyle={{color:C.amber}} formatter={(v)=>[`${v}% N (DM)`,'N Content']}/>
-                    <Bar dataKey="n" fill="#F5A623" radius={[4,4,0,0]} fillOpacity={0.80}/>
+                    <Bar dataKey="n" fill="#F5A623" radius={[5,5,0,0]} fillOpacity={0.85} isAnimationActive={true} animationDuration={600} animationEasing="ease-out"/>
                   </BarChart>
                 </ResponsiveContainer>
               </div>
 
               {/* How it works */}
-              <div style={{ background:'rgba(0,162,73,0.05)', border:`1px solid rgba(0,162,73,0.14)`, borderRadius:12, padding:'14px 16px' }}>
-                <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.green, letterSpacing:'0.08em', marginBottom:10 }}>HOW IT WORKS</div>
-                <div style={{ display:'flex', flexDirection:'column', gap:7 }}>
+              <div style={{ background:'rgba(0,162,73,0.04)', border:`1px solid rgba(0,162,73,0.10)`, borderRadius:14, padding:'16px 18px', boxShadow:'inset 0 1px 0 rgba(255,255,255,0.02)' }}>
+                <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.mono, color:C.green, letterSpacing:'0.08em', marginBottom:12 }}>HOW IT WORKS</div>
+                <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
                   {[
                     ['01', 'Enter your mill identity & GPS location in Section A'],
                     ['02', 'Platform auto-detects soil type, climate & agronomic zone'],
@@ -1385,98 +1443,120 @@ export default function SiteSetup() {
 
           {dashPage >= 1 && <>
           {/* ── B: CPO MILL PROCESSING ── */}
-          <div id="sec-b" style={{...card, scrollMarginTop:180}}>
-            <div style={secTitle}>B — CPO Mill Processing</div>
-            <div style={secSub}>Auto-Detected · Override Available</div>
-            <div style={cbody}>
-              <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-                {/* CPO Production — Annual/Monthly toggle */}
-                <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', background:C.navyField, border:`1px solid rgba(168,189,208,0.12)`, borderRadius:8, padding:'10px 14px', gap:12, minHeight:48 }}>
-                  <span style={{ flex:1, fontSize:14, fontWeight:700, color:C.grey, whiteSpace:'nowrap' }}>CPO Production</span>
-                  <div style={{ display:'flex', alignItems:'center', gap:6, flexShrink:0 }}>
-                    <input type="number" value={cpoProd} onChange={e=>setCpoProd(+e.target.value||0)} style={bInput} />
-                    <span style={{ fontSize:11, fontFamily:Fnt.mono, color:C.greyLt }}>t</span>
-                    <button onClick={()=>setCpoPeriod('annual')} style={{ padding:'4px 10px', borderRadius:5, border:`1.5px solid ${cpoPeriod==='annual' ? C.tealBdr : 'rgba(139,160,180,0.25)'}`, background: cpoPeriod==='annual' ? C.tealDim : 'transparent', color: cpoPeriod==='annual' ? C.teal : C.grey, fontFamily:Fnt.mono, fontSize:10, fontWeight:700, cursor:'pointer' }}>Annual</button>
-                    <button onClick={()=>setCpoPeriod('month')} style={{ padding:'4px 10px', borderRadius:5, border:`1.5px solid ${cpoPeriod==='month' ? C.tealBdr : 'rgba(139,160,180,0.25)'}`, background: cpoPeriod==='month' ? C.tealDim : 'transparent', color: cpoPeriod==='month' ? C.teal : C.grey, fontFamily:Fnt.mono, fontSize:10, fontWeight:700, cursor:'pointer' }}>Month</button>
+          <div id="sec-b" style={{...card, scrollMarginTop:180, background:'linear-gradient(165deg, rgba(17,30,51,0.98) 0%, rgba(10,22,40,0.95) 100%)', border:'1.5px solid rgba(64,215,197,0.10)', borderRadius:14, boxShadow:'0 8px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(64,215,197,0.06)'}}>
+            {/* Header with accent bar */}
+            <div style={{ position:'relative', padding:'16px 20px 14px', borderBottom:'1px solid rgba(64,215,197,0.08)' }}>
+              <div style={{ position:'absolute', top:0, left:20, right:20, height:2, background:'linear-gradient(90deg, #40D7C5 0%, rgba(64,215,197,0.0) 100%)', borderRadius:1 }}/>
+              <div style={{ fontFamily:Fnt.syne, fontWeight:700, fontSize:16, color:C.teal, letterSpacing:'0.02em', lineHeight:1.3 }}>B — CPO Mill Processing</div>
+              <div style={{ fontSize:12, color:'rgba(168,189,208,0.50)', fontFamily:Fnt.dm, marginTop:4, letterSpacing:'0.01em' }}>Auto-Detected · Override Available</div>
+            </div>
+            <div style={{ padding:'16px 18px 10px', display:'flex', flexDirection:'column', gap:10 }}>
+              {/* CPO Production — Annual/Monthly toggle */}
+              <div className="sec-b-field-row" style={{ display:'flex', alignItems:'center', justifyContent:'space-between', background:'rgba(10,22,40,0.60)', backdropFilter:'blur(8px)', border:'1px solid rgba(64,215,197,0.08)', borderRadius:10, padding:'12px 16px', gap:14, minHeight:52, transition:'all 0.25s cubic-bezier(0.4,0,0.2,1)' }}>
+                <span style={{ flex:1, fontSize:14, fontWeight:600, color:'#C8D8E8', fontFamily:Fnt.dm, whiteSpace:'nowrap', letterSpacing:'0.01em' }}>CPO Production</span>
+                <div style={{ display:'flex', alignItems:'center', gap:8, flexShrink:0 }}>
+                  <input type="number" value={cpoProd} onChange={e=>setCpoProd(+e.target.value||0)} style={{...bInput, borderRadius:8, height:40, width:80, fontSize:15, border:'1.5px solid rgba(64,215,197,0.35)', background:'rgba(0,0,0,0.50)', boxShadow:'inset 0 2px 6px rgba(0,0,0,0.3)', transition:'border-color 0.2s ease, box-shadow 0.2s ease'}} />
+                  <span style={{ fontSize:10, fontFamily:Fnt.mono, color:'rgba(168,189,208,0.45)', fontWeight:600, letterSpacing:'0.04em' }}>t</span>
+                  {['annual','month'].map(p=>(
+                    <button key={p} onClick={()=>handlePeriodToggle(p)} style={{
+                      padding:'5px 14px', borderRadius:6, fontFamily:Fnt.mono, fontSize:10, fontWeight:700, cursor:'pointer', letterSpacing:'0.04em',
+                      border:`1.5px solid ${cpoPeriod===p ? 'rgba(64,215,197,0.55)' : 'rgba(139,160,180,0.15)'}`,
+                      background: cpoPeriod===p ? 'rgba(64,215,197,0.12)' : 'rgba(255,255,255,0.02)',
+                      color: cpoPeriod===p ? C.teal : 'rgba(168,189,208,0.50)',
+                      transition:'all 0.2s cubic-bezier(0.4,0,0.2,1)',
+                      boxShadow: cpoPeriod===p ? '0 0 12px rgba(64,215,197,0.10)' : 'none',
+                    }}>{p==='annual' ? 'Annual' : 'Month'}</button>
+                  ))}
+                </div>
+              </div>
+              {[
+                { lbl:'FFB Capacity',     key:'ffb',  unit:'TPH',         max:3    },
+                { lbl:'Operating Hours',  key:'hrs',  unit:'Hours / Day',  max:24   },
+                { lbl:'Days / Month',     key:'days', unit:'Days',         max:31   },
+                { lbl:'Utilization',      key:'util', unit:'%',            max:100  },
+              ].map((row,i)=>(
+              <div key={row.key} className="sec-b-field-row" style={{ display:'flex', alignItems:'center', justifyContent:'space-between', background:'rgba(10,22,40,0.60)', backdropFilter:'blur(8px)', border:'1px solid rgba(64,215,197,0.08)', borderRadius:10, padding:'12px 16px', gap:14, minHeight:52, transition:'all 0.25s cubic-bezier(0.4,0,0.2,1)' }}>
+                  <span style={{ flex:1, fontSize:14, fontWeight:600, color:'#C8D8E8', fontFamily:Fnt.dm, whiteSpace:'nowrap', letterSpacing:'0.01em' }}>{row.lbl}</span>
+                  <div style={{ display:'flex', alignItems:'center', gap:10, flexShrink:0 }}>
+                    <input
+                      type="number"
+                      value={mill[row.key]}
+                      min={0}
+                      max={row.max}
+                      onChange={e=>upMill(row.key, e.target.value)}
+                      readOnly={false}
+                      style={{...bInput, borderRadius:8, height:40, width:80, fontSize:15, border:'1.5px solid rgba(64,215,197,0.35)', background:'rgba(0,0,0,0.50)', boxShadow:'inset 0 2px 6px rgba(0,0,0,0.3)', transition:'border-color 0.2s ease, box-shadow 0.2s ease'}}
+                    />
+                    <span style={{ fontSize:10, fontFamily:Fnt.mono, color:'rgba(168,189,208,0.40)', whiteSpace:'nowrap', width:58, fontWeight:600, letterSpacing:'0.04em' }}>{row.unit}</span>
                   </div>
                 </div>
-                {[
-                  { lbl:'FFB Capacity',     key:'ffb',  unit:'TPH',         max:3    },
-                  { lbl:'Operating Hours',  key:'hrs',  unit:'Hours / Day',  max:24   },
-                  { lbl:'Days / Month',     key:'days', unit:'Days',         max:31   },
-                  { lbl:'Utilization',      key:'util', unit:'%',            max:100  },
-                ].map(row=>(
-                <div key={row.key} style={{ display:'flex', alignItems:'center', justifyContent:'space-between', background:C.navyField, border:`1px solid rgba(168,189,208,0.12)`, borderRadius:8, padding:'10px 14px', gap:12, minHeight:48 }}>
-                    <span style={{ flex:1, fontSize:14, fontWeight:700, color:C.grey, whiteSpace:'nowrap' }}>{row.lbl}</span>
-                    <div style={{ display:'flex', alignItems:'center', gap:8, flexShrink:0 }}>
-                      <input
-                        type="number"
-                        value={mill[row.key]}
-                        min={0}
-                        max={row.max}
-                        onChange={e=>upMill(row.key, e.target.value)}
-                        readOnly={false}
-                        style={bInput}
-                      />
-                      <span style={{ fontSize:11, fontFamily:Fnt.mono, color:C.greyLt, whiteSpace:'nowrap', width:42 }}>{row.unit}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              ))}
             </div>
-            <div style={{ padding:'8px 13px 13px' }}>
-              <button onClick={handleBConfirm} style={{
-                ...confirmBtn,
-                fontWeight:700,
-                ...(bConfirmed ? { background:'rgba(0,201,177,0.25)', color:'#00C9B1', border:'1px solid #00C9B1' } : { background:C.green, color:'#000' }),
+            {/* Confirm / Edit button */}
+            <div style={{ padding:'10px 18px 18px' }}>
+              <button onClick={handleBConfirm} className="sec-b-confirm-btn" style={{
+                fontFamily:Fnt.brand, fontWeight:700, fontSize:16, letterSpacing:'0.04em',
+                border:'none', borderRadius:10, padding:'0 32px', height:54, minWidth:280,
+                display:'block', margin:'0 auto', cursor:'pointer', position:'relative', overflow:'hidden',
+                transition:'all 0.35s cubic-bezier(0.4,0,0.2,1)',
+                ...(bConfirmed
+                  ? { background:'linear-gradient(135deg, rgba(64,215,197,0.15) 0%, rgba(64,215,197,0.08) 100%)', color:'#40D7C5', border:'1.5px solid rgba(64,215,197,0.40)', boxShadow:'0 0 20px rgba(64,215,197,0.08)' }
+                  : { background:'linear-gradient(135deg, #00A249 0%, #33B56D 50%, #00A249 100%)', backgroundSize:'200% 100%', color:'#000', boxShadow:'0 4px 20px rgba(0,162,73,0.25), inset 0 1px 0 rgba(255,255,255,0.15)' }),
               }}>
                 {bConfirmed ? 'Click To Edit' : 'Confirm'}
               </button>
-              <div style={{ fontSize:11, color:C.greyLt, textAlign:'center', marginTop:5 }}>
+              <div style={{ fontSize:11, color:'rgba(168,189,208,0.45)', textAlign:'center', marginTop:8, fontFamily:Fnt.dm, letterSpacing:'0.02em' }}>
                 {bConfirmed ? 'C and E updated · click to unlock' : 'Lock values and cascade to C and E'}
               </div>
             </div>
           </div>
 
           {/* ── C: MILL MONTHLY RESULTS ── */}
-          <div id="sec-c" style={{...card, scrollMarginTop:180}}>
-            <div style={secTitle}>C — Mill Monthly Results</div>
-            <div style={secSub}>Calculated From Mill Capacity Inputs</div>
+          <div id="sec-c" style={{...card, scrollMarginTop:180, background:'linear-gradient(165deg, rgba(17,30,51,0.98) 0%, rgba(10,22,40,0.95) 100%)', border:'1.5px solid rgba(64,215,197,0.10)', borderRadius:14, boxShadow:'0 8px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(64,215,197,0.06)'}}>
+            {/* Header with accent bar */}
+            <div style={{ position:'relative', padding:'16px 20px 14px', borderBottom:'1px solid rgba(64,215,197,0.08)' }}>
+              <div style={{ position:'absolute', top:0, left:20, right:20, height:2, background:'linear-gradient(90deg, #40D7C5 0%, rgba(64,215,197,0.0) 100%)', borderRadius:1 }}/>
+              <div style={{ fontFamily:Fnt.syne, fontWeight:700, fontSize:16, color:C.teal, letterSpacing:'0.02em', lineHeight:1.3 }}>C — Mill Monthly Results</div>
+              <div style={{ fontSize:12, color:'rgba(168,189,208,0.50)', fontFamily:Fnt.dm, marginTop:4, letterSpacing:'0.01em' }}>Calculated From Mill Capacity Inputs</div>
+            </div>
             {!bConfirmed ? (
-              <div style={{ padding:'30px 16px', textAlign:'center', fontSize:12, color:C.greyLt, fontFamily:Fnt.dm }}>
+              <div style={{ padding:'40px 20px', textAlign:'center', fontSize:13, color:'rgba(168,189,208,0.45)', fontFamily:Fnt.dm, letterSpacing:'0.01em' }}>
                 Confirm Mill Processing In Section B To See Results
               </div>
             ) : (
-              <div style={{ padding:'15px 18px', display:'flex', flexDirection:'column', alignItems:'center', gap:6 }}>
-                {/* FFB Processed — green box, black text */}
-                <div style={{ background:C.green, border:`1.5px solid ${C.green}`, borderRadius:9, padding:'12px 17px', textAlign:'center', width:'100%' }}>
-                  <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:17, color:'#000', marginBottom:4 }}>FFB Processed</div>
-                  <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:17, color:'#000' }}>
-                    {fmtT(ffbMonth)} <span style={{ fontSize:16, fontWeight:700, color:'#000' }}>t / month</span>
+              <div className="sec-c-results" style={{ padding:'18px 20px 22px', display:'flex', flexDirection:'column', alignItems:'center', gap:8 }}>
+                {/* FFB Processed — premium green gradient */}
+                <div className="sec-c-card sec-c-card--ffb" style={{ background:'linear-gradient(135deg, #00A249 0%, #2DBF6A 50%, #00A249 100%)', backgroundSize:'200% 100%', border:'1.5px solid rgba(51,181,109,0.40)', borderRadius:12, padding:'16px 20px', textAlign:'center', width:'100%', boxShadow:'0 4px 24px rgba(0,162,73,0.20), inset 0 1px 0 rgba(255,255,255,0.12)', transition:'all 0.4s cubic-bezier(0.4,0,0.2,1)' }}>
+                  <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:14, color:'rgba(0,0,0,0.65)', marginBottom:6, letterSpacing:'0.03em', textTransform:'uppercase' }}>FFB Processed</div>
+                  <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:22, color:'#000' }}>
+                    <AnimatedNumber value={ffbMonth} duration={1400} delay={0}/> <span style={{ fontSize:15, fontWeight:600, color:'rgba(0,0,0,0.70)' }}>t / month</span>
                   </div>
                 </div>
-                <div style={{ fontSize:24, color:C.grey, opacity:0.85, fontWeight:900, lineHeight:1 }}>↓</div>
-                {/* EFB Discharged — teal-dim, amber text */}
-                <div style={{ background:C.tealDim, border:`1.5px solid ${C.tealBdr}`, borderRadius:9, padding:'12px 17px', textAlign:'center', width:'100%' }}>
-                  <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:17, color:C.amber, marginBottom:4 }}>EFB Discharged</div>
-                  <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:19, color:C.amber }}>
-                    {fmtT(maxT.efb)} <span style={{ fontSize:16, color:C.amber }}>t / month</span>
+                {/* Flow arrow */}
+                <div className="sec-c-arrow" style={{ fontSize:18, color:'rgba(64,215,197,0.40)', fontWeight:900, lineHeight:1, padding:'2px 0' }}>↓</div>
+                {/* EFB Discharged — glassmorphic teal */}
+                <div className="sec-c-card sec-c-card--efb" style={{ background:'rgba(64,215,197,0.06)', backdropFilter:'blur(8px)', border:'1.5px solid rgba(64,215,197,0.25)', borderRadius:12, padding:'16px 20px', textAlign:'center', width:'100%', boxShadow:'0 4px 20px rgba(64,215,197,0.06), inset 0 1px 0 rgba(64,215,197,0.08)', transition:'all 0.4s cubic-bezier(0.4,0,0.2,1)' }}>
+                  <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:14, color:C.teal, marginBottom:6, letterSpacing:'0.03em', opacity:0.75 }}>EFB Discharged</div>
+                  <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:22, color:C.amber }}>
+                    <AnimatedNumber value={maxT.efb} duration={1400} delay={200}/> <span style={{ fontSize:15, fontWeight:600, color:'rgba(245,166,35,0.70)' }}>t / month</span>
                   </div>
                 </div>
-                <div style={{ fontSize:11, fontWeight:700, fontFamily:Fnt.dm, color:C.grey, letterSpacing:'0.05em', width:'100%', textAlign:'center', marginTop:10 }}>
+                {/* Section divider label */}
+                <div style={{ fontSize:11, fontWeight:600, fontFamily:Fnt.dm, color:'rgba(168,189,208,0.40)', letterSpacing:'0.06em', width:'100%', textAlign:'center', marginTop:12, marginBottom:4 }}>
                   Additional CPO Mill Residues
                 </div>
-                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, width:'100%', marginTop:8, alignItems:'stretch' }}>
+                {/* Residue grid — glassmorphic cards */}
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, width:'100%', alignItems:'stretch' }}>
                   {[
                     { lbl:'Decanter Cake',     val:maxT.opdc },
                     { lbl:'Palm Oil Sludge',   val:maxT.pos  },
                     { lbl:'POME Liquid',       val:maxT.pome },
                     { lbl:'Palm Mesocarp Fiber',val:maxT.pmf  },
-                  ].map(r=>(
-                    <div key={r.lbl} style={{ background:C.tealDim, border:`1.5px solid ${C.tealBdr}`, borderRadius:7, padding:'13px 9px', textAlign:'center' }}>
-                      <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:17, color:C.amber, marginBottom:4, lineHeight:1.2 }}>{r.lbl}</div>
-                      <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:19, color:C.amber }}>
-                        {fmtT(r.val)} <span style={{ fontSize:16, color:C.amber }}>t / month</span>
+                  ].map((r,i)=>(
+                    <div key={r.lbl} className="sec-c-card sec-c-card--residue" style={{ background:'rgba(10,22,40,0.60)', backdropFilter:'blur(8px)', border:'1px solid rgba(64,215,197,0.12)', borderRadius:10, padding:'14px 12px', textAlign:'center', transition:'all 0.3s cubic-bezier(0.4,0,0.2,1)' }}>
+                      <div style={{ fontFamily:Fnt.dm, fontWeight:600, fontSize:13, color:'#C8D8E8', marginBottom:6, lineHeight:1.3, letterSpacing:'0.01em' }}>{r.lbl}</div>
+                      <div style={{ fontFamily:Fnt.brand, fontWeight:700, fontSize:20, color:C.amber }}>
+                        <AnimatedNumber value={r.val} duration={1400} delay={400 + i * 150}/> <span style={{ fontSize:14, fontWeight:600, color:'rgba(245,166,35,0.60)' }}>t / month</span>
                       </div>
                     </div>
                   ))}
@@ -1648,7 +1728,7 @@ export default function SiteSetup() {
                 </div>
 
                 {/* Chart: Residue generation trend */}
-                <div style={{ background:C.navyCard, border:`1px solid rgba(64,215,197,0.18)`, borderRadius:10, padding:'12px 14px' }}>
+                <div style={{ background:`linear-gradient(180deg, ${C.navyCard} 0%, rgba(12,30,51,0.95) 100%)`, border:`1px solid rgba(64,215,197,0.15)`, borderRadius:12, padding:'12px 14px', boxShadow:'0 4px 24px rgba(0,0,0,0.20)' }}>
                   <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.teal, letterSpacing:'0.08em', marginBottom:8 }}>
                     PROCESSING STREAM TREND
                   </div>
@@ -1668,14 +1748,14 @@ export default function SiteSetup() {
                       <XAxis dataKey="t" hide/>
                       <YAxis domain={[0,100]} tick={{fill:'rgba(168,189,208,0.30)', fontSize:8}} tickLine={false} axisLine={false}/>
                       <Tooltip contentStyle={{background:'#0C1E33',border:'1px solid rgba(64,215,197,0.30)',borderRadius:6,fontSize:10,fontFamily:"'DM Sans',sans-serif"}} itemStyle={{color:C.grey}} labelStyle={{display:'none'}} formatter={(v,n)=>[`${v}%`, n==='rec'?'Recovery':n.toUpperCase()]}/>
-                      <Area type="monotone" dataKey="rec" stroke="#40D7C5" strokeWidth={2} fill="url(#g2A)" dot={false} isAnimationActive={false}/>
-                      <Area type="monotone" dataKey="p"   stroke="#F5A623" strokeWidth={1.5} fill="url(#g2B)" dot={false} isAnimationActive={false}/>
+                      <Area type="natural" dataKey="rec" stroke="#40D7C5" strokeWidth={2} fill="url(#g2A)" dot={false} isAnimationActive={true} animationDuration={800} animationEasing="ease-in-out"/>
+                      <Area type="natural" dataKey="p"   stroke="#F5A623" strokeWidth={1.5} fill="url(#g2B)" dot={false} isAnimationActive={true} animationDuration={800} animationEasing="ease-in-out"/>
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
 
                 {/* Chart: Monthly residue output from mill settings */}
-                <div style={{ background:C.navyCard, border:`1px solid rgba(245,166,35,0.18)`, borderRadius:10, padding:'12px 14px' }}>
+                <div style={{ background:`linear-gradient(180deg, ${C.navyCard} 0%, rgba(12,30,51,0.95) 100%)`, border:`1px solid rgba(245,166,35,0.15)`, borderRadius:12, padding:'12px 14px', boxShadow:'0 4px 24px rgba(0,0,0,0.20)' }}>
                   <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.amber, letterSpacing:'0.08em', marginBottom:2 }}>
                     MONTHLY OUTPUT (t/month)
                   </div>
@@ -1688,7 +1768,7 @@ export default function SiteSetup() {
                       <XAxis dataKey="s" tick={{fill:'rgba(168,189,208,0.55)', fontSize:9, fontFamily:"'DM Sans',sans-serif"}} axisLine={false} tickLine={false}/>
                       <YAxis tick={{fill:'rgba(168,189,208,0.30)', fontSize:8}} tickLine={false} axisLine={false}/>
                       <Tooltip contentStyle={{background:'#0C1E33',border:'1px solid rgba(245,166,35,0.30)',borderRadius:6,fontSize:10,fontFamily:"'DM Sans',sans-serif"}} itemStyle={{color:C.amber}} formatter={(v)=>[`${v.toLocaleString()} t`, 'Monthly']}/>
-                      <Bar dataKey="t" fill="#F5A623" radius={[3,3,0,0]} fillOpacity={0.80}/>
+                      <Bar dataKey="t" fill="#F5A623" radius={[4,4,0,0]} fillOpacity={0.85} isAnimationActive={true} animationDuration={600} animationEasing="ease-out"/>
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -1793,7 +1873,7 @@ export default function SiteSetup() {
           </div>
 
           {/* Live NPK trend chart */}
-          <div style={{ background:C.navyCard, border:`1px solid rgba(64,215,197,0.14)`, borderRadius:10, padding:'14px 16px' }}>
+          <div style={{ background:`linear-gradient(180deg, ${C.navyCard} 0%, rgba(12,30,51,0.95) 100%)`, border:`1px solid rgba(64,215,197,0.12)`, borderRadius:12, padding:'14px 16px', boxShadow:'0 4px 24px rgba(0,0,0,0.20)' }}>
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:8 }}>
               <div style={{ fontSize:10, fontWeight:700, fontFamily:Fnt.mono, color:C.teal, letterSpacing:'0.08em' }}>LIVE NPK RECOVERY MODEL</div>
               <div style={{ display:'flex', gap:10 }}>
@@ -1816,9 +1896,9 @@ export default function SiteSetup() {
                 <XAxis dataKey="t" hide/>
                 <YAxis domain={[0,100]} tick={{fill:'rgba(168,189,208,0.28)',fontSize:8}} tickLine={false} axisLine={false}/>
                 <Tooltip contentStyle={{background:'#0C1E33',border:'1px solid rgba(64,215,197,0.28)',borderRadius:6,fontSize:10,fontFamily:"'DM Sans',sans-serif"}} itemStyle={{color:C.grey}} labelStyle={{display:'none'}} formatter={(v,n)=>[`${v}%`,n.toUpperCase()]}/>
-                <Area type="monotone" dataKey="n" stroke="#40D7C5" strokeWidth={1.8} fill="url(#g3N)" dot={false} isAnimationActive={false}/>
-                <Area type="monotone" dataKey="p" stroke="#F5A623" strokeWidth={1.5} fill="url(#g3P)" dot={false} isAnimationActive={false}/>
-                <Area type="monotone" dataKey="k" stroke="#00A249" strokeWidth={1.5} fill="url(#g3K)" dot={false} isAnimationActive={false}/>
+                <Area type="natural" dataKey="n" stroke="#40D7C5" strokeWidth={2} fill="url(#g3N)" dot={false} isAnimationActive={true} animationDuration={800} animationEasing="ease-in-out"/>
+                <Area type="natural" dataKey="p" stroke="#F5A623" strokeWidth={1.5} fill="url(#g3P)" dot={false} isAnimationActive={true} animationDuration={800} animationEasing="ease-in-out"/>
+                <Area type="natural" dataKey="k" stroke="#00A249" strokeWidth={1.5} fill="url(#g3K)" dot={false} isAnimationActive={true} animationDuration={800} animationEasing="ease-in-out"/>
               </AreaChart>
             </ResponsiveContainer>
           </div>

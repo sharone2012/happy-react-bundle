@@ -342,6 +342,7 @@ function StreamModal({ streamKey, mb, site, onClose }) {
               className="s1hub-modal-iframe"
               src={iframeUrl}
               title={`${cfg.label} ${tab}`}
+              sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"
             />
           )}
 
@@ -351,6 +352,7 @@ function StreamModal({ streamKey, mb, site, onClose }) {
               className="s1hub-modal-iframe"
               src={cfg.floorPlanUrl}
               title={`${cfg.label} Floor Plan`}
+              sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"
             />
           )}
 

@@ -3,6 +3,46 @@
 @tailwind utilities;
 
 /* ══════════════════════════════════════════════════
+   CFI GLOBAL PROFESSIONAL STYLING
+   ══════════════════════════════════════════════════ */
+
+/* Smooth scrolling & font rendering */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Universal smooth transitions for interactive elements */
+*, *::before, *::after {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Selection color matching brand */
+::selection {
+  background: rgba(64, 215, 197, 0.25);
+  color: #FFFFFF;
+}
+
+/* Smooth focus outlines */
+:focus-visible {
+  outline: 2px solid rgba(64, 215, 197, 0.45);
+  outline-offset: 2px;
+  transition: outline-offset 0.15s ease;
+}
+
+/* Scrollbar styling for dark theme */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: rgba(6, 12, 20, 0.5); }
+::-webkit-scrollbar-thumb {
+  background: rgba(168, 189, 208, 0.15);
+  border-radius: 4px;
+  border: 2px solid transparent;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(168, 189, 208, 0.25); }
+
+/* ══════════════════════════════════════════════════
    CFI GLOBAL BRAND HEADER (LOCKED)
    ══════════════════════════════════════════════════ */
 .global-header {

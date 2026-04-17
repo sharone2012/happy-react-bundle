@@ -7,7 +7,17 @@ import { useAuth } from "@/contexts/AuthContext";
 // Handles: browser autofill override, class-based styles, keyframes
 const GLOBAL_STYLES = `
   @keyframes cfi-spin   { to { transform: rotate(360deg); } }
-  @keyframes cfi-fadeup { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes cfi-fadeup { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes cfi-pulse  { 0%,100% { opacity:0.4; } 50% { opacity:1; } }
+  @keyframes cfi-glow   { 0%,100% { box-shadow: 0 0 20px rgba(64,215,197,0.06); } 50% { box-shadow: 0 0 40px rgba(64,215,197,0.12); } }
+  @keyframes cfi-shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes cfi-float {
+    0%,100% { transform: translateY(0); }
+    50%     { transform: translateY(-4px); }
+  }
 
   /* ── Kill the browser's autofill white-box override ── */
   input:-webkit-autofill,
@@ -24,51 +34,59 @@ const GLOBAL_STYLES = `
   .cfi-input {
     width: 100%;
     height: 46px;
-    background: #0A1624;
-    border: 1px solid rgba(168,189,208,0.13);
-    border-radius: 7px;
+    background: rgba(10,22,36,0.80);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(168,189,208,0.10);
+    border-radius: 8px;
     color: #FFFFFF;
     font-family: 'DM Sans', sans-serif;
     font-size: 14px;
     padding: 0 42px 0 14px;
     outline: none;
     box-sizing: border-box;
-    transition: border-color 0.18s, box-shadow 0.18s;
+    transition: border-color 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.25s cubic-bezier(0.4,0,0.2,1), background 0.25s ease;
   }
   .cfi-input:focus {
-    border-color: rgba(64,215,197,0.58);
-    box-shadow: 0 0 0 3px rgba(64,215,197,0.08);
+    border-color: rgba(64,215,197,0.55);
+    box-shadow: 0 0 0 3px rgba(64,215,197,0.08), 0 0 20px rgba(64,215,197,0.06);
+    background: rgba(10,22,36,0.95);
   }
-  .cfi-input::placeholder { color: rgba(168,189,208,0.27); }
-  .cfi-input:disabled     { opacity: 0.45; cursor: not-allowed; }
+  .cfi-input::placeholder { color: rgba(168,189,208,0.24); }
+  .cfi-input:disabled     { opacity: 0.40; cursor: not-allowed; }
   .cfi-input-plain { padding-right: 14px; }
 
   /* ── Tab buttons ── */
   .cfi-tab {
     flex: 1;
-    height: 40px;
+    height: 42px;
     background: transparent;
     border: none;
     border-bottom: 2px solid transparent;
-    color: rgba(168,189,208,0.48);
+    color: rgba(168,189,208,0.42);
     font-family: 'Syne', sans-serif;
     font-weight: 600;
     font-size: 12px;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.08em;
     cursor: pointer;
-    transition: color 0.18s, border-color 0.18s;
+    transition: color 0.3s cubic-bezier(0.4,0,0.2,1), border-color 0.3s cubic-bezier(0.4,0,0.2,1);
     padding: 0;
+    position: relative;
   }
-  .cfi-tab.active { color: #40D7C5; border-bottom-color: #40D7C5; }
-  .cfi-tab:hover:not(.active) { color: rgba(168,189,208,0.78); }
+  .cfi-tab.active {
+    color: #40D7C5;
+    border-bottom-color: #40D7C5;
+    text-shadow: 0 0 20px rgba(64,215,197,0.3);
+  }
+  .cfi-tab:hover:not(.active) { color: rgba(168,189,208,0.72); }
 
   /* ── Primary button ── */
   .cfi-btn-primary {
     width: 100%;
     height: 48px;
-    background: #40D7C5;
+    background: linear-gradient(135deg, #40D7C5 0%, #2BC4B4 100%);
     border: none;
-    border-radius: 7px;
+    border-radius: 8px;
     color: #060C14;
     font-family: 'Syne', sans-serif;
     font-weight: 700;
@@ -79,17 +97,34 @@ const GLOBAL_STYLES = `
     align-items: center;
     justify-content: center;
     gap: 10px;
-    transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  .cfi-btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    background-size: 200% 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
   .cfi-btn-primary:hover:not(:disabled) {
-    background: #5AEADB;
     transform: translateY(-1px);
-    box-shadow: 0 6px 24px rgba(64,215,197,0.22);
+    box-shadow: 0 8px 32px rgba(64,215,197,0.28), 0 0 0 1px rgba(64,215,197,0.15);
   }
-  .cfi-btn-primary:active:not(:disabled) { transform: translateY(0); box-shadow: none; }
+  .cfi-btn-primary:hover:not(:disabled)::before {
+    opacity: 1;
+    animation: cfi-shimmer 1.5s ease infinite;
+  }
+  .cfi-btn-primary:active:not(:disabled) {
+    transform: translateY(0) scale(0.99);
+    box-shadow: 0 2px 8px rgba(64,215,197,0.15);
+  }
   .cfi-btn-primary:disabled {
-    background: rgba(64,215,197,0.25);
-    color: rgba(6,12,20,0.55);
+    background: rgba(64,215,197,0.18);
+    color: rgba(6,12,20,0.45);
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
@@ -99,9 +134,11 @@ const GLOBAL_STYLES = `
   .cfi-btn-google {
     width: 100%;
     height: 46px;
-    background: transparent;
-    border: 1px solid rgba(168,189,208,0.13);
-    border-radius: 7px;
+    background: rgba(168,189,208,0.03);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(168,189,208,0.10);
+    border-radius: 8px;
     color: #A8BDD0;
     font-family: 'DM Sans', sans-serif;
     font-size: 13px;
@@ -111,17 +148,20 @@ const GLOBAL_STYLES = `
     align-items: center;
     justify-content: center;
     gap: 10px;
-    transition: background 0.18s, border-color 0.18s;
+    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
   }
   .cfi-btn-google:hover:not(:disabled) {
-    background: rgba(168,189,208,0.06);
-    border-color: rgba(168,189,208,0.26);
+    background: rgba(168,189,208,0.07);
+    border-color: rgba(168,189,208,0.22);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
   }
-  .cfi-btn-google:disabled { opacity: 0.42; cursor: not-allowed; }
+  .cfi-btn-google:active:not(:disabled) { transform: translateY(0); }
+  .cfi-btn-google:disabled { opacity: 0.38; cursor: not-allowed; }
 
   /* ── Feedback banners ── */
   .cfi-banner {
-    border-radius: 7px;
+    border-radius: 8px;
     padding: 11px 14px;
     margin-bottom: 20px;
     font-family: 'DM Sans', sans-serif;
@@ -130,19 +170,34 @@ const GLOBAL_STYLES = `
     display: flex;
     align-items: flex-start;
     gap: 9px;
-    animation: cfi-fadeup 0.2s ease;
+    animation: cfi-fadeup 0.3s cubic-bezier(0.4,0,0.2,1);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
   }
-  .cfi-banner.error   { background:rgba(232,64,64,0.09);  border:1px solid rgba(232,64,64,0.28);  color:#F07878; }
-  .cfi-banner.success { background:rgba(0,162,73,0.09);   border:1px solid rgba(0,162,73,0.28);   color:#3DD68C; }
+  .cfi-banner.error   { background:rgba(232,64,64,0.08);  border:1px solid rgba(232,64,64,0.22);  color:#F07878; }
+  .cfi-banner.success { background:rgba(0,162,73,0.08);   border:1px solid rgba(0,162,73,0.22);   color:#3DD68C; }
 
   /* ── Card entrance ── */
-  .cfi-card { animation: cfi-fadeup 0.32s ease; }
+  .cfi-card {
+    animation: cfi-fadeup 0.45s cubic-bezier(0.16,1,0.3,1);
+    animation-fill-mode: both;
+  }
 
   /* ── Eye toggle ── */
   .cfi-eye { position:absolute; right:12px; top:50%; transform:translateY(-50%);
     background:none; border:none; cursor:pointer; padding:3px;
-    color:rgba(168,189,208,0.40); line-height:0; transition:color 0.15s; }
-  .cfi-eye:hover { color:rgba(168,189,208,0.75); }
+    color:rgba(168,189,208,0.35); line-height:0; transition:color 0.2s ease, transform 0.2s ease; }
+  .cfi-eye:hover { color:rgba(168,189,208,0.70); transform: translateY(-50%) scale(1.1); }
+
+  /* ── Smooth form field transitions ── */
+  .cfi-field-group {
+    animation: cfi-fadeup 0.35s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .cfi-field-group:nth-child(1) { animation-delay: 0.04s; }
+  .cfi-field-group:nth-child(2) { animation-delay: 0.08s; }
+  .cfi-field-group:nth-child(3) { animation-delay: 0.12s; }
+  .cfi-field-group:nth-child(4) { animation-delay: 0.16s; }
+  .cfi-field-group:nth-child(5) { animation-delay: 0.20s; }
 `;
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
@@ -164,7 +219,7 @@ function FieldLabel({ children }) {
 
 function Field({ label, children }) {
   return (
-    <div style={{ marginBottom: 20 }}>
+    <div className="cfi-field-group" style={{ marginBottom: 20 }}>
       <FieldLabel>{label}</FieldLabel>
       {children}
     </div>
@@ -261,10 +316,10 @@ function SuccessBanner({ message }) {
 
 function Divider() {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "22px 0" }}>
-      <div style={{ flex: 1, height: 1, background: "rgba(168,189,208,0.10)" }} />
-      <span style={{ fontFamily: F.dm, fontSize: 11, color: "rgba(168,189,208,0.28)", letterSpacing: "0.06em" }}>OR</span>
-      <div style={{ flex: 1, height: 1, background: "rgba(168,189,208,0.10)" }} />
+    <div style={{ display: "flex", alignItems: "center", gap: 14, margin: "24px 0" }}>
+      <div style={{ flex: 1, height: 1, background: "linear-gradient(90deg, transparent, rgba(168,189,208,0.10), transparent)" }} />
+      <span style={{ fontFamily: F.dm, fontSize: 10, color: "rgba(168,189,208,0.24)", letterSpacing: "0.10em", fontWeight: 500 }}>OR</span>
+      <div style={{ flex: 1, height: 1, background: "linear-gradient(90deg, transparent, rgba(168,189,208,0.10), transparent)" }} />
     </div>
   );
 }
@@ -403,29 +458,30 @@ function SignUpForm({ onError, onSuccess }) {
 // ─── Logo ─────────────────────────────────────────────────────────────────────
 function CFILogo() {
   return (
-    <div style={{ textAlign: "center", marginBottom: 34 }}>
+    <div style={{ textAlign: "center", marginBottom: 36 }}>
       {/* Icon mark */}
       <div style={{
         display: "inline-flex", alignItems: "center", justifyContent: "center",
-        width: 56, height: 56,
-        background: "linear-gradient(135deg, rgba(64,215,197,0.13) 0%, rgba(64,215,197,0.05) 100%)",
-        border: "1.5px solid rgba(64,215,197,0.42)",
-        borderRadius: 14, marginBottom: 17,
-        boxShadow: "0 0 22px rgba(64,215,197,0.11)",
+        width: 58, height: 58,
+        background: "linear-gradient(135deg, rgba(64,215,197,0.14) 0%, rgba(64,215,197,0.04) 100%)",
+        border: "1.5px solid rgba(64,215,197,0.35)",
+        borderRadius: 16, marginBottom: 18,
+        boxShadow: "0 0 30px rgba(64,215,197,0.10), inset 0 1px 0 rgba(255,255,255,0.03)",
+        animation: "cfi-float 4s ease-in-out infinite",
       }}>
         <svg width="30" height="30" viewBox="0 0 28 28" fill="none">
           <path d="M14 2L25 8V20L14 26L3 20V8L14 2Z" stroke="#40D7C5" strokeWidth="1.5" fill="none"/>
-          <path d="M14 7L20 10.5V17.5L14 21L8 17.5V10.5L14 7Z" fill="#40D7C5" fillOpacity="0.14"/>
+          <path d="M14 7L20 10.5V17.5L14 21L8 17.5V10.5L14 7Z" fill="#40D7C5" fillOpacity="0.12"/>
           <circle cx="14" cy="14" r="3.5" fill="#40D7C5"/>
         </svg>
       </div>
 
-      <div style={{ fontFamily: F.syne, fontWeight: 700, fontSize: 19.5,
-                    letterSpacing: "0.07em", color: "#FFFFFF", lineHeight: 1 }}>
+      <div style={{ fontFamily: F.syne, fontWeight: 700, fontSize: 20,
+                    letterSpacing: "0.08em", color: "#FFFFFF", lineHeight: 1 }}>
         CFI DEEP TECH
       </div>
-      <div style={{ fontFamily: F.dm, fontSize: 11.5, color: "rgba(168,189,208,0.58)",
-                    marginTop: 8, letterSpacing: "0.05em" }}>
+      <div style={{ fontFamily: F.dm, fontSize: 11.5, color: "rgba(168,189,208,0.50)",
+                    marginTop: 9, letterSpacing: "0.06em" }}>
         Circular Nutrient Recovery Platform
       </div>
     </div>
@@ -456,10 +512,15 @@ export default function AuthPage() {
     <>
       <style>{GLOBAL_STYLES}</style>
 
-      {/* Page wrapper — subtle teal radial glow emanating from top */}
+      {/* Page wrapper — layered radial glows for depth */}
       <div style={{
         minHeight: "100dvh",
-        background: "radial-gradient(ellipse 65% 35% at 50% -2%, rgba(64,215,197,0.07) 0%, transparent 70%), #060C14",
+        background: `
+          radial-gradient(ellipse 60% 30% at 50% -5%, rgba(64,215,197,0.08) 0%, transparent 60%),
+          radial-gradient(ellipse 40% 40% at 80% 90%, rgba(64,215,197,0.03) 0%, transparent 50%),
+          radial-gradient(ellipse 30% 30% at 10% 80%, rgba(245,166,35,0.02) 0%, transparent 50%),
+          #060C14
+        `,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -468,15 +529,23 @@ export default function AuthPage() {
         fontFamily: F.dm,
       }}>
 
-        {/* Auth card */}
+        {/* Auth card — glassmorphic deeptech panel */}
         <div className="cfi-card" style={{
           width: "100%",
           maxWidth: 462,
-          background: "#0D1927",
-          border: "1px solid rgba(64,215,197,0.10)",
-          borderRadius: 14,
-          padding: "40px 38px 46px",
-          boxShadow: "0 0 0 1px rgba(64,215,197,0.04), 0 40px 80px rgba(0,0,0,0.60)",
+          background: "rgba(13,25,39,0.85)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          border: "1px solid rgba(64,215,197,0.08)",
+          borderRadius: 16,
+          padding: "42px 40px 48px",
+          boxShadow: `
+            0 0 0 1px rgba(64,215,197,0.04),
+            0 1px 2px rgba(0,0,0,0.3),
+            0 8px 16px rgba(0,0,0,0.3),
+            0 40px 80px rgba(0,0,0,0.5)
+          `,
+          animation: "cfi-glow 6s ease-in-out infinite",
         }}>
           <CFILogo />
 
@@ -507,11 +576,11 @@ export default function AuthPage() {
 
         {/* Footer */}
         <div style={{
-          marginTop: 28,
+          marginTop: 32,
           fontFamily: F.dm,
           fontSize: 11,
-          color: "rgba(168,189,208,0.26)",
-          letterSpacing: "0.04em",
+          color: "rgba(168,189,208,0.22)",
+          letterSpacing: "0.05em",
           textAlign: "center",
           lineHeight: 1.85,
         }}>
