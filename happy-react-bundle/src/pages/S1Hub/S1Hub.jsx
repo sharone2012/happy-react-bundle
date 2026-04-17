@@ -1096,6 +1096,13 @@ export default function S1Hub() {
         {/* ── MAIN CONTENT ── */}
         <div className="s1hub-main">
 
+      {/* ── SUBSTRATE FLOW STRIP — top of page ── */}
+      <SubstrateFlowStrip
+        stageLabel="Substrate Flow — S0 Feedstock → S1 Mechanical Output"
+        inflows={S1_INFLOWS}
+        outflows={S1_OUTFLOWS}
+      />
+
       {/* ── PRIMARY TAB BAR ── */}
       <div className="s1hub-tab-bar">
         {TABS.map(t => (
@@ -1116,14 +1123,6 @@ export default function S1Hub() {
         <div className="s1hub-tab-content">
           <S1MassBalanceTable mb={mb} site={site} />
           <S0ResidueStreamCards mb={mb} site={site} mcOverride={mcOverride} setMcOverride={setMcOverride} efbPressDuty={efbPressDuty} efbMillDuty={efbMillDuty} opdcPressDuty={opdcPressDuty} />
-
-          <div style={{ marginTop: 20 }}>
-            <SubstrateFlowStrip
-              stageLabel="Substrate Flow — S0 Feedstock → S1 Mechanical Output"
-              inflows={S1_INFLOWS}
-              outflows={S1_OUTFLOWS}
-            />
-          </div>
 
           <S1ResidueCards />
 
