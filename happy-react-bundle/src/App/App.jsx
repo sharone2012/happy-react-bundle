@@ -2,7 +2,6 @@ import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SiteSetup from "../pages/SiteSetup/SiteSetup.jsx";
 import S1Hub from "../pages/S1Hub/S1Hub.jsx";
-import LoginPage from "../LoginPage/LoginPage.jsx";
 import { supabase } from "@/integrations/supabase/client";
 import CFI_PriceRefreshBadge from "@/components/CFI_PriceRefreshBadge/CFI_PriceRefreshBadge.jsx";
 import CFI_ValueCalculator from "@/components/CFI_ValueCalculator/CFI_ValueCalculator.jsx";
@@ -1410,13 +1409,6 @@ function OrchestrationTab({uploadedConfigs, setUploadedConfigs}) {
 
 // ג”€ג”€ג”€ MAIN APP ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
 export default function CFI() {
-  const [session, setSession] = useState(null);
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session: s } }) => setSession(s));
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => setSession(s));
-    return () => subscription.unsubscribe();
-  }, []);
   const [stage, setStage] = useState(0);
   const navigate = useNavigate();
   const [showMoreStreams, setShowMoreStreams] = useState(false);
@@ -2362,9 +2354,6 @@ export default function CFI() {
     window.addEventListener("cfi-stage-change", onStageChange);
     return () => window.removeEventListener("cfi-stage-change", onStageChange);
   }, []);
-
-  // Auth guard disabled for preview
-  // if (!session) return <LoginPage onLoginSuccess={() => {}} />;
 
   const NAV_TABS = ["Site Setup","Pre-Processing","Pre-Treatment","Biologicals","BSF","Biofertiliser / Other","Emissions","Financials","Summary"];
   const SHORT_TABS = ["S0","S1","S2","S3","S4","S5","S6"];

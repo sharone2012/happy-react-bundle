@@ -18,6 +18,7 @@
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import CFI_PriceRefreshBadge from "../CFI_PriceRefreshBadge/CFI_PriceRefreshBadge.jsx";
+import { useAuth } from "@/contexts/AuthContext";
 
 const F  = "'DM Sans', sans-serif";
 const FM = "'DM Mono', monospace";
@@ -67,7 +68,28 @@ function readSiteInfo() {
 export default function GlobalLayout() {
   const location = useLocation();
   const navigate  = useNavigate();
+  const { user, signOut } = useAuth();
   const [site, setSite] = useState(readSiteInfo);
+  const [signingOut, setSigningOut] = useState(false);
+
+  async function handleSignOut() {
+    setSigningOut(true);
+    await signOut();
+    navigate("/login", { replace: true });
+  }
+
+  // Derive display name: prefer metadata full_name, fall back to email prefix
+  const displayName = user?.user_metadata?.full_name
+    || user?.email?.split("@")[0]
+    || "User";
+  const displayEmail = user?.email || "";
+  // Initials from display name (up to 2 chars)
+  const initials = displayName
+    .split(" ")
+    .map(w => w[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
 
   const activeTab   = resolveActiveTab(location.pathname, location.search);
   const activeShort = resolveShortTab(location.pathname, activeTab);
@@ -120,7 +142,7 @@ export default function GlobalLayout() {
               <span className="tagline-segment tagline-teal">Rebalancing Soil's Microbiome &amp; Reducing Synthetic Fertiliser Use</span>
             </div>
           </div>
-          {/* Price badge + S0–S6 short tabs */}
+          {/* Price badge + S0–S6 short tabs + User strip */}
           <div style={{ marginLeft:"auto", display:"flex", alignItems:"center", gap:12, flexShrink:0 }}>
             <CFI_PriceRefreshBadge />
             {SHORT_TABS.map((s, i) => (
@@ -136,6 +158,69 @@ export default function GlobalLayout() {
                 }}
               >{s}</span>
             ))}
+
+            {/* ── Vertical divider ── */}
+            <div style={{ width:1, height:22, background:"rgba(168,189,208,0.15)", flexShrink:0 }} />
+
+            {/* ── User identity strip ── */}
+            <div style={{ display:"flex", alignItems:"center", gap:9, flexShrink:0 }}>
+              {/* Avatar */}
+              <div style={{
+                width:28, height:28, borderRadius:"50%",
+                background:"linear-gradient(135deg, rgba(64,215,197,0.22) 0%, rgba(64,215,197,0.10) 100%)",
+                border:"1.5px solid rgba(64,215,197,0.42)",
+                display:"flex", alignItems:"center", justifyContent:"center",
+                fontFamily:"'Syne', sans-serif", fontWeight:700, fontSize:10,
+                color:"#40D7C5", flexShrink:0, letterSpacing:"0.04em",
+              }}>
+                {initials}
+              </div>
+
+              {/* Name + email */}
+              <div style={{ display:"flex", flexDirection:"column", gap:1, minWidth:0 }}>
+                <span style={{
+                  fontFamily:"'DM Sans', sans-serif", fontWeight:600, fontSize:11,
+                  color:"#FFFFFF", whiteSpace:"nowrap", maxWidth:140,
+                  overflow:"hidden", textOverflow:"ellipsis",
+                }}>
+                  {displayName}
+                </span>
+                <span style={{
+                  fontFamily:FM, fontSize:9.5,
+                  color:"rgba(168,189,208,0.50)", whiteSpace:"nowrap",
+                  maxWidth:140, overflow:"hidden", textOverflow:"ellipsis",
+                }}>
+                  {displayEmail}
+                </span>
+              </div>
+
+              {/* Sign Out button */}
+              <button
+                onClick={handleSignOut}
+                disabled={signingOut}
+                title="Sign out"
+                style={{
+                  display:"flex", alignItems:"center", gap:5,
+                  background:"rgba(232,64,64,0.08)",
+                  border:"1px solid rgba(232,64,64,0.22)",
+                  borderRadius:5, padding:"4px 10px",
+                  color: signingOut ? "rgba(232,64,64,0.40)" : "#E84040",
+                  fontFamily:"'Syne', sans-serif", fontWeight:600, fontSize:10,
+                  letterSpacing:"0.07em", cursor: signingOut ? "not-allowed" : "pointer",
+                  transition:"background 0.18s, border-color 0.18s", whiteSpace:"nowrap",
+                  flexShrink:0,
+                }}
+                onMouseEnter={e => { if(!signingOut) { e.currentTarget.style.background="rgba(232,64,64,0.16)"; e.currentTarget.style.borderColor="rgba(232,64,64,0.45)"; } }}
+                onMouseLeave={e => { e.currentTarget.style.background="rgba(232,64,64,0.08)"; e.currentTarget.style.borderColor="rgba(232,64,64,0.22)"; }}
+              >
+                {/* Power icon */}
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
+                  <line x1="12" y1="2" x2="12" y2="12"/>
+                </svg>
+                {signingOut ? "..." : "Sign Out"}
+              </button>
+            </div>
           </div>
         </div>
 
